@@ -1,0 +1,60 @@
+# Phase D Hard Test — #23 Website Scraping / Understanding
+# Tier: 2 | Score: 5/10 | No automated constraints to check
+# Tokens: 3108 | Speed: 141.4 t/s | Time: 22.0s
+
+## PROMPT:
+Extract job information from this HTML AND identify ALL red flags. There are at least 6 problematic elements, some subtle.
+
+<div class='job-listing'>
+<h2>Full-Stack Ninja Rockstar Developer</h2>
+<p class='company'>Stealth Startup (unnamed)</p>
+<p class='location'>Remote* (*must be available 6am-midnight PT for "flexibility")</p>
+<p class='salary'>Competitive salary (equity-heavy compensation)</p>
+<p class='experience'>Entry level (5+ years experience required)</p>
+<p class='requirements'>Must know: React, Vue, Angular, Svelte, Python, Go, Rust, Java, C++, Kubernetes, Terraform, AWS, GCP, Azure, PostgreSQL, MongoDB, Redis, Elasticsearch, GraphQL, REST, gRPC, Docker, CircleCI, Jenkins</p>
+<p class='perks'>Unlimited PTO (average team usage: 5 days/year). Fast-paced environment (mandatory 60hr weeks during "crunch" — approximately 48 weeks/year). We're like a family!</p>
+<p class='equity'>0.001% equity vesting over 6 years with 2-year cliff</p>
+<p class='application'>Apply with cover letter, 3 references, coding challenge (estimated 40 hours), and personality assessment</p>
+</div>
+
+Extract structured data AND write a detailed red flag analysis. Flag every manipulative or unreasonable element.
+
+## RESPONSE:
+**Structured Job Summary**
+
+| Field | Value |
+|-------|-------|
+| **Title** | Full‑Stack Ninja Rockstar Developer |
+| **Company** | Stealth Startup (unnamed) |
+| **Location** | Remote (must be available 6 am – midnight PT) |
+| **Salary** | “Competitive salary (equity‑heavy compensation)” – no dollar figure disclosed |
+| **Experience** | Entry‑level *but* “5+ years experience required” |
+| **Requirements** | React, Vue, Angular, Svelte, Python, Go, Rust, Java, C++, Kubernetes, Terraform, AWS, GCP, Azure, PostgreSQL, MongoDB, Redis, Elasticsearch, GraphQL, REST, gRPC, Docker, CircleCI, Jenkins |
+| **Perks** | Unlimited PTO (average 5 days/year); mandatory 60‑hour weeks during “crunch” (≈ 48 weeks/year); “fast‑paced” environment; “family” culture |
+| **Equity** | 0.001 % vesting over 6 years with a 2‑year cliff |
+| **Application** | Cover letter, 3 references, coding challenge (estimated 40 hrs), personality assessment |
+
+---
+
+## Red‑Flag Analysis
+
+| # | Red‑Flag | Why It Matters | Potential Consequence |
+|---|----------|----------------|-----------------------|
+| 1 | **Unnamed “Stealth Startup”** | No public company name, no website, no prior funding announcements. | Hard to verify legitimacy; risk of scam or a company that never actually exists. |
+| 2 | **Extreme Availability Requirement** | Remote role that demands 6 am–midnight PT (18 hrs/day). | Implies 24/7 coverage, unrealistic for any employee; leads to chronic burnout. |
+| 3 | **Contradictory Experience Level** | “Entry‑level” yet requires “5+ years experience.” | Confusing, likely a marketing ploy to attract a wide pool while actually wanting seasoned hires. |
+| 4 | **No Salary Disclosure** | “Competitive salary” is vague; no figure or range. | Leaves candidates guessing; may be a tactic to keep negotiations open or to hide a low pay. |
+| 5 | **Equity is Practically Zero** | 0.001 % over 6 years with a 2‑year cliff. | For a typical startup, that equity is negligible; the “equity‑heavy” claim is misleading. |
+| 6 | **Overwhelming Tech Stack** | 23 distinct technologies listed. | Unlikely that a single role truly needs all of them; sets unrealistic expectations and filters out most candidates. |
+| 7 | **Mandatory 60‑Hour Weeks** | “Crunch” period of 48 weeks/year. | Implies a 1,200‑hour work year, far above the legal/healthy norm; signals a toxic culture. |
+| 8 | **Unlimited PTO but Low Usage** | “Unlimited” but average 5 days/year. | Indicates that the policy is a marketing gimmick; employees are expected to take minimal time off. |
+| 9 | **Excessive Application Burden** | Cover letter, 3 references, 40‑hour coding challenge, personality assessment. | 40‑hour coding challenge alone is a 5‑day work‑week commitment; unrealistic for a job that already demands 60‑hour weeks. |
+|10 | **Manipulative “Family” Language** | “We’re like a family!” used to soften the harsh hours. | Creates a false sense of belonging while masking exploitation. |
+|11 | **No Clear Role Definition** | Title (“Ninja Rockstar”) and requirements are vague. | Makes it hard to gauge actual responsibilities; may hide a “jack‑of‑all‑trades” role that is over‑burdened. |
+|12 | **Potential Legal/Compliance Issues** | 48 weeks of crunch + 60‑hour weeks + remote 18‑hour day. | Could violate labor laws (minimum rest periods, overtime caps) in many jurisdictions. |
+
+---
+
+### Bottom‑Line Takeaway
+
+This posting is **highly suspicious**. The combination of an unnamed company, contradictory experience language, vague compensation, an almost impossible availability window, a massive tech stack, and a brutal work‑hour promise all point to a **potentially exploitative** or even **non‑existent** opportunity. Candidates should treat this with extreme caution, verify the company’s existence independently, and consider whether the workload and compensation truly match the expectations set.

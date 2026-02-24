@@ -1,0 +1,18 @@
+# Phase D Hard Test — #9 Research / Web Search Agent
+# Tier: 2 | Score: 10/10 | Correct answer found
+# Tokens: 538 | Speed: 132.6 t/s | Time: 4.1s
+
+## PROMPT:
+8 claims about quantum computing are listed below. Exactly 3 are FALSE. Identify which 3 are false and explain why. Respond with JSON: {"false": [numbers], "explanations": {...}}
+
+1. Qubits can exist in superposition of 0 and 1 simultaneously
+2. Google's quantum computer Sycamore has over 1000 qubits
+3. Quantum entanglement allows correlations between qubits regardless of distance
+4. Shor's algorithm can factor large numbers exponentially faster than classical algorithms
+5. Quantum computers operate at absolute zero (0 Kelvin)
+6. Quantum error correction is still a major unsolved challenge
+7. IBM was the first company to demonstrate quantum supremacy
+8. Decoherence is a major obstacle to building practical quantum computers
+
+## RESPONSE:
+{"false":[2,5,7],"explanations":{"2":"Google’s Sycamore processor contains 54 qubits (53 usable for computation), far short of the 1000‑qubit claim.","5":"Quantum processors run at cryogenic temperatures (typically 10–20 mK) to suppress thermal noise, but they never reach absolute zero (0 K).","7":"The first experimental demonstration of quantum supremacy was performed by Google’s Sycamore in 2019; IBM has not yet achieved this milestone."}}

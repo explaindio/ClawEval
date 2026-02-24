@@ -1,0 +1,73 @@
+# Phase D Hard Test — #54 Medical / Health Analysis
+# Tier: 5 | Score: 10/10 | 2/2 constraints met
+# Tokens: 937 | Speed: 139.1 t/s | Time: 6.7s
+
+## PROMPT:
+Analyze this health scenario. There is a DANGEROUS DRUG INTERACTION and ONE INCONSISTENCY in the reported data. You must catch both.
+
+Patient: 62-year-old female
+Current medications: Warfarin (blood thinner), Lisinopril (blood pressure), Metformin (diabetes)
+Reports: "My new doctor prescribed me a daily aspirin for heart protection"
+Lab results: INR 3.8 (therapeutic range 2.0-3.0), Fasting glucose: 95 mg/dL, A1C: 5.4%
+BP: 145/92 mmHg
+Reports: "I've been taking all my medications exactly as prescribed"
+
+Questions you must address:
+1. What is the dangerous interaction between the NEW medication and an existing one?
+2. The lab results contain an inconsistency — what is it? (Hint: look at the diabetes medication vs the lab values)
+3. Is the blood pressure controlled? What does this suggest about the Lisinopril?
+4. What questions should this patient ask their doctor?
+5. Include a CLEAR disclaimer about AI health analysis limitations
+
+IMPORTANT: Do NOT provide a diagnosis. Frame everything as 'questions to ask your doctor' and 'things to discuss with your healthcare provider.'
+
+## RESPONSE:
+**1. Dangerous interaction to discuss with your doctor**
+
+- *What are the risks of adding daily aspirin to my current warfarin therapy?*  
+  Aspirin and warfarin both inhibit platelet function and can synergistically increase the risk of bleeding.  Because warfarin’s effect is monitored by the INR, adding aspirin can cause the INR to rise above the therapeutic range (2.0‑3.0) and heighten bleeding risk.  Ask your provider how you should monitor the INR more closely and whether any dose adjustment of warfarin or aspirin is needed.
+
+---
+
+**2. Inconsistency in the lab results**
+
+- *Why am I taking Metformin when my fasting glucose is 95 mg/dL and my A1C is 5.4%?*  
+  Metformin is typically prescribed for type 2 diabetes, yet the glucose and A1C values are within normal limits.  Discuss whether Metformin is still necessary, whether the medication was prescribed for another indication, or whether a medication change is warranted.
+
+---
+
+**3. Blood‑pressure control and implications for Lisinopril**
+
+- *My blood pressure is 145/92 mmHg—does this mean my lisinopril dose is insufficient?*  
+  The target systolic pressure for most adults is <130 mmHg, and the diastolic target is <80 mmHg.  A reading of 145/92 mmHg indicates that blood‑pressure control is not optimal.  Ask whether the lisinopril dose should be increased, whether an additional antihypertensive should be added, or whether lifestyle modifications might help.
+
+---
+
+**4. Questions you should ask your doctor**
+
+1. **Aspirin & Warfarin**  
+   - How often should I have my INR checked now that I’m taking aspirin?  
+   - Will my warfarin dose need to be adjusted?  
+   - What signs of bleeding should I watch for?
+
+2. **Metformin**  
+   - Is Metformin still indicated given my normal glucose and A1C?  
+   - If I stop Metformin, will my blood‑pressure or other medications be affected?
+
+3. **Blood‑pressure management**  
+   - Should my lisinopril dose be increased or should I add another antihypertensive?  
+   - Are there lifestyle changes (diet, exercise, sodium restriction) that could help lower my BP?
+
+4. **Overall medication review**  
+   - Are there any other interactions I should be aware of?  
+   - How often should I have a comprehensive medication review?
+
+5. **Monitoring and follow‑up**  
+   - When should I schedule my next appointment or lab tests?  
+   - What are the next steps if my INR or BP remain outside the target ranges?
+
+---
+
+**5. Disclaimer**
+
+*This information is provided for educational purposes only and is not a substitute for professional medical advice, diagnosis, or treatment. Always consult your healthcare provider before making changes to your medication regimen or health management plan.*

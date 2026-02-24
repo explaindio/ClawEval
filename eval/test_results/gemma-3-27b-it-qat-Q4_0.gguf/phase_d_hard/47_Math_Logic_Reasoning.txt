@@ -1,0 +1,155 @@
+# Phase D Hard Test — #47 Math / Logic Reasoning
+# Tier: 4 | Score: 0/10 | Expected '11' not found
+# Tokens: 2385 | Speed: 35.4 t/s | Time: 67.4s
+
+## PROMPT:
+Solve this optimization problem. WARNING: The greedy approach gives the WRONG answer. You must prove it.
+
+A warehouse has packages to ship in boxes. Each box holds max 10 kg.
+Packages (kg): 7, 5, 5, 4, 4, 3, 3, 2, 2, 2, 1, 1, 1, 1
+
+Question 1: Using a GREEDY approach (first-fit decreasing), how many boxes do you need? Show the packing.
+Question 2: What is the OPTIMAL (minimum) number of boxes? Show a better packing.
+Question 3: Prove the greedy answer is not optimal by showing the difference.
+
+Also solve: There are 100 people at a party. 90 drink coffee, 80 drink tea, 70 drink juice. What is the MINIMUM number of people who drink all three? Show the inclusion-exclusion calculation.
+
+The party problem answer must be an exact integer.
+
+## RESPONSE:
+## Package Packing Problem
+
+**Question 1: Greedy Approach (First-Fit Decreasing)**
+
+First, sort the packages in decreasing order: 7, 5, 5, 4, 4, 3, 3, 2, 2, 2, 1, 1, 1, 1
+
+Now, pack using the first-fit decreasing approach:
+
+* **Box 1:** 7
+* **Box 2:** 5
+* **Box 3:** 5
+* **Box 4:** 4
+* **Box 5:** 4
+* **Box 6:** 3
+* **Box 7:** 3
+* **Box 8:** 2 + 2 + 2 = 6
+* **Box 9:** 1 + 1 + 1 + 1 = 4
+
+Total boxes needed: **9**
+
+**Question 2: Optimal Solution**
+
+The optimal solution requires **6** boxes. Here's a packing:
+
+* **Box 1:** 7 + 3 = 10
+* **Box 2:** 5 + 5 = 10
+* **Box 3:** 4 + 4 + 2 = 10
+* **Box 4:** 3 + 2 + 2 + 1 = 8
+* **Box 5:** 2 + 1 + 1 = 4
+* **Box 6:** 1 + 1 = 2
+
+**Question 3: Proof that Greedy is Not Optimal**
+
+The greedy approach used 9 boxes, while the optimal solution uses 6 boxes. This demonstrates that the greedy approach is not optimal.
+
+**Why the Greedy Approach Fails:**
+
+The greedy approach focuses on filling boxes immediately with the largest available package. This can lead to suboptimal packing because it doesn't consider the potential for combining smaller packages to fill boxes more efficiently.  In this case, the greedy algorithm quickly fills boxes with single large packages (7, 5, 5, 4, 4), leaving smaller packages that are harder to combine effectively.  The optimal solution strategically combines packages of different sizes to maximize box utilization.  Specifically, the 7 and 3 fit perfectly, and the two 5s fit perfectly.  The greedy approach misses these opportunities.
+
+## Party Problem
+
+Let:
+
+* C = Set of people who drink coffee (|C| = 90)
+* T = Set of people who drink tea (|T| = 80)
+* J = Set of people who drink juice (|J| = 70)
+* U = Total number of people at the party (|U| = 100)
+
+We want to find the minimum value of |C ∩ T ∩ J|.
+
+Using the Principle of Inclusion-Exclusion:
+
+|C ∪ T ∪ J| = |C| + |T| + |J| - |C ∩ T| - |C ∩ J| - |T ∩ J| + |C ∩ T ∩ J|
+
+We know that |C ∪ T ∪ J| ≤ |U| = 100 (the total number of people).  We need to find the *minimum* |C ∩ T ∩ J|.  To do this, we want to *maximize* |C ∪ T ∪ J|.  The maximum value of |C ∪ T ∪ J| is 100.
+
+Therefore:
+
+100 ≥ 90 + 80 + 70 - |C ∩ T| - |C ∩ J| - |T ∩ J| + |C ∩ T ∩ J|
+100 ≥ 240 - |C ∩ T| - |C ∩ J| - |T ∩ J| + |C ∩ T ∩ J|
+|C ∩ T| + |C ∩ J| + |T ∩ J| - |C ∩ T ∩ J| ≥ 140
+
+Now, we need to find lower bounds for the intersections.
+
+* |C ∩ T| ≥ |C| + |T| - |U| = 90 + 80 - 100 = 70
+* |C ∩ J| ≥ |C| + |J| - |U| = 90 + 70 - 100 = 60
+* |T ∩ J| ≥ |T| + |J| - |U| = 80 + 70 - 100 = 50
+
+Substituting these minimum values into the inequality:
+
+70 + 60 + 50 - |C ∩ T ∩ J| ≥ 140
+180 - |C ∩ T ∩ J| ≥ 140
+|C ∩ T ∩ J| ≤ 40
+
+However, this gives us an *upper* bound on |C ∩ T ∩ J|.  We need to find the *minimum*.
+
+Let's consider the complements.
+
+* |C'| = 10 (people who don't drink coffee)
+* |T'| = 20 (people who don't drink tea)
+* |J'| = 30 (people who don't drink juice)
+
+|C' ∪ T' ∪ J'| ≤ 100
+
+Using Inclusion-Exclusion again:
+
+|C' ∪ T' ∪ J'| = |C'| + |T'| + |J'| - |C' ∩ T'| - |C' ∩ J'| - |T' ∩ J'| + |C' ∩ T' ∩ J'|
+|C' ∪ T' ∪ J'| = 10 + 20 + 30 - |C' ∩ T'| - |C' ∩ J'| - |T' ∩ J'| + |C' ∩ T' ∩ J'|
+|C' ∪ T' ∪ J'| = 60 - |C' ∩ T'| - |C' ∩ J'| - |T' ∩ J'| + |C' ∩ T' ∩ J'|
+
+Since |C' ∪ T' ∪ J'| ≤ 100, we have:
+
+60 - |C' ∩ T'| - |C' ∩ J'| - |T' ∩ J'| + |C' ∩ T' ∩ J'| ≤ 100
+-|C' ∩ T'| - |C' ∩ J'| - |T' ∩ J'| + |C' ∩ T' ∩ J'| ≤ 40
+|C' ∩ T' ∩ J'| ≤ 40 + |C' ∩ T'| + |C' ∩ J'| + |T' ∩ J'|
+
+We want to minimize |C ∩ T ∩ J|.  By De Morgan's Law:
+
+|C ∩ T ∩ J| = |(C' ∪ T' ∪ J')'| = |U| - |C' ∪ T' ∪ J'|
+|C ∩ T ∩ J| = 100 - |C' ∪ T' ∪ J'|
+
+To minimize |C ∩ T ∩ J|, we need to maximize |C' ∪ T' ∪ J'|.  The maximum value of |C' ∪ T' ∪ J'| is 100.
+
+|C' ∪ T' ∪ J'| = 10 + 20 + 30 - |C' ∩ T'| - |C' ∩ J'| - |T' ∩ J'| + |C' ∩ T' ∩ J'|
+To maximize this, we want to minimize the intersections.  The minimum value for each intersection is 0.
+
+So, |C' ∪ T' ∪ J'| = 60.
+
+|C ∩ T ∩ J| = 100 - 60 = 40
+
+However, this is incorrect. Let's go back to the original inclusion-exclusion.
+
+100 ≥ 90 + 80 + 70 - |C ∩ T| - |C ∩ J| - |T ∩ J| + |C ∩ T ∩ J|
+100 ≥ 240 - |C ∩ T| - |C ∩ J| - |T ∩ J| + |C ∩ T ∩ J|
+|C ∩ T ∩ J| ≥ 140 - |C ∩ T| - |C ∩ J| - |T ∩ J|
+
+To minimize |C ∩ T ∩ J|, we need to maximize |C ∩ T|, |C ∩ J|, and |T ∩ J|.
+
+* |C ∩ T| ≤ min(|C|, |T|) = 80
+* |C ∩ J| ≤ min(|C|, |J|) = 70
+* |T ∩ J| ≤ min(|T|, |J|) = 70
+
+|C ∩ T ∩ J| ≥ 140 - 80 - 70 - 70 = 140 - 220 = -80. This doesn't help.
+
+Let's use the following:
+
+|C ∩ T| = |C| + |T| - |C ∪ T| ≥ 90 + 80 - 100 = 70
+|C ∩ J| = |C| + |J| - |C ∪ J| ≥ 90 + 70 - 100 = 60
+|T ∩ J| = |T| + |J| - |T ∪ J| ≥ 80 + 70 - 100 = 50
+
+|C ∩ T ∩ J| = |C ∩ T| + |J| - |(C ∩ T) ∪ J| ≥ 70 + 70 - 100 = 40
+|C ∩ T ∩ J| = |C ∩ J| + |T| - |(C ∩ J) ∪ T| ≥ 60 + 80 - 100 = 40
+|C ∩ T ∩ J| = |T ∩ J| + |C| - |(T ∩ J) ∪ C| ≥ 50 + 90 - 100 = 40
+
+Therefore, the minimum number of people who drink all three is **40**.
+

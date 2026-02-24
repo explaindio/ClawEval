@@ -1,0 +1,126 @@
+# Phase D Hard Test — #51 Software Architect Agent
+# Tier: 5 | Score: 10/10 | 4/4 constraints met
+# Tokens: 3770 | Speed: 140.9 t/s | Time: 26.8s
+
+## PROMPT:
+Design a system architecture. WARNING: The requirements contain 3 CONTRADICTORY pairs. You must identify them and propose tradeoffs instead of pretending all requirements can be met simultaneously.
+
+Requirements:
+1. Process 50,000 events per second in real-time (< 100ms latency)
+2. Also support batch processing of historical data (millions of records)
+3. Zero downtime during deployments AND database schema migrations
+4. Store data in a strongly consistent SQL database with ACID transactions
+5. Horizontally scale to handle 10x traffic spikes within 30 seconds
+6. Multi-region deployment with data residency compliance (EU data stays in EU)
+7. Total infrastructure cost under $5,000/month at current scale
+8. 99.999% availability (five nines = ~5 minutes downtime/year)
+
+For each contradictory pair:
+1. Explain WHY they conflict
+2. Propose a compromise or phased approach
+3. What would you prioritize and why?
+
+Then provide the architecture diagram (text format) with the tradeoffs built in.
+
+## RESPONSE:
+## 1. Contradictory Requirement Pairs
+
+| Pair | Requirements | Why they conflict | Compromise / Phased Approach | What to Prioritize |
+|------|---------------|-------------------|------------------------------|--------------------|
+| **A** | **3** – Zero‑downtime deployments **and** schema migrations  **vs**  **4** – Strongly consistent SQL database with ACID transactions | In a single‑node ACID‑SQL system a schema change usually requires a table lock or a full‑table rebuild, which blocks reads/writes for a non‑trivial period.  The “zero‑downtime” promise is therefore at odds with the “strong consistency” promise when the same database is used for both live traffic and migrations. | 1. **Versioned schema** – Keep two parallel schemas (old & new) and route writes to both until the new one is fully populated. 2. **Feature‑flag‑driven migrations** – Deploy the new schema in parallel, enable the flag only after a successful health‑check, then retire the old schema. 3. **Use a migration tool that supports online migrations** (e.g., Flyway + “online” mode, or a custom “copy‑and‑switch” script). 4. **Separate read‑only replicas** – Run migrations on a read‑only replica and promote it once the migration is complete. | **Strong consistency** is non‑negotiable for the core business data, but we can accept a *brief* (≤ 5 s) read‑only window during the final cut‑over.  The cost is a very short, well‑controlled downtime that is invisible to end‑users. |
+| **B** | **5** – Horizontal scale to 10× traffic spikes in 30 s  **vs**  **7** – Total infra cost < $5 k/month | Scaling 10× traffic usually means spinning up many new compute nodes or containers, which increases the number of database replicas, load‑balancers, and networking resources.  Even with auto‑scaling, the peak‑time cost can exceed the $5 k budget unless we use very cheap or spot resources. | 1. **Burst‑only scaling** – Use *serverless* compute (e.g., AWS Lambda, Azure Functions) for the spike‑handling layer; only the stateless micro‑services need to scale. 2. **Spot/Pre‑emptible VMs** – Run the bulk of the compute on spot instances with a small on‑demand “anchor” set of nodes for reliability. 3. **Cost‑aware autoscaling** – Set a hard cap on the number of nodes that can be spun up during a spike. 4. **Batch‑to‑SQL off‑peak** – Move heavy batch writes to a separate “batch” cluster that is not part of the real‑time scaling pool. | **Availability** (5‑nines) and **real‑time latency** are higher priority than absolute cost.  We accept a modest increase in cost during the rare 10× spikes if it guarantees the required 100 ms latency and 99.999% uptime. |
+| **C** | **6** – Multi‑region with EU data residency  **vs**  **7** – Cost < $5 k/month | Multi‑region deployments require separate databases, load balancers, and networking in each region.  Keeping EU data inside the EU means we cannot use cheaper, single‑region services or a single global database that would otherwise reduce cost. | 1. **Region‑specific clusters** – Deploy a full stack (API, Kafka, DB) in each region, but share the *batch* analytics cluster in a single region to reduce cost. 2. **Read‑only cross‑region replicas** – Only replicate reads to the other region; writes stay local. 3. **Use a managed multi‑AZ, single‑region database** (e.g., Aurora Serverless) for the EU cluster and a cheaper, single‑AZ instance for the non‑EU region. 4. **Cost‑sharing** – Use a shared object store (S3) for historical data that is replicated between regions, but only pay for the storage that is actually accessed. | **Data residency** is a regulatory requirement and cannot be compromised.  We therefore accept the higher cost of a dedicated EU cluster and pay the premium for compliance. |
+
+> **Bottom line:**  
+> *Strong consistency* and *zero‑downtime migrations* are reconciled by online, flag‑driven migrations.  
+> *Scalability* and *budget* are reconciled by burst‑only, serverless scaling and spot instances.  
+> *Multi‑region compliance* and *budget* are reconciled by region‑specific clusters and selective replication.
+
+---
+
+## 2. High‑Level Architecture (Text Diagram)
+
+```
++-------------------+          +-------------------+          +-------------------+
+|  EU Region (EU)   |          |  US Region (US)   |          |  Global Services  |
+|  (Data Residency) |          |  (Optional)       |          |  (Auth, CDN, etc) |
++-------------------+          +-------------------+          +-------------------+
+        |                               |                               |
+        | 1. API Gateway (regional)     | 1. API Gateway (regional)     | 1. Auth, CDN, SSO
+        |                               |                               |
+        v                               v                               v
++-------------------+          +-------------------+          +-------------------+
+|  API Layer (K8s)  |          |  API Layer (K8s)  |          |  Global API Layer |
+|  (Stateless,      |          |  (Stateless,      |          |  (Auth, Rate‑limiting) |
+|   100 ms latency) |          |   100 ms latency) |          +-------------------+
++-------------------+          +-------------------+                     |
+        |                               |                               |
+        | 2. Kafka / Pulsar (regional)   | 2. Kafka / Pulsar (regional)   |
+        |  (High‑throughput, 50k/s)      |  (High‑throughput, 50k/s)      |
+        |                               |                               |
+        v                               v                               v
++-------------------+          +-------------------+          +-------------------+
+|  Event Processor  |          |  Event Processor  |          |  Global Event     |
+|  (Consumer, 100 ms)|          |  (Consumer, 100 ms)|          |  Aggregator (optional)|
+|  (Stateless)      |          |  (Stateless)      |          +-------------------+
++-------------------+          +-------------------+                     |
+        |                               |                               |
+        | 3. Write‑ahead Store (Kafka)  | 3. Write‑ahead Store (Kafka)  |
+        |  (Durable, 100 ms)             |  (Durable, 100 ms)             |
+        |                               |                               |
+        v                               v                               v
++-------------------+          +-------------------+          +-------------------+
+|  SQL DB (PostgreSQL) |        |  SQL DB (PostgreSQL) |        |  Batch Analytics  |
+|  (Strongly Consistent, |      |  (Strongly Consistent, |      |  (Spark / Flink)  |
+|   ACID, 1‑AZ per reg.) |      |   ACID, 1‑AZ per reg.) |      |  (Historical data)|
++-------------------+          +-------------------+          +-------------------+
+        |                               |                               |
+        | 4. Online Schema Migration  | 4. Online Schema Migration  | 4. Batch Jobs
+        |    (Flyway + Feature Flag)  |    (Flyway + Feature Flag)  |    (Off‑peak)
+        |                               |                               |
+        v                               v                               v
++-------------------+          +-------------------+          +-------------------+
+|  Read‑Replica (EU) |          |  Read‑Replica (US) |          |  Data Lake (S3)   |
+|  (Cross‑region)    |          |  (Cross‑region)    |          |  (Historical)     |
++-------------------+          +-------------------+          +-------------------+
+```
+
+### Key Trade‑offs Embedded in the Diagram
+
+| Trade‑off | Where it appears | How it satisfies the contradictory pair |
+|-----------|------------------|----------------------------------------|
+| **Online migrations** | 4. Online Schema Migration | Allows zero‑downtime deployments while keeping ACID guarantees. |
+| **Region‑specific clusters** | EU & US clusters | Meets data‑residency compliance while keeping the global services lightweight. |
+| **Burst‑only scaling** | Event Processor & API Layer | Uses stateless containers that can be auto‑scaled on demand; spot instances keep cost low. |
+| **Write‑ahead store** | Kafka | Offloads 50k events/s from the SQL DB, keeping latency < 100 ms. |
+| **Batch analytics off‑peak** | Batch Analytics | Keeps heavy batch jobs separate from real‑time processing, reducing cost during spikes. |
+| **Read‑only cross‑region replicas** | Read‑Replica | Provides 5‑nines availability without violating residency (writes stay local). |
+| **Managed services** | SQL DB (Aurora Serverless) | Reduces operational cost while still delivering ACID. |
+
+---
+
+## 3. Phased Roll‑out Plan
+
+| Phase | Goal | Key Actions |
+|-------|------|-------------|
+| **0 – Baseline** | Deploy core real‑time pipeline in a single region (EU). | API → Kafka → Event Processor → SQL DB. |
+| **1 – Add Online Migrations** | Enable zero‑downtime schema changes. | Integrate Flyway with feature‑flag logic; test on staging. |
+| **2 – Introduce Batch Layer** | Separate historical processing. | Deploy Spark cluster, connect to S3 data lake. |
+| **3 – Scale Horizontally** | Meet 10× spike requirement. | Enable K8s autoscaler, test spot‑instance burst. |
+| **4 – Add US Region** | Multi‑region with residency. | Spin up identical stack in US; set up read‑only replicas. |
+| **5 – Optimize Cost** | Keep <$5 k/month. | Shift idle compute to spot, prune unused resources, monitor spend. |
+
+---
+
+## 4. Summary of Priorities
+
+| Priority | Reason |
+|----------|--------|
+| **Strong consistency & ACID** | Core business data integrity cannot be compromised. |
+| **Zero‑downtime deployments** | Business continuity & user experience. |
+| **Real‑time latency (< 100 ms)** | Meets the 50k events/s requirement. |
+| **5‑nines availability** | Regulatory & SLA obligations. |
+| **Data residency compliance** | Legal requirement for EU data. |
+| **Cost < $5 k/month** | Budget constraint; achieved through careful resource planning. |
+
+By explicitly acknowledging the conflicts and applying the compromises above, the system can satisfy all *non‑contradictory* requirements while providing a clear path to resolve the unavoidable trade‑offs.

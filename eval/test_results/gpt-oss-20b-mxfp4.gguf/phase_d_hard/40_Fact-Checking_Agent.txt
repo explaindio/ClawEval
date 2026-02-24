@@ -1,0 +1,71 @@
+# Phase D Hard Test — #40 Fact-Checking Agent
+# Tier: 3 | Score: 0/10 | 0/8 correct | Missing: #1: expected 'misleading'; #2: expected 'false'; #3: expected 'true'; #4: expected 'false'; #5: expected 'true'; #6: expected 'misleading'; #7: expected 'false'; #8: expected 'true'
+# Tokens: 1065 | Speed: 139.6 t/s | Time: 7.6s
+
+## PROMPT:
+Fact-check these 8 statements. They mix true facts, false facts, and MISLEADING statements (technically true but deceptive). Classify each as true/false/misleading. Respond with JSON.
+
+1. "Humans share 60% of their DNA with bananas" (TRUE percentage, but is the framing misleading?)
+2. "The Great Wall of China is visible from space with the naked eye"
+3. "Octopuses have three hearts"
+4. "Thomas Edison invented the light bulb"
+5. "Water can boil and freeze at the same time (triple point)"
+6. "You eat an average of 8 spiders per year in your sleep"
+7. "Goldfish have a 3-second memory"
+8. "Honey never spoils — edible honey has been found in Egyptian tombs"
+
+For each: verdict (true/false/misleading), explanation, and confidence level.
+
+## RESPONSE:
+```json
+[
+  {
+    "statement": "Humans share 60% of their DNA with bananas",
+    "verdict": "misleading",
+    "explanation": "The 60% figure is correct for shared genes, but the claim can mislead readers into thinking humans and bananas are genetically very similar overall. The context of gene homology is important.",
+    "confidence": 0.95
+  },
+  {
+    "statement": "The Great Wall of China is visible from space with the naked eye",
+    "verdict": "false",
+    "explanation": "No reliable evidence shows that the Great Wall can be seen from low Earth orbit without aid. Astronauts report it is not visible to the naked eye from typical orbital altitudes.",
+    "confidence": 0.97
+  },
+  {
+    "statement": "Octopuses have three hearts",
+    "verdict": "true",
+    "explanation": "Octopuses possess two branchial hearts that pump blood through the gills and one systemic heart that delivers blood to the rest of the body.",
+    "confidence": 0.99
+  },
+  {
+    "statement": "Thomas Edison invented the light bulb",
+    "verdict": "misleading",
+    "explanation": "Edison did not invent the first incandescent bulb; he improved and commercialized it. The invention predates him by several inventors.",
+    "confidence": 0.96
+  },
+  {
+    "statement": "Water can boil and freeze at the same time (triple point)",
+    "verdict": "true",
+    "explanation": "At the triple point (0.01 °C, 611.657 Pa) water can coexist in solid, liquid, and vapor phases simultaneously.",
+    "confidence": 0.99
+  },
+  {
+    "statement": "You eat an average of 8 spiders per year in your sleep",
+    "verdict": "false",
+    "explanation": "There is no scientific evidence supporting this claim; it is a persistent myth with no empirical basis.",
+    "confidence": 0.97
+  },
+  {
+    "statement": "Goldfish have a 3-second memory",
+    "verdict": "false",
+    "explanation": "Goldfish can remember information for months, as demonstrated in numerous behavioral studies.",
+    "confidence": 0.98
+  },
+  {
+    "statement": "Honey never spoils — edible honey has been found in Egyptian tombs",
+    "verdict": "true",
+    "explanation": "Honey's low water content and acidity inhibit microbial growth, allowing it to remain edible for millennia, as evidenced by ancient Egyptian samples.",
+    "confidence": 0.99
+  }
+]
+```

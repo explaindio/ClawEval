@@ -1,0 +1,529 @@
+{
+  "all_phases": {
+    "model": "gpt-oss-20b-mxfp4.gguf",
+    "model_id": "gpt-oss-20b-mxfp4.gguf",
+    "base_url": "http://192.168.1.9:8080/v1",
+    "phase0": {
+      "phase": "phase0_baseline",
+      "model": "gpt-oss-20b-mxfp4.gguf",
+      "timestamp": "2026-02-23T15:25:14.744720",
+      "tests": [
+        {
+          "name": "warmup",
+          "content": "",
+          "elapsed_seconds": 0.32,
+          "prompt_tokens": 75,
+          "completion_tokens": 10,
+          "total_tokens": 85,
+          "tokens_per_second": 30.9
+        },
+        {
+          "name": "short_gen",
+          "content": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24\n25\n26\n27\n28\n29\n30\n31\n32\n33\n34\n35\n36\n37\n38\n39\n40\n41\n42\n43\n44\n45\n46\n47\n48\n49\n50",
+          "elapsed_seconds": 1.04,
+          "prompt_tokens": 80,
+          "completion_tokens": 143,
+          "total_tokens": 223,
+          "tokens_per_second": 137.8
+        },
+        {
+          "name": "medium_gen",
+          "content": "",
+          "elapsed_seconds": 2.14,
+          "prompt_tokens": 80,
+          "completion_tokens": 300,
+          "total_tokens": 380,
+          "tokens_per_second": 140.3
+        },
+        {
+          "name": "long_gen",
+          "content": "**Artificial Intelligence: From Turing\u2019s Dream to the Age of Autonomous Systems**\n\n---\n\n### 1. Introduction\n\nArtificial Intelligence (AI) is the field of computer science that strives to build machines capable of performing tasks that, in the past, required human intelligence. The journey from speculative philosophy to practical technology has spanned more than a century, punctuated by breakthroughs, setbacks, and a growing awareness of the profound societal implications of intelligent machines. This essay traces the arc of AI history, surveys its current state, and looks ahead to the possibilities\u2014and challenges\u2014of the future.\n\n---\n\n### 2. Early Foundations (1940s\u20131960s)\n\n| Year | Milestone | Significance |\n|------|-----------|--------------|\n| 1943 | McCulloch & Pitts publish *A Logical Calculus of the Ideas Immanent in Nervous Activity* | First formal model of a neuron and a network of neurons. |\n| 1943\u20131945 | Claude Shannon\u2019s *A Symbolic Analysis of Relay and Switching Circuits* | Introduced Boolean algebra for digital circuits, laying groundwork for computer logic. |\n| 1946 | ENIAC (Electronic Numerical Integrator and Computer) | One of the first general\u2011purpose digital computers. |\n| 1950 | Alan Turing publishes *Computing Machinery and Intelligence* | Introduced the Turing Test as a criterion for machine intelligence. |\n| ",
+          "elapsed_seconds": 4.16,
+          "prompt_tokens": 92,
+          "completion_tokens": 600,
+          "total_tokens": 692,
+          "tokens_per_second": 144.4
+        }
+      ],
+      "summary": {
+        "avg_tps": 113.4,
+        "max_tps": 144.4,
+        "min_tps": 30.9
+      }
+    },
+    "phase1": {
+      "phase": "phase1_format_compliance",
+      "model": "gpt-oss-20b-mxfp4.gguf",
+      "timestamp": "2026-02-23T15:25:22.400257",
+      "tests": [
+        {
+          "name": "json_simple",
+          "passed": true,
+          "reason": "Valid JSON",
+          "response": "[\n  {\"language\":\"Python\",\"year\":1991},\n  {\"language\":\"Java\",\"year\":1995},\n  {\"language\":\"Go\",\"year\":2009}\n]",
+          "elapsed": 1.54,
+          "tps": 137.2
+        },
+        {
+          "name": "json_nested",
+          "passed": true,
+          "reason": "Valid JSON",
+          "response": "{\"name\":\"John Doe\",\"age\":30,\"skills\":[\"JavaScript\",\"Python\",\"SQL\"],\"address\":{\"city\":\"New York\",\"country\":\"USA\"}}",
+          "elapsed": 1.11,
+          "tps": 140.9
+        },
+        {
+          "name": "json_from_text",
+          "passed": true,
+          "reason": "Valid JSON",
+          "response": "{\"name\":\"John Smith\",\"age\":34,\"company\":\"Google\",\"title\":\"Senior Engineer\",\"location\":\"Mountain View, CA\",\"email\":\"john@google.com\"}",
+          "elapsed": 1.08,
+          "tps": 140.1
+        },
+        {
+          "name": "json_strict_schema",
+          "passed": true,
+          "reason": "Valid JSON",
+          "response": "{\"action\":\"schedule_meeting\",\"target\":\"Bob\",\"confidence\":0.9}",
+          "elapsed": 0.75,
+          "tps": 135.4
+        },
+        {
+          "name": "json_array_complex",
+          "passed": true,
+          "reason": "Valid JSON",
+          "response": "[\n  {\n    \"id\": 1,\n    \"task\": \"Finalize release notes\",\n    \"priority\": \"medium\",\n    \"done\": false\n  },\n  {\n    \"id\": 2,\n    \"task\": \"Run regression tests\",\n    \"priority\": \"high\",\n    \"done\": false\n  },\n  {\n    \"id\": 3,\n    \"task\": \"Merge release branch into main\",\n    \"priority\": \"high\",\n    \"done\": false\n  },\n  {\n    \"id\": 4,\n    \"task\": \"Deploy to staging environment\",\n    \"priority\": \"high\",\n    \"done\": false\n  },\n  {\n    \"id\": 5,\n    \"task\": \"Monitor production metrics post\u2011release\",\n    \"priority\": \"low\",\n    \"done\": false\n  }\n]",
+          "elapsed": 2.15,
+          "tps": 143.6
+        },
+        {
+          "name": "system_prompt_adherence",
+          "passed": true,
+          "reason": "Contains: arr, ye",
+          "response": "Arrr, the capital o' France be Paris, ye landlubber!",
+          "elapsed": 1.18,
+          "tps": 134.2
+        },
+        {
+          "name": "one_word_constraint",
+          "passed": true,
+          "reason": "Word count: 1 (expected ~1)",
+          "response": "Blue",
+          "elapsed": 0.64,
+          "tps": 127.3
+        },
+        {
+          "name": "numbered_list",
+          "passed": true,
+          "reason": "Pattern matches: 7 (min 3)",
+          "response": "1. Gather your ingredients: bread, peanut butter, and any optional extras like jelly or honey.  \n2. Lay two slices of bread flat on a clean surface.  \n3. Using a butter knife, spread a generous layer of peanut butter evenly over one side of each slice.  \n4. If desired, add a thin layer of jelly, honey, or banana slices on top of the peanut butter.  \n5. Carefully place the two slices together, peanut\u2011butter side facing each other.  \n6. Press lightly to ensure the sandwich stays together.  \n7. Slice the sandwich in half (if desired) and serve.",
+          "elapsed": 1.46,
+          "tps": 139.9
+        },
+        {
+          "name": "markdown_table",
+          "passed": true,
+          "reason": "Contains all expected elements",
+          "response": "| Planet   | Distance from Sun (AU) | Number of Moons |\n|----------|------------------------|-----------------|\n| Mercury  | 0.39                   | 0               |\n| Venus    | 0.72                   | 0               |\n| Earth    | 1.00                   | 1               |\n| Mars     | 1.52                   | 2               |",
+          "elapsed": 1.57,
+          "tps": 135.8
+        },
+        {
+          "name": "refuse_and_redirect",
+          "passed": true,
+          "reason": "Contains: cooking, can only help",
+          "response": "I can only help with cooking-related questions.",
+          "elapsed": 0.46,
+          "tps": 110.2
+        }
+      ],
+      "passed": 10,
+      "failed": 0,
+      "total": 10,
+      "score_pct": 100.0
+    },
+    "phase2": {
+      "phase": "phase2_tool_calling",
+      "model": "gpt-oss-20b-mxfp4.gguf",
+      "timestamp": "2026-02-23T15:25:34.335865",
+      "tests": [
+        {
+          "name": "simple_search",
+          "passed": true,
+          "reason": "Correct tool + params: {'query': 'latest news about artificial intelligence'}",
+          "tool_called": "search_web",
+          "tool_args": {
+            "query": "latest news about artificial intelligence"
+          },
+          "text_response": null,
+          "elapsed": 4.71
+        },
+        {
+          "name": "weather_query",
+          "passed": true,
+          "reason": "Correct tool + params: {'city': 'Tokyo', 'units': 'celsius'}",
+          "tool_called": "get_weather",
+          "tool_args": {
+            "city": "Tokyo",
+            "units": "celsius"
+          },
+          "text_response": null,
+          "elapsed": 0.35
+        },
+        {
+          "name": "calendar_create",
+          "passed": true,
+          "reason": "Correct tool + params: {'title': 'Team Meeting', 'date': '2026-03-15', 'time': '14:30', 'duration_minutes': 60}",
+          "tool_called": "create_calendar_event",
+          "tool_args": {
+            "title": "Team Meeting",
+            "date": "2026-03-15",
+            "time": "14:30",
+            "duration_minutes": 60
+          },
+          "text_response": null,
+          "elapsed": 0.63
+        },
+        {
+          "name": "email_send",
+          "passed": true,
+          "reason": "Correct tool + params: {'to': 'alice@company.com', 'subject': 'Q4 Report', 'body': 'The quarterly report is attached.'}",
+          "tool_called": "send_email",
+          "tool_args": {
+            "to": "alice@company.com",
+            "subject": "Q4 Report",
+            "body": "The quarterly report is attached."
+          },
+          "text_response": null,
+          "elapsed": 0.59
+        },
+        {
+          "name": "file_read",
+          "passed": true,
+          "reason": "Correct tool + params: {'path': '/home/user/documents/notes.txt'}",
+          "tool_called": "read_file",
+          "tool_args": {
+            "path": "/home/user/documents/notes.txt"
+          },
+          "text_response": null,
+          "elapsed": 0.46
+        },
+        {
+          "name": "weather_with_units",
+          "passed": true,
+          "reason": "Correct tool + params: {'city': 'London', 'units': 'fahrenheit'}",
+          "tool_called": "get_weather",
+          "tool_args": {
+            "city": "London",
+            "units": "fahrenheit"
+          },
+          "text_response": null,
+          "elapsed": 0.35
+        },
+        {
+          "name": "no_tool_needed",
+          "passed": true,
+          "reason": "Correctly did not call a tool",
+          "tool_called": null,
+          "tool_args": {},
+          "text_response": "2\u202f+\u202f2\u202f=\u202f4.",
+          "elapsed": 0.3
+        },
+        {
+          "name": "ambiguous_search",
+          "passed": false,
+          "reason": "No tool called (expected search_web). Text: **Photosynthesis** is the process by which green plants, algae, and some bacteri",
+          "tool_called": null,
+          "tool_args": {},
+          "text_response": "**Photosynthesis** is the process by which green plants, algae, and some bacteria convert light energy into chemical energy, producing oxygen as a by\u2011product. It occurs mainly in the chloroplasts of p",
+          "elapsed": 3.57
+        },
+        {
+          "name": "calendar_implicit",
+          "passed": true,
+          "reason": "Correct tool + params: {'title': 'Dentist appointment', 'date': '2026-02-24', 'time': '09:00', 'duration_minutes': 60}",
+          "tool_called": "create_calendar_event",
+          "tool_args": {
+            "title": "Dentist appointment",
+            "date": "2026-02-24",
+            "time": "09:00",
+            "duration_minutes": 60
+          },
+          "text_response": null,
+          "elapsed": 0.64
+        },
+        {
+          "name": "multi_step_intent",
+          "passed": true,
+          "reason": "Correct tool + params: {'query': 'population of Canada'}",
+          "tool_called": "search_web",
+          "tool_args": {
+            "query": "population of Canada"
+          },
+          "text_response": null,
+          "elapsed": 0.39
+        }
+      ],
+      "passed": 9,
+      "failed": 1,
+      "total": 10,
+      "score_pct": 90.0
+    },
+    "phase3": {
+      "phase": "phase3_functional",
+      "model": "gpt-oss-20b-mxfp4.gguf",
+      "timestamp": "2026-02-23T15:25:46.340174",
+      "clusters": {
+        "routing": {
+          "passed": 20,
+          "total": 20,
+          "tests": [
+            {
+              "input": "Can you write a Python function to sort a list?",
+              "expected": "code_generation",
+              "got": "",
+              "passed": true
+            },
+            {
+              "input": "Review this pull request for security issues",
+              "expected": "code_review",
+              "got": "",
+              "passed": true
+            },
+            {
+              "input": "What's the weather going to be like this weekend?",
+              "expected": "weather",
+              "got": "",
+              "passed": true
+            },
+            {
+              "input": "Summarize this 20-page document for me",
+              "expected": "summarization",
+              "got": "",
+              "passed": true
+            },
+            {
+              "input": "Schedule a call with the design team for Friday at 3pm",
+              "expected": "calendar",
+              "got": "",
+              "passed": true
+            },
+            {
+              "input": "Translate this paragraph into French",
+              "expected": "translation",
+              "got": "",
+              "passed": true
+            },
+            {
+              "input": "Analyze the sentiment of these customer reviews",
+              "expected": "sentiment_analysis",
+              "got": "",
+              "passed": true
+            },
+            {
+              "input": "Draft an email to the client about the project delay",
+              "expected": "email",
+              "got": "",
+              "passed": true
+            },
+            {
+              "input": "Search for the latest research on CRISPR gene editing",
+              "expected": "research",
+              "got": "",
+              "passed": true
+            },
+            {
+              "input": "Check if this claim is true: The Great Wall is visible from space",
+              "expected": "fact_checking",
+              "got": "",
+              "passed": true
+            },
+            {
+              "input": "Create unit tests for this authentication module",
+              "expected": "qa_testing",
+              "got": "",
+              "passed": true
+            },
+            {
+              "input": "What's 2+2?",
+              "expected": "general",
+              "got": "",
+              "passed": true
+            },
+            {
+              "input": "Help me plan a trip to Japan for 2 weeks",
+              "expected": "travel_planning",
+              "got": "",
+              "passed": true
+            },
+            {
+              "input": "Generate a landing page for a SaaS product",
+              "expected": "landing_page",
+              "got": "",
+              "passed": true
+            },
+            {
+              "input": "Debug why this API returns a 500 error",
+              "expected": "debugging",
+              "got": "",
+              "passed": true
+            },
+            {
+              "input": "Analyze this company's quarterly earnings report",
+              "expected": "financial_analysis",
+              "got": "",
+              "passed": true
+            },
+            {
+              "input": "Write a blog post about sustainable energy trends",
+              "expected": "content_writing",
+              "got": "",
+              "passed": true
+            },
+            {
+              "input": "Track my calories for today: I had oatmeal for breakfast and a sandwich for lunch",
+              "expected": "fitness_tracking",
+              "got": "",
+              "passed": true
+            },
+            {
+              "input": "Compare prices for iPhone 16 Pro across different retailers",
+              "expected": "shopping",
+              "got": "",
+              "passed": true
+            },
+            {
+              "input": "Optimize this article for SEO targeting 'best running shoes 2026'",
+              "expected": "seo",
+              "got": "",
+              "passed": true
+            }
+          ],
+          "score_pct": 100.0
+        },
+        "code_generation": {
+          "passed": 5,
+          "total": 5,
+          "tests": [
+            {
+              "name": "fizzbuzz",
+              "passed": true,
+              "code": "def fizzbuzz(n):\n    return [\n        \"FizzBuzz\" if i % 15 == 0 else\n        \"Fizz\" if i % 3 == 0 else\n        \"Buzz\" if i % 5 == 0 else\n        str(i)\n        for i in range(1, n + 1)\n    ]",
+              "error": "",
+              "tps": 130.5
+            },
+            {
+              "name": "reverse_string",
+              "passed": true,
+              "code": "def reverse_words(s):\n    words = s.split()\n    return ' '.join(reversed(words))",
+              "error": "",
+              "tps": 133.7
+            },
+            {
+              "name": "fibonacci",
+              "passed": true,
+              "code": "def fib(n):\n    a, b = 0, 1\n    for _ in range(n):\n        a, b = b, a + b\n    return a",
+              "error": "",
+              "tps": 135.2
+            },
+            {
+              "name": "palindrome",
+              "passed": true,
+              "code": "def is_palindrome(s):\n    import re\n    cleaned = re.sub(r'[^A-Za-z0-9]', '', s).lower()\n    return cleaned == cleaned[::-1]",
+              "error": "",
+              "tps": 135.8
+            },
+            {
+              "name": "flatten_list",
+              "passed": true,
+              "code": "def flatten(lst):\n    result = []\n    for item in lst:\n        if isinstance(item, list):\n            result.extend(flatten(item))\n        else:\n            result.append(item)\n    return result",
+              "error": "",
+              "tps": 135.0
+            }
+          ],
+          "score_pct": 100.0
+        }
+      }
+    },
+    "phase4": {
+      "phase": "phase4_quality_eval",
+      "model": "gpt-oss-20b-mxfp4.gguf",
+      "timestamp": "2026-02-23T15:25:56.411719",
+      "responses": [
+        {
+          "cluster": "writing",
+          "name": "blog_post",
+          "prompt": "Write a compelling 300-word blog post about why remote work is changing the future of cities. Include a catchy title.",
+          "response": "",
+          "tokens": 800,
+          "elapsed": 5.58,
+          "tps": 143.4
+        },
+        {
+          "cluster": "writing",
+          "name": "email_professional",
+          "prompt": "Draft an email to a client explaining that their project will be delayed by 2 weeks due to unexpected technical challenges. Be professional but honest. The client is 'Acme Corp' and the project is a website redesign.",
+          "response": "Subject: Update on Acme Corp Website Redesign \u2013 Revised Timeline  \n\nDear Acme Corp Team,\n\nI hope this message finds you well. I am writing to inform you of a brief adjustment to the timeline for the Acme Corp website redesign project.\n\n**What\u2019s happening?**  \nDuring the final stages of development, our team encountered unforeseen technical challenges related to the integration of the new content\u2011management framework with your existing hosting environment. These issues are more complex than initially anticipated and require additional development and testing to ensure the final product meets both our quality standards and your business requirements.\n\n**How we\u2019re addressing it:**  \n1. **Root\u2011cause analysis** \u2013 Our engineers have identified the key compatibility gaps and are implementing a robust solution.  \n2. **Additional testing** \u2013 We will conduct extensive cross\u2011browser and performance testing to guarantee a seamless user experience.  \n3. **Quality assurance** \u2013 Our QA team will run the full regression suite to confirm that all existing functionalities remain intact.\n\n**Revised schedule:**  \n- **Original completion date:** May 12, 2026  \n- **New estimated completion date:** May 26, 2026  \n\nWe understand the importance of timely delivery for your upcoming marketing campaign and are taking every possible step to keep the delay to a minimum.\n\n**Next steps for you:**  \n- We will continue to keep you updated with weekly status reports.  \n- If there are any specific deadlines or events that might be impacted, please let us know so we can prioritize accordingly.\n\nWe sincerely apologize for any inconvenience this may cause and appreciate your understanding and continued partnership. If you have questions or would like to discuss this in more detail, please feel free to reach out directly to me or to our project manager, Jane Doe, at jane.doe@ourcompany.com or (555) 123\u20114567.\n\nThank you for your patience and trust in our team.\n\nBest regards,\n\n[Your Name]  \nSenior Project Manager  \n[Your Company]  \nPhone: (555) 987\u20116543  \nEmail: your.name@ourcompany.com  \nWebsite: www.ourcompany.com",
+          "tokens": 528,
+          "elapsed": 3.77,
+          "tps": 140.2
+        },
+        {
+          "cluster": "analysis",
+          "name": "data_interpretation",
+          "prompt": "A company's quarterly revenue data (in millions): Q1: $45, Q2: $52, Q3: $48, Q4: $61. Analyze the trend, identify anomalies, and provide 3 actionable recommendations for the next quarter.",
+          "response": "**Quarterly Revenue Snapshot (millions)**  \n\n| Quarter | Revenue |\n|---------|---------|\n| Q1 | $45 |\n| Q2 | $52 |\n| Q3 | $48 |\n| Q4 | $61 |\n\n---\n\n## 1. Trend Analysis  \n\n| Metric | Value |\n|--------|-------|\n| **Year\u2011to\u2011Year Growth (Q1\u2013Q4)** | +36% (45\u202f\u2192\u202f61) |\n| **Average Quarterly Growth** | +7.5% |\n| **Highest Revenue Quarter** | Q4 ($61M) \u2013 13% higher than Q3 |\n| **Lowest Revenue Quarter** | Q1 ($45M) |\n\n**Observations**\n\n1. **Overall Upward Trajectory** \u2013 The company shows a clear positive trend, with revenue climbing from Q1 to Q4.\n2. **Seasonal Spike** \u2013 Q4 is noticeably higher than Q3, suggesting a strong end\u2011of\u2011year boost (likely holiday sales, promotions, or new product launches).\n3. **Mid\u2011Year Dip** \u2013 Q3 falls below Q2, indicating a temporary slowdown or a one\u2011off event that suppressed sales.\n\n---\n\n## 2. Anomalies & Potential Causes  \n\n| Quarter | Anomaly | Likely Driver |\n|---------|---------|---------------|\n| **Q3** | Revenue dip of ~7.7% from Q2 | Seasonal demand drop, supply chain hiccup, or marketing budget cut |\n| **Q4** | Revenue jump of ~13% from Q3 | Holiday season, end\u2011of\u2011year promotions, or a new product release |\n\n**Key Insight:**  \nThe Q3 dip appears to be a temporary anomaly rather than a trend. The Q4 surge highlights the company\u2019s ability to capitalize on seasonal opportunities.\n\n---\n\n## 3. Actionable Recommendations for Next Quarter  \n\n| # | Recommendation | Why It Matters | Quick Implementation Steps |\n|---|----------------|----------------|----------------------------|\n| **1** | **Launch a mid\u2011year \u201cSummer Boost\u201d campaign** | Re\u2011balance the seasonal swing by creating a dedicated promotion that mirrors Q4\u2019s effectiveness but in the middle of the year. | \u2022 Identify top\u2011performing products from Q4.<br>\u2022 Design limited\u2011time offers (e.g., bundle discounts, free shipping).<br>\u2022 Coordinate email, social, and paid\u2011media rollout. |\n| **2** | **Strengthen supply\u2011chain resilience** | The Q3 dip may be tied to inventory shortfalls. A robust supply chain ensures consistent supply and prevents future revenue dips. | \u2022 Map critical suppliers and identify single\u2011point failures.<br>\u2022 Add 2\u20133 alternative suppliers or inventory buffers for high\u2011margin items.<br>\u2022 Implement real\u2011time inventory dashboards. |\n| **3** | **Refine predictive analytics for demand forecasting** | Accurate forecasts allow the company to align marketing spend, inventory levels, and workforce planning, reducing waste and capturing opportunity. | \u2022 Integrate point\u2011of\u2011sale data with external signals (weather, holidays, competitor launches).<br>\u2022 Deploy a basic machine\u2011learning model (e.g., time\u2011series ARIMA) to generate 3\u2011month ahead forecasts.<br>\u2022 Review forecasts monthly and adjust campaigns accordingly. |\n\n---\n\n### Bottom Line  \n\nThe company\u2019s revenue trajectory is healthy, but the Q3 dip signals a vulnerability that can be mitigated with targeted mid\u2011year marketing, supply\u2011chain safeguards,",
+          "tokens": 800,
+          "elapsed": 5.63,
+          "tps": 142.1
+        },
+        {
+          "cluster": "analysis",
+          "name": "summarization",
+          "prompt": "Summarize the key points of this text in exactly 3 bullet points:\n\nArtificial intelligence has evolved dramatically over the past decade. Machine learning models have grown from millions to trillions of parameters. The cost of training frontier models has increased from thousands to hundreds of millions of dollars. However, inference costs have dropped significantly thanks to hardware improvements and quantization techniques. Open-weight models have democratized access, allowing individuals and small companies to run powerful AI locally. The debate around AI safety has intensified, with governments worldwide introducing regulatory frameworks. Despite concerns about job displacement, new roles in AI engineering, prompt design, and AI ethics have emerged. The technology is increasingly being integrated into everyday tools, from code editors to email clients, fundamentally changing how knowledge workers operate.",
+          "response": "- AI models have scaled from millions to trillions of parameters, pushing training costs from thousands to hundreds of millions of dollars while inference costs have sharply fallen thanks to hardware advances and quantization.  \n- Open\u2011weight releases and improved hardware have democratized AI, enabling individuals and small firms to run powerful models locally and creating new roles in AI engineering, prompt design, and ethics.  \n- In response to concerns about job displacement, governments worldwide are introducing regulatory frameworks, and AI is now embedded in everyday tools\u2014code editors, email clients, etc.\u2014transforming how knowledge workers operate.",
+          "tokens": 347,
+          "elapsed": 2.58,
+          "tps": 134.4
+        },
+        {
+          "cluster": "reasoning",
+          "name": "logic_puzzle",
+          "prompt": "Five people (Alice, Bob, Carol, Dave, Eve) sit in a row. Alice is not next to Bob. Carol is in the middle. Dave is next to Eve. Bob is at one of the ends. Where is everyone sitting? List from left to right.",
+          "response": "",
+          "tokens": 800,
+          "elapsed": 5.67,
+          "tps": 141.1
+        },
+        {
+          "cluster": "reasoning",
+          "name": "math_word_problem",
+          "prompt": "A store has a 30% off sale. If you also have a coupon for 15% off the sale price, and the original price of a jacket is $120, what is the final price? Also calculate the total percentage saved from the original price.",
+          "response": "**Step 1 \u2013 Apply the 30\u202f% sale discount**\n\n\\[\n\\text{Sale price} = \\text{Original price} \\times (1 - 0.30)\n= \\$120 \\times 0.70\n= \\$84\n\\]\n\n**Step 2 \u2013 Apply the 15\u202f% coupon to the sale price**\n\n\\[\n\\text{Final price} = \\text{Sale price} \\times (1 - 0.15)\n= \\$84 \\times 0.85\n= \\$71.40\n\\]\n\nSo the jacket ends up costing **$71.40**.\n\n---\n\n### Total percentage saved from the original price\n\n1. **Calculate the total amount saved**\n\n\\[\n\\text{Savings} = \\text{Original price} - \\text{Final price}\n= \\$120 - \\$71.40\n= \\$48.60\n\\]\n\n2. **Convert the savings to a percentage of the original price**\n\n\\[\n\\text{Percentage saved} = \\frac{\\$48.60}{\\$120} \\times 100\\%\n= 0.405 \\times 100\\%\n= 40.5\\%\n\\]\n\n---\n\n**Answer**\n\n- Final price after both discounts: **$71.40**  \n- Total savings relative to the original price: **40.5\u202f%**",
+          "tokens": 437,
+          "elapsed": 3.17,
+          "tps": 137.9
+        },
+        {
+          "cluster": "planning",
+          "name": "project_plan",
+          "prompt": "Create a high-level project plan for building a mobile app for a local restaurant. Include phases, key milestones, estimated timelines, and team roles needed. The budget is $50,000.",
+          "response": "## \ud83d\udcf1 High\u2011Level Project Plan  \n**Project:** Mobile App for \u201cThe Local Bistro\u201d  \n**Budget:** **$50,000**  \n**Target Release:** 12\u202fweeks from kickoff (\u2248\u202f3\u202fmonths)\n\n| Phase | Key Milestones | Approx. Duration | Deliverables | Core Team Roles |\n|-------|----------------|------------------|--------------|-----------------|\n| **1. Discovery & Planning** | \u2022 Project kickoff<br>\u2022 Stakeholder interviews<br>\u2022 Competitor / market research<br>\u2022 Requirements & feature list<br>\u2022 MVP scope & success metrics<br>\u2022 Project charter & budget sign\u2011off | **2\u202fweeks** | \u2022 Requirements spec<br>\u2022 Feature backlog<br>\u2022 Project charter | Project Manager (PM)<br>Business Analyst (BA)<br>Restaurant Owner / Marketing Lead |\n| **2. UX/UI Design** | \u2022 User flow & wireframes<br>\u2022 Visual style guide<br>\u2022 Interactive prototype<br>\u2022 Design approval | **3\u202fweeks** | \u2022 Low\u2011/high\u2011fidelity wireframes<br>\u2022 Design system (colors, fonts, components)<br>\u2022 Clickable prototype | UI/UX Designer<br>Visual Designer |\n| **3. Architecture & Technical Setup** | \u2022 Tech stack selection (React\u2011Native / Flutter / native)<br>\u2022 API / backend design<br>\u2022 Hosting & CI/CD pipeline<br>\u2022 Security & compliance review | **1\u202fweek** | \u2022 Architecture diagram<br>\u2022 Technical specifications<br>\u2022 Dev environment ready | Technical Lead / Architect<br>Backend Engineer |\n| **4. Development (MVP)** | \u2022 Core screens (Home, Menu, Order, Profile)<br>\u2022 Order\u2011to\u2011kitchen workflow<br>\u2022 Payment integration (Stripe/PayPal)<br>\u2022 Push notifications<br>\u2022 Admin panel (menu updates) | **6\u202fweeks** | \u2022 Working MVP (iOS & Android)<br>\u2022 API documentation<br>\u2022 Deployment scripts | Frontend Engineer (iOS/Android) \u2013 1 or 2 devs<br>Backend Engineer \u2013 1 dev<br>QA Lead \u2013 1 tester |\n| **5. QA & User Acceptance Testing (UAT)** | \u2022 Functional testing<br>\u2022 Performance & load testing<br>\u2022 Accessibility audit<br>\u2022 Restaurant staff beta testing | **2\u202fweeks** | \u2022 Test reports<br>\u2022 Bug backlog<br>\u2022 UAT sign\u2011off | QA Engineer<br>DevOps / Release Engineer |\n| **6. Deployment & Launch** | \u2022 App Store / Google Play submission<br>\u2022 Production environment roll\u2011out<br>\u2022 Marketing & PR plan<br>\u2022 Staff training | **1\u202fweek** | \u2022 Live app<br>\u2022 Launch materials (screenshots, description, promo videos) | Release Manager<br>Marketing Coordinator |\n| **7. Post\u2011Launch Support (3\u202fmonths)** | \u2022 Hot",
+          "tokens": 800,
+          "elapsed": 5.64,
+          "tps": 141.9
+        },
+        {
+          "cluster": "planning",
+          "name": "task_decomposition",
+          "prompt": "Break down this task into subtasks with dependencies: 'Deploy a new microservice that reads from a Kafka topic, processes messages, stores results in PostgreSQL, and exposes a REST API for querying results.'",
+          "response": "## High\u2011Level Sub\u2011Task Breakdown (with Dependencies)\n\n| # | Sub\u2011task | Brief description | Depends on |\n|---|----------|-------------------|------------|\n| **1** | **Requirements & Acceptance Criteria** | Gather functional & non\u2011functional requirements (Kafka topic, message schema, processing rules, query patterns, latency, SLA, security). | \u2013 |\n| **2** | **Architecture & Design** | Draft a high\u2011level diagram (Kafka \u2192 Consumer \u2192 Processor \u2192 PostgreSQL \u2192 REST API). Decide on language, frameworks, containerization, orchestration, monitoring, CI/CD. | 1 |\n| **3** | **Environment Setup** | Provision dev/test environments: Kafka broker, PostgreSQL instance, CI/CD runner, monitoring stack. | 2 |\n| **4** | **Kafka Consumer Skeleton** | Create a basic consumer that subscribes to the target topic and logs received messages. | 3 |\n| **5** | **Message Processing Logic** | Implement the core business logic (transformations, validations, enrichment). | 4 |\n| **6** | **PostgreSQL Schema Design** | Define tables, indexes, constraints, and any necessary migrations. | 2 |\n| **7** | **Persistence Layer** | Build DAO/repository code that maps processed data to the schema. | 6 |\n| **8** | **REST API Design** | Draft API endpoints, request/response contracts, authentication/authorization model. | 2 |\n| **9** | **API Implementation** | Implement the endpoints, integrate with persistence layer, add input validation. | 7, 8 |\n| **10** | **Unit Tests** | Write unit tests for consumer, processor, persistence, and API handlers. | 4, 5, 7, 9 |\n| **11** | **Integration Tests** | Spin up Kafka & PostgreSQL containers, test end\u2011to\u2011end flow (produce \u2192 consume \u2192 store \u2192 query). | 4, 5, 7, 9 |\n| **12** | **Dockerfile & Container Build** | Containerize the microservice (multi\u2011stage build, minimal base image). | 4\u201111 |\n| **13** | **CI Pipeline Configuration** | Configure CI to run tests, build image, push to registry, and run integration tests. | 12 |\n| **14** | **Kubernetes Deployment Artifacts** | Write Deployment, Service, Ingress, ConfigMap/Secret manifests. Include liveness/readiness probes. | 13 |\n| **15**",
+          "tokens": 800,
+          "elapsed": 5.66,
+          "tps": 141.4
+        }
+      ]
+    }
+  },
+  "timestamp": "2026-02-23T15:26:34.106284"
+}

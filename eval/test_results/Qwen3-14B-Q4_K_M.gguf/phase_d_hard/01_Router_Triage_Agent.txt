@@ -1,0 +1,32 @@
+# Phase D Hard Test — #1 Router / Triage Agent
+# Tier: 1 | Score: 10/10 | 8/8 correct
+# Tokens: 562 | Speed: 60.3 t/s | Time: 9.3s
+
+## PROMPT:
+Classify each message into EXACTLY ONE category. Respond with ONLY a JSON object mapping message number to category.
+
+Categories: code_generation, code_review, qa_testing, research, email, summarization, translation, calendar, devops
+
+Messages:
+1. "Roll back the production deployment to v2.3.1" 
+2. "This function works but the variable names are terrible and there's no error handling"
+3. "What are the pros and cons of GraphQL vs REST for mobile apps?"
+4. "Convert this error message to Japanese: 'Connection timeout after 30 seconds'"
+5. "Write me a Python decorator that retries failed API calls 3 times with exponential backoff"
+6. "Move my 2pm meeting with Sarah to Thursday same time"
+7. "Our login tests are passing locally but failing in CI — can you investigate why?"
+8. "Give me the key points from the last 3 board meeting transcripts"
+
+IMPORTANT: Some messages are deliberately ambiguous. Pick the BEST single category.
+
+## RESPONSE:
+{
+  "1": "devops",
+  "2": "code_review",
+  "3": "research",
+  "4": "translation",
+  "5": "code_generation",
+  "6": "calendar",
+  "7": "qa_testing",
+  "8": "summarization"
+}

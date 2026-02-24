@@ -1,0 +1,43 @@
+# Phase D Hard Test — #24 Image Description / Understanding
+# Tier: 2 | Score: 5/10 | No automated constraints to check
+# Tokens: 322 | Speed: 32.9 t/s | Time: 9.8s
+
+## PROMPT:
+Write WCAG 2.1 compliant alt-text for this complex data visualization (described textually). Your description must make the data accessible to a screen reader user — they should understand the INSIGHT, not just the shape.
+
+Chart description:
+- Type: Combined bar and line chart
+- X-axis: Months Jan-Dec 2025
+- Left Y-axis: Revenue in millions (bars)
+- Right Y-axis: Customer satisfaction % (line)
+- Bar values: Jan:2.1, Feb:2.3, Mar:2.8, Apr:3.1, May:2.9, Jun:3.4, Jul:3.2, Aug:3.0, Sep:4.1, Oct:4.5, Nov:4.2, Dec:5.0
+- Line values: Jan:82, Feb:84, Mar:81, Apr:78, May:75, Jun:73, Jul:74, Aug:76, Sep:71, Oct:68, Nov:70, Dec:65
+- Notable: Revenue up 138% but satisfaction down 17 points
+- There's also a small annotation "Price increase" at April
+
+Requirements: 
+1. Under 150 words (screen reader users need conciseness)
+2. Convey the KEY INSIGHT (revenue and satisfaction moving in opposite directions)  
+3. Include specific numbers for the trend
+4. Note the likely cause (price increase in April)
+
+## RESPONSE:
+Here's WCAG 2.1 compliant alt-text for the data visualization, meeting your requirements:
+
+**Alt Text:**
+
+Combined bar and line chart showing monthly revenue in millions (bars) and customer satisfaction percentage (line) for January through December 2025. Revenue steadily increased over the year, starting at 2.1 million in January and reaching 5.0 million in December – a 138% overall increase. However, customer satisfaction declined concurrently, falling from 82% in January to 65% in December, a 17-point drop. A noticeable dip in satisfaction begins in April, coinciding with an annotation indicating a “Price increase.” This suggests the price change negatively impacted customer satisfaction despite revenue growth. 
+
+**Explanation of why this is compliant:**
+
+*   **Conveys Insight:** Focuses on the *relationship* between the two datasets (opposite trends) and the overall story.
+*   **Specific Numbers:** Includes key starting and ending values, and the percentage changes for both revenue and satisfaction.
+*   **Context:** Clearly states the axes and time period.
+*   **Notable Event:** Highlights the price increase annotation and its potential connection to the satisfaction decline.
+*   **Concise:** Remains under 150 words.
+*   **Avoids Visual Language:** Doesn't rely on terms like "higher" or "lower" without providing the actual values.
+*   **Complete:** Provides enough information for a screen reader user to understand the chart’s main message.
+
+
+
+

@@ -1,0 +1,105 @@
+# Phase D Hard Test — #32 Personal Finance Tracking
+# Tier: 2 | Score: 10/10 | 3/3 constraints met
+# Tokens: 4123 | Speed: 56.0 t/s | Time: 73.6s
+
+## PROMPT:
+Analyze 3 months of transactions. WARNING: There are 2 potentially fraudulent transactions hidden in the data. Find them.
+
+January:
+- Salary: +$5,000 (Jan 1). Rent: -$1,800 (Jan 1). Grocery Store: -$312 (Jan 5). Electric: -$95 (Jan 10). Netflix: -$15 (Jan 15). Gas: -$45 (Jan 18). Restaurant: -$85 (Jan 22). Gym: -$50 (Jan 28).
+
+February:
+- Salary: +$5,000 (Feb 1). Rent: -$1,800 (Feb 1). Grocery Store: -$287 (Feb 4). Electric: -$102 (Feb 10). Netflix: -$15 (Feb 15). Netflix: -$15 (Feb 15). Gas: -$52 (Feb 19). Restaurant: -$120 (Feb 23). Coffee: -$45 (Feb 25).
+
+March:
+- Salary: +$5,000 (Mar 1). Rent: -$1,800 (Mar 1). Grocery Store: -$345 (Mar 6). ATM Withdrawal Miami: -$400 (Mar 8). Local Gas Station: -$48 (Mar 8). Electric: -$98 (Mar 12). Netflix: -$15 (Mar 15). Restaurant: -$95 (Mar 20). Shopping: -$250 (Mar 25).
+
+Calculate exact monthly totals, savings rate, category trends, AND identify the suspicious transactions with explanation.
+
+## RESPONSE:
+### **Analysis of 3 Months of Transactions**
+
+---
+
+### **Monthly Totals & Savings Rate**
+
+#### **January**
+- **Income**: $5,000 (Salary)  
+- **Expenses**:  
+  - Rent: $1,800  
+  - Grocery: $312  
+  - Electric: $95  
+  - Netflix: $15  
+  - Gas: $45  
+  - Restaurant: $85  
+  - Gym: $50  
+  **Total Expenses**: **$2,402**  
+- **Savings**: $5,000 - $2,402 = **$2,598**  
+- **Savings Rate**: (2,598 / 5,000) × 100 = **51.96%**
+
+#### **February**
+- **Income**: $5,000 (Salary)  
+- **Expenses**:  
+  - Rent: $1,800  
+  - Grocery: $287  
+  - Electric: $102  
+  - Netflix: $15 × 2 = $30  
+  - Gas: $52  
+  - Restaurant: $120  
+  - Coffee: $45  
+  **Total Expenses**: **$2,436**  
+- **Savings**: $5,000 - $2,436 = **$2,564**  
+- **Savings Rate**: (2,564 / 5,000) × 100 = **51.28%**
+
+#### **March**
+- **Income**: $5,000 (Salary)  
+- **Expenses**:  
+  - Rent: $1,800  
+  - Grocery: $345  
+  - ATM Withdrawal (Miami): $400  
+  - Gas: $48  
+  - Electric: $98  
+  - Netflix: $15  
+  - Restaurant: $95  
+  - Shopping: $250  
+  **Total Expenses**: **$3,051**  
+- **Savings**: $5,000 - $3,051 = **$1,949**  
+- **Savings Rate**: (1,949 / 5,000) × 100 = **38.98%**
+
+---
+
+### **Category Trends**
+- **Rent**: Consistent at $1,800/month.  
+- **Groceries**: Slight increase in March ($345 vs. $312 in Jan, $287 in Feb).  
+- **Utilities (Electric)**: Minor fluctuations ($95, $102, $98).  
+- **Entertainment (Netflix)**: $15/month.  
+- **Gas**: $45 (Jan), $52 (Feb), $48 (Mar).  
+- **Dining**: Increased in Feb ($120 vs. $85 in Jan), then dropped in Mar ($95).  
+- **Gym**: Only in Jan ($50).  
+- **Coffee**: Only in Feb ($45).  
+- **Shopping**: Appears in March ($250), a significant jump from previous months.  
+
+---
+
+### **Suspicious Transactions Identified**
+
+#### **1. ATM Withdrawal (Miami): -$400 (Mar 8)**
+- **Why Suspicious**:  
+  - **Location**: The transaction is labeled as an "ATM Withdrawal Miami," which is unusual if the individual does not reside in Miami.  
+  - **Amount**: $400 is a large withdrawal for a single transaction, especially if the person typically spends smaller amounts on cash.  
+  - **Timing**: Occurs on the same day as a $48 gas purchase, which may indicate a trip to Miami, but the lack of other related expenses (e.g., lodging, meals) raises red flags.  
+
+#### **2. Shopping: -$250 (Mar 25)**
+- **Why Suspicious**:  
+  - **Amount**: $250 is a significant expense compared to previous months (no shopping expenses in Jan/Feb).  
+  - **Lack of Context**: No prior shopping expenses are listed, making this a sudden and unexplained large purchase.  
+  - **Combined with ATM Withdrawal**: The two transactions (ATM withdrawal and shopping) on different dates in March could indicate fraudulent activity, such as unauthorized purchases or a stolen card.  
+
+---
+
+### **Conclusion**
+- **Monthly Savings Rate**: Dropped sharply in March (38.98%) compared to 51.96% in January and 51.28% in February.  
+- **Fraudulent Transactions**:  
+  1. **ATM Withdrawal (Miami): -$400 (Mar 8)**  
+  2. **Shopping: -$250 (Mar 25)**  
+  These transactions deviate from the user’s typical spending patterns and lack contextual support, suggesting potential fraud.

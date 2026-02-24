@@ -1,0 +1,42 @@
+# Phase D Hard Test — #13 Email Drafting / Summarization
+# Tier: 2 | Score: 5/10 | No automated constraints to check
+# Tokens: 1569 | Speed: 139.4 t/s | Time: 11.3s
+
+## PROMPT:
+Prioritize these 8 emails. WARNING: 2 emails have HIDDEN urgency clues buried in the text that change their priority. Read carefully.
+
+1. Subject: "Team lunch Friday" — "Hey, let's do Thai food this week!"
+2. Subject: "Quick question" — "The board presentation is tomorrow and slide 14 has last quarter's numbers instead of this quarter's. Can someone fix?"
+3. Subject: "FYI - vendor update" — "Just letting you know Acme renewed. PS: They mentioned in passing that they're evaluating competitors and their contract has a 30-day termination clause that activates next week."
+4. Subject: "URGENT: Office supplies" — "We're running low on printer paper!!!!"
+5. Subject: "Re: Project timeline" — "Looks good, no changes needed from my end."
+6. Subject: "Meeting notes from Tuesday" — "Attached are the notes. Also, I noticed during the meeting that the CFO mentioned they're freezing all new hires starting Monday — might affect our expansion plans."
+7. Subject: "Newsletter subscription" — "Thanks for subscribing to TechDigest!"
+8. Subject: "Parking lot maintenance" — "Lot B will be closed Saturday for restriping."
+
+Rank P1-P4. Explain the hidden urgency in the emails where it exists.
+
+## RESPONSE:
+**Priority Ranking (P1 = highest, P4 = lowest)**  
+
+| Rank | Email # | Subject | Reason for the rank |
+|------|---------|---------|---------------------|
+| **P1** | 2 | “Quick question” | The board presentation is tomorrow and the slide that will be shown contains last‑quarter numbers instead of this‑quarter numbers. If the slide isn’t fixed before the meeting, the presentation will be wrong and the whole deck will look unprofessional. This is a *time‑critical* issue that must be resolved immediately. |
+| **P2** | 6 | “Meeting notes from Tuesday” | The CFO announced that all new hires will be frozen **starting Monday**. That decision directly impacts the team’s expansion plans and could trigger a cascade of re‑planning. It is urgent, but it is a *policy change* rather than a technical glitch that could be dealt with a short‑term workaround. |
+| **P2** | 4 | “URGENT: Office supplies” | “Running low on printer paper!!!!” is flagged as urgent in the subject line. While it is important for day‑to‑day operations, it is not a *critical* business‑impacting event like the presentation or hiring freeze. It can be handled quickly by ordering more paper. |
+| **P3** | 3 | “FYI - vendor update” | The email contains a *hidden* urgency: Acme’s contract has a 30‑day termination clause that activates next week. That means the contract could end before the end of the month, so the company needs to decide whether to renegotiate or find a replacement. It’s important, but the deadline is a week away, so it sits below the immediate operational issues. |
+| **P4** | 1 | “Team lunch Friday” | Casual invitation to Thai food. No business impact. |
+| **P4** | 5 | “Re: Project timeline” | The sender says everything looks good; no action required. |
+| **P4** | 7 | “Newsletter subscription” | Thank‑you note for subscribing to a newsletter. No action needed. |
+| **P4** | 8 | “Parking lot maintenance” | Lot B will be closed Saturday for restriping – a routine maintenance notice. |
+
+---
+
+### Hidden urgency clues
+
+| Email # | Hidden clue | Why it changes priority |
+|---------|-------------|------------------------|
+| 3 | “30‑day termination clause that activates next week” | The contract could end before the end of the month, requiring a decision or renegotiation. It’s a *time‑sensitive* business risk that isn’t obvious from the subject line. |
+| 6 | “CFO mentioned they're freezing all new hires starting Monday” | A policy change that will take effect the very next day and could derail expansion plans. The urgency is buried in the body text, not the subject. |
+
+These two hidden clues elevate emails 3 and 6 to higher priority levels than their surface‑level content would suggest. All other emails are straightforward in their urgency (or lack thereof).

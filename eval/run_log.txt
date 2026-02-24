@@ -1,0 +1,391 @@
+
+######################################################################
+#  OpenClaw 59-Role Model Evaluation
+#  Model: gpt-oss-20b-mxfp4.gguf
+#  Server: http://192.168.1.9:8080/v1
+#  Roles: 59
+#  Time: 2026-02-23T20:04:31.203443
+######################################################################
+
+======================================================================
+  PHASE A: AUTOMATED ROLE TESTS — gpt-oss-20b-mxfp4.gguf
+======================================================================
+
+  [ 1/59] T1 # 1 Router / Triage Agent
+         ✅ Contains 'qa_testing'  (97.1 t/s, 0.92s)
+
+  [ 2/59] T1 # 2 Input Validator / Sanitizer
+         ✅ Valid JSON  (137.6 t/s, 1.34s)
+
+  [ 3/59] T1 # 3 Heartbeat / Health Monitor
+         ✅ Valid JSON  (139.5 t/s, 1.74s)
+
+  [ 4/59] T1 # 4 Notification / Alert Agent
+         ✅ Valid JSON  (142.6 t/s, 2.48s)
+
+  [ 5/59] T1 # 5 Sentiment Analysis Agent
+         ✅ Valid JSON  (141.3 t/s, 2.51s)
+
+  [ 6/59] T1 # 6 FAQ Generation Agent
+         ✅ Valid JSON  (141.1 t/s, 2.14s)
+
+  [ 7/59] T1 # 7 Translation Agent
+         ✅ Contains: rapport trimestriel, trimestriel, augmentation, revenus  (139.6 t/s, 1.55s)
+
+  [ 8/59] T1 # 8 Calendar / Scheduling Agent
+         ✅ Valid JSON  (143.0 t/s, 4.14s)
+
+  [ 9/59] T2 # 9 Research / Web Search Agent
+         ✅ Valid JSON  (144.5 t/s, 2.82s)
+
+  [10/59] T2 #10 Content Writer / Blog Writer
+         ❌ Too short: 0 words (need 100)  (143.2 t/s, 5.59s)
+
+  [11/59] T2 #11 Editor Agent
+         ❌ Missing: They're, groceries  (142.1 t/s, 5.63s)
+
+  [12/59] T2 #12 Content Planner
+         ❌ Invalid JSON: Expecting value: line 37 column 19 (char 959)  (141.4 t/s, 5.66s)
+
+  [13/59] T2 #13 Email Drafting / Summarization
+         ✅ Valid JSON  (133.1 t/s, 1.98s)
+
+  [14/59] T2 #14 Document Summarization
+         ✅ Pattern matches: 3  (132.9 t/s, 1.48s)
+
+  [15/59] T2 #15 Meeting Notes / Transcription Agent
+         ✅ Valid JSON  (141.1 t/s, 3.67s)
+
+  [16/59] T2 #16 Social Media Scouting / Monitoring
+         ✅ Valid JSON  (139.0 t/s, 3.41s)
+
+  [17/59] T2 #17 Social Media Content Agent
+         ✅ Length OK: 216 chars  (141.9 t/s, 5.03s)
+
+  [18/59] T2 #18 News Aggregation Agent
+         ✅ Valid JSON  (139.1 t/s, 4.02s)
+
+  [19/59] T2 #19 Shopping / Price Comparison
+         ❌ Invalid JSON: Expecting value: line 52 column 61 (char 1902)  (141.2 t/s, 5.67s)
+
+  [20/59] T2 #20 Memory / Knowledge Management
+         ✅ Valid JSON  (135.3 t/s, 2.48s)
+
+  [21/59] T2 #21 RAG / Retrieval Agent
+         ✅ Valid JSON  (124.0 t/s, 0.99s)
+
+  [22/59] T2 #22 Data Analysis Agent
+         ✅ Valid JSON  (139.5 t/s, 2.55s)
+
+  [23/59] T2 #23 Website Scraping / Understanding
+         ✅ Valid JSON  (129.6 t/s, 1.3s)
+
+  [24/59] T2 #24 Image Description / Understanding
+         ✅ Valid JSON  (140.9 t/s, 4.17s)
+
+  [25/59] T2 #25 Customer Support Agent
+         ✅ Contains: sorry, understand, frustrat  (130.7 t/s, 1.32s)
+
+  [26/59] T2 #26 Lead Scoring / Prospecting
+         ✅ Valid JSON  (138.4 t/s, 2.17s)
+
+  [27/59] T2 #27 Sprint / Project Summarizer
+         ✅ Valid JSON  (131.1 t/s, 1.46s)
+
+  [28/59] T2 #28 Transaction / Approval Agent
+         ✅ Valid JSON  (135.3 t/s, 1.88s)
+
+  [29/59] T2 #29 Home Automation Agent
+         ✅ Valid JSON  (135.9 t/s, 1.63s)
+
+  [30/59] T2 #30 Fitness / Health Tracking
+         ❌ Invalid JSON: Unterminated string starting at: line 38 column 20 (char 1244)  (142.0 t/s, 5.63s)
+
+  [31/59] T2 #31 Recipe / Cooking Agent
+         ✅ Valid JSON  (140.0 t/s, 4.87s)
+
+  [32/59] T2 #32 Personal Finance Tracking
+         ✅ Valid JSON  (140.5 t/s, 5.09s)
+
+  [33/59] T2 #33 SEO Optimization Agent
+         ✅ Valid JSON  (140.3 t/s, 5.03s)
+
+  [34/59] T2 #34 Landing Page Generator
+         ✅ Valid JSON  (140.2 t/s, 4.51s)
+
+  [35/59] T2 #35 Travel Planning Agent
+         ✅ Valid JSON  (140.5 t/s, 4.92s)
+
+  [36/59] T3 #36 Code Generation Agent
+         ✅ All tests pass  (136.6 t/s, 2.39s)
+
+  [37/59] T3 #37 Code Review Agent
+         ❌ Invalid JSON: Expecting ',' delimiter: line 29 column 23 (char 1096)  (141.4 t/s, 5.66s)
+
+  [38/59] T3 #38 QA / Test Writing Agent
+         ✅ Contains all expected elements  (140.0 t/s, 5.04s)
+
+  [39/59] T3 #39 Task Planning / Decomposition
+         ❌ Invalid JSON: Unterminated string starting at: line 30 column 24 (char 762)  (140.7 t/s, 5.69s)
+
+  [40/59] T3 #40 Fact-Checking Agent
+         ✅ Valid JSON  (139.1 t/s, 4.32s)
+
+  [41/59] T3 #41 Critic / Review Agent
+         ✅ Valid JSON  (136.4 t/s, 2.61s)
+
+  [42/59] T3 #42 Market Research Agent
+         ✅ Valid JSON  (141.9 t/s, 5.1s)
+
+  [43/59] T3 #43 Synthesizer / Aggregator
+         ✅ Length OK: 112 words  (131.8 t/s, 1.83s)
+
+  [44/59] T3 #44 Curriculum / Course Designer
+         ✅ Valid JSON  (141.5 t/s, 4.76s)
+
+  [45/59] T3 #45 Prototype Generator
+         ✅ Contains all expected elements  (139.4 t/s, 4.25s)
+
+  [46/59] T3 #46 DevOps Agent
+         ✅ Valid JSON  (139.2 t/s, 3.94s)
+
+  [47/59] T4 #47 Math / Logic Reasoning
+         ❌ Missing '44' in: **Step‑by‑step calculation for a \$100 item**
+
+| Step | Action | Calculation | R  (141.4 t/s, 5.05s)
+
+  [48/59] T4 #48 STEM Analysis
+         ✅ Valid JSON  (134.6 t/s, 2.36s)
+
+  [49/59] T4 #49 Algorithm Exploration
+         ✅ Valid JSON  (141.6 t/s, 5.49s)
+
+  [50/59] T5 #50 Orchestrator / Manager Agent
+         ✅ Valid JSON  (136.5 t/s, 3.0s)
+
+  [51/59] T5 #51 Software Architect Agent
+         ❌ Invalid JSON: Unterminated string starting at: line 36 column 25 (char 1669)  (141.1 t/s, 5.67s)
+
+  [52/59] T5 #52 Complex Debugger Agent
+         ✅ Valid JSON  (134.4 t/s, 2.29s)
+
+  [53/59] T5 #53 Legal Document Review
+         ✅ Valid JSON  (140.1 t/s, 3.98s)
+
+  [54/59] T5 #54 Medical / Health Analysis
+         ✅ Valid JSON  (138.6 t/s, 3.74s)
+
+  [55/59] T5 #55 Financial Analysis / Stock Research
+         ✅ Valid JSON  (140.1 t/s, 4.34s)
+
+  [56/59] T5 #56 Security Analyst Agent
+         ❌ Invalid JSON: Invalid \escape: line 13 column 112 (char 553)  (140.5 t/s, 5.69s)
+
+  [57/59] T5 #57 SRE / Incident Response
+         ✅ Valid JSON  (139.1 t/s, 4.63s)
+
+  [58/59] T5 #58 Book Writing Agent
+         ✅ Length OK: 168 words  (137.2 t/s, 2.63s)
+
+  [59/59] T5 #59 Compliance / Regulatory Agent
+         ✅ Valid JSON  (141.2 t/s, 5.58s)
+
+  ==================================================
+  AUTOMATED SCORE: 49/59 = 83.1%
+    Tier 1: 8/8 = 100.0%
+    Tier 2: 22/27 = 81.5%
+    Tier 3: 9/11 = 81.8%
+    Tier 4: 2/3 = 66.7%
+    Tier 5: 8/10 = 80.0%
+  → Saved: /Users/andrew/Documents/AAAPPS5/OpenClaw/eval/test_results/gpt-oss-20b-mxfp4.gguf/automated_scores.json
+
+======================================================================
+  PHASE B: QUALITY PROMPTS (for manual review) — gpt-oss-20b-mxfp4.gguf
+======================================================================
+
+  [ 1/59] T1 # 1 Router / Triage Agent
+         365 tok, 135.2 t/s → **1. “Rewrite this function to be more efficient.”**   *Classification: Code‑Optimization* – The user is requesting a mo...
+
+  [ 2/59] T1 # 2 Input Validator / Sanitizer
+         1200 tok, 142.3 t/s → **Validation Issues**  | # | Field | Value | Issue | Severity | |---|-------|-------|-------|----------| | 1 | `user_id`...
+
+  [ 3/59] T1 # 3 Heartbeat / Health Monitor
+         1200 tok, 140.5 t/s → **Server Health Report – Last 5 Minutes**  | Metric | 5‑min Trend | Comment | |--------|-------------|---------| | **CPU...
+
+  [ 4/59] T1 # 4 Notification / Alert Agent
+         625 tok, 138.2 t/s → **Alert 1 – Production DB Disk Space**  | Field | Value | |-------|-------| | **Priority** | P1 (Critical) | | **Urgency...
+
+  [ 5/59] T1 # 5 Sentiment Analysis Agent
+         913 tok, 140.8 t/s → **Sentiment Analysis**  | Category | Assessment | |----------|------------| | **Overall sentiment** | **Negative‑leaning...
+
+  [ 6/59] T1 # 6 FAQ Generation Agent
+         1200 tok, 141.1 t/s → ### FAQ – AI‑Powered Email Management SaaS  ---  #### 1. **What plans do you offer and how much do they cost?**   **Answ...
+
+  [ 7/59] T1 # 7 Translation Agent
+         1085 tok, 140.6 t/s → **Spanish translation**  > Nuestro gateway de API de *grado empresarial* procesa 10 000 solicitudes por segundo con un S...
+
+  [ 8/59] T1 # 8 Calendar / Scheduling Agent
+         1025 tok, 140.4 t/s → **Suggested slot:** **7:30 – 9:00 AM**  **Why this works**  | Requirement | How it’s satisfied | |-------------|--------...
+
+  [ 9/59] T2 # 9 Research / Web Search Agent
+         1200 tok, 141.2 t/s → ...
+
+  [10/59] T2 #10 Content Writer / Blog Writer
+         743 tok, 139.3 t/s → **Why Your Company Should Adopt a 4‑Day Work Week**  *Imagine a Friday that feels like a holiday, yet your team finishes...
+
+  [11/59] T2 #11 Editor Agent
+         724 tok, 140.3 t/s → **Revised Draft (Tracked Changes)**    > **AI is really really changing everything.**   > **Companies that dont use AI w...
+
+  [12/59] T2 #12 Content Planner
+         1200 tok, 141.7 t/s → ## 3‑Month Content Strategy for a Millennial‑Focused Health & Wellness App  > **Goal** – Build brand awareness, drive ap...
+
+  [13/59] T2 #13 Email Drafting / Summarization
+         911 tok, 139.7 t/s → **Email Summaries & Prioritization**  | # | Sender | Key Content | Priority | |---|--------|-------------|----------| | ...
+
+  [14/59] T2 #14 Document Summarization
+         582 tok, 138.1 t/s → **Executive Summary (≈120 words)**   The microservices migration is 60 % complete, with 12 of 20 legacy services transit...
+
+  [15/59] T2 #15 Meeting Notes / Transcription Agent
+         1086 tok, 141.3 t/s → **Product Sync – 20 Feb**  | Item | Details | |------|---------| | **Attendees** | Sarah (PM), Mike (Eng Lead), Lisa (De...
+
+  [16/59] T2 #16 Social Media Scouting / Monitoring
+         1200 tok, 140.9 t/s → # Social Listening Report – Consumer Electronics Brand   **Week Ending: 2026‑02‑16**   **Prepared by:** Social Media Int...
+
+  [17/59] T2 #17 Social Media Content Agent
+         1200 tok, 140.9 t/s → **Sustainable Fashion Brand: “AquaThreads”**   *New Collection Launch – “SeaRenew” (Recycled Ocean Plastic)*    Below is...
+
+  [18/59] T2 #18 News Aggregation Agent
+         1200 tok, 141.1 t/s → **Morning Briefing – 2026‑02‑23**   *Prepared for the Executive Team – Technology Division*  ---  ### Top 5 Stories  1. ...
+
+  [19/59] T2 #19 Shopping / Price Comparison
+         1200 tok, 141.0 t/s → Below are **four realistic, current‑model laptops** that fit a $1,500 budget and are well‑suited for software developmen...
+
+  [20/59] T2 #20 Memory / Knowledge Management
+         974 tok, 140.6 t/s → **User Profile – Consolidated & Updated**  | Category | Detail | Source & Date | Notes | |----------|--------|----------...
+
+  [21/59] T2 #21 RAG / Retrieval Agent
+         681 tok, 138.4 t/s → To get real‑time order notifications you should use the **webhook** feature:  * Register a webhook endpoint in your appl...
+
+  [22/59] T2 #22 Data Analysis Agent
+         1200 tok, 141.5 t/s → **A/B Test Summary (10 k visitors each)**    | Metric | Control (A) | Variant (B) | |--------|-------------|------------...
+
+  [23/59] T2 #23 Website Scraping / Understanding
+         847 tok, 139.7 t/s → **Structured Job Data**  | Field          | Value                                    | |----------------|---------------...
+
+  [24/59] T2 #24 Image Description / Understanding
+         690 tok, 139.8 t/s → **1. Dashboard – Sales Analytics**   “Dashboard screen with a three‑column layout. The left column shows a line chart ti...
+
+  [25/59] T2 #25 Customer Support Agent
+         632 tok, 140.0 t/s → Hi [Customer Name],  I’m really sorry you’ve had to go through this again – it’s absolutely not the experience we want t...
+
+  [26/59] T2 #26 Lead Scoring / Prospecting
+         1200 tok, 141.6 t/s → **Lead‑Scoring Framework (0‑100)**   | Factor | Weight | How we applied it | |--------|--------|-------------------| | C...
+
+  [27/59] T2 #27 Sprint / Project Summarizer
+         1200 tok, 140.9 t/s → ## Sprint Retrospective Summary   *(Team comments – Sprint X)*    | **Area** | **Feedback** | |----------|--------------...
+
+  [28/59] T2 #28 Transaction / Approval Agent
+         1200 tok, 140.9 t/s → **Policy recap**  | Rule | Detail | |------|--------| | **Individual transaction limit** | ≤ $5,000 | | **Team monthly s...
+
+  [29/59] T2 #29 Home Automation Agent
+         1200 tok, 140.8 t/s → ...
+
+  [30/59] T2 #30 Fitness / Health Tracking
+         1200 tok, 140.8 t/s → ...
+
+  [31/59] T2 #31 Recipe / Cooking Agent
+         1200 tok, 140.9 t/s → ...
+
+  [32/59] T2 #32 Personal Finance Tracking
+         1200 tok, 140.4 t/s → ## 1. Quick Snapshot    | Category | Jan | Feb | Mar | % of Income | |----------|-----|-----|-----|-------------| | **In...
+
+  [33/59] T2 #33 SEO Optimization Agent
+         1200 tok, 140.6 t/s → Below is a “quick‑reference playbook” you can copy‑paste into your CMS or hand to your content team.   Everything is gea...
+
+  [34/59] T2 #34 Landing Page Generator
+         1200 tok, 141.0 t/s → Below is a **single‑file** landing page that you can drop into an editor and open in a browser.   It contains a modern, ...
+
+  [35/59] T2 #35 Travel Planning Agent
+         1200 tok, 141.0 t/s → ...
+
+  [36/59] T3 #36 Code Generation Agent
+         1200 tok, 140.7 t/s → ...
+
+  [37/59] T3 #37 Code Review Agent
+         1200 tok, 140.8 t/s → ...
+
+  [38/59] T3 #38 QA / Test Writing Agent
+         1200 tok, 141.0 t/s → Below is a **stand‑alone pytest test‑suite** that covers the five core cart operations, a handful of edge‑cases, and an ...
+
+  [39/59] T3 #39 Task Planning / Decomposition
+         1200 tok, 140.9 t/s → ...
+
+  [40/59] T3 #40 Fact-Checking Agent
+         1193 tok, 140.8 t/s → **Fact‑check of the blog paragraph**  | # | Claim | Accuracy | Corrected Statement (if needed) | Confidence | |---|-----...
+
+  [41/59] T3 #41 Critic / Review Agent
+         1200 tok, 140.6 t/s → **Evaluation of the research summary**  | Dimension | Score (1–5) | Why | |-----------|-------------|-----| | **Accuracy...
+
+  [42/59] T3 #42 Market Research Agent
+         1200 tok, 140.8 t/s → ## Competitive Analysis: New AI Writing Assistant vs. Jasper, Copy.ai, Writesonic    *(All data reflects public informat...
+
+  [43/59] T3 #43 Synthesizer / Aggregator
+         876 tok, 139.4 t/s → **Executive Recommendation – Build vs. Buy AI Solution**  | Dimension | Current Assessment | Recommendation | Rationale ...
+
+  [44/59] T3 #44 Curriculum / Course Designer
+         1200 tok, 140.9 t/s → ## 📚 8‑Week Online Course   **Python for Data Science — From Zero to Job‑Ready**   *Designed for career changers with no...
+
+  [45/59] T3 #45 Prototype Generator
+         1200 tok, 140.8 t/s → Below is a **stand‑alone Streamlit app** that implements a polished “Personal Finance Dashboard”.   Save the code as `ap...
+
+  [46/59] T3 #46 DevOps Agent
+         1200 tok, 140.6 t/s → Below is a **single, fully‑commented GitHub Actions workflow** that satisfies every requirement you listed.   Save it as...
+
+  [47/59] T4 #47 Math / Logic Reasoning
+         1200 tok, 140.6 t/s → **Step 1 –  What is the absolute minimum number of trips?**    * Total weight of all deliveries    \...
+
+  [48/59] T4 #48 STEM Analysis
+         1200 tok, 140.1 t/s → ...
+
+  [49/59] T4 #49 Algorithm Exploration
+         1200 tok, 140.7 t/s → **Overview**  | Approach | Core idea | Where the *conflict* is handled | |----------|-----------|-----------------------...
+
+  [50/59] T5 #50 Orchestrator / Manager Agent
+         1200 tok, 140.8 t/s → ## 🚀 Execution Plan for Your Series‑A Pitch Deck   *(8‑agent orchestration, 4‑6 hours total, with built‑in human checkpo...
+
+  [51/59] T5 #51 Software Architect Agent
+         1200 tok, 140.8 t/s → # 1.  System Overview    | Layer | Purpose | Example Technology | |-------|---------|--------------------| | **Client** ...
+
+  [52/59] T5 #52 Complex Debugger Agent
+         1200 tok, 140.7 t/s → ## 1. Root‑Cause Analysis  | Symptom | What we see | What actually happens | Why it happens | |---------|-------------|-...
+
+  [53/59] T5 #53 Legal Document Review
+         1200 tok, 140.8 t/s → **Quick note:**   The following observations are *general guidance* only and are **not** legal advice.  If you’re drafti...
+
+  [54/59] T5 #54 Medical / Health Analysis
+         1200 tok, 140.5 t/s → **⚠️ Disclaimer**   The information below is for educational purposes only. It is **not** a substitute for a personalize...
+
+  [55/59] T5 #55 Financial Analysis / Stock Research
+         1200 tok, 140.7 t/s → **Fundamental Analysis & Investment Thesis – Hypothetical Tech Company**  | Metric | Value | Interpretation | |--------|...
+
+  [56/59] T5 #56 Security Analyst Agent
+         1200 tok, 140.1 t/s → ...
+
+  [57/59] T5 #57 SRE / Incident Response
+         1200 tok, 140.5 t/s → # Incident Postmortem   **Incident ID:** 2026‑02‑18‑API‑5xx   **Date of Incident:** Friday, 18 Feb 2026 5:45 PM – Saturd...
+
+  [58/59] T5 #58 Book Writing Agent
+         1200 tok, 140.5 t/s → ...
+
+  [59/59] T5 #59 Compliance / Regulatory Agent
+         1200 tok, 140.9 t/s → **Executive Summary**  | Requirement | Status (likely) | Priority | Key Actions | |-------------|-----------------|-----...
+  → Saved: /Users/andrew/Documents/AAAPPS5/OpenClaw/eval/test_results/gpt-oss-20b-mxfp4.gguf/quality_responses.json
+  → Report: /Users/andrew/Documents/AAAPPS5/OpenClaw/eval/test_results/gpt-oss-20b-mxfp4.gguf/REPORT.md
+
+======================================================================
+  EVALUATION COMPLETE: gpt-oss-20b-mxfp4.gguf
+======================================================================
+  Automated: 83.1% (49/59)
+  Avg speed: 138.0 t/s
+  Quality responses: 59 saved for review
+  Results: /Users/andrew/Documents/AAAPPS5/OpenClaw/eval/test_results/gpt-oss-20b-mxfp4.gguf/

@@ -1,0 +1,443 @@
+Model: gemma-3-27b-it-qat-Q4_0.gguf
+Model ID: gemma-3-27b-it-qat-Q4_0.gguf
+
+======================================================================
+  PHASE A: AUTOMATED ROLE TESTS — gemma-3-27b-it-qat-Q4_0.gguf
+======================================================================
+
+  [ 1/59] T1 # 1 Router / Triage Agent
+         ✅ Found 1/1 keywords  (6.8 t/s, 0.73s)
+
+  [ 2/59] T1 # 2 Input Validator / Sanitizer
+         ✅ Valid JSON (extracted from code block)  (30.8 t/s, 1.72s)
+
+  [ 3/59] T1 # 3 Heartbeat / Health Monitor
+         ✅ Valid JSON (extracted from code block)  (23.7 t/s, 2.28s)
+
+  [ 4/59] T1 # 4 Notification / Alert Agent
+         ✅ Valid JSON (extracted from code block)  (29.0 t/s, 5.14s)
+
+  [ 5/59] T1 # 5 Sentiment Analysis Agent
+         ✅ Valid JSON (extracted from code block)  (28.4 t/s, 5.35s)
+
+  [ 6/59] T1 # 6 FAQ Generation Agent
+         ✅ Valid JSON (extracted from code block)  (26.9 t/s, 3.82s)
+
+  [ 7/59] T1 # 7 Translation Agent
+         ✅ Has content  (31.4 t/s, 1.24s)
+
+  [ 8/59] T1 # 8 Calendar / Scheduling Agent
+         ✅ Valid JSON (extracted from code block)  (31.9 t/s, 2.01s)
+
+  [ 9/59] T2 # 9 Research / Web Search Agent
+         ✅ Valid JSON (extracted from code block)  (36.7 t/s, 8.57s)
+
+  [10/59] T2 #10 Content Writer / Blog Writer
+         ✅ Has content  (36.4 t/s, 4.37s)
+
+  [11/59] T2 #11 Editor Agent
+         ✅ Has content  (38.0 t/s, 8.93s)
+
+  [12/59] T2 #12 Content Planner
+         ✅ Valid JSON (extracted from code block)  (37.4 t/s, 42.86s)
+
+  [13/59] T2 #13 Email Drafting / Summarization
+         ✅ Valid JSON (extracted from code block)  (32.9 t/s, 4.77s)
+
+  [14/59] T2 #14 Document Summarization
+         ✅ Has content  (32.8 t/s, 2.68s)
+
+  [15/59] T2 #15 Meeting Notes / Transcription Agent
+         ✅ Valid JSON (extracted from code block)  (33.1 t/s, 5.46s)
+
+  [16/59] T2 #16 Social Media Scouting / Monitoring
+         ✅ Valid JSON (extracted from code block)  (28.0 t/s, 6.15s)
+
+  [17/59] T2 #17 Social Media Content Agent
+         ✅ Has content  (30.4 t/s, 2.17s)
+
+  [18/59] T2 #18 News Aggregation Agent
+         ✅ Valid JSON (extracted from code block)  (36.8 t/s, 7.77s)
+
+  [19/59] T2 #19 Shopping / Price Comparison
+         ✅ Valid JSON (extracted from code block)  (37.2 t/s, 17.03s)
+
+  [20/59] T2 #20 Memory / Knowledge Management
+         ✅ Valid JSON (extracted from code block)  (35.5 t/s, 7.49s)
+
+  [21/59] T2 #21 RAG / Retrieval Agent
+         ✅ Valid JSON (extracted from code block)  (32.0 t/s, 1.72s)
+
+  [22/59] T2 #22 Data Analysis Agent
+         ✅ Valid JSON (extracted from code block)  (35.8 t/s, 10.38s)
+
+  [23/59] T2 #23 Website Scraping / Understanding
+         ✅ Valid JSON (extracted from code block)  (27.1 t/s, 3.61s)
+
+  [24/59] T2 #24 Image Description / Understanding
+         ✅ Valid JSON (extracted from code block)  (36.1 t/s, 11.79s)
+
+  [25/59] T2 #25 Customer Support Agent
+         ✅ Has content  (35.5 t/s, 4.43s)
+
+  [26/59] T2 #26 Lead Scoring / Prospecting
+         ✅ Valid JSON (extracted from code block)  (34.1 t/s, 5.64s)
+
+  [27/59] T2 #27 Sprint / Project Summarizer
+         ✅ Valid JSON (extracted from code block)  (33.0 t/s, 2.66s)
+
+  [28/59] T2 #28 Transaction / Approval Agent
+         ✅ Valid JSON (extracted from code block)  (23.8 t/s, 1.93s)
+
+  [29/59] T2 #29 Home Automation Agent
+         ✅ Valid JSON (extracted from code block)  (32.2 t/s, 2.14s)
+
+  [30/59] T2 #30 Fitness / Health Tracking
+         ✅ Valid JSON (extracted from code block)  (36.7 t/s, 10.09s)
+
+  [31/59] T2 #31 Recipe / Cooking Agent
+         ✅ Valid JSON (extracted from code block)  (37.4 t/s, 10.6s)
+
+  [32/59] T2 #32 Personal Finance Tracking
+         ✅ Valid JSON (extracted from code block)  (37.4 t/s, 11.93s)
+
+  [33/59] T2 #33 SEO Optimization Agent
+         ✅ Valid JSON (extracted from code block)  (37.3 t/s, 13.76s)
+
+  [34/59] T2 #34 Landing Page Generator
+         ✅ Valid JSON (extracted from code block)  (35.5 t/s, 10.75s)
+
+  [35/59] T2 #35 Travel Planning Agent
+         ✅ Valid JSON (extracted from code block)  (36.6 t/s, 18.15s)
+
+  [36/59] T3 #36 Code Generation Agent
+         ✅ Code passes all tests  (34.2 t/s, 7.13s)
+
+  [37/59] T3 #37 Code Review Agent
+         ✅ Valid JSON (extracted from code block)  (35.0 t/s, 10.7s)
+
+  [38/59] T3 #38 QA / Test Writing Agent
+         ✅ Has content  (32.7 t/s, 5.1s)
+
+  [39/59] T3 #39 Task Planning / Decomposition
+         ✅ Valid JSON (extracted from code block)  (36.8 t/s, 31.18s)
+
+  [40/59] T3 #40 Fact-Checking Agent
+         ✅ Valid JSON (extracted from code block)  (36.7 t/s, 12.87s)
+
+  [41/59] T3 #41 Critic / Review Agent
+         ✅ Valid JSON (extracted from code block)  (33.1 t/s, 4.95s)
+
+  [42/59] T3 #42 Market Research Agent
+         ✅ Valid JSON (extracted from code block)  (37.2 t/s, 22.47s)
+
+  [43/59] T3 #43 Synthesizer / Aggregator
+         ✅ Has content  (31.0 t/s, 6.87s)
+
+  [44/59] T3 #44 Curriculum / Course Designer
+         ✅ Valid JSON (extracted from code block)  (35.9 t/s, 17.23s)
+
+  [45/59] T3 #45 Prototype Generator
+         ✅ Has content  (36.2 t/s, 8.87s)
+
+  [46/59] T3 #46 DevOps Agent
+         ✅ Valid JSON (extracted from code block)  (29.9 t/s, 6.45s)
+
+  [47/59] T4 #47 Math / Logic Reasoning
+         ❌ Found 0/1 keywords  (35.9 t/s, 7.43s)
+
+  [48/59] T4 #48 STEM Analysis
+         ✅ Valid JSON (extracted from code block)  (35.3 t/s, 13.95s)
+
+  [49/59] T4 #49 Algorithm Exploration
+         ✅ Valid JSON (extracted from code block)  (36.1 t/s, 10.45s)
+
+  [50/59] T5 #50 Orchestrator / Manager Agent
+         ✅ Valid JSON (extracted from code block)  (36.4 t/s, 11.1s)
+
+  [51/59] T5 #51 Software Architect Agent
+         ✅ Valid JSON (extracted from code block)  (37.1 t/s, 36.6s)
+
+  [52/59] T5 #52 Complex Debugger Agent
+         ✅ Valid JSON (extracted from code block)  (32.8 t/s, 5.74s)
+
+  [53/59] T5 #53 Legal Document Review
+         ✅ Valid JSON (extracted from code block)  (35.6 t/s, 12.31s)
+
+  [54/59] T5 #54 Medical / Health Analysis
+         ✅ Valid JSON (extracted from code block)  (35.3 t/s, 10.75s)
+
+  [55/59] T5 #55 Financial Analysis / Stock Research
+         ✅ Valid JSON (extracted from code block)  (31.7 t/s, 7.72s)
+
+  [56/59] T5 #56 Security Analyst Agent
+         ❌ Invalid JSON  (36.6 t/s, 10.2s)
+
+  [57/59] T5 #57 SRE / Incident Response
+         ✅ Valid JSON (extracted from code block)  (35.3 t/s, 12.02s)
+
+  [58/59] T5 #58 Book Writing Agent
+         ✅ Has content  (34.4 t/s, 6.68s)
+
+  [59/59] T5 #59 Compliance / Regulatory Agent
+         ✅ Valid JSON (extracted from code block)  (36.7 t/s, 14.36s)
+
+  ==================================================
+  AUTOMATED SCORE: 57/59 = 96.6%
+    Tier 1: 8/8 = 100.0%
+    Tier 2: 27/27 = 100.0%
+    Tier 3: 11/11 = 100.0%
+    Tier 4: 2/3 = 66.7%
+    Tier 5: 9/10 = 90.0%
+
+  → Saved automated_scores.json
+
+======================================================================
+  PHASE B: QUALITY PROMPTS (for review) — gemma-3-27b-it-qat-Q4_0.gguf
+======================================================================
+
+  [ 1/59] T1 # 1 Router / Triage Agent
+         224 tok, 165 words, 33.7 t/s
+         Here's the classification of each message and my reasoning:  1. **Classification: Code Modification.** Reasoning: The me...
+
+  [ 2/59] T1 # 2 Input Validator / Sanitizer
+         1182 tok, 644 words, 36.8 t/s
+         Okay, here's a breakdown of the validation issues in the provided API request body, categorized by severity:  **API Requ...
+
+  [ 3/59] T1 # 3 Heartbeat / Health Monitor
+         712 tok, 469 words, 36.3 t/s
+         ## Server Health Report - Last 5 Minutes  **Date:** October 26, 2023 (Example - adjust as needed) **Time:** 10:30 AM PST...
+
+  [ 4/59] T1 # 4 Notification / Alert Agent
+         1549 tok, 895 words, 36.3 t/s
+         Okay, here are alert messages for the three scenarios, designed for a DevOps team, including Priority, Channel, and Urge...
+
+  [ 5/59] T1 # 5 Sentiment Analysis Agent
+         964 tok, 692 words, 36.3 t/s
+         ## Sentiment Analysis of Customer Feedback Email  Here's a breakdown of the sentiment expressed in the email:  **1. Over...
+
+  [ 6/59] T1 # 6 FAQ Generation Agent
+         1284 tok, 947 words, 35.3 t/s
+         ## AI Email Management - Frequently Asked Questions  Here's a comprehensive FAQ section for an AI-powered email manageme...
+
+  [ 7/59] T1 # 7 Translation Agent
+         1189 tok, 593 words, 35.3 t/s
+         ## Translations of "Our enterprise-grade API gateway handles 10,000 requests per second with 99.99% uptime SLA. Features...
+
+  [ 8/59] T1 # 8 Calendar / Scheduling Agent
+         291 tok, 130 words, 31.6 t/s
+         Okay, let's find the best time for this 90-minute workshop with the design team.  **Here's my reasoning:**  1. **Existin...
+
+  [ 9/59] T2 # 9 Research / Web Search Agent
+         2108 tok, 1234 words, 35.6 t/s
+         ## Room-Temperature Superconductivity in 2025: A Landscape of Approaches and Challenges  The quest for room-temperature ...
+
+  [10/59] T2 #10 Content Writer / Blog Writer
+         687 tok, 495 words, 34.5 t/s
+         ## Why Your Company Should Adopt a 4-Day Work Week  **Are you still clinging to the 9-to-5, five-day work week like it’s...
+
+  [11/59] T2 #11 Editor Agent
+         69 tok, 43 words, 21.3 t/s
+         Okay, here's the draft with tracked changes, along with explanations of the edits and suggestions for structural improve...
+
+  [12/59] T2 #12 Content Planner
+         1921 tok, 1083 words, 36.0 t/s
+         ## 3-Month Content Strategy: Health & Wellness App for Millennials  **Target Audience:** Millennials (27-42 years old) -...
+
+  [13/59] T2 #13 Email Drafting / Summarization
+         1142 tok, 803 words, 35.1 t/s
+         Okay, here's a summary of each email, a prioritization, and draft responses for the P1 items.  ## Email Summaries & Prio...
+
+  [14/59] T2 #14 Document Summarization
+         344 tok, 245 words, 33.2 t/s
+         ## Executive Summary  The microservices migration project is progressing well, currently 60% complete with 12 out of 20 ...
+
+  [15/59] T2 #15 Meeting Notes / Transcription Agent
+         216 tok, 146 words, 35.4 t/s
+         ## Product Sync - February 20th  **Attendees:** Sarah (PM), Mike (Eng Lead), Lisa (Design), James (QA)  **Summary:**  Th...
+
+  [16/59] T2 #16 Social Media Scouting / Monitoring
+         1291 tok, 900 words, 35.5 t/s
+         ## Social Listening Report: [Brand Name] - Week of [Date Range]  **Executive Summary:**  This week saw a significant sur...
+
+  [17/59] T2 #17 Social Media Content Agent
+         2336 tok, 1363 words, 35.9 t/s
+         Okay, here's a week of social media content for a sustainable fashion brand launching a new collection made from recycle...
+
+  [18/59] T2 #18 News Aggregation Agent
+         1014 tok, 731 words, 35.8 t/s
+         ## Tech Executive Morning Briefing - October 26, 2023  **Good Morning,**  Here's a quick rundown of the top tech stories...
+
+  [19/59] T2 #19 Shopping / Price Comparison
+         1903 tok, 1086 words, 36.3 t/s
+         ## Laptop Recommendations for Software Development (Around $1500)  Here are 4 realistic laptop options for software deve...
+
+  [20/59] T2 #20 Memory / Knowledge Management
+         280 tok, 162 words, 31.6 t/s
+         ## User Profile - Consolidated Knowledge (as of Feb 20)  Here's a merged and organized knowledge profile based on the pr...
+
+  [21/59] T2 #21 RAG / Retrieval Agent
+         162 tok, 111 words, 27.3 t/s
+         To integrate for real-time order notifications, you should set up Webhooks for the `order.created`, `order.updated`, and...
+
+  [22/59] T2 #22 Data Analysis Agent
+         1377 tok, 810 words, 35.3 t/s
+         ## A/B Test Analysis: Control (A) vs. Variant (B)  Here's a comprehensive analysis of the A/B test data provided, culmin...
+
+  [23/59] T2 #23 Website Scraping / Understanding
+         460 tok, 276 words, 33.4 t/s
+         ## Structured Job Information:  ```json {   "title": "Senior Developer",   "company": "Acme Corp",   "location": "Remote...
+
+  [24/59] T2 #24 Image Description / Understanding
+         1225 tok, 808 words, 36.5 t/s
+         Okay, here are detailed alt-text descriptions for each of your hypothetical UI screenshots, aiming for accessibility bes...
+
+  [25/59] T2 #25 Customer Support Agent
+         1170 tok, 763 words, 36.6 t/s
+         Okay, here's a response designed to de-escalate the situation, acknowledge the problem, offer a concrete solution, and a...
+
+  [26/59] T2 #26 Lead Scoring / Prospecting
+         1666 tok, 1033 words, 35.7 t/s
+         Okay, here's my scoring and ranking of these leads, followed by a prioritized outreach strategy for each.  I'm using a B...
+
+  [27/59] T2 #27 Sprint / Project Summarizer
+         920 tok, 619 words, 35.5 t/s
+         ## Sprint Retrospective Summary - [Sprint Number/Date Range]  **Overall Sentiment:** This sprint saw positive momentum w...
+
+  [28/59] T2 #28 Transaction / Approval Agent
+         537 tok, 327 words, 33.8 t/s
+         Okay, here's my assessment of each transaction, acting as the transaction approval agent, based on the provided company ...
+
+  [29/59] T2 #29 Home Automation Agent
+         1341 tok, 795 words, 35.5 t/s
+         Okay, here's the evening routine automation I've created based on your description. I've broken it down into steps with ...
+
+  [30/59] T2 #30 Fitness / Health Tracking
+         1092 tok, 689 words, 35.3 t/s
+         ## Weekly Workout Progress Report - [Date Range of Week]  **Overview:**  This week demonstrates excellent consistency wi...
+
+  [31/59] T2 #31 Recipe / Cooking Agent
+         1692 tok, 968 words, 35.7 t/s
+         Okay, this is a fun challenge! Here's a 3-course menu designed to delight all six guests – Vegan, Gluten-Free, and Nut-F...
+
+  [32/59] T2 #32 Personal Finance Tracking
+         1385 tok, 820 words, 35.6 t/s
+         Okay, let's break down this user's spending over the past three months and create some actionable advice.  **Overall Sum...
+
+  [33/59] T2 #33 SEO Optimization Agent
+         1849 tok, 1011 words, 35.6 t/s
+         Okay, let's overhaul this blog post to target "best project management tools 2026".  It needs a *significant* upgrade. H...
+
+  [34/59] T2 #34 Landing Page Generator
+         2882 tok, 1038 words, 35.5 t/s
+         ```html <!DOCTYPE html> <html lang="en"> <head>   <meta charset="UTF-8">   <meta name="viewport" content="width=device-w...
+
+  [35/59] T2 #35 Travel Planning Agent
+         2144 tok, 1219 words, 35.5 t/s
+         ## 10-Day Family Adventure in Italy: Rome, Florence & Cinque Terre (Budget: $8,000 - excluding flights)  This plan balan...
+
+  [36/59] T3 #36 Code Generation Agent
+         1607 tok, 764 words, 35.3 t/s
+         ```python from collections import OrderedDict from threading import Lock  class LRUCache:     """     A thread-safe LRU ...
+
+  [37/59] T3 #37 Code Review Agent
+         2738 tok, 1592 words, 35.4 t/s
+         Okay, let's perform a comprehensive code review of the provided Flask API endpoint.  I'll break down the analysis into S...
+
+  [38/59] T3 #38 QA / Test Writing Agent
+         2790 tok, 967 words, 35.3 t/s
+         ```python import pytest from datetime import datetime, timedelta  # Define a simple Product class for testing class Prod...
+
+  [39/59] T3 #39 Task Planning / Decomposition
+         2219 tok, 1129 words, 35.7 t/s
+         ## Work Breakdown Structure (WBS) & Critical Path Analysis: E-commerce Platform Migration  This WBS decomposes the proje...
+
+  [40/59] T3 #40 Fact-Checking Agent
+         896 tok, 588 words, 34.8 t/s
+         Okay, let's break down each factual claim in the paragraph and fact-check it:  **1. "Elon Musk founded Tesla in 2003..."...
+
+  [41/59] T3 #41 Critic / Review Agent
+         1143 tok, 774 words, 34.9 t/s
+         ## AI Agent Research Summary Review: "Impact of AI on Software Development Jobs"  Here's a detailed critique of the prov...
+
+  [42/59] T3 #42 Market Research Agent
+         1965 tok, 1161 words, 35.4 t/s
+         ## Competitive Analysis: New AI Writing Assistant vs. Jasper, Copy.ai, & Writesonic  This analysis assesses the competit...
+
+  [43/59] T3 #43 Synthesizer / Aggregator
+         675 tok, 481 words, 34.3 t/s
+         ## Executive Recommendation: Prioritize a Phased Buy-and-Build Approach  **Summary:** While long-term strategic advantag...
+
+  [44/59] T3 #44 Curriculum / Course Designer
+         2273 tok, 1432 words, 35.8 t/s
+         ## Python for Data Science — From Zero to Job-Ready: 8-Week Online Course  **Target Audience:** Career changers with no ...
+
+  [45/59] T3 #45 Prototype Generator
+         1859 tok, 752 words, 35.7 t/s
+         ```python import streamlit as st import pandas as pd import numpy as np import plotly.express as px from datetime import...
+
+  [46/59] T3 #46 DevOps Agent
+         2571 tok, 1159 words, 35.7 t/s
+         ```yaml name: Node.js CI/CD Pipeline  on:   push:     branches:       - main  # Trigger on pushes to main branch for pro...
+
+  [47/59] T4 #47 Math / Logic Reasoning
+         917 tok, 504 words, 35.3 t/s
+         Okay, let's break down this delivery optimization problem step-by-step.  The goal is to minimize the *number of trips* m...
+
+  [48/59] T4 #48 STEM Analysis
+         1133 tok, 639 words, 35.1 t/s
+         Okay, let's analyze this data and draw some conclusions. Here's a breakdown of the reasoning and findings:  **1. Determi...
+
+  [49/59] T4 #49 Algorithm Exploration
+         1924 tok, 1327 words, 35.7 t/s
+         ## Conflict Resolution Algorithm for Real-Time Collaborative Text Editor  This document outlines two approaches for hand...
+
+  [50/59] T5 #50 Orchestrator / Manager Agent
+         1762 tok, 1083 words, 35.6 t/s
+         ## Series A Pitch Deck Execution Plan  **Goal:** Deliver a comprehensive Series A pitch deck including market research, ...
+
+  [51/59] T5 #51 Software Architect Agent
+         2328 tok, 1331 words, 35.7 t/s
+         ## Food Delivery Platform Architecture - "DashNow"  This document outlines the system architecture for "DashNow," a food...
+
+  [52/59] T5 #52 Complex Debugger Agent
+         1810 tok, 1095 words, 35.3 t/s
+         ## Debugging Intermittent Double Charging in a Microservices Architecture  This is a classic distributed systems problem...
+
+  [53/59] T5 #53 Legal Document Review
+         2009 tok, 1417 words, 35.6 t/s
+         Okay, here's a breakdown of each clause, identifying the risks for the customer, and suggesting alternative language. Th...
+
+  [54/59] T5 #54 Medical / Health Analysis
+         1658 tok, 1096 words, 35.5 t/s
+         ## Health Data Analysis - 45-Year-Old Male  Okay, let's break down your health data. It's great you're being proactive a...
+
+  [55/59] T5 #55 Financial Analysis / Stock Research
+         1704 tok, 1074 words, 35.1 t/s
+         ## Fundamental Analysis: Hypothetical Tech Company "NovaTech"  Let's break down NovaTech's financials and assess its inv...
+
+  [56/59] T5 #56 Security Analyst Agent
+         2448 tok, 1316 words, 35.6 t/s
+         Okay, let's perform a security audit of this Node.js Express application.  This code has *significant* security flaws.  ...
+
+  [57/59] T5 #57 SRE / Incident Response
+         1596 tok, 1103 words, 35.4 t/s
+         ## Incident Postmortem: API 5xx Errors & Subsequent Database Latency - November 3, 2023  **Incident ID:** 20231103-API-5...
+
+  [58/59] T5 #58 Book Writing Agent
+         842 tok, 579 words, 34.4 t/s
+         ## Chapter 1  The wrench slipped, clanging against the durasteel plating of the conduit with a hollow boom that vibrated...
+
+  [59/59] T5 #59 Compliance / Regulatory Agent
+         2067 tok, 1316 words, 35.6 t/s
+         ## EU Market Entry for US AI-Powered Patient Triage System: Regulatory Assessment & Roadmap  This assessment outlines th...
+
+  → Saved quality_responses.json
+
+======================================================================
+  EVALUATION COMPLETE: gemma-3-27b-it-qat-Q4_0.gguf
+======================================================================
+  Automated: 96.6% (57/59)
+  Avg speed (auto): 33.4 t/s
+  Quality responses saved: 59 (0 empty, 1 short <50w)
+  Results: /Users/andrew/Documents/AAAPPS5/OpenClaw/eval/test_results/gemma-3-27b-it-qat-Q4_0.gguf/

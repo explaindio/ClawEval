@@ -1,0 +1,182 @@
+# Phase D Hard Test — #49 Algorithm Exploration
+# Tier: 4 | Score: 5/10 | No automated constraints to check
+# Tokens: 5716 | Speed: 51.4 t/s | Time: 111.3s
+
+## PROMPT:
+Design an algorithm for this problem. There's an O(n) solution but most people give O(n log n) or O(n²). Find the optimal one.
+
+Problem: Given an array of n integers, find the maximum difference arr[j] - arr[i] such that j > i (the larger element must come AFTER the smaller element). If no positive difference exists, return 0.
+
+Example: [2, 3, 10, 6, 4, 8, 1] → Answer: 8 (10-2)
+Example: [7, 9, 5, 6, 3, 2] → Answer: 2 (9-7, not 5-2 because 5 comes after 9)
+Example: [10, 8, 6, 4, 2] → Answer: 0 (strictly decreasing)
+
+Requirements:
+1. Give the naive O(n²) solution and explain why it's slow
+2. Give an O(n log n) solution using a common technique
+3. Give the OPTIMAL O(n) solution — track minimum so far
+4. Prove the O(n) solution is correct with a formal argument
+5. Handle edge cases: empty array, single element, all same values, all negative
+6. Provide Python implementation of the O(n) solution with tests
+
+## RESPONSE:
+### Problem Overview
+
+We are given an array of integers and asked to find the **maximum difference** `arr[j] - arr[i]` such that `j > i`. If no such positive difference exists, we return `0`.
+
+---
+
+### 1. Naive O(n²) Solution (Slow)
+
+This approach checks **every possible pair** `(i, j)` where `j > i`, computing the difference and keeping track of the maximum.
+
+```python
+def max_diff_naive(arr):
+    max_diff = 0
+    n = len(arr)
+    for i in range(n):
+        for j in range(i + 1, n):
+            current_diff = arr[j] - arr[i]
+            if current_diff > max_diff:
+                max_diff = current_diff
+    return max_diff
+```
+
+**Time Complexity:**  
+- **O(n²)** — For each of the `n` elements, we compare it with `n-1` elements, leading to quadratic time.
+
+**Why It's Slow:**  
+- For large arrays (e.g., `n = 10^5`), this approach is infeasible due to the high number of operations (`10^10` in this case).
+
+---
+
+### 2. O(n log n) Solution (Divide and Conquer)
+
+This approach uses **divide and conquer** to split the array into halves and compute the maximum difference in three parts:
+
+- Maximum difference in the left half
+- Maximum difference in the right half
+- Maximum difference crossing the two halves (i.e., min in left, max in right)
+
+```python
+def max_diff_divide_conquer(arr):
+    def helper(arr):
+        if len(arr) < 2:
+            return 0
+        mid = len(arr) // 2
+        left = helper(arr[:mid])
+        right = helper(arr[mid:])
+        min_left = min(arr[:mid])
+        max_right = max(arr[mid:])
+        cross = max_right - min_left
+        return max(left, right, cross)
+    return helper(arr)
+```
+
+**Time Complexity:**  
+- **O(n log n)** — Each level of recursion processes `O(n)` elements, and there are `log n` levels.
+
+**Use Case:**  
+- Useful for understanding alternative approaches, but not optimal for large inputs.
+
+---
+
+### 3. Optimal O(n) Solution (Track Minimum So Far)
+
+This is the **most efficient** solution. We maintain the **minimum value seen so far** as we iterate through the array and compute the difference between the current element and the minimum so far.
+
+```python
+def max_diff_optimal(arr):
+    if len(arr) < 2:
+        return 0
+    min_so_far = arr[0]
+    max_diff = 0
+    for num in arr[1:]:
+        current_diff = num - min_so_far
+        if current_diff > max_diff:
+            max_diff = current_diff
+        if num < min_so_far:
+            min_so_far = num
+    return max_diff
+```
+
+**Time Complexity:**  
+- **O(n)** — Single pass through the array.
+
+**Why It Works:**  
+- At each step, we ensure that we are considering the **smallest possible value before the current index**, which maximizes the potential difference.
+
+---
+
+### 4. Proof of Correctness (Formal Argument)
+
+Let the array be `arr[0], arr[1], ..., arr[n-1]`. We want to find the maximum `arr[j] - arr[i]` such that `j > i`.
+
+- As we iterate from left to right, we track the **minimum value seen so far** (`min_so_far`).
+- For each element `arr[j]`, the maximum possible difference with any `arr[i] < j` is `arr[j] - min_so_far`.
+- Since `min_so_far` is the smallest value seen before `j`, this guarantees we are considering the best possible `arr[i]` for `arr[j]`.
+
+Thus, the algorithm correctly computes the maximum difference in linear time.
+
+---
+
+### 5. Edge Cases
+
+| Case | Input | Expected Output |
+|------|-------|-----------------|
+| Empty array | `[]` | `0` |
+| Single element | `[5]` | `0` |
+| All same values | `[3, 3, 3]` | `0` |
+| Strictly decreasing | `[10, 8, 6, 4, 2]` | `0` |
+| All negative | `[-5, -3, -1]` | `4` (from -1 - (-5)) |
+| Increasing array | `[1, 2, 3, 4, 5]` | `4` (5 - 1) |
+| Mixed values | `[3, 1, 2]` | `1` (2 - 1) |
+
+---
+
+### 6. Python Implementation with Tests
+
+```python
+def max_diff_optimal(arr):
+    if len(arr) < 2:
+        return 0
+    min_so_far = arr[0]
+    max_diff = 0
+    for num in arr[1:]:
+        current_diff = num - min_so_far
+        if current_diff > max_diff:
+            max_diff = current_diff
+        if num < min_so_far:
+            min_so_far = num
+    return max_diff
+
+# Test Cases
+test_cases = [
+    ([2, 3, 10, 6, 4, 8, 1], 8),
+    ([7, 9, 5, 6, 3, 2], 2),
+    ([10, 8, 6, 4, 2], 0),
+    ([1, 2, 3, 4, 5], 4),
+    ([5, 4, 3, 2, 1], 0),
+    ([3, 1, 2], 1),
+    ([1, 1, 1], 0),
+    ([-5, -3, -1], 4),
+    ([], 0),
+    ([5], 0),
+]
+
+for i, (input_arr, expected) in enumerate(test_cases):
+    result = max_diff_optimal(input_arr)
+    assert result == expected, f"Test case {i} failed: {input_arr} -> expected {expected}, got {result}"
+
+print("All test cases passed.")
+```
+
+---
+
+### Summary
+
+- **Naive O(n²)**: Simple but inefficient.
+- **O(n log n)**: Uses divide and conquer, but not optimal.
+- **Optimal O(n)**: Tracks the minimum so far and computes the difference in one pass.
+- **Correctness**: Proven by ensuring the minimum value is always considered before the current element.
+- **Edge Cases**: Handled gracefully.

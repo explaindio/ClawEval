@@ -1,0 +1,61 @@
+# Phase D Hard Test — #40 Fact-Checking Agent
+# Tier: 3 | Score: 0/10 | 0/8 correct | Missing: #1: expected 'misleading'; #2: expected 'false'; #3: expected 'true'; #4: expected 'false'; #5: expected 'true'; #6: expected 'misleading'; #7: expected 'false'; #8: expected 'true'
+# Tokens: 1219 | Speed: 48.1 t/s | Time: 25.4s
+
+## PROMPT:
+Fact-check these 8 statements. They mix true facts, false facts, and MISLEADING statements (technically true but deceptive). Classify each as true/false/misleading. Respond with JSON.
+
+1. "Humans share 60% of their DNA with bananas" (TRUE percentage, but is the framing misleading?)
+2. "The Great Wall of China is visible from space with the naked eye"
+3. "Octopuses have three hearts"
+4. "Thomas Edison invented the light bulb"
+5. "Water can boil and freeze at the same time (triple point)"
+6. "You eat an average of 8 spiders per year in your sleep"
+7. "Goldfish have a 3-second memory"
+8. "Honey never spoils — edible honey has been found in Egyptian tombs"
+
+For each: verdict (true/false/misleading), explanation, and confidence level.
+
+## RESPONSE:
+{
+  "1": {
+    "verdict": "misleading",
+    "explanation": "While humans share approximately 50-60% of their DNA with bananas, the comparison is often misleading. The figure refers to the similarity in protein-coding genes, not the entire genome. Bananas have a much larger genome with more repetitive sequences, so the framing can be deceptive.",
+    "confidence_level": "high"
+  },
+  "2": {
+    "verdict": "false",
+    "explanation": "The Great Wall of China is not visible from space with the naked eye. Astronauts have confirmed that it is too narrow and blends with the surrounding terrain to be seen without magnification.",
+    "confidence_level": "high"
+  },
+  "3": {
+    "verdict": "true",
+    "explanation": "Octopuses have three hearts: two pump blood to the gills, and one pumps it to the rest of the body. This is a well-documented biological fact.",
+    "confidence_level": "high"
+  },
+  "4": {
+    "verdict": "misleading",
+    "explanation": "Thomas Edison did not invent the light bulb but improved upon existing designs, making it practical for commercial use. The statement is misleading because it implies sole invention, ignoring prior contributions.",
+    "confidence_level": "high"
+  },
+  "5": {
+    "verdict": "true",
+    "explanation": "At the triple point of water (0.01°C and 611.73 Pa), water can exist in solid, liquid, and gaseous states simultaneously. This is a scientifically accurate phenomenon.",
+    "confidence_level": "high"
+  },
+  "6": {
+    "verdict": "false",
+    "explanation": "There is no scientific evidence that spiders enter human mouths during sleep. The claim is a myth with no basis in reality.",
+    "confidence_level": "high"
+  },
+  "7": {
+    "verdict": "false",
+    "explanation": "Goldfish have memory spans of several weeks, not just three seconds. The 3-second memory myth is a common misconception.",
+    "confidence_level": "high"
+  },
+  "8": {
+    "verdict": "true",
+    "explanation": "Honey can last indefinitely under ideal conditions (e.g., sealed, dry, and cool). Archaeologists have found edible honey in Egyptian tombs over 3,000 years old, confirming its longevity.",
+    "confidence_level": "high"
+  }
+}

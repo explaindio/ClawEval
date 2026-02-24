@@ -1,0 +1,114 @@
+# Phase D Hard Test — #27 Sprint / Project Summarizer
+# Tier: 2 | Score: 5/10 | No automated constraints to check
+# Tokens: 2463 | Speed: 56.8 t/s | Time: 43.4s
+
+## PROMPT:
+Analyze these 3 sprints and identify the trends that nobody is talking about. Calculate exact velocity and predict sprint 4 outcomes.
+
+Sprint 1 (2 weeks): 8 stories planned (34 pts), 7 completed (30 pts), 1 carried over. 0 stories added mid-sprint.
+Sprint 2 (2 weeks): 10 stories planned (40 pts), 7 completed (32 pts), 3 carried over. 3 stories added mid-sprint by product.
+Sprint 3 (2 weeks): 12 stories planned (48 pts), 6 completed (28 pts), 6 carried over. 5 stories added mid-sprint by product.
+
+The team has committed to delivering 15 stories (60 pts) in Sprint 4 because "the deadline is non-negotiable."
+
+Questions:
+1. Calculate the velocity trend across 3 sprints (exact numbers)
+2. What is the realistic capacity for Sprint 4?
+3. What percentage of scope creep has occurred each sprint?
+4. Is the Sprint 4 commitment achievable? Show math.
+5. What should you recommend to the product owner?
+
+## RESPONSE:
+### **Analysis of Sprints 1–3 and Sprint 4 Predictions**
+
+---
+
+### **1. Velocity Trend Across 3 Sprints (Exact Numbers)**  
+**Velocity** is the total story points completed in a sprint.  
+- **Sprint 1**: 30 pts  
+- **Sprint 2**: 32 pts  
+- **Sprint 3**: 28 pts  
+
+**Trend**:  
+- **Fluctuating velocity** with a slight **decline** from Sprint 2 (32 pts) to Sprint 3 (28 pts).  
+- **Average velocity**:  
+  $$
+  \frac{30 + 32 + 28}{3} = 30 \text{ pts/sprint}
+  $$
+
+---
+
+### **2. Realistic Capacity for Sprint 4**  
+**Capacity** is based on the team’s **historical velocity** and **trends**.  
+- **Average velocity**: 30 pts/sprint (2 weeks).  
+- **Sprint 4 commitment**: 60 pts (15 stories).  
+
+**Realistic capacity**:  
+- The team’s **maximum achievable capacity** is likely **~30 pts** (based on average velocity).  
+- **60 pts** is **double** the historical average, which is **unlikely** to be achievable without significant improvements or external support.  
+
+---
+
+### **3. Percentage of Scope Creep per Sprint**  
+**Scope creep** is calculated as:  
+$$
+\text{Scope Creep \%} = \frac{\text{Stories Added Mid-Sprint}}{\text{Stories Planned Initially}} \times 100
+$$  
+- **Sprint 1**:  
+  $$
+  \frac{0}{8} \times 100 = 0\%
+  $$  
+- **Sprint 2**:  
+  $$
+  \frac{3}{10} \times 100 = 30\%
+  $$  
+- **Sprint 3**:  
+  $$
+  \frac{5}{12} \times 100 \approx 41.67\%
+  $$  
+
+**Trend**:  
+- **Scope creep increased** from 0% to 30% to 41.67%, indicating **growing unpredictability** in sprint planning.  
+
+---
+
+### **4. Is the Sprint 4 Commitment Achievable?**  
+**Commitment**: 60 pts (15 stories) in 2 weeks.  
+**Key factors**:  
+- **Historical velocity**: 30 pts/sprint (average).  
+- **Scope creep**: 41.67% in Sprint 3 (highest yet).  
+- **Carried-over stories**: 1 → 3 → 6 (increasing backlog).  
+
+**Mathematical analysis**:  
+- **Required velocity for Sprint 4**:  
+  $$
+  \frac{60 \text{ pts}}{2 \text{ weeks}} = 30 \text{ pts/week}
+  $$  
+  (This assumes the team can maintain **perfect velocity** for 2 weeks, which is unrealistic given the trend.)  
+
+- **Probability of success**:  
+  - **Sprint 3 velocity**: 28 pts (below average).  
+  - **Sprint 4 commitment**: 60 pts (double the average).  
+  - **Conclusion**: **Not achievable**. The team would need to **double their velocity** (from 30 to 60 pts) in a single sprint, which is **highly unlikely** given the trend of decreasing velocity and increasing scope creep.  
+
+---
+
+### **5. Recommendation to the Product Owner**  
+- **Adjust the sprint commitment**:  
+  - Reduce the scope to **~30 pts** (based on historical velocity) instead of 60 pts.  
+  - Prioritize **critical stories** and **minimize mid-sprint additions** to avoid scope creep.  
+- **Address scope creep**:  
+  - Enforce a **strict backlog grooming process** to prevent last-minute additions.  
+  - Re-evaluate the **deadline** if it’s non-negotiable; consider **extending the sprint duration** or **allocating additional resources**.  
+- **Improve sprint planning**:  
+  - Use **historical velocity** (30 pts/sprint) as a baseline for future commitments.  
+  - Allocate **buffer capacity** for scope creep (e.g., 10–15% extra stories).  
+
+---
+
+### **Summary**  
+- **Velocity trend**: 30 → 32 → 28 pts (average: 30 pts/sprint).  
+- **Realistic capacity for Sprint 4**: ~30 pts.  
+- **Scope creep**: 0% → 30% → 41.67%.  
+- **Sprint 4 commitment**: **Unachievable** (60 pts vs. 30 pts average).  
+- **Recommendation**: Reduce scope, address scope creep, and re-evaluate the deadline.

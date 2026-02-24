@@ -1,0 +1,42 @@
+# Phase D Hard Test — #3 Heartbeat / Health Monitor
+# Tier: 1 | Score: 0/10 | 0/4 constraints met | Missing: memory_leak; Missing: cron_correlation; Missing: disk_will_fill
+# Tokens: 4525 | Speed: 58.5 t/s | Time: 77.4s
+
+## PROMPT:
+Analyze these 10-minute server metrics sampled every minute. Identify ALL hidden patterns and predict failures. There are at least 3 non-obvious correlations.
+
+Time  | CPU% | Mem%  | Disk% | Conn | Err/s | DiskIO
+00:00 | 45   | 71.0  | 82.0  | 200  | 2     | 10MB/s
+00:01 | 42   | 71.5  | 82.1  | 205  | 1     | 12MB/s
+00:02 | 48   | 72.0  | 82.2  | 198  | 3     | 11MB/s
+00:03 | 95   | 72.5  | 82.3  | 450  | 45    | 150MB/s
+00:04 | 55   | 73.2  | 82.5  | 210  | 5     | 15MB/s
+00:05 | 43   | 73.8  | 82.6  | 195  | 2     | 10MB/s
+00:06 | 44   | 74.5  | 82.8  | 202  | 1     | 11MB/s
+00:07 | 47   | 75.1  | 82.9  | 205  | 3     | 12MB/s
+00:08 | 93   | 75.8  | 83.1  | 440  | 42    | 145MB/s
+00:09 | 52   | 76.4  | 83.2  | 215  | 4     | 14MB/s
+
+Questions to answer:
+1. What recurring event happens and at what interval?
+2. Memory is rising linearly — at this rate, when will it hit 95%?
+3. What is the correlation between connections and error rate?
+4. At the current disk growth rate, how many hours until 95% full?
+Give EXACT numbers for questions 2 and 4.
+
+## RESPONSE:
+1. **Recurring Event**: The CPU usage spikes every 5 minutes (at 00:03, 00:08, etc.), correlating with sudden increases in connections (Conn) and disk I/O (DiskIO). This pattern repeats every 5 minutes.
+
+2. **Memory Prediction**: Memory usage increases at a rate of **0.6% per minute** (5.4% over 9 minutes). Starting from 71.0%, it will reach 95% in **40 minutes** (since $ (95 - 71) / 0.6 = 40 $).
+
+3. **Correlation Between Connections and Error Rate**: There is a **strong positive correlation** between connections (Conn) and error rate (Err/s). When connections surge (e.g., 450 at 00:03, 440 at 00:08), error rates spike (45 and 42, respectively). This suggests that high connection loads directly contribute to increased errors.
+
+4. **Disk Growth Prediction**: Disk usage increases at a rate of **0.1333% per minute** (1.2% over 9 minutes). Starting from 83.2% at 00:09, it will reach 95% in **88.5 minutes** (since $ (95 - 83.2) / 0.1333 = 88.5 $). This is **1.475 hours**.
+
+---
+
+**Final Answers**:
+1. **Recurring event**: Every 5 minutes (at 00:03, 00:08, etc.).
+2. **Memory hits 95% at**: **40 minutes**.
+3. **Correlation**: Connections and error rate are positively correlated.
+4. **Disk reaches 95% in**: **88.5 minutes** (or **1.475 hours**).

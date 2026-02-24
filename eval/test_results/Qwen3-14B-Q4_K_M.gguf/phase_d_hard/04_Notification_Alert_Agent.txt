@@ -1,0 +1,71 @@
+# Phase D Hard Test — #4 Notification / Alert Agent
+# Tier: 1 | Score: 10/10 | 2/2 constraints met
+# Tokens: 5004 | Speed: 55.8 t/s | Time: 89.7s
+
+## PROMPT:
+Process these 7 events into alerts. WATCH OUT: 2 events are duplicates (merge them), 1 is a false positive that should NOT generate an alert. Assign correct priorities.
+
+Events (timestamps in UTC):
+1. 14:00 — "Disk /data at 94% capacity" (source: monitoring)
+2. 14:01 — "SSL certificate for api.example.com expired 2 hours ago" (source: cert-manager)
+3. 14:02 — "CPU spike to 98% on worker-3" (source: monitoring)
+4. 14:02 — "CPU on worker-3 returned to 12% after scheduled batch job completed" (source: monitoring)
+5. 14:03 — "SSL certificate for api.example.com expires in -2 hours" (source: different cert checker)
+6. 14:05 — "New deployment v2.4.1 rolled out successfully" (source: CI/CD)
+7. 14:06 — "Disk /data at 94% — approaching critical threshold" (source: secondary monitoring)
+
+For each alert: priority (P1/P2/P3), channel, message, and reasoning. Explain which events you merged and which you filtered as false positives.
+
+## RESPONSE:
+### Processed Alerts
+
+---
+
+#### **Alert 1: Disk /data at 94% capacity (Merged Events 1 & 7)**  
+- **Priority**: P2  
+- **Channel**: Monitoring  
+- **Message**: "Disk /data at 94% capacity — approaching critical threshold"  
+- **Reasoning**:  
+  - Events 1 and 7 both report the same disk at 94% capacity, with event 7 adding "approaching critical threshold," which emphasizes urgency.  
+  - While not yet at critical capacity, this is a high-priority issue requiring immediate attention to prevent potential outages.  
+  - Assigned **P2** (medium-high) due to proximity to critical thresholds but not yet critical.  
+
+---
+
+#### **Alert 2: SSL certificate for api.example.com expired 2 hours ago (Merged Events 2 & 5)**  
+- **Priority**: P1  
+- **Channel**: Security / Certificates  
+- **Message**: "SSL certificate for api.example.com expired 2 hours ago"  
+- **Reasoning**:  
+  - Events 2 and 5 both confirm the same SSL certificate is expired.  
+  - SSL expiration is a **critical security risk**, potentially causing service outages and exposing the system to attacks.  
+  - Assigned **P1** (highest priority) due to the severity of the issue.  
+
+---
+
+#### **Alert 3: CPU spike to 98% on worker-3 (Event 3)**  
+- **Priority**: P2  
+- **Channel**: Monitoring  
+- **Message**: "CPU spike to 98% on worker-3"  
+- **Reasoning**:  
+  - A 98% CPU spike indicates a potential performance bottleneck or resource contention.  
+  - While event 4 resolves the spike, the alert is triggered based on the initial spike.  
+  - Assigned **P2** (medium-high) as it requires investigation to identify the root cause.  
+
+---
+
+### **Filtered Events**  
+- **Event 4**: "CPU on worker-3 returned to 12% after scheduled batch job completed"  
+  - **Action**: Not an alert (resolution of a prior issue).  
+  - **Reasoning**: This is a follow-up to the CPU spike (event 3) and indicates resolution, not a new alert.  
+
+- **Event 6**: "New deployment v2.4.1 rolled out successfully"  
+  - **Action**: False positive (excluded).  
+  - **Reasoning**: A successful deployment is a normal operational event and does not require an alert.  
+
+---
+
+### Summary  
+- **Merged Duplicates**: Events 1 & 7 (disk), Events 2 & 5 (SSL).  
+- **False Positive**: Event 6 (deployment success).  
+- **Generated Alerts**: 3 alerts (P1, P2, P2).

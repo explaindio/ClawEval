@@ -1,0 +1,32 @@
+# Phase D Hard Test — #15 Meeting Notes / Transcription Agent
+# Tier: 2 | Score: 3/10 | 1/3 constraints met | Missing: budget (Sarah says 50K, Mike says 75K); Missing: headcount (Sarah says 3, later says 2)
+# Tokens: 979 | Speed: 140.7 t/s | Time: 7.0s
+
+## PROMPT:
+Process this meeting transcript into structured notes. WARNING: The transcript contains 3 contradictory statements made by different participants. You MUST identify all 3 contradictions.
+
+Transcript:
+Sarah (PM): "OK let's kick off. Budget for Project Atlas is $50K as approved by the board."
+Mike (Eng): "Actually I spoke with finance yesterday and they confirmed $75K for Atlas."
+Sarah: "We'll need to clarify that. Moving on — Lisa, timeline update?"
+Lisa (Design): "Designs will be finalized by end of March. That gives engineering 6 weeks."
+James (QA): "Wait, in last week's email you said designs would be done in April. We planned QA around that."
+Lisa: "That was before we got the additional designer. March is firm now."
+Sarah: "OK, so we need 3 new hires for this: 2 backend, 1 frontend."
+Mike: "Agreed on the technical side."
+Sarah: "Actually, thinking about it, we only need 2 new hires — we can reassign Jordan."
+James: "QA will need 2 weeks after engineering freeze. Factor that into the timeline."
+
+Extract: decisions, action items, and CONTRADICTIONS (with who said what).
+
+## RESPONSE:
+**Meeting Notes – Project Atlas (Feb 24 2026)**  
+
+| Category | Item |
+|----------|------|
+| **Decisions** | • None of the key items (budget, timeline, staffing) were finalized – the team agreed to seek clarification and revisit the next meeting. |
+| **Action Items** | 1. **Budget Confirmation** – Sarah to coordinate with Finance to confirm the correct budget (50 K vs 75 K). <br>2. **Timeline Update** – Lisa to provide a definitive design‑completion date (March vs. April) and adjust the engineering schedule accordingly. <br>3. **Staffing Plan** – Sarah to decide whether to hire 3 new engineers or reassign Jordan, and communicate the final staffing requirement to HR. <br>4. **QA Schedule** – James to incorporate the 2‑week QA period after the engineering freeze into the updated project timeline. |
+| **Contradictions** | 1. **Budget** – <br> • **Sarah**: “Budget for Project Atlas is **$50 K** as approved by the board.” <br> • **Mike**: “Actually I spoke with finance yesterday and they confirmed **$75 K** for Atlas.” <br>2. **Design Completion Date** – <br> • **Lisa**: “Designs will be finalized by end of **March**.” <br> • **James**: “In last week’s email you said designs would be done in **April**.” <br>3. **Number of New Hires** – <br> • **Sarah** (first statement): “We need **3 new hires** – 2 backend, 1 frontend.” <br> • **Sarah** (later statement): “Actually, we only need **2 new hires** – we can reassign Jordan.” |
+
+**Key Takeaway:**  
+The team needs to resolve three core contradictions—budget, design timeline, and staffing—before moving forward. All action items are aimed at clarifying these points and updating the project plan accordingly.

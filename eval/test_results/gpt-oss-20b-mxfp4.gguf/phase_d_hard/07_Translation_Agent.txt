@@ -1,0 +1,54 @@
+# Phase D Hard Test — #7 Translation Agent
+# Tier: 1 | Score: 5/10 | No automated constraints to check
+# Tokens: 2320 | Speed: 142.3 t/s | Time: 16.3s
+
+## PROMPT:
+Translate this marketing copy to Spanish AND Japanese. This text contains: 1 pun, 1 culture-specific reference, and 1 idiom. You MUST add translator notes explaining how you handled each.
+
+"Our new Cloud9 hosting puts your website on cloud nine! Like a good neighbor, ServerFarm is there. Don't put all your eggs in one basket — our multi-region failover means your data is always safe. With speeds that would make Usain Bolt jealous, your pages load before you can say 'supercalifragilisticexpialidocious.'"
+
+Requirements:
+- Translate the full text to both languages
+- Add [TRANSLATOR NOTE] for EACH culturally-specific element explaining your adaptation
+- The pun "Cloud9/cloud nine" must be addressed — explain if you preserved it or adapted it
+- The "good neighbor" is a State Farm insurance slogan reference — explain how you handled it
+
+## RESPONSE:
+**Spanish**
+
+> ¡Nuestro nuevo hosting **Cloud9** lleva tu sitio web a la **nube nueve**!  
+> Como un **buen vecino**, ServerFarm está ahí.  
+> **No pongas todos tus huevos en una sola canasta** — nuestro failover multi‑región garantiza que tus datos estén siempre seguros.  
+> Con velocidades que harían envidiar a Usain Bolt, tus páginas se cargan antes de que puedas decir **“supercalifragilisticexpialidocious.”**
+
+**[TRANSLATOR NOTE] Pun “Cloud9/cloud nine”**  
+Se mantuvo el nombre de la marca “Cloud9” y se tradujo la expresión “on cloud nine” literalmente como “nube nueve”. El juego de palabras funciona en español porque “nube nueve” suena similar a “cloud nine” y conserva el tono divertido.
+
+**[TRANSLATOR NOTE] Culture‑specific reference “good neighbor”**  
+Se utilizó la traducción literal “buen vecino”, que es la frase empleada en la campaña publicitaria de State Farm. Se dejó intacta para que el lector reconozca la referencia.
+
+**[TRANSLATOR NOTE] Idiom “Don’t put all your eggs in one basket”**  
+Se tradujo literalmente como “No pongas todos tus huevos en una sola canasta”, que es la forma idiomática equivalente en español y mantiene el mismo significado.
+
+
+
+---
+
+**Japanese**
+
+> 新しい **Cloud9** ホスティングは、あなたのウェブサイトを **クラウドナイン** に乗せます！  
+> まるで **良い隣人** のように、ServerFarm がそこにいます。  
+> **卵を一つのバスケットに入れないで** — 私たちのマルチリージョンフェイルオーバーで、データは常に安全です。  
+> Usain Bolt を嫉妬させるようなスピードで、ページは **“スーパーカリフラジリスティックエクスピアリドーショス”** と言える前に読み込まれます。
+
+**[TRANSLATOR NOTE] Pun “Cloud9/cloud nine”**  
+Se conservó el nombre de la marca “Cloud9” y se tradujo la expresión “on cloud nine” como “クラウドナイン” para mantener el juego de palabras. En japonés la similitud fonética ayuda a que el lector perciba el doble sentido.
+
+**[TRANSLATOR NOTE] Culture‑specific reference “good neighbor”**  
+Se usó la traducción literal “良い隣人”, que corresponde al eslogan de State Farm. Se dejó tal cual para que la referencia sea evidente.
+
+**[TRANSLATOR NOTE] Idiom “Don’t put all your eggs in one basket”**  
+Se tradujo literalmente como “卵を一つのバスケットに入れないで”. El japonés no tiene un equivalente idiomático directo, por lo que se optó por una traducción literal que conserva el sentido.
+
+**[TRANSLATOR NOTE] “Supercalifragilisticexpialidocious”**  
+Se mantuvo la palabra en inglés y se transcribió fonéticamente como “スーパーカリフラジリスティックエクスピアリドーショス” para conservar su carácter lúdico y reconocible.

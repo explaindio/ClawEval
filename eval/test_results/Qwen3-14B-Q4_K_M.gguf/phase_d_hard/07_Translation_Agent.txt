@@ -1,0 +1,46 @@
+# Phase D Hard Test — #7 Translation Agent
+# Tier: 1 | Score: 5/10 | No automated constraints to check
+# Tokens: 1835 | Speed: 53.5 t/s | Time: 34.3s
+
+## PROMPT:
+Translate this marketing copy to Spanish AND Japanese. This text contains: 1 pun, 1 culture-specific reference, and 1 idiom. You MUST add translator notes explaining how you handled each.
+
+"Our new Cloud9 hosting puts your website on cloud nine! Like a good neighbor, ServerFarm is there. Don't put all your eggs in one basket — our multi-region failover means your data is always safe. With speeds that would make Usain Bolt jealous, your pages load before you can say 'supercalifragilisticexpialidocious.'"
+
+Requirements:
+- Translate the full text to both languages
+- Add [TRANSLATOR NOTE] for EACH culturally-specific element explaining your adaptation
+- The pun "Cloud9/cloud nine" must be addressed — explain if you preserved it or adapted it
+- The "good neighbor" is a State Farm insurance slogan reference — explain how you handled it
+
+## RESPONSE:
+**Spanish Translation:**  
+"Nuestro nuevo alojamiento en la nube Cloud9 pone tu sitio web en la nube nueve! Como un buen vecino, ServerFarm siempre está ahí. No pongas todos tus huevos en una canasta — nuestro fallo en múltiples regiones garantiza que tus datos siempre estén seguros. Con velocidades que envidiarían a Usain Bolt, tus páginas se cargan antes de que puedas decir 'supercalifragilisticexpialidocious'."  
+
+**Japanese Translation:**  
+「当社の新しいクラウド9ホスティングで、あなたのウェブサイトを九つの雲に載せましょう！良い隣人のように、サーバーファームはいつもそばにいます。すべての卵を一つの籠にいれないでください — 私たちのマルチリージョンフェイルオーバーにより、あなたのデータは常に安全です。ウサイン・ボルトがうらやむほどのスピードで、ページの読み込みは「スーパーカリフォラジリスティックエクスパイアリドーシャス」と言える前に完了します。」  
+
+---
+
+**[TRANSLATOR NOTES]**  
+
+1. **Pun: "Cloud9/cloud nine"**  
+   - In Spanish, the pun is preserved as "nube nueve" (literal translation of "cloud nine"), which retains the wordplay between the product name (Cloud9) and the idiom "estar en la nube nueve" (meaning extreme happiness).  
+   - In Japanese, "九つの雲" (kyū no kumo, "nine clouds") is used. While the pun is less direct in Japanese (as "cloud nine" is not a common idiom), the term is kept to maintain the product name's association with the concept.  
+
+2. **Culture-specific reference: "Like a good neighbor" (State Farm insurance slogan)**  
+   - In Spanish, the phrase "como un buen vecino" is used, directly referencing the original slogan. The reference to State Farm is replaced with "ServerFarm" to avoid confusion.  
+   - In Japanese, the equivalent phrase "良い隣人" (yoi rinin, "good neighbor") is used, preserving the structure of the original slogan. The company name "ServerFarm" is retained without adaptation.  
+
+3. **Idiom: "Don't put all your eggs in one basket"**  
+   - In Spanish, the direct translation "no pongas todos tus huevos en una canasta" is used, which is a common equivalent idiom.  
+   - In Japanese, the direct translation "すべての卵を一つの籠にいれないでください" (subete no tamago o hitotsu no kago ni irenaide kudasai) is used, which mirrors the original idiom.  
+
+4. **"Supercalifragilisticexpialidocious"**  
+   - In both languages, the word is transliterated directly (in Spanish as "supercalifragilisticexpialidocious" and in Japanese as スーパー・カリフォラジリスティック・エクスパイアリドーシャス), as it is a well-known term from *Mary Poppins* and retains its whimsical nature.  
+
+--- 
+
+**Final Notes:**  
+- The translations prioritize clarity and cultural relevance while preserving the original tone and key elements.  
+- The pun and references are adapted to maintain their intent in each language, even if the direct wordplay is less explicit in Japanese.

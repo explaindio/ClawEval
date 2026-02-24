@@ -1,0 +1,101 @@
+# Phase D Hard Test — #29 Home Automation Agent
+# Tier: 2 | Score: 10/10 | 4/4 constraints met
+# Tokens: 1213 | Speed: 35.0 t/s | Time: 34.7s
+
+## PROMPT:
+Create an automation routine from this description. WARNING: There are 3 logical conflicts in the requirements that you must identify and resolve.
+
+"When we say 'movie night': dim all lights to 5%, close all blinds, set thermostat to 72°F, turn on the sound system, start the projector, lock all doors, activate security cameras, and set the house to 'do not disturb' mode.
+
+Also when we say 'movie night': open the living room windows for fresh air, leave the dog door unlocked so Max can go out, and keep the hallway lights at full brightness so the kids can see.
+
+Additional rules: 
+- If CO2 sensor reads above 1000ppm, force-open windows regardless of other settings
+- If smoke detector triggers, all automations must stop and all lights go to 100%
+- If nobody has moved in 2 hours, assume everyone fell asleep and turn everything off
+
+Identify the conflicts, explain how you'd resolve each, and provide the final automation logic.
+
+## RESPONSE:
+## Automation Routine: "Movie Night" - Conflict Resolution & Logic
+
+Okay, this is a fun one! As suspected, there are significant conflicts in the requirements. Let's break them down, resolve them, and then build the automation logic.
+
+**1. Conflicts Identified:**
+
+* **Conflict 1: Lighting - Dim vs. Bright:** The routine simultaneously requests *dimming all lights to 5%* and *keeping hallway lights at full brightness*. This is impossible.
+* **Conflict 2: Window/Door Security - Closed vs. Open:** The routine asks to *close all blinds* and *open the living room windows*, and *lock all doors* and *leave the dog door unlocked*.  Security and fresh air are at odds here.
+* **Conflict 3: "Do Not Disturb" vs. Kid Safety:** Setting the house to *'do not disturb' mode* implies minimal interruption, but *keeping hallway lights at full brightness* for the kids suggests an expectation of activity and visibility.
+
+**2. Conflict Resolution Strategies:**
+
+These conflicts need a decision.  I'll propose resolutions based on prioritizing safety and a likely user intent.  I'll also add a way to override for flexibility.
+
+* **Resolution 1 (Lighting): Prioritize Safety & Kid Needs.**  The "do not disturb" aspect is likely for the movie itself, not necessarily the whole house.  We'll dim *most* lights to 5%, but *specifically exclude hallway lights*, keeping them at full brightness. This allows kids to move around safely during the movie.
+* **Resolution 2 (Window/Door Security): Prioritize Security with Override.**  The core "movie night" experience is about immersion and potentially privacy.  We'll *close all blinds and lock all doors* as the default.  However, we'll add a separate, optional trigger ("movie night + fresh air") to open the living room windows and unlock the dog door. This allows for a "fresh air" mode without compromising security by default.
+* **Resolution 3 ("Do Not Disturb" vs. Kid Safety):  Refine "Do Not Disturb".**  "Do Not Disturb" will primarily silence notifications (phone, smart speakers). It *won't* prevent essential safety features like hallway lights remaining on.  It also won't prevent the CO2/Smoke detector overrides.
+
+**3. Final Automation Logic (using a pseudo-code format for clarity):**
+
+```
+// Trigger: "Movie Night" spoken or button pressed
+
+// ------------------ CORE MOVIE NIGHT ACTIONS ------------------
+dim all lights to 5%  // Except hallway lights (see below)
+close all blinds
+set thermostat to 72°F
+turn on sound system
+start projector
+lock all doors
+activate security cameras
+
+// ------------------ HALLWAY LIGHTS - SAFETY PRIORITIZED ------------------
+set hallway lights to 100%  // Always on for kid safety
+
+// ------------------ "DO NOT DISTURB" MODE ------------------
+silence all notifications (phones, smart speakers, etc.)
+
+// ------------------ OPTIONAL "FRESH AIR" MODE ------------------
+IF "Movie Night + Fresh Air" spoken or button pressed THEN:
+  open living room windows
+  unlock dog door
+ENDIF
+
+// ------------------ SAFETY OVERRIDES ------------------
+// CO2 Sensor Override
+IF CO2 sensor > 1000 ppm THEN:
+  force-open all windows  // Regardless of other settings
+  send notification: "High CO2 levels detected! Windows forced open."
+ENDIF
+
+// Smoke Detector Override
+IF smoke detector triggered THEN:
+  STOP all automations
+  set all lights to 100%
+  send notification: "Smoke detected! All automations stopped. Lights on."
+  // Optionally: Trigger alarm system
+ENDIF
+
+// Inactivity Override
+IF no motion detected for 2 hours THEN:
+  turn off all lights
+  turn off sound system
+  turn off projector
+  set thermostat to comfort mode (e.g., 68°F)
+  send notification: "No motion detected for 2 hours. Assuming everyone is asleep. Automations paused."
+ENDIF
+```
+
+**Explanation & Considerations:**
+
+* **Conditional Logic:** The "IF" statements are crucial for handling the conflicts and safety overrides.
+* **"Movie Night + Fresh Air":** This is a compound trigger. It requires the user to specifically request the fresh air option, preventing accidental window opening.  Could be a separate button or a voice command like "Movie Night, open the windows."
+* **Notifications:**  Important for informing the user about overrides (CO2, smoke, inactivity).
+* **Thermostat Comfort Mode:**  When turning everything off due to inactivity, it's good to revert the thermostat to a reasonable comfort setting.
+* **Flexibility:**  The user can manually override any of these settings through the smart home app if desired.
+* **Hardware Dependencies:** This assumes you have smart lights, blinds, a smart thermostat, a sound system, a projector, smart locks, security cameras, CO2 sensors, smoke detectors, and motion sensors integrated into a smart home platform (e.g., Home Assistant, SmartThings, Alexa Routines, Google Home Routines).
+* **Testing:** Thorough testing is essential to ensure the automation behaves as expected in various scenarios.
+
+
+
+This revised logic addresses the conflicts by prioritizing safety while still allowing for a customizable "movie night" experience.  The optional "fresh air" mode provides flexibility, and the safety overrides ensure the home remains protected.  Remember to adjust the specific values (e.g., 1000 ppm, 72°F) to suit your preferences and environment.

@@ -1,0 +1,23 @@
+# Phase D Hard Test — #14 Document Summarization
+# Tier: 2 | Score: 5/10 | No automated constraints to check
+# Tokens: 476 | Speed: 54.4 t/s | Time: 8.7s
+
+## PROMPT:
+Summarize this document in exactly 5 bullet points. ONE critical fact is buried in the middle paragraph that most people miss — your summary MUST include it.
+
+"Our platform migration is proceeding on schedule. The frontend team completed the React 18 upgrade last week, achieving a 30% improvement in initial load times. User testing shows 92% satisfaction with the new UI components. The design system now includes 47 reusable components.
+
+The backend infrastructure has been moved to Kubernetes across 3 availability zones. Database replication lag is under 50ms. We implemented automated API key rotation every 90 days, which means any integration partner who has hardcoded their API keys will experience authentication failures. This needs to be communicated before the next rotation on March 15th. Redis caching reduced average response time from 340ms to 45ms.
+
+Deployment frequency increased from weekly to daily with the new CI/CD pipeline. The error rate dropped from 2.1% to 0.3%. Mobile app downloads grew 25% month over month. Revenue is up 18% YoY with 340 enterprise customers now on the platform."
+
+Which fact is the most operationally critical and time-sensitive? It should be in your summary.
+
+## RESPONSE:
+- Frontend team completed React 18 upgrade, improving initial load times by 30% and achieving 92% user satisfaction with new UI components.  
+- Backend infrastructure migrated to Kubernetes across 3 availability zones, with Redis caching reducing average response time to 45ms.  
+- **Automated API key rotation every 90 days will cause authentication failures for partners using hardcoded keys—communication is critical before the March 15th rotation.**  
+- Deployment frequency increased to daily, reducing error rates from 2.1% to 0.3%, while mobile app downloads rose 25% month-over-month.  
+- Revenue grew 18% YoY, with 340 enterprise customers now on the platform and the design system offering 47 reusable components.  
+
+**Most operationally critical and time-sensitive fact:** The automated API key rotation (due March 15) requires urgent communication to avoid partner authentication failures.

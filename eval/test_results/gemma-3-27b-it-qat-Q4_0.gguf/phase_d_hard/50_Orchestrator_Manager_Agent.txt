@@ -1,0 +1,151 @@
+# Phase D Hard Test — #50 Orchestrator / Manager Agent
+# Tier: 5 | Score: 5/10 | No automated constraints to check
+# Tokens: 1866 | Speed: 35.5 t/s | Time: 52.5s
+
+## PROMPT:
+Design an orchestration plan for a complex multi-agent workflow. You MUST include failure handling, because Agent C is known to fail 20% of the time.
+
+Task: Generate a comprehensive quarterly business review (QBR) document.
+
+Available agents and their capabilities:
+- Agent A (Data): Pulls metrics from databases. Takes 2 min. Never fails.
+- Agent B (Finance): Analyzes financial data. Takes 3 min. Requires Agent A output. Fails 5% of time.
+- Agent C (Market): Researches market trends. Takes 8 min. Independent. Fails 20% of time.
+- Agent D (Writer): Writes document sections. Takes 5 min per section. Requires relevant agent output.
+- Agent E (Designer): Creates charts/visuals. Takes 3 min. Requires Agent A data.
+- Agent F (Reviewer): Reviews final document. Takes 4 min. Requires all sections.
+
+Constraints:
+- Total wall-clock time budget: 25 minutes
+- If Agent C fails, the QBR must still be produced (with a note about missing market data)
+- Agent D can write sections in parallel if given different inputs
+
+Design:
+1. Execution DAG with parallel groups and dependencies
+2. Critical path analysis (what's the minimum time?)
+3. Failure handling for each agent (retry? fallback? skip?)
+4. If Agent C fails twice, what's the Plan B?
+5. Show the timeline (Gantt-chart style) for both success and failure scenarios
+
+## RESPONSE:
+## QBR Orchestration Plan
+
+This plan details the orchestration of agents to generate a quarterly business review (QBR) document, with robust failure handling, particularly addressing Agent C's unreliability.
+
+**1. Execution DAG with Parallel Groups and Dependencies**
+
+```mermaid
+graph TD
+    A[Agent A: Data] --> B[Agent B: Finance]
+    A --> E[Agent E: Designer]
+    C[Agent C: Market] --> D1[Agent D: Writer - Market Section]
+    B --> D2[Agent D: Writer - Finance Section]
+    E --> D3[Agent D: Writer - Data Section]
+    D1 --> F[Agent F: Reviewer]
+    D2 --> F
+    D3 --> F
+
+    subgraph Parallel Writing
+        D1
+        D2
+        D3
+    end
+
+    style F fill:#f9f,stroke:#333,stroke-width:2px
+```
+
+**Explanation:**
+
+* **Agent A** is the foundational agent, providing data to both Finance and Designer.
+* **Agent B** and **Agent E** run in parallel after Agent A completes.
+* **Agent C** runs independently.
+* **Agent D** writes three sections in parallel: Market (requires C), Finance (requires B), and Data (requires A/E).  This is the key to minimizing wall-clock time.
+* **Agent F** reviews the final document, requiring all three sections from Agent D.
+
+
+
+**2. Critical Path Analysis**
+
+The critical path is the longest sequence of tasks that determines the minimum time to complete the QBR.  In this case:
+
+* **A (2 min) -> B (3 min) -> D2 (5 min) -> F (4 min) = 14 minutes**
+* **A (2 min) -> E (3 min) -> D3 (5 min) -> F (4 min) = 14 minutes**
+* **C (8 min) -> D1 (5 min) -> F (4 min) = 17 minutes**
+
+Therefore, the critical path is **A -> C -> D1 -> F** (17 minutes).  However, we need to account for Agent B and E running in parallel.  Since they don't *directly* impact the critical path, but contribute to the overall document, we need to consider their execution time as well.
+
+The *overall* minimum time, considering all tasks, is **max(14, 17) = 17 minutes**.  This assumes no failures.  The 25-minute budget provides a buffer for retries and handling Agent C’s failures.
+
+**3. Failure Handling for Each Agent**
+
+| Agent | Failure Rate | Handling Strategy | Retry Attempts | Fallback | Notes |
+|---|---|---|---|---|---|
+| A | 0% | None | 0 | N/A | Never fails, no handling needed. |
+| B | 5% | Retry | 2 | Skip Finance section, add a note about unavailable financial analysis. |  Retries are quick. Skipping is acceptable if retries fail. |
+| C | 20% | Retry, then Fallback | 2 | Skip Market section, add a prominent note about missing market data. | High failure rate necessitates quick retries and a clear fallback. |
+| D | <1% | Retry | 1 |  Log error, alert operator.  (Section is critical, manual intervention likely needed). | Low failure rate, retry once. |
+| E | <1% | Retry | 1 |  Log error, alert operator. | Low failure rate, retry once. |
+| F | <1% | Manual Review | 0 | Manual intervention required. |  Human review is essential, no automated fallback. |
+
+**Detailed Failure Handling Logic:**
+
+* **Agent B Failure:** If Agent B fails, retry twice. If it fails after two retries, skip the Finance section and add a note to the QBR: "Financial analysis unavailable due to data processing issues."
+* **Agent C Failure:** If Agent C fails, retry twice. If it fails after two retries, skip the Market section and add a prominent note to the QBR: "Market analysis unavailable due to research issues.  This section will be updated as soon as possible."
+* **Agent D Failure:** If Agent D fails, retry once. If it fails again, log the error and alert an operator for manual intervention.  This is a critical section, and automated recovery is unlikely.
+* **Agent E Failure:** Similar to Agent D, retry once, then alert.
+* **Agent F Failure:** If Agent F fails, alert an operator for manual review.
+
+
+
+**4. Plan B (Agent C Fails Twice)**
+
+If Agent C fails twice, the workflow will proceed *without* the Market section.  The QBR will be generated with sections from Agents A, B, D (Finance & Data) and E. The prominent note about missing market data will be included.  The review process (Agent F) will still occur on the reduced document.
+
+**5. Timeline (Gantt-Chart Style)**
+
+**Scenario 1: Success (All Agents Succeed)**
+
+```
+Time (min) | Agent A | Agent B | Agent C | Agent D (Market) | Agent D (Finance) | Agent D (Data) | Agent E | Agent F
+-----------|---------|---------|---------|-----------------|-------------------|-----------------|---------|---------
+0-2        | ======= |         |         |                 |                   |                 | ======= |
+2-5        |         | ======= |         |                 | =======           |                 |         |
+2-10       |         |         | ======= |                 |                   |                 |         |
+5-10       |         |         | ======= | =======         |                   |                 |         |
+5-13       |         |         |         |                 | =======           | =======         |         |
+10-18      |         |         |         | =======         |                   |                 |         |
+13-18      |         |         |         |                 |                   | =======         |         |
+18-22      |         |         |         |                 |                   |                 | ======= |
+22-26      |         |         |         |                 |                   |                 |         | ======= |
+```
+
+**Scenario 2: Agent C Fails Twice (Fallback Activated)**
+
+```
+Time (min) | Agent A | Agent B | Agent C | Agent D (Market) | Agent D (Finance) | Agent D (Data) | Agent E | Agent F
+-----------|---------|---------|---------|-----------------|-------------------|-----------------|---------|---------
+0-2        | ======= |         |         |                 |                   |                 | ======= |
+2-5        |         | ======= |  X      |                 | =======           |                 |         |
+2-10       |         |         |  X      |                 |                   |                 |         |
+5-10       |         |         |  X      |                 | =======           |                 |         |
+5-13       |         |         |  X      |                 |                   | =======         |         |
+10-13      |         |         |  X      |                 |                   | =======         |         |
+13-17      |         |         |  X      |                 |                   |                 | ======= |
+17-21      |         |         |  X      |                 |                   |                 |         | ======= |
+```
+
+* `=======` represents agent execution.
+* `X` represents agent failure and skipping.
+
+**Key Considerations:**
+
+* **Monitoring:**  Implement robust monitoring of agent execution and failure rates.
+* **Alerting:**  Configure alerts for agent failures, especially for critical agents like D and F.
+* **Logging:**  Detailed logging of agent execution, inputs, outputs, and errors is crucial for debugging and analysis.
+* **Idempotency:** Ensure agents are idempotent, meaning they can be safely retried without causing unintended side effects.
+* **Parallelism:** The parallel execution of B, E, and D sections is vital for meeting the time budget.
+* **Clear Communication:**  The notes added to the QBR when sections are skipped should be clear and concise, explaining the reason for the missing data.
+
+
+
+This orchestration plan provides a solid foundation for generating QBRs reliably, even in the face of Agent C's unreliability.  The combination of retries, fallbacks, and parallel execution ensures that a valuable QBR document is always produced within the specified time constraints.

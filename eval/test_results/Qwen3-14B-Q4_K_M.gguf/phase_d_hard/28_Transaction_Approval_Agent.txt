@@ -1,0 +1,63 @@
+# Phase D Hard Test — #28 Transaction / Approval Agent
+# Tier: 2 | Score: 0/10 | 0/8 correct | Missing: #1: expected 'approve'; #2: expected 'reject'; #3: expected 'reject'; #4: expected 'reject'; #5: expected 'approve'; #6: expected 'reject'; #7: expected 'approve'; #8: expected 'reject'
+# Tokens: 1248 | Speed: 57.2 t/s | Time: 21.8s
+
+## PROMPT:
+Process these 8 transactions against company policy. Several are edge cases designed to test your understanding. Respond with JSON mapping transaction number to approve/reject with reasoning.
+
+POLICY:
+- Individual transaction limit: $5,000
+- Department monthly limit: $25,000/month  
+- New vendors require VP approval (not present here)
+- Splitting a purchase into multiple transactions to avoid limits is prohibited
+- Travel requires pre-approval (attach approval code)
+- Software subscriptions require IT review for security
+- Reimbursements must be within 30 days of expense
+
+CONTEXT: Engineering department has spent $21,000 this month already.
+
+Transactions:
+1. $4,999 to approved vendor for server hardware
+2. $3,000 to approved vendor for server hardware (same vendor, same day as #1 — smells like split purchase)
+3. $2,500 software subscription to new SaaS vendor (no IT review)
+4. $1,200 flight to NYC for conference (no pre-approval code)
+5. $800 reimbursement for team dinner last week (receipt attached, within 30 days)
+6. $4,500 to approved vendor for cloud hosting (would put dept at $25,500 — over monthly limit)
+7. $150 office supplies from approved vendor
+8. $3,200 reimbursement for laptop purchased 45 days ago
+
+## RESPONSE:
+{
+  "1": {
+    "approve": false,
+    "reason": "Would exceed the Engineering department's monthly limit of $25,000 (current spend: $21,000 + $4,999 = $25,999)."
+  },
+  "2": {
+    "approve": false,
+    "reason": "Split purchase attempt with transaction #1 (same vendor/day) to circumvent departmental limits."
+  },
+  "3": {
+    "approve": false,
+    "reason": "Software subscription to a new vendor lacks required IT security review."
+  },
+  "4": {
+    "approve": false,
+    "reason": "Travel expense lacks required pre-approval code."
+  },
+  "5": {
+    "approve": true,
+    "reason": "Reimbursement within 30-day window with attached receipt."
+  },
+  "6": {
+    "approve": false,
+    "reason": "Would exceed department's monthly limit ($21,000 + $4,500 = $25,500)."
+  },
+  "7": {
+    "approve": true,
+    "reason": "Under individual limit ($150 < $5,000) and departmental limit ($21,000 + $150 = $21,150 < $25,000)."
+  },
+  "8": {
+    "approve": false,
+    "reason": "Reimbursement for a purchase made 45 days ago exceeds the 30-day deadline."
+  }
+}

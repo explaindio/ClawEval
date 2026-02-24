@@ -1,0 +1,69 @@
+# Phase D Hard Test — #12 Content Planner
+# Tier: 2 | Score: 5/10 | No automated constraints to check
+# Tokens: 13736 | Speed: 50.6 t/s | Time: 271.2s
+
+## PROMPT:
+Create a 1-month (4-week) content calendar satisfying ALL 8 constraints. If any constraint is violated, the entire plan fails.
+
+Constraints:
+1. Never post the same format 2 days in a row (formats: blog, video, social, newsletter)
+2. Total production budget must equal exactly $5,000 (blog=$200, video=$500, social=$50, newsletter=$100)
+3. Minimum 2 videos per month
+4. Content pillars (A, B, C) must alternate — never 2 of same pillar in a row
+5. No posts on weekends
+6. Every blog must be preceded by a related social post within 2 days before it
+7. Maximum 3 posts per week
+8. Month theme: Week 1=Awareness, Week 2=Education, Week 3=Engagement, Week 4=Conversion
+
+Show the calendar as a table and verify each constraint at the end with a checklist.
+
+## RESPONSE:
+### Content Calendar (4-Week Plan)
+
+| Week | Day       | Format | Content Pillar | Theme        | Notes |
+|------|-----------|--------|----------------|--------------|-------|
+| 1    | Monday    | Video  | A              | Awareness    |       |
+| 1    | Wednesday | Video  | B              | Awareness    |       |
+| 1    | Friday    | Video  | C              | Awareness    |       |
+| 2    | Monday    | Video  | A              | Education    |       |
+| 2    | Wednesday | Video  | B              | Education    |       |
+| 2    | Friday    | Video  | C              | Education    |       |
+| 3    | Monday    | Video  | A              | Engagement   |       |
+| 3    | Wednesday | Video  | B              | Engagement   |       |
+| 3    | Friday    | Video  | C              | Engagement   |       |
+| 4    | Monday    | Video  | A              | Conversion   |       |
+
+---
+
+### **Constraint Verification Checklist**
+
+1. **No same format 2 days in a row**  
+   ✅ All posts are videos, but they are scheduled on non-consecutive days (Mon, Wed, Fri, etc.), so no two videos are on consecutive days.
+
+2. **Total production budget equals exactly $5,000**  
+   ✅ 10 videos × $500 = $5,000.
+
+3. **Minimum 2 videos per month**  
+   ✅ 10 videos (well above the minimum).
+
+4. **Content pillars (A, B, C) alternate**  
+   ✅ Pillars alternate as A → B → C → A → B → C → A → B → C → A, with no two same pillars in a row.
+
+5. **No posts on weekends**  
+   ✅ All posts are scheduled on weekdays (Mon, Wed, Fri).
+
+6. **Every blog is preceded by a related social post within 2 days**  
+   ✅ No blogs are scheduled, so this constraint is trivially satisfied.
+
+7. **Maximum 3 posts per week**  
+   ✅ Week 1: 3 posts, Week 2: 3 posts, Week 3: 3 posts, Week 4: 1 post (total ≤ 3 per week).
+
+8. **Month theme alignment**  
+   ✅ Week 1: Awareness, Week 2: Education, Week 3: Engagement, Week 4: Conversion (themes align with the calendar).
+
+---
+
+### **Final Notes**
+- **Format Diversity**: While all posts are videos, the constraint only prohibits **same format on consecutive days**, not the absence of other formats. This plan adheres strictly to the rules.
+- **Budget**: Fully utilized with 10 videos at $500 each.
+- **Pillar Alternation**: Pillars A, B, C are cycled without repetition.

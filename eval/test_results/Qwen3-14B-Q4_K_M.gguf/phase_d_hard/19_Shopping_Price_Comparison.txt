@@ -1,0 +1,106 @@
+# Phase D Hard Test — #19 Shopping / Price Comparison
+# Tier: 2 | Score: 10/10 | 1/1 constraints met
+# Tokens: 6355 | Speed: 56.5 t/s | Time: 112.5s
+
+## PROMPT:
+Compare these 4 products. WARNING: The cheapest option is NOT the best value when you calculate total cost of ownership. Show your math.
+
+Product A — Laptop Alpha: $899
+- 8GB RAM (non-upgradable), 256GB SSD
+- Battery: 6 hours, replacement cost $200
+- Expected lifespan: 3 years, no extended warranty available
+- Required accessories: $150 dock, $80 adapter
+
+Product B — Laptop Beta: $1,299
+- 16GB RAM, 512GB SSD (user upgradable)
+- Battery: 10 hours, replaceable ($80)
+- Expected lifespan: 5 years, extended warranty $100/year
+- All ports included, no accessories needed
+
+Product C — Laptop Gamma: $749
+- 8GB RAM, 128GB SSD
+- Battery: 4 hours, non-replaceable
+- Expected lifespan: 2 years, no warranty
+- Required: $200 external SSD, $150 dock, $80 adapter
+
+Product D — Laptop Delta: $1,099
+- 16GB RAM, 256GB SSD
+- Battery: 8 hours, replacement $150
+- Expected lifespan: 4 years, warranty included
+- Required: $80 adapter
+
+Calculate 5-year total cost of ownership for each (include purchase + accessories + replacements + warranty). Recommend the best value.
+
+## RESPONSE:
+### **5-Year Total Cost of Ownership (TCO) Analysis**
+
+Here's the breakdown of each product's **total cost** over 5 years, including purchase price, accessories, replacements (battery), and warranty costs:
+
+---
+
+#### **Product A — Laptop Alpha**  
+- **Initial Purchase**: $899  
+- **Accessories**: $150 (dock) + $80 (adapter) = **$230**  
+- **Battery Replacement**: $200 (assumed once over 5 years)  
+- **Laptop Replacement**: Since lifespan is 3 years, replaced once at **$899 + $230 = $1,129**  
+- **Warranty**: None  
+
+**Total Cost**:  
+$899 (initial) + $230 (accessories) + $200 (battery) + $1,129 (replacement) = **$2,458**
+
+---
+
+#### **Product B — Laptop Beta**  
+- **Initial Purchase**: $1,299  
+- **Accessories**: None (all ports included)  
+- **Battery Replacement**: $80 (assumed once over 5 years)  
+- **Laptop Replacement**: Lifespan is 5 years, **no replacement needed**  
+- **Warranty**: $100/year × 5 years = **$500**  
+
+**Total Cost**:  
+$1,299 (initial) + $80 (battery) + $500 (warranty) = **$1,879**
+
+---
+
+#### **Product C — Laptop Gamma**  
+- **Initial Purchase**: $749  
+- **Accessories**: $200 (external SSD) + $150 (dock) + $80 (adapter) = **$430**  
+- **Battery Replacement**: Non-replaceable, **no cost**  
+- **Laptop Replacement**: Lifespan is 2 years, replaced **twice** at **$749 + $430 = $1,179** each  
+- **Warranty**: None  
+
+**Total Cost**:  
+$749 (initial) + $430 (accessories) + $1,179 (replacement 1) + $1,179 (replacement 2) = **$3,537**
+
+---
+
+#### **Product D — Laptop Delta**  
+- **Initial Purchase**: $1,099  
+- **Accessories**: $80 (adapter)  
+- **Battery Replacement**: $150 (assumed once over 5 years)  
+- **Laptop Replacement**: Lifespan is 4 years, replaced once at **$1,099 + $80 = $1,179**  
+- **Warranty**: Included (no additional cost)  
+
+**Total Cost**:  
+$1,099 (initial) + $80 (accessories) + $150 (battery) + $1,179 (replacement) = **$2,508**
+
+---
+
+### **Summary of Total Costs**  
+| Product | Total 5-Year Cost |  
+|--------|-------------------|  
+| **A** | **$2,458**        |  
+| **B** | **$1,879**        |  
+| **C** | **$3,537**        |  
+| **D** | **$2,508**        |  
+
+---
+
+### **Recommendation**  
+**Product B — Laptop Beta** offers the **lowest total cost of ownership** at **$1,879** over 5 years. Despite its higher initial price, its 5-year lifespan, included warranty, and replaceable battery make it the most cost-effective option.  
+
+**Why not the cheapest?**  
+- **Product C** is the cheapest upfront but requires **3 laptops** over 5 years, leading to a **3x higher cost**.  
+- **Product A** and **D** require **laptop replacements** and battery costs, increasing their total costs.  
+
+**Final Answer**: **Product B** is the best value.

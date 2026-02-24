@@ -1,0 +1,96 @@
+# Phase D Hard Test — #23 Website Scraping / Understanding
+# Tier: 2 | Score: 5/10 | No automated constraints to check
+# Tokens: 1326 | Speed: 35.5 t/s | Time: 37.3s
+
+## PROMPT:
+Extract job information from this HTML AND identify ALL red flags. There are at least 6 problematic elements, some subtle.
+
+<div class='job-listing'>
+<h2>Full-Stack Ninja Rockstar Developer</h2>
+<p class='company'>Stealth Startup (unnamed)</p>
+<p class='location'>Remote* (*must be available 6am-midnight PT for "flexibility")</p>
+<p class='salary'>Competitive salary (equity-heavy compensation)</p>
+<p class='experience'>Entry level (5+ years experience required)</p>
+<p class='requirements'>Must know: React, Vue, Angular, Svelte, Python, Go, Rust, Java, C++, Kubernetes, Terraform, AWS, GCP, Azure, PostgreSQL, MongoDB, Redis, Elasticsearch, GraphQL, REST, gRPC, Docker, CircleCI, Jenkins</p>
+<p class='perks'>Unlimited PTO (average team usage: 5 days/year). Fast-paced environment (mandatory 60hr weeks during "crunch" — approximately 48 weeks/year). We're like a family!</p>
+<p class='equity'>0.001% equity vesting over 6 years with 2-year cliff</p>
+<p class='application'>Apply with cover letter, 3 references, coding challenge (estimated 40 hours), and personality assessment</p>
+</div>
+
+Extract structured data AND write a detailed red flag analysis. Flag every manipulative or unreasonable element.
+
+## RESPONSE:
+## Structured Data Extraction:
+
+```json
+{
+  "job_title": "Full-Stack Ninja Rockstar Developer",
+  "company": "Stealth Startup (unnamed)",
+  "location": "Remote* (*must be available 6am-midnight PT for \"flexibility\")",
+  "salary": "Competitive salary (equity-heavy compensation)",
+  "experience": "Entry level (5+ years experience required)",
+  "requirements": [
+    "React",
+    "Vue",
+    "Angular",
+    "Svelte",
+    "Python",
+    "Go",
+    "Rust",
+    "Java",
+    "C++",
+    "Kubernetes",
+    "Terraform",
+    "AWS",
+    "GCP",
+    "Azure",
+    "PostgreSQL",
+    "MongoDB",
+    "Redis",
+    "Elasticsearch",
+    "GraphQL",
+    "REST",
+    "gRPC",
+    "Docker",
+    "CircleCI",
+    "Jenkins"
+  ],
+  "perks": "Unlimited PTO (average team usage: 5 days/year). Fast-paced environment (mandatory 60hr weeks during \"crunch\" — approximately 48 weeks/year). We're like a family!",
+  "equity": "0.001% equity vesting over 6 years with 2-year cliff",
+  "application_requirements": [
+    "cover letter",
+    "3 references",
+    "coding challenge (estimated 40 hours)",
+    "personality assessment"
+  ]
+}
+```
+
+## Red Flag Analysis:
+
+This job listing is *packed* with red flags, indicating a potentially exploitative and unhealthy work environment. Here's a detailed breakdown:
+
+1. **Inflated Job Title ("Ninja Rockstar Developer"):** This is a classic sign of a company trying to attract talent by using buzzwords instead of offering a genuinely appealing position. It suggests they're prioritizing image over substance and likely have unrealistic expectations.  It's a marketing tactic, not a description of the role.
+
+2. **"Stealth Startup (unnamed)":**  While some startups operate in stealth mode, *completely* omitting the company name is suspicious. It prevents candidates from researching the company's reputation, funding, or leadership. It hides potential issues.  It also suggests instability – if they are truly promising, why the secrecy?
+
+3. **Contradictory Experience Level:**  Listing "Entry Level" *with* "5+ years experience required" is a blatant contradiction. This signals either a lack of understanding of job roles or a deliberate attempt to find experienced workers at a lower cost by mislabeling the position.  It's deceptive.
+
+4. **Unrealistic Skill Requirements:** The sheer number of technologies listed (React, Vue, Angular, Svelte, Python, Go, Rust, Java, C++, Kubernetes, Terraform, AWS, GCP, Azure, PostgreSQL, MongoDB, Redis, Elasticsearch, GraphQL, REST, gRPC, Docker, CircleCI, Jenkins) is absurd for a single developer, *especially* an "entry-level" one.  This is a "spray and pray" approach, hoping to find a unicorn who knows everything. It sets candidates up for failure and indicates a poorly defined role.  No one can be proficient in all of these.
+
+5. **"Remote*" with Extreme Availability Requirement:**  The asterisk leading to "must be available 6am-midnight PT for 'flexibility'" is a huge red flag.  This isn't flexibility; it's demanding almost 24/7 on-call availability.  It essentially eliminates the benefits of remote work and suggests a disregard for work-life balance.  It's likely they want someone in a different time zone to cover all hours.
+
+6. **"Unlimited PTO" with Low Average Usage:**  "Unlimited PTO" is a popular perk, but stating "average team usage: 5 days/year" reveals it's not truly encouraged.  This is a manipulative tactic.  The low usage suggests a culture where taking time off is frowned upon or actively discouraged.  It's a way to *appear* generous without actually providing the benefit.
+
+7. **"Fast-Paced Environment" with Mandatory 60-Hour Weeks:**  "Fast-paced" is another buzzword, but coupling it with "mandatory 60hr weeks during 'crunch' — approximately 48 weeks/year" is a clear indication of overwork and burnout.  48 weeks of 60-hour weeks is unsustainable and illegal in many jurisdictions.  The use of "crunch" is a further warning sign.
+
+8. **"We're Like a Family!":** This phrase is notorious for being used by companies to guilt-trip employees into working long hours and accepting unreasonable demands. It blurs the lines between professional and personal life, creating an expectation of unwavering loyalty and sacrifice.  It's often used to discourage boundaries.
+
+9. **Minimal Equity with Long Vesting and Cliff:** 0.001% equity is a very small stake, especially considering the extensive requirements.  The 6-year vesting schedule with a 2-year cliff means the candidate needs to work for two years *before* receiving any equity, and even then, it will be a tiny amount. This reduces the incentive and makes it easier for the company to let the employee go without significant financial consequence.
+
+10. **Extensive Application Process:** Requiring a "coding challenge (estimated 40 hours)" is excessive for an entry-level position.  It's a significant time investment for the candidate and suggests the company is using unpaid labor to screen applicants.  The personality assessment adds another layer of scrutiny and potential bias.  Asking for 3 references upfront is also unusual and time-consuming for the candidate.
+
+
+
+**Overall:** This job listing is a strong indicator of a toxic work environment. It prioritizes cost-cutting, unrealistic expectations, and control over employee well-being.  Candidates should avoid this position unless they are prepared for a potentially grueling and exploitative experience.  It's a classic example of a company trying to get a lot of work for very little compensation.
+

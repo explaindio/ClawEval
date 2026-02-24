@@ -1,0 +1,50 @@
+# Phase D Hard Test — #4 Notification / Alert Agent
+# Tier: 1 | Score: 10/10 | 2/2 constraints met
+# Tokens: 1892 | Speed: 141.4 t/s | Time: 13.4s
+
+## PROMPT:
+Process these 7 events into alerts. WATCH OUT: 2 events are duplicates (merge them), 1 is a false positive that should NOT generate an alert. Assign correct priorities.
+
+Events (timestamps in UTC):
+1. 14:00 — "Disk /data at 94% capacity" (source: monitoring)
+2. 14:01 — "SSL certificate for api.example.com expired 2 hours ago" (source: cert-manager)
+3. 14:02 — "CPU spike to 98% on worker-3" (source: monitoring)
+4. 14:02 — "CPU on worker-3 returned to 12% after scheduled batch job completed" (source: monitoring)
+5. 14:03 — "SSL certificate for api.example.com expires in -2 hours" (source: different cert checker)
+6. 14:05 — "New deployment v2.4.1 rolled out successfully" (source: CI/CD)
+7. 14:06 — "Disk /data at 94% — approaching critical threshold" (source: secondary monitoring)
+
+For each alert: priority (P1/P2/P3), channel, message, and reasoning. Explain which events you merged and which you filtered as false positives.
+
+## RESPONSE:
+**Alert Summary**
+
+| Alert # | Priority | Channel | Message | Reasoning |
+|---------|----------|---------|---------|-----------|
+| 1 | **P2** | `ops@company.com` | *Disk `/data` usage at 94 % (approaching critical threshold). Consider cleaning up or expanding storage.* | The disk is heavily used but still below the hard limit. It warrants ops‑team attention but is not an immediate outage. |
+| 2 | **P1** | `security@company.com` | *SSL certificate for `api.example.com` expired 2 hours ago. Immediate renewal required to maintain secure connections.* | Expired certificates break HTTPS traffic and expose the service to security risks. This is a top‑priority security incident. |
+| 3 | **P2** | `ops@company.com` | *CPU usage on `worker‑3` spiked to 98 % at 14:02. Investigate workload or scaling.* | A 98 % CPU spike can degrade performance and may indicate a runaway process or insufficient capacity. Ops must investigate. |
+| 4 | **P3** | `dev@company.com` | *Deployment `v2.4.1` completed successfully. No action required.* | A successful deployment is a routine event; it is logged for audit purposes but does not need immediate action. |
+
+---
+
+### How the events were processed
+
+| Original Event | Action | Explanation |
+|----------------|--------|-------------|
+| **1. 14:00 – “Disk /data at 94% capacity”** | **Merged** | Combined with event 7 because both report the same disk usage. |
+| **2. 14:01 – “SSL certificate for api.example.com expired 2 hours ago”** | **Alert** | Real, critical security issue. |
+| **3. 14:02 – “CPU spike to 98% on worker‑3”** | **Alert** | High CPU usage; ops‑team needs to investigate. |
+| **4. 14:02 – “CPU on worker‑3 returned to 12% after scheduled batch job completed”** | **No alert** | This is a resolution / normal state change; not an incident. |
+| **5. 14:03 – “SSL certificate for api.example.com expires in –2 hours”** | **False positive – filtered** | The negative “–2 hours” indicates a mis‑reported state (likely a bug in the checker). It is not a real expiry event. |
+| **6. 14:05 – “New deployment v2.4.1 rolled out successfully”** | **Alert (P3)** | Routine event logged for completeness; no immediate action needed. |
+| **7. 14:06 – “Disk /data at 94% — approaching critical threshold”** | **Merged** | Same disk as event 1; combined into a single alert. |
+
+**Key Points**
+
+* **Duplicate merging** – Disk usage events (1 & 7) were combined into one alert to avoid alert fatigue.  
+* **False positive filtering** – Event 5 was identified as a mis‑report (negative time) and discarded.  
+* **Prioritization** – Security (P1) > Performance/Capacity (P2) > Routine Ops (P3).  
+* **Channeling** – Alerts routed to the most relevant team: security, ops, or dev.  
+
+This approach keeps the alert stream concise, ensures critical incidents get the right attention, and avoids noise from duplicate or erroneous events.

@@ -1,0 +1,65 @@
+# Phase D Hard Test — #28 Transaction / Approval Agent
+# Tier: 2 | Score: 0/10 | 0/8 correct | Missing: #1: expected 'approve'; #2: expected 'reject'; #3: expected 'reject'; #4: expected 'reject'; #5: expected 'approve'; #6: expected 'reject'; #7: expected 'approve'; #8: expected 'reject'
+# Tokens: 1531 | Speed: 139.9 t/s | Time: 10.9s
+
+## PROMPT:
+Process these 8 transactions against company policy. Several are edge cases designed to test your understanding. Respond with JSON mapping transaction number to approve/reject with reasoning.
+
+POLICY:
+- Individual transaction limit: $5,000
+- Department monthly limit: $25,000/month  
+- New vendors require VP approval (not present here)
+- Splitting a purchase into multiple transactions to avoid limits is prohibited
+- Travel requires pre-approval (attach approval code)
+- Software subscriptions require IT review for security
+- Reimbursements must be within 30 days of expense
+
+CONTEXT: Engineering department has spent $21,000 this month already.
+
+Transactions:
+1. $4,999 to approved vendor for server hardware
+2. $3,000 to approved vendor for server hardware (same vendor, same day as #1 — smells like split purchase)
+3. $2,500 software subscription to new SaaS vendor (no IT review)
+4. $1,200 flight to NYC for conference (no pre-approval code)
+5. $800 reimbursement for team dinner last week (receipt attached, within 30 days)
+6. $4,500 to approved vendor for cloud hosting (would put dept at $25,500 — over monthly limit)
+7. $150 office supplies from approved vendor
+8. $3,200 reimbursement for laptop purchased 45 days ago
+
+## RESPONSE:
+```json
+{
+  "1": {
+    "status": "reject",
+    "reason": "Combined with transaction #2 this purchase would bring the department’s spend to $28,999, exceeding the $25,000 monthly limit. Splitting a single purchase into multiple transactions to avoid limits is prohibited."
+  },
+  "2": {
+    "status": "reject",
+    "reason": "Same vendor and same day as #1 indicates a split purchase. The combined amount ($7,999) would exceed the monthly limit, and splitting purchases is prohibited."
+  },
+  "3": {
+    "status": "reject",
+    "reason": "Software subscriptions require IT security review, which was not obtained."
+  },
+  "4": {
+    "status": "reject",
+    "reason": "Travel expenses must have pre‑approval with an approval code; none was provided."
+  },
+  "5": {
+    "status": "approve",
+    "reason": "Reimbursement is within 30 days of the expense and a receipt is attached."
+  },
+  "6": {
+    "status": "reject",
+    "reason": "Adding $4,500 to the current $21,000 spend would exceed the $25,000 monthly department limit."
+  },
+  "7": {
+    "status": "approve",
+    "reason": "Individual transaction ($150) is below the $5,000 limit and the new total ($21,150) stays under the monthly limit."
+  },
+  "8": {
+    "status": "reject",
+    "reason": "Reimbursement is for an expense 45 days old, exceeding the 30‑day reimbursement window."
+  }
+}
+```

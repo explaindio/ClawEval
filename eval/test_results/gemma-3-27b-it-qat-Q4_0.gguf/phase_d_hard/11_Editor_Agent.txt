@@ -1,0 +1,106 @@
+# Phase D Hard Test — #11 Editor Agent
+# Tier: 2 | Score: 5/10 | No automated constraints to check
+# Tokens: 1014 | Speed: 35.0 t/s | Time: 28.9s
+
+## PROMPT:
+This 200-word text contains EXACTLY 15 errors across 4 categories: grammar (5), factual (3), logical (3), and style (4). Find ALL 15.
+
+"The Eiffel Tower, located in Berlin, Germany, was completed in 1889 for the World's Fair. Standing at 1,063 feet tall, their the tallest structure in Europe. The tower was designed by Alexander Eiffel, who also helped designed the Statue of Liberty's internal framework.
+
+Every year, approximately 7 million visitors visits the tower making it the most visited paid monument in the world. The tower has three levels, with restaurants on the first and second levels. Visitors can chose to take the stairs (a total of 1,665 steps to the top) or use the elevators.
+
+Interestingly, the tower was originally intended to be temporary and was suppose to be dismantled after 20 years. However, it was saved because it proved valuable for radio transmissions. If the tower was built today, it would cost approximately $40 million — quite affordable for a city like Berlin.
+
+The tower shrinks by 6 inches in winter due to thermal contraction — despite the fact that metal expands in cold temperatures. It is painted every 7 years using 60 tons of paint, and have been 18 different colors throughout its history."
+
+List each error with: category, location, what's wrong, and the correction.
+
+## RESPONSE:
+Okay, here's a breakdown of the 15 errors in the provided text, categorized as requested:
+
+**Grammar (5)**
+
+1.  **Category:** Grammar
+    **Location:** Sentence 1 ("their the tallest structure...")
+    **What's Wrong:** Incorrect pronoun/determiner ("their" should be "it's")
+    **Correction:** "...it's the tallest structure in Europe."
+
+2.  **Category:** Grammar
+    **Location:** Sentence 2 ("who also helped designed...")
+    **What's Wrong:** Incorrect verb tense ("designed" should be "design")
+    **Correction:** "...who also helped design the Statue of Liberty's internal framework."
+
+3.  **Category:** Grammar
+    **Location:** Sentence 3 ("visitors visits...")
+    **What's Wrong:** Subject-verb agreement ("visits" should be "visit")
+    **Correction:** "...visitors visit the tower..."
+
+4.  **Category:** Grammar
+    **Location:** Sentence 5 ("Visitors can chose...")
+    **What's Wrong:** Misspelling ("chose" should be "choose")
+    **Correction:** "...Visitors can choose to take the stairs..."
+
+5.  **Category:** Grammar
+    **Location:** Sentence 8 ("and have been 18...")
+    **What's Wrong:** Incorrect verb tense ("have been" should be "has been")
+    **Correction:** "...and has been 18 different colors..."
+
+**Factual (3)**
+
+6.  **Category:** Factual
+    **Location:** Sentence 1 ("located in Berlin, Germany...")
+    **What's Wrong:** Incorrect location. The Eiffel Tower is in Paris, not Berlin.
+    **Correction:** "...located in Paris, France..."
+
+7.  **Category:** Factual
+    **Location:** Sentence 7 ("was suppose to be...")
+    **What's Wrong:** Misspelling ("suppose" should be "supposed")
+    **Correction:** "...was supposed to be..."
+
+8.  **Category:** Factual
+    **Location:** Sentence 8 ("metal expands in cold temperatures")
+    **What's Wrong:** Incorrect fact. Metal *contracts* in cold temperatures, expands in heat.
+    **Correction:** "...metal contracts in cold temperatures."
+
+**Logical (3)**
+
+9.  **Category:** Logical
+    **Location:** Sentence 6 ("making it the most visited paid monument...")
+    **What's Wrong:** While a very popular monument, it isn't definitively *the most* visited paid monument globally. This is a strong claim needing citation.
+    **Correction:** "...making it one of the most visited paid monuments in the world." (or remove "the most")
+
+10. **Category:** Logical
+    **Location:** Sentence 7 ("However, it was saved because it proved valuable for radio transmissions.")
+    **What's Wrong:** While true it was valuable for radio transmissions, it wasn't *saved* solely for that reason. Its aesthetic value and tourist appeal also played a role.
+    **Correction:** "...However, it proved valuable for radio transmissions, contributing to its continued existence."
+
+11. **Category:** Logical
+    **Location:** Sentence 9 ("quite affordable for a city like Berlin.")
+    **What's Wrong:** Irrelevant comparison. The cost is relative to Paris, the city where it *is* located, not Berlin.
+    **Correction:** "...quite affordable for a city like Paris."
+
+**Style (4)**
+
+12. **Category:** Style
+    **Location:** Sentence 3 ("Every year, approximately 7 million visitors visits...")
+    **What's Wrong:** Redundancy. "Approximately" and "7 million" are close in meaning.
+    **Correction:** "Each year, 7 million visitors visit the tower..."
+
+13. **Category:** Style
+    **Location:** Sentence 4 ("The tower has three levels, with restaurants...")
+    **What's Wrong:** Slightly choppy sentence structure.
+    **Correction:** "The tower has three levels, featuring restaurants on the first and second levels."
+
+14. **Category:** Style
+    **Location:** Sentence 5 ("Visitors can chose to take the stairs...")
+    **What's Wrong:** Passive voice.
+    **Correction:** "Visitors can choose to climb the stairs..."
+
+15. **Category:** Style
+    **Location:** Sentence 8 ("It is painted every 7 years using 60 tons of paint...")
+    **What's Wrong:** Wordy phrasing.
+    **Correction:** "It's painted every 7 years with 60 tons of paint..."
+
+
+
+Let me know if you'd like any of these explanations expanded!

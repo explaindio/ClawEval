@@ -1,0 +1,79 @@
+# Phase D Hard Test — #32 Personal Finance Tracking
+# Tier: 2 | Score: 10/10 | 3/3 constraints met
+# Tokens: 1226 | Speed: 34.8 t/s | Time: 35.2s
+
+## PROMPT:
+Analyze 3 months of transactions. WARNING: There are 2 potentially fraudulent transactions hidden in the data. Find them.
+
+January:
+- Salary: +$5,000 (Jan 1). Rent: -$1,800 (Jan 1). Grocery Store: -$312 (Jan 5). Electric: -$95 (Jan 10). Netflix: -$15 (Jan 15). Gas: -$45 (Jan 18). Restaurant: -$85 (Jan 22). Gym: -$50 (Jan 28).
+
+February:
+- Salary: +$5,000 (Feb 1). Rent: -$1,800 (Feb 1). Grocery Store: -$287 (Feb 4). Electric: -$102 (Feb 10). Netflix: -$15 (Feb 15). Netflix: -$15 (Feb 15). Gas: -$52 (Feb 19). Restaurant: -$120 (Feb 23). Coffee: -$45 (Feb 25).
+
+March:
+- Salary: +$5,000 (Mar 1). Rent: -$1,800 (Mar 1). Grocery Store: -$345 (Mar 6). ATM Withdrawal Miami: -$400 (Mar 8). Local Gas Station: -$48 (Mar 8). Electric: -$98 (Mar 12). Netflix: -$15 (Mar 15). Restaurant: -$95 (Mar 20). Shopping: -$250 (Mar 25).
+
+Calculate exact monthly totals, savings rate, category trends, AND identify the suspicious transactions with explanation.
+
+## RESPONSE:
+Okay, let's analyze these three months of transactions to find the potential fraudulent activity.
+
+**1. Monthly Totals:**
+
+*   **January:** +$5,000 - $1,800 - $312 - $95 - $15 - $45 - $85 - $50 = **$2,568**
+*   **February:** +$5,000 - $1,800 - $287 - $102 - $15 - $15 - $52 - $120 - $45 = **$2,599**
+*   **March:** +$5,000 - $1,800 - $345 - $400 - $48 - $98 - $15 - $95 - $250 = **$2,169**
+
+**2. Savings Rate:**
+
+To calculate the savings rate, we need to assume a baseline income.  We'll use the salary of $5,000 as the income.
+
+*   **January:** ($2,568 / $5,000) * 100% = **51.36%**
+*   **February:** ($2,599 / $5,000) * 100% = **51.98%**
+*   **March:** ($2,169 / $5,000) * 100% = **43.38%**
+
+**3. Category Trends:**
+
+Let's break down spending by category and look for changes:
+
+| Category        | January | February | March | Trend Analysis                               |
+|-----------------|---------|----------|-------|-----------------------------------------------|
+| **Income (Salary)** | $5,000  | $5,000   | $5,000| Consistent                                    |
+| **Rent**          | $1,800  | $1,800   | $1,800| Consistent                                    |
+| **Grocery Store** | $312    | $287     | $345  | Fluctuating, slight increase in March        |
+| **Electric**      | $95     | $102     | $98   | Relatively stable, slight increase in Feb    |
+| **Netflix**       | $15     | $30      | $15   | Doubled in February, returned to normal in March|
+| **Gas**           | $45     | $52      | -     | Relatively stable, no transaction in March |
+| **Restaurant**    | $85     | $120     | $95   | Fluctuating, increase in February, decrease in March|
+| **Gym**           | $50     | -        | -     | Only in January                               |
+| **Coffee**        | -       | $45      | -     | Only in February                               |
+| **ATM Withdrawal**| -       | -        | $400  | New transaction in March                      |
+| **Local Gas Station**| -       | -        | $48   | New transaction in March                      |
+| **Shopping**      | -       | -        | $250  | New transaction in March                      |
+
+**4. Identification of Suspicious Transactions:**
+
+Based on the transaction data, I identify the following two transactions as potentially fraudulent:
+
+*   **ATM Withdrawal Miami: -$400 (Mar 8)** - This is highly suspicious.  The individual consistently pays bills and uses standard payment methods (credit card, etc.). A $400 ATM withdrawal, especially in Miami (which isn't mentioned as a place of residence or regular travel), is a significant deviation from the established pattern.  It suggests a possible compromised card or unauthorized access.
+*   **Local Gas Station: -$48 (Mar 8)** - This transaction occurring on the same day as the ATM withdrawal in Miami is also concerning. It could be related to the fraudulent ATM withdrawal (e.g., card testing after the ATM compromise) or a separate fraudulent charge. The proximity in time and location raises a red flag.
+
+**Explanation of Why These are Suspicious:**
+
+*   **Unusual Location:** The Miami ATM withdrawal is out of character.
+*   **Large Cash Withdrawal:** $400 is a relatively large cash withdrawal for typical day-to-day expenses.
+*   **Timing:** The simultaneous occurrence of the ATM withdrawal and gas station charge is a strong indicator of potential fraud.  Fraudsters often test cards with small purchases after a larger withdrawal.
+*   **Lack of Prior History:** There's no previous pattern of ATM withdrawals, especially in a different city.
+
+**Recommendations:**
+
+1.  **Contact the Bank Immediately:** Report the suspicious transactions to the bank and request a review of the account activity.
+2.  **Cancel and Reissue Card:**  Cancel the current debit/credit card and request a new one with a different number.
+3.  **Monitor Account Closely:**  Carefully monitor the account for any further unauthorized transactions.
+4.  **Review Security Measures:**  Ensure strong passwords are used and consider enabling two-factor authentication.
+5.  **File a Police Report (if necessary):** If significant funds are stolen, file a police report.
+
+
+
+**Disclaimer:**  I am an AI and cannot definitively determine fraud. This analysis is based on the provided data and common fraud patterns.  It's crucial to contact the bank and relevant authorities for a thorough investigation.

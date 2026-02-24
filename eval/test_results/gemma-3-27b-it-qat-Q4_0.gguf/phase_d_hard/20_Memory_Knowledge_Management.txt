@@ -1,0 +1,53 @@
+# Phase D Hard Test — #20 Memory / Knowledge Management
+# Tier: 2 | Score: 5/10 | No automated constraints to check
+# Tokens: 528 | Speed: 34.2 t/s | Time: 15.4s
+
+## PROMPT:
+Extract and merge knowledge from these 5 conversation snippets. There are 3 contradictions — resolve each by using the MOST RECENT information and flag what changed.
+
+Jan 2: "I'm a senior developer at Acme Corp working on their Python backend."
+Jan 15: "We decided to migrate from PostgreSQL to MongoDB for the user service."
+Feb 1: "Got promoted to Tech Lead! Managing a team of 4 developers now."
+Feb 20: "After benchmarking, we're actually sticking with PostgreSQL — MongoDB wasn't right for our consistency requirements. Also, we hired 2 more people, team is now 6."
+Mar 5: "Acme Corp got acquired by MegaTech. I'm now technically a MegaTech employee but same role. Oh, and 1 person left, so team is 5. We're also evaluating MySQL as finance wants to standardize."
+
+Produce a final knowledge profile, clearly marking:
+1. What the CURRENT truth is for each fact
+2. What changed and when (changelog)
+3. What is UNCERTAIN (e.g., MySQL evaluation — in progress, not decided)
+
+## RESPONSE:
+## Knowledge Profile - Consolidated & Resolved
+
+Here's the consolidated knowledge profile, incorporating all snippets and resolving contradictions with the most recent information.
+
+**1. CURRENT TRUTH:**
+
+*   **Role:** Tech Lead at MegaTech (formerly Acme Corp)
+*   **Company:** MegaTech (acquired Acme Corp)
+*   **Backend Language:** Python
+*   **Database:** PostgreSQL (currently in use, evaluation of MySQL ongoing)
+*   **Team Size:** 5 developers
+
+**2. CHANGELOG (What changed and when):**
+
+*   **Feb 1:** Role changed from Senior Developer to Tech Lead. Team size increased to 4 developers.
+*   **Feb 20:** Database migration plan changed. Initially planned to migrate to MongoDB, but reverted to PostgreSQL. Team size increased to 6 developers. **(Contradiction Resolved: Jan 15 -> Feb 20)**
+*   **Mar 5:** Company changed from Acme Corp to MegaTech due to acquisition. Team size decreased to 5 developers. Evaluation of MySQL began. **(Contradiction Resolved: Feb 20 -> Mar 5)**
+
+**3. UNCERTAIN:**
+
+*   **MySQL Evaluation:** The team is currently evaluating MySQL for potential standardization, driven by the finance department's request. The decision on whether to adopt MySQL is *pending* and not yet finalized.
+*   **Long-term Database Strategy:** While PostgreSQL is currently in use, the ongoing MySQL evaluation suggests a potential shift in the long-term database strategy. The final outcome is unknown.
+
+
+
+**Explanation of Contradiction Resolution:**
+
+*   **Database Choice:** The initial plan to migrate to MongoDB (Jan 15) was superseded by the decision to stick with PostgreSQL (Feb 20). The *most recent* information (Feb 20) takes precedence.
+*   **Team Size:** The team size was initially 4 (Feb 1), then increased to 6 (Feb 20), and then decreased to 5 (Mar 5). The *latest* update (Mar 5) is considered the current truth.
+*   **Company Affiliation:** The initial company was Acme Corp (Jan 2), but was acquired by MegaTech (Mar 5). The *most recent* information (Mar 5) is the current affiliation.
+
+
+
+This profile aims to provide a clear and up-to-date understanding of the individual's situation, acknowledging uncertainties where they exist and explicitly stating the evolution of knowledge over time.

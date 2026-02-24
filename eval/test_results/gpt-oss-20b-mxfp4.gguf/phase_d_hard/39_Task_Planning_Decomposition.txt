@@ -1,0 +1,91 @@
+# Phase D Hard Test — #39 Task Planning / Decomposition
+# Tier: 3 | Score: 10/10 | 1/1 constraints met
+# Tokens: 1824 | Speed: 140.4 t/s | Time: 13.0s
+
+## PROMPT:
+Decompose this project into tasks with dependencies. WARNING: The requirements as stated contain a CIRCULAR DEPENDENCY. You must detect it and propose a resolution.
+
+Project: Build a real-time dashboard
+- Task A (Auth system): "Requires the notification service (Task C) to send verification emails"
+- Task B (Data pipeline): "Requires the auth system (Task A) to validate data sources"
+- Task C (Notification service): "Requires the data pipeline (Task B) to know what events to notify about"
+- Task D (Dashboard UI): "Requires A, B, and C to be complete"
+- Task E (Testing): "Requires D to be complete, plus access to A, B, C independently"
+- Task F (Deployment): "Requires E to pass, but also needs to deploy A, B, C as separate services"
+
+Team: 2 backend devs, 1 frontend dev, 1 QA. Timeline: 8 weeks.
+
+1. Draw the dependency graph (text format)
+2. Identify the circular dependency
+3. Propose how to break the cycle (e.g., mock service, interface-first approach)
+4. Create a realistic 8-week schedule with parallel work
+
+## RESPONSE:
+**1. Dependency graph (text format)**  
+
+```
+A (Auth system)      ←─ requires ──► C (Notification service)
+B (Data pipeline)    ←─ requires ──► A (Auth system)
+C (Notification)    ←─ requires ──► B (Data pipeline)
+D (Dashboard UI)    ←─ requires ──► A, B, C
+E (Testing)         ←─ requires ──► D  +  independent access to A, B, C
+F (Deployment)      ←─ requires ──► E  +  deploy A, B, C separately
+```
+
+**2. Circular dependency**
+
+The cycle is:
+
+```
+A → C → B → A
+```
+
+Auth → Notification → Data pipeline → Auth
+
+**3. How to break the cycle**
+
+| Option | What it does | Why it works |
+|--------|--------------|--------------|
+| **Interface‑first / contract‑first** | Define *Auth API*, *Data API*, and *Notification API* contracts before any implementation. Each service implements its own contract and only calls the contract of the next service. | The contracts are stable and can be mocked; services can be built and tested in isolation. |
+| **Mock / stub services** | While Auth is being built, provide a *mock Notification* that simply logs the “verification email” request. While Notification is being built, provide a *mock Data pipeline* that emits a static event stream. | Allows each service to be developed and unit‑tested without needing the real downstream service. |
+| **Event bus / message queue** | Introduce a lightweight event bus (e.g., in‑memory or a simple Kafka topic). Auth publishes “user‑created” events; Data pipeline subscribes to them; Notification subscribes to “event‑to‑notify” events. | Decouples services; each can be started independently and later wired together. |
+| **Split Auth into two parts** | Separate *Auth‑Core* (user validation) from *Auth‑Email* (sending verification). Auth‑Core can be used by Data pipeline; Auth‑Email can be built after Notification. | Removes the direct dependency of Auth on Notification. |
+
+**Recommended resolution**  
+Adopt an **interface‑first + mock‑service** strategy:
+
+1. Draft the three service contracts (Auth, Data, Notification) in a shared repo (OpenAPI / gRPC / JSON‑Schema).  
+2. Generate stubs for each contract.  
+3. Backend devs build the stubs first, allowing unit tests to run.  
+4. Once the stubs are stable, implement the real services in parallel, wiring them together only after the contracts are agreed upon.
+
+**4. 8‑Week schedule (parallel work)**  
+
+| Week | Backend Dev 1 | Backend Dev 2 | Frontend Dev | QA | Notes / Dependencies |
+|------|---------------|---------------|--------------|----|----------------------|
+| **1** | • Draft Auth contract (OpenAPI).<br>• Generate Auth stub. | • Draft Data contract.<br>• Generate Data stub. | • Scaffold UI skeleton (React/Vue). | • Define test plan (unit, integration, regression). | All teams start on contracts; no real service logic yet. |
+| **2** | • Implement Auth core logic (user validation).<br>• Unit‑test Auth stub. | • Implement Data core logic (ingest stub data).<br>• Unit‑test Data stub. | • Build basic UI components (login, dashboard layout). | • Write unit tests for Auth & Data stubs. | Auth & Data can run independently; UI can be rendered with mock data. |
+| **3** | • Add Auth‑Email stub (mock notification).<br>• Wire Auth to stub Notification. | • Add Data‑Event stub (mock notification).<br>• Wire Data to stub Notification. | • Connect UI to mock Auth & Data APIs. | • Integration tests against stubs. | Cycle broken: Auth no longer needs real Notification. |
+| **4** | • Finalise Auth implementation (real email sending via SMTP). | • Finalise Data pipeline (real event source). | • Finish UI logic (state management, API hooks). | • Smoke tests on all services. | All services are functional but still decoupled. |
+| **5** | • Implement Notification service (real push/email). | • Connect Notification to real Data events. | • Hook UI to real Notification events (e.g., alerts). | • End‑to‑end tests (Auth → Data → Notification → UI). | Notification now depends on Data, but Data already has Auth; cycle resolved. |
+| **6** | • Refactor Auth to expose a clean API for Data pipeline. | • Refactor Data to expose a clean API for Notification. | • Polish UI, add responsiveness. | • Performance & load tests. | All services are fully wired; interfaces stable. |
+| **7** | • Bug‑fix sprint (all devs). | • Bug‑fix sprint (all devs). | • Bug‑fix sprint (all devs). | • Regression testing, security audit. | Prepare for deployment. |
+| **8** | • Deploy A, B, C as separate Docker containers (CI/CD). | • Deploy A, B, C (same). | • Deploy UI (static host). | • Final UAT, sign‑off. | Release to production. |
+
+**Parallelism & Resource Allocation**
+
+- **Backend Dev 1 & 2** work on different services but share the same contract repo, allowing continuous integration of stubs.
+- **Frontend Dev** can work on UI while backend services are still stubs; once stubs are stable, the UI can be connected to real APIs.
+- **QA** starts with unit tests on stubs, then moves to integration tests as services mature, and finally to performance & UAT in the last two weeks.
+
+**Key Milestones**
+
+| Milestone | Week | Deliverable |
+|-----------|------|-------------|
+| Contracts & stubs ready | 2 | OpenAPI specs, generated stubs |
+| Auth & Data core functional | 3 | Auth & Data services running with mock Notification |
+| Notification service implemented | 5 | Real Notification service wired to Data |
+| Full integration | 6 | All services communicating via real APIs |
+| UAT & sign‑off | 8 | Production‑ready deployment |
+
+With the interface‑first / mock‑service approach, the circular dependency is eliminated, and the 8‑week timeline is realistic for the 2‑backend‑dev + 1‑frontend‑dev + 1‑QA team.

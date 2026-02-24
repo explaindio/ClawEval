@@ -1,0 +1,37 @@
+# Phase D Hard Test — #43 Synthesizer / Aggregator
+# Tier: 3 | Score: 10/10 | 1/1 constraints met
+# Tokens: 890 | Speed: 137.5 t/s | Time: 6.5s
+
+## PROMPT:
+Three agents analyzed whether to open a second office location. Their analyses CONTRADICT each other on key points. You must synthesize — not just summarize — and make a recommendation.
+
+Agent A (Financial): "Opening in Austin will cost $2M upfront. Break-even in 18 months. ROI of 35% by year 3. However, our cash reserves are only $3M and we need $1M buffer. Recommendation: GO."
+
+Agent B (HR/Talent): "Austin has a strong tech talent pool but salaries are 20% higher than expected. Retention at remote offices historically 30% lower in first 2 years. We'd need 15 people, not the 10 originally planned, due to the retention gap. Recommendation: DELAY 6 months."
+
+Agent C (Strategy): "3 competitors opened Austin offices last year. Market is becoming saturated. However, NOT having a presence could mean losing 2 key enterprise clients who prefer local teams. Those clients represent 25% of revenue. Recommendation: GO but with a smaller team."
+
+Note: Agent A's financial model assumes 10 people (not 15), Agent B's retention data contradicts Agent A's break-even timeline, and Agent C's competitor info wasn't available to Agent A.
+
+Synthesize into ONE recommendation. Show how you resolved the contradictions.
+
+## RESPONSE:
+**Integrated Recommendation – “Phased, Risk‑Mitigated Launch”**
+
+| Issue | Agent View | How we reconciled it | Action |
+|-------|------------|----------------------|--------|
+| **Capital & Cash Flow** | A: $2 M upfront, break‑even 18 mo, ROI 35 % by year 3. | A’s model is based on 10 staff. B’s need for 15 staff and higher salaries will push costs up. | **Re‑budget**: 15 staff × (average salary + 20 % premium) + $2 M fixed costs = **$3.4 M**. Add a $1 M contingency → **$4.4 M** total. Our $3 M reserve + $1 M buffer = $4 M, so we need an additional **$0.4 M** (e.g., a short‑term line of credit or a phased capital raise). |
+| **Break‑Even Timeline** | A: 18 mo. | B’s higher salaries and retention risk mean revenue will lag; the 18‑mo break‑even is optimistic. | **Extend break‑even to 24 mo** in the new model. This still meets the 3‑year ROI target (35 %) when we factor in the larger team and higher costs. |
+| **Headcount & Talent** | B: 15 people needed; A: 10 people. | B’s data shows a 30 % retention drop for remote teams; to keep the same net headcount after attrition, we must hire 15. | **Hire 15** but **phase the ramp‑up**: 5 hires in month 1, 5 in month 4, 5 in month 7. This spreads salary out, reduces upfront cash burn, and gives us time to test retention strategies (e.g., local perks, hybrid work). |
+| **Competitive Saturation vs. Client Risk** | C: Market saturated but losing 2 key clients (25 % revenue) if we don’t have a local presence. | The saturation risk is real, but the client loss risk is immediate and quantifiable. | **Proceed with a smaller footprint** (15 people instead of 20+). This satisfies the clients’ local‑team preference while keeping the team lean enough to avoid over‑saturation. |
+| **Timing** | B: Delay 6 mo. | A wants to go now; C wants to go now. | **Delay 6 mo** to secure the extra $0.4 M, finalize hiring plan, and lock in client contracts. This gives us time to negotiate better salary terms and set up local HR processes. |
+
+### Final Recommendation
+
+1. **Launch the Austin office in 6 months** (after securing the additional $0.4 M and finalizing the phased hiring plan).  
+2. **Open with a lean, 15‑person team** that grows in three 5‑person waves, allowing us to monitor retention and revenue generation before committing to a larger staff.  
+3. **Adjust the financial model** to a 24‑month break‑even and a 35 % ROI by year 3, which remains attractive while reflecting the higher cost base.  
+4. **Implement retention safeguards** (hybrid work, local perks, career‑pathing) to mitigate the 30 % attrition risk identified by HR.  
+5. **Secure the 2 key enterprise clients** by offering them a dedicated local team, preserving 25 % of our revenue stream.  
+
+This phased, risk‑mitigated approach resolves the contradictions: it respects the financial constraints, addresses the talent and retention realities, and protects strategic client relationships—all while staying within a manageable budget and timeline.

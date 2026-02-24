@@ -1,0 +1,98 @@
+# Phase D Hard Test — #45 Prototype Generator
+# Tier: 3 | Score: 5/10 | No test code provided
+# Tokens: 780 | Speed: 34.9 t/s | Time: 22.4s
+
+## PROMPT:
+Write a COMPLETE, RUNNABLE Streamlit prototype that actually works when executed. I will run it with `streamlit run app.py`.
+
+Requirements:
+1. A form to input expense data (date, category dropdown, amount, description)
+2. Store entries in session state (persist within session)
+3. A pie chart showing spending by category (use st.pyplot or plotly)
+4. A date range filter that updates the chart
+5. Display total spending prominently
+6. An "Export CSV" button that generates and downloads data
+
+The code must be a SINGLE FILE with ALL imports. It must run without errors on a fresh Python environment with only streamlit, pandas, and matplotlib/plotly installed. No placeholder — working code only.
+
+## RESPONSE:
+```python
+import streamlit as st
+import pandas as pd
+import matplotlib.pyplot as plt
+import plotly.express as px
+import io
+import datetime
+
+# Initialize session state
+if 'expenses' not in st.session_state:
+    st.session_state.expenses = pd.DataFrame(columns=['date', 'category', 'amount', 'description'])
+
+# Define categories
+categories = ['Food', 'Transportation', 'Entertainment', 'Utilities', 'Rent', 'Other']
+
+# Form for expense input
+with st.form("expense_form"):
+    date = st.date_input("Date", datetime.date.today())
+    category = st.selectbox("Category", categories)
+    amount = st.number_input("Amount", min_value=0.0)
+    description = st.text_input("Description")
+    submitted = st.form_submit_button("Add Expense")
+
+    if submitted:
+        new_expense = pd.DataFrame([{
+            'date': date,
+            'category': category,
+            'amount': amount,
+            'description': description
+        }])
+        st.session_state.expenses = pd.concat([st.session_state.expenses, new_expense], ignore_index=True)
+        st.success("Expense added!")
+
+# Date range filter
+min_date = st.session_state.expenses['date'].min() if not st.session_state.expenses.empty else datetime.date.today() - datetime.timedelta(days=30)
+max_date = st.session_state.expenses['date'].max() if not st.session_state.expenses.empty else datetime.date.today()
+date_range = st.date_input("Date Range", [min_date, max_date])
+
+# Filter expenses based on date range
+filtered_expenses = st.session_state.expenses[(st.session_state.expenses['date'] >= pd.to_datetime(date_range[0])) & (st.session_state.expenses['date'] <= pd.to_datetime(date_range[1]))]
+
+# Calculate total spending
+total_spending = filtered_expenses['amount'].sum()
+
+# Display total spending
+st.metric("Total Spending", f"${total_spending:.2f}")
+
+# Pie chart of spending by category
+if not filtered_expenses.empty:
+    category_counts = filtered_expenses['category'].value_counts()
+
+    # Using Matplotlib
+    # fig, ax = plt.subplots()
+    # ax.pie(category_counts, labels=category_counts.index, autopct='%1.1f%%', startangle=90)
+    # ax.axis('equal')
+    # st.pyplot(fig)
+
+    # Using Plotly
+    fig = px.pie(category_counts, values=category_counts.values, names=category_counts.index, title="Spending by Category")
+    st.plotly_chart(fig)
+else:
+    st.warning("No expenses in the selected date range.")
+
+# Export CSV button
+def convert_df(df):
+    return df.to_csv().encode('utf-8')
+
+csv = convert_df(st.session_state.expenses)
+
+st.download_button(
+    label="Export CSV",
+    data=csv,
+    file_name='expenses.csv',
+    mime='text/csv',
+)
+
+# Display expense data
+st.subheader("Expense Data")
+st.dataframe(st.session_state.expenses)
+```

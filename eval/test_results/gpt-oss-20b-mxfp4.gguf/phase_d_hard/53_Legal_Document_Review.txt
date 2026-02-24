@@ -1,0 +1,62 @@
+# Phase D Hard Test — #53 Legal Document Review
+# Tier: 5 | Score: 10/10 | 1/1 constraints met
+# Tokens: 1595 | Speed: 140.1 t/s | Time: 11.4s
+
+## PROMPT:
+Review this SaaS contract. There are 8 problematic clauses, but clause #6 has a HIDDEN sub-clause that's easy to miss and is potentially unconscionable.
+
+1. "Service Provider may modify pricing with 7 days email notice. Continued use constitutes acceptance."
+2. "Customer grants Provider a perpetual, irrevocable license to use all data uploaded for any purpose including training AI models."
+3. "Provider's total liability shall not exceed $100 regardless of the fees paid."
+4. "Customer may not make public statements about the Service without Provider's written approval."  
+5. "This agreement is governed by the laws of the Cayman Islands. All disputes must be resolved through arbitration in Singapore."
+6. "Initial term is 12 months. Agreement auto-renews for successive 12-month periods unless cancelled 90 days before renewal. Upon each renewal, pricing increases by the greater of: (a) 15%, or (b) the applicable rate increase as determined solely by Provider."
+7. "Provider may terminate for any reason with 30 days notice. Customer must provide 180 days written notice to terminate."
+8. "Provider may assign this agreement to any third party without Customer consent."
+9. "Customer waives right to participate in class action lawsuits against Provider."
+10. "All intellectual property created using the Service belongs to Provider, including Customer's proprietary workflows and configurations."
+
+For each: risk level, explanation, and suggested counter-language. Flag clause 6's hidden escalation.
+
+## RESPONSE:
+Below is a quick‑fire review of the ten clauses you listed.  
+For each one I give:
+
+| # | Clause | Risk Level | Why it’s risky | Suggested Counter‑Language |
+|---|--------|------------|----------------|----------------------------|
+| 1 | **Price change with 7‑day notice** | **High** | 7 days is a very short window for a customer to react, and the clause says “continued use constitutes acceptance.”  That effectively forces the customer to pay the new price or lose service. | **“Provider may change pricing only after 30 days written notice.  Customer may terminate within 30 days of notice without penalty.  Continued use after 30 days constitutes acceptance.”** |
+| 2 | **Perpetual, irrevocable data license** | **High** | The customer loses control over all uploaded data, including confidential or regulated data.  The clause is broad (“any purpose, including training AI models”). | **“Provider may use uploaded data only for the purpose of providing the Service and for internal quality‑improvement purposes.  No use for training AI models or third‑party resale is permitted without separate written consent.  The license is revocable upon termination.”** |
+| 3 | **Liability capped at $100** | **Very High** | The cap is absurdly low relative to the fees paid and the potential damages.  It is likely unenforceable in most jurisdictions. | **“Provider’s liability for any claim arising from this Agreement shall be limited to the total fees paid by the Customer in the 12 months preceding the claim, and not less than $10,000.”** |
+| 4 | **No public statements without approval** | **Medium** | While it protects the Provider’s reputation, it can be abused to silence legitimate customer feedback.  The clause should be narrowed. | **“Customer may make public statements about the Service, provided they are truthful and not defamatory.  Provider’s approval is required only for statements that could materially affect the Provider’s reputation.”** |
+| 5 | **Cayman Islands law + Singapore arbitration** | **Medium** | The choice of law and forum may be inconvenient and costly for a customer located elsewhere.  It is not inherently unconscionable but can be burdensome. | **“This Agreement shall be governed by the laws of the jurisdiction where the Customer is incorporated, and disputes shall be resolved by arbitration in that jurisdiction unless the parties mutually agree otherwise.”** |
+| 6 | **Auto‑renewal + price escalation** | **Very High** | The hidden sub‑clause (“greater of 15 % or a rate increase determined solely by Provider”) gives the Provider unilateral, potentially unlimited price hikes.  It is unconscionable and likely unenforceable. | **“The Agreement shall auto‑renew for successive 12‑month periods unless either party gives written notice at least 90 days prior to the renewal date.  Upon each renewal, the price may increase no more than 10 % or the average inflation rate (whichever is lower), and any increase must be communicated in writing 60 days before the renewal.”** |
+| 7 | **Provider termination 30 days, Customer 180 days** | **High** | The asymmetry is extreme; the customer is locked in for 180 days while the provider can exit at will.  This is a classic “customer lock‑in” clause. | **“Either party may terminate this Agreement upon 90 days written notice.  No party shall be required to provide a longer notice period.”** |
+| 8 | **Unconditional assignment** | **Medium** | Unconditional assignment is common, but the clause should require that the assignee is a bona fide successor and that the customer is notified. | **“Provider may assign this Agreement to a successor in interest, provided that the assignee is a bona fide successor and that the Customer is notified in writing at least 30 days prior to the assignment.”** |
+| 9 | **Class‑action waiver** | **High** | A blanket class‑action waiver can be viewed as unconscionable, especially if the customer is a small business.  Courts often scrutinize such waivers. | **“Customer may pursue individual claims in a court of competent jurisdiction.  The parties waive only the right to participate in a class action that is not a class action under the applicable law.”** |
+|10 | **IP ownership of all created IP** | **High** | The clause claims ownership of *all* IP created using the Service, including the customer’s own workflows.  This is overly broad and likely unenforceable. | **“All intellectual property that the Customer creates independently of the Service remains the Customer’s property.  Provider owns only the IP that is a direct result of the Service’s proprietary technology and is licensed to the Customer under this Agreement.”** |
+
+---
+
+### Flagged Issue: Clause 6 Hidden Escalation
+
+**Why it matters**  
+Clause 6 reads:  
+> “Upon each renewal, pricing increases by the greater of: (a) 15 %, or (b) the applicable rate increase as determined solely by Provider.”
+
+The second option (“determined solely by Provider”) is a *hidden* escalation mechanism that can lead to price hikes far beyond 15 % without any customer input.  Because the clause is buried under the renewal language, a customer may overlook it until the price jump occurs.
+
+**What to do**  
+- **Cap the increase** (e.g., 10 % or inflation‑based).  
+- **Require mutual agreement** or a transparent formula.  
+- **Provide a longer notice period** (at least 60 days).  
+- **Add a clause that allows the customer to negotiate or terminate** if the increase is unreasonable.
+
+---
+
+### Quick Take‑away
+
+- **High‑risk clauses** (1, 2, 3, 6, 7, 9, 10) should be renegotiated or removed.  
+- **Medium‑risk clauses** (4, 5, 8) can be softened with narrower language.  
+- **All clauses** should include clear notice periods, termination rights, and data‑ownership safeguards to protect the customer’s interests.  
+
+Feel free to let me know if you’d like a more detailed rewrite of any specific clause or additional legal context!

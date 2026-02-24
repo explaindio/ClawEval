@@ -1,0 +1,127 @@
+# Phase D Hard Test — #57 SRE / Incident Response
+# Tier: 5 | Score: 10/10 | 1/1 constraints met
+# Tokens: 1741 | Speed: 53.8 t/s | Time: 32.4s
+
+## PROMPT:
+Write an incident postmortem. This incident had a CASCADE FAILURE — the initial issue triggered 3 secondary failures. Map the entire cascade.
+
+Timeline:
+- Mon 2:00 AM: Automated certificate rotation runs on the API gateway
+- Mon 2:01 AM: New certificate has wrong domain (*.example.com instead of *.api.example.com)
+- Mon 2:01 AM: All API requests start returning TLS errors
+- Mon 2:05 AM: Health check failures trigger auto-scaling — new instances spin up
+- Mon 2:06 AM: New instances also fail health checks (same cert), triggering MORE scaling
+- Mon 2:10 AM: Kubernetes cluster hits pod limit (500 pods). Cluster API becomes unresponsive.
+- Mon 2:11 AM: Monitoring system (also on same cluster) goes down. All alerts stop.
+- Mon 2:15 AM: Database connection pool exhausted from 500 pods trying to connect
+- Mon 2:20 AM: Database enters read-only mode to protect data
+- Mon 3:15 AM: On-call engineer wakes up from customer complaint on Twitter (no alert!)
+- Mon 3:45 AM: Root cause identified, correct certificate deployed manually
+- Mon 4:00 AM: Cluster stabilized, database connections draining
+- Mon 4:30 AM: Full service restored
+
+SLA: 99.95% monthly uptime = 21.9 minutes/month allowed downtime.
+This incident: ~2.5 hours downtime.
+
+Write: cascade map, root cause, 5 whys, SLA impact calculation, blameless action items.
+
+## RESPONSE:
+# Incident Postmortem: Cascade Failure Due to Certificate Rotation Error  
+
+---
+
+## **Cascade Map**  
+**Initial Failure**:  
+- **Mon 2:00 AM**: Automated certificate rotation runs on the API gateway.  
+- **Mon 2:01 AM**: New certificate has incorrect domain (`*.example.com` instead of `*.api.example.com`).  
+
+**Secondary Failures (Cascade)**:  
+1. **TLS Errors & API Outage**  
+   - **Mon 2:01 AM**: All API requests return TLS errors due to invalid certificate.  
+   - **Impact**: End-users and downstream services lose access to APIs.  
+
+2. **Auto-Scaling Loop**  
+   - **Mon 2:05 AM**: Health check failures trigger auto-scaling (new instances spin up).  
+   - **Mon 2:06 AM**: New instances also fail health checks (same invalid certificate), triggering further scaling.  
+   - **Impact**: Exponential scaling of faulty instances.  
+
+3. **Kubernetes Cluster Overload**  
+   - **Mon 2:10 AM**: Cluster hits pod limit (500 pods). Cluster API becomes unresponsive.  
+   - **Impact**: Inability to manage or terminate faulty pods.  
+
+4. **Monitoring System Failure**  
+   - **Mon 2:11 AM**: Monitoring system (on the same cluster) goes down. All alerts stop.  
+   - **Impact**: No visibility into the incident; no automated recovery.  
+
+5. **Database Connection Exhaustion**  
+   - **Mon 2:15 AM**: Database connection pool exhausted from 500 pods attempting to connect.  
+   - **Mon 2:20 AM**: Database enters read-only mode to protect data.  
+   - **Impact**: Full system outage; no writes allowed.  
+
+6. **Delayed Detection**  
+   - **Mon 3:15 AM**: On-call engineer wakes up from a customer complaint on Twitter (no alert).  
+   - **Impact**: 1.5-hour delay in detection.  
+
+7. **Manual Recovery**  
+   - **Mon 3:45 AM**: Root cause identified; correct certificate deployed manually.  
+   - **Mon 4:00 AM**: Cluster stabilized; database connections draining.  
+   - **Mon 4:30 AM**: Full service restored.  
+
+---
+
+## **Root Cause**  
+The root cause was an **invalid certificate** deployed by the automated certificate rotation process. The certificate used the wrong domain (`*.example.com` instead of `*.api.example.com`), which caused TLS handshake failures across the API gateway and downstream services. This error was not detected by pre-deployment validation checks, allowing the faulty certificate to propagate system-wide.  
+
+---
+
+## **5 Whys Analysis**  
+1. **Why did the certificate have the wrong domain?**  
+   The certificate rotation process did not validate the domain against the expected pattern (`*.api.example.com`).  
+
+2. **Why was there no validation?**  
+   The automation script lacked a validation step to verify the certificate’s domain before deployment.  
+
+3. **Why was the validation step missing?**  
+   The team assumed the certificate generation tool would enforce correct domains, but no explicit validation was implemented.  
+
+4. **Why was there no testing for this scenario?**  
+   The certificate rotation process was not thoroughly tested for edge cases (e.g., misconfigured domains).  
+
+5. **Why was the process not tested?**  
+   The team prioritized speed over robustness in automation, and the process was not included in regular regression testing.  
+
+---
+
+## **SLA Impact Calculation**  
+- **SLA**: 99.95% monthly uptime = **21.9 minutes of downtime allowed per month**.  
+- **Incident Duration**: ~2.5 hours = **150 minutes of downtime**.  
+- **SLA Breach**:  
+  - **Excess Downtime**: 150 minutes – 21.9 minutes = **128.1 minutes** over the SLA.  
+  - **Impact**: Severe breach of SLA, affecting customer trust and potential financial penalties.  
+
+---
+
+## **Blameless Action Items**  
+1. **Implement Certificate Validation**  
+   - Add a pre-deployment check in the certificate rotation process to validate the domain matches `*.api.example.com`.  
+
+2. **Enhance Automation Testing**  
+   - Create test cases for certificate rotation, including edge cases (e.g., incorrect domains, expired certificates).  
+
+3. **Decouple Critical Services**  
+   - Move monitoring and alerting systems to a separate, isolated cluster to prevent cascading failures.  
+
+4. **Improve Alerting & Escalation**  
+   - Configure alerts for certificate rotation failures and auto-scaling anomalies.  
+   - Ensure on-call engineers are notified via multiple channels (e.g., SMS, phone calls) for critical incidents.  
+
+5. **Review Auto-Scaling Policies**  
+   - Limit auto-scaling to prevent exponential scaling in failure scenarios (e.g., set a maximum pod limit per service).  
+
+6. **Post-Incident Documentation**  
+   - Document this incident in the knowledge base to train teams on certificate management and cascading failure scenarios.  
+
+--- 
+
+**Lessons Learned**:  
+This incident highlights the risks of over-reliance on automation without robust validation and the importance of isolating critical systems to prevent cascading failures.

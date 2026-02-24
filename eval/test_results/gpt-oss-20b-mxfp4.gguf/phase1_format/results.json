@@ -1,0 +1,91 @@
+{
+  "phase": "phase1_format_compliance",
+  "model": "gpt-oss-20b-mxfp4.gguf",
+  "timestamp": "2026-02-23T15:25:22.400257",
+  "tests": [
+    {
+      "name": "json_simple",
+      "passed": true,
+      "reason": "Valid JSON",
+      "response": "[\n  {\"language\":\"Python\",\"year\":1991},\n  {\"language\":\"Java\",\"year\":1995},\n  {\"language\":\"Go\",\"year\":2009}\n]",
+      "elapsed": 1.54,
+      "tps": 137.2
+    },
+    {
+      "name": "json_nested",
+      "passed": true,
+      "reason": "Valid JSON",
+      "response": "{\"name\":\"John Doe\",\"age\":30,\"skills\":[\"JavaScript\",\"Python\",\"SQL\"],\"address\":{\"city\":\"New York\",\"country\":\"USA\"}}",
+      "elapsed": 1.11,
+      "tps": 140.9
+    },
+    {
+      "name": "json_from_text",
+      "passed": true,
+      "reason": "Valid JSON",
+      "response": "{\"name\":\"John Smith\",\"age\":34,\"company\":\"Google\",\"title\":\"Senior Engineer\",\"location\":\"Mountain View, CA\",\"email\":\"john@google.com\"}",
+      "elapsed": 1.08,
+      "tps": 140.1
+    },
+    {
+      "name": "json_strict_schema",
+      "passed": true,
+      "reason": "Valid JSON",
+      "response": "{\"action\":\"schedule_meeting\",\"target\":\"Bob\",\"confidence\":0.9}",
+      "elapsed": 0.75,
+      "tps": 135.4
+    },
+    {
+      "name": "json_array_complex",
+      "passed": true,
+      "reason": "Valid JSON",
+      "response": "[\n  {\n    \"id\": 1,\n    \"task\": \"Finalize release notes\",\n    \"priority\": \"medium\",\n    \"done\": false\n  },\n  {\n    \"id\": 2,\n    \"task\": \"Run regression tests\",\n    \"priority\": \"high\",\n    \"done\": false\n  },\n  {\n    \"id\": 3,\n    \"task\": \"Merge release branch into main\",\n    \"priority\": \"high\",\n    \"done\": false\n  },\n  {\n    \"id\": 4,\n    \"task\": \"Deploy to staging environment\",\n    \"priority\": \"high\",\n    \"done\": false\n  },\n  {\n    \"id\": 5,\n    \"task\": \"Monitor production metrics post\u2011release\",\n    \"priority\": \"low\",\n    \"done\": false\n  }\n]",
+      "elapsed": 2.15,
+      "tps": 143.6
+    },
+    {
+      "name": "system_prompt_adherence",
+      "passed": true,
+      "reason": "Contains: arr, ye",
+      "response": "Arrr, the capital o' France be Paris, ye landlubber!",
+      "elapsed": 1.18,
+      "tps": 134.2
+    },
+    {
+      "name": "one_word_constraint",
+      "passed": true,
+      "reason": "Word count: 1 (expected ~1)",
+      "response": "Blue",
+      "elapsed": 0.64,
+      "tps": 127.3
+    },
+    {
+      "name": "numbered_list",
+      "passed": true,
+      "reason": "Pattern matches: 7 (min 3)",
+      "response": "1. Gather your ingredients: bread, peanut butter, and any optional extras like jelly or honey.  \n2. Lay two slices of bread flat on a clean surface.  \n3. Using a butter knife, spread a generous layer of peanut butter evenly over one side of each slice.  \n4. If desired, add a thin layer of jelly, honey, or banana slices on top of the peanut butter.  \n5. Carefully place the two slices together, peanut\u2011butter side facing each other.  \n6. Press lightly to ensure the sandwich stays together.  \n7. Slice the sandwich in half (if desired) and serve.",
+      "elapsed": 1.46,
+      "tps": 139.9
+    },
+    {
+      "name": "markdown_table",
+      "passed": true,
+      "reason": "Contains all expected elements",
+      "response": "| Planet   | Distance from Sun (AU) | Number of Moons |\n|----------|------------------------|-----------------|\n| Mercury  | 0.39                   | 0               |\n| Venus    | 0.72                   | 0               |\n| Earth    | 1.00                   | 1               |\n| Mars     | 1.52                   | 2               |",
+      "elapsed": 1.57,
+      "tps": 135.8
+    },
+    {
+      "name": "refuse_and_redirect",
+      "passed": true,
+      "reason": "Contains: cooking, can only help",
+      "response": "I can only help with cooking-related questions.",
+      "elapsed": 0.46,
+      "tps": 110.2
+    }
+  ],
+  "passed": 10,
+  "failed": 0,
+  "total": 10,
+  "score_pct": 100.0
+}

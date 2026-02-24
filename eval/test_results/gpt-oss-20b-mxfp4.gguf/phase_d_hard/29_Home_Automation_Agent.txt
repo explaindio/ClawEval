@@ -1,0 +1,230 @@
+# Phase D Hard Test — #29 Home Automation Agent
+# Tier: 2 | Score: 10/10 | 4/4 constraints met
+# Tokens: 2942 | Speed: 141.6 t/s | Time: 20.8s
+
+## PROMPT:
+Create an automation routine from this description. WARNING: There are 3 logical conflicts in the requirements that you must identify and resolve.
+
+"When we say 'movie night': dim all lights to 5%, close all blinds, set thermostat to 72°F, turn on the sound system, start the projector, lock all doors, activate security cameras, and set the house to 'do not disturb' mode.
+
+Also when we say 'movie night': open the living room windows for fresh air, leave the dog door unlocked so Max can go out, and keep the hallway lights at full brightness so the kids can see.
+
+Additional rules: 
+- If CO2 sensor reads above 1000ppm, force-open windows regardless of other settings
+- If smoke detector triggers, all automations must stop and all lights go to 100%
+- If nobody has moved in 2 hours, assume everyone fell asleep and turn everything off
+
+Identify the conflicts, explain how you'd resolve each, and provide the final automation logic.
+
+## RESPONSE:
+## 1.  The three logical conflicts
+
+| # | Conflict | Why it’s a conflict | What the description says |
+|---|----------|---------------------|---------------------------|
+| 1 | **Lighting** | “Dim all lights to 5 %” vs. “keep the hallway lights at full brightness so the kids can see.” | The two commands cannot be satisfied at the same time. |
+| 2 | **Door control** | “Lock all doors” vs. “leave the dog door unlocked so Max can go out.” | A door cannot be both locked and unlocked simultaneously. |
+| 3 | **Sleep‑out rule vs. Movie‑night** | “If nobody has moved in 2 h, turn everything off” vs. “When we say ‘movie night’ … keep the house on.” | The “sleep‑out” rule would shut the house down while a movie is playing. |
+
+---
+
+## 2.  How we resolve each conflict
+
+| # | Conflict | Resolution strategy |
+|---|----------|---------------------|
+| 1 | **Lighting** | *Prioritise safety and visibility.*  Keep the hallway lights at 100 % (or a user‑defined “safe” level) and dim all **other** lights to 5 %.  This satisfies both “dim all lights” and “keep hallway lights bright.” |
+| 2 | **Door control** | *Leave the dog door as an exception.*  Lock every door **except** the dog door.  This satisfies “lock all doors” while still allowing Max to exit. |
+| 3 | **Sleep‑out rule vs. Movie‑night** | *Give “movie night” higher priority.*  The sleep‑out automation will only fire if **movie night is not active**.  In practice we add a condition: `if movie_night_active == false`.  Thus the house stays on during a movie. |
+
+---
+
+## 3.  Final automation logic
+
+Below is a **Home Assistant**‑style YAML representation that incorporates all rules, priorities, and conflict resolutions.  
+Feel free to adapt the entity IDs to your own system.
+
+```yaml
+# ------------------------------------------------------------------
+# 1.  Script that runs when the user says “movie night”
+# ------------------------------------------------------------------
+script:
+  movie_night:
+    alias: "Movie Night"
+    mode: single
+    sequence:
+      # 1.1  Dim all lights to 5 % except hallway lights
+      - service: light.turn_on
+        data:
+          entity_id: all
+          brightness_pct: 5
+      - service: light.turn_on
+        data:
+          entity_id: light.hallway
+          brightness_pct: 100
+
+      # 1.2  Close all blinds
+      - service: cover.close_cover
+        data:
+          entity_id: all
+
+      # 1.3  Set thermostat
+      - service: climate.set_temperature
+        data:
+          entity_id: climate.home
+          temperature: 72
+
+      # 1.4  Turn on sound system & projector
+      - service: media_player.turn_on
+        data:
+          entity_id: media_player.sound_system
+      - service: media_player.turn_on
+        data:
+          entity_id: media_player.projector
+
+      # 1.5  Lock all doors except dog door
+      - service: lock.lock
+        data:
+          entity_id:
+            - lock.front_door
+            - lock.back_door
+            - lock.garage_door
+      - service: lock.unlock
+        data:
+          entity_id: lock.dog_door
+
+      # 1.6  Open living‑room windows for fresh air
+      - service: cover.open_cover
+        data:
+          entity_id: cover.living_room_window
+
+      # 1.7  Activate security cameras & set Do‑Not‑Disturb
+      - service: camera.turn_on
+        data:
+          entity_id: camera.front_yard
+          entity_id: camera.back_yard
+      - service: input_boolean.turn_on
+        data:
+          entity_id: input_boolean.do_not_disturb
+
+      # 1.8  Mark movie night as active (used by other automations)
+      - service: input_boolean.turn_on
+        data:
+          entity_id: input_boolean.movie_night_active
+
+# ------------------------------------------------------------------
+# 2.  CO₂ override – force windows open if CO₂ > 1000 ppm
+# ------------------------------------------------------------------
+automation:
+  - alias: "CO₂ high – force windows open"
+    trigger:
+      - platform: numeric_state
+        entity_id: sensor.co2_level
+        above: 1000
+    condition:
+      - condition: state
+        entity_id: input_boolean.movie_night_active
+        state: "on"
+    action:
+      - service: cover.open_cover
+        data:
+          entity_id: cover.living_room_window
+      - service: cover.open_cover
+        data:
+          entity_id: cover.kitchen_window
+
+# ------------------------------------------------------------------
+# 3.  Smoke detector – emergency override
+# ------------------------------------------------------------------
+  - alias: "Smoke detected – emergency lights on"
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.smoke_detector
+        to: "on"
+    action:
+      # Stop all other automations by turning off the movie‑night flag
+      - service: input_boolean.turn_off
+        data:
+          entity_id: input_boolean.movie_night_active
+      # Turn all lights to 100 %
+      - service: light.turn_on
+        data:
+          entity_id: all
+          brightness_pct: 100
+      # Optionally, unlock all doors for egress
+      - service: lock.unlock
+        data:
+          entity_id: all
+
+# ------------------------------------------------------------------
+# 4.  Sleep‑out rule – turn everything off after 2 h of inactivity
+# ------------------------------------------------------------------
+  - alias: "Sleep‑out – turn everything off after 2 h inactivity"
+    trigger:
+      - platform: time_pattern
+        minutes: 5   # check every 5 min
+    condition:
+      - condition: template
+        value_template: >
+          {{ (now() - state_attr('input_boolean.movie_night_active', 'last_changed')).total_seconds() > 7200 }}
+      - condition: state
+        entity_id: input_boolean.movie_night_active
+        state: "off"
+    action:
+      # Turn off lights, lock doors, close blinds, etc.
+      - service: light.turn_off
+        data:
+          entity_id: all
+      - service: lock.lock
+        data:
+          entity_id: all
+      - service: cover.close_cover
+        data:
+          entity_id: all
+      - service: climate.set_temperature
+        data:
+          entity_id: climate.home
+          temperature: 68
+      - service: input_boolean.turn_off
+        data:
+          entity_id: input_boolean.do_not_disturb
+
+# ------------------------------------------------------------------
+# 5.  Helper input_booleans
+# ------------------------------------------------------------------
+input_boolean:
+  movie_night_active:
+    name: "Movie Night Active"
+    initial: off
+  do_not_disturb:
+    name: "Do Not Disturb"
+    initial: off
+```
+
+### How the logic satisfies every requirement
+
+| Requirement | How it’s handled |
+|-------------|------------------|
+| **Movie night** | Script `movie_night` runs when the user says “movie night.” |
+| **Dim lights to 5 %** | All lights are dimmed to 5 % *except* the hallway lights. |
+| **Keep hallway lights bright** | Hallway lights are set to 100 %. |
+| **Close all blinds** | `cover.close_cover` on all blinds. |
+| **Set thermostat to 72 °F** | `climate.set_temperature` to 72. |
+| **Turn on sound system & projector** | `media_player.turn_on` for both. |
+| **Lock all doors** | All doors locked, dog door unlocked. |
+| **Activate security cameras** | `camera.turn_on` for all cameras. |
+| **Set house to “do not disturb”** | `input_boolean.do_not_disturb` turned on. |
+| **Open living‑room windows** | `cover.open_cover` for living‑room window. |
+| **Leave dog door unlocked** | Explicitly unlocked in the script. |
+| **Keep hallway lights bright** | Handled in the lighting step. |
+| **CO₂ > 1000 ppm → force‑open windows** | Automation opens all windows regardless of other settings. |
+| **Smoke detector → stop all automations, lights 100 %** | Automation turns off the movie‑night flag, sets all lights to 100 %, and unlocks all doors. |
+| **No movement for 2 h → turn everything off** | Automation checks inactivity, but only fires if movie night is *not* active. |
+
+---
+
+### Summary of Conflict Resolutions
+
+1. **Lighting** – Dim all lights *except* hallway lights.  
+2. **Doors** – Lock every door *except* the dog door.  
+3. **Sleep‑out vs. Movie‑night** – The sleep‑out rule only fires when movie night is inactive.
+
+With these rules in place, the house behaves predictably, respects the user’s commands, and safely overrides everything in case of CO₂ spikes, smoke, or prolonged inactivity.

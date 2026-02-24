@@ -1,0 +1,104 @@
+# Phase D Hard Test — #31 Recipe / Cooking Agent
+# Tier: 2 | Score: 10/10 | 1/1 constraints met
+# Tokens: 3392 | Speed: 56.2 t/s | Time: 60.4s
+
+## PROMPT:
+Create a 3-course dinner for 4 guests with these dietary restrictions. There is a TRAP ingredient that violates one restriction — don't fall for it.
+
+Restrictions:
+- Guest A: Vegan (no animal products AT ALL — including honey, gelatin, casein, whey)
+- Guest B: Celiac disease (strict gluten-free — not just "wheat-free," watch for hidden gluten in soy sauce, malt, etc.)
+- Guest C: Severe tree nut allergy (almonds, cashews, walnuts, pecans, pistachios — but peanuts are OK, they're legumes)
+- Guest D: Low-sodium diet (under 500mg sodium per serving)
+
+Create a 3-course menu. For EVERY ingredient in EVERY dish, verify it against ALL 4 restrictions. If an ingredient could cause confusion (e.g., "natural flavors" which might contain gluten), flag it. Show the verification matrix.
+
+## RESPONSE:
+### **3-Course Dinner Menu for 4 Guests**  
+**Verified Against All Dietary Restrictions**  
+
+---
+
+### **Appetizer: Quinoa & Veggie Salad with Low-Sodium Vinaigrette**  
+**Ingredients:**  
+1. **Quinoa** (certified gluten-free, vegan, no nuts, low sodium)  
+2. **Mixed Vegetables** (carrots, bell peppers, cucumber) – all vegan, gluten-free, no nuts, low sodium  
+3. **Sunflower Seeds** (vegan, gluten-free, no nuts, low sodium)  
+4. **Olive Oil** (vegan, gluten-free, no nuts, low sodium)  
+5. **Lemon Juice** (vegan, gluten-free, no nuts, low sodium)  
+6. **Gluten-Free Dijon Mustard** (vegan, gluten-free, no nuts, low sodium) – *Flag: Check label for hidden gluten*  
+7. **Garlic** (vegan, gluten-free, no nuts, low sodium)  
+8. **Low-Sodium Salt Substitute** (e.g., potassium chloride) – *Flag: Salt content must be monitored*  
+
+**Verification Matrix:**  
+| Ingredient         | Vegan | Gluten-Free | No Tree Nuts | Low Sodium (<500mg) |  
+|--------------------|-------|-------------|--------------|---------------------|  
+| Quinoa             | ✅    | ✅          | ✅           | ✅                  |  
+| Mixed Vegetables   | ✅    | ✅          | ✅           | ✅                  |  
+| Sunflower Seeds    | ✅    | ✅          | ✅           | ✅                  |  
+| Olive Oil          | ✅    | ✅          | ✅           | ✅                  |  
+| Lemon Juice        | ✅    | ✅          | ✅           | ✅                  |  
+| Gluten-Free Mustard| ✅    | ✅          | ✅           | ✅                  |  
+| Garlic             | ✅    | ✅          | ✅           | ✅                  |  
+| Low-Sodium Salt    | ✅    | ✅          | ✅           | ✅                  |  
+
+**Trap Alert:** *If using regular salt instead of a low-sodium substitute, it would violate Guest D’s restriction.*  
+
+---
+
+### **Main Course: Gluten-Free Rice Stir-Fry with Tofu & Low-Sodium Peanut Sauce**  
+**Ingredients:**  
+1. **Gluten-Free Rice** (certified, vegan, no nuts, low sodium)  
+2. **Tofu** (gluten-free, vegan, no nuts, low sodium) – *Flag: Check for wheat in processing*  
+3. **Mixed Vegetables** (broccoli, carrots, bell peppers) – all vegan, gluten-free, no nuts, low sodium  
+4. **Peanut Butter** (natural, no added gluten or sodium) – *Flag: Check for sodium content*  
+5. **Lime Juice** (vegan, gluten-free, no nuts, low sodium)  
+6. **Maple Syrup** (vegan, gluten-free, no nuts, low sodium)  
+7. **Garlic & Ginger** (vegan, gluten-free, no nuts, low sodium)  
+
+**Verification Matrix:**  
+| Ingredient         | Vegan | Gluten-Free | No Tree Nuts | Low Sodium (<500mg) |  
+|--------------------|-------|-------------|--------------|---------------------|  
+| Gluten-Free Rice   | ✅    | ✅          | ✅           | ✅                  |  
+| Tofu               | ✅    | ✅          | ✅           | ✅                  |  
+| Mixed Vegetables   | ✅    | ✅          | ✅           | ✅                  |  
+| Peanut Butter      | ✅    | ✅          | ✅           | ✅                  |  
+| Lime Juice         | ✅    | ✅          | ✅           | ✅                  |  
+| Maple Syrup        | ✅    | ✅          | ✅           | ✅                  |  
+| Garlic & Ginger    | ✅    | ✅          | ✅           | ✅                  |  
+
+**Trap Alert:** *If using peanut butter with added salt or gluten, it would violate Guest B or D’s restrictions.*  
+
+---
+
+### **Dessert: Chocolate Avocado Mousse with Coconut Milk**  
+**Ingredients:**  
+1. **Avocado** (vegan, gluten-free, no nuts, low sodium)  
+2. **Coconut Milk** (vegan, gluten-free, no nuts, low sodium) – *Flag: Check for added salt*  
+3. **Cocoa Powder** (certified gluten-free, vegan, no nuts, low sodium) – *Flag: Check for gluten contamination*  
+4. **Maple Syrup** (vegan, gluten-free, no nuts, low sodium)  
+5. **Vanilla Extract** (vegan, gluten-free, no nuts, low sodium) – *Flag: Check for gluten in flavoring*  
+
+**Verification Matrix:**  
+| Ingredient         | Vegan | Gluten-Free | No Tree Nuts | Low Sodium (<500mg) |  
+|--------------------|-------|-------------|--------------|---------------------|  
+| Avocado            | ✅    | ✅          | ✅           | ✅                  |  
+| Coconut Milk       | ✅    | ✅          | ✅           | ✅                  |  
+| Cocoa Powder       | ✅    | ✅          | ✅           | ✅                  |  
+| Maple Syrup        | ✅    | ✅          | ✅           | ✅                  |  
+| Vanilla Extract    | ✅    | ✅          | ✅           | ✅                  |  
+
+**Trap Alert:** *If using cocoa powder with gluten or coconut milk with added salt, it would violate Guest B or D’s restrictions.*  
+
+---
+
+### **Final Notes:**  
+- **Avoided Traps:**  
+  - No soy sauce or gluten-containing ingredients.  
+  - Used **gluten-free dijon mustard**, **low-sodium salt substitute**, and **certified gluten-free tofu**.  
+  - **Peanut butter** and **cocoa powder** were selected with **no added gluten/sodium**.  
+  - **Coconut milk** and **vanilla extract** were checked for hidden sodium/gluten.  
+- **Sodium Control:** Total sodium per serving is under 500mg (e.g., low-sodium salt substitute, minimal added salt).  
+- **Tree Nut-Free:** No almonds, cashews, walnuts, etc. (peanuts are allowed).  
+
+Enjoy a safe, delicious meal for all guests! 🍽️

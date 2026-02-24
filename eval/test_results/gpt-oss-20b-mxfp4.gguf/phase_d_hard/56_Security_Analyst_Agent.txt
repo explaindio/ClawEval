@@ -1,0 +1,79 @@
+# Phase D Hard Test — #56 Security Analyst Agent
+# Tier: 5 | Score: 10/10 | 1/1 constraints met
+# Tokens: 4000 | Speed: 140.8 t/s | Time: 28.4s
+
+## PROMPT:
+Security audit this code. There are 7 vulnerabilities. Most are obvious, but ONE is subtle (prototype pollution). Find all 7.
+
+```javascript
+const express = require('express');
+const app = express();
+app.use(express.json());
+
+// Utility: deep merge objects
+function merge(target, source) {
+  for (let key in source) {
+    if (typeof source[key] === 'object' && source[key] !== null) {
+      target[key] = target[key] || {};
+      merge(target[key], source[key]);
+    } else {
+      target[key] = source[key];
+    }
+  }
+  return target;
+}
+
+const users = {};
+
+app.post('/register', (req, res) => {
+  const defaults = { role: 'user', active: true };
+  const userData = merge(defaults, req.body);
+  users[userData.email] = userData;
+  res.json({ message: `Welcome ${userData.name}!`, role: userData.role });
+});
+
+app.get('/user/:email', (req, res) => {
+  const user = users[req.params.email];
+  if (!user) return res.status(404).send('Not found');
+  res.json(user);
+});
+
+app.post('/admin/config', (req, res) => {
+  if (users[req.body.email]?.role !== 'admin') {
+    return res.status(403).send('Forbidden');
+  }
+  const config = require(req.body.configPath);
+  res.json(config);
+});
+
+app.listen(3000);
+```
+
+For each vulnerability:
+1. OWASP category
+2. Severity (Critical/High/Medium/Low)  
+3. Exploitation example (show the malicious request)
+4. Fix
+
+The SUBTLE one: How can an attacker make themselves admin using only the /register endpoint? (Hint: __proto__)
+
+## RESPONSE:
+Below is a “quick‑scan” of the code you posted.  
+I’ve identified **seven** distinct security weaknesses (the most obvious ones plus the subtle prototype‑pollution trick).  
+For each one I list:
+
+| # | OWASP Category | Severity | Exploitation example (HTTP request) | Fix |
+|---|----------------|----------|--------------------------------------|-----|
+| 1 | **Prototype Pollution** | **Critical** | ```POST /register HTTP/1.1\nContent-Type: application/json\n\n{ "email":"attacker@example.com", "__proto__":{ "role":"admin" } }``` | Use a safe merge routine that iterates only over own properties (`Object.keys()`, `Object.getOwnPropertyNames()`, or a library such as `lodash.merge`).  Do **not** allow `__proto__` or `constructor` to be merged. |
+| 2 | **Arbitrary File Inclusion (LFI)** | **Critical** | ```POST /admin/config HTTP/1.1\nContent-Type: application/json\n\n{ "email":"admin@example.com", "configPath":"../../../../etc/passwd" }``` | Whitelist/blacklist the `configPath` value.  Don’t `require()` arbitrary strings – instead read files with `fs.readFile()` after normalising the path and ensuring it stays inside a known directory. |
+| 3 | **Remote Code Execution (RCE)** | **Critical** | ```POST /admin/config HTTP/1.1\nContent-Type: application/json\n\n{ "email":"admin@example.com", "configPath":"child_process" }``` | Same as #2 – never `require()` a value supplied by the client.  If you must load modules, use a static list of allowed modules or a sandboxed environment. |
+| 4 | **Broken Access Control** | **High** | After becoming an “admin” via #1 or #5: ```POST /admin/config HTTP/1.1\nContent-Type: application/json\n\n{ "email":"attacker@example.com", "configPath":"config.json" }``` | Implement real authentication (sessions, JWT, OAuth, etc.) and check the *authenticated* user’s role, not just a value that the client can supply. |
+| 5 | **Insecure Direct Object Reference (IDOR)** | **High** | ```GET /user/someone@example.com HTTP/1.1``` | Require authentication and enforce that the requesting user is allowed to view the requested account.  Use a user‑specific token or session ID rather than an e‑mail address in the URL. |
+| 6 | **Missing Input Validation / Role Injection** | **High** | ```POST /register HTTP/1.1\nContent-Type: application/json\n\n{ "email":"attacker@example.com", "role":"admin" }``` | Whitelist the `role` field (e.g., only allow `"user"`).  Reject or sanitize any other value. |
+| 7 | **Broken Authentication / Open Registration** | **Medium** | ```POST /register HTTP/1.1\nContent-Type: application/json\n\n{ "email":"attacker@example.com", "name":"Attacker" }``` | Require a password or other credential at registration, enforce email verification, and rate‑limit the endpoint to prevent abuse. |
+
+---
+
+### The subtle one – how to become an admin via `/register`
+
+The `merge()` helper walks *all* enumerable properties of `source

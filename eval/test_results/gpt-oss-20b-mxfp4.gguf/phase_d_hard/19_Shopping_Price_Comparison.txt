@@ -1,0 +1,72 @@
+# Phase D Hard Test — #19 Shopping / Price Comparison
+# Tier: 2 | Score: 10/10 | 1/1 constraints met
+# Tokens: 2895 | Speed: 141.4 t/s | Time: 20.5s
+
+## PROMPT:
+Compare these 4 products. WARNING: The cheapest option is NOT the best value when you calculate total cost of ownership. Show your math.
+
+Product A — Laptop Alpha: $899
+- 8GB RAM (non-upgradable), 256GB SSD
+- Battery: 6 hours, replacement cost $200
+- Expected lifespan: 3 years, no extended warranty available
+- Required accessories: $150 dock, $80 adapter
+
+Product B — Laptop Beta: $1,299
+- 16GB RAM, 512GB SSD (user upgradable)
+- Battery: 10 hours, replaceable ($80)
+- Expected lifespan: 5 years, extended warranty $100/year
+- All ports included, no accessories needed
+
+Product C — Laptop Gamma: $749
+- 8GB RAM, 128GB SSD
+- Battery: 4 hours, non-replaceable
+- Expected lifespan: 2 years, no warranty
+- Required: $200 external SSD, $150 dock, $80 adapter
+
+Product D — Laptop Delta: $1,099
+- 16GB RAM, 256GB SSD
+- Battery: 8 hours, replacement $150
+- Expected lifespan: 4 years, warranty included
+- Required: $80 adapter
+
+Calculate 5-year total cost of ownership for each (include purchase + accessories + replacements + warranty). Recommend the best value.
+
+## RESPONSE:
+**5‑Year Total Cost of Ownership (TOC)**  
+
+| Item | Product A | Product B | Product C | Product D |
+|------|-----------|-----------|-----------|-----------|
+| **Purchase price** | $899 | $1,299 | $749 | $1,099 |
+| **Accessories** | $150 dock + $80 adapter = **$230** | $0 | $200 SSD + $150 dock + $80 adapter = **$430** | $80 adapter |
+| **Battery replacement** | 1 × $200 (after 3 yrs) = **$200** | 0 (5‑yr battery life) | 0 (non‑replaceable) | 1 × $150 (after 4 yrs) = **$150** |
+| **Warranty** | 0 | 5 yrs × $100 = **$500** | 0 | 0 (included) |
+| **Subtotal** | $899 + $230 + $200 = **$1,329** | $1,299 + $500 = **$1,799** | $749 + $430 = **$1,179** | $1,099 + $80 + $150 = **$1,329** |
+| **5‑Year TOC** | **$1,329** | **$1,799** | **$1,179** | **$1,329** |
+
+> **Key take‑away:**  
+> The cheapest option on paper (Product C) is actually the *least* economical when you factor in its short lifespan and lack of warranty.  
+
+---
+
+### Why Product B is the best value
+
+| Metric | Product A | Product B | Product C | Product D |
+|--------|-----------|-----------|-----------|-----------|
+| **RAM** | 8 GB | **16 GB** | 8 GB | 16 GB |
+| **SSD** | 256 GB | **512 GB** | 128 GB | 256 GB |
+| **Battery life** | 6 h | **10 h** | 4 h | 8 h |
+| **Expected lifespan** | 3 yrs | **5 yrs** | 2 yrs | 4 yrs |
+| **Warranty** | None | 5 yr $100/yr | None | Included |
+| **Cost per “performance unit”** | $4.92 | **$3.34** | $8.42 | $4.74 |
+
+*Performance unit* = (RAM GB + SSD GB + Battery hrs).  
+Product B delivers the highest performance for the lowest cost per unit, and its 5‑year lifespan plus an inexpensive warranty make it the most reliable long‑term investment.
+
+---
+
+### Bottom line recommendation
+
+- **Best overall value:** **Product B (Laptop Beta)** – highest performance, longest usable life, and a modest warranty cost.  
+- **Cheapest upfront:** **Product C (Laptop Gamma)** – but its 2‑year life and no warranty mean you’ll likely need a replacement sooner, erasing the initial savings.  
+
+> **Tip:** If you’re willing to pay a bit more now, Product B gives you the most “bang for the buck” over five years.

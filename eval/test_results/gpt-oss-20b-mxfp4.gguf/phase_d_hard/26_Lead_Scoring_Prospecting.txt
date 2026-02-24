@@ -1,0 +1,66 @@
+# Phase D Hard Test — #26 Lead Scoring / Prospecting
+# Tier: 2 | Score: 10/10 | 1/1 constraints met
+# Tokens: 1554 | Speed: 141.1 t/s | Time: 11.0s
+
+## PROMPT:
+Score these 5 leads. WARNING: The lead with the MOST engagement is actually a tire-kicker, not your best prospect. Identify them.
+
+Lead 1: "CTO at a 50-person startup. Downloaded every whitepaper (12 total), attended 3 webinars, watches all YouTube content. Has been doing this for 18 months. No demo request. When sales reached out, said 'just researching, no timeline.'"
+
+Lead 2: "VP Engineering at 200-person company. Visited pricing page once 3 months ago. No other activity."
+
+Lead 3: "Developer at enterprise company (5000 employees). Created free account, built a POC over 2 weeks, invited 3 teammates. Just asked about SSO integration."
+
+Lead 4: "Procurement manager at 300-person company. First visit to site yesterday, immediately went to pricing, downloaded security whitepaper, submitted a form asking about SOC 2 compliance and volume discounts. Mentioned Q2 budget allocation."
+
+Lead 5: "Founder of 10-person agency. Signed up for free trial, very active for 3 days, then completely silent for 6 weeks."
+
+Score each 1-100, identify the tire-kicker, rank them, and explain your reasoning.
+
+## RESPONSE:
+**Lead Scores (1 – 100)**  
+
+| Lead | Score | Reasoning |
+|------|-------|-----------|
+| **Lead 1 – CTO, 50‑person startup** | **55** | • Very high content‑engagement (12 whitepapers, 3 webinars, full YouTube library).  <br>• No demo request and “just researching” with no timeline → low intent.  <br>• Typical “tire‑kicker” profile: high curiosity, low buying signal. |
+| **Lead 2 – VP Engineering, 200‑person company** | **25** | • Only a single pricing‑page visit 3 months ago.  <br>• No further activity, no budget or timeline mention.  <br>• Very low intent and weak fit signal. |
+| **Lead 3 – Developer, 5 000‑employee enterprise** | **75** | • Created a free account, built a POC in 2 weeks, and invited 3 teammates.  <br>• Asked a concrete integration question (SSO).  <br>• High engagement + clear technical intent → good fit for a product‑heavy buyer. |
+| **Lead 4 – Procurement Manager, 300‑person company** | **90** | • Immediate pricing‑page visit, security whitepaper download, and a form asking about SOC 2 & volume discounts.  <br>• Explicit mention of Q2 budget allocation → strong buying intent.  <br>• Excellent fit (role, company size, budget). |
+| **Lead 5 – Founder, 10‑person agency** | **35** | • Active for 3 days during free trial, then 6 weeks of silence.  <br>• Initial curiosity but no follow‑up or budget signal.  <br>• Small company size limits deal size; low intent after trial. |
+
+---
+
+### 1. Identify the tire‑kicker  
+**Lead 1** is the tire‑kicker. The CTO shows the *most* engagement (12 whitepapers, 3 webinars, full YouTube consumption), yet he has no demo request, no timeline, and explicitly says he’s “just researching.” That classic high‑engagement‑but‑low‑intent profile is the hallmark of a tire‑kicker.
+
+---
+
+### 2. Ranking (highest to lowest score)
+
+1. **Lead 4 – Procurement Manager (90)**  
+2. **Lead 3 – Developer (75)**  
+3. **Lead 1 – CTO (55)** – *tire‑kicker*  
+4. **Lead 5 – Founder (35)**  
+5. **Lead 2 – VP Engineering (25)**  
+
+---
+
+### 3. Why the scores look the way they do
+
+| Factor | How it’s weighted | Lead 1 | Lead 2 | Lead 3 | Lead 4 | Lead 5 |
+|--------|-------------------|--------|--------|--------|--------|--------|
+| **Fit** (company size, role relevance) | 20 pts | 10 | 10 | 10 | 10 | 5 |
+| **Engagement** (content consumption, site activity) | 25 pts | 20 | 5 | 20 | 20 | 10 |
+| **Intent** (budget, timeline, concrete questions) | 35 pts | 5 | 5 | 20 | 30 | 10 |
+| **Deal‑size potential** (company size, role authority) | 20 pts | 10 | 10 | 10 | 10 | 5 |
+| **Total** | 100 | 55 | 25 | 75 | 90 | 35 |
+
+- **Lead 4** scores highest because it combines strong intent (budget, compliance questions) with good fit and engagement.  
+- **Lead 3** scores high due to active product testing and a concrete integration question, indicating real buying intent.  
+- **Lead 1** gets a mid‑range score: engagement is high, but intent is essentially zero, so the score is capped.  
+- **Lead 5** shows a brief burst of activity but no follow‑up, so the intent component is weak.  
+- **Lead 2** is the lowest: a single pricing‑page visit with no other signals.
+
+---
+
+**Bottom line:** Focus first on Lead 4, then Lead 3. Lead 1 is a tire‑kicker; you can keep it warm but don’t prioritize it. Lead 5 and Lead 2 are low‑priority prospects.

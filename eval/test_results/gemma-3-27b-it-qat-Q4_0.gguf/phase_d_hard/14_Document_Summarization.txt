@@ -1,0 +1,27 @@
+# Phase D Hard Test — #14 Document Summarization
+# Tier: 2 | Score: 5/10 | No automated constraints to check
+# Tokens: 305 | Speed: 33.9 t/s | Time: 9.0s
+
+## PROMPT:
+Summarize this document in exactly 5 bullet points. ONE critical fact is buried in the middle paragraph that most people miss — your summary MUST include it.
+
+"Our platform migration is proceeding on schedule. The frontend team completed the React 18 upgrade last week, achieving a 30% improvement in initial load times. User testing shows 92% satisfaction with the new UI components. The design system now includes 47 reusable components.
+
+The backend infrastructure has been moved to Kubernetes across 3 availability zones. Database replication lag is under 50ms. We implemented automated API key rotation every 90 days, which means any integration partner who has hardcoded their API keys will experience authentication failures. This needs to be communicated before the next rotation on March 15th. Redis caching reduced average response time from 340ms to 45ms.
+
+Deployment frequency increased from weekly to daily with the new CI/CD pipeline. The error rate dropped from 2.1% to 0.3%. Mobile app downloads grew 25% month over month. Revenue is up 18% YoY with 340 enterprise customers now on the platform."
+
+Which fact is the most operationally critical and time-sensitive? It should be in your summary.
+
+## RESPONSE:
+Here's a 5-bullet point summary of the document, including the often-missed critical fact:
+
+*   **Migration On Track:** The platform migration is progressing as planned, with frontend React 18 upgrades resulting in a 30% faster initial load time and high user satisfaction (92%).
+*   **Robust Backend:** The backend infrastructure is now running on Kubernetes across three availability zones, boasting database replication lag under 50ms and improved performance via Redis caching (response time reduced from 340ms to 45ms).
+*   **Automated API Key Rotation – *CRITICAL ACTION REQUIRED*:** Automated API key rotation is now in place every 90 days; **integrations using hardcoded API keys will fail after March 15th and require immediate updating.**
+*   **Increased Velocity:** Deployment frequency has increased to daily thanks to a new CI/CD pipeline, leading to a significant error rate reduction (from 2.1% to 0.3%).
+*   **Positive Business Impact:** The migration is driving positive business outcomes, with an 18% year-over-year revenue increase, 340 enterprise customers, and 25% month-over-month growth in mobile app downloads.
+
+
+
+**The most operationally critical and time-sensitive fact is the automated API key rotation and the impending March 15th deadline.** Failure to notify integration partners will cause widespread outages and impact revenue.

@@ -1,0 +1,77 @@
+# Phase D Hard Test — #18 News Aggregation Agent
+# Tier: 2 | Score: 5/10 | No automated constraints to check
+# Tokens: 1012 | Speed: 35.8 t/s | Time: 28.3s
+
+## PROMPT:
+Process these 8 headlines. Some are about the SAME story from different angles (identify which). One pair contains contradictory information (flag it). Assess source reliability.
+
+1. Reuters: "TechCorp reports Q4 revenue of $12.3B, beating estimates by 8%"
+2. BlogSpam.io: "SHOCKING: TechCorp hiding massive losses behind revenue numbers!!"
+3. WSJ: "TechCorp Q4 revenue misses analyst expectations, stock drops 3%"
+4. AP: "EU announces new AI regulation framework affecting US tech companies"
+5. TechCrunch: "TechCorp's cloud division drives Q4 beat, revenue hits $12.3B"
+6. Reuters: "European Commission proposes AI Act amendments with stricter compliance timelines"
+7. RandomBlog2024.com: "AI regulations will DESTROY the tech industry forever!!!"
+8. Bloomberg: "TechCorp CEO discusses AI strategy after strong Q4 earnings"
+
+Tasks:
+1. Group stories that cover the same event
+2. Identify the contradictory pair (headline 1 vs 3) and assess which is more likely accurate
+3. Rate each source's reliability (1-10)
+4. Create a briefing with only the verified, deduplicated information
+
+## RESPONSE:
+## Headline Processing & Briefing
+
+Here's a breakdown of the headlines, grouped, with contradictions flagged, reliability assessed, and a final briefing.
+
+**1. Grouping Stories Covering the Same Event:**
+
+* **Group 1: TechCorp Q4 Earnings:** Headlines 1, 3, 5, & 8 all relate to TechCorp's fourth-quarter financial performance.
+* **Group 2: EU AI Regulation:** Headlines 4 & 6 both discuss the European Union's new AI regulation framework.
+* **Headline 7: (Standalone):** Headline 7 is an opinion piece and doesn't directly report on a specific event, but rather a prediction.
+
+**2. Contradictory Pair & Assessment:**
+
+* **Contradictory Pair:** Headlines **1 (Reuters: "TechCorp reports Q4 revenue of $12.3B, beating estimates by 8%")** and **3 (WSJ: "TechCorp Q4 revenue misses analyst expectations, stock drops 3%")** present opposing views on the same earnings report.
+
+* **Assessment of Accuracy:** **Reuters (Headline 1) is more likely accurate.** Here's why:
+    * **Reuters & WSJ Reputation:** Reuters is a highly respected, established news agency known for factual reporting. The Wall Street Journal is also reputable, but often focuses on market reactions *after* the initial report.
+    * **"Beating Estimates" vs. "Missing Expectations":**  It's possible for a company to report revenue that is higher than the *previous* estimate, but still lower than what some analysts were *individually* predicting. However, "beating estimates" is a standard financial reporting term and suggests a general consensus was surpassed.
+    * **Stock Drop as a Reaction:** The stock drop in Headline 3 is a *consequence* of the report, not necessarily the report itself.  The market could react negatively to other factors revealed in the earnings call (future guidance, etc.) even if revenue was technically positive.
+    * **TechCrunch corroboration:** Headline 5 supports Reuters' claim of a revenue beat.
+
+**3. Source Reliability Rating (1-10, 10 being most reliable):**
+
+* **Reuters:** 9/10 - Extremely reliable.  Known for accuracy, speed, and impartiality.
+* **BlogSpam.io:** 2/10 - Highly unreliable. The name itself suggests sensationalism and lack of journalistic integrity. Likely biased and prone to misinformation.
+* **WSJ (Wall Street Journal):** 8/10 - Very reliable.  Reputable financial publication, but can sometimes focus on market impact and interpretation.
+* **AP (Associated Press):** 8/10 - Very reliable.  Another established news agency with a strong commitment to factual reporting.
+* **TechCrunch:** 7/10 - Generally reliable for tech news, but can lean towards a more optimistic perspective and focus on startup/growth stories.
+* **European Commission (via Reuters):** 9/10 - Direct source, highly reliable for information about its own policies.
+* **RandomBlog2024.com:** 1/10 - Extremely unreliable.  Generic name, hyperbolic language ("DESTROY forever!!!"), and lack of any established journalistic credentials.
+* **Bloomberg:** 8/10 - Very reliable.  Leading financial news source, known for in-depth reporting and analysis.
+
+**4. Briefing: Verified, Deduplicated Information**
+
+**TechCorp Q4 Earnings Report – February 2024**
+
+TechCorp reported Q4 revenue of **$12.3 billion**, **exceeding analyst estimates by 8%**.  The company's **cloud division** was a key driver of this positive performance.  The CEO discussed the company's **AI strategy** following the earnings announcement.  While revenue beat expectations, the stock price experienced a **3% drop**, likely due to market reaction to other factors revealed during the earnings call.
+
+**European Union AI Regulation – February 2024**
+
+The European Commission has proposed **amendments to the AI Act**, introducing **stricter compliance timelines** for US tech companies and other organizations operating within the EU.  The framework aims to regulate artificial intelligence technologies.
+
+
+
+**Notes:**
+
+*   I prioritized Reuters, AP, WSJ, and Bloomberg as primary sources.
+*   TechCrunch was used to provide additional context (cloud division).
+*   BlogSpam.io and RandomBlog2024.com were disregarded due to their unreliability.
+*   The briefing focuses on *facts* reported, not opinions or predictions.
+*   The stock drop is included as a consequence of the report, but not presented as a definitive negative outcome.
+
+
+
+

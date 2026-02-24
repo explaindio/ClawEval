@@ -1,0 +1,79 @@
+# Phase D Hard Test — #48 STEM Analysis
+# Tier: 4 | Score: 10/10 | 2/2 constraints met
+# Tokens: 1265 | Speed: 34.6 t/s | Time: 36.5s
+
+## PROMPT:
+Analyze this experimental data. There's a CONFOUNDING VARIABLE that invalidates the researcher's conclusion. Find it.
+
+Experiment: Testing whether a new fertilizer increases crop yield.
+
+Group A (fertilizer): 20 plots, avg yield 8.2 tons/hectare, std dev 1.1
+Group B (control): 20 plots, avg yield 6.4 tons/hectare, std dev 1.3
+
+Researcher's conclusion: "The fertilizer increased yield by 28% (p < 0.01). The fertilizer clearly works."
+
+Hidden data (not in the paper's abstract):
+- Group A plots: southern slope, clay soil, received 20% more sunlight in May
+- Group B plots: northern slope, sandy soil
+- The study was not randomized — farmers who CHOSE the fertilizer happened to own the better plots
+- 3 of the 20 control plots had a pest outbreak mid-season
+
+Questions:
+1. Is the p-value meaningful given the experimental design? Why or why not?
+2. List ALL confounding variables
+3. What type of bias is present? (selection bias, measurement bias, etc.)
+4. Design a proper experiment that would actually test the fertilizer
+5. Calculate: IF we remove the 3 pest-affected plots, what is the new control average? (remaining 17 plots had avg 7.1 tons) Does this change the conclusion?
+
+## RESPONSE:
+Okay, let's break down this experiment and its flaws.
+
+**1. Is the p-value meaningful given the experimental design? Why or why not?**
+
+No, the p-value is **not meaningful**. A p-value of <0.01 suggests strong evidence *if* the experiment was well-controlled. However, this experiment is fundamentally flawed due to a lack of randomization and the presence of confounding variables. The p-value only tells you how likely the observed difference is *if* the only difference between the groups is the fertilizer. Here, many other differences exist, making it impossible to attribute the yield difference solely to the fertilizer.  The p-value is likely a false positive – it's showing statistical significance where none truly exists regarding the fertilizer's effect.
+
+**2. List ALL confounding variables**
+
+Here's a comprehensive list of confounding variables:
+
+*   **Slope (Southern vs. Northern):** Southern slopes receive more sunlight, which directly impacts plant growth.
+*   **Soil Type (Clay vs. Sandy):** Clay soil retains more water and nutrients than sandy soil, affecting yield.
+*   **Sunlight Exposure (20% more in May for Group A):** May is a critical growth month; more sunlight is a significant advantage.
+*   **Farmer Choice:**  The fact that farmers *chose* to use the fertilizer means they likely already had better land or were more skilled/motivated farmers. This is a huge factor.
+*   **Pest Outbreak (in 3 control plots):** While addressed later, the initial pest outbreak is a variable that affects the control group's yield.
+
+**3. What type of bias is present?**
+
+The primary bias present is **selection bias**. Farmers self-selected into the fertilizer group, and this selection was *not* random.  This means the groups were inherently different at the start of the experiment, and those differences (better land, more sunlight, etc.) are likely responsible for the yield difference, not the fertilizer itself. There's also a hint of **performance bias** as farmers who believe in the fertilizer might provide better care to those plots.
+
+**4. Design a proper experiment that would actually test the fertilizer**
+
+Here's how to design a robust experiment:
+
+1.  **Randomization:**  This is *crucial*.  Randomly assign plots to either the fertilizer group or the control group.  Use a random number generator or similar method to ensure each plot has an equal chance of being in either group.
+2.  **Control Group:**  The control group receives *no* fertilizer.
+3.  **Blinding (if possible):** Ideally, the people applying the fertilizer and measuring the yield should be "blinded" to which plots are which. This prevents unconscious bias in how they treat the plants or record data.  (This might be difficult if the fertilizer has a very obvious appearance).
+4.  **Standardization:**
+    *   **Same Soil Type:**  Ideally, conduct the experiment on a field with relatively uniform soil type. If that's not possible, stratify the randomization (see below).
+    *   **Same Slope:** Use plots with similar slope.
+    *   **Same Sunlight Exposure:** Choose plots with comparable sunlight exposure.
+    *   **Same Watering/Care:**  All plots receive the same amount of water, weeding, and other standard agricultural practices.
+5.  **Stratified Randomization (if necessary):** If you *can't* control for soil type or slope perfectly, use stratified randomization.  Divide the field into strata based on soil type (e.g., clay, loam, sandy) and slope (e.g., north-facing, south-facing).  Then, *within each stratum*, randomly assign plots to the fertilizer and control groups. This ensures a balanced representation of each soil/slope type in both groups.
+6.  **Sufficient Sample Size:**  20 plots per group is a reasonable starting point, but a larger sample size (e.g., 50 or more) would increase the statistical power of the experiment.
+7.  **Data Collection:**  Carefully measure the yield from each plot using a standardized method.
+8.  **Statistical Analysis:** Use a t-test or ANOVA to compare the average yield of the fertilizer group to the control group.  Report the p-value *and* confidence intervals.
+
+**5. Calculate: IF we remove the 3 pest-affected plots, what is the new control average? (remaining 17 plots had avg 7.1 tons) Does this change the conclusion?**
+
+*   **Original Control Total:** 20 plots * 6.4 tons/hectare = 128 tons
+*   **Pest-Affected Plots Total:** 3 plots * 6.4 tons/hectare = 19.2 tons
+*   **New Control Total:** 128 tons - 19.2 tons = 108.8 tons
+*   **New Control Average:** 108.8 tons / 17 plots = **6.4 tons/hectare** (rounded to one decimal place)
+
+**Does this change the conclusion?**
+
+No, removing the pest-affected plots does *not* change the conclusion. The average remains the same. The original difference between the groups (8.2 tons vs. 6.4 tons) still exists, but it's still likely due to the confounding variables, not the fertilizer.  Removing the pest plots addresses one issue, but it doesn't solve the fundamental problem of the non-randomized design and the other pre-existing differences between the groups.  The p-value remains misleading. You still cannot conclude that the fertilizer is effective.
+
+
+
+In summary, this experiment is a classic example of correlation not equaling causation. The observed yield difference is almost certainly due to factors other than the fertilizer, and a properly randomized, controlled experiment is needed to draw valid conclusions.

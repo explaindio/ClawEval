@@ -1,0 +1,194 @@
+# Phase D Hard Test — #56 Security Analyst Agent
+# Tier: 5 | Score: 10/10 | 1/1 constraints met
+# Tokens: 1465 | Speed: 34.7 t/s | Time: 42.2s
+
+## PROMPT:
+Security audit this code. There are 7 vulnerabilities. Most are obvious, but ONE is subtle (prototype pollution). Find all 7.
+
+```javascript
+const express = require('express');
+const app = express();
+app.use(express.json());
+
+// Utility: deep merge objects
+function merge(target, source) {
+  for (let key in source) {
+    if (typeof source[key] === 'object' && source[key] !== null) {
+      target[key] = target[key] || {};
+      merge(target[key], source[key]);
+    } else {
+      target[key] = source[key];
+    }
+  }
+  return target;
+}
+
+const users = {};
+
+app.post('/register', (req, res) => {
+  const defaults = { role: 'user', active: true };
+  const userData = merge(defaults, req.body);
+  users[userData.email] = userData;
+  res.json({ message: `Welcome ${userData.name}!`, role: userData.role });
+});
+
+app.get('/user/:email', (req, res) => {
+  const user = users[req.params.email];
+  if (!user) return res.status(404).send('Not found');
+  res.json(user);
+});
+
+app.post('/admin/config', (req, res) => {
+  if (users[req.body.email]?.role !== 'admin') {
+    return res.status(403).send('Forbidden');
+  }
+  const config = require(req.body.configPath);
+  res.json(config);
+});
+
+app.listen(3000);
+```
+
+For each vulnerability:
+1. OWASP category
+2. Severity (Critical/High/Medium/Low)  
+3. Exploitation example (show the malicious request)
+4. Fix
+
+The SUBTLE one: How can an attacker make themselves admin using only the /register endpoint? (Hint: __proto__)
+
+## RESPONSE:
+Okay, let's break down the security vulnerabilities in this code.
+
+**1. OWASP Category: Insecure Deserialization (Prototype Pollution)**
+
+*   **Severity:** Critical
+*   **Exploitation Example:**
+
+    ```json
+    {
+      "__proto__": {
+        "role": "admin"
+      }
+    }
+    ```
+
+    Send this as the body of a POST request to `/register`.  The `merge` function recursively merges properties.  Because JavaScript objects inherit from a prototype, setting `__proto__` allows an attacker to modify the prototype of the `users` object. This effectively makes the attacker an admin because all subsequent user objects will inherit the `role: 'admin'` property.
+*   **Fix:**  The `merge` function should explicitly check for and ignore properties named `__proto__`, `constructor`, and `prototype`.  A safer approach is to avoid recursive merging altogether and use a non-recursive copy or a library designed for secure object merging.  Here's a safer merge function:
+
+    ```javascript
+    function merge(target, source) {
+      for (const key in source) {
+        if (Object.prototype.hasOwnProperty.call(source, key) && !['__proto__', 'constructor', 'prototype'].includes(key)) {
+          target[key] = source[key];
+        }
+      }
+      return target;
+    }
+    ```
+
+**2. OWASP Category: Path Traversal**
+
+*   **Severity:** Critical
+*   **Exploitation Example:**
+
+    ```json
+    {
+      "email": "test@example.com",
+      "configPath": "../../../etc/passwd"
+    }
+    ```
+
+    Send this as the body of a POST request to `/admin/config`. The `require()` function will attempt to load the file specified in `configPath`.  The `../` sequences allow the attacker to traverse up the directory structure and access sensitive files like `/etc/passwd`.
+*   **Fix:**  Never directly use user-supplied input as a file path.  Whitelist allowed config paths or, better yet, avoid allowing users to specify config paths at all. If config paths *must* be configurable, validate the path against a strict whitelist of known safe paths.  Here's an example of whitelisting:
+
+    ```javascript
+    const allowedConfigPaths = ['/path/to/config1.js', '/path/to/config2.js'];
+
+    app.post('/admin/config', (req, res) => {
+      if (users[req.body.email]?.role !== 'admin') {
+        return res.status(403).send('Forbidden');
+      }
+
+      if (!allowedConfigPaths.includes(req.body.configPath)) {
+        return res.status(400).send('Invalid config path');
+      }
+
+      const config = require(req.body.configPath);
+      res.json(config);
+    });
+    ```
+
+**3. OWASP Category: Lack of Input Validation (Email)**
+
+*   **Severity:** Medium
+*   **Exploitation Example:**
+
+    ```json
+    {
+      "email": "test@example.com<script>alert('XSS')</script>",
+      "name": "Malicious User"
+    }
+    ```
+
+    Send this as the body of a POST request to `/register`. The email address is not validated.  If the application later displays this email address without proper encoding, it could lead to a Cross-Site Scripting (XSS) vulnerability.
+*   **Fix:**  Validate the email address format using a regular expression or a dedicated email validation library.  Encode the email address when displaying it to prevent XSS.
+
+**4. OWASP Category: Lack of Input Validation (Name)**
+
+*   **Severity:** Low
+*   **Exploitation Example:**
+
+    ```json
+    {
+      "email": "test@example.com",
+      "name": "<script>alert('XSS')</script>"
+    }
+    ```
+
+    Send this as the body of a POST request to `/register`. The name field is not validated. If the application displays the name without proper encoding, it could lead to XSS.
+*   **Fix:**  Sanitize or encode the name field before displaying it.  Consider a whitelist of allowed characters.
+
+**5. OWASP Category: Information Disclosure**
+
+*   **Severity:** Low
+*   **Exploitation Example:**
+
+    Access `/user/test@example.com` (assuming a user with that email exists). The endpoint returns the entire user object, potentially including sensitive information.
+*   **Fix:**  Only return the necessary information in the response.  Avoid exposing sensitive data like passwords or internal IDs.
+
+**6. OWASP Category: Lack of Authentication (Direct Object Reference)**
+
+*   **Severity:** Medium
+*   **Exploitation Example:**
+
+    An attacker can simply guess valid email addresses and access user data via `/user/:email`.  There's no authentication or authorization to prevent this.
+*   **Fix:** Implement proper authentication and authorization.  Require users to be logged in to access user data.  Consider using unique user IDs instead of email addresses in URLs.
+
+**7. OWASP Category: Cross-Site Scripting (XSS) in Welcome Message**
+
+*   **Severity:** Medium
+*   **Exploitation Example:**
+
+    ```json
+    {
+      "email": "test@example.com",
+      "name": "<script>alert('XSS')</script>"
+    }
+    ```
+
+    Send this as the body of a POST request to `/register`. The `userData.name` is directly included in the welcome message without encoding. This could lead to XSS.
+*   **Fix:**  Encode the `userData.name` before including it in the response.  Use a templating engine with automatic escaping or a dedicated encoding function.  For example:
+
+    ```javascript
+    res.json({ message: `Welcome ${encodeURIComponent(userData.name)}!`, role: userData.role });
+    ```
+
+**Important Considerations:**
+
+*   **Error Handling:** The code lacks robust error handling.  `require()` could throw an error if the file doesn't exist or is invalid.
+*   **Security Libraries:**  Consider using well-vetted security libraries for tasks like input validation, encoding, and authentication.
+*   **Principle of Least Privilege:**  The admin role should have the minimum necessary permissions.
+
+This comprehensive audit should help you secure your application. Remember to prioritize the Critical vulnerabilities (Prototype Pollution and Path Traversal) and address them immediately.  Regular security testing and code reviews are essential for maintaining a secure application.
+

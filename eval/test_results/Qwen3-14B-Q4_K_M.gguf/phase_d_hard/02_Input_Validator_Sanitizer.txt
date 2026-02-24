@@ -1,0 +1,115 @@
+# Phase D Hard Test — #2 Input Validator / Sanitizer
+# Tier: 1 | Score: 10/10 | 8/8 constraints met
+# Tokens: 1738 | Speed: 51.2 t/s | Time: 33.9s
+
+## PROMPT:
+Validate this API request body. Find ALL issues (there are at least 10). For each issue, specify: field, severity (critical/error/warning), and explanation. Cross-field validations are required.
+
+```json
+{
+  "order": {
+    "customer": {
+      "name": "<img src=x onerror=alert(1)>John",
+      "email": "john@",
+      "phone": "555-CALL-ME",
+      "zip": "1234"
+    },
+    "items": [
+      {"sku": "ABC-123", "quantity": -3, "unit_price": 29.99},
+      {"sku": "", "quantity": 0, "unit_price": 0.001},
+      {"sku": "DEF-456", "quantity": 2, "unit_price": 15.00}
+    ],
+    "discount_percent": 150,
+    "start_date": "2025-03-15",
+    "end_date": "2025-03-10",
+    "notes": "Regular order'; DROP TABLE orders;--",
+    "shipping": {"method": "TELEPORT", "address": ""}
+  }
+}
+```
+
+List every single issue. Do NOT miss cross-field validations (e.g., date relationships).
+
+## RESPONSE:
+### **API Request Body Validation Issues**
+
+---
+
+#### **1. `order.customer.name`**
+- **Severity**: Critical  
+- **Explanation**: Contains HTML injection (`<img src=x onerror=alert(1)>`) which is a potential **XSS (Cross-Site Scripting)** vulnerability. This could execute malicious scripts in the user's browser.
+
+---
+
+#### **2. `order.customer.email`**
+- **Severity**: Error  
+- **Explanation**: The email field is incomplete (`"john@"`). It lacks a domain (e.g., `john@example.com`). This is invalid and will fail validation.
+
+---
+
+#### **3. `order.customer.phone`**
+- **Severity**: Warning  
+- **Explanation**: The phone number format (`"555-CALL-ME"`) is non-standard. While not necessarily invalid, it may not be parsed correctly by systems expecting a specific format (e.g., `(555) 123-4567`).
+
+---
+
+#### **4. `order.customer.zip`**
+- **Severity**: Error  
+- **Explanation**: The ZIP code (`"1234"`) is too short. In the U.S., ZIP codes are typically 5 digits (e.g., `12345`). This is invalid for most systems.
+
+---
+
+#### **5. `order.items[0].quantity`**
+- **Severity**: Error  
+- **Explanation**: The quantity (`-3`) is negative. Quantities should be non-negative integers (≥ 0). Negative values are invalid in this context.
+
+---
+
+#### **6. `order.items[1].sku`**
+- **Severity**: Error  
+- **Explanation**: The SKU is empty (`""`). SKUs are typically required to uniquely identify items. An empty SKU is invalid.
+
+---
+
+#### **7. `order.items[1].unit_price`**
+- **Severity**: Warning  
+- **Explanation**: The unit price (`0.001`) is extremely low. While technically valid, it may indicate a data entry error or a pricing anomaly that requires review.
+
+---
+
+#### **8. `order.discount_percent`**
+- **Severity**: Error  
+- **Explanation**: The discount percentage (`150`) exceeds 100%. Discounts should be between 0% and 100% (inclusive). A 150% discount is invalid and likely a mistake.
+
+---
+
+#### **9. `order.start_date` and `order.end_date`**
+- **Severity**: Critical  
+- **Explanation**: The `end_date` (`"2025-03-10"`) is earlier than the `start_date` (`"2025-03-15"`). This violates the logical constraint that the end date must be **after** the start date.
+
+---
+
+#### **10. `order.notes`**
+- **Severity**: Critical  
+- **Explanation**: Contains SQL injection (`"; DROP TABLE orders;--"`). This is a **SQL injection vulnerability** that could allow an attacker to delete the `orders` table or execute arbitrary SQL commands.
+
+---
+
+#### **11. `order.shipping.method`**
+- **Severity**: Error  
+- **Explanation**: The shipping method (`"TELEPORT"`) is invalid. If the API expects predefined values (e.g., `"STANDARD"`, `"EXPRESS"`), this is an invalid choice.
+
+---
+
+#### **12. `order.shipping.address`**
+- **Severity**: Error  
+- **Explanation**: The shipping address is empty (`""`). A valid shipping address is required for order fulfillment. An empty field is invalid.
+
+---
+
+### **Summary of Issues**
+- **Critical Issues**: 4 (XSS, SQL injection, date order, invalid shipping method)
+- **Errors**: 5 (email, ZIP code, negative quantity, empty SKU, empty shipping address)
+- **Warnings**: 3 (phone format, unit price, discount percentage)
+
+All issues must be resolved for the request to be valid.

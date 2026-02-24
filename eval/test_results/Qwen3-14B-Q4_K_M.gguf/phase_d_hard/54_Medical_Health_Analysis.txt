@@ -1,0 +1,41 @@
+# Phase D Hard Test — #54 Medical / Health Analysis
+# Tier: 5 | Score: 10/10 | 2/2 constraints met
+# Tokens: 1038 | Speed: 52.6 t/s | Time: 19.7s
+
+## PROMPT:
+Analyze this health scenario. There is a DANGEROUS DRUG INTERACTION and ONE INCONSISTENCY in the reported data. You must catch both.
+
+Patient: 62-year-old female
+Current medications: Warfarin (blood thinner), Lisinopril (blood pressure), Metformin (diabetes)
+Reports: "My new doctor prescribed me a daily aspirin for heart protection"
+Lab results: INR 3.8 (therapeutic range 2.0-3.0), Fasting glucose: 95 mg/dL, A1C: 5.4%
+BP: 145/92 mmHg
+Reports: "I've been taking all my medications exactly as prescribed"
+
+Questions you must address:
+1. What is the dangerous interaction between the NEW medication and an existing one?
+2. The lab results contain an inconsistency — what is it? (Hint: look at the diabetes medication vs the lab values)
+3. Is the blood pressure controlled? What does this suggest about the Lisinopril?
+4. What questions should this patient ask their doctor?
+5. Include a CLEAR disclaimer about AI health analysis limitations
+
+IMPORTANT: Do NOT provide a diagnosis. Frame everything as 'questions to ask your doctor' and 'things to discuss with your healthcare provider.'
+
+## RESPONSE:
+**1. Dangerous Drug Interaction:**  
+The new medication (aspirin) interacts with Warfarin (a blood thinner). Both drugs increase the risk of bleeding by affecting platelet function and clotting factors. This combination could lead to severe bleeding (e.g., gastrointestinal bleeding, bruising, or hemorrhage).  
+
+**2. Inconsistency in Lab Results:**  
+The patient is on Metformin (a diabetes medication), but her fasting glucose (95 mg/dL) and A1C (5.4%) are within normal ranges. This suggests her diabetes may not be severe enough to require Metformin, or her blood sugar is well-controlled without it. This raises a question about whether the medication is necessary.  
+
+**3. Blood Pressure Control and Lisinopril:**  
+Her blood pressure (145/92 mmHg) is elevated (stage 1 hypertension). This suggests Lisinopril may not be effectively controlling her hypertension, or additional medications or lifestyle changes may be needed.  
+
+**4. Questions to Ask the Doctor:**  
+- *Why was aspirin prescribed, and how does it interact with my Warfarin?*  
+- *Is Metformin still necessary given my normal glucose and A1C levels?*  
+- *Why is my blood pressure not controlled despite taking Lisinopril? Should I consider a different medication or additional treatment?*  
+- *Should I be monitored more closely for bleeding risks due to the Warfarin-aspirin combination?*  
+
+**5. Disclaimer:**  
+This analysis is for informational purposes only and should not replace professional medical advice. AI tools cannot replace the expertise of healthcare providers, and individual health needs require personalized evaluation by a qualified physician. Always consult your doctor before making changes to medications or treatment plans.

@@ -1,0 +1,59 @@
+# Phase D Hard Test — #20 Memory / Knowledge Management
+# Tier: 2 | Score: 5/10 | No automated constraints to check
+# Tokens: 949 | Speed: 54.4 t/s | Time: 17.4s
+
+## PROMPT:
+Extract and merge knowledge from these 5 conversation snippets. There are 3 contradictions — resolve each by using the MOST RECENT information and flag what changed.
+
+Jan 2: "I'm a senior developer at Acme Corp working on their Python backend."
+Jan 15: "We decided to migrate from PostgreSQL to MongoDB for the user service."
+Feb 1: "Got promoted to Tech Lead! Managing a team of 4 developers now."
+Feb 20: "After benchmarking, we're actually sticking with PostgreSQL — MongoDB wasn't right for our consistency requirements. Also, we hired 2 more people, team is now 6."
+Mar 5: "Acme Corp got acquired by MegaTech. I'm now technically a MegaTech employee but same role. Oh, and 1 person left, so team is 5. We're also evaluating MySQL as finance wants to standardize."
+
+Produce a final knowledge profile, clearly marking:
+1. What the CURRENT truth is for each fact
+2. What changed and when (changelog)
+3. What is UNCERTAIN (e.g., MySQL evaluation — in progress, not decided)
+
+## RESPONSE:
+### **Final Knowledge Profile**  
+**Current Truths (as of Mar 5):**  
+1. **Role:** Tech Lead at MegaTech (previously Acme Corp, now under MegaTech acquisition).  
+2. **Team Size:** 5 developers (initial 4 → +2 hires → -1 departure).  
+3. **Database:** PostgreSQL (initial migration to MongoDB abandoned due to consistency requirements).  
+4. **Company Status:** Acme Corp acquired by MegaTech; the individual remains in the same role.  
+5. **Uncertain:** MySQL evaluation is ongoing (finance department wants standardization, but no decision yet).  
+
+---
+
+### **Changelog (Resolutions by Most Recent Info):**  
+1. **Database Choice (PostgreSQL vs. MongoDB):**  
+   - **Jan 15:** Migrated to MongoDB.  
+   - **Feb 20:** Reverted to PostgreSQL (MongoDB unsuitable for consistency).  
+   - **Change:** Feb 20 **overruled** Jan 15.  
+
+2. **Team Size:**  
+   - **Feb 1:** 4 developers.  
+   - **Feb 20:** 6 developers (+2 hires).  
+   - **Mar 5:** 5 developers (1 departure).  
+   - **Change:** Mar 5 **overruled** Feb 20.  
+
+3. **Company Affiliation:**  
+   - **Jan 2–Feb 20:** Acme Corp.  
+   - **Mar 5:** Acquired by MegaTech (now technically a MegaTech employee).  
+   - **Change:** Mar 5 **updated** company status.  
+
+---
+
+### **Uncertain/In-Progress Items:**  
+- **MySQL Evaluation:**  
+  - **Status:** Ongoing (finance department pushing for standardization, but no decision yet).  
+  - **Note:** This is **not finalized** and depends on further analysis.  
+
+--- 
+
+### **Summary of Contradictions Resolved:**  
+- **Database:** PostgreSQL (Feb 20) > MongoDB (Jan 15).  
+- **Team Size:** 5 (Mar 5) > 6 (Feb 20) > 4 (Feb 1).  
+- **Company:** MegaTech (Mar 5) > Acme Corp (prior).

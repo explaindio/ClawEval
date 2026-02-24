@@ -1,0 +1,188 @@
+# Phase D Hard Test — #50 Orchestrator / Manager Agent
+# Tier: 5 | Score: 5/10 | No automated constraints to check
+# Tokens: 3552 | Speed: 141.1 t/s | Time: 25.2s
+
+## PROMPT:
+Design an orchestration plan for a complex multi-agent workflow. You MUST include failure handling, because Agent C is known to fail 20% of the time.
+
+Task: Generate a comprehensive quarterly business review (QBR) document.
+
+Available agents and their capabilities:
+- Agent A (Data): Pulls metrics from databases. Takes 2 min. Never fails.
+- Agent B (Finance): Analyzes financial data. Takes 3 min. Requires Agent A output. Fails 5% of time.
+- Agent C (Market): Researches market trends. Takes 8 min. Independent. Fails 20% of time.
+- Agent D (Writer): Writes document sections. Takes 5 min per section. Requires relevant agent output.
+- Agent E (Designer): Creates charts/visuals. Takes 3 min. Requires Agent A data.
+- Agent F (Reviewer): Reviews final document. Takes 4 min. Requires all sections.
+
+Constraints:
+- Total wall-clock time budget: 25 minutes
+- If Agent C fails, the QBR must still be produced (with a note about missing market data)
+- Agent D can write sections in parallel if given different inputs
+
+Design:
+1. Execution DAG with parallel groups and dependencies
+2. Critical path analysis (what's the minimum time?)
+3. Failure handling for each agent (retry? fallback? skip?)
+4. If Agent C fails twice, what's the Plan B?
+5. Show the timeline (Gantt-chart style) for both success and failure scenarios
+
+## RESPONSE:
+## 1.  Execution DAG (Directed Acyclic Graph)
+
+```
+          +-------------------+
+          |  Agent A (Data)   |
+          |  (2 min, never fails) |
+          +--------+----------+
+                   |
+                   v
+          +-------------------+
+          |  Agent B (Finance)|
+          |  (3 min, 5 % fail) |
+          +--------+----------+
+                   |
+                   v
+          +-------------------+          +-------------------+
+          |  Agent D – Exec   |<--------+|  Agent D – Market |
+          |  Summary (5 min)  |          |  Analysis (5 min) |
+          +--------+----------+          +--------+----------+
+                   |                           |
+          +--------+----------+          +--------+----------+
+          |  Agent D – Finance|          |  Agent D – Visual|
+          |  Analysis (5 min) |          |  Section (5 min) |
+          +--------+----------+          +--------+----------+
+                   |                           |
+          +--------+----------+          +--------+----------+
+          |  Agent F – Review |<--------+|  Agent E – Design|
+          |  (4 min)          |          |  (3 min, 5 % fail)|
+          +-------------------+          +-------------------+
+```
+
+### Dependencies
+
+| Node | Depends on | Notes |
+|------|------------|-------|
+| **A** | – | – |
+| **B** | A | – |
+| **C** | – | Independent (may fail 20 %) |
+| **E** | A | – |
+| **D1 (Exec Summary)** | B, E, **optional** C | If C fails → note “Market data missing” |
+| **D2 (Finance Analysis)** | B | – |
+| **D3 (Market Analysis)** | C | – |
+| **D4 (Visual Section)** | E | – |
+| **F (Reviewer)** | D1, D2, D3, D4 | – |
+
+*All four `D`‑tasks can run **in parallel** once their inputs are ready.*
+
+---
+
+## 2.  Critical‑Path Analysis
+
+| Scenario | Wall‑clock time | Critical path |
+|----------|-----------------|---------------|
+| **All agents succeed** | **19 min** | A → C → D1 → F |
+| **Agent C fails once (retry succeeds)** | 19 min | Same as above |
+| **Agent C fails twice (fallback)** | **14 min** | A → B → D1 → F |
+| **Agent B fails once (retry succeeds)** | 19 min | Same as above |
+| **Agent B fails twice (fallback)** | 14 min | A → D1 → F (no Finance Analysis) |
+
+*The total budget is 25 min, so every scenario comfortably fits.*
+
+---
+
+## 3.  Failure‑Handling Strategy
+
+| Agent | Failure probability | Retry policy | Fallback / Skip | Notes |
+|-------|---------------------|--------------|-----------------|-------|
+| **A** | 0 % | – | – | Never fails |
+| **B** | 5 % | 1 retry (max 2 attempts) | Skip Finance Analysis section, add note “Finance data unavailable” | |
+| **C** | 20 % | 1 retry (max 2 attempts) | Skip Market Analysis & Exec Summary market data, add note “Market data missing” | |
+| **D** | – | – | – | Assumed reliable |
+| **E** | – | – | – | Assumed reliable |
+| **F** | – | – | – | Assumed reliable |
+
+### Detailed Flow
+
+1. **Agent A** runs first (0–2 min).  
+2. **Agent B**, **Agent C**, and **Agent E** start in parallel (2–5 min for B & E, 2–10 min for C).  
+3. If **C** fails on first attempt, **retry** immediately (2–10 min).  
+4. If **C** fails a second time, **skip** Market Analysis (`D3`) and mark Exec Summary (`D1`) with a “Market data missing” note.  
+5. If **B** fails on first attempt, **retry** immediately (2–5 min).  
+6. If **B** fails a second time, **skip** Finance Analysis (`D2`) and note “Finance data unavailable”.  
+7. Once inputs are ready, all four `D` tasks start in parallel.  
+8. **F** reviews after all `D` tasks finish.
+
+---
+
+## 4.  Plan B if Agent C Fails Twice
+
+| Step | Action | Rationale |
+|------|--------|-----------|
+| **1.** | Skip `D3` (Market Analysis) | No reliable market data |
+| **2.** | In `D1` (Exec Summary), insert a placeholder paragraph: “Market data was unavailable during this quarter; analysis omitted.” | Keeps the document coherent |
+| **3.** | Optionally pull the **previous quarter’s market trend** from a cached dataset (if available) and include it as a “Historical Context” footnote. | Provides some insight without new data |
+| **4.** | Proceed with `D2`, `D4`, and `F` as normal | Maintains schedule |
+
+*This Plan B keeps the QBR complete while clearly indicating the data gap.*
+
+---
+
+## 5.  Gantt‑Chart‑Style Timeline
+
+### 5.1  Success Scenario (All agents succeed)
+
+| Time (min) | 0–2 | 2–5 | 5–10 | 10–15 | 15–19 |
+|------------|-----|-----|------|-------|-------|
+| **A** | ✔ |  |  |  |  |
+| **B** |  | ✔ |  |  |  |
+| **C** |  | ✔ |  |  |  |
+| **E** |  | ✔ |  |  |  |
+| **D2** |  |  | ✔ |  |  |
+| **D4** |  |  | ✔ |  |  |
+| **D1** |  |  |  | ✔ |  |
+| **F** |  |  |  |  | ✔ |
+
+*Total wall‑clock time: **19 min**.*
+
+### 5.2  Failure Scenario (Agent C fails twice → Plan B)
+
+| Time (min) | 0–2 | 2–5 | 5–10 | 10–14 |
+|------------|-----|-----|------|-------|
+| **A** | ✔ |  |  |  |
+| **B** |  | ✔ |  |  |
+| **C** |  |  |  |  |
+| **E** |  | ✔ |  |  |
+| **D2** |  |  | ✔ |  |
+| **D4** |  |  | ✔ |  |
+| **D1** |  |  |  | ✔ |
+| **F** |  |  |  | ✔ |
+
+*Total wall‑clock time: **14 min**.*
+
+### 5.3  Failure Scenario (Agent B fails twice → Finance section omitted)
+
+| Time (min) | 0–2 | 2–5 | 5–10 | 10–15 | 15–19 |
+|------------|-----|-----|------|-------|-------|
+| **A** | ✔ |  |  |  |  |
+| **B** |  |  |  |  |  |
+| **C** |  | ✔ |  |  |  |
+| **E** |  | ✔ |  |  |  |
+| **D3** |  |  | ✔ |  |  |
+| **D4** |  |  | ✔ |  |  |
+| **D1** |  |  |  | ✔ |  |
+| **F** |  |  |  |  | ✔ |
+
+*Total wall‑clock time: **19 min** (same as success because Finance Analysis is omitted but the Exec Summary still waits for Market Analysis).*
+
+---
+
+## 6.  Summary
+
+- **All agents succeed** → 19 min, full QBR.  
+- **C fails twice** → 14 min, QBR with “Market data missing” note.  
+- **B fails twice** → 19 min, QBR without Finance Analysis section.  
+- **Retry logic** keeps the workflow within the 25‑minute budget.  
+- **Parallelism** (four `D` tasks) is fully exploited to minimize critical‑path length.  
+
+This orchestration plan guarantees a complete quarterly business review under all expected failure modes while respecting the 25‑minute wall‑clock constraint.

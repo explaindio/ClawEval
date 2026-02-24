@@ -1,0 +1,212 @@
+# Phase D Hard Test — #46 DevOps Agent
+# Tier: 3 | Score: 5/10 | No automated constraints to check
+# Tokens: 3488 | Speed: 55.0 t/s | Time: 63.4s
+
+## PROMPT:
+Debug this GitHub Actions workflow. It has 3 SYNTAX errors and 2 LOGIC errors. Find all 5.
+
+```yaml
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - run: npm install
+      - run: npm test
+      
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: npm install
+        - run: npm run build  # Syntax error 1
+      - uses: docker/build-push-action@v5
+        with:
+          push: true
+          tags: myapp:${{ github.sha }}
+
+  deploy-staging:
+    needs: build
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: staging
+    steps:
+      - run: |
+          kubectl set image deployment/myapp             myapp=myapp:${{ github.sha }}
+  
+  deploy-production:
+    needs: build  # Logic error: should this depend on staging?
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - run: kubectl set image deployment/myapp myapp=myapp:${{ github.sha }}
+      
+  notify:
+    needs: [deploy-staging deploy-production]  # Syntax error 2
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - run: curl -X POST $SLACK_WEBHOOK -d '{"text": "Deployment complete"}'
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }  # Syntax error 3
+```
+
+Find all 5 errors (3 syntax, 2 logic), explain each, and provide the corrected YAML.
+
+## RESPONSE:
+### ✅ **Summary of Errors**
+
+This GitHub Actions workflow contains **3 syntax errors** and **2 logic errors**. Below is a breakdown of each error, followed by the corrected YAML.
+
+---
+
+### 🔧 **Syntax Errors**
+
+#### **1. Incorrect indentation in the `build` job's `run` steps**
+```yaml
+      - run: npm install
+        - run: npm run build  # Syntax error 1
+```
+
+**Explanation**:  
+Each step in a `steps` list must be a top-level key-value pair. The second `run` is incorrectly indented under the first `run`, which is invalid in YAML.
+
+**Fix**:  
+Each `run` must be a separate list item with proper indentation.
+
+---
+
+#### **2. Missing commas in the `notify` job's `needs` list**
+```yaml
+    needs: [deploy-staging deploy-production]  # Syntax error 2
+```
+
+**Explanation**:  
+YAML lists require commas between elements. The list `[deploy-staging deploy-production]` is invalid and should be `[deploy-staging, deploy-production]`.
+
+**Fix**:  
+Add commas between job names in the list.
+
+---
+
+#### **3. Missing closing quote in the `SLACK_WEBHOOK` environment variable**
+```yaml
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }  # Syntax error 3
+```
+
+**Explanation**:  
+The line ends with an open curly brace `{` and is missing the closing quote `"`.
+
+**Fix**:  
+Add the closing quote to the line.
+
+---
+
+### 🤔 **Logic Errors**
+
+#### **1. `deploy-production` should depend on `deploy-staging`**
+```yaml
+  deploy-production:
+    needs: build  # Logic error: should this depend on staging?
+```
+
+**Explanation**:  
+The `deploy-production` job currently depends only on the `build` job. However, it's logical to ensure that the staging deployment (`deploy-staging`) completes successfully before proceeding to production. This ensures that the staging environment is stable before deploying to production.
+
+**Fix**:  
+Update the `needs` field to include both `build` and `deploy-staging`.
+
+---
+
+#### **2. `deploy-staging` should only run on pull requests, not on pushes to `main`**
+```yaml
+  deploy-staging:
+    needs: build
+    if: github.ref == 'refs/heads/main'
+```
+
+**Explanation**:  
+The `deploy-staging` job is currently triggered on **pushes to `main`**, but it's more common to deploy to staging only when a **pull request is opened or updated**. This ensures that staging is not unnecessarily updated on every push to the main branch.
+
+**Fix**:  
+Change the `if` condition to only trigger on pull requests to `main`.
+
+---
+
+### ✅ **Corrected YAML**
+
+```yaml
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - run: npm install
+      - run: npm test
+
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: npm install
+      - run: npm run build
+
+  deploy-staging:
+    needs: build
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    environment: staging
+    steps:
+      - run: |
+          kubectl set image deployment/myapp myapp=myapp:${{ github.sha }}
+
+  deploy-production:
+    needs: [build, deploy-staging]
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - run: kubectl set image deployment/myapp myapp=myapp:${{ github.sha }}
+
+  notify:
+    needs: [deploy-staging, deploy-production]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - run: curl -X POST $SLACK_WEBHOOK -d '{"text": "Deployment complete"}'
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+```
+
+---
+
+### 📌 **Key Takeaways**
+
+- **Syntax**: Always ensure proper indentation and formatting in YAML.
+- **Logic**: Jobs should depend on each other in a logical order (e.g., staging before production).
+- **Conditions**: Use appropriate conditions to control when jobs run (e.g., `pull_request` vs. `push`).

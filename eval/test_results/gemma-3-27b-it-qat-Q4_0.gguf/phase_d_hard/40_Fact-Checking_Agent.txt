@@ -1,0 +1,71 @@
+# Phase D Hard Test — #40 Fact-Checking Agent
+# Tier: 3 | Score: 0/10 | 0/8 correct | Missing: #1: expected 'misleading'; #2: expected 'false'; #3: expected 'true'; #4: expected 'false'; #5: expected 'true'; #6: expected 'misleading'; #7: expected 'false'; #8: expected 'true'
+# Tokens: 910 | Speed: 35.5 t/s | Time: 25.6s
+
+## PROMPT:
+Fact-check these 8 statements. They mix true facts, false facts, and MISLEADING statements (technically true but deceptive). Classify each as true/false/misleading. Respond with JSON.
+
+1. "Humans share 60% of their DNA with bananas" (TRUE percentage, but is the framing misleading?)
+2. "The Great Wall of China is visible from space with the naked eye"
+3. "Octopuses have three hearts"
+4. "Thomas Edison invented the light bulb"
+5. "Water can boil and freeze at the same time (triple point)"
+6. "You eat an average of 8 spiders per year in your sleep"
+7. "Goldfish have a 3-second memory"
+8. "Honey never spoils — edible honey has been found in Egyptian tombs"
+
+For each: verdict (true/false/misleading), explanation, and confidence level.
+
+## RESPONSE:
+```json
+[
+  {
+    "statement": "Humans share 60% of their DNA with bananas",
+    "verdict": "misleading",
+    "explanation": "While it's true humans and bananas share approximately 60% DNA *similarity*, the framing is highly misleading. It implies a closer genetic relationship than exists.  We share 60% of the *same types* of genes, but the overall genome is vastly different.  All living things share some genetic code, but 60% with a banana is often presented to downplay the complexity of genetics and evolution. It's technically not *wrong* but very easily misinterpreted.",
+    "confidence_level": 0.95
+  },
+  {
+    "statement": "The Great Wall of China is visible from space with the naked eye",
+    "verdict": "false",
+    "explanation": "This is a persistent myth. While it *can* be seen from low Earth orbit *with assistance* (binoculars or good camera lenses), it's not visible to the naked eye. Its width is too narrow and blends into the surrounding terrain. Astronauts have repeatedly debunked this claim.",
+    "confidence_level": 1.0
+  },
+  {
+    "statement": "Octopuses have three hearts",
+    "verdict": "true",
+    "explanation": "Octopuses have three hearts: two pump blood through the gills, and one circulates blood to the organs. The heart that pumps blood to the organs stops beating when the octopus swims, which is why they prefer to crawl.",
+    "confidence_level": 1.0
+  },
+  {
+    "statement": "Thomas Edison invented the light bulb",
+    "verdict": "false",
+    "explanation": "Thomas Edison did *not* invent the light bulb. He created the first *commercially viable* incandescent light bulb, improving upon earlier designs by inventors like Humphry Davy, Warren de la Rue, and Joseph Swan.  He didn't originate the concept, but refined it for practical use.",
+    "confidence_level": 0.95
+  },
+  {
+    "statement": "Water can boil and freeze at the same time (triple point)",
+    "verdict": "true",
+    "explanation": "This refers to the triple point of water, a specific temperature and pressure (0.01 °C and 611.73 Pascals) where water can exist simultaneously as a solid (ice), liquid (water), and gas (water vapor) in thermodynamic equilibrium. It's a very specific condition, not something that happens in everyday life.",
+    "confidence_level": 1.0
+  },
+  {
+    "statement": "You eat an average of 8 spiders per year in your sleep",
+    "verdict": "false",
+    "explanation": "This is a widely circulated urban legend. There is absolutely no evidence to support this claim. Spiders generally avoid humans, and the conditions required for swallowing a spider while asleep are extremely unlikely. It originated as a hoax.",
+    "confidence_level": 1.0
+  },
+  {
+    "statement": "Goldfish have a 3-second memory",
+    "verdict": "false",
+    "explanation": "This is a common misconception. Studies have shown goldfish can have a memory span of several months, and can be trained to respond to stimuli. Their memory is much longer than 3 seconds.",
+    "confidence_level": 1.0
+  },
+  {
+    "statement": "Honey never spoils — edible honey has been found in Egyptian tombs",
+    "verdict": "misleading",
+    "explanation": "While honey *is* remarkably resistant to spoilage due to its low water content, acidity, and the presence of hydrogen peroxide, it *can* spoil over time. The honey found in Egyptian tombs was preserved in sealed containers, creating ideal conditions.  It doesn't 'never' spoil; it's exceptionally long-lasting, but not immortal.  The framing implies complete invulnerability to decay.",
+    "confidence_level": 0.9
+  }
+]
+```

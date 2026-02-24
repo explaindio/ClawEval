@@ -1,0 +1,250 @@
+# Phase D Hard Test — #56 Security Analyst Agent
+# Tier: 5 | Score: 10/10 | 1/1 constraints met
+# Tokens: 6315 | Speed: 55.2 t/s | Time: 114.3s
+
+## PROMPT:
+Security audit this code. There are 7 vulnerabilities. Most are obvious, but ONE is subtle (prototype pollution). Find all 7.
+
+```javascript
+const express = require('express');
+const app = express();
+app.use(express.json());
+
+// Utility: deep merge objects
+function merge(target, source) {
+  for (let key in source) {
+    if (typeof source[key] === 'object' && source[key] !== null) {
+      target[key] = target[key] || {};
+      merge(target[key], source[key]);
+    } else {
+      target[key] = source[key];
+    }
+  }
+  return target;
+}
+
+const users = {};
+
+app.post('/register', (req, res) => {
+  const defaults = { role: 'user', active: true };
+  const userData = merge(defaults, req.body);
+  users[userData.email] = userData;
+  res.json({ message: `Welcome ${userData.name}!`, role: userData.role });
+});
+
+app.get('/user/:email', (req, res) => {
+  const user = users[req.params.email];
+  if (!user) return res.status(404).send('Not found');
+  res.json(user);
+});
+
+app.post('/admin/config', (req, res) => {
+  if (users[req.body.email]?.role !== 'admin') {
+    return res.status(403).send('Forbidden');
+  }
+  const config = require(req.body.configPath);
+  res.json(config);
+});
+
+app.listen(3000);
+```
+
+For each vulnerability:
+1. OWASP category
+2. Severity (Critical/High/Medium/Low)  
+3. Exploitation example (show the malicious request)
+4. Fix
+
+The SUBTLE one: How can an attacker make themselves admin using only the /register endpoint? (Hint: __proto__)
+
+## RESPONSE:
+### **Vulnerability 1: Prototype Pollution via `__proto__` (Subtle)**  
+**OWASP Category:** Injection (A03:2021)  
+**Severity:** High  
+**Exploitation Example:**  
+```http
+POST /register
+Content-Type: application/json
+
+{
+  "__proto__": {
+    "role": "admin"
+  }
+}
+```  
+**Fix:**  
+Use a deep clone of the `defaults` object before merging. Replace the `merge` function with a deep cloning approach to avoid modifying the original `defaults` object. Example:  
+```javascript
+function merge(target, source) {
+  const clonedTarget = JSON.parse(JSON.stringify(target));
+  for (let key in source) {
+    if (typeof source[key] === 'object' && source[key] !== null) {
+      clonedTarget[key] = clonedTarget[key] || {};
+      merge(clonedTarget[key], source[key]);
+    } else {
+      clonedTarget[key] = source[key];
+    }
+  }
+  return clonedTarget;
+}
+```
+
+---
+
+### **Vulnerability 2: Arbitrary File Inclusion in `/admin/config`**  
+**OWASP Category:** Injection (A03:2021)  
+**Severity:** Critical  
+**Exploitation Example:**  
+```http
+POST /admin/config
+Content-Type: application/json
+
+{
+  "email": "admin@example.com",
+  "configPath": "../../../../etc/passwd"
+}
+```  
+**Fix:**  
+Validate and sanitize the `configPath` input. Restrict it to a predefined directory or use a whitelist of allowed files. Example:  
+```javascript
+const allowedPaths = ['config1.js', 'config2.js'];
+if (!allowedPaths.includes(req.body.configPath)) {
+  return res.status(400).send('Invalid config path');
+}
+```
+
+---
+
+### **Vulnerability 3: Insecure Authentication in `/admin/config`**  
+**OWASP Category:** Broken Access Control (A05:2021)  
+**Severity:** High  
+**Exploitation Example:**  
+```http
+POST /admin/config
+Content-Type: application/json
+
+{
+  "email": "admin@example.com",
+  "configPath": "config.js"
+}
+```  
+**Fix:**  
+Implement session-based authentication and ensure the user is authenticated before allowing access to `/admin/config`. Example:  
+```javascript
+app.post('/admin/config', (req, res) => {
+  if (!req.session.user || req.session.user.role !== 'admin') {
+    return res.status(401).send('Unauthorized');
+  }
+  // Proceed with config logic
+});
+```
+
+---
+
+### **Vulnerability 4: Lack of Input Validation in `/register`**  
+**OWASP Category:** Input Validation (A07:2021)  
+**Severity:** Medium  
+**Exploitation Example:**  
+```http
+POST /register
+Content-Type: application/json
+
+{
+  "email": "",
+  "name": "Malicious User"
+}
+```  
+**Fix:**  
+Validate required fields (e.g., `email`, `name`) and ensure they are in the correct format. Example:  
+```javascript
+const { email, name } = req.body;
+if (!email || !name || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+  return res.status(400).send('Invalid email or name');
+}
+```
+
+---
+
+### **Vulnerability 5: Mass Assignment Vulnerability in `/register`**  
+**OWASP Category:** Broken Access Control (A05:2021)  
+**Severity:** Medium  
+**Exploitation Example:**  
+```http
+POST /register
+Content-Type: application/json
+
+{
+  "isAdmin": true
+}
+```  
+**Fix:**  
+Use a whitelist of allowed properties to merge. Example:  
+```javascript
+const allowedFields = ['email', 'name', 'role', 'active'];
+const userData = {};
+for (const key of allowedFields) {
+  if (req.body[key] !== undefined) {
+    userData[key] = req.body[key];
+  }
+}
+merge(defaults, userData);
+```
+
+---
+
+### **Vulnerability 6: Mutation of `defaults` Object in `merge`**  
+**OWASP Category:** Input Validation (A07:2021)  
+**Severity:** Medium  
+**Exploitation Example:**  
+Multiple users registering with different fields, leading to unexpected behavior in subsequent merges.  
+**Fix:**  
+Clone the `defaults` object before merging to prevent mutation. Example:  
+```javascript
+const defaults = { role: 'user', active: true };
+const userData = merge(JSON.parse(JSON.stringify(defaults)), req.body);
+```
+
+---
+
+### **Vulnerability 7: Insecure Direct Object Reference in `/admin/config`**  
+**OWASP Category:** Broken Access Control (A05:2021)  
+**Severity:** Medium  
+**Exploitation Example:**  
+```http
+POST /admin/config
+Content-Type: application/json
+
+{
+  "email": "admin@example.com",
+  "configPath": "config.js"
+}
+```  
+**Fix:**  
+Implement proper authentication and authorization checks. Ensure the user is authenticated and has the necessary permissions. Example:  
+```javascript
+app.post('/admin/config', (req, res) => {
+  if (!req.session.user || req.session.user.role !== 'admin') {
+    return res.status(401).send('Unauthorized');
+  }
+  // Proceed with config logic
+});
+```
+
+---
+
+### **Subtle Vulnerability: Prototype Pollution via `__proto__`**  
+**Exploitation Example:**  
+```http
+POST /register
+Content-Type: application/json
+
+{
+  "__proto__": {
+    "role": "admin"
+  }
+}
+```  
+**Explanation:**  
+The `merge` function modifies the `defaults` object in place. If an attacker sends a payload with `__proto__`, it will overwrite the prototype of the `defaults` object. When the user is created, even if they don't specify a `role`, the prototype's `role` will be used, making the user an admin.  
+**Fix:**  
+Use a deep clone of the `defaults` object to prevent prototype pollution, as described in Vulnerability 1.

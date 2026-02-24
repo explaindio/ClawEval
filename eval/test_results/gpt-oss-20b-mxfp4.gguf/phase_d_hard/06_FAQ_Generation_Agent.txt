@@ -1,0 +1,49 @@
+# Phase D Hard Test — #6 FAQ Generation Agent
+# Tier: 1 | Score: 10/10 | 3/3 constraints met
+# Tokens: 928 | Speed: 142.1 t/s | Time: 6.5s
+
+## PROMPT:
+Generate FAQs from this product description. WARNING: The text contains 2 deliberate contradictions. You MUST identify and flag them rather than silently picking one version.
+
+Product Description:
+"CloudStore offers unlimited storage starting at $9.99/month. All plans include a 14-day free trial. Enterprise customers get dedicated support with 4-hour response SLA. Files are encrypted with AES-256 at rest and in transit. Our 30-day free trial lets you explore all features. Refunds are available within 60 days of purchase, no questions asked. Maximum file size is 10GB. We guarantee 99.9% uptime. Note: due to our no-refund policy, please use the free trial to evaluate before purchasing. Supports Windows, Mac, Linux, iOS, and Android."
+
+Generate 6 FAQs AND explicitly call out the contradictions you found in the source text.
+
+## RESPONSE:
+**Frequently Asked Questions (FAQs)**  
+
+1. **What is the cost of CloudStore and what does the plan include?**  
+   - CloudStore starts at **$9.99 per month** and offers **unlimited storage**. All plans automatically include the free‑trial period (see FAQ 2 for details).  
+
+2. **How long is the free‑trial period?**  
+   - The product description contains two conflicting statements:  
+     * “All plans include a **14‑day free trial**.”  
+     * “Our **30‑day free trial** lets you explore all features.”  
+   - Because of this contradiction, the exact trial length is unclear.  
+
+3. **What support is available for enterprise customers?**  
+   - Enterprise subscribers receive **dedicated support** with a **4‑hour response Service Level Agreement (SLA)**.  
+
+4. **How is my data protected?**  
+   - Files are encrypted with **AES‑256** both **at rest and in transit**, ensuring strong security for all stored data.  
+
+5. **What is the refund policy?**  
+   - The description also contains contradictory statements:  
+     * “**Refunds are available within 60 days of purchase, no questions asked**.”  
+     * “**Note: due to our no‑refund policy, please use the free trial to evaluate before purchasing**.”  
+   - Because of this inconsistency, the actual refund policy is ambiguous.  
+
+6. **What are the file‑size limits and platform compatibility?**  
+   - The maximum file size you can upload is **10 GB**. CloudStore is compatible with **Windows, macOS, Linux, iOS, and Android** devices.  
+
+---
+
+### Identified Contradictions in the Source Text  
+
+| Issue | Contradictory Statements | Impact |
+|-------|--------------------------|--------|
+| **Free‑trial duration** | “All plans include a 14‑day free trial.” vs “Our 30‑day free trial lets you explore all features.” | Uncertainty about how long the trial lasts. |
+| **Refund policy** | “Refunds are available within 60 days of purchase, no questions asked.” vs “Note: due to our no‑refund policy, please use the free trial to evaluate before purchasing.” | Confusion over whether refunds are allowed and under what conditions. |
+
+These contradictions should be clarified by the company to avoid misleading customers.

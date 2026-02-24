@@ -1,0 +1,103 @@
+# Phase D Hard Test — #48 STEM Analysis
+# Tier: 4 | Score: 10/10 | 2/2 constraints met
+# Tokens: 1582 | Speed: 139.4 t/s | Time: 11.3s
+
+## PROMPT:
+Analyze this experimental data. There's a CONFOUNDING VARIABLE that invalidates the researcher's conclusion. Find it.
+
+Experiment: Testing whether a new fertilizer increases crop yield.
+
+Group A (fertilizer): 20 plots, avg yield 8.2 tons/hectare, std dev 1.1
+Group B (control): 20 plots, avg yield 6.4 tons/hectare, std dev 1.3
+
+Researcher's conclusion: "The fertilizer increased yield by 28% (p < 0.01). The fertilizer clearly works."
+
+Hidden data (not in the paper's abstract):
+- Group A plots: southern slope, clay soil, received 20% more sunlight in May
+- Group B plots: northern slope, sandy soil
+- The study was not randomized — farmers who CHOSE the fertilizer happened to own the better plots
+- 3 of the 20 control plots had a pest outbreak mid-season
+
+Questions:
+1. Is the p-value meaningful given the experimental design? Why or why not?
+2. List ALL confounding variables
+3. What type of bias is present? (selection bias, measurement bias, etc.)
+4. Design a proper experiment that would actually test the fertilizer
+5. Calculate: IF we remove the 3 pest-affected plots, what is the new control average? (remaining 17 plots had avg 7.1 tons) Does this change the conclusion?
+
+## RESPONSE:
+**1.  Is the p‑value meaningful?**
+
+No.  
+The p‑value is only interpretable when the data come from a *randomized* (or at least unbiased) sample and when the only systematic difference between the two groups is the treatment itself.  
+In this study the plots were **not** randomly assigned – the farmers who chose the fertilizer happened to own plots that were on a southern slope, had clay soil and received more sunlight.  The control plots were on a northern slope, had sandy soil, and 3 of them suffered a pest outbreak.  Because of these systematic differences the two groups are not comparable, so the assumption underlying the p‑value calculation is violated.  The reported “p < 0.01” therefore does **not** provide evidence that the fertilizer caused the yield difference.
+
+---
+
+**2.  All confounding variables**
+
+| Confounder | Why it matters | How it could bias the result |
+|------------|----------------|------------------------------|
+| **Slope orientation** (south vs. north) | Southern slopes receive more direct sunlight, which can increase photosynthesis and yield. | Fertilizer group gets a sun advantage. |
+| **Soil texture** (clay vs. sandy) | Clay soils hold more nutrients and water; sandy soils drain quickly and are nutrient‑poor. | Fertilizer group has inherently fertile soil. |
+| **Sunlight exposure** (20 % more in May for Group A) | Extra light can boost growth during a critical period. | Fertilizer group gets a light advantage. |
+| **Plot ownership / farmer choice** | Farmers who opted for the fertilizer may also manage their plots more intensively (better irrigation, weed control, etc.). | Fertilizer group benefits from better overall management. |
+| **Pest outbreak** (3 control plots) | Pest damage reduces yield. | Control group is artificially depressed. |
+| **Other environmental factors** (e.g., micro‑climate, wind exposure, drainage) | These can differ systematically between the two slope orientations. | Unmeasured differences could favor the fertilizer group. |
+| **Plot size / shape** | Variations can affect yield per hectare if not standardized. | If fertilizer plots are larger or more uniform, yields appear higher. |
+
+---
+
+**3.  Type of bias present**
+
+- **Selection bias** – because the assignment to fertilizer vs. control was not random; farmers chose the treatment.  
+- **Confounding bias** – the above-listed variables are confounders that differ systematically between groups.  
+- (Measurement bias is not evident; the yields were measured in the same way.)
+
+---
+
+**4.  Design a proper experiment**
+
+1. **Randomized block design**  
+   - *Blocks*: Stratify plots by slope orientation (south vs. north) and soil type (clay vs. sandy).  
+   - *Randomization*: Within each block, randomly assign plots to “fertilizer” or “control” (no fertilizer).  
+   - *Number of plots*: Equal numbers per treatment in each block (e.g., 10 fertilizer, 10 control per block).
+
+2. **Standardize management**  
+   - Use the same irrigation schedule, weed control, and pest‑management protocol for all plots.  
+   - Ensure plots are of identical size and shape.
+
+3. **Blinding** (if possible)  
+   - The agronomist measuring yields should be unaware of which plots received fertilizer to avoid measurement bias.
+
+4. **Replication**  
+   - Replicate the entire block design across several farms or seasons to increase generalizability.
+
+5. **Statistical analysis**  
+   - Use ANOVA or mixed‑effects models that include block factors (slope, soil) as random effects.  
+   - Report effect size (difference in mean yield) and confidence intervals, not just a p‑value.
+
+---
+
+**5.  Effect of removing the 3 pest‑affected control plots**
+
+- **Original control mean**: 6.4 t / ha  
+- **New control mean (17 plots)**: 7.1 t / ha (given)
+
+**New difference**  
+\( \Delta = 8.2 - 7.1 = 1.1 \) t / ha
+
+**Percentage increase relative to the new control**  
+\( \frac{1.1}{7.1} \times 100 \approx 15.5\% \)
+
+**Interpretation**
+
+- The fertilizer still increases yield, but the magnitude drops from the claimed 28 % to about **15–16 %**.  
+- The conclusion that “the fertilizer clearly works” remains true, but the specific claim of a 28 % increase is no longer supported.  
+- Moreover, even after removing the pest‑affected plots, the other confounders (soil, slope, sunlight, farmer choice) still bias the result, so the statistical significance and causal inference remain questionable.
+
+---
+
+**Bottom line**
+
+The reported p‑value is not trustworthy because of non‑random assignment and confounding.  The study suffers from selection bias and multiple confounders (soil, slope, sunlight, pest outbreak, farmer management).  A randomized block design with standardized management is required to test the fertilizer’s true effect.  Removing the pest‑affected plots reduces the apparent benefit but does not eliminate the bias; the fertilizer’s effect size would be about 15 % rather than 28 %.

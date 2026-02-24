@@ -1,0 +1,120 @@
+# Phase D Hard Test — #27 Sprint / Project Summarizer
+# Tier: 2 | Score: 5/10 | No automated constraints to check
+# Tokens: 2828 | Speed: 141.5 t/s | Time: 20.0s
+
+## PROMPT:
+Analyze these 3 sprints and identify the trends that nobody is talking about. Calculate exact velocity and predict sprint 4 outcomes.
+
+Sprint 1 (2 weeks): 8 stories planned (34 pts), 7 completed (30 pts), 1 carried over. 0 stories added mid-sprint.
+Sprint 2 (2 weeks): 10 stories planned (40 pts), 7 completed (32 pts), 3 carried over. 3 stories added mid-sprint by product.
+Sprint 3 (2 weeks): 12 stories planned (48 pts), 6 completed (28 pts), 6 carried over. 5 stories added mid-sprint by product.
+
+The team has committed to delivering 15 stories (60 pts) in Sprint 4 because "the deadline is non-negotiable."
+
+Questions:
+1. Calculate the velocity trend across 3 sprints (exact numbers)
+2. What is the realistic capacity for Sprint 4?
+3. What percentage of scope creep has occurred each sprint?
+4. Is the Sprint 4 commitment achievable? Show math.
+5. What should you recommend to the product owner?
+
+## RESPONSE:
+### 1. Velocity trend (exact numbers)
+
+| Sprint | Planned pts | Completed pts | Velocity (pts) |
+|--------|-------------|---------------|----------------|
+| 1      | 34          | 30            | **30**         |
+| 2      | 40          | 32            | **32**         |
+| 3      | 48          | 28            | **28**         |
+
+**Trend line**  
+- Sprint 1 → Sprint 2: +2 pts  
+- Sprint 2 → Sprint 3: –4 pts  
+
+**Average velocity**  
+\[
+\frac{30+32+28}{3}= \mathbf{30\;pts\;per\;sprint}
+\]
+
+**Standard deviation** (shows the spread)  
+\[
+\sigma=\sqrt{\frac{(30-30)^2+(32-30)^2+(28-30)^2}{3}}
+      =\sqrt{\frac{0+4+4}{3}}
+      =\sqrt{2.667}\approx\mathbf{1.63\;pts}
+\]
+
+So the team is consistently completing about **30 pts** per sprint, with a small but noticeable dip in Sprint 3.
+
+---
+
+### 2. Realistic capacity for Sprint 4
+
+Capacity is best approximated by the *average completed points* of the last few sprints, because that reflects what the team actually delivers.
+
+\[
+\text{Capacity} \approx \mathbf{30\;pts}
+\]
+
+If we want a safety band we can use the average ± σ:
+
+\[
+30 \pm 1.63 \;\Rightarrow\; 28.4\text{ – }31.6\;\text{pts}
+\]
+
+**Take‑away:** The team can realistically finish **≈ 30 pts** (or 28–32 pts if you want a buffer) in Sprint 4.
+
+---
+
+### 3. Scope‑creep percentage per sprint
+
+Scope creep is measured as the *mid‑sprint additions* relative to the original plan.
+
+| Sprint | Added stories | Added pts (≈ 4 pts/story) | Creep % (added pts / planned pts) |
+|--------|---------------|---------------------------|-----------------------------------|
+| 1      | 0             | 0                         | **0 %** |
+| 2      | 3             | 3 × 4 = 12                | 12 / 40 = **30 %** |
+| 3      | 5             | 5 × 4 = 20                | 20 / 48 = **41.7 %** |
+
+*(If you use the exact average points per story from the data: 4.08 pts/story → 30.6 % and 42.5 % respectively; the rounded 4 pts/story gives the same ball‑park.)*
+
+**Trend:** Scope creep is **increasing** from 0 % → 30 % → 42 %. The team is taking on almost half of the planned work in Sprint 3.
+
+---
+
+### 4. Is the Sprint 4 commitment achievable? (Math)
+
+**Committed work:** 15 stories ≈ 60 pts  
+**Realistic capacity:** ≈ 30 pts
+
+\[
+\frac{60\;\text{pts}}{30\;\text{pts}} = 2.0 \;\text{(200 % of capacity)}
+\]
+
+Even if we use the upper bound of the capacity band (31.6 pts):
+
+\[
+\frac{60}{31.6} \approx 1.90 \;\text{(190 % of capacity)}
+\]
+
+**Conclusion:** The Sprint 4 commitment is **not achievable** with the current velocity and scope‑creep pattern.
+
+---
+
+### 5. Recommendation to the Product Owner
+
+| Issue | Why it matters | Suggested action |
+|-------|----------------|------------------|
+| **Velocity drop & high carry‑over** | The team is consistently finishing only ~30 pts, yet the backlog keeps growing. | Re‑evaluate the backlog to keep the sprint goal realistic. |
+| **Escalating scope creep** | 30 % → 42 % creep shows that mid‑sprint changes are draining capacity. | Adopt a *“no change after sprint start”* rule or require a formal change‑request process. |
+| **Sprint 4 “non‑negotiable” deadline** | The deadline forces a 60 pts sprint, double the team’s proven capacity. | Negotiate the deadline, or split the 60 pts into two 30 pts sprints, or add resources. |
+| **Story sizing consistency** | The average story size is ~4 pts; adding 5 stories in Sprint 3 added ~20 pts, which is a huge chunk. | Keep story sizes small (2–5 pts) and use a *Definition of Done* that includes acceptance testing. |
+| **Capacity planning** | The team’s capacity is ~30 pts; planning beyond that leads to unfinished work. | Use the *average velocity ± σ* as the capacity baseline for future sprints. |
+| **Transparency & communication** | Stakeholders may not see the real progress. | Publish velocity charts, carry‑over counts, and creep percentages in the sprint review. |
+
+**Bottom line:**  
+- **Reduce Sprint 4 scope to ~30 pts** (≈ 7–8 stories).  
+- **Lock the sprint scope** and avoid mid‑sprint additions.  
+- **Re‑align the deadline** with the team’s proven velocity or add a buffer sprint.  
+- **Implement stricter backlog refinement** to keep stories sized and scoped appropriately.
+
+By following these steps, the team will deliver on time, maintain quality, and avoid the “non‑negotiable” trap that is currently unsustainable.

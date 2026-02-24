@@ -1,0 +1,83 @@
+# Phase D Hard Test — #39 Task Planning / Decomposition
+# Tier: 3 | Score: 10/10 | 1/1 constraints met
+# Tokens: 1668 | Speed: 46.0 t/s | Time: 36.2s
+
+## PROMPT:
+Decompose this project into tasks with dependencies. WARNING: The requirements as stated contain a CIRCULAR DEPENDENCY. You must detect it and propose a resolution.
+
+Project: Build a real-time dashboard
+- Task A (Auth system): "Requires the notification service (Task C) to send verification emails"
+- Task B (Data pipeline): "Requires the auth system (Task A) to validate data sources"
+- Task C (Notification service): "Requires the data pipeline (Task B) to know what events to notify about"
+- Task D (Dashboard UI): "Requires A, B, and C to be complete"
+- Task E (Testing): "Requires D to be complete, plus access to A, B, C independently"
+- Task F (Deployment): "Requires E to pass, but also needs to deploy A, B, C as separate services"
+
+Team: 2 backend devs, 1 frontend dev, 1 QA. Timeline: 8 weeks.
+
+1. Draw the dependency graph (text format)
+2. Identify the circular dependency
+3. Propose how to break the cycle (e.g., mock service, interface-first approach)
+4. Create a realistic 8-week schedule with parallel work
+
+## RESPONSE:
+### 1. **Dependency Graph (Text Format)**  
+```
+A (Auth) → C (Notification)  
+C → B (Data Pipeline)  
+B → A  
+A, B, C → D (Dashboard UI)  
+D, A, B, C → E (Testing)  
+E, A, B, C → F (Deployment)  
+```
+
+---
+
+### 2. **Circular Dependency**  
+The cycle is:  
+**A → C → B → A**  
+- **Task A (Auth)** depends on **Task C (Notification)**  
+- **Task C** depends on **Task B (Data Pipeline)**  
+- **Task B** depends on **Task A**  
+
+This creates a loop where none of the tasks can be completed without the others, blocking progress.
+
+---
+
+### 3. **Proposed Resolution to Break the Cycle**  
+**Approach: Interface-First Design with Mocks**  
+- **Define interfaces** for all services (A, B, C) upfront (e.g., API contracts, message formats).  
+- **Use mocks/stubs** during initial development:  
+  - Develop **Task A** with a mock **Task C** (fake email sending).  
+  - Develop **Task B** with a mock **Task A** (fake data source validation).  
+  - Develop **Task C** with a mock **Task B** (fake event definitions).  
+- Once interfaces are stable, **replace mocks with real implementations** in parallel.  
+- **Testing (E)** and **Deployment (F)** can proceed once all mocks are replaced and integration is verified.
+
+---
+
+### 4. **Realistic 8-Week Schedule with Parallel Work**  
+
+| **Week** | **Backend Dev 1**         | **Backend Dev 2**         | **Frontend Dev**          | **QA**                    |
+|----------|---------------------------|---------------------------|---------------------------|---------------------------|
+| **1-2**  | Design interfaces for A, B, C | Create mocks for A, B, C | -                         | -                         |
+| **3-4**  | Develop A with mock C     | Develop B with mock A     | -                         | -                         |
+|          |                           | Develop C with mock B     |                           |                           |
+| **5**    | Replace mock C with real C | Replace mock A with real A | -                         | -                         |
+|          | Replace mock B with real B |                           |                           |                           |
+| **6**    | Integrate A, B, C         | Integrate A, B, C         | Develop Dashboard UI (D)  | -                         |
+| **7**    | Finalize A, B, C          | Finalize A, B, C          | Polish Dashboard UI (D)   | Test D, A, B, C (E)       |
+| **8**    | Deploy A, B, C            | Deploy A, B, C            | -                         | Run end-to-end tests (E)  |
+|          |                           |                           |                           | Deploy all services (F)   |
+
+---
+
+### Key Notes:  
+- **Weeks 1-2**: Focus on **designing interfaces** and **mocks** to break the cycle.  
+- **Weeks 3-4**: Parallel development of A, B, C using mocks.  
+- **Week 5**: Replace mocks with real implementations.  
+- **Week 6**: Frontend dev works on **Dashboard UI (D)** once core services are mock-ready.  
+- **Week 7**: QA tests **D** and verifies **A, B, C** independently.  
+- **Week 8**: Final deployment and testing.  
+
+This approach ensures no task is blocked by the circular dependency, using mocks to enable parallel development.

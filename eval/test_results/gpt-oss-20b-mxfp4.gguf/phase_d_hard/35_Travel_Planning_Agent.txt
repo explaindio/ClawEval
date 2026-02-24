@@ -1,0 +1,24 @@
+# Phase D Hard Test — #35 Travel Planning Agent
+# Tier: 2 | Score: 0/10 | 0/1 constraints met | Trap not identified: schengen_zone_counting
+# Tokens: 4000 | Speed: 141.1 t/s | Time: 28.4s
+
+## PROMPT:
+Plan a 14-day Europe trip. WARNING: There's a visa/Schengen counting trap and a budget constraint that's tighter than it looks.
+
+Travelers: US couple + 1 child (age 6)
+Budget: $7,000 total (not including transatlantic flights which are booked)  
+Must visit: London (3 nights), Paris (3 nights), Barcelona (3 nights), Rome (3 nights), plus 2 travel days
+Dietary: One traveler is vegetarian with dairy allergy
+
+Requirements:
+1. Daily budget breakdown (hotel, food, transport, activities) — must sum to EXACTLY $7,000
+2. Note that London is NOT in the Schengen zone — separate entry
+3. The child needs activities — no museum-only days
+4. Must book inter-city transport (suggest rail vs flight with prices)
+5. Vegetarian + dairy-free restaurant recommendations (real restaurant names in each city)
+6. One "splurge" experience per city within budget
+
+Show running budget total after each city. If budget doesn't work, say so and suggest cuts.
+
+## RESPONSE:
+

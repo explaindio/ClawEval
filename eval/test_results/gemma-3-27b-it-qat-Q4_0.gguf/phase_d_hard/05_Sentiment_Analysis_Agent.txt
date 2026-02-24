@@ -1,0 +1,29 @@
+# Phase D Hard Test — #5 Sentiment Analysis Agent
+# Tier: 1 | Score: 10/10 | 6/6 correct
+# Tokens: 57 | Speed: 27.1 t/s | Time: 2.1s
+
+## PROMPT:
+Classify the sentiment of each text as positive, negative, or neutral. CAREFUL: These contain sarcasm, irony, and idioms that may mislead you.
+
+Respond with ONLY a JSON object mapping number to sentiment.
+
+1. "Oh great, another update that breaks everything. Just what I needed today."
+2. "I can't believe how bad I am at putting this product down — I keep using it!"
+3. "The service is about as useful as a chocolate teapot."
+4. "I would recommend this to my worst enemy."
+5. "Not gonna lie, I was skeptical, but this thing slaps."
+6. "Sure, if you enjoy waiting 3 hours for a response, their support is 'fantastic'."
+
+Think carefully about sarcasm before answering.
+
+## RESPONSE:
+```json
+{
+  "1": "negative",
+  "2": "positive",
+  "3": "negative",
+  "4": "negative",
+  "5": "positive",
+  "6": "negative"
+}
+```

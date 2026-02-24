@@ -1,0 +1,160 @@
+# Phase D Hard Test — #46 DevOps Agent
+# Tier: 3 | Score: 5/10 | No automated constraints to check
+# Tokens: 1104 | Speed: 34.6 t/s | Time: 31.9s
+
+## PROMPT:
+Debug this GitHub Actions workflow. It has 3 SYNTAX errors and 2 LOGIC errors. Find all 5.
+
+```yaml
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - run: npm install
+      - run: npm test
+      
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: npm install
+        - run: npm run build  # Syntax error 1
+      - uses: docker/build-push-action@v5
+        with:
+          push: true
+          tags: myapp:${{ github.sha }}
+
+  deploy-staging:
+    needs: build
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: staging
+    steps:
+      - run: |
+          kubectl set image deployment/myapp             myapp=myapp:${{ github.sha }}
+  
+  deploy-production:
+    needs: build  # Logic error: should this depend on staging?
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - run: kubectl set image deployment/myapp myapp=myapp:${{ github.sha }}
+      
+  notify:
+    needs: [deploy-staging deploy-production]  # Syntax error 2
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - run: curl -X POST $SLACK_WEBHOOK -d '{"text": "Deployment complete"}'
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }  # Syntax error 3
+```
+
+Find all 5 errors (3 syntax, 2 logic), explain each, and provide the corrected YAML.
+
+## RESPONSE:
+Okay, let's break down the errors in this GitHub Actions workflow.
+
+**Errors Found:**
+
+1.  **Syntax Error 1:**  `run: npm install` followed by `- run: npm run build` are not correctly indented.  Each step in a workflow must be indented with at least two spaces.
+    *   **Location:** `build` job, steps section.
+    *   **Explanation:** YAML is sensitive to indentation.  The `- run: npm run build` line is interpreted as a sub-item of the previous `run: npm install` step, which is invalid.
+
+2.  **Syntax Error 2:** `needs: [deploy-staging deploy-production]` is missing a hyphen before `deploy-production`.
+    *   **Location:** `notify` job, `needs` section.
+    *   **Explanation:** When specifying multiple dependencies in the `needs` section, each dependency must be prefixed with a hyphen.
+
+3.  **Syntax Error 3:** `env:` is not indented correctly. It should be indented to be a sub-item of the `run` step.
+    *   **Location:** `notify` job, steps section.
+    *   **Explanation:** Similar to the first error, YAML requires correct indentation. The `env` block needs to be nested under the `run` step.
+
+4.  **Logic Error 1:** `deploy-production` job depends on `build` directly. It should depend on `deploy-staging` to ensure staging deployment is successful before attempting production deployment.
+    *   **Location:** `deploy-production` job, `needs` section.
+    *   **Explanation:**  A typical CI/CD pipeline deploys to staging first, verifies the deployment, and *then* deploys to production.  Directly depending on `build` bypasses this crucial verification step.
+
+5.  **Logic Error 2:** The `deploy-staging` and `deploy-production` jobs both use the same `kubectl set image` command with the same image tag (`myapp:${{ github.sha }}`). This means that if a deployment fails in staging, the production deployment will still attempt to use the same potentially broken image. It's better to use a unique tag or a mechanism to roll back if staging fails.  While not a *strict* error that will cause the workflow to fail, it's a risky practice.  For this exercise, I'll assume the intent is to avoid deploying a failed build to production.
+
+**Corrected YAML:**
+
+```yaml
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - run: npm install
+      - run: npm test
+      
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: npm install
+      - run: npm run build  
+      - uses: docker/build-push-action@v5
+        with:
+          push: true
+          tags: myapp:${{ github.sha }}
+
+  deploy-staging:
+    needs: build
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: staging
+    steps:
+      - run: |
+          kubectl set image deployment/myapp myapp=myapp:${{ github.sha }}
+  
+  deploy-production:
+    needs: [deploy-staging]  # Corrected dependency
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - run: kubectl set image deployment/myapp myapp=myapp:${{ github.sha }}
+      
+  notify:
+    needs: [deploy-staging, deploy-production]  # Corrected syntax
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - run: curl -X POST $SLACK_WEBHOOK -d '{"text": "Deployment complete"}'
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}  # Corrected indentation
+```
+
+**Key Improvements in the Corrected Version:**
+
+*   **Indentation:** All steps and blocks are correctly indented.
+*   **`needs` Syntax:** The `needs` section in `notify` now correctly lists multiple dependencies with hyphens.
+*   **`env` Indentation:** The `env` block in `notify` is properly nested under the `run` step.
+*   **`deploy-production` Dependency:** `deploy-production` now depends on `deploy-staging`, ensuring a staging deployment occurs first.
+*   **Readability:**  The corrected YAML is more readable and easier to understand.
+

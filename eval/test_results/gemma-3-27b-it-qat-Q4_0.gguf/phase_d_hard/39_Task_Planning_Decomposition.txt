@@ -1,0 +1,106 @@
+# Phase D Hard Test — #39 Task Planning / Decomposition
+# Tier: 3 | Score: 10/10 | 1/1 constraints met
+# Tokens: 1641 | Speed: 35.3 t/s | Time: 46.5s
+
+## PROMPT:
+Decompose this project into tasks with dependencies. WARNING: The requirements as stated contain a CIRCULAR DEPENDENCY. You must detect it and propose a resolution.
+
+Project: Build a real-time dashboard
+- Task A (Auth system): "Requires the notification service (Task C) to send verification emails"
+- Task B (Data pipeline): "Requires the auth system (Task A) to validate data sources"
+- Task C (Notification service): "Requires the data pipeline (Task B) to know what events to notify about"
+- Task D (Dashboard UI): "Requires A, B, and C to be complete"
+- Task E (Testing): "Requires D to be complete, plus access to A, B, C independently"
+- Task F (Deployment): "Requires E to pass, but also needs to deploy A, B, C as separate services"
+
+Team: 2 backend devs, 1 frontend dev, 1 QA. Timeline: 8 weeks.
+
+1. Draw the dependency graph (text format)
+2. Identify the circular dependency
+3. Propose how to break the cycle (e.g., mock service, interface-first approach)
+4. Create a realistic 8-week schedule with parallel work
+
+## RESPONSE:
+Okay, let's break down this project, identify the circular dependency, propose a solution, and create a schedule.
+
+## 1. Dependency Graph (Text Format)
+
+Here's a representation of the dependencies:
+
+```
+A (Auth System) --> C (Notification Service)
+B (Data Pipeline) --> A (Auth System)
+C (Notification Service) --> B (Data Pipeline)
+D (Dashboard UI) --> A (Auth System)
+D (Dashboard UI) --> B (Data Pipeline)
+D (Dashboard UI) --> C (Notification Service)
+E (Testing) --> D (Dashboard UI)
+E (Testing) --> A (Auth System)
+E (Testing) --> B (Data Pipeline)
+E (Testing) --> C (Notification Service)
+F (Deployment) --> E (Testing)
+F (Deployment) --> A (Auth System)
+F (Deployment) --> B (Data Pipeline)
+F (Deployment) --> C (Notification Service)
+```
+
+## 2. Identify the Circular Dependency
+
+The circular dependency is **A -> C -> B -> A**.  The Auth System needs the Notification Service, the Notification Service needs the Data Pipeline, and the Data Pipeline needs the Auth System. This means none of these tasks can be truly completed without the others being at least partially functional.  This is a classic "chicken and egg" problem.
+
+## 3. Propose Breaking the Cycle
+
+The best approach to break this cycle is to use an **Interface-First Approach with Mocking**. Here's how:
+
+1. **Define Clear Interfaces:**  Instead of tightly coupling A, B, and C, define well-defined interfaces for their interactions.  For example:
+   *   **Auth System Interface:**  Specifies methods for user authentication, validation, and potentially data source registration (without *actually* validating yet).
+   *   **Data Pipeline Interface:** Specifies methods for receiving data, transforming it, and notifying about events.
+   *   **Notification Service Interface:** Specifies methods for sending notifications based on event data.
+
+2. **Initial Mock Implementation:** Start with a *minimal* mock implementation of one service (let's say the Notification Service - Task C). This mock doesn't need full functionality, just enough to allow the Data Pipeline (Task B) to *begin* development.  The mock can return canned responses or log events.
+
+3. **Iterative Development:**
+   *   **Phase 1 (Weeks 1-2):** Develop the Auth System (Task A) to the point where it exposes the defined interface.  It doesn't need to *use* the Notification Service yet, just be able to *call* the interface.  Develop the Data Pipeline (Task B) to the point where it can *call* the Auth System interface for basic validation. Use the mock Notification Service.
+   *   **Phase 2 (Weeks 3-4):** Develop the Notification Service (Task C) to interact with the Data Pipeline interface.  Now, Task B can switch from the mock to the real Notification Service.
+   *   **Phase 3 (Weeks 5-6):** Refine A, B, and C based on integration testing.  The interfaces guide the integration.
+   *   **Phase 4 (Weeks 7-8):** Dashboard UI (Task D), Testing (Task E), and Deployment (Task F) can proceed with the now-integrated services.
+
+**Why this works:**  By focusing on interfaces, you decouple the tasks.  You can develop each service independently, relying on contracts (the interfaces) rather than concrete implementations.  The mock allows you to start development without waiting for all dependencies to be fully resolved.
+
+
+
+## 4. Realistic 8-Week Schedule with Parallel Work
+
+Here's a schedule, assuming 2 backend devs (Backend 1 & 2), 1 frontend dev (Frontend), and 1 QA.  This is a high-level plan; detailed task breakdown within each week would be needed.  I'll indicate who is primarily responsible for each task, but collaboration is expected.
+
+**Key:**
+*   A = Auth System
+*   B = Data Pipeline
+*   C = Notification Service
+*   D = Dashboard UI
+*   E = Testing
+*   F = Deployment
+
+| **Week** | **Backend 1** | **Backend 2** | **Frontend** | **QA** | **Notes** |
+|---|---|---|---|---|---|
+| **1: Foundations & Auth Core** | A: Core Auth Logic, User Management | B: Initial Data Ingestion, Mock C integration | D: Basic UI Structure, Component Setup | Planning, Requirements Review | Focus on setting up development environments, basic project structure.  Start Auth System.  Begin Data Pipeline with mock Notification Service. |
+| **2: Auth Interface & Pipeline Start** | A: Auth Interface Definition, Basic Validation | B: Data Transformation Logic, Interface Implementation | D: UI Component Development (login/registration) | A: Unit Tests | Complete Auth System interface.  Data Pipeline starts receiving and processing data (using mock). |
+| **3: Notification Service Core** | C: Core Notification Logic, Interface Definition | B: Event Handling, Integration with Auth Interface | D: UI Component Integration (login/registration) | B: Unit Tests | Begin Notification Service.  Data Pipeline integrates with Auth System for validation. |
+| **4: Notification Service Integration** | C: Integration with Data Pipeline Interface | A: Advanced Validation Rules, Security Considerations | D: Data Visualization Framework Setup | C: Unit Tests | Notification Service integrates with Data Pipeline. Data Pipeline switches to real Notification Service. |
+| **5: Dashboard Integration & Refinement** | A: API Endpoints for Dashboard | B: Data Pipeline Monitoring & Logging | D: Connect UI to A & B APIs (initial data flow) | E: Integration Testing (A, B, C) | Start Dashboard UI integration. Backend focuses on providing data to the UI. |
+| **6: Dashboard UI Completion & Testing Prep** | C: Notification Service Configuration & Management | D: Complete Dashboard UI, Data Display | E: Test Plan Creation, Test Data Setup | E: Smoke Tests (A, B, C) | Finish Dashboard UI. QA prepares for comprehensive testing. |
+| **7: Comprehensive Testing & Bug Fixing** | E: Functional Testing (A, B, C, D) | E: Performance Testing (A, B, C) | D: Bug Fixing, UI Polish | E: Regression Testing | Intensive testing phase.  Identify and fix bugs. |
+| **8: Deployment & Monitoring** | F: Infrastructure Setup, A, B, C Deployment | F: Dashboard Deployment, Monitoring Setup | F: Final UI Adjustments | F: Final Acceptance Testing | Deploy services to production.  Set up monitoring and alerting. |
+
+**Important Considerations:**
+
+*   **Communication:**  Constant communication between the team is *critical*, especially during integration phases. Daily stand-ups are a must.
+*   **Version Control:**  Use a robust version control system (Git) and branching strategy.
+*   **CI/CD:** Implement Continuous Integration/Continuous Deployment (CI/CD) to automate testing and deployment.
+*   **Monitoring:**  Set up comprehensive monitoring of all services to detect and resolve issues quickly.
+*   **Flexibility:**  This schedule is a plan, not a rigid contract. Be prepared to adjust based on unforeseen challenges.
+*   **Sprint Planning:** Break down each week into smaller sprints with specific goals.
+
+
+
+This detailed breakdown should provide a solid foundation for building your real-time dashboard project.  Remember that the interface-first approach and mocking are key to overcoming the circular dependency and delivering a successful product within the 8-week timeline.

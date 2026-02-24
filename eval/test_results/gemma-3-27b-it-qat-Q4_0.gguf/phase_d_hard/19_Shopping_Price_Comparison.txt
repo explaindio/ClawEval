@@ -1,0 +1,108 @@
+# Phase D Hard Test — #19 Shopping / Price Comparison
+# Tier: 2 | Score: 10/10 | 1/1 constraints met
+# Tokens: 1234 | Speed: 35.3 t/s | Time: 34.9s
+
+## PROMPT:
+Compare these 4 products. WARNING: The cheapest option is NOT the best value when you calculate total cost of ownership. Show your math.
+
+Product A — Laptop Alpha: $899
+- 8GB RAM (non-upgradable), 256GB SSD
+- Battery: 6 hours, replacement cost $200
+- Expected lifespan: 3 years, no extended warranty available
+- Required accessories: $150 dock, $80 adapter
+
+Product B — Laptop Beta: $1,299
+- 16GB RAM, 512GB SSD (user upgradable)
+- Battery: 10 hours, replaceable ($80)
+- Expected lifespan: 5 years, extended warranty $100/year
+- All ports included, no accessories needed
+
+Product C — Laptop Gamma: $749
+- 8GB RAM, 128GB SSD
+- Battery: 4 hours, non-replaceable
+- Expected lifespan: 2 years, no warranty
+- Required: $200 external SSD, $150 dock, $80 adapter
+
+Product D — Laptop Delta: $1,099
+- 16GB RAM, 256GB SSD
+- Battery: 8 hours, replacement $150
+- Expected lifespan: 4 years, warranty included
+- Required: $80 adapter
+
+Calculate 5-year total cost of ownership for each (include purchase + accessories + replacements + warranty). Recommend the best value.
+
+## RESPONSE:
+Okay, let's break down the 5-year Total Cost of Ownership (TCO) for each laptop, considering all associated costs.  This will help us determine the best value, even if it's not the cheapest upfront.
+
+**Assumptions:**
+
+*   We're calculating for 5 years of use, even if the laptop's expected lifespan is shorter.  This means we'll need to factor in replacement costs if the laptop dies within that timeframe.
+*   Battery replacement is assumed to happen when the lifespan is reached, or if the battery fails before then.
+*   SSD upgrades are optional, but we'll consider the cost if the initial storage is insufficient for 5 years of use.
+*   We'll assume Laptop C needs a new SSD after 2 years (its lifespan) as 128GB is likely insufficient for 5 years of typical use.
+
+**Calculations:**
+
+**Product A — Laptop Alpha: $899**
+
+*   **Purchase Price:** $899
+*   **Accessories:** $150 (dock) + $80 (adapter) = $230
+*   **Battery Replacements:** 1 replacement at $200 (after 3 years) = $200
+*   **Warranty:** $0
+*   **Total Cost:** $899 + $230 + $200 + $0 = **$1329**
+
+**Product B — Laptop Beta: $1,299**
+
+*   **Purchase Price:** $1,299
+*   **Accessories:** $0
+*   **Battery Replacements:** 1 replacement at $80 (after 5 years) = $80
+*   **Warranty:** $100/year * 5 years = $500
+*   **Total Cost:** $1,299 + $0 + $80 + $500 = **$1879**
+
+**Product C — Laptop Gamma: $749**
+
+*   **Purchase Price:** $749
+*   **Accessories:** $150 (dock) + $80 (adapter) = $230
+*   **SSD Replacement:** 1 replacement at $200 (after 2 years) = $200
+*   **Battery Replacements:** 0 (non-replaceable - laptop is effectively dead after 2 years, so no further battery costs. We'll need to factor in a *second* laptop purchase)
+*   **Second Laptop Purchase:** Assume same cost as original: $749
+*   **Warranty:** $0
+*   **Total Cost:** $749 + $230 + $200 + $749 + $0 = **$1928**
+
+**Product D — Laptop Delta: $1,099**
+
+*   **Purchase Price:** $1,099
+*   **Accessories:** $80 (adapter) = $80
+*   **Battery Replacements:** 1 replacement at $150 (after 4 years) = $150
+*   **Warranty:** $0 (included)
+*   **Total Cost:** $1,099 + $80 + $150 + $0 = **$1329**
+
+**Summary Table:**
+
+| Product   | Purchase Price | Accessories | Battery | Warranty | Total Cost (5 Years) |
+| --------- | -------------- | ----------- | ------- | -------- | -------------------- |
+| A - Alpha | $899           | $230        | $200    | $0       | $1329                |
+| B - Beta  | $1,299         | $0          | $80     | $500     | $1879                |
+| C - Gamma | $749           | $230        | $0      | $0       | $1928                |
+| D - Delta | $1,099         | $80         | $150    | $0       | $1329                |
+
+**Recommendation:**
+
+Based on this 5-year TCO analysis, **Product A (Laptop Alpha) and Product D (Laptop Delta) tie for the best value at $1329.**
+
+**Why?**
+
+*   **Product C (Laptop Gamma)** appears cheapest initially, but the short lifespan and required SSD replacement, *plus* the need to buy a second laptop after 2 years, make it the most expensive option overall.
+*   **Product B (Laptop Beta)** is a good laptop with a long lifespan and warranty, but the higher initial price and warranty costs push its TCO significantly above the others.
+*   **Product A and D** offer a good balance of initial cost, accessories, and potential replacement costs.  The included warranty on Product D is a nice bonus.
+
+**Important Considerations:**
+
+*   **RAM:** If you know you'll need more than 8GB of RAM in the future, Product A is not a good choice as it's non-upgradable.
+*   **SSD:** If you anticipate needing more than 256GB of storage, Product A might require an upgrade down the line, adding to the cost.
+*   **Reliability:** These calculations assume the laptops last their expected lifespans. Real-world reliability can vary.
+*   **Usage:**  The intensity of your usage will affect battery life and SSD wear.
+
+
+
+I hope this detailed breakdown helps you make an informed decision! Let me know if you'd like me to refine the calculations based on specific usage scenarios or other factors.

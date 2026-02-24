@@ -1,0 +1,95 @@
+# Phase D Hard Test — #11 Editor Agent
+# Tier: 2 | Score: 5/10 | No automated constraints to check
+# Tokens: 1526 | Speed: 52.6 t/s | Time: 29.0s
+
+## PROMPT:
+This 200-word text contains EXACTLY 15 errors across 4 categories: grammar (5), factual (3), logical (3), and style (4). Find ALL 15.
+
+"The Eiffel Tower, located in Berlin, Germany, was completed in 1889 for the World's Fair. Standing at 1,063 feet tall, their the tallest structure in Europe. The tower was designed by Alexander Eiffel, who also helped designed the Statue of Liberty's internal framework.
+
+Every year, approximately 7 million visitors visits the tower making it the most visited paid monument in the world. The tower has three levels, with restaurants on the first and second levels. Visitors can chose to take the stairs (a total of 1,665 steps to the top) or use the elevators.
+
+Interestingly, the tower was originally intended to be temporary and was suppose to be dismantled after 20 years. However, it was saved because it proved valuable for radio transmissions. If the tower was built today, it would cost approximately $40 million — quite affordable for a city like Berlin.
+
+The tower shrinks by 6 inches in winter due to thermal contraction — despite the fact that metal expands in cold temperatures. It is painted every 7 years using 60 tons of paint, and have been 18 different colors throughout its history."
+
+List each error with: category, location, what's wrong, and the correction.
+
+## RESPONSE:
+Here are all 15 errors, categorized and corrected:
+
+---
+
+### **Grammar (5 errors)**  
+1. **Location**: "their the tallest structure in Europe"  
+   - **What's wrong**: "their" is incorrect; "it is" is needed.  
+   - **Correction**: "it is the tallest structure in Europe."  
+
+2. **Location**: "helped designed the Statue of Liberty's internal framework"  
+   - **What's wrong**: "helped designed" is incorrect; "helped design" is correct.  
+   - **Correction**: "helped design the Statue of Liberty's internal framework."  
+
+3. **Location**: "visitors visits the tower"  
+   - **What's wrong**: Subject-verb agreement error ("visitors" is plural, "visits" is singular).  
+   - **Correction**: "visitors visit the tower."  
+
+4. **Location**: "Visitors can chose to take the stairs"  
+   - **What's wrong**: "chose" is past tense; "choose" is correct.  
+   - **Correction**: "Visitors can choose to take the stairs."  
+
+5. **Location**: "It is painted every 7 years... and have been 18 different colors"  
+   - **What's wrong**: Subject-verb agreement error ("it" is singular, "have been" is plural).  
+   - **Correction**: "It is painted every 7 years... and has been 18 different colors."  
+
+---
+
+### **Factual (3 errors)**  
+6. **Location**: "The Eiffel Tower, located in Berlin, Germany"  
+   - **What's wrong**: The Eiffel Tower is in Paris, France.  
+   - **Correction**: "The Eiffel Tower, located in Paris, France."  
+
+7. **Location**: "the tower was designed by Alexander Eiffel"  
+   - **What's wrong**: The designer was Gustave Eiffel.  
+   - **Correction**: "the tower was designed by Gustave Eiffel."  
+
+8. **Location**: "If the tower was built today, it would cost approximately $40 million — quite affordable for a city like Berlin."  
+   - **What's wrong**: The Eiffel Tower is in Paris, not Berlin.  
+   - **Correction**: "If the tower was built today, it would cost approximately $40 million — quite affordable for a city like Paris."  
+
+---
+
+### **Logical (3 errors)**  
+9. **Location**: "the tower was originally intended to be temporary and was suppose to be dismantled after 20 years"  
+   - **What's wrong**: "suppose" is incorrect; "supposed" is correct.  
+   - **Correction**: "was supposed to be dismantled after 20 years."  
+
+10. **Location**: "The tower shrinks by 6 inches in winter due to thermal contraction — despite the fact that metal expands in cold temperatures."  
+    - **What's wrong**: Metal contracts in cold temperatures, not expands.  
+    - **Correction**: "The tower shrinks by 6 inches in winter due to thermal contraction — despite the fact that metal contracts in cold temperatures."  
+
+11. **Location**: "it would cost approximately $40 million — quite affordable for a city like Berlin."  
+    - **What's wrong**: The cost of $40 million is not "affordable" for a city like Paris (or Berlin, but the location is incorrect).  
+    - **Correction**: "it would cost approximately $40 million — quite affordable for a city like Paris."  
+
+---
+
+### **Style (4 errors)**  
+12. **Location**: "their the tallest structure in Europe"  
+    - **What's wrong**: Awkward phrasing; "it is" is more natural.  
+    - **Correction**: "it is the tallest structure in Europe."  
+
+13. **Location**: "with restaurants on the first and second levels"  
+    - **What's wrong**: "levels" is vague; "floors" is more precise.  
+    - **Correction**: "with restaurants on the first and second floors."  
+
+14. **Location**: "have been 18 different colors throughout its history"  
+    - **What's wrong**: "have been" is inconsistent with the singular subject "it."  
+    - **Correction**: "has been 18 different colors throughout its history."  
+
+15. **Location**: "using 60 tons of paint, and have been 18 different colors"  
+    - **What's wrong**: Awkward phrasing; "and has been" is better.  
+    - **Correction**: "using 60 tons of paint, and has been 18 different colors."  
+
+--- 
+
+**Total errors**: 15 (5 grammar, 3 factual, 3 logical, 4 style).

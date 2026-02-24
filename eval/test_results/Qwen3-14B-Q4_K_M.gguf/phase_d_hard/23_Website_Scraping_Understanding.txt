@@ -1,0 +1,109 @@
+# Phase D Hard Test — #23 Website Scraping / Understanding
+# Tier: 2 | Score: 5/10 | No automated constraints to check
+# Tokens: 2080 | Speed: 54.5 t/s | Time: 38.2s
+
+## PROMPT:
+Extract job information from this HTML AND identify ALL red flags. There are at least 6 problematic elements, some subtle.
+
+<div class='job-listing'>
+<h2>Full-Stack Ninja Rockstar Developer</h2>
+<p class='company'>Stealth Startup (unnamed)</p>
+<p class='location'>Remote* (*must be available 6am-midnight PT for "flexibility")</p>
+<p class='salary'>Competitive salary (equity-heavy compensation)</p>
+<p class='experience'>Entry level (5+ years experience required)</p>
+<p class='requirements'>Must know: React, Vue, Angular, Svelte, Python, Go, Rust, Java, C++, Kubernetes, Terraform, AWS, GCP, Azure, PostgreSQL, MongoDB, Redis, Elasticsearch, GraphQL, REST, gRPC, Docker, CircleCI, Jenkins</p>
+<p class='perks'>Unlimited PTO (average team usage: 5 days/year). Fast-paced environment (mandatory 60hr weeks during "crunch" — approximately 48 weeks/year). We're like a family!</p>
+<p class='equity'>0.001% equity vesting over 6 years with 2-year cliff</p>
+<p class='application'>Apply with cover letter, 3 references, coding challenge (estimated 40 hours), and personality assessment</p>
+</div>
+
+Extract structured data AND write a detailed red flag analysis. Flag every manipulative or unreasonable element.
+
+## RESPONSE:
+### **Extracted Structured Data**
+```json
+{
+  "job_title": "Full-Stack Ninja Rockstar Developer",
+  "company": "Stealth Startup (unnamed)",
+  "location": "Remote* (*must be available 6am-midnight PT for 'flexibility')",
+  "salary": "Competitive salary (equity-heavy compensation)",
+  "experience": "Entry level (5+ years experience required)",
+  "requirements": [
+    "React", "Vue", "Angular", "Svelte", "Python", "Go", "Rust", "Java", "C++", "Kubernetes", "Terraform", "AWS", "GCP", "Azure", "PostgreSQL", "MongoDB", "Redis", "Elasticsearch", "GraphQL", "REST", "gRPC", "Docker", "CircleCI", "Jenkins"
+  ],
+  "perks": [
+    "Unlimited PTO (average team usage: 5 days/year)",
+    "Fast-paced environment (mandatory 60hr weeks during 'crunch' — approximately 48 weeks/year)",
+    "We're like a family!"
+  ],
+  "equity": "0.001% equity vesting over 6 years with 2-year cliff",
+  "application": "Apply with cover letter, 3 references, coding challenge (estimated 40 hours), and personality assessment"
+}
+```
+
+---
+
+### **Red Flag Analysis**
+
+#### **1. Contradictory Experience Requirements**  
+- **Issue**: The job is labeled "Entry level" but requires **5+ years of experience**.  
+- **Why it’s a red flag**: This is a manipulative contradiction. "Entry level" typically implies no prior experience, but the requirement is absurdly high. This may be a tactic to filter out candidates who are not overqualified or to mask the lack of a clear career path for entry-level roles.  
+
+---
+
+#### **2. Stealth Startup with No Name**  
+- **Issue**: The company is described as a "Stealth Startup (unnamed)."  
+- **Why it’s a red flag**: Stealth startups often lack transparency, which can be a sign of instability, lack of funding, or an unproven business model. The absence of a company name raises concerns about legitimacy and the ability to provide a stable work environment.  
+
+---
+
+#### **3. Misleading Remote Work Requirements**  
+- **Issue**: The job is advertised as "Remote" but requires **availability from 6am to midnight PT**.  
+- **Why it’s a red flag**: This is a subtle manipulation. While the job claims to be remote, the strict time window implies the company expects candidates to work during specific hours, effectively enforcing a de facto office schedule. This undermines the flexibility of remote work.  
+
+---
+
+#### **4. Equity-Heavy Compensation with Minimal Value**  
+- **Issue**: The salary is "Competitive" but relies heavily on **0.001% equity**.  
+- **Why it’s a red flag**:  
+  - **Low equity value**: 0.001% is negligible, especially for a stealth startup with no clear exit strategy.  
+  - **Long vesting period**: 6 years with a 2-year cliff means the candidate is unlikely to benefit from the equity unless the company is wildly successful.  
+  - **Unrealistic expectations**: Equity-heavy compensation is often a red flag for underpaying salaries while relying on the candidate’s gamble on the startup’s success.  
+
+---
+
+#### **5. Overwhelming Technical Requirements**  
+- **Issue**: The job lists **25+ technologies** as "Must know" (e.g., React, Kubernetes, AWS, etc.).  
+- **Why it’s a red flag**:  
+  - **Unrealistic expectations**: No single developer can master all these technologies. This is a tactic to filter out candidates who are not "overqualified" or to create an impossible standard.  
+  - **Signal of a disorganized team**: The sheer breadth of requirements suggests the company may lack clear technical direction or is trying to cover all bases with a single hire.  
+
+---
+
+#### **6. Exploitative Work Culture**  
+- **Issue**: Perks include **"mandatory 60hr weeks during 'crunch'"** (48 weeks/year) and **"unlimited PTO"** with average usage of 5 days/year.  
+- **Why it’s a red flag**:  
+  - **Burnout risk**: Mandatory 60-hour weeks for most of the year is unsustainable and indicative of a toxic work environment.  
+  - **Misleading PTO**: "Unlimited PTO" is a hollow perk if employees rarely use it due to pressure to work long hours.  
+  - **Manipulative language**: The phrase "We're like a family!" is a classic tactic to mask exploitation under the guise of camaraderie.  
+
+---
+
+#### **7. Excessive Application Requirements**  
+- **Issue**: The application process includes a **40-hour coding challenge** and a **personality assessment**.  
+- **Why it’s a red flag**:  
+  - **Unreasonable time investment**: A 40-hour coding challenge is excessive and impractical. It may be a way to weed out candidates without a legitimate assessment.  
+  - **Signal of low confidence**: The company may lack a structured hiring process and is using arbitrary hurdles to justify poor hiring decisions.  
+
+---
+
+### **Summary of Red Flags**  
+1. Contradictory "Entry level" vs. 5+ years experience.  
+2. Stealth startup with no name.  
+3. Misleading remote work hours.  
+4. Minimal equity with long vesting.  
+5. Overwhelming technical requirements.  
+6. Exploitative work culture (mandatory crunch hours, misleading PTO).  
+7. Excessive application process (40-hour coding challenge).  
+
+These elements collectively signal a high-risk, manipulative job posting that prioritizes exploitation over fair compensation and reasonable expectations.

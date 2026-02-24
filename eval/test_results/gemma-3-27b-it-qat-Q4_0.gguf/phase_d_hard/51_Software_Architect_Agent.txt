@@ -1,0 +1,124 @@
+# Phase D Hard Test — #51 Software Architect Agent
+# Tier: 5 | Score: 10/10 | 4/4 constraints met
+# Tokens: 1879 | Speed: 35.2 t/s | Time: 53.4s
+
+## PROMPT:
+Design a system architecture. WARNING: The requirements contain 3 CONTRADICTORY pairs. You must identify them and propose tradeoffs instead of pretending all requirements can be met simultaneously.
+
+Requirements:
+1. Process 50,000 events per second in real-time (< 100ms latency)
+2. Also support batch processing of historical data (millions of records)
+3. Zero downtime during deployments AND database schema migrations
+4. Store data in a strongly consistent SQL database with ACID transactions
+5. Horizontally scale to handle 10x traffic spikes within 30 seconds
+6. Multi-region deployment with data residency compliance (EU data stays in EU)
+7. Total infrastructure cost under $5,000/month at current scale
+8. 99.999% availability (five nines = ~5 minutes downtime/year)
+
+For each contradictory pair:
+1. Explain WHY they conflict
+2. Propose a compromise or phased approach
+3. What would you prioritize and why?
+
+Then provide the architecture diagram (text format) with the tradeoffs built in.
+
+## RESPONSE:
+## System Architecture Design: Event Processing & Data Storage
+
+This design addresses the requirements for a high-throughput, real-time event processing system with historical batch processing, high availability, and strict data governance. However, as noted, several requirements are contradictory.  We'll identify those, propose tradeoffs, and then present the architecture.
+
+**Contradictory Requirement Pairs & Tradeoffs:**
+
+**1. Real-time Processing (Req 1) vs. Strong Consistency (Req 4) & Batch Processing (Req 2)**
+
+* **Conflict:** Achieving true real-time processing (<100ms latency) with a strongly consistent SQL database is extremely challenging, especially at 50,000 events/second.  Strong consistency requires synchronization and potentially blocking operations, which introduce latency. Batch processing, while not directly conflicting, adds load to the database that can impact real-time performance.  Furthermore, ACID transactions, while desirable, are expensive in terms of performance.
+* **Compromise/Phased Approach:**  We'll adopt a *polyglot persistence* strategy.  Real-time processing will primarily write to a fast, eventually consistent store (like Apache Kafka with replication) for immediate consumption.  Batch processing will read from the same Kafka stream and write to the strongly consistent SQL database.  This decouples the real-time and batch concerns.  We can also use Change Data Capture (CDC) from the SQL database to replicate data to other systems if needed.
+* **Prioritization:** **Real-time Processing (Req 1) with *eventual* consistency.**  The core value proposition appears to be immediate insights from events.  While strong consistency is valuable, it's less critical for the initial processing pipeline.  We can build strong consistency *on top* of the eventual consistency store for specific use cases, but not as the foundation.
+
+**2. Horizontally Scalable (Req 5) vs. Total Cost (Req 7)**
+
+* **Conflict:**  Horizontally scaling to handle 10x traffic spikes within 30 seconds requires significant infrastructure resources – more servers, more database capacity, more networking, etc.  This directly clashes with a tight $5,000/month budget.  Achieving true auto-scaling to that degree is expensive.
+* **Compromise/Phased Approach:**  We'll focus on *elastic scalability* rather than *instantaneous* 10x scaling.  We'll use auto-scaling groups, but configure them with more conservative scaling thresholds and potentially pre-provision some capacity to reduce startup time.  We'll also leverage serverless components where possible (e.g., AWS Lambda for event transformations) to minimize idle costs.  We'll also need to carefully optimize the database (sharding, read replicas) to reduce the load on the primary database instance.
+* **Prioritization:** **Total Cost (Req 7) with *reasonable* scalability.**  While 10x scaling is desirable, it's likely unrealistic within the budget.  We'll aim for 3-5x scaling within 30 seconds, which is more achievable and provides a good safety margin.  We'll monitor resource utilization closely and adjust scaling parameters as needed.
+
+**3. Zero Downtime Deployments (Req 3) vs. Strongly Consistent SQL Database (Req 4)**
+
+* **Conflict:**  Zero downtime deployments with schema migrations on a strongly consistent SQL database are notoriously difficult.  Schema changes often require downtime or complex, risky online schema migration techniques.  Traditional SQL databases aren’t designed for seamless schema evolution while maintaining full consistency.
+* **Compromise/Phased Approach:**  We'll adopt a *Blue/Green Deployment* strategy combined with *schema versioning*.  We'll maintain two identical database environments (Blue and Green).  Deployments will involve switching traffic between the environments.  Schema migrations will be performed on the inactive environment *before* the switch.  The application will need to be designed to handle multiple schema versions concurrently (e.g., using feature flags or versioned data access layers).  We'll also explore techniques like online schema migration tools (e.g., Flyway, Liquibase) but acknowledge they may still introduce brief periods of degraded performance.
+* **Prioritization:** **Zero Downtime Deployments (Req 3) with *minimal* disruption during schema changes.**  The business likely values continuous availability highly.  We'll invest in tooling and processes to minimize the impact of schema migrations, even if it means accepting a small performance dip during the switchover.
+
+
+
+## Architecture Diagram (Text Format)
+
+```
++---------------------+      +---------------------+      +---------------------+
+|  Event Sources       |----->|  API Gateway        |----->|  Event Router        |
++---------------------+      +---------------------+      +---------------------+
+                                    (AWS API Gateway)      (Kafka Connect/Custom)
+                                                              |
+                                                              v
++---------------------+      +---------------------+      +---------------------+
+|  Kafka Cluster       |----->|  Real-time Processors|----->|  Eventual Consistency|
++---------------------+      +---------------------+      +---------------------+
+| (EU & Non-EU Clusters)|      (AWS Lambda/Flink)      |      (Kafka Topics)     |
+| (Replicated)         |                                  |                      |
++---------------------+                                  +---------------------+
+                                                              |
+                                                              v
++---------------------+      +---------------------+      +---------------------+
+|  Batch Processors    |----->|  Data Transformation|----->|  Strongly Consistent|
++---------------------+      +---------------------+      +---------------------+
+| (Spark/AWS Glue)     |      (AWS Lambda/Glue)      |      |  SQL Database       |
++---------------------+                                  +---------------------+
+                                                              | (PostgreSQL/Aurora) |
+                                                              v                      |
++---------------------+      +---------------------+      +---------------------+
+|  CDC Stream          |----->|  Data Sync          |----->|  Downstream Systems |
++---------------------+      +---------------------+      +---------------------+
+| (Debezium/AWS DMS)   |      (Kafka Connect)      |      (Reporting, Analytics)|
++---------------------+                                  +---------------------+
+
+**Infrastructure Components:**
+
+* **AWS:**  Primarily using AWS services for cost-effectiveness and scalability.
+* **Kafka:**  Central message broker for both real-time and batch processing.  Separate clusters for EU and non-EU data residency.
+* **API Gateway:**  Handles incoming event requests.
+* **Event Router:**  Routes events to the appropriate Kafka cluster based on data residency rules.
+* **Real-time Processors:**  Serverless functions (Lambda) or stream processing framework (Flink) for immediate event analysis.
+* **Batch Processors:**  Spark or AWS Glue for large-scale historical data processing.
+* **Data Transformation:**  Serverless functions or ETL tools for cleaning and preparing data for the SQL database.
+* **Strongly Consistent SQL Database:**  PostgreSQL or Aurora for ACID transactions and reliable data storage.
+* **CDC Stream:**  Captures changes from the SQL database for replication to other systems.
+* **Data Sync:**  Kafka Connect for replicating data from the CDC stream.
+
+**Deployment & Scalability:**
+
+* **Blue/Green Deployments:**  For zero downtime deployments of application code and database schema changes.
+* **Auto-Scaling Groups:**  For scaling real-time and batch processors based on load.
+* **Serverless Components:**  Minimize idle costs and provide automatic scaling.
+* **Database Sharding & Read Replicas:**  Improve database performance and scalability.
+
+**Monitoring & Alerting:**
+
+* **Prometheus/Grafana:**  For monitoring system metrics and alerting on anomalies.
+* **CloudWatch:**  AWS native monitoring service.
+
+**Cost Considerations:**
+
+* **Kafka:**  Optimized instance sizes and replication factors.
+* **Lambda:**  Pay-per-use pricing.
+* **Database:**  Right-sized instance and storage.
+* **Networking:**  Minimize data transfer costs.
+```
+
+**Key Tradeoffs Summarized:**
+
+* **Eventual Consistency for Real-time:** Prioritizing speed over immediate strong consistency.
+* **Elastic Scalability:**  Aiming for 3-5x scaling within 30 seconds instead of instantaneous 10x.
+* **Schema Versioning & Blue/Green Deployments:** Minimizing downtime during schema changes, accepting potential brief performance dips.
+* **Polyglot Persistence:** Using Kafka as a buffer and intermediary to decouple real-time and batch processing.
+
+
+
+This architecture provides a solid foundation for building a high-throughput event processing system while acknowledging and addressing the inherent tradeoffs between competing requirements.  Continuous monitoring and optimization will be crucial to ensure the system meets its performance, availability, and cost goals.

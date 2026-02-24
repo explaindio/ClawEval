@@ -1,0 +1,132 @@
+# Phase D Hard Test — #57 SRE / Incident Response
+# Tier: 5 | Score: 10/10 | 1/1 constraints met
+# Tokens: 1420 | Speed: 34.9 t/s | Time: 40.7s
+
+## PROMPT:
+Write an incident postmortem. This incident had a CASCADE FAILURE — the initial issue triggered 3 secondary failures. Map the entire cascade.
+
+Timeline:
+- Mon 2:00 AM: Automated certificate rotation runs on the API gateway
+- Mon 2:01 AM: New certificate has wrong domain (*.example.com instead of *.api.example.com)
+- Mon 2:01 AM: All API requests start returning TLS errors
+- Mon 2:05 AM: Health check failures trigger auto-scaling — new instances spin up
+- Mon 2:06 AM: New instances also fail health checks (same cert), triggering MORE scaling
+- Mon 2:10 AM: Kubernetes cluster hits pod limit (500 pods). Cluster API becomes unresponsive.
+- Mon 2:11 AM: Monitoring system (also on same cluster) goes down. All alerts stop.
+- Mon 2:15 AM: Database connection pool exhausted from 500 pods trying to connect
+- Mon 2:20 AM: Database enters read-only mode to protect data
+- Mon 3:15 AM: On-call engineer wakes up from customer complaint on Twitter (no alert!)
+- Mon 3:45 AM: Root cause identified, correct certificate deployed manually
+- Mon 4:00 AM: Cluster stabilized, database connections draining
+- Mon 4:30 AM: Full service restored
+
+SLA: 99.95% monthly uptime = 21.9 minutes/month allowed downtime.
+This incident: ~2.5 hours downtime.
+
+Write: cascade map, root cause, 5 whys, SLA impact calculation, blameless action items.
+
+## RESPONSE:
+## Incident Postmortem: API Gateway Certificate Rotation Failure - Cascade Event
+
+**Incident ID:** 2024-10-27-API-Cert-Rotation
+**Date:** October 27, 2024
+**Start Time:** 02:00 AM UTC
+**End Time:** 04:30 AM UTC
+**Duration:** 2.5 hours
+**Impact:** Full service outage, impacting all API users.
+**Severity:** Critical
+
+---
+
+### 1. Cascade Map
+
+This incident was a cascading failure, initiated by an incorrect certificate deployment. Here's a breakdown of the event chain:
+
+```mermaid
+graph TD
+    A[Mon 02:00 AM: Automated Certificate Rotation - Incorrect Cert (*.example.com)] --> B(Mon 02:01 AM: API Requests - TLS Errors);
+    B --> C(Mon 02:05 AM: Health Checks Fail - Auto-Scaling Triggered);
+    C --> D(Mon 02:06 AM: New Instances Fail Health Checks - MORE Scaling);
+    D --> E(Mon 02:10 AM: Kubernetes Cluster - Pod Limit Hit - Cluster API Unresponsive);
+    E --> F(Mon 02:11 AM: Monitoring System Down - Alerts Stop);
+    F --> G(Mon 02:15 AM: Database Connection Pool Exhausted);
+    G --> H(Mon 02:20 AM: Database - Read-Only Mode);
+    H --> I(Mon 03:15 AM: On-Call Awakened - Customer Complaint);
+    I --> J(Mon 03:45 AM: Root Cause Identified - Correct Cert Deployed);
+    J --> K(Mon 04:00 AM: Cluster Stabilized - Connections Draining);
+    K --> L(Mon 04:30 AM: Full Service Restored);
+```
+
+---
+
+### 2. Root Cause
+
+The root cause of the incident was a **configuration error in the automated certificate rotation process**. The script was configured to request a certificate with the domain `*.example.com` instead of the correct domain `*.api.example.com`. This incorrect certificate caused TLS handshake failures for all API requests.  The automated nature of the process amplified the impact, rapidly scaling the problem before manual intervention could occur.
+
+---
+
+### 3. 5 Whys
+
+1. **Why did the API requests start failing?** Because the new certificate did not match the domain used by the API gateway.
+2. **Why did the new certificate not match the domain?** Because the certificate rotation script was configured with the wrong domain name.
+3. **Why was the script configured with the wrong domain name?** Because the configuration was manually updated without proper validation or testing.
+4. **Why was there no validation or testing of the configuration change?** Because there was no automated validation step in the certificate rotation process.
+5. **Why was there no automated validation step?** Because the initial implementation prioritized speed of deployment over robust error prevention and lacked sufficient safeguards.
+
+---
+
+### 4. SLA Impact Calculation
+
+* **Monthly Allowed Downtime:** 21.9 minutes
+* **Incident Downtime:** 2.5 hours = 150 minutes
+* **SLA Breach:** 150 minutes - 21.9 minutes = 128.1 minutes breach.
+* **Percentage Breach:** (128.1 minutes / (30 days * 24 hours * 60 minutes)) * 100% = ~0.296% breach.  This significantly exceeds the acceptable downtime threshold for the 99.95% SLA.
+
+---
+
+### 5. Blameless Action Items
+
+This incident was not caused by individual error, but by systemic failures in our processes.  These action items focus on preventing recurrence.
+
+**1. Implement Automated Certificate Validation (High Priority - Owner: Platform Engineering)**
+
+*   **Description:**  Add a validation step to the certificate rotation process that automatically checks the newly issued certificate against the expected domain name *before* deploying it to the API gateway. This could involve DNS lookups, connection tests to internal services, or a dedicated validation service.
+*   **Timeline:** Within 2 weeks.
+
+**2. Enhance Monitoring and Alerting (High Priority - Owner: SRE)**
+
+*   **Description:**  Improve monitoring to detect certificate errors *before* they impact all API requests.  Specifically, monitor TLS handshake success rates and add alerts for significant drops.  Investigate why the monitoring system itself failed during the incident and implement redundancy/failover mechanisms.
+*   **Timeline:** Within 1 week.
+
+**3. Review and Improve Auto-Scaling Configuration (Medium Priority - Owner: DevOps)**
+
+*   **Description:**  Re-evaluate the auto-scaling configuration to prevent runaway scaling in the event of a widespread failure. Consider implementing a maximum pod limit that is more conservative and/or adding a delay to scaling events to allow for manual intervention.
+*   **Timeline:** Within 3 weeks.
+
+**4. Strengthen Change Management Process (Medium Priority - Owner: Platform Engineering & Security)**
+
+*   **Description:**  Implement a more rigorous change management process for critical infrastructure configurations like certificate rotation. This should include peer review, automated testing, and a rollback plan.  Consider using infrastructure-as-code to track changes and facilitate rollbacks.
+*   **Timeline:** Within 4 weeks.
+
+**5. Database Connection Pool Management (Low Priority - Owner: Database Team)**
+
+*   **Description:**  Investigate options for more resilient database connection pool management, such as dynamic pool sizing or connection limiting to prevent exhaustion during scaling events.
+*   **Timeline:** Within 6 weeks.
+
+**6. Post-Incident Review Automation (Low Priority - Owner: SRE)**
+
+*   **Description:** Automate the collection of relevant logs and metrics immediately following an incident to streamline the postmortem process.
+*   **Timeline:** Within 8 weeks.
+
+
+
+---
+
+**Document Revision History:**
+
+*   **Version 1.0 (October 27, 2024):** Initial Draft.
+*   **Version 1.1 (October 28, 2024):** Added more detail to the 5 Whys and Action Items.  Clarified SLA impact calculation.
+
+
+
+This postmortem aims to provide a clear understanding of the incident, its root cause, and the steps we will take to prevent similar issues in the future.  It is crucial that these action items are tracked and completed to improve the reliability and resilience of our services.

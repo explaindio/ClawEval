@@ -1,0 +1,87 @@
+# Phase D Hard Test — #22 Data Analysis Agent
+# Tier: 2 | Score: 10/10 | 1/1 constraints met
+# Tokens: 1058 | Speed: 141.2 t/s | Time: 7.5s
+
+## PROMPT:
+Analyze this clinical trial data. WARNING: The obvious conclusion from the aggregate data is WRONG. You must analyze the subgroups to find the truth. This is a real statistical phenomenon.
+
+Overall Results:
+- Treatment A: 100 patients, 40 recovered (40%)
+- Treatment B: 100 patients, 50 recovered (50%)
+
+Subgroup breakdown:
+- Mild cases with Treatment A: 10 patients, 8 recovered (80%)
+- Mild cases with Treatment B: 60 patients, 45 recovered (75%)
+- Severe cases with Treatment A: 90 patients, 32 recovered (35.6%)
+- Severe cases with Treatment B: 40 patients, 5 recovered (12.5%)
+
+Questions:
+1. Based on aggregate data alone, which treatment appears better?
+2. When you look at subgroups, which treatment is actually better for mild cases?
+3. Which treatment is actually better for severe cases?
+4. Explain the paradox — why does the aggregate data mislead?
+5. What is the name of this statistical phenomenon?
+6. What is your final recommendation and why?
+
+## RESPONSE:
+**1.  Aggregate view**
+
+| Treatment | Patients | Recovered | Recovery % |
+|-----------|----------|-----------|------------|
+| A | 100 | 40 | **40 %** |
+| B | 100 | 50 | **50 %** |
+
+*On the surface, Treatment B looks better.*
+
+---
+
+**2.  Mild‑case subgroup**
+
+| Treatment | Mild patients | Recovered | Recovery % |
+|-----------|---------------|-----------|------------|
+| A | 10 | 8 | **80 %** |
+| B | 60 | 45 | **75 %** |
+
+*For mild disease, Treatment A actually has the higher recovery rate.*
+
+---
+
+**3.  Severe‑case subgroup**
+
+| Treatment | Severe patients | Recovered | Recovery % |
+|-----------|-----------------|-----------|------------|
+| A | 90 | 32 | **35.6 %** |
+| B | 40 | 5 | **12.5 %** |
+
+*For severe disease, Treatment A is again superior.*
+
+---
+
+**4.  Why the aggregate data misleads**
+
+The two treatments are **not balanced** with respect to disease severity:
+
+- **Treatment A**: 10 mild / 90 severe  
+- **Treatment B**: 60 mild / 40 severe  
+
+Because mild patients recover at a much higher rate than severe patients, the overall recovery rate for Treatment B is inflated by the large number of mild cases it contains. When you pool the data, the “good” mild cases in the B group pull the overall percentage up, masking the fact that B performs poorly in both subgroups.
+
+This is a classic example of **Simpson’s paradox** (also called the Yule–Simpson effect). A confounding variable (here, severity) creates a spurious association that reverses when the data are stratified.
+
+---
+
+**5.  Statistical phenomenon**
+
+**Simpson’s paradox** – an association that appears in aggregated data but disappears or reverses when the data are partitioned by a confounding factor.
+
+---
+
+**6.  Final recommendation**
+
+- **Choose Treatment A.**  
+  - It yields a higher recovery rate in *both* mild and severe subgroups.  
+  - The apparent advantage of Treatment B in the aggregate is an artifact of the uneven distribution of severity.  
+  - A proper analysis (stratified or adjusted for severity) shows A’s superiority.
+
+**Practical take‑away:**  
+Always examine subgroup or stratified results, especially when the treatment groups differ in key prognostic variables. Relying solely on aggregate figures can lead to the wrong clinical decision.

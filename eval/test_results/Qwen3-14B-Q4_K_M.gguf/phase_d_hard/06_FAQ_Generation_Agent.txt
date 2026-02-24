@@ -1,0 +1,40 @@
+# Phase D Hard Test — #6 FAQ Generation Agent
+# Tier: 1 | Score: 10/10 | 3/3 constraints met
+# Tokens: 800 | Speed: 53.5 t/s | Time: 15.0s
+
+## PROMPT:
+Generate FAQs from this product description. WARNING: The text contains 2 deliberate contradictions. You MUST identify and flag them rather than silently picking one version.
+
+Product Description:
+"CloudStore offers unlimited storage starting at $9.99/month. All plans include a 14-day free trial. Enterprise customers get dedicated support with 4-hour response SLA. Files are encrypted with AES-256 at rest and in transit. Our 30-day free trial lets you explore all features. Refunds are available within 60 days of purchase, no questions asked. Maximum file size is 10GB. We guarantee 99.9% uptime. Note: due to our no-refund policy, please use the free trial to evaluate before purchasing. Supports Windows, Mac, Linux, iOS, and Android."
+
+Generate 6 FAQs AND explicitly call out the contradictions you found in the source text.
+
+## RESPONSE:
+**FAQs Generated from Product Description:**  
+
+1. **What is the free trial period for CloudStore?**  
+   CloudStore offers a 14-day free trial for all plans. However, the description also mentions a 30-day free trial for exploring all features. These conflicting durations need clarification.  
+
+2. **Is there a refund policy for CloudStore?**  
+   Refunds are available within 60 days of purchase, no questions asked. However, the note explicitly states a "no-refund policy," creating a contradiction.  
+
+3. **How is data secured on CloudStore?**  
+   Files are encrypted with AES-256 both at rest and in transit, ensuring robust security for user data.  
+
+4. **What platforms does CloudStore support?**  
+   CloudStore supports Windows, Mac, Linux, iOS, and Android devices.  
+
+5. **What is the uptime guarantee?**  
+   CloudStore guarantees 99.9% uptime for its services.  
+
+6. **What is the maximum file size allowed?**  
+   The maximum file size supported by CloudStore is 10GB.  
+
+---
+
+**Identified Contradictions in the Source Text:**  
+1. **Free Trial Duration:** The text states both a "14-day free trial" and a "30-day free trial," creating a direct contradiction.  
+2. **Refund Policy:** The description claims "refunds are available within 60 days" but also includes a note stating "no-refund policy," which conflicts with the refund guarantee.  
+
+These contradictions must be resolved by the product team to ensure clarity for users.

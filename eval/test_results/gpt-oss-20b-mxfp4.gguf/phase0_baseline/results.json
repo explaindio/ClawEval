@@ -1,0 +1,48 @@
+{
+  "phase": "phase0_baseline",
+  "model": "gpt-oss-20b-mxfp4.gguf",
+  "timestamp": "2026-02-23T15:25:14.744720",
+  "tests": [
+    {
+      "name": "warmup",
+      "content": "",
+      "elapsed_seconds": 0.32,
+      "prompt_tokens": 75,
+      "completion_tokens": 10,
+      "total_tokens": 85,
+      "tokens_per_second": 30.9
+    },
+    {
+      "name": "short_gen",
+      "content": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24\n25\n26\n27\n28\n29\n30\n31\n32\n33\n34\n35\n36\n37\n38\n39\n40\n41\n42\n43\n44\n45\n46\n47\n48\n49\n50",
+      "elapsed_seconds": 1.04,
+      "prompt_tokens": 80,
+      "completion_tokens": 143,
+      "total_tokens": 223,
+      "tokens_per_second": 137.8
+    },
+    {
+      "name": "medium_gen",
+      "content": "",
+      "elapsed_seconds": 2.14,
+      "prompt_tokens": 80,
+      "completion_tokens": 300,
+      "total_tokens": 380,
+      "tokens_per_second": 140.3
+    },
+    {
+      "name": "long_gen",
+      "content": "**Artificial Intelligence: From Turing\u2019s Dream to the Age of Autonomous Systems**\n\n---\n\n### 1. Introduction\n\nArtificial Intelligence (AI) is the field of computer science that strives to build machines capable of performing tasks that, in the past, required human intelligence. The journey from speculative philosophy to practical technology has spanned more than a century, punctuated by breakthroughs, setbacks, and a growing awareness of the profound societal implications of intelligent machines. This essay traces the arc of AI history, surveys its current state, and looks ahead to the possibilities\u2014and challenges\u2014of the future.\n\n---\n\n### 2. Early Foundations (1940s\u20131960s)\n\n| Year | Milestone | Significance |\n|------|-----------|--------------|\n| 1943 | McCulloch & Pitts publish *A Logical Calculus of the Ideas Immanent in Nervous Activity* | First formal model of a neuron and a network of neurons. |\n| 1943\u20131945 | Claude Shannon\u2019s *A Symbolic Analysis of Relay and Switching Circuits* | Introduced Boolean algebra for digital circuits, laying groundwork for computer logic. |\n| 1946 | ENIAC (Electronic Numerical Integrator and Computer) | One of the first general\u2011purpose digital computers. |\n| 1950 | Alan Turing publishes *Computing Machinery and Intelligence* | Introduced the Turing Test as a criterion for machine intelligence. |\n| ",
+      "elapsed_seconds": 4.16,
+      "prompt_tokens": 92,
+      "completion_tokens": 600,
+      "total_tokens": 692,
+      "tokens_per_second": 144.4
+    }
+  ],
+  "summary": {
+    "avg_tps": 113.4,
+    "max_tps": 144.4,
+    "min_tps": 30.9
+  }
+}

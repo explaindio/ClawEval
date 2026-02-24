@@ -1,0 +1,68 @@
+# Phase D Hard Test — #22 Data Analysis Agent
+# Tier: 2 | Score: 10/10 | 1/1 constraints met
+# Tokens: 737 | Speed: 34.6 t/s | Time: 21.3s
+
+## PROMPT:
+Analyze this clinical trial data. WARNING: The obvious conclusion from the aggregate data is WRONG. You must analyze the subgroups to find the truth. This is a real statistical phenomenon.
+
+Overall Results:
+- Treatment A: 100 patients, 40 recovered (40%)
+- Treatment B: 100 patients, 50 recovered (50%)
+
+Subgroup breakdown:
+- Mild cases with Treatment A: 10 patients, 8 recovered (80%)
+- Mild cases with Treatment B: 60 patients, 45 recovered (75%)
+- Severe cases with Treatment A: 90 patients, 32 recovered (35.6%)
+- Severe cases with Treatment B: 40 patients, 5 recovered (12.5%)
+
+Questions:
+1. Based on aggregate data alone, which treatment appears better?
+2. When you look at subgroups, which treatment is actually better for mild cases?
+3. Which treatment is actually better for severe cases?
+4. Explain the paradox — why does the aggregate data mislead?
+5. What is the name of this statistical phenomenon?
+6. What is your final recommendation and why?
+
+## RESPONSE:
+Okay, let's break down this clinical trial data. You're right to warn about the misleading nature of aggregate data – this is a classic example of a statistical quirk!
+
+**1. Based on aggregate data alone, which treatment appears better?**
+
+Based on the aggregate data, **Treatment B appears better**. It has a 50% recovery rate compared to Treatment A's 40% recovery rate. A simple comparison would lead one to conclude Treatment B is superior.
+
+**2. When you look at subgroups, which treatment is actually better for mild cases?**
+
+Looking at the subgroups, **Treatment A is actually better for mild cases**. It has an 80% recovery rate compared to Treatment B's 75% recovery rate.
+
+**3. Which treatment is actually better for severe cases?**
+
+For severe cases, **Treatment A is significantly better**. It has a 35.6% recovery rate compared to Treatment B's dismal 12.5% recovery rate.
+
+**4. Explain the paradox — why does the aggregate data mislead?**
+
+The aggregate data is misleading because of **unequal distribution of case severity between the treatment groups**.  Treatment B had a *much* larger proportion of mild cases (60 out of 100) compared to Treatment A (10 out of 100). Mild cases are inherently easier to recover from, regardless of treatment.  
+
+Treatment A, on the other hand, was given to a much larger proportion of severe cases (90 out of 100).  Severe cases are harder to recover from, even with the best treatment.
+
+The higher overall recovery rate for Treatment B is largely due to the higher number of patients with mild cases who were more likely to recover *anyway*. The aggregate data doesn't account for this crucial difference in patient populations. It's a case of comparing apples and oranges – or, more accurately, comparing apples to mostly oranges.
+
+**5. What is the name of this statistical phenomenon?**
+
+This statistical phenomenon is called **Simpson's Paradox** (or Simpson's inconsistency). It occurs when a trend appears in different groups of data but disappears or reverses when these groups are combined. It highlights the danger of making conclusions based solely on aggregated data without considering confounding variables (in this case, case severity).
+
+**6. What is your final recommendation and why?**
+
+My final recommendation is to **prioritize Treatment A, especially for severe cases**. 
+
+Here's the reasoning:
+
+*   **Severe Cases Matter:** Severe cases represent the patients who *most* need effective treatment. Treatment A demonstrates a substantially higher recovery rate in this critical subgroup.
+*   **Mild Cases are Less Dependent on Treatment:** The difference in recovery rates for mild cases is relatively small.  Both treatments perform well, and the natural recovery rate is high.
+*   **Stratified Analysis is Key:** The subgroup analysis reveals the true benefit of each treatment. Ignoring this analysis leads to a potentially harmful conclusion.
+*   **Further Investigation:** While Treatment A appears superior, further research is warranted to understand *why* it performs better in severe cases. Is it a direct effect of the treatment, or are there other factors at play?
+
+In conclusion, while the aggregate data suggests Treatment B is better, a deeper analysis reveals that Treatment A is the more effective option, particularly for the patients who need it most.  This is a powerful illustration of why careful statistical analysis, including subgroup analysis, is essential in clinical trials and beyond.
+
+
+
+

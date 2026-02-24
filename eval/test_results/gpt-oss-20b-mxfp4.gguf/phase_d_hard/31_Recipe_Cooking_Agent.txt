@@ -1,0 +1,76 @@
+# Phase D Hard Test — #31 Recipe / Cooking Agent
+# Tier: 2 | Score: 10/10 | 1/1 constraints met
+# Tokens: 4000 | Speed: 140.9 t/s | Time: 28.4s
+
+## PROMPT:
+Create a 3-course dinner for 4 guests with these dietary restrictions. There is a TRAP ingredient that violates one restriction — don't fall for it.
+
+Restrictions:
+- Guest A: Vegan (no animal products AT ALL — including honey, gelatin, casein, whey)
+- Guest B: Celiac disease (strict gluten-free — not just "wheat-free," watch for hidden gluten in soy sauce, malt, etc.)
+- Guest C: Severe tree nut allergy (almonds, cashews, walnuts, pecans, pistachios — but peanuts are OK, they're legumes)
+- Guest D: Low-sodium diet (under 500mg sodium per serving)
+
+Create a 3-course menu. For EVERY ingredient in EVERY dish, verify it against ALL 4 restrictions. If an ingredient could cause confusion (e.g., "natural flavors" which might contain gluten), flag it. Show the verification matrix.
+
+## RESPONSE:
+**3‑Course Vegan, Gluten‑Free, Tree‑Nut‑Free, Low‑Sodium Menu (4 servings)**  
+
+| Course | Dish | Ingredients | Vegan? | Gluten‑Free? | Tree‑Nut? | Low‑Sodium? | Notes / Potential Confusion |
+|--------|------|-------------|--------|--------------|-----------|--------------|-----------------------------|
+| **Appetizer** | Roasted Red Pepper & Tomato Soup with Coconut Cream | 4 red bell peppers | ✔ | ✔ | ✔ | ✔ | Fresh produce – no issue |
+| | | 4 medium tomatoes | ✔ | ✔ | ✔ | ✔ | Fresh produce – no issue |
+| | | 1 medium carrot | ✔ | ✔ | ✔ | ✔ | Fresh produce – no issue |
+| | | 1 medium onion | ✔ | ✔ | ✔ | ✔ | Fresh produce – no issue |
+| | | 2 cloves garlic | ✔ | ✔ | ✔ | ✔ | Fresh produce – no issue |
+| | | 4 cups low‑sodium vegetable broth (vegan, gluten‑free, no soy sauce) | ✔ | ✔ | ✔ | ✔ | **Check label** – must be 0‑10 mg Na / cup |
+| | | 1 cup coconut cream | ✔ | ✔ | **Tree‑nut confusion** – coconut is a fruit, not a tree nut | ✔ | Safe for tree‑nut allergy |
+| | | 2 Tbsp olive oil | ✔ | ✔ | ✔ | ✔ | No sodium |
+| | | 1 tsp dried basil | ✔ | ✔ | ✔ | ✔ | No sodium |
+| | | 1 tsp dried oregano | ✔ | ✔ | ✔ | ✔ | No sodium |
+| | | ½ tsp black pepper | ✔ | ✔ | ✔ | ✔ | No sodium |
+| | | Fresh basil leaves (garnish) | ✔ | ✔ | ✔ | ✔ | No sodium |
+| | | **Optional** pinch of sea salt | ❌ | ❌ | ❌ | ❌ | **Avoid** – would break low‑sodium rule |
+| **Main** | Stuffed Bell Peppers (Quinoa, Black Beans, Corn, Tomato Sauce) | 4 large bell peppers | ✔ | ✔ | ✔ | ✔ | Fresh produce – no issue |
+| | | 1 cup quinoa (certified gluten‑free) | ✔ | ✔ | ✔ | ✔ | No sodium |
+| | | 1 cup black beans (canned, no‑salt) | ✔ | ✔ | ✔ | ✔ | Check label – no added salt |
+| | | 1 cup corn kernels (fresh or frozen, no‑salt) | ✔ | ✔ | ✔ | ✔ | Check label – no added salt |
+| | | 1 cup tomato sauce (no added salt, no sugar) | ✔ | ✔ | ✔ | ✔ | **Check label** – no added salt |
+| | | 1 Tbsp olive oil | ✔ | ✔ | ✔ | ✔ | No sodium |
+| | | 1 tsp cumin | ✔ | ✔ | ✔ | ✔ | No sodium |
+| | | 1 tsp smoked paprika | ✔ | ✔ | ✔ | ✔ | No sodium |
+| | | ½ tsp oregano | ✔ | ✔ | ✔ | ✔ | No sodium |
+| | | ½ tsp garlic powder | ✔ | ✔ | ✔ | ✔ | No sodium |
+| | | ¼ tsp black pepper | ✔ | ✔ | ✔ | ✔ | No sodium |
+| | | Fresh cilantro (garnish) | ✔ | ✔ | ✔ | ✔ | No sodium |
+| | | Optional: lime juice | ✔ | ✔ | ✔ | ✔ | No sodium |
+| **Dessert** | Berry Crumble (Gluten‑Free Oat Flour & Coconut Sugar) | 4 cups mixed berries (strawberries, blueberries, raspberries) | ✔ | ✔ | ✔ | ✔ | Fresh produce – no issue |
+| | | 1 cup gluten‑free oat flour (certified gluten‑free) | ✔ | ✔ | ✔ | ✔ | **Check label** – must be 100 % gluten‑free |
+| | | ¼ cup coconut sugar | ✔ | ✔ | ✔ | ✔ | No sodium |
+| | | 1 tsp cinnamon | ✔ | ✔ | ✔ | ✔ | No sodium |
+| | | ¼ tsp nutmeg | ✔ | ✔ | ✔ | ✔ | No sodium |
+| | | 2 Tbsp coconut oil (solid at room temp) | ✔ | ✔ | ✔ | ✔ | No sodium |
+| | | 1 tsp vanilla extract (pure, no dairy) | ✔ | ✔ | ✔ | ✔ | **Check label** – no “natural flavors” that may contain gluten |
+| | | **Optional** pinch of sea salt | ❌ | ❌ | ❌ | ❌ | **Avoid** – would break low‑sodium rule |
+
+---
+
+### Verification Matrix Summary
+
+| Restriction | Vegan | Gluten‑Free | Tree‑Nut‑Free | Low‑Sodium |
+|-------------|-------|-------------|---------------|------------|
+| **All dishes** | ✔ | ✔ | ✔ | ✔ |
+
+*All ingredients listed above have been verified against each restriction. No animal products, no wheat/rye/barley/oats (unless certified gluten‑free), no tree nuts, and no added sodium.*
+
+---
+
+### Trap Ingredient (and why we avoided it)
+
+| Ingredient | Why it’s a Trap | What we did |
+|------------|-----------------|-------------|
+| **Almond Milk** | Almonds are a tree nut. Using almond milk would violate Guest C’s severe tree‑nut allergy. | We considered using a plant‑based milk for the soup but replaced it with coconut cream, which is safe for tree‑nut allergies. |
+| **Soy Sauce** | Traditional soy sauce contains wheat → not gluten‑free. | We used no soy sauce; instead, we relied on herbs and spices for flavor. |
+| **Gelatin** | Derived from animal collagen → not vegan. | Not used in any dish. |
+
+**Key Takeaway:** Always double‑check labels for hidden allergens (e.g., “natural flavors,” “malt,” or “soy sauce”) and confirm certifications (gluten‑free, nut‑free) before adding an ingredient. In this menu, every ingredient has been vetted to meet all four dietary restrictions.

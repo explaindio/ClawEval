@@ -1,0 +1,63 @@
+# Phase D Hard Test — #20 Memory / Knowledge Management
+# Tier: 2 | Score: 5/10 | No automated constraints to check
+# Tokens: 1553 | Speed: 140.0 t/s | Time: 11.1s
+
+## PROMPT:
+Extract and merge knowledge from these 5 conversation snippets. There are 3 contradictions — resolve each by using the MOST RECENT information and flag what changed.
+
+Jan 2: "I'm a senior developer at Acme Corp working on their Python backend."
+Jan 15: "We decided to migrate from PostgreSQL to MongoDB for the user service."
+Feb 1: "Got promoted to Tech Lead! Managing a team of 4 developers now."
+Feb 20: "After benchmarking, we're actually sticking with PostgreSQL — MongoDB wasn't right for our consistency requirements. Also, we hired 2 more people, team is now 6."
+Mar 5: "Acme Corp got acquired by MegaTech. I'm now technically a MegaTech employee but same role. Oh, and 1 person left, so team is 5. We're also evaluating MySQL as finance wants to standardize."
+
+Produce a final knowledge profile, clearly marking:
+1. What the CURRENT truth is for each fact
+2. What changed and when (changelog)
+3. What is UNCERTAIN (e.g., MySQL evaluation — in progress, not decided)
+
+## RESPONSE:
+**Current Knowledge Profile (as of Mar 5)**  
+
+| Fact | Current Truth | Notes |
+|------|---------------|-------|
+| **Company** | **MegaTech** (Acme Corp was acquired) | The employee is now officially a MegaTech employee, though the work and role remain the same. |
+| **Role** | **Tech Lead** | Promoted on Feb 1; still holds the same title after the acquisition. |
+| **Employment Status** | Full‑time employee of MegaTech | No change in employment status beyond the corporate acquisition. |
+| **Team Size** | **5 developers** | After hiring two more people (team 6) on Feb 20, one left on Mar 5. |
+| **Primary Database** | **PostgreSQL** | The team decided to stay with PostgreSQL after benchmarking on Feb 20. |
+| **Backend Language** | **Python** | Continues to work on the Python backend. |
+| **Key Service** | **User Service** (still using PostgreSQL) | The database choice for the user service is PostgreSQL. |
+| **Database Evaluation** | **MySQL under evaluation** | Finance wants to standardize; the decision is still pending. |
+
+---
+
+### Changelog (most recent info overrides earlier statements)
+
+| Date | Change | Impact |
+|------|--------|--------|
+| **Jan 2** | Employee was a senior developer at Acme Corp, working on the Python backend. | Baseline status. |
+| **Jan 15** | Migrated from PostgreSQL to MongoDB for the user service. | Database switch (now reversed). |
+| **Feb 1** | Promoted to Tech Lead; managing a team of 4 developers. | Role and team size updated. |
+| **Feb 20** | Benchmarking led to *sticking with PostgreSQL* (MongoDB not suitable). Hired 2 more people → team size 6. | Reverted database choice; team grew. |
+| **Mar 5** | Acme Corp acquired by MegaTech → employee now a MegaTech employee (same role). 1 person left → team size 5. Evaluating MySQL for standardization. | Company ownership changed; team size adjusted; new database evaluation started. |
+
+---
+
+### Uncertain / Pending Decisions
+
+| Item | Status | Reason |
+|------|--------|--------|
+| **MySQL adoption** | *In progress, not decided* | Finance wants to standardize, but the team is still evaluating whether to switch from PostgreSQL to MySQL. |
+
+---
+
+**Summary of Contradictions Resolved**
+
+| Contradiction | Resolution (most recent) | Flag |
+|---------------|--------------------------|------|
+| Database choice: PostgreSQL → MongoDB → PostgreSQL | Current: PostgreSQL (Feb 20 decision). | ✅ |
+| Team size: 4 → 6 → 5 | Current: 5 (Mar 5 update). | ✅ |
+| Company: Acme Corp → MegaTech | Current: MegaTech (Mar 5 acquisition). | ✅ |
+
+All earlier statements have been superseded by the most recent information, and any ongoing evaluations are marked as uncertain.

@@ -1,0 +1,65 @@
+# Phase D Hard Test — #2 Input Validator / Sanitizer
+# Tier: 1 | Score: 10/10 | 8/8 constraints met
+# Tokens: 4000 | Speed: 144.1 t/s | Time: 27.8s
+
+## PROMPT:
+Validate this API request body. Find ALL issues (there are at least 10). For each issue, specify: field, severity (critical/error/warning), and explanation. Cross-field validations are required.
+
+```json
+{
+  "order": {
+    "customer": {
+      "name": "<img src=x onerror=alert(1)>John",
+      "email": "john@",
+      "phone": "555-CALL-ME",
+      "zip": "1234"
+    },
+    "items": [
+      {"sku": "ABC-123", "quantity": -3, "unit_price": 29.99},
+      {"sku": "", "quantity": 0, "unit_price": 0.001},
+      {"sku": "DEF-456", "quantity": 2, "unit_price": 15.00}
+    ],
+    "discount_percent": 150,
+    "start_date": "2025-03-15",
+    "end_date": "2025-03-10",
+    "notes": "Regular order'; DROP TABLE orders;--",
+    "shipping": {"method": "TELEPORT", "address": ""}
+  }
+}
+```
+
+List every single issue. Do NOT miss cross-field validations (e.g., date relationships).
+
+## RESPONSE:
+**All detected validation issues**
+
+| # | Field (JSON path) | Severity | Explanation |
+|---|-------------------|----------|-------------|
+| 1 | `order.customer.name` | **Critical** | Contains `<img src=x onerror=alert(1)>John` – an XSS payload. The value must be sanitized or rejected to prevent script injection. |
+| 2 | `order.customer.email` | **Error** | `"john@"` is not a syntactically valid e‑mail address (missing domain). Must match a proper e‑mail regex. |
+| 3 | `order.customer.phone` | **Warning** | `"555-CALL-ME"` includes alphabetic characters and does not match a typical phone‑number format. It should be validated against a phone‑number pattern or rejected. |
+| 4 | `order.customer.zip` | **Warning** | `"1234"` is only 4 digits; US ZIP codes are 5 (or 9) digits. The field should be validated for length/format. |
+| 5 | `order.items[0].quantity` | **Error** | Quantity `-3` is negative. Quantities must be positive integers (≥ 1). |
+| 6 | `order.items[1].sku` | **Error** | Empty SKU (`""`) is invalid – every item must have a non‑empty SKU. |
+| 7 | `order.items[1].quantity` | **Warning** | Quantity `0` means “no item”. The business rule usually requires quantity ≥ 1. |
+| 8 | `order.items[1].unit_price` | **Warning** | Unit price `0.001` is below the assumed minimum (e.g., $0.01). Prices should be ≥ the minimum allowed. |
+| 9 | `order.discount_percent` | **Error** | `150` % exceeds the maximum allowed discount of 100 %. Must be in the range 0–100. |
+|10 | `order.end_date` | **Error** | `"2025-03-10"` is earlier than `start_date` (`"2025-03-15"`). Dates must be in chronological order (`start_date` ≤ `end_date`). |
+|11 | `order.notes` | **Critical** | Contains SQL‑injection payload `'; DROP TABLE orders;--`. The notes field must be sanitized or rejected to avoid injection attacks. |
+|12 | `order.shipping.method` | **Error** | `"TELEPORT"` is not a supported shipping method (expected values like `STANDARD`, `EXPRESS`, etc.). |
+|13 | `order.shipping.address` | **Error** | Empty string – a shipping address is required when a shipping method is provided. |
+|14 | `order.start_date` | **Warning** | `"2025-03-15"` is in the past relative to the current date (2026‑02‑24). If the API requires future dates for scheduling, this should be flagged. |
+
+**Cross‑field validations that were triggered**
+
+| Validation | Triggered by | Issue |
+|------------|--------------|-------|
+| `start_date` ≤ `end_date` | `order.start_date` and `order.end_date` | End date precedes start date (see #10). |
+| `discount_percent` ≤ 100 | `order.discount_percent` | Discount exceeds 100 % (see #9). |
+| `items.quantity` ≥ 1 | `order.items[0].quantity`, `order.items[1].quantity` | Negative or zero quantity (see #5, #7). |
+| `items.unit_price` ≥ 0.01 | `order.items[1].unit_price` | Unit price too low (see #8). |
+| `items.sku` non‑empty | `order.items[1].sku` | Empty SKU (see #6). |
+| `customer.email` valid | `order.customer.email` | Invalid e‑mail format (see #2). |
+| `customer.phone` numeric | `order.customer.phone` | Non‑numeric characters (see #3). |
+| `customer.zip` 5‑digit | `order.customer.zip` | Too short (see #4). |
+| `customer.name` no HTML | `order.customer.name` | Contains X

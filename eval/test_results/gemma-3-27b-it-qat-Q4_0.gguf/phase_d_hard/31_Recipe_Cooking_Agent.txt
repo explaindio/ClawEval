@@ -1,0 +1,82 @@
+# Phase D Hard Test — #31 Recipe / Cooking Agent
+# Tier: 2 | Score: 10/10 | 1/1 constraints met
+# Tokens: 1596 | Speed: 35.2 t/s | Time: 45.3s
+
+## PROMPT:
+Create a 3-course dinner for 4 guests with these dietary restrictions. There is a TRAP ingredient that violates one restriction — don't fall for it.
+
+Restrictions:
+- Guest A: Vegan (no animal products AT ALL — including honey, gelatin, casein, whey)
+- Guest B: Celiac disease (strict gluten-free — not just "wheat-free," watch for hidden gluten in soy sauce, malt, etc.)
+- Guest C: Severe tree nut allergy (almonds, cashews, walnuts, pecans, pistachios — but peanuts are OK, they're legumes)
+- Guest D: Low-sodium diet (under 500mg sodium per serving)
+
+Create a 3-course menu. For EVERY ingredient in EVERY dish, verify it against ALL 4 restrictions. If an ingredient could cause confusion (e.g., "natural flavors" which might contain gluten), flag it. Show the verification matrix.
+
+## RESPONSE:
+Okay, this is a fun challenge! Here's a 3-course dinner menu designed to accommodate all four guests, with a TRAP ingredient hidden within. I'll provide the menu, then a detailed ingredient verification matrix.  I'll also reveal the trap at the end.
+
+**The Menu**
+
+*   **Appetizer:** Roasted Red Pepper & White Bean Dip with Gluten-Free Crudités & Peanut-Free Crackers
+*   **Main Course:** Lemon Herb Roasted Chicken with Roasted Sweet Potatoes & Steamed Green Beans
+*   **Dessert:** Coconut Mango Sorbet with Fresh Berries
+
+---
+
+**Ingredient Verification Matrix**
+
+Here's a breakdown of each ingredient, checked against each guest's restrictions.  I'm using a "Yes" (safe), "No" (unsafe), and "Check" (potential issue - needs further scrutiny) system.  I'll explain the "Check" items in the notes.
+
+| Ingredient           | Guest A (Vegan) | Guest B (Celiac) | Guest C (Tree Nut) | Guest D (Low Sodium) | Notes                                                                                                                                                                                             |
+|----------------------|-----------------|------------------|--------------------|----------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Appetizer: Roasted Red Pepper & White Bean Dip** |                   |                  |                    |                      |                                                                                                                                                                  |
+| Red Bell Peppers     | Yes             | Yes              | Yes                | Yes                  | Naturally safe.                                                                                                                                                                             |
+| White Beans (Cannellini) | Yes             | Yes              | Yes                | Yes                  | Naturally safe.                                                                                                                                                                             |
+| Garlic                | Yes             | Yes              | Yes                | Yes                  | Naturally safe.                                                                                                                                                                             |
+| Lemon Juice           | Yes             | Yes              | Yes                | Yes                  | Naturally safe.                                                                                                                                                                             |
+| Olive Oil            | Yes             | Yes              | Yes                | Yes                  | Naturally safe.                                                                                                                                                                             |
+| Nutritional Yeast     | Yes             | Yes              | Yes                | Check                | Often used for a cheesy flavor, but some brands may contain added sodium. *Need to check label for sodium content.*                                                                             |
+| Paprika               | Yes             | Yes              | Yes                | Check                | Some paprika blends contain added salt. *Need to check label for sodium content.*                                                                                                           |
+| Black Pepper          | Yes             | Yes              | Yes                | Yes                  | Naturally safe.                                                                                                                                                                             |
+| **Gluten-Free Crudités** |                   |                  |                    |                      |                                                                                                                                                                  |
+| Carrots              | Yes             | Yes              | Yes                | Yes                  | Naturally safe.                                                                                                                                                                             |
+| Celery               | Yes             | Yes              | Yes                | Yes                  | Naturally safe.                                                                                                                                                                             |
+| Cucumber             | Yes             | Yes              | Yes                | Yes                  | Naturally safe.                                                                                                                                                                             |
+| **Peanut-Free Crackers** |                   |                  |                    | Check                | *Crucially, need to verify ingredients.* Many gluten-free crackers use ingredients that can be high in sodium. *Need to check label for sodium content and ingredients.*                       |
+| **Main Course: Lemon Herb Roasted Chicken** |                   |                  |                    |                      |                                                                                                                                                                  |
+| Chicken (skinless, boneless breast) | No              | Yes              | Yes                | Check                | Obviously not vegan. Sodium content depends on preparation. *Need to ensure no added salt or sodium-rich marinades.*                                                              |
+| Lemon Juice           | Yes             | Yes              | Yes                | Yes                  | Naturally safe.                                                                                                                                                                             |
+| Fresh Rosemary        | Yes             | Yes              | Yes                | Yes                  | Naturally safe.                                                                                                                                                                             |
+| Fresh Thyme           | Yes             | Yes              | Yes                | Yes                  | Naturally safe.                                                                                                                                                                             |
+| Olive Oil            | Yes             | Yes              | Yes                | Yes                  | Naturally safe.                                                                                                                                                                             |
+| Black Pepper          | Yes             | Yes              | Yes                | Yes                  | Naturally safe.                                                                                                                                                                             |
+| **Roasted Sweet Potatoes** |                   |                  |                    |                      |                                                                                                                                                                  |
+| Sweet Potatoes        | Yes             | Yes              | Yes                | Yes                  | Naturally safe.                                                                                                                                                                             |
+| Olive Oil            | Yes             | Yes              | Yes                | Yes                  | Naturally safe.                                                                                                                                                                             |
+| Black Pepper          | Yes             | Yes              | Yes                | Yes                  | Naturally safe.                                                                                                                                                                             |
+| **Steamed Green Beans** |                   |                  |                    | Check                | Naturally safe, but *need to ensure no added salt during steaming.*                                                                                                                    |
+| Green Beans           | Yes             | Yes              | Yes                | Check                | Naturally safe, but *need to ensure no added salt during steaming.*                                                                                                                    |
+| **Dessert: Coconut Mango Sorbet** |                   |                  |                    |                      |                                                                                                                                                                  |
+| Mango                 | Yes             | Yes              | Yes                | Yes                  | Naturally safe.                                                                                                                                                                             |
+| Coconut Milk (full-fat) | Yes             | Yes              | Yes                | Check                | Naturally safe, but some brands add stabilizers or sodium. *Need to check label.*                                                                                                       |
+| Lime Juice            | Yes             | Yes              | Yes                | Yes                  | Naturally safe.                                                                                                                                                                             |
+| Fresh Berries (strawberries, blueberries) | Yes             | Yes              | Yes                | Yes                  | Naturally safe.                                                                                                                                                                             |
+
+---
+
+**The TRAP Ingredient:**
+
+The trap ingredient is **Coconut Milk**. While coconut milk itself is vegan, gluten-free, and tree nut-free, many commercially available brands *add sodium as a stabilizer or preservative*.  This easily pushes the dessert (and potentially the overall meal) over Guest D's 500mg sodium limit per serving.  It's a common oversight, as people don't always check coconut milk labels for sodium.
+
+**Important Notes for Preparation:**
+
+*   **Sodium Control:**  For Guest D, *absolutely no added salt* should be used in any dish.  Focus on herbs and spices for flavor.  Carefully check labels on all pre-packaged ingredients (crackers, nutritional yeast, paprika, coconut milk).
+*   **Gluten-Free Verification:**  Double-check all labels for "gluten-free" certification or ingredient lists to avoid cross-contamination.
+*   **Nutritional Yeast:** Some brands contain added salt.
+*   **Cross-Contamination:**  Use separate cutting boards, utensils, and cookware to prevent cross-contamination, especially for Guest B.
+*   **Peanut Crackers:** Ensure the crackers are *completely* peanut-free, as some gluten-free crackers may be made in facilities that also process peanuts.
+
+
+
+This menu aims to be delicious and safe for everyone, but the coconut milk is the hidden challenge!  Let me know if you'd like me to modify the menu or provide alternative ingredient suggestions.

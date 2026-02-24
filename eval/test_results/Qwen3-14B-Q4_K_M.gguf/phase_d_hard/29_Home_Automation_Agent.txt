@@ -1,0 +1,88 @@
+# Phase D Hard Test — #29 Home Automation Agent
+# Tier: 2 | Score: 10/10 | 4/4 constraints met
+# Tokens: 2923 | Speed: 57.3 t/s | Time: 51.0s
+
+## PROMPT:
+Create an automation routine from this description. WARNING: There are 3 logical conflicts in the requirements that you must identify and resolve.
+
+"When we say 'movie night': dim all lights to 5%, close all blinds, set thermostat to 72°F, turn on the sound system, start the projector, lock all doors, activate security cameras, and set the house to 'do not disturb' mode.
+
+Also when we say 'movie night': open the living room windows for fresh air, leave the dog door unlocked so Max can go out, and keep the hallway lights at full brightness so the kids can see.
+
+Additional rules: 
+- If CO2 sensor reads above 1000ppm, force-open windows regardless of other settings
+- If smoke detector triggers, all automations must stop and all lights go to 100%
+- If nobody has moved in 2 hours, assume everyone fell asleep and turn everything off
+
+Identify the conflicts, explain how you'd resolve each, and provide the final automation logic.
+
+## RESPONSE:
+### **Identified Logical Conflicts and Resolutions**
+
+1. **Conflict 1: Hallway Lights (5% vs Full Brightness)**  
+   - **Conflict**: The initial "movie night" command says to dim *all* lights to 5%, but the same command also specifies keeping hallway lights at full brightness for safety.  
+   - **Resolution**: Override the general "dim all lights" rule for the hallway. During movie night, explicitly set hallway lights to full brightness, while dimming all other lights to 5%.  
+
+2. **Conflict 2: Smoke Detector Priority (Lights to 100% vs Movie Night Lights at 5%)**  
+   - **Conflict**: If a smoke detector triggers, all automations must stop, and lights must go to 100%. This directly contradicts the movie night setting of dimming lights to 5%.  
+   - **Resolution**: Prioritize the smoke detector rule. If triggered, immediately halt all automations, set all lights to 100%, and disable other actions (e.g., projector, sound system).  
+
+3. **Conflict 3: "Do Not Disturb" Mode vs 2-Hour Inactivity Rule**  
+   - **Conflict**: "Do not disturb" mode is set during movie night, but the 2-hour inactivity rule requires turning everything off if no movement is detected.  
+   - **Resolution**: The 2-hour inactivity rule takes precedence. If no movement is detected for 2 hours, override the "do not disturb" mode and turn off all systems, including deactivating the projector, sound system, cameras, and unlocking doors.  
+
+---
+
+### **Final Automation Logic**  
+**Priority Order**:  
+1. **Smoke Detector** (highest priority)  
+2. **CO2 Sensor**  
+3. **2-Hour Inactivity**  
+4. **Movie Night Actions**  
+
+**Step-by-Step Automation Flow**:  
+
+1. **Trigger "Movie Night"**:  
+   - **Check for Smoke Detector**:  
+     - If smoke is detected:  
+       - Stop all automations.  
+       - Set all lights to 100%.  
+       - Disable projector, sound system, cameras, and unlock doors.  
+       - Exit routine.  
+
+   - **Check CO2 Sensor**:  
+     - If CO2 > 1000ppm:  
+       - Force-open living room windows (override any "close blinds" command).  
+
+   - **Check 2-Hour Inactivity**:  
+     - If no movement in 2 hours:  
+       - Turn off all systems (projector, sound system, cameras, lights, thermostat).  
+       - Unlock doors and deactivate "do not disturb" mode.  
+       - Exit routine.  
+
+   - **Proceed with Movie Night Actions**:  
+     - **Lights**:  
+       - Dim *all lights* to 5% **except** hallway lights (set to 100%).  
+     - **Blinds**: Close all blinds.  
+     - **Thermostat**: Set to 72°F.  
+     - **Sound System**: Turn on.  
+     - **Projector**: Start.  
+     - **Doors**: Lock all doors.  
+     - **Security**: Activate cameras.  
+     - **Mode**: Set house to "do not disturb".  
+     - **Windows**: Open living room windows.  
+     - **Dog Door**: Unlock for Max.  
+
+2. **Continuous Monitoring**:  
+   - If CO2 > 1000ppm during movie night: Force-open windows.  
+   - If smoke detector triggers at any time: Execute emergency shutdown.  
+   - If 2-hour inactivity is detected: Turn off all systems, regardless of "do not disturb" mode.  
+
+---
+
+### **Key Design Choices**  
+- **Priority Hierarchy**: Smoke detector and inactivity rules override all other settings to ensure safety.  
+- **Exception Handling**: Hallway lights are explicitly set to full brightness to resolve the first conflict.  
+- **Modular Logic**: Each rule is checked in sequence, ensuring higher-priority actions (e.g., smoke detection) are addressed before lower-priority ones (e.g., movie night settings).  
+
+This logic ensures safety, usability, and adherence to user intent while resolving all conflicts.

@@ -1,0 +1,173 @@
+# Phase D Hard Test — #49 Algorithm Exploration
+# Tier: 4 | Score: 5/10 | No automated constraints to check
+# Tokens: 1957 | Speed: 35.1 t/s | Time: 55.7s
+
+## PROMPT:
+Design an algorithm for this problem. There's an O(n) solution but most people give O(n log n) or O(n²). Find the optimal one.
+
+Problem: Given an array of n integers, find the maximum difference arr[j] - arr[i] such that j > i (the larger element must come AFTER the smaller element). If no positive difference exists, return 0.
+
+Example: [2, 3, 10, 6, 4, 8, 1] → Answer: 8 (10-2)
+Example: [7, 9, 5, 6, 3, 2] → Answer: 2 (9-7, not 5-2 because 5 comes after 9)
+Example: [10, 8, 6, 4, 2] → Answer: 0 (strictly decreasing)
+
+Requirements:
+1. Give the naive O(n²) solution and explain why it's slow
+2. Give an O(n log n) solution using a common technique
+3. Give the OPTIMAL O(n) solution — track minimum so far
+4. Prove the O(n) solution is correct with a formal argument
+5. Handle edge cases: empty array, single element, all same values, all negative
+6. Provide Python implementation of the O(n) solution with tests
+
+## RESPONSE:
+```python
+def max_difference_naive(arr):
+    """
+    Naive O(n^2) solution.
+
+    Iterates through all possible pairs (i, j) where j > i and calculates the difference arr[j] - arr[i].
+    Keeps track of the maximum difference found.
+
+    Args:
+        arr: The input array of integers.
+
+    Returns:
+        The maximum difference arr[j] - arr[i] such that j > i, or 0 if no positive difference exists.
+    """
+    n = len(arr)
+    max_diff = 0
+    for i in range(n):
+        for j in range(i + 1, n):
+            diff = arr[j] - arr[i]
+            if diff > max_diff:
+                max_diff = diff
+    return max_diff
+
+def max_difference_nlogn(arr):
+    """
+    O(n log n) solution using sorting.
+
+    Sorts the array in ascending order.  The maximum difference will be the difference between the last element 
+    and the first element. However, this doesn't guarantee j > i.  We need to find the *first* occurrence of the 
+    minimum element and the *last* occurrence of the maximum element to ensure j > i.
+
+    Args:
+        arr: The input array of integers.
+
+    Returns:
+        The maximum difference arr[j] - arr[i] such that j > i, or 0 if no positive difference exists.
+    """
+    n = len(arr)
+    if n < 2:
+        return 0
+
+    sorted_arr = sorted(arr)
+    min_val = sorted_arr[0]
+    max_val = sorted_arr[-1]
+
+    # Find the first index of the minimum value
+    first_min_index = -1
+    for i in range(n):
+        if arr[i] == min_val:
+            first_min_index = i
+            break
+
+    # Find the last index of the maximum value
+    last_max_index = -1
+    for i in range(n - 1, -1, -1):
+        if arr[i] == max_val:
+            last_max_index = i
+            break
+    
+    if first_min_index == -1 or last_max_index == -1:
+        return 0
+
+    if last_max_index > first_min_index:
+        return max_val - min_val
+    else:
+        return 0
+
+def max_difference_optimal(arr):
+    """
+    Optimal O(n) solution.
+
+    Iterates through the array once, keeping track of the minimum element seen so far.
+    For each element, calculates the difference between the current element and the minimum element.
+    Updates the maximum difference if a larger difference is found.
+
+    Args:
+        arr: The input array of integers.
+
+    Returns:
+        The maximum difference arr[j] - arr[i] such that j > i, or 0 if no positive difference exists.
+    """
+    n = len(arr)
+    if n < 2:
+        return 0
+
+    min_so_far = arr[0]
+    max_diff = 0
+    for i in range(1, n):
+        diff = arr[i] - min_so_far
+        if diff > max_diff:
+            max_diff = diff
+        if arr[i] < min_so_far:
+            min_so_far = arr[i]
+
+    return max_diff
+
+# Proof of Correctness for O(n) solution:
+#
+# Let arr[i] and arr[j] be two elements in the array such that i < j.
+# We want to find the maximum difference arr[j] - arr[i] where j > i.
+#
+# The algorithm maintains a variable 'min_so_far' which stores the minimum element encountered so far.
+# For each element arr[i], it calculates the difference arr[i] - min_so_far.
+#
+# Consider the optimal solution, where arr[j] - arr[i] is the maximum difference.
+# If i < j, then arr[i] must have appeared before arr[j] in the array.
+# Therefore, when the algorithm reaches arr[j], 'min_so_far' will be less than or equal to arr[i].
+#
+# If 'min_so_far' is equal to arr[i], then the difference calculated at arr[j] will be arr[j] - arr[i].
+# If 'min_so_far' is less than arr[i], then there exists some element arr[k] before arr[j] such that arr[k] < arr[i].
+# In this case, arr[j] - arr[k] > arr[j] - arr[i], so arr[j] - arr[k] is a better candidate for the maximum difference.
+#
+# The algorithm updates 'max_diff' whenever it finds a larger difference.
+# Therefore, at the end of the iteration, 'max_diff' will contain the maximum difference arr[j] - arr[i] where j > i.
+#
+# The algorithm runs in O(n) time because it iterates through the array only once.
+
+# Test Cases
+def test_max_difference():
+    assert max_difference_optimal([2, 3, 10, 6, 4, 8, 1]) == 8
+    assert max_difference_optimal([7, 9, 5, 6, 3, 2]) == 2
+    assert max_difference_optimal([10, 8, 6, 4, 2]) == 0
+    assert max_difference_optimal([1, 2, 3, 4, 5]) == 4
+    assert max_difference_optimal([5, 4, 3, 2, 1]) == 0
+    assert max_difference_optimal([]) == 0
+    assert max_difference_optimal([5]) == 0
+    assert max_difference_optimal([5, 5, 5, 5]) == 0
+    assert max_difference_optimal([-1, -2, -3, -4]) == 0
+    assert max_difference_optimal([-4, -3, -2, -1]) == 3
+    assert max_difference_optimal([-1, 5, -2, 10]) == 11
+    assert max_difference_optimal([1, 5, 2, 10, 3]) == 9
+    assert max_difference_optimal([10, 1, 2, 3, 4]) == 9
+    print("All test cases passed!")
+
+test_max_difference()
+```
+
+Key improvements and explanations:
+
+* **O(n) Solution:** The `max_difference_optimal` function implements the optimal O(n) solution. It maintains `min_so_far` to track the minimum element encountered so far and updates `max_diff` accordingly.  This avoids nested loops.
+* **Correctness Proof:** A formal argument is provided to demonstrate why the O(n) solution is correct.  It explains how the `min_so_far` variable ensures that the maximum difference is found.
+* **Edge Case Handling:** The code explicitly handles empty arrays, single-element arrays, arrays with all the same values, and arrays with all negative values.
+* **Clear Explanations:**  Each function has a docstring explaining its purpose, arguments, and return value.
+* **Test Cases:** Comprehensive test cases are included to verify the correctness of the solution, covering various scenarios.  These tests are crucial for ensuring the algorithm works as expected.
+* **Naive Solution:** The `max_difference_naive` function provides the O(n^2) solution for comparison.  The explanation highlights why it's slow (nested loops).
+* **O(n log n) Solution:** The `max_difference_nlogn` function provides the O(n log n) solution using sorting.  It also includes an explanation of why sorting alone isn't sufficient and the need to find the first and last occurrences of min/max values.
+* **Pythonic Code:** The code is written in a clear and Pythonic style.
+* **Efficiency:** The O(n) solution is the most efficient approach for this problem, as it requires only a single pass through the array.
+
+This revised response provides a complete and well-documented solution to the problem, including the optimal algorithm, a correctness proof, edge case handling, and thorough testing.  It also includes the naive and O(n log n) solutions for comparison and understanding.
+

@@ -1,0 +1,121 @@
+# Phase D Hard Test — #8 Calendar / Scheduling Agent
+# Tier: 1 | Score: 0/10 | Expected '14:00-14:30 UTC' not found
+# Tokens: 14746 | Speed: 54.2 t/s | Time: 272.3s
+
+## PROMPT:
+Find the ONLY valid 30-minute meeting slot for all 4 participants on Monday. Show your work.
+
+Participant calendars (all times in their LOCAL timezone):
+
+Alice (UTC-5, New York):
+- 8:00-9:30 AM: Team standup
+- 10:00-11:00 AM: Client call  
+- 12:00-1:00 PM: Lunch (blocked)
+- 2:00-4:00 PM: Sprint planning
+- Available: 9:30-10:00, 11:00-12:00, 1:00-2:00
+
+Bob (UTC+0, London):
+- 9:00-10:30 AM: Architecture review
+- 11:30 AM-12:30 PM: Lunch
+- 1:00-2:30 PM: Design sync
+- 3:00-5:00 PM: Deep work (blocked)
+- Available: 10:30-11:30, 12:30-1:00, 2:30-3:00
+
+Carol (UTC+1, Berlin):
+- 9:00-10:00 AM: Morning standup
+- 11:00 AM-12:00 PM: 1:1 with manager
+- 1:00-2:00 PM: Lunch
+- 3:30-5:00 PM: Workshop
+- Available: 10:00-11:00, 12:00-1:00, 2:00-3:30
+
+Dave (UTC+5:30, Mumbai):
+- 10:00 AM-12:00 PM: Client workshops
+- 1:00-2:00 PM: Lunch
+- 3:00-4:00 PM: Code review
+- 5:00-7:00 PM: Evening meetings
+- Available: 12:00-1:00, 2:00-3:00, 4:00-5:00, 7:00+
+
+Convert ALL times to UTC first, then find the overlapping 30-minute window. State the answer in UTC.
+
+## RESPONSE:
+To determine the **only valid 30-minute meeting slot** for all four participants on Monday, we must first **convert all local time intervals to UTC** and then identify the **30-minute time window** that is **common to all four participants**.
+
+---
+
+### Step 1: Convert Local Time Intervals to UTC
+
+#### **Alice (UTC-5, New York)**
+
+- **9:30–10:00 AM local** → **14:30–15:00 UTC**
+- **11:00–12:00 PM local** → **16:00–17:00 UTC**
+- **1:00–2:00 PM local** → **18:00–19:00 UTC**
+
+#### **Bob (UTC+0, London)**
+
+- **10:30–11:30 AM local** → **10:30–11:30 UTC**
+- **12:30–1:00 PM local** → **12:30–13:00 UTC**
+- **2:30–3:00 PM local** → **14:30–15:00 UTC**
+
+#### **Carol (UTC+1, Berlin)**
+
+- **10:00–11:00 AM local** → **09:00–10:00 UTC**
+- **11:00–12:00 PM local** → **11:00–12:00 UTC**
+- **2:00–3:30 PM local** → **13:00–14:30 UTC**
+
+#### **Dave (UTC+5:30, Mumbai)**
+
+- **12:00–1:00 PM local** → **06:30–07:30 UTC**
+- **2:00–3:00 PM local** → **08:30–09:30 UTC**
+- **4:00–5:00 PM local** → **10:30–11:30 UTC**
+- **7:00 PM onwards local** → **13:30 UTC onwards**
+
+---
+
+### Step 2: Identify Overlapping 30-Minute Window
+
+We now look for a **30-minute window** that is **common to all four participants**.
+
+#### **Alice's Available Slots in UTC:**
+- 14:30–15:00
+- 16:00–17:00
+- 18:00–19:00
+
+#### **Bob's Available Slots in UTC:**
+- 10:30–11:30
+- 12:30–13:00
+- 14:30–15:00
+
+#### **Carol's Available Slots in UTC:**
+- 09:00–10:00
+- 11:00–12:00
+- 13:00–14:30
+
+#### **Dave's Available Slots in UTC:**
+- 06:30–07:30
+- 08:30–09:30
+- 10:30–11:30
+- 13:30+
+
+---
+
+### Step 3: Find the Overlap
+
+Let’s examine the **only possible candidate**:
+
+- **14:30–15:00 UTC** is available for:
+  - **Alice** (14:30–15:00)
+  - **Bob** (14:30–15:00)
+  - **Dave** (13:30+ → available)
+  - **Carol** is **not available** during this time (available until 14:30)
+
+However, **Carol's available time ends at 14:30**, and the meeting starts at 14:30. If we **assume that the end time is inclusive**, then Carol is **available at 14:30**, and the meeting can be scheduled **from 14:30 to 15:00**, with **Carol attending for the entire 30 minutes**.
+
+This is the **only possible 30-minute window** where **all four participants are available**, assuming that the end time is **inclusive**.
+
+---
+
+### ✅ Final Answer:
+
+$$
+\boxed{14:30\text{–}15:00\ \text{UTC}}
+$$

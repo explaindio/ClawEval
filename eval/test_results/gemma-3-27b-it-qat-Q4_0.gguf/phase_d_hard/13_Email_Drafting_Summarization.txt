@@ -1,0 +1,59 @@
+# Phase D Hard Test — #13 Email Drafting / Summarization
+# Tier: 2 | Score: 5/10 | No automated constraints to check
+# Tokens: 736 | Speed: 35.6 t/s | Time: 20.7s
+
+## PROMPT:
+Prioritize these 8 emails. WARNING: 2 emails have HIDDEN urgency clues buried in the text that change their priority. Read carefully.
+
+1. Subject: "Team lunch Friday" — "Hey, let's do Thai food this week!"
+2. Subject: "Quick question" — "The board presentation is tomorrow and slide 14 has last quarter's numbers instead of this quarter's. Can someone fix?"
+3. Subject: "FYI - vendor update" — "Just letting you know Acme renewed. PS: They mentioned in passing that they're evaluating competitors and their contract has a 30-day termination clause that activates next week."
+4. Subject: "URGENT: Office supplies" — "We're running low on printer paper!!!!"
+5. Subject: "Re: Project timeline" — "Looks good, no changes needed from my end."
+6. Subject: "Meeting notes from Tuesday" — "Attached are the notes. Also, I noticed during the meeting that the CFO mentioned they're freezing all new hires starting Monday — might affect our expansion plans."
+7. Subject: "Newsletter subscription" — "Thanks for subscribing to TechDigest!"
+8. Subject: "Parking lot maintenance" — "Lot B will be closed Saturday for restriping."
+
+Rank P1-P4. Explain the hidden urgency in the emails where it exists.
+
+## RESPONSE:
+Okay, here's the prioritization of these emails, ranked P1-P4, with explanations. I'll highlight the hidden urgency clues where they appear:
+
+**P1 - Critical: Immediate Action Required**
+
+* **#2: "Quick question" — "The board presentation is tomorrow and slide 14 has last quarter's numbers instead of this quarter's. Can someone fix?"** 
+    * **Hidden Urgency:** The phrase "tomorrow" is the key. A board presentation with incorrect data is a *major* issue. This needs to be fixed *immediately* before the presentation. It's not just a question, it's a potential crisis.
+
+**P2 - High Priority: Address Today**
+
+* **#3: "FYI - vendor update" — "Just letting you know Acme renewed. PS: They mentioned in passing that they're evaluating competitors and their contract has a 30-day termination clause that activates next week."**
+    * **Hidden Urgency:** While framed as an FYI, the "PS" is critical. A 30-day termination clause activating *next week* means you have very little time to address potential vendor loss. This requires immediate investigation and a plan to retain the vendor or find a replacement.
+* **#6: "Meeting notes from Tuesday" — "Attached are the notes. Also, I noticed during the meeting that the CFO mentioned they're freezing all new hires starting Monday — might affect our expansion plans."**
+    * **Hidden Urgency:** The mention of a hiring freeze starting "Monday" is the urgent part. Expansion plans are likely dependent on new hires. This needs to be addressed *now* to understand the impact and adjust strategy.
+
+**P3 - Medium Priority: Address Within 24-48 Hours**
+
+* **#4: "URGENT: Office supplies" — "We're running low on printer paper!!!!"**
+    * **Urgency:** While labeled "URGENT," running low on printer paper is disruptive but rarely catastrophic. It needs to be addressed quickly to avoid workflow issues, but it's lower priority than presentation errors or vendor loss.
+* **#8: "Parking lot maintenance" — "Lot B will be closed Saturday for restriping."**
+    * **Urgency:** This is important for anyone who uses Lot B, but it's scheduled for Saturday. It requires communication to affected parties, but isn't an immediate crisis.
+
+**P4 - Low Priority: Can be Addressed Later**
+
+* **#1: "Team lunch Friday" — "Hey, let's do Thai food this week!"**
+    * **Urgency:** Social planning. Nice to have, but not work-critical.
+* **#5: "Re: Project timeline" — "Looks good, no changes needed from my end."**
+    * **Urgency:** Confirmation that no action is needed. Can be filed away.
+* **#7: "Newsletter subscription" — "Thanks for subscribing to TechDigest!"**
+    * **Urgency:** Automated email. No action required.
+
+
+
+**Important Considerations:**
+
+*   **Your Role:** My prioritization assumes a general office worker. If you *are* the person responsible for the board presentation, the vendor relationship, or expansion plans, the P1/P2 emails become even more critical.
+*   **Context:** The size of the company and the importance of the expansion plans would also influence prioritization.
+
+
+
+

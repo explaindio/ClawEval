@@ -1,0 +1,100 @@
+# Phase D Hard Test — #2 Input Validator / Sanitizer
+# Tier: 1 | Score: 10/10 | 8/8 constraints met
+# Tokens: 1153 | Speed: 38.1 t/s | Time: 30.3s
+
+## PROMPT:
+Validate this API request body. Find ALL issues (there are at least 10). For each issue, specify: field, severity (critical/error/warning), and explanation. Cross-field validations are required.
+
+```json
+{
+  "order": {
+    "customer": {
+      "name": "<img src=x onerror=alert(1)>John",
+      "email": "john@",
+      "phone": "555-CALL-ME",
+      "zip": "1234"
+    },
+    "items": [
+      {"sku": "ABC-123", "quantity": -3, "unit_price": 29.99},
+      {"sku": "", "quantity": 0, "unit_price": 0.001},
+      {"sku": "DEF-456", "quantity": 2, "unit_price": 15.00}
+    ],
+    "discount_percent": 150,
+    "start_date": "2025-03-15",
+    "end_date": "2025-03-10",
+    "notes": "Regular order'; DROP TABLE orders;--",
+    "shipping": {"method": "TELEPORT", "address": ""}
+  }
+}
+```
+
+List every single issue. Do NOT miss cross-field validations (e.g., date relationships).
+
+## RESPONSE:
+Okay, here's a comprehensive validation of the provided API request body, identifying at least 10 issues with severity levels and explanations.
+
+**Overall Structure:** The top-level "order" key is good, but all issues are nested within it.
+
+---
+
+**1. Field: `order.customer.name`**
+   * **Severity:** Critical
+   * **Explanation:** Contains HTML injection. The `<img src=x onerror=alert(1)>` is a malicious payload attempting to execute JavaScript code when the page renders. This is a severe security vulnerability (Cross-Site Scripting - XSS).  The name field should be sanitized to remove or escape HTML tags.
+
+**2. Field: `order.customer.email`**
+   * **Severity:** Error
+   * **Explanation:** Invalid email format. "john@" is not a valid email address. It's missing the domain part.  Email should conform to a standard email regex pattern.
+
+**3. Field: `order.customer.phone`**
+   * **Severity:** Warning
+   * **Explanation:**  Unusual phone number format. "555-CALL-ME" is not a standard phone number. While not necessarily invalid, it's highly suspicious and should be flagged for review or further validation (e.g., against a phone number regex or lookup service).
+
+**4. Field: `order.customer.zip`**
+   * **Severity:** Warning
+   * **Explanation:** Zip code length. "1234" is a valid zip code but is likely a US zip code. The API should specify the expected zip code format (length and potentially country).  If expecting a 5-digit US zip, this is too short.
+
+**5. Field: `order.items[0].quantity`**
+   * **Severity:** Error
+   * **Explanation:** Negative quantity. A quantity of -3 is invalid for an order item. Quantities should be non-negative integers.
+
+**6. Field: `order.items[1].sku`**
+   * **Severity:** Error
+   * **Explanation:** Empty SKU. An empty string "" is not a valid SKU. SKUs should be unique identifiers and cannot be empty.
+
+**7. Field: `order.items[1].unit_price`**
+   * **Severity:** Warning
+   * **Explanation:** Extremely low unit price.  0.001 is a very low price and could indicate a data entry error or an attempt to manipulate the system.  A reasonable price range should be enforced.
+
+**8. Field: `order.discount_percent`**
+   * **Severity:** Error
+   * **Explanation:** Discount percentage exceeds 100%.  150% is an invalid discount. Discount percentages should be between 0 and 100 (inclusive).
+
+**9. Field: `order.start_date` & `order.end_date` (Cross-Field Validation)**
+   * **Severity:** Critical
+   * **Explanation:** End date is before start date. "2025-03-10" is earlier than "2025-03-15". The end date must be on or after the start date. This indicates a logical error in the order data.
+
+**10. Field: `order.notes`**
+    * **Severity:** Critical
+    * **Explanation:** SQL Injection vulnerability. The string "Regular order'; DROP TABLE orders;--" contains a SQL injection attempt. The semicolon and `DROP TABLE orders` are malicious code that could potentially delete the `orders` table. The notes field must be sanitized or parameterized to prevent SQL injection.
+
+**11. Field: `order.shipping.address`**
+    * **Severity:** Warning
+    * **Explanation:** Empty shipping address. An empty string "" for the shipping address is likely invalid.  A shipping address is typically required for delivery.
+
+**12. Field: `order.shipping.method`**
+    * **Severity:** Warning
+    * **Explanation:** Invalid shipping method. "TELEPORT" is not a standard shipping method. The API should define a list of valid shipping methods and validate against it.
+
+---
+
+**Recommendations:**
+
+*   **Input Sanitization:**  Crucially, sanitize all string inputs (name, email, notes, shipping address, etc.) to prevent XSS and SQL injection attacks.
+*   **Data Type Validation:** Enforce correct data types for all fields (e.g., numbers for quantity and price, dates for start/end dates).
+*   **Range Validation:**  Set reasonable ranges for numerical values (e.g., discount percentage, unit price).
+*   **Format Validation:** Use regular expressions to validate formats (e.g., email, zip code, phone number, SKU).
+*   **Cross-Field Validation:** Implement logic to check relationships between fields (e.g., start date vs. end date).
+*   **Whitelisting:** For fields like shipping method, use a whitelist of allowed values instead of allowing arbitrary strings.
+*   **Error Handling:** Provide clear and informative error messages to the client when validation fails.  Specify *which* fields are invalid and *why*.
+*   **Consider a Schema:** Use a schema definition language (like JSON Schema) to formally define the expected structure and validation rules for the API request body. This can automate validation and improve code maintainability.
+

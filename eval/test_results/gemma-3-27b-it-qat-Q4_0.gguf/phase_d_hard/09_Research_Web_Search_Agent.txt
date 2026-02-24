@@ -1,0 +1,27 @@
+# Phase D Hard Test — #9 Research / Web Search Agent
+# Tier: 2 | Score: 10/10 | Correct answer found
+# Tokens: 275 | Speed: 35.1 t/s | Time: 7.8s
+
+## PROMPT:
+8 claims about quantum computing are listed below. Exactly 3 are FALSE. Identify which 3 are false and explain why. Respond with JSON: {"false": [numbers], "explanations": {...}}
+
+1. Qubits can exist in superposition of 0 and 1 simultaneously
+2. Google's quantum computer Sycamore has over 1000 qubits
+3. Quantum entanglement allows correlations between qubits regardless of distance
+4. Shor's algorithm can factor large numbers exponentially faster than classical algorithms
+5. Quantum computers operate at absolute zero (0 Kelvin)
+6. Quantum error correction is still a major unsolved challenge
+7. IBM was the first company to demonstrate quantum supremacy
+8. Decoherence is a major obstacle to building practical quantum computers
+
+## RESPONSE:
+```json
+{
+  "false": [2, 7, 5],
+  "explanations": {
+    "2": "Google's Sycamore processor, while a significant achievement, has 53 qubits, not over 1000. While Google continues to develop larger processors, the initial claim of over 1000 qubits is inaccurate. As of late 2023/early 2024, the largest quantum computers have hundreds of qubits, but not yet over 1000.",
+    "7": "While IBM has made substantial progress in quantum computing, it was Google who first *claimed* quantum supremacy in 2019 with their Sycamore processor. IBM has challenged Google's claim and demonstrated other quantum computations, but they were not the first to announce supremacy.",
+    "5": "Quantum computers don't operate *at* absolute zero. They operate at extremely *low* temperatures, typically just above absolute zero (around 10-20 millikelvin), to minimize thermal noise and maintain qubit coherence. Absolute zero is practically unattainable, and even operating at temperatures very close to it is a significant engineering challenge, but it's not a hard requirement to be *at* 0 Kelvin."
+  }
+}
+```

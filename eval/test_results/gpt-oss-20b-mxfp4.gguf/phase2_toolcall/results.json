@@ -1,0 +1,127 @@
+{
+  "phase": "phase2_tool_calling",
+  "model": "gpt-oss-20b-mxfp4.gguf",
+  "timestamp": "2026-02-23T15:25:34.335865",
+  "tests": [
+    {
+      "name": "simple_search",
+      "passed": true,
+      "reason": "Correct tool + params: {'query': 'latest news about artificial intelligence'}",
+      "tool_called": "search_web",
+      "tool_args": {
+        "query": "latest news about artificial intelligence"
+      },
+      "text_response": null,
+      "elapsed": 4.71
+    },
+    {
+      "name": "weather_query",
+      "passed": true,
+      "reason": "Correct tool + params: {'city': 'Tokyo', 'units': 'celsius'}",
+      "tool_called": "get_weather",
+      "tool_args": {
+        "city": "Tokyo",
+        "units": "celsius"
+      },
+      "text_response": null,
+      "elapsed": 0.35
+    },
+    {
+      "name": "calendar_create",
+      "passed": true,
+      "reason": "Correct tool + params: {'title': 'Team Meeting', 'date': '2026-03-15', 'time': '14:30', 'duration_minutes': 60}",
+      "tool_called": "create_calendar_event",
+      "tool_args": {
+        "title": "Team Meeting",
+        "date": "2026-03-15",
+        "time": "14:30",
+        "duration_minutes": 60
+      },
+      "text_response": null,
+      "elapsed": 0.63
+    },
+    {
+      "name": "email_send",
+      "passed": true,
+      "reason": "Correct tool + params: {'to': 'alice@company.com', 'subject': 'Q4 Report', 'body': 'The quarterly report is attached.'}",
+      "tool_called": "send_email",
+      "tool_args": {
+        "to": "alice@company.com",
+        "subject": "Q4 Report",
+        "body": "The quarterly report is attached."
+      },
+      "text_response": null,
+      "elapsed": 0.59
+    },
+    {
+      "name": "file_read",
+      "passed": true,
+      "reason": "Correct tool + params: {'path': '/home/user/documents/notes.txt'}",
+      "tool_called": "read_file",
+      "tool_args": {
+        "path": "/home/user/documents/notes.txt"
+      },
+      "text_response": null,
+      "elapsed": 0.46
+    },
+    {
+      "name": "weather_with_units",
+      "passed": true,
+      "reason": "Correct tool + params: {'city': 'London', 'units': 'fahrenheit'}",
+      "tool_called": "get_weather",
+      "tool_args": {
+        "city": "London",
+        "units": "fahrenheit"
+      },
+      "text_response": null,
+      "elapsed": 0.35
+    },
+    {
+      "name": "no_tool_needed",
+      "passed": true,
+      "reason": "Correctly did not call a tool",
+      "tool_called": null,
+      "tool_args": {},
+      "text_response": "2\u202f+\u202f2\u202f=\u202f4.",
+      "elapsed": 0.3
+    },
+    {
+      "name": "ambiguous_search",
+      "passed": false,
+      "reason": "No tool called (expected search_web). Text: **Photosynthesis** is the process by which green plants, algae, and some bacteri",
+      "tool_called": null,
+      "tool_args": {},
+      "text_response": "**Photosynthesis** is the process by which green plants, algae, and some bacteria convert light energy into chemical energy, producing oxygen as a by\u2011product. It occurs mainly in the chloroplasts of p",
+      "elapsed": 3.57
+    },
+    {
+      "name": "calendar_implicit",
+      "passed": true,
+      "reason": "Correct tool + params: {'title': 'Dentist appointment', 'date': '2026-02-24', 'time': '09:00', 'duration_minutes': 60}",
+      "tool_called": "create_calendar_event",
+      "tool_args": {
+        "title": "Dentist appointment",
+        "date": "2026-02-24",
+        "time": "09:00",
+        "duration_minutes": 60
+      },
+      "text_response": null,
+      "elapsed": 0.64
+    },
+    {
+      "name": "multi_step_intent",
+      "passed": true,
+      "reason": "Correct tool + params: {'query': 'population of Canada'}",
+      "tool_called": "search_web",
+      "tool_args": {
+        "query": "population of Canada"
+      },
+      "text_response": null,
+      "elapsed": 0.39
+    }
+  ],
+  "passed": 9,
+  "failed": 1,
+  "total": 10,
+  "score_pct": 90.0
+}

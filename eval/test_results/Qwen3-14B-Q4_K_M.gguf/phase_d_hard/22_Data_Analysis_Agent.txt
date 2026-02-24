@@ -1,0 +1,43 @@
+# Phase D Hard Test — #22 Data Analysis Agent
+# Tier: 2 | Score: 10/10 | 1/1 constraints met
+# Tokens: 1281 | Speed: 54.2 t/s | Time: 23.6s
+
+## PROMPT:
+Analyze this clinical trial data. WARNING: The obvious conclusion from the aggregate data is WRONG. You must analyze the subgroups to find the truth. This is a real statistical phenomenon.
+
+Overall Results:
+- Treatment A: 100 patients, 40 recovered (40%)
+- Treatment B: 100 patients, 50 recovered (50%)
+
+Subgroup breakdown:
+- Mild cases with Treatment A: 10 patients, 8 recovered (80%)
+- Mild cases with Treatment B: 60 patients, 45 recovered (75%)
+- Severe cases with Treatment A: 90 patients, 32 recovered (35.6%)
+- Severe cases with Treatment B: 40 patients, 5 recovered (12.5%)
+
+Questions:
+1. Based on aggregate data alone, which treatment appears better?
+2. When you look at subgroups, which treatment is actually better for mild cases?
+3. Which treatment is actually better for severe cases?
+4. Explain the paradox — why does the aggregate data mislead?
+5. What is the name of this statistical phenomenon?
+6. What is your final recommendation and why?
+
+## RESPONSE:
+1. **Based on aggregate data alone, which treatment appears better?**  
+   Treatment B appears better (50% recovery rate vs. 40% for Treatment A).
+
+2. **When you look at subgroups, which treatment is actually better for mild cases?**  
+   Treatment A is better for mild cases (80% recovery rate vs. 75% for Treatment B).
+
+3. **Which treatment is actually better for severe cases?**  
+   Treatment A is better for severe cases (35.6% recovery rate vs. 12.5% for Treatment B).
+
+4. **Explain the paradox — why does the aggregate data mislead?**  
+   The aggregate data misleads because **the distribution of patients across subgroups differs significantly between the two treatments**. Treatment A has far more severe cases (90 out of 100 patients) compared to Treatment B (40 out of 100 patients). Since severe cases have inherently lower recovery rates, Treatment A’s overall performance is dragged down by its higher proportion of severe cases. Conversely, Treatment B has far more mild cases (60 out of 100 patients), which have higher recovery rates, artificially inflating its overall success rate. This creates a **confounding effect** where the subgroup trends (A better for both mild and severe) are reversed in the aggregate.
+
+5. **What is the name of this statistical phenomenon?**  
+   This is **Simpson’s Paradox**, a situation where trends within subgroups reverse when data is aggregated, often due to confounding variables or imbalanced subgroup distributions.
+
+6. **What is your final recommendation and why?**  
+   **Recommend Treatment A** despite its lower aggregate recovery rate. The subgroup analysis reveals that Treatment A is **superior in both mild and severe cases**, which are critical patient groups. The paradox arises because Treatment B’s higher aggregate rate is driven by an unbalanced distribution of patients (more mild cases, which are easier to treat). Relying solely on aggregate data would lead to a flawed conclusion. Clinical decisions should prioritize subgroup-specific efficacy, especially when subgroups are clinically meaningful (e.g., mild vs. severe disease).

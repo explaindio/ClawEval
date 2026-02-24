@@ -1,0 +1,49 @@
+# Phase D Hard Test — #6 FAQ Generation Agent
+# Tier: 1 | Score: 10/10 | 3/3 constraints met
+# Tokens: 463 | Speed: 32.9 t/s | Time: 14.1s
+
+## PROMPT:
+Generate FAQs from this product description. WARNING: The text contains 2 deliberate contradictions. You MUST identify and flag them rather than silently picking one version.
+
+Product Description:
+"CloudStore offers unlimited storage starting at $9.99/month. All plans include a 14-day free trial. Enterprise customers get dedicated support with 4-hour response SLA. Files are encrypted with AES-256 at rest and in transit. Our 30-day free trial lets you explore all features. Refunds are available within 60 days of purchase, no questions asked. Maximum file size is 10GB. We guarantee 99.9% uptime. Note: due to our no-refund policy, please use the free trial to evaluate before purchasing. Supports Windows, Mac, Linux, iOS, and Android."
+
+Generate 6 FAQs AND explicitly call out the contradictions you found in the source text.
+
+## RESPONSE:
+## CloudStore FAQs
+
+Here are 6 FAQs generated from the product description, followed by a section identifying the contradictions:
+
+**1. How much storage does CloudStore offer?**
+CloudStore offers unlimited storage, with plans starting at $9.99/month.
+
+**2. Is there a free trial available?**
+Yes! CloudStore offers *two* free trials: a 14-day free trial included with all plans, *and* a 30-day free trial to explore all features.
+
+**3. What kind of security does CloudStore provide?**
+CloudStore encrypts your files with AES-256 encryption both at rest and in transit, ensuring your data is secure.
+
+**4. What operating systems does CloudStore support?**
+CloudStore supports Windows, Mac, Linux, iOS, and Android.
+
+**5. What is the uptime guarantee for CloudStore?**
+CloudStore guarantees 99.9% uptime.
+
+**6. What is the refund policy for CloudStore?**
+CloudStore offers refunds within 60 days of purchase, with no questions asked.
+
+
+
+---
+
+## **CONTRADICTIONS IDENTIFIED:**
+
+The product description contains **two clear contradictions** regarding the free trial and refund policy:
+
+*   **Contradiction 1: Free Trial Duration:** The description states both a **14-day free trial** *and* a **30-day free trial**. This is inconsistent. It's unclear which trial duration is accurate, or if they apply to different plan types (which isn't specified).
+*   **Contradiction 2: Refund Policy:** The description explicitly states **refunds are available within 60 days of purchase**, *but then immediately contradicts this by stating a **"no-refund policy"**. This is a significant conflict and will likely cause confusion and distrust with potential customers.
+
+
+
+It's crucial to resolve these contradictions in the official product documentation to provide a clear and accurate representation of CloudStore's offerings.  The "no-refund policy" statement should be removed or clarified if the 60-day refund window is genuine. The free trial duration should also be standardized and explained.

@@ -1,0 +1,21 @@
+# Phase D Hard Test — #14 Document Summarization
+# Tier: 2 | Score: 5/10 | No automated constraints to check
+# Tokens: 595 | Speed: 136.6 t/s | Time: 4.4s
+
+## PROMPT:
+Summarize this document in exactly 5 bullet points. ONE critical fact is buried in the middle paragraph that most people miss — your summary MUST include it.
+
+"Our platform migration is proceeding on schedule. The frontend team completed the React 18 upgrade last week, achieving a 30% improvement in initial load times. User testing shows 92% satisfaction with the new UI components. The design system now includes 47 reusable components.
+
+The backend infrastructure has been moved to Kubernetes across 3 availability zones. Database replication lag is under 50ms. We implemented automated API key rotation every 90 days, which means any integration partner who has hardcoded their API keys will experience authentication failures. This needs to be communicated before the next rotation on March 15th. Redis caching reduced average response time from 340ms to 45ms.
+
+Deployment frequency increased from weekly to daily with the new CI/CD pipeline. The error rate dropped from 2.1% to 0.3%. Mobile app downloads grew 25% month over month. Revenue is up 18% YoY with 340 enterprise customers now on the platform."
+
+Which fact is the most operationally critical and time-sensitive? It should be in your summary.
+
+## RESPONSE:
+- Frontend: React 18 upgrade finished, giving a 30 % faster initial load, 92 % user satisfaction, and 47 reusable components.  
+- Backend: Moved to Kubernetes across 3 availability zones, keeping replication lag under 50 ms and cutting Redis‑cached response time from 340 ms to 45 ms.  
+- CI/CD: Deployment frequency increased to daily, reducing the error rate from 2.1 % to 0.3 %.  
+- Business: Mobile app downloads grew 25 % month‑over‑month, revenue is up 18 % YoY, and 340 enterprise customers now use the platform.  
+- Critical operational risk: Automated API key rotation every 90 days will cause authentication failures for partners with hard‑coded keys; they must be notified before the next rotation on March 15.

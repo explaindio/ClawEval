@@ -1,0 +1,71 @@
+# Phase D Hard Test — #4 Notification / Alert Agent
+# Tier: 1 | Score: 10/10 | 2/2 constraints met
+# Tokens: 855 | Speed: 36.1 t/s | Time: 23.7s
+
+## PROMPT:
+Process these 7 events into alerts. WATCH OUT: 2 events are duplicates (merge them), 1 is a false positive that should NOT generate an alert. Assign correct priorities.
+
+Events (timestamps in UTC):
+1. 14:00 — "Disk /data at 94% capacity" (source: monitoring)
+2. 14:01 — "SSL certificate for api.example.com expired 2 hours ago" (source: cert-manager)
+3. 14:02 — "CPU spike to 98% on worker-3" (source: monitoring)
+4. 14:02 — "CPU on worker-3 returned to 12% after scheduled batch job completed" (source: monitoring)
+5. 14:03 — "SSL certificate for api.example.com expires in -2 hours" (source: different cert checker)
+6. 14:05 — "New deployment v2.4.1 rolled out successfully" (source: CI/CD)
+7. 14:06 — "Disk /data at 94% — approaching critical threshold" (source: secondary monitoring)
+
+For each alert: priority (P1/P2/P3), channel, message, and reasoning. Explain which events you merged and which you filtered as false positives.
+
+## RESPONSE:
+Okay, here's the processed alert list, based on the provided events, with priorities, channels, messages, and reasoning.
+
+**Alerts:**
+
+**1. P1 - Critical Disk Space - Immediate Action Required**
+
+*   **Channel:** PagerDuty/SMS/High-Priority Slack Channel
+*   **Message:** "CRITICAL: Disk `/data` is at 94% capacity. Approaching critical threshold. Investigate immediately to prevent service disruption."
+*   **Reasoning:**  High disk usage can lead to service outages. Combining events 1 & 7 provides a clearer picture of the severity (approaching critical) and reinforces the urgency.  Events 1 and 7 were merged as they both relate to the same disk `/data` reaching a high capacity level. The secondary monitoring source confirms the initial alert and adds urgency.
+*   **Events Merged:** 1 & 7
+
+**2. P1 - SSL Certificate Expired - Urgent Remediation Needed**
+
+*   **Channel:** PagerDuty/SMS/High-Priority Slack Channel
+*   **Message:** "CRITICAL: SSL certificate for `api.example.com` expired 2 hours ago.  Service disruption possible.  Renew/replace certificate immediately."
+*   **Reasoning:** An expired SSL certificate directly impacts service availability and security.  Events 2 & 5 are duplicates, both reporting the expired certificate. The second event (5) provides additional confirmation from a different source, increasing confidence.
+*   **Events Merged:** 2 & 5
+
+**3. P2 - CPU Spike - Investigate Performance**
+
+*   **Channel:** Slack - #operations/monitoring-alerts
+*   **Message:** "WARNING: CPU spike to 98% on `worker-3`. Investigate potential performance issues.  Spike resolved after scheduled batch job."
+*   **Reasoning:** While a CPU spike is concerning, event 4 indicates it was transient and related to a scheduled job. This reduces the immediate severity but still warrants investigation to understand the job's resource consumption and potential optimization.
+*   **Events Used:** 3 & 4 (Events 3 triggered the alert, event 4 provides context and resolution)
+
+**4. P3 - Deployment Successful - Informational**
+
+*   **Channel:** Slack - #general/deployments
+*   **Message:** "INFO: New deployment `v2.4.1` rolled out successfully."
+*   **Reasoning:** Successful deployments are good to know, but don't require immediate action.  This is an informational alert to keep the team aware of changes.
+*   **Event Used:** 6
+
+**Filtered/False Positive:**
+
+*   **Event:** None. All events generated alerts.
+
+
+
+**Explanation of Filtering/Merging:**
+
+*   **Duplicates (Merged):** Events 2 and 5 were identical in their reporting of the expired SSL certificate. Merging them provides stronger confirmation and avoids alert fatigue. Events 1 and 7 were merged as they both relate to the same disk `/data` reaching a high capacity level.
+*   **False Positives (Filtered):** There were no false positives in this dataset. All events indicated a state that required some level of attention.
+
+
+
+**Important Considerations:**
+
+*   **Correlation:**  In a real-world scenario, you'd want to correlate these alerts.  For example, a CPU spike *could* be related to a new deployment (event 6) if the deployment introduced a performance regression.
+*   **Automation:**  Automated remediation steps could be added for some of these alerts (e.g., automatically renewing SSL certificates).
+*   **Thresholds:**  The thresholds for disk capacity and CPU usage should be carefully tuned to minimize false positives and ensure timely alerts.
+*   **Context:** Providing more context in the alerts (e.g., the specific batch job that caused the CPU spike) can help responders diagnose the issue more quickly.
+*   **Runbooks:** Link alerts to relevant runbooks or documentation to guide responders.

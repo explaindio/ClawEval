@@ -1,0 +1,99 @@
+# Phase D Hard Test — #27 Sprint / Project Summarizer
+# Tier: 2 | Score: 5/10 | No automated constraints to check
+# Tokens: 1342 | Speed: 34.9 t/s | Time: 38.5s
+
+## PROMPT:
+Analyze these 3 sprints and identify the trends that nobody is talking about. Calculate exact velocity and predict sprint 4 outcomes.
+
+Sprint 1 (2 weeks): 8 stories planned (34 pts), 7 completed (30 pts), 1 carried over. 0 stories added mid-sprint.
+Sprint 2 (2 weeks): 10 stories planned (40 pts), 7 completed (32 pts), 3 carried over. 3 stories added mid-sprint by product.
+Sprint 3 (2 weeks): 12 stories planned (48 pts), 6 completed (28 pts), 6 carried over. 5 stories added mid-sprint by product.
+
+The team has committed to delivering 15 stories (60 pts) in Sprint 4 because "the deadline is non-negotiable."
+
+Questions:
+1. Calculate the velocity trend across 3 sprints (exact numbers)
+2. What is the realistic capacity for Sprint 4?
+3. What percentage of scope creep has occurred each sprint?
+4. Is the Sprint 4 commitment achievable? Show math.
+5. What should you recommend to the product owner?
+
+## RESPONSE:
+Okay, let's break down these sprints, identify the hidden trends, and make some recommendations.
+
+## Sprint Analysis
+
+Here's a detailed analysis of the provided sprint data:
+
+**1. Calculate the Velocity Trend Across 3 Sprints (Exact Numbers)**
+
+*   **Sprint 1 Velocity:** 30 points completed
+*   **Sprint 2 Velocity:** 32 points completed
+*   **Sprint 3 Velocity:** 28 points completed
+
+**Trend:** The velocity is *not* consistently increasing. It started at 30, rose slightly to 32, and then *dropped* to 28.  This is a concerning trend.  A simple linear regression isn't very useful here with only three data points, but we can observe a clear fluctuation.  Calculating an average velocity is more helpful:
+
+*   **Average Velocity:** (30 + 32 + 28) / 3 = **30 points per sprint**
+
+**2. What is the Realistic Capacity for Sprint 4?**
+
+Given the fluctuating velocity and the average, a realistic capacity for Sprint 4 would be around **30 points**.  However, we need to consider the *downward trend* in the last sprint.  To be conservative, I'd suggest planning for **28-32 points** as a more realistic range.  We'll use 30 for our calculations, but acknowledge the risk.
+
+**3. What Percentage of Scope Creep Has Occurred Each Sprint?**
+
+Scope creep is measured by the points added mid-sprint relative to the initial plan.
+
+*   **Sprint 1:** 0 points added / 34 points planned = **0% scope creep**
+*   **Sprint 2:** 3 points added / 40 points planned = **7.5% scope creep**
+*   **Sprint 3:** 5 points added / 48 points planned = **10.4% scope creep**
+
+**Trend:** Scope creep is *increasing* with each sprint. This is a significant issue.  It's impacting the team's ability to deliver what they commit to.
+
+**4. Is the Sprint 4 Commitment Achievable? Show Math.**
+
+The team committed to 60 points (15 stories).
+
+*   **Average Velocity:** 30 points
+*   **Committed Scope:** 60 points
+*   **Difference:** 60 - 30 = 30 points over average velocity.
+
+**Conclusion:**  The commitment is **highly unlikely to be achievable** based on historical data.  It represents a 100% increase in scope compared to the team's average velocity. Even planning for the higher end of the realistic capacity (32 points) leaves a significant gap (28 points).
+
+**Further Breakdown Considering Scope Creep:**
+
+If we assume scope creep continues at the same rate as Sprint 3 (10.4%), the team can expect roughly 6.24 points of additional work added to the sprint. This would mean they are trying to deliver 66.24 points. This makes the commitment even more unrealistic.
+
+**5. What Should You Recommend to the Product Owner?**
+
+I would recommend the following to the Product Owner, framing it as a collaborative problem-solving discussion:
+
+*   **Acknowledge the Deadline, but Discuss Prioritization:**  "I understand the deadline is firm, and we want to support that. However, based on our recent performance, committing to 60 points is a significant risk. Let's review the 15 stories and prioritize them ruthlessly. We need to identify the *absolute must-have* features for the deadline."
+*   **Reduce Scope:**  "To realistically meet the deadline, we need to reduce the scope of the sprint.  We can either:
+    *   **Defer lower-priority stories to the next sprint.**  This is the preferred option.
+    *   **Break down larger stories into smaller, more manageable pieces.** (But be careful not to just create more stories without reducing overall effort).
+*   **Address Scope Creep:** "We've seen a consistent increase in scope added mid-sprint.  This is disrupting our planning and impacting our ability to deliver.  Let's discuss how we can better manage this.  Some options include:
+    *   **More thorough backlog refinement sessions *before* sprint planning.**
+    *   **A clear process for evaluating and approving new requests during the sprint.** (e.g., a change request process with impact assessment).
+    *   **A commitment to minimizing changes during the sprint.**  (Unless it's a critical bug fix).
+*   **Transparency and Realistic Planning:** "Let's agree to be transparent about our capacity and plan realistically.  It's better to deliver a smaller set of features well than to overcommit and deliver something incomplete or of lower quality."
+*   **Velocity Tracking and Improvement:** "We should continue to track our velocity closely and identify any impediments that are preventing us from achieving our potential."
+
+**Specific Actionable Steps for Sprint 4:**
+
+1.  **Backlog Refinement:**  Hold a dedicated backlog refinement session with the Product Owner to review all 15 stories.
+2.  **Prioritization:**  Use a prioritization framework (e.g., MoSCoW - Must have, Should have, Could have, Won't have) to rank the stories.
+3.  **Capacity Planning:**  Plan for 28-32 points based on the team's recent velocity.
+4.  **Scope Negotiation:**  Negotiate with the Product Owner to reduce the scope to fit within the realistic capacity.
+5.  **Scope Creep Mitigation:**  Establish a clear process for handling new requests during the sprint.
+
+
+
+**Important Considerations:**
+
+*   **Team Morale:**  Overcommitting and consistently failing to deliver can be demotivating for the team.
+*   **Technical Debt:**  Rushing to deliver features can lead to technical debt, which will slow down the team in the future.
+*   **Quality:**  Prioritizing speed over quality can result in bugs and a poor user experience.
+
+
+
+By addressing these trends proactively, you can help the team deliver more value consistently and build a more sustainable development process.

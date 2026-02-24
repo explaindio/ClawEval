@@ -1,0 +1,68 @@
+# Phase D Hard Test — #45 Prototype Generator
+# Tier: 3 | Score: 5/10 | No test code provided
+# Tokens: 2999 | Speed: 56.1 t/s | Time: 53.5s
+
+## PROMPT:
+Write a COMPLETE, RUNNABLE Streamlit prototype that actually works when executed. I will run it with `streamlit run app.py`.
+
+Requirements:
+1. A form to input expense data (date, category dropdown, amount, description)
+2. Store entries in session state (persist within session)
+3. A pie chart showing spending by category (use st.pyplot or plotly)
+4. A date range filter that updates the chart
+5. Display total spending prominently
+6. An "Export CSV" button that generates and downloads data
+
+The code must be a SINGLE FILE with ALL imports. It must run without errors on a fresh Python environment with only streamlit, pandas, and matplotlib/plotly installed. No placeholder — working code only.
+
+## RESPONSE:
+```python
+import streamlit as st
+import pandas as pd
+import plotly.express as px
+from datetime import datetime
+
+# Initialize session state for expenses
+if 'expenses' not in st.session_state:
+    st.session_state['expenses'] = []
+
+# Form to input expense data
+with st.form("expense_form"):
+    date = st.date_input("Date")
+    category = st.selectbox("Category", ["Food", "Transport", "Entertainment", "Utilities", "Other"])
+    amount = st.number_input("Amount", min_value=0.0, format="%.2f")
+    description = st.text_area("Description")
+    submitted = st.form_submit_button("Add Expense")
+    if submitted:
+        st.session_state['expenses'].append({
+            'Date': date,
+            'Category': category,
+            'Amount': amount,
+            'Description': description
+        })
+
+# Date range filter
+start_date = st.date_input("Start Date", value=datetime.today() - pd.Timedelta(days=30))
+end_date = st.date_input("End Date", value=datetime.today())
+
+# Convert session state to DataFrame
+df = pd.DataFrame(st.session_state['expenses'])
+df['Date'] = pd.to_datetime(df['Date'])
+filtered_df = df[(df['Date'] >= pd.to_datetime(start_date)) & (df['Date'] <= pd.to_datetime(end_date))]
+
+# Display total spending
+total_spent = filtered_df['Amount'].sum()
+st.metric(label="Total Spending", value=f"${total_spent:.2f}")
+
+# Pie chart
+if not filtered_df.empty:
+    category_df = filtered_df.groupby('Category')['Amount'].sum().reset_index()
+    fig = px.pie(category_df, names='Category', values='Amount', title='Spending by Category')
+    st.plotly_chart(fig)
+else:
+    st.write("No expenses in the selected date range.")
+
+# Export CSV
+csv = filtered_df.to_csv(index=False)
+st.download_button(label="Export CSV", data=csv, file_name='expenses.csv', mime='text/csv')
+```

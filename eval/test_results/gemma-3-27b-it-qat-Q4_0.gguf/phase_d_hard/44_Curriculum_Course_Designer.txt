@@ -1,0 +1,112 @@
+# Phase D Hard Test — #44 Curriculum / Course Designer
+# Tier: 3 | Score: 10/10 | 1/1 constraints met
+# Tokens: 2286 | Speed: 35.4 t/s | Time: 64.6s
+
+## PROMPT:
+Design Week 1 of a web development bootcamp. TRAP: The requested schedule is physically impossible — you must identify why and propose a fix.
+
+Requested schedule:
+- Day 1 (Mon): HTML basics (9am-12pm), CSS fundamentals (1pm-5pm), Assessment on HTML+CSS (5pm-6pm)
+- Day 2 (Tue): JavaScript basics (9am-12pm), Build a responsive landing page using HTML+CSS+JS (1pm-5pm)
+- Day 3 (Wed): React fundamentals (9am-12pm), Build a React app with state management (1pm-5pm)
+- Day 4 (Thu): Node.js + Express backend (9am-12pm), Build full-stack app connecting React frontend to Node backend (1pm-5pm)
+- Day 5 (Fri): Deploy to AWS (9am-12pm), Portfolio presentation of all projects (1pm-5pm)
+
+Requirements:
+1. Identify which days have unrealistic expectations (Bloom's taxonomy violations)
+2. Note prerequisite gaps (can't do X before Y is mastered)
+3. Propose a realistic revised schedule maintaining the same 5-day format
+4. Include formative assessment points (not just Day 1)
+5. Ensure learning objectives follow Bloom's hierarchy (remember → understand → apply → analyze)
+
+## RESPONSE:
+## Web Development Bootcamp - Week 1: Analysis & Revised Schedule
+
+This requested schedule is **physically impossible** due to the incredibly rapid pace and insufficient time for foundational understanding and practice. It attempts to cram too much content into too little time, violating Bloom's Taxonomy principles and ignoring crucial prerequisite learning.  Specifically:
+
+**1. Unrealistic Expectations (Bloom's Taxonomy Violations):**
+
+* **Day 2 (Tue):** Building a *responsive* landing page with HTML+CSS+JS in 4 hours after *just* learning JavaScript basics is unrealistic. Responsiveness requires understanding media queries, flexible layouts (Flexbox/Grid), and potentially JS for dynamic behavior – all concepts that need dedicated time.  This jumps straight to *application* without sufficient *understanding*.
+* **Day 3 (Wed):** React fundamentals *and* building a React app with state management in a single day is a massive undertaking. React has a steep learning curve (JSX, components, props, state, lifecycle methods). State management (even simple state) requires grasping core React concepts first. This is asking for *analysis* before *application* is solid.
+* **Day 4 (Thu):** Node.js + Express *and* building a full-stack app in a day is impossible for beginners.  Node.js introduces asynchronous programming, modules, package management (npm/yarn), and Express adds routing, middleware, and request handling. Connecting it to a React frontend requires understanding APIs, fetch/axios, and data flow. This is *evaluation* before even *application*.
+* **Day 5 (Fri):** Deploying to AWS is a complex topic with many moving parts (IAM roles, S3 buckets, EC2 instances, etc.).  It's a significant undertaking even for experienced developers.  Portfolio presentations are good, but should focus on the projects *built*, not just shown.  This is asking for *creation* before *application* is fully realized.
+
+**2. Prerequisite Gaps:**
+
+* **JavaScript before HTML/CSS Mastery:** While JS can enhance HTML/CSS, a solid understanding of HTML structure and CSS styling is *essential* before effectively using JS to manipulate the DOM.
+* **CSS Layouts before Responsiveness:**  Flexbox and Grid are fundamental to responsive design.  They need to be taught *before* attempting responsive layouts.
+* **Core JavaScript before DOM Manipulation:** Understanding variables, data types, functions, control flow, and event listeners is crucial before manipulating the DOM with JS.
+* **JavaScript Fundamentals before React:** React builds *on* JavaScript.  Concepts like arrow functions, `map()`, `filter()`, and object destructuring are heavily used.
+* **HTTP/API Basics before Full-Stack:** Understanding requests (GET, POST, PUT, DELETE), responses, JSON, and API endpoints is essential for connecting frontend and backend.
+
+
+
+## Revised Week 1 Schedule: Foundations & First Full-Stack Experience
+
+This revised schedule focuses on building a strong foundation and achieving a *basic* full-stack experience. It prioritizes understanding over rushing to complex projects.
+
+**Overall Approach:**  Each day will include a mix of lecture/demo (40%), guided practice (40%), and independent practice/small challenges (20%).  Formative assessments are woven throughout.
+
+**Day 1: HTML & CSS – Structure & Styling (Focus: Remember & Understand)**
+
+* **9:00 AM - 10:30 AM:** HTML Basics: Tags, attributes, document structure, semantic HTML (headings, paragraphs, lists, links, images). *Assessment: Quick quiz on tag usage.*
+* **10:30 AM - 12:00 PM:** CSS Fundamentals: Selectors, properties, values, box model, basic styling (colors, fonts, text). *Assessment: Style a pre-built HTML page with specific requirements.*
+* **1:00 PM - 3:00 PM:** CSS Layouts:  Flexbox – core concepts, properties, creating simple layouts. *Assessment: Build a simple navigation bar using Flexbox.*
+* **3:00 PM - 5:00 PM:** CSS Positioning & Responsiveness:  Relative/Absolute positioning, Media Queries (basic implementation). *Assessment: Make the navigation bar responsive for different screen sizes.*
+* **5:00 PM - 6:00 PM:**  HTML/CSS Review & Challenge:  Recreate a simple static webpage from a provided design.
+
+**Learning Objectives:** Students will *remember* core HTML tags and CSS properties, *understand* the box model and Flexbox principles, and *apply* these concepts to style basic webpages.
+
+**Day 2: JavaScript – Interactivity & DOM Manipulation (Focus: Understand & Apply)**
+
+* **9:00 AM - 10:30 AM:** JavaScript Basics: Variables, data types, operators, control flow (if/else, loops). *Assessment: Code a simple program to calculate the average of numbers.*
+* **10:30 AM - 12:00 PM:** Functions & Events: Defining functions, event listeners, handling user interactions. *Assessment: Create a button that displays an alert message when clicked.*
+* **1:00 PM - 3:00 PM:** DOM Manipulation: Selecting elements, modifying content, adding/removing elements. *Assessment:  Create a button that toggles the visibility of a paragraph.*
+* **3:00 PM - 5:00 PM:**  JavaScript & HTML Integration:  Building interactive elements, responding to user input. *Assessment: Build a simple form that validates user input.*
+* **5:00 PM - 6:00 PM:** JavaScript Review & Challenge:  Create a simple to-do list application with add/remove functionality.
+
+**Learning Objectives:** Students will *understand* core JavaScript concepts, *apply* them to manipulate the DOM, and *analyze* how to create interactive webpages.
+
+**Day 3: Introduction to React – Components & State (Focus: Understand & Apply)**
+
+* **9:00 AM - 10:30 AM:** React Fundamentals: JSX, components (functional components), props. *Assessment: Create a simple React component that displays a greeting.*
+* **10:30 AM - 12:00 PM:** React State:  Using `useState` hook, updating state, re-rendering components. *Assessment: Create a counter component that increments/decrements on button clicks.*
+* **1:00 PM - 3:00 PM:**  React Event Handling:  Passing event handlers, updating state based on user input. *Assessment: Create a form component with controlled inputs.*
+* **3:00 PM - 5:00 PM:**  React Lists & Keys: Rendering lists of data, using the `map()` method, understanding the importance of keys. *Assessment: Display a list of items from an array in a React component.*
+* **5:00 PM - 6:00 PM:** React Review & Challenge: Build a simple React component that displays a list of items and allows users to add new items.
+
+**Learning Objectives:** Students will *understand* the core concepts of React, *apply* them to create components with state, and *analyze* how data flows in a React application.
+
+**Day 4: Node.js & Express – Backend Basics (Focus: Understand & Apply)**
+
+* **9:00 AM - 10:30 AM:** Node.js Introduction:  What is Node.js, npm/yarn, running JavaScript on the server. *Assessment: Create a simple Node.js script that logs a message to the console.*
+* **10:30 AM - 12:00 PM:** Express Fundamentals:  Creating a server, defining routes, handling requests and responses. *Assessment: Create a simple Express server that responds with "Hello, World!"*
+* **1:00 PM - 3:00 PM:**  Express Routing:  Handling different HTTP methods (GET, POST), route parameters. *Assessment: Create an Express server that handles GET and POST requests to different routes.*
+* **3:00 PM - 5:00 PM:**  Basic API Creation:  Returning JSON data from an Express server. *Assessment: Create an Express server that returns a JSON array of data.*
+* **5:00 PM - 6:00 PM:** Node.js/Express Review & Challenge: Create a simple API that returns a list of users.
+
+**Learning Objectives:** Students will *understand* the basics of Node.js and Express, *apply* them to create a simple server and API, and *analyze* how to handle requests and responses.
+
+**Day 5: Connecting Frontend & Backend + Deployment Introduction (Focus: Apply & Analyze)**
+
+* **9:00 AM - 10:30 AM:**  Fetching Data with JavaScript: Using `fetch` or `axios` to make API requests. *Assessment: Fetch data from the API created on Day 4 and display it in the console.*
+* **10:30 AM - 12:00 PM:** Integrating React with Node.js:  Connecting a React frontend to the Node.js backend. *Assessment: Display the data fetched from the API in a React component.*
+* **1:00 PM - 3:00 PM:**  Basic Deployment Overview: Introduction to Netlify/Vercel for frontend deployment. *Demo: Deploy a simple React app to Netlify/Vercel.*
+* **3:00 PM - 5:00 PM:** Portfolio Project Presentations: Students present the full-stack application they built throughout the week. *Assessment: Peer review of projects based on functionality and code quality.*
+
+**Learning Objectives:** Students will *apply* their knowledge to connect a React frontend to a Node.js backend, *analyze* the data flow between the two, and *understand* the basics of deployment.
+
+
+
+**Key Improvements:**
+
+* **Gradual Progression:**  Content is introduced in a logical order, building on previous concepts.
+* **Formative Assessments:** Frequent quizzes, coding challenges, and reviews reinforce learning.
+* **Realistic Scope:** Projects are scaled down to achievable goals for beginners.
+* **Focus on Understanding:**  Emphasis is placed on grasping core concepts before moving on to complex implementations.
+* **Bloom's Taxonomy Alignment:** Learning objectives are designed to progress through the levels of Bloom's Taxonomy.
+* **Deployment Introduction:** Provides a taste of deployment without overwhelming students with complex AWS configurations.
+
+
+
+This revised schedule provides a more realistic and effective learning experience for web development bootcamp students, setting them up for success in future weeks.  It's important to be flexible and adjust the pace based on student needs and progress.

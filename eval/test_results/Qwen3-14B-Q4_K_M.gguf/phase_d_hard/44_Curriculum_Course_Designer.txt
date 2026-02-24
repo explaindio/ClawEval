@@ -1,0 +1,115 @@
+# Phase D Hard Test — #44 Curriculum / Course Designer
+# Tier: 3 | Score: 10/10 | 1/1 constraints met
+# Tokens: 2126 | Speed: 56.4 t/s | Time: 37.7s
+
+## PROMPT:
+Design Week 1 of a web development bootcamp. TRAP: The requested schedule is physically impossible — you must identify why and propose a fix.
+
+Requested schedule:
+- Day 1 (Mon): HTML basics (9am-12pm), CSS fundamentals (1pm-5pm), Assessment on HTML+CSS (5pm-6pm)
+- Day 2 (Tue): JavaScript basics (9am-12pm), Build a responsive landing page using HTML+CSS+JS (1pm-5pm)
+- Day 3 (Wed): React fundamentals (9am-12pm), Build a React app with state management (1pm-5pm)
+- Day 4 (Thu): Node.js + Express backend (9am-12pm), Build full-stack app connecting React frontend to Node backend (1pm-5pm)
+- Day 5 (Fri): Deploy to AWS (9am-12pm), Portfolio presentation of all projects (1pm-5pm)
+
+Requirements:
+1. Identify which days have unrealistic expectations (Bloom's taxonomy violations)
+2. Note prerequisite gaps (can't do X before Y is mastered)
+3. Propose a realistic revised schedule maintaining the same 5-day format
+4. Include formative assessment points (not just Day 1)
+5. Ensure learning objectives follow Bloom's hierarchy (remember → understand → apply → analyze)
+
+## RESPONSE:
+### **Analysis of the Requested Schedule**  
+The proposed schedule is **physically impossible** due to **prerequisite gaps**, **overloading complex tasks before foundational skills are mastered**, and **violations of Bloom’s Taxonomy** (e.g., jumping from "remembering" to "creating" without intermediate steps). Below is the breakdown:
+
+---
+
+### **1. Unrealistic Expectations & Bloom’s Taxonomy Violations**  
+#### **Day 1**  
+- **Issue**: Assessing HTML+CSS after only 5 hours of instruction (9am–6pm) violates **Bloom’s "Apply" level**. Mastery of basics requires time for practice, not just passive learning.  
+- **Violation**: No time for **analysis** or **evaluation** of code quality.  
+
+#### **Day 2**  
+- **Issue**: Building a **responsive landing page** (which requires advanced CSS techniques like Flexbox/Grid, media queries, and layout planning) immediately after CSS fundamentals is unrealistic.  
+- **Violation**: Skips **understanding** and **analysis** of responsive design principles.  
+
+#### **Day 3**  
+- **Issue**: Learning **React** (a framework requiring advanced JavaScript knowledge) after only 3 hours of JavaScript basics is impossible.  
+- **Violation**: React requires **ES6+ syntax**, **component structure**, and **state management**, which are not covered in "JavaScript basics."  
+
+#### **Day 4**  
+- **Issue**: Building a **full-stack app** requires simultaneous mastery of frontend (React) and backend (Node.js). The schedule assumes students can integrate both in one day without prior practice.  
+- **Violation**: No time for **application** of backend concepts before attempting integration.  
+
+#### **Day 5**  
+- **Issue**: Deploying to AWS requires knowledge of **CI/CD pipelines**, **server configuration**, and **version control** (e.g., Git), which are not taught in the schedule.  
+- **Violation**: Portfolio presentation assumes mastery of all skills in 5 days, which is unrealistic.  
+
+---
+
+### **2. Prerequisite Gaps**  
+- **JavaScript**: React (Day 3) and Node.js (Day 4) require advanced JavaScript (ES6+, async/await, closures), which are not covered in the "JavaScript basics" session.  
+- **Responsive Design**: Building a landing page (Day 2) requires advanced CSS skills not covered in "CSS fundamentals."  
+- **Full-Stack Integration**: Day 4 assumes students can connect React and Node.js without prior practice in API calls, RESTful endpoints, or backend routing.  
+
+---
+
+### **3. Revised Realistic Schedule**  
+**Goal**: Ensure prerequisites are met, align with Bloom’s Taxonomy, and include formative assessments.  
+
+#### **Day 1 (Mon): HTML & CSS Foundations**  
+- **9am–12pm**: HTML basics (tags, structure, semantics) → **Remember**  
+- **1pm–3pm**: CSS fundamentals (selectors, styling, box model) → **Remember**  
+- **3pm–4pm**: Practice: Build a static personal page → **Apply**  
+- **4pm–5pm**: Formative quiz on HTML/CSS → **Understand**  
+
+#### **Day 2 (Tue): JavaScript Fundamentals**  
+- **9am–12pm**: JS basics (variables, functions, DOM manipulation) → **Remember**  
+- **1pm–3pm**: Practice: Interactive elements (e.g., to-do list) → **Apply**  
+- **3pm–4pm**: Formative quiz on JS concepts → **Understand**  
+
+#### **Day 3 (Wed): Responsive Design & Advanced CSS**  
+- **9am–12pm**: Responsive design (Flexbox, Grid, media queries) → **Understand**  
+- **1pm–3pm**: Practice: Build a responsive landing page → **Apply**  
+- **3pm–4pm**: Peer review of layouts → **Analyze**  
+
+#### **Day 4 (Thu): React Fundamentals**  
+- **9am–12pm**: React basics (components, props, state) → **Remember**  
+- **1pm–3pm**: Practice: Build a React app with state management → **Apply**  
+- **3pm–4pm**: Formative quiz on React → **Understand**  
+
+#### **Day 5 (Fri): Full-Stack Integration & Deployment**  
+- **9am–12pm**: Node.js + Express (APIs, routing, middleware) → **Remember**  
+- **1pm–3pm**: Practice: Connect React frontend to Node backend → **Apply**  
+- **3pm–4pm**: Deploy to AWS (basic setup, Git, CI/CD) → **Analyze**  
+- **4pm–5pm**: Portfolio presentation → **Create**  
+
+---
+
+### **4. Formative Assessment Points**  
+- **Day 1**: HTML/CSS quiz (code validation).  
+- **Day 2**: Interactive JS project (e.g., calculator).  
+- **Day 3**: Peer review of responsive layouts.  
+- **Day 4**: React component challenge (e.g., form with validation).  
+- **Day 5**: Full-stack app demo and AWS deployment check.  
+
+---
+
+### **5. Bloom’s Taxonomy Alignment**  
+| **Day** | **Learning Objective** | **Bloom’s Level** |  
+|--------|------------------------|-------------------|  
+| 1 | Write valid HTML/CSS | Remember → Apply |  
+| 2 | Use JS for interactivity | Remember → Apply |  
+| 3 | Design responsive layouts | Understand → Analyze |  
+| 4 | Build React apps with state | Remember → Apply |  
+| 5 | Integrate frontend/backend, deploy | Apply → Create |  
+
+---
+
+### **Key Fixes**  
+- **Spaced repetition**: JavaScript and React are separated to allow mastery.  
+- **Progressive complexity**: Responsive design and full-stack integration are delayed until prerequisites are met.  
+- **Formative checks**: Daily assessments ensure foundational skills are mastered before advancing.  
+
+This revised schedule avoids cognitive overload and aligns with pedagogical best practices.

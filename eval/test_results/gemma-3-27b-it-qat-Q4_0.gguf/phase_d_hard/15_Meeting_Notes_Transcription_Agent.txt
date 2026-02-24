@@ -1,0 +1,55 @@
+# Phase D Hard Test — #15 Meeting Notes / Transcription Agent
+# Tier: 2 | Score: 7/10 | 2/3 constraints met | Missing: headcount (Sarah says 3, later says 2)
+# Tokens: 383 | Speed: 32.7 t/s | Time: 11.7s
+
+## PROMPT:
+Process this meeting transcript into structured notes. WARNING: The transcript contains 3 contradictory statements made by different participants. You MUST identify all 3 contradictions.
+
+Transcript:
+Sarah (PM): "OK let's kick off. Budget for Project Atlas is $50K as approved by the board."
+Mike (Eng): "Actually I spoke with finance yesterday and they confirmed $75K for Atlas."
+Sarah: "We'll need to clarify that. Moving on — Lisa, timeline update?"
+Lisa (Design): "Designs will be finalized by end of March. That gives engineering 6 weeks."
+James (QA): "Wait, in last week's email you said designs would be done in April. We planned QA around that."
+Lisa: "That was before we got the additional designer. March is firm now."
+Sarah: "OK, so we need 3 new hires for this: 2 backend, 1 frontend."
+Mike: "Agreed on the technical side."
+Sarah: "Actually, thinking about it, we only need 2 new hires — we can reassign Jordan."
+James: "QA will need 2 weeks after engineering freeze. Factor that into the timeline."
+
+Extract: decisions, action items, and CONTRADICTIONS (with who said what).
+
+## RESPONSE:
+## Project Atlas Meeting - Structured Notes
+
+**Date:** (Not specified in transcript)
+**Attendees:** Sarah (PM), Mike (Eng), Lisa (Design), James (QA)
+
+**I. Decisions:**
+
+*   **Budget:** Initial decision of $50K (Sarah), pending clarification.
+*   **New Hires:** Initial decision of 3 new hires (2 Backend, 1 Frontend - Sarah), revised to 2 new hires with reassignment of Jordan (Sarah).
+*   **Design Finalization:** Designs finalized by end of March (Lisa).
+*   **QA Timeline:** 2 weeks QA time post-engineering freeze (James).
+
+**II. Action Items:**
+
+*   **Sarah:** Clarify Project Atlas budget with Finance.
+*   **Lisa:** Communicate revised design timeline (end of March) to James and any other relevant stakeholders.
+*   **Sarah:** Confirm reassignment of Jordan and update resource allocation.
+
+**III. CONTRADICTIONS:**
+
+1.  **Budget Discrepancy:**
+    *   **Sarah (PM):** Budget is $50K (as approved by the board).
+    *   **Mike (Eng):** Finance confirmed $75K for Atlas.
+2.  **Design Timeline - Initial vs. Revised:**
+    *   **Lisa (Design - Last Week's Email):** Designs would be done in April.
+    *   **Lisa (Design - Current Meeting):** Designs will be finalized by end of March.
+3.  **New Hire Count - Initial vs. Revised:**
+    *   **Sarah (PM - Initial):** Need 3 new hires (2 Backend, 1 Frontend).
+    *   **Sarah (PM - Revised):** Only need 2 new hires; Jordan will be reassigned.
+
+
+
+

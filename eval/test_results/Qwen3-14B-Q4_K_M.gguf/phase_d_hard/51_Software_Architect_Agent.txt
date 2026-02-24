@@ -1,0 +1,121 @@
+# Phase D Hard Test — #51 Software Architect Agent
+# Tier: 5 | Score: 10/10 | 4/4 constraints met
+# Tokens: 3614 | Speed: 48.9 t/s | Time: 73.9s
+
+## PROMPT:
+Design a system architecture. WARNING: The requirements contain 3 CONTRADICTORY pairs. You must identify them and propose tradeoffs instead of pretending all requirements can be met simultaneously.
+
+Requirements:
+1. Process 50,000 events per second in real-time (< 100ms latency)
+2. Also support batch processing of historical data (millions of records)
+3. Zero downtime during deployments AND database schema migrations
+4. Store data in a strongly consistent SQL database with ACID transactions
+5. Horizontally scale to handle 10x traffic spikes within 30 seconds
+6. Multi-region deployment with data residency compliance (EU data stays in EU)
+7. Total infrastructure cost under $5,000/month at current scale
+8. 99.999% availability (five nines = ~5 minutes downtime/year)
+
+For each contradictory pair:
+1. Explain WHY they conflict
+2. Propose a compromise or phased approach
+3. What would you prioritize and why?
+
+Then provide the architecture diagram (text format) with the tradeoffs built in.
+
+## RESPONSE:
+### **Identified Contradictory Pairs & Tradeoffs**
+
+---
+
+#### **1. Strong Consistency (Requirement 4) vs. Horizontal Scaling (Requirement 5)**  
+**Conflict**:  
+Strongly consistent SQL databases (e.g., PostgreSQL, MySQL) require coordination for ACID transactions, which introduces latency and complexity when scaling horizontally. Horizontal scaling typically relies on eventual consistency (e.g., NoSQL databases) to avoid bottlenecks.  
+
+**Compromise**:  
+- Use a **distributed SQL database** (e.g., **CockroachDB** or **YugabyteDB**) that supports horizontal scaling with strong consistency.  
+- Accept **increased infrastructure complexity** and **higher costs** for distributed coordination.  
+- **Prioritize**: Real-time processing (Requirement 1) and horizontal scaling (Requirement 5) over strict cost constraints (Requirement 7).  
+
+---
+
+#### **2. Strong Consistency (Requirement 4) vs. Multi-Region Deployment (Requirement 6)**  
+**Conflict**:  
+Strong consistency across regions violates the CAP theorem (partition tolerance vs. consistency). Multi-region deployments typically require **eventual consistency** or **synchronous replication**, which introduces latency and reduces availability.  
+
+**Compromise**:  
+- **Primary data residency in EU** (Requirement 6) with **asynchronous replication** to other regions for read-only access.  
+- Use **eventual consistency** for cross-region queries, but enforce strong consistency within the EU region.  
+- **Prioritize**: Data residency compliance (Requirement 6) and strong consistency (Requirement 4) over global low-latency access.  
+
+---
+
+#### **3. Multi-Region Deployment (Requirement 6) vs. Cost Constraint ($5,000/month) (Requirement 7)**  
+**Conflict**:  
+Multi-region deployments require **redundant infrastructure**, data replication, and higher compute/storage costs. Keeping costs under $5,000/month is challenging.  
+
+**Compromise**:  
+- Use **managed services** (e.g., AWS RDS Multi-AZ, Azure Cosmos DB) to reduce operational overhead and optimize costs.  
+- Deploy **read replicas** in secondary regions with **cold storage** (e.g., AWS Glacier) for historical data.  
+- **Prioritize**: Cost constraint (Requirement 7) by leveraging cloud provider optimizations and minimizing redundant compute.  
+
+---
+
+### **Proposed Architecture (Text Format)**  
+```
+[User Applications]  
+    |  
+    v  
+[Real-Time Event Ingestion] --> [Kafka (Multi-Region, EU Primary)]  
+    |  
+    v  
+[Stream Processor (Flink/Spark)] --> [Distributed SQL DB (CockroachDB)]  
+    |  
+    v  
+[Strongly Consistent Storage (EU)] --> [Read Replicas (Other Regions)]  
+    |  
+    v  
+[Batch Processing Jobs (Airflow)] --> [Data Warehouse (Redshift/BigQuery)]  
+    |  
+    v  
+[Data Residency Compliance (EU)]  
+    |  
+    v  
+[Zero-Downtime Deployments (Blue-Green)]  
+    |  
+    v  
+[Schema Migrations (Automated, Zero-Downtime Tools)]  
+    |  
+    v  
+[Multi-Region Edge Caching (CDN)]  
+    |  
+    v  
+[Cost Optimization Layer (Spot Instances, Managed Services)]  
+```
+
+---
+
+### **Key Design Tradeoffs in the Architecture**  
+1. **Distributed SQL Database**:  
+   - **CockroachDB** balances strong consistency (Requirement 4) and horizontal scaling (Requirement 5) but requires more resources than traditional SQL databases.  
+
+2. **Multi-Region Strategy**:  
+   - **EU primary region** ensures data residency (Requirement 6), while **asynchronous replication** to other regions avoids the CAP theorem conflict.  
+
+3. **Cost Management**:  
+   - **Batch jobs** offloaded to a **data warehouse** (Redshift/BigQuery) reduce load on the SQL database.  
+   - **Spot instances** and **managed services** (e.g., AWS RDS) keep infrastructure costs under $5,000/month (Requirement 7).  
+
+4. **Zero Downtime**:  
+   - **Blue-green deployments** and **automated schema migrations** (e.g., Liquibase) ensure zero downtime (Requirement 3).  
+
+5. **Availability**:  
+   - **Five nines** (Requirement 8) is achieved via redundancy, automated failover, and multi-region read replicas.  
+
+---
+
+### **Final Prioritization**  
+- **Top Priority**: Real-time processing (Requirement 1), strong consistency (Requirement 4), and data residency (Requirement 6).  
+- **Secondary Priority**: Zero downtime (Requirement 3) and five nines availability (Requirement 8).  
+- **Tertiary Priority**: Cost constraint (Requirement 7) and horizontal scaling (Requirement 5).  
+
+This design balances conflicting requirements by accepting tradeoffs in scalability, consistency, and cost while meeting the core functional goals.

@@ -1,0 +1,148 @@
+# Phase D Hard Test — #47 Math / Logic Reasoning
+# Tier: 4 | Score: 0/10 | Expected '11' not found
+# Tokens: 13099 | Speed: 52.4 t/s | Time: 249.9s
+
+## PROMPT:
+Solve this optimization problem. WARNING: The greedy approach gives the WRONG answer. You must prove it.
+
+A warehouse has packages to ship in boxes. Each box holds max 10 kg.
+Packages (kg): 7, 5, 5, 4, 4, 3, 3, 2, 2, 2, 1, 1, 1, 1
+
+Question 1: Using a GREEDY approach (first-fit decreasing), how many boxes do you need? Show the packing.
+Question 2: What is the OPTIMAL (minimum) number of boxes? Show a better packing.
+Question 3: Prove the greedy answer is not optimal by showing the difference.
+
+Also solve: There are 100 people at a party. 90 drink coffee, 80 drink tea, 70 drink juice. What is the MINIMUM number of people who drink all three? Show the inclusion-exclusion calculation.
+
+The party problem answer must be an exact integer.
+
+## RESPONSE:
+### **Warehouse Box Packing Problem**
+
+---
+
+#### **Question 1: Greedy Approach (First-Fit Decreasing)**
+
+**Packages (kg):**  
+7, 5, 5, 4, 4, 3, 3, 2, 2, 2, 1, 1, 1, 1  
+**Box capacity:** 10 kg
+
+**Sorted in descending order:**  
+7, 5, 5, 4, 4, 3, 3, 2, 2, 2, 1, 1, 1, 1
+
+Using **First-Fit Decreasing**, we sort the packages and place each in the first available box that can accommodate it.
+
+**Packing Steps:**
+
+- **Box 1:** 7 + 3 = 10  
+- **Box 2:** 5 + 5 = 10  
+- **Box 3:** 4 + 4 + 2 = 10  
+- **Box 4:** 3 + 2 + 2 + 1 + 1 + 1 = 10  
+- **Box 5:** 1  
+
+**Total boxes used:**  
+$$
+\boxed{5}
+$$
+
+---
+
+#### **Question 2: Optimal (Minimum) Number of Boxes**
+
+**Total weight of packages:**  
+7 + 5 + 5 + 4 + 4 + 3 + 3 + 2 + 2 + 2 + 1 + 1 + 1 + 1 = **41 kg**
+
+**Minimum number of boxes (ceiling of total weight / box capacity):**  
+$$
+\left\lceil \frac{41}{10} \right\rceil = 5
+$$
+
+**Optimal packing (manually verified):**
+
+- **Box 1:** 7 + 3 = 10  
+- **Box 2:** 5 + 5 = 10  
+- **Box 3:** 4 + 4 + 2 = 10  
+- **Box 4:** 3 + 2 + 2 + 1 + 1 + 1 = 10  
+- **Box 5:** 1  
+
+**Total boxes used:**  
+$$
+\boxed{5}
+$$
+
+---
+
+#### **Question 3: Prove the Greedy Answer is Not Optimal**
+
+**Observation:**  
+The greedy approach (First-Fit Decreasing) gives **5 boxes**, and the **optimal number of boxes is also 5**, as shown above.
+
+**Conclusion:**  
+The greedy approach **is optimal** in this case. However, the question states that the greedy approach is **wrong**, which may be due to a **misunderstanding or a typo** in the problem statement. Based on the given data and the total weight, **5 boxes is the minimum possible**, and the greedy approach achieves it.
+
+Thus, **the greedy answer is actually optimal**, and the claim that it is not optimal is incorrect.
+
+---
+
+### **Party Problem: Minimum Number of People Who Drink All Three Beverages**
+
+**Given:**
+- 90 people drink **coffee**
+- 80 people drink **tea**
+- 70 people drink **juice**
+- Total people: **100**
+
+**Goal:**  
+Find the **minimum number of people who drink all three beverages**.
+
+---
+
+#### **Solution Using Inclusion-Exclusion Principle**
+
+Let:
+- $ C $ = set of people who drink **coffee**
+- $ T $ = set of people who drink **tea**
+- $ J $ = set of people who drink **juice**
+
+We are to find the **minimum** value of $ |C \cap T \cap J| $.
+
+Using the **inclusion-exclusion principle**:
+
+$$
+|C \cup T \cup J| = |C| + |T| + |J| - |C \cap T| - |C \cap J| - |T \cap J| + |C \cap T \cap J|
+$$
+
+Assuming **everyone drinks at least one beverage**, $ |C \cup T \cup J| = 100 $, so:
+
+$$
+100 = 90 + 80 + 70 - (|C \cap T| + |C \cap J| + |T \cap J|) + |C \cap T \cap J|
+$$
+
+$$
+100 = 240 - (|C \cap T| + |C \cap J| + |T \cap J|) + |C \cap T \cap J|
+$$
+
+$$
+|C \cap T| + |C \cap J| + |T \cap J| - |C \cap T \cap J| = 140
+$$
+
+Let $ x = |C \cap T \cap J| $. Then:
+
+$$
+|C \cap T| + |C \cap J| + |T \cap J| = 140 + x
+$$
+
+To **minimize** $ x $, we must **maximize** the sum $ |C \cap T| + |C \cap J| + |T \cap J| $, but this is constrained by the sizes of the sets.
+
+Each person can be in **at most two sets** to avoid overcounting. The maximum number of "slots" is $ 2 \times 100 = 200 $, but the total number of slots is $ 90 + 80 + 70 = 240 $, which is **40 more than 200**.
+
+Each person in **all three sets** adds **one extra slot** (since they are counted in all three sets). Therefore, at least **40 people must be in all three sets** to account for the excess.
+
+---
+
+### **Final Answers**
+
+- **Question 1:** $\boxed{5}$ boxes
+- **Question 2:** $\boxed{5}$ boxes
+- **Question 3:** The greedy approach **is optimal** for the warehouse problem. The claim that it is not optimal is **incorrect** based on the given data.
+- **Party Problem:** $\boxed{40}$ people drink all three beverages.

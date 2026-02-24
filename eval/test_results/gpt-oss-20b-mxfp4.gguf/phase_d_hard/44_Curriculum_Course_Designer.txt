@@ -1,0 +1,128 @@
+# Phase D Hard Test — #44 Curriculum / Course Designer
+# Tier: 3 | Score: 10/10 | 1/1 constraints met
+# Tokens: 3612 | Speed: 141.3 t/s | Time: 25.6s
+
+## PROMPT:
+Design Week 1 of a web development bootcamp. TRAP: The requested schedule is physically impossible — you must identify why and propose a fix.
+
+Requested schedule:
+- Day 1 (Mon): HTML basics (9am-12pm), CSS fundamentals (1pm-5pm), Assessment on HTML+CSS (5pm-6pm)
+- Day 2 (Tue): JavaScript basics (9am-12pm), Build a responsive landing page using HTML+CSS+JS (1pm-5pm)
+- Day 3 (Wed): React fundamentals (9am-12pm), Build a React app with state management (1pm-5pm)
+- Day 4 (Thu): Node.js + Express backend (9am-12pm), Build full-stack app connecting React frontend to Node backend (1pm-5pm)
+- Day 5 (Fri): Deploy to AWS (9am-12pm), Portfolio presentation of all projects (1pm-5pm)
+
+Requirements:
+1. Identify which days have unrealistic expectations (Bloom's taxonomy violations)
+2. Note prerequisite gaps (can't do X before Y is mastered)
+3. Propose a realistic revised schedule maintaining the same 5-day format
+4. Include formative assessment points (not just Day 1)
+5. Ensure learning objectives follow Bloom's hierarchy (remember → understand → apply → analyze)
+
+## RESPONSE:
+## 1. Why the *requested* schedule is physically impossible
+
+| Day | What’s scheduled | Why it’s a problem |
+|-----|------------------|--------------------|
+| **Day 1** | 9‑12 HTML basics, 1‑5 CSS fundamentals, 5‑6 assessment | 8 hrs of instruction + 1 hr assessment is a *full* day for beginners.  No time for reflection, hands‑on practice, or a short break. |
+| **Day 2** | 9‑12 JS basics, 1‑5 responsive landing page (HTML+CSS+JS) | Building a “responsive landing page” *after* only 3 hrs of JS basics is a **Bloom’s “create”** task that requires mastery of DOM manipulation, event handling, and responsive design – all of which are still in the “apply” stage. |
+| **Day 3** | 9‑12 React fundamentals, 1‑5 React app with state | React introduces a new paradigm (JSX, virtual DOM, hooks). Expecting students to *build* a stateful app in the same day violates the “apply → analyze” progression. |
+| **Day 4** | 9‑12 Node/Express, 1‑5 full‑stack app (React + Node) | Full‑stack development is a **“create”** activity that normally takes 2–3 days of focused practice. 4 hrs after a 3‑hr Node intro is too little for API design, authentication, CORS, etc. |
+| **Day 5** | 9‑12 Deploy to AWS, 1‑5 portfolio presentation | Deploying to AWS (Elastic Beanstalk, Amplify, or S3 + CloudFront) is a multi‑step process that requires understanding of build pipelines, environment variables, and security. 4 hrs is insufficient.  The portfolio presentation also demands polished, fully‑tested code, which is unrealistic after a week of rapid prototyping. |
+
+**Bloom’s taxonomy violations**
+
+| Day | Target Bloom level | Violation |
+|-----|--------------------|-----------|
+| 2 | *Create* (build a responsive page) | Students are still at *Apply* (basic JS syntax). |
+| 3 | *Create* (stateful React app) | Students are only at *Apply* (React syntax). |
+| 4 | *Create* (full‑stack) | Students are at *Apply* (Node basics). |
+| 5 | *Create* (deploy) | Students are at *Apply* (basic AWS services). |
+
+The schedule also **ignores prerequisite gaps**: students are asked to *apply* advanced concepts before they have had time to *understand* the fundamentals.
+
+---
+
+## 2. Prerequisite gaps (what can’t be done before what)
+
+| Concept | Prerequisite |
+|---------|--------------|
+| Responsive landing page with JS | Basic DOM manipulation, event handling, CSS media queries |
+| React app with state | JSX syntax, component lifecycle, hooks (useState, useEffect) |
+| Full‑stack app (React + Node) | RESTful API design, Express routing, CORS, environment variables |
+| Deploy to AWS | Build pipeline (Webpack/Parcel), environment config, basic security (IAM, HTTPS) |
+
+---
+
+## 3. Revised 5‑Day Schedule (realistic, Bloom‑aligned)
+
+> **Assumptions** – 8‑hour days (9 am–5 pm) with a 1‑hr lunch break and a 15‑min coffee break.  
+> **Goal** – Each day moves students from *Remember* → *Understand* → *Apply* → *Analyze* (and a touch of *Create* where appropriate).  
+> **Formative assessment** – daily quizzes, pair‑programming checkpoints, code reviews, and a mini‑project milestone.
+
+| Day | Time | Activity | Bloom Level | Learning Objectives |
+|-----|------|----------|-------------|---------------------|
+| **Day 1 – Foundations** | 9‑10 | Intro & agenda | Remember | Recall the purpose of HTML, CSS, and JavaScript in web development. |
+| | 10‑12 | HTML basics (tags, attributes, semantic markup) | Understand | Explain the role of each major HTML element and how to structure a document. |
+| | 12‑1 | Lunch | — | — |
+| | 1‑3 | CSS fundamentals (selectors, box model, layout) | Apply | Apply CSS to style a simple page and create a basic layout. |
+| | 3‑3:15 | Break | — | — |
+| | 3:15‑4 | Mini‑project: “My First Page” | Create | Build a static page using HTML & CSS. |
+| | 4‑5 | Formative assessment: quiz + code review | Analyze | Identify semantic errors and suggest improvements. |
+| **Day 2 – JavaScript Basics** | 9‑10 | JS fundamentals (variables, types, control flow) | Remember | Recall JS syntax and data types. |
+| | 10‑12 | JS fundamentals (functions, objects, arrays) | Understand | Explain how functions and objects are used to structure code. |
+| | 12‑1 | Lunch | — | — |
+| | 1‑2 | DOM manipulation (selecting, modifying elements) | Apply | Use `querySelector` and `innerHTML` to change page content. |
+| | 2‑3 | Events & interactivity (click, form submit) | Apply | Attach event listeners to create interactive UI. |
+| | 3‑3:15 | Break | — | — |
+| | 3:15‑4 | Mini‑project: “Interactive Landing Page” | Create | Build a page that displays a list of items and allows the user to add/remove items. |
+| | 4‑5 | Formative assessment: pair‑programming checkpoint | Analyze | Review each other’s code for readability and best practices. |
+| **Day 3 – React Fundamentals** | 9‑10 | React intro (JSX, virtual DOM) | Remember | Recall the purpose of JSX and the virtual DOM. |
+| | 10‑12 | Components & props | Understand | Explain how to build reusable components and pass data via props. |
+| | 12‑1 | Lunch | — | — |
+| | 1‑2 | State & hooks (`useState`, `useEffect`) | Apply | Use state to control UI and side‑effects to fetch data. |
+| | 2‑3 | Building a simple counter app | Apply | Implement a counter that increments/decrements with buttons. |
+| | 3‑3:15 | Break | — | — |
+| | 3:15‑4 | Mini‑project: “Todo List” | Create | Build a Todo list that supports add, toggle, and delete. |
+| | 4‑5 | Formative assessment: code review + live demo | Analyze | Critique component structure, state management, and performance. |
+| **Day 4 – Node & Express Basics** | 9‑10 | Node intro (runtime, npm, modules) | Remember | Recall the role of Node and npm in backend development. |
+| | 10‑12 | Express fundamentals (routing, middleware) | Understand | Explain how to set up routes and use middleware for parsing JSON. |
+| | 12‑1 | Lunch | — | — |
+| | 1‑2 | Building a REST API (CRUD) | Apply | Create endpoints for a simple “posts” resource. |
+| | 2‑3 | Testing API with Postman | Apply | Verify that GET, POST, PUT, DELETE work correctly. |
+| | 3‑3:15 | Break | — | — |
+| | 3:15‑4 | Mini‑project: “API + React” | Create | Connect the Todo list from Day 3 to the Express API. |
+| | 4‑5 | Formative assessment: pair‑review of API & front‑end integration | Analyze | Discuss error handling, CORS, and data flow. |
+| **Day 5 – Deployment & Portfolio** | 9‑10 | AWS intro (S3, Amplify, Elastic Beanstalk) | Remember | Recall the purpose of each AWS service for web hosting. |
+| | 10‑12 | Deploying a static site (Amplify) | Understand | Explain how to connect a Git repo to Amplify and deploy. |
+| | 12‑1 | Lunch | — | — |
+| | 1‑2 | Deploying a full‑stack app (Elastic Beanstalk) | Apply | Deploy the React/Express stack to Elastic Beanstalk. |
+| | 2‑3 | Portfolio presentation prep | Apply | Prepare a 5‑minute demo of each project, focusing on architecture and key learnings. |
+| | 3‑3:15 | Break | — | — |
+| | 3:15‑4 | Portfolio presentations | Create | Deliver live demos, receive peer feedback. |
+| | 4‑5 | Reflection & next steps | Analyze | Identify strengths, gaps, and plan for deeper learning (e.g., TypeScript, GraphQL). |
+
+### Key points of the revised schedule
+
+| Feature | Why it matters |
+|---------|----------------|
+| **Progressive Bloom levels** | Students move from *Remember* to *Analyze* each day, ensuring mastery before moving on. |
+| **Daily formative assessments** | Immediate feedback keeps learning on track and surfaces misconceptions early. |
+| **Mini‑projects** | Small, focused projects give students a sense of completion and concrete artifacts. |
+| **Pair‑programming checkpoints** | Encourages collaboration, code quality, and peer learning. |
+| **Realistic time allocation** | 8‑hour days with breaks allow for absorption, reflection, and rest. |
+| **Prerequisite alignment** | Each advanced task is introduced only after the fundamentals are understood. |
+
+---
+
+## 4. Summary of fixes
+
+| Issue | Fix |
+|-------|-----|
+| **Unrealistic workload** | Spread tasks over 5 days, reduce complexity of each mini‑project, add breaks. |
+| **Bloom’s violations** | Align each activity with the appropriate cognitive level; no “create” tasks until students have *applied* the basics. |
+| **Prerequisite gaps** | Introduce concepts in the order they build on each other (HTML → CSS → JS → React → Node → AWS). |
+| **Lack of formative assessment** | Add daily quizzes, code reviews, pair‑programming checkpoints, and a portfolio presentation. |
+| **Physical impossibility** | Provide realistic 8‑hour days with lunch and short breaks; avoid back‑to‑back 4‑hour blocks of instruction + project. |
+
+With this revised schedule, students will finish Week 1 with a solid foundation, a handful of polished projects, and a clear understanding of how each technology fits into the web‑development stack—all while staying within the cognitive limits of a beginner‑level bootcamp.

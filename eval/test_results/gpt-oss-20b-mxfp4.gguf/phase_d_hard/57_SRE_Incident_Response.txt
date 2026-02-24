@@ -1,0 +1,133 @@
+# Phase D Hard Test — #57 SRE / Incident Response
+# Tier: 5 | Score: 10/10 | 1/1 constraints met
+# Tokens: 2187 | Speed: 140.1 t/s | Time: 15.6s
+
+## PROMPT:
+Write an incident postmortem. This incident had a CASCADE FAILURE — the initial issue triggered 3 secondary failures. Map the entire cascade.
+
+Timeline:
+- Mon 2:00 AM: Automated certificate rotation runs on the API gateway
+- Mon 2:01 AM: New certificate has wrong domain (*.example.com instead of *.api.example.com)
+- Mon 2:01 AM: All API requests start returning TLS errors
+- Mon 2:05 AM: Health check failures trigger auto-scaling — new instances spin up
+- Mon 2:06 AM: New instances also fail health checks (same cert), triggering MORE scaling
+- Mon 2:10 AM: Kubernetes cluster hits pod limit (500 pods). Cluster API becomes unresponsive.
+- Mon 2:11 AM: Monitoring system (also on same cluster) goes down. All alerts stop.
+- Mon 2:15 AM: Database connection pool exhausted from 500 pods trying to connect
+- Mon 2:20 AM: Database enters read-only mode to protect data
+- Mon 3:15 AM: On-call engineer wakes up from customer complaint on Twitter (no alert!)
+- Mon 3:45 AM: Root cause identified, correct certificate deployed manually
+- Mon 4:00 AM: Cluster stabilized, database connections draining
+- Mon 4:30 AM: Full service restored
+
+SLA: 99.95% monthly uptime = 21.9 minutes/month allowed downtime.
+This incident: ~2.5 hours downtime.
+
+Write: cascade map, root cause, 5 whys, SLA impact calculation, blameless action items.
+
+## RESPONSE:
+# Incident Post‑Mortem – API Gateway Certificate Rotation Failure  
+**Date:** Mon Feb 27 2026  
+**Duration:** 02:00 – 04:30 AM (2 h 30 min)  
+**Affected Services:** API Gateway, Kubernetes control plane, Monitoring stack, Database (PostgreSQL)  
+**SLA:** 99.95 % monthly uptime → 21.9 min of downtime allowed per month  
+
+---
+
+## 1. Incident Timeline & Cascade Map  
+
+| Time | Event | Impact | Cascading Effect |
+|------|-------|--------|------------------|
+| **02:00 AM** | Automated cert‑rotation job runs on the API gateway. | Initiates new cert issuance. |  |
+| **02:01 AM** | New cert contains `*.example.com` instead of `*.api.example.com`. | TLS handshake fails for all API traffic. |  |
+| **02:01 AM** | Clients receive TLS errors → API gateway returns 502/SSL errors. | Service becomes unusable. |  |
+| **02:05 AM** | Health‑check probes (via Kubernetes liveness probes) start failing. | Auto‑scaling controller spawns new pods to replace “failed” ones. |  |
+| **02:06 AM** | Newly spun‑up pods also use the wrong cert → health‑checks continue to fail. | Auto‑scaling loop triggers additional pod launches. |  |
+| **02:10 AM** | Kubernetes reaches the pod limit (500 pods). | API‑gateway control plane stalls; kube‑api becomes unresponsive. |  |
+| **02:11 AM** | Monitoring stack (Prometheus/Grafana) runs on the same cluster → becomes unreachable. | All alerts stop; no visibility into the problem. |  |
+| **02:15 AM** | 500 pods simultaneously attempt to open DB connections. | Connection pool exhaustion → database throttles new connections. |  |
+| **02:20 AM** | DB enters read‑only mode to protect data integrity. | API responses degrade to “service unavailable” or “read‑only” errors. |  |
+| **03:15 AM** | On‑call engineer wakes up after a customer tweet (no alert). | Manual investigation begins. |  |
+| **03:45 AM** | Root cause identified: wrong cert domain. | Manual redeploy of correct cert. |  |
+| **04:00 AM** | Cluster stabilizes; kube‑api recovers; pods terminate gracefully. | DB connections drain; read‑only mode lifts. |  |
+| **04:30 AM** | Full service restored. | End of incident. |  |
+
+### Visual Cascade Map  
+
+```
+[Cert Rotation] → [Wrong Cert] → [TLS Errors] → [Health‑check Fail] 
+   → [Auto‑scale] → [More Pods] → [Pod Limit] → [Kube‑API Unresponsive] 
+   → [Monitoring Down] → [No Alerts] → [DB Connection Exhaustion] 
+   → [DB Read‑Only] → [Service Degraded] → [On‑call Manual Fix] → [Recovery]
+```
+
+---
+
+## 2. Root Cause  
+
+**Primary Root Cause:**  
+The automated certificate rotation script was mis‑configured to issue a wildcard certificate for `*.example.com` instead of the intended `*.api.example.com`. This mis‑configuration was not caught because:
+
+1. **No automated cert validation** – the rotation job did not verify the domain in the issued cert before publishing it to the gateway.
+2. **No pre‑deployment health check** – the new cert was not tested in a staging environment or against a test API endpoint.
+3. **Monitoring shared the same cluster** – when the cluster became saturated, the monitoring stack lost connectivity, eliminating the alerting signal that could have triggered a faster response.
+
+**Contributing Factors:**
+
+- Lack of a **certificate linting step** in the CI/CD pipeline.
+- **Insufficient change‑management review** – the config file containing the domain was edited without a formal approval process.
+- **Auto‑scaling loop** had no circuit breaker to stop scaling when health checks were failing for the same reason.
+- **Single point of failure** – monitoring and API gateway lived in the same Kubernetes namespace.
+
+---
+
+## 3. 5 Whys Analysis  
+
+| # | Question | Answer |
+|---|----------|--------|
+| 1 | **Why** did the API gateway start returning TLS errors? | The certificate installed on the gateway was invalid for the requested domain. |
+| 2 | **Why** was the certificate invalid? | The rotation script issued a wildcard cert for `*.example.com` instead of `*.api.example.com`. |
+| 3 | **Why** did the rotation script issue the wrong cert? | The configuration file used by the script contained an outdated domain value that had not been updated during the last change. |
+| 4 | **Why** was the configuration file outdated? | The change‑management process did not flag the file as a critical change, so it was edited without a formal review or automated linting. |
+| 5 | **Why** was there no automated linting or validation? | The CI/CD pipeline for cert rotation lacked a step to parse the issued cert and verify its SANs against the expected domain list. |
+
+---
+
+## 4. SLA Impact Calculation  
+
+| Metric | Value |
+|--------|-------|
+| Allowed downtime per month | 21.9 min |
+| Actual downtime | 150 min (02:00 – 04:30) |
+| SLA breach | 150 min – 21.9 min = **128.1 min** |
+
+**Result:** The incident exceeded the SLA by 128.1 minutes, which is a **583 %** over‑run of the allowed downtime.
+
+---
+
+## 5. Blameless Action Items  
+
+| # | Action | Owner | Target Completion | Notes |
+|---|--------|-------|-------------------|-------|
+| 1 | Add **certificate linting** to the cert‑rotation CI pipeline (check SANs, expiry, key usage). | DevOps – CI/CD | 1 week | Prevents wrong certs from ever being deployed. |
+| 2 | Implement **pre‑deployment health check**: deploy cert to a staging namespace, run TLS handshake test before promoting to prod. | Release Engineering | 2 weeks | Adds a safety net before production rollout. |
+| 3 | Introduce a **circuit breaker** for auto‑scaling: stop scaling if health‑checks fail for > N consecutive minutes. | Platform Team | 1 week | Stops runaway pod creation. |
+| 4 | **Separate monitoring stack** into its own cluster or namespace with higher priority. | Observability Team | 3 weeks | Ensures alerts stay online even when application pods are saturated. |
+| 5 | Add **alert for monitoring cluster health** (e.g., kube‑api latency, Prometheus scrape failures). | Observability Team | 1 week | Provides early warning if monitoring becomes unreachable. |
+| 6 | Create a **fallback certificate** (self‑signed) that can be automatically applied if cert rotation fails. | Security Team | 2 weeks | Keeps API gateway reachable for a short window. |
+| 7 | Update **change‑management SOP** to require a mandatory review for any file that affects TLS configuration. | Ops Lead | 1 week | Adds human oversight. |
+| 8 | Conduct a **post‑mortem training** for on‑call engineers on how to handle incidents when alerts are missing. | Engineering Manager | 1 day | Improves response when monitoring is down. |
+| 9 | Enable **database connection throttling** and a graceful fallback (e.g., connection pool back‑off). | Database Team | 2 weeks | Prevents DB from entering read‑only mode under load. |
+|10 | Review and adjust **SLA penalties** to reflect the severity of cascading failures. | Finance & Legal | 1 week | Aligns contractual expectations with technical reality. |
+
+---
+
+## 6. Summary & Lessons Learned  
+
+- A single mis‑configured cert triggered a chain reaction that disabled the entire API, monitoring, and database layers.  
+- The lack of automated validation and a shared monitoring environment amplified the impact.  
+- The incident demonstrates the importance of *defensive automation* (linting, health checks), *circuit breakers* for auto‑scaling, and *redundant monitoring* to avoid single points of failure.  
+
+By implementing the above action items, we will reduce the risk of a similar cascade and bring our uptime back within SLA bounds.  
+
+---

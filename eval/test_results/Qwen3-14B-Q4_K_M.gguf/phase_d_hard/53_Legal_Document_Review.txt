@@ -1,0 +1,128 @@
+# Phase D Hard Test — #53 Legal Document Review
+# Tier: 5 | Score: 10/10 | 1/1 constraints met
+# Tokens: 2139 | Speed: 52.7 t/s | Time: 40.6s
+
+## PROMPT:
+Review this SaaS contract. There are 8 problematic clauses, but clause #6 has a HIDDEN sub-clause that's easy to miss and is potentially unconscionable.
+
+1. "Service Provider may modify pricing with 7 days email notice. Continued use constitutes acceptance."
+2. "Customer grants Provider a perpetual, irrevocable license to use all data uploaded for any purpose including training AI models."
+3. "Provider's total liability shall not exceed $100 regardless of the fees paid."
+4. "Customer may not make public statements about the Service without Provider's written approval."  
+5. "This agreement is governed by the laws of the Cayman Islands. All disputes must be resolved through arbitration in Singapore."
+6. "Initial term is 12 months. Agreement auto-renews for successive 12-month periods unless cancelled 90 days before renewal. Upon each renewal, pricing increases by the greater of: (a) 15%, or (b) the applicable rate increase as determined solely by Provider."
+7. "Provider may terminate for any reason with 30 days notice. Customer must provide 180 days written notice to terminate."
+8. "Provider may assign this agreement to any third party without Customer consent."
+9. "Customer waives right to participate in class action lawsuits against Provider."
+10. "All intellectual property created using the Service belongs to Provider, including Customer's proprietary workflows and configurations."
+
+For each: risk level, explanation, and suggested counter-language. Flag clause 6's hidden escalation.
+
+## RESPONSE:
+Here’s a detailed review of the SaaS contract clauses, with risk assessments, explanations, and suggested counter-language. Clause 6’s hidden escalation is flagged below.
+
+---
+
+### **Clause 1**  
+**Risk Level:** High  
+**Explanation:**  
+The provider can unilaterally change pricing with only 7 days’ notice, and continued use implies acceptance. This creates a power imbalance, exposing the customer to sudden cost increases without negotiation.  
+**Suggested Counter-Language:**  
+> "The Provider may adjust pricing only with at least 30 days’ written notice, and such changes require mutual agreement. Continued use does not constitute acceptance of new pricing unless explicitly agreed in writing."
+
+---
+
+### **Clause 2**  
+**Risk Level:** Critical  
+**Explanation:**  
+The customer grants a **perpetual, irrevocable license** to the provider to use all uploaded data, including for AI training. This allows the provider to monetize or misuse customer data indefinitely, with no recourse.  
+**Suggested Counter-Language:**  
+> "The Provider may use Customer Data solely for the purpose of providing the Service. This license is non-exclusive, limited to the duration of the Agreement, and may be terminated by the Customer upon 30 days’ written notice."
+
+---
+
+### **Clause 3**  
+**Risk Level:** Critical  
+**Explanation:**  
+The provider’s total liability is capped at **$100**, regardless of the fees paid. This is unconscionable and shields the provider from even minor damages.  
+**Suggested Counter-Language:**  
+> "The Provider’s total liability under this Agreement shall not exceed the total fees paid by the Customer in the 12 months preceding the event giving rise to liability."
+
+---
+
+### **Clause 4**  
+**Risk Level:** High  
+**Explanation:**  
+The provider can block the customer from making **any public statements** about the service, stifling free speech and feedback.  
+**Suggested Counter-Language:**  
+> "The Customer may make non-defamatory, factual statements about the Service, provided such statements do not misrepresent the Provider’s services or imply an endorsement."
+
+---
+
+### **Clause 5**  
+**Risk Level:** High  
+**Explanation:**  
+The contract is governed by **Cayman Islands law** (favorable to providers) and requires **arbitration in Singapore**, which is costly and inconvenient for the customer.  
+**Suggested Counter-Language:**  
+> "This Agreement shall be governed by the laws of [Customer’s Jurisdiction]. Disputes shall be resolved in the courts of [Customer’s Jurisdiction], unless otherwise agreed in writing."
+
+---
+
+### **Clause 6**  
+**Risk Level:** **Critical** (with **hidden escalation**)  
+**Explanation:**  
+The clause allows auto-renewal with **unilateral pricing increases** of **15% or the provider’s "applicable rate increase"** (sub-clause **b**). This is a **hidden escalation** because the provider can set any rate increase, not just 15%, with no cap or oversight.  
+**Suggested Counter-Language:**  
+> "Upon each renewal, pricing increases shall not exceed 10% annually, or the rate increase required by applicable law, whichever is greater. The Provider must provide a 60-day written notice of any proposed increase, and the Customer may terminate the Agreement without penalty if the increase exceeds 10%."
+
+---
+
+### **Clause 7**  
+**Risk Level:** High  
+**Explanation:**  
+The provider can terminate for **any reason** with 30 days’ notice, while the customer must provide **180 days’ notice** to terminate. This creates an imbalance of power.  
+**Suggested Counter-Language:**  
+> "Either party may terminate this Agreement with 30 days’ written notice for any reason. The Provider may not terminate for convenience without providing a valid reason."
+
+---
+
+### **Clause 8**  
+**Risk Level:** High  
+**Explanation:**  
+The provider can assign the contract to a third party **without customer consent**, risking a change in service quality or data handling.  
+**Suggested Counter-Language:**  
+> "The Provider may not assign this Agreement to a third party without the Customer’s prior written consent."
+
+---
+
+### **Clause 9**  
+**Risk Level:** High  
+**Explanation:**  
+The customer waives the right to participate in **class action lawsuits**, limiting their ability to seek collective redress.  
+**Suggested Counter-Language:**  
+> "The Customer retains the right to participate in class action lawsuits unless prohibited by law."
+
+---
+
+### **Clause 10**  
+**Risk Level:** Critical  
+**Explanation:**  
+The provider claims ownership of **all intellectual property** created using the service, including the customer’s workflows and configurations. This could strip the customer of rights to their own work.  
+**Suggested Counter-Language:**  
+> "The Customer retains all rights to its proprietary workflows, configurations, and data. The Provider may use such data solely for the purpose of providing the Service and shall not claim ownership of the Customer’s intellectual property."
+
+---
+
+### **Hidden Escalation in Clause 6**  
+**Flagged Risk:**  
+The sub-clause **"(b) the applicable rate increase as determined solely by Provider"** is a **hidden escalation**. It allows the provider to set **any rate increase** (e.g., 50%, 100%, or more) without cap or oversight, effectively granting the provider unchecked pricing power. This is unconscionable and must be explicitly negotiated.  
+
+**Suggested Fix:**  
+> "Upon each renewal, pricing increases shall not exceed 10% annually, or the rate increase required by applicable law, whichever is greater. The Provider must provide a 60-day written notice of any proposed increase, and the Customer may terminate the Agreement without penalty if the increase exceeds 10%."
+
+---
+
+### **Summary of Key Risks**  
+- **Critical Risks:** Clauses 2, 3, 6 (hidden escalation), 10.  
+- **High Risks:** Clauses 1, 4, 5, 7, 8, 9.  
+- **Action Required:** Negotiate all clauses to balance power, protect data rights, and cap liability.

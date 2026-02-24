@@ -1,0 +1,73 @@
+# Phase D Hard Test — #32 Personal Finance Tracking
+# Tier: 2 | Score: 10/10 | 3/3 constraints met
+# Tokens: 3133 | Speed: 140.6 t/s | Time: 22.3s
+
+## PROMPT:
+Analyze 3 months of transactions. WARNING: There are 2 potentially fraudulent transactions hidden in the data. Find them.
+
+January:
+- Salary: +$5,000 (Jan 1). Rent: -$1,800 (Jan 1). Grocery Store: -$312 (Jan 5). Electric: -$95 (Jan 10). Netflix: -$15 (Jan 15). Gas: -$45 (Jan 18). Restaurant: -$85 (Jan 22). Gym: -$50 (Jan 28).
+
+February:
+- Salary: +$5,000 (Feb 1). Rent: -$1,800 (Feb 1). Grocery Store: -$287 (Feb 4). Electric: -$102 (Feb 10). Netflix: -$15 (Feb 15). Netflix: -$15 (Feb 15). Gas: -$52 (Feb 19). Restaurant: -$120 (Feb 23). Coffee: -$45 (Feb 25).
+
+March:
+- Salary: +$5,000 (Mar 1). Rent: -$1,800 (Mar 1). Grocery Store: -$345 (Mar 6). ATM Withdrawal Miami: -$400 (Mar 8). Local Gas Station: -$48 (Mar 8). Electric: -$98 (Mar 12). Netflix: -$15 (Mar 15). Restaurant: -$95 (Mar 20). Shopping: -$250 (Mar 25).
+
+Calculate exact monthly totals, savings rate, category trends, AND identify the suspicious transactions with explanation.
+
+## RESPONSE:
+**1. Monthly totals**
+
+| Month | Income | Expenses | Net Savings | Savings Rate |
+|-------|--------|----------|-------------|--------------|
+| January | **$5,000** | **$2,402** | **$2,598** | **51.96 %** |
+| February | **$5,000** | **$2,436** | **$2,564** | **51.28 %** |
+| March | **$5,000** | **$3,051** | **$1,949** | **38.98 %** |
+
+*All amounts are rounded to the nearest dollar.*
+
+**2. Category trends**
+
+| Category | Jan | Feb | Mar | Trend / Notes |
+|----------|-----|-----|-----|---------------|
+| Rent | $1,800 | $1,800 | $1,800 | Constant |
+| Grocery | $312 | $287 | $345 | Fluctuates – slight rise in Mar |
+| Electric | $95 | $102 | $98 | Stable |
+| Netflix | $15 | $30 (2×$15) | $15 | Duplicate charge in Feb |
+| Gas | $45 | $52 | $48 | Stable |
+| Restaurant | $85 | $120 | $95 | Variable |
+| Gym | $50 | – | – | Only Jan |
+| Coffee | – | $45 | – | Only Feb |
+| ATM Withdrawal (Miami) | – | – | $400 | Only Mar |
+| Local Gas Station | – | – | $48 | Only Mar |
+| Shopping | – | – | $250 | Only Mar |
+
+**Key observations**
+
+* Rent is a fixed out‑flow every month.  
+* Grocery, electric, gas, and restaurant spend are fairly consistent, with only modest month‑to‑month swings.  
+* Netflix shows a *double* charge in February – a clear anomaly.  
+* The March month is the only one that includes an ATM withdrawal, a local gas station purchase, and a shopping expense, all of which are one‑off items.
+
+**3. Suspicious transactions**
+
+| Transaction | Date | Amount | Why it looks suspicious |
+|-------------|------|--------|--------------------------|
+| **ATM Withdrawal – Miami** | March 8 | **$400** | • No other ATM withdrawals in the 3‑month window. <br>• “Miami” is a location that the account holder has not indicated they visited. <br>• $400 is a round, sizeable amount that is atypical for a single withdrawal. |
+| **Duplicate Netflix charge** | February 15 | **$15 × 2** | • Netflix is normally a single monthly subscription fee. <br>• Two identical $15 charges on the same day strongly suggest a duplicate or unauthorized charge. <br>• No other subscription or recurring fee appears in the data. |
+
+**Explanation**
+
+1. **ATM Withdrawal – Miami ($400)**  
+   The account shows a single, large cash withdrawal that is geographically out of place and not mirrored by any other ATM activity. In a typical personal‑finance record, such a one‑off withdrawal would be accompanied by a travel or cash‑needs explanation. The absence of that context, combined with the round figure, flags it as a likely fraudulent or unauthorized transaction.
+
+2. **Duplicate Netflix charge ($15 × 2)**  
+   Netflix subscriptions are billed once per month. Seeing two identical charges on the same day is a textbook sign of a duplicate billing error or a potential attempt to double‑charge the account. Since no other subscription or recurring fee appears, the second charge is almost certainly not legitimate.
+
+---
+
+**Bottom line**
+
+- The account’s savings rate fell sharply in March (down to ~39 %) largely because of the $400 ATM withdrawal and the $250 shopping purchase.  
+- The two transactions flagged above are the only ones that deviate from the otherwise consistent spending pattern and warrant further investigation.
