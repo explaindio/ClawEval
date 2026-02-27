@@ -12,13 +12,13 @@ Most benchmarks tell you a model is "smart." ClawEval tells you if it can **do t
 
 ### 🖥️ LOCAL Models — Run on YOUR Hardware
 
-We test quantized open-source models that fit on hardware you already own. Find out which model is best for each agent role **before you commit your VRAM.**
+We test quantized open-source models that fit on hardware you already own. Find out which model is best for each agent role **before you commit your VRAM.** We're also testing smaller models for max context and usability — even a 16GB GPU can run capable sub-agents.
 
-| 🟢 24GB VRAM | 🔵 96GB VRAM |
-|---|---|
-| Qwen3.5-35B-A3B Q4_K_M | Qwen3.5-122B-A10B NVFP4 |
-| Qwen3.5-27B Q4_K_M | More models coming |
-| llama.cpp · SGLang · vLLM | SGLang · vLLM |
+| 🟡 16GB VRAM | 🟢 24GB VRAM | 🔵 96GB VRAM |
+|---|---|---|
+| Qwen3-8B, Phi-4 14B | Qwen3.5-35B-A3B Q4_K_M | Qwen3.5-122B-A10B NVFP4 |
+| Mistral Small 24B, GPT-OSS-20B | Qwen3.5-27B Q4_K_M | More models coming |
+| Coming soon | llama.cpp · SGLang · vLLM | SGLang · vLLM |
 
 ### ☁️ CLOUD Models — Run via API
 
@@ -227,6 +227,33 @@ ClawEval/
 ├── docs/                       # Model selection & VRAM guides
 └── README.md
 ```
+
+## 🗺️ Model Testing Roadmap
+
+This is a living benchmark. We're continuously adding new models as they release. Here's what's on the radar — and we take requests.
+
+**16GB VRAM tier (coming soon)**
+- Qwen3-8B, Qwen3.5-14B
+- Phi-4 14B, Phi-4-mini 3.8B
+- Mistral Small 3.1 24B (tight fit)
+- GPT-OSS-20B MXFP4
+- Gemma 3 12B
+- Ministral 3B (ultra-fast routing/triage)
+
+**24GB VRAM tier**
+- ✅ Qwen3.5-35B-A3B Q4_K_M (tested)
+- ✅ Qwen3.5-27B Q4_K_M (tested)
+- Gemma 3 27B QAT
+- More MoE models as they release
+
+**96GB VRAM tier**
+- ✅ Qwen3.5-122B-A10B NVFP4 (tested)
+- More large models coming
+
+**Cloud (open-source via API)**
+- Open-source models via OpenRouter, Chutes, and other affordable providers
+
+> 💬 **Want us to test a specific model?** [Open an issue](https://github.com/explaindio/ClawEval/issues) or drop a comment — we prioritize community requests. New models are added as they release.
 
 ## 📄 License
 
