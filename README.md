@@ -34,11 +34,13 @@ Don't have a GPU? We also test open-source models hosted on cloud providers so y
 
 🟢 = 8-10 &nbsp; 🟡 = 5-7 &nbsp; 🔴 = 0-4 &nbsp; 📝 = Manual (5) &nbsp; ⬛ = 32K overflow
 
-All scores out of 10. Models: **122B** = Qwen3.5-122B-A10B NVFP4 (think 16K, SGLang) · **35B-T** = Qwen3.5-35B-A3B Q4_K_M (think ∞, llama.cpp) · **35B-N** = same, nothink
+All scores out of 10.
 
 | # | Agent Role | Qwen3.5-122B-A10B | Qwen3.5-35B-A3B | Qwen3.5-35B-A3B |
 |---|---|---|---|---|
+| | | NVFP4 · KV: TBD | Q4_K_M · KV: q8_0 | Q4_K_M · KV: q8_0 |
 | | | Think 16K · SGLang | Think ∞ · llama.cpp | NoThink · llama.cpp |
+| | | 🔵 96GB · RTX PRO 6000 | 🟢 24GB · RTX 3090 | 🟢 24GB · RTX 3090 |
 | | **Tier 1 — Utility** | | | |
 | 1 | Router / Triage | 🟢 10 | 🟢 10 | 🟢 10 |
 | 2 | Input Validator | 🟢 10 | 🟢 10 | 🟢 10 |
