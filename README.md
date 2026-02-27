@@ -2,17 +2,19 @@
 
 **The only deterministic benchmark that tests LLMs as real AI agents** — not trivia, not chat, not vibes. 59 specialized roles. Hard, verifiable tasks. Every score is reproducible.
 
-> 🔥 **New models added regularly.** We test the latest open-weight models you can actually run — on a single 24GB GPU, on a 96GB local rig, and soon cloud models like Claude, GPT-4o, Gemini, and DeepSeek. Star ⭐ this repo to get notified when we add new results.
+> 🔥 **New models added regularly.** We test the latest open-source models you can actually run locally — and compare them against cloud-hosted open-source models. Star ⭐ this repo to get notified when new results drop.
 
 ### Why ClawEval?
 
 Most benchmarks tell you a model is "smart." ClawEval tells you if it can **do the work** — route tickets, review code, analyze financials, draft legal docs, plan sprints, and 54 more agent roles. Each test has an exact expected answer. No LLM-as-judge. No vibes.
 
-| | 24GB VRAM | 96GB VRAM | Cloud (coming) |
+### 🖥️ LOCAL Models — What Can You Run at Home?
+
+| | 🟢 24GB VRAM (RTX 4090) | 🔵 96GB VRAM (2×48GB) | ☁️ CLOUD (open-source) |
 |---|---|---|---|
-| **Models** | Qwen3.5-35B-A3B, 27B | Qwen3.5-122B-A10B | Claude, GPT-4o, Gemini, DeepSeek |
-| **Server** | llama.cpp | SGLang | API |
-| **Status** | ✅ Tested | ✅ Tested | 🔜 Next |
+| **Models** | Qwen3.5-35B-A3B Q4, Qwen3.5-27B Q4 | Qwen3.5-122B-A10B NVFP4 | More open-source models |
+| **Server** | llama.cpp | SGLang | API (OpenRouter, Together, etc.) |
+| **Status** | ✅ Tested | ✅ Tested | 🔜 Coming soon |
 
 ---
 
