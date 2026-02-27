@@ -1,4 +1,4 @@
-# Phase E: Killer Evaluation Comparison — Qwen3.5-35B-A3B MoE Q4_K_M
+# Phase E: Killer Evaluation Comparison — All Models
 
 **Date:** 2026-02-26  
 **Test Suite:** 12 tests (10 single-shot + 2 multi-turn agentic)  
@@ -6,74 +6,63 @@
 
 ---
 
-## Head-to-Head: Thinking (32K budget) vs No-Think (4K budget)
+## Head-to-Head Comparison
 
-| # | Test | Category | No-Think | Think | Δ |
-|---|------|----------|:--------:|:-----:|:---:|
-| 1 | Precise Counting | reasoning | 4 | 4 | = |
-| 2 | Constrained JSON | structured | 9 | **10** | +1 |
-| 3 | Logic Grid Puzzle | reasoning | 6 | **10** | **+4** |
-| 4 | Multi-Step Math | reasoning | 10 | 10 | = |
-| 5 | Code Output Prediction | code | 10 | 10 | = |
-| 6 | Contradiction Detection | reasoning | 5 | 5 | = |
-| 7 | Complex Multi-Key Sort | reasoning | 3 | **8** | **+5** |
-| 8 | Regex Construction | code | 7 | **10** | **+3** |
-| 9 | Data Transformation | structured | 2 | **10** | **+8** |
-| 10 | Instruction Following | instruction | 4 | **8** | **+4** |
-| 11 | Multi-Turn Code Refinement | multi_turn | **9** | 8 | -1 |
-| 12 | Multi-Turn State Tracking | multi_turn | 7 | **9** | +2 |
-| | **TOTAL** | | **76 (63.3%)** | **102 (85.0%)** | **+26** |
+| # | Test | Category | 27B-nothink | 35B-nothink | 35B-think |
+|---|------|----------|:-----------:|:-----------:|:---------:|
+| 1 | Precise Counting | reasoning | 4 | 4 | 4 |
+| 2 | Constrained JSON | structured | **10** | 9 | **10** |
+| 3 | Logic Grid Puzzle | reasoning | 5 | 6 | **10** |
+| 4 | Multi-Step Math | reasoning | **10** | **10** | **10** |
+| 5 | Code Output | code | **10** | **10** | **10** |
+| 6 | Contradictions | reasoning | 5 | 5 | 5 |
+| 7 | Complex Sorting | reasoning | **8** | 3 | **8** |
+| 8 | Regex Construction | code | **10** | 7 | **10** |
+| 9 | Data Transform | structured | 0 | 2 | **10** |
+| 10 | Instruction Chain | instruction | 4 | 4 | **8** |
+| 11 | Multi-Turn Code | multi_turn | **10** | 9 | 8 |
+| 12 | Multi-Turn State | multi_turn | 7 | 7 | **9** |
+| | **TOTAL** | | **83 (69%)** | **76 (63%)** | **102 (85%)** |
 
 ---
 
 ## Category Breakdown
 
-| Category | No-Think | Think | Winner |
-|----------|:--------:|:-----:|:------:|
-| Code | 85% | **100%** | Think |
-| Multi-Turn (Agentic) | 80% | **85%** | Think |
-| Reasoning | 56% | **74%** | Think |
-| Structured Output | 55% | **100%** | Think |
-| Instruction Following | 40% | **80%** | Think |
+| Category | 27B-nothink | 35B-nothink | 35B-think |
+|----------|:-----------:|:-----------:|:---------:|
+| Code | **100%** | 85% | **100%** |
+| Multi-Turn | **85%** | 80% | **85%** |
+| Reasoning | **64%** | 56% | **74%** |
+| Structured Output | 50% | 55% | **100%** |
+| Instruction | 40% | 40% | **80%** |
 
 ---
 
 ## Resource Usage
 
-| Metric | No-Think | Think |
-|--------|:--------:|:-----:|
-| Total tokens | ~3K | ~92K |
-| Total time | ~30s | ~15min |
-| Avg speed | ~85 t/s | ~95 t/s |
-| Token budget | 4,000 | 32,000 |
+| Metric | 27B-nothink | 35B-nothink | 35B-think |
+|--------|:-----------:|:-----------:|:---------:|
+| Total tokens | ~2K | ~3K | ~92K |
+| Total time | ~2 min | ~30s | ~15 min |
+| Avg speed | ~30 t/s | ~85 t/s | ~95 t/s |
+| Token budget | 4,000 | 4,000 | 32,000 |
 
 ---
 
 ## Key Findings
 
 > [!IMPORTANT]
-> Phase E is the **first eval that clearly differentiates thinking vs no-think**.
-> Previous phases (A, D) actually scored *better* without thinking.
+> 27B nothink (69.2%) **outperforms** 35B MoE nothink (63.3%) on Phase E despite being a smaller dense model.
+> 35B-think (85.0%) dominates both on hard reasoning, but at 30x token cost.
 
-**Where thinking helps most (Δ ≥ +3):**
-- Data Transformation: +8 (2→10) — step-by-step pipeline execution
-- Complex Sorting: +5 (3→8) — multi-key tie-breaking requires tracking
-- Logic Grid Puzzle: +4 (6→10) — constraint propagation benefits from reasoning
-- Instruction Chain: +4 (4→8) — sequential operations on text
-- Regex Construction: +3 (7→10) — edge case handling in pattern design
+**27B nothink strengths vs 35B nothink:**
+- Sorting: 8 vs 3 (+5)
+- Regex: 10 vs 7 (+3)
+- Constrained JSON: 10 vs 9 (+1)
+- Multi-Turn Code: 10 vs 9 (+1) — best multi-turn score of all models
 
-**Where thinking doesn't help (Δ = 0):**
-- Precise Counting: 4=4 — both modes struggle equally with counting
-- Multi-Step Math: 10=10 — both perfect
-- Code Output: 10=10 — both perfect
-- Contradictions: 5=5 — both partial (scorer limitation)
+**27B nothink weaknesses:**
+- Data Transform: 0 vs 2 (both bad, but 27B worse)
+- Logic Puzzle: 5 vs 6 (-1)
 
-**Where nothink wins (Δ < 0):**
-- Multi-Turn Code Refinement: 9>8 — thinking produced too many assertions, missed count constraint
-
-## Recommendation for OpenClaw
-
-For agentic workflows, a **hybrid approach** would be optimal:
-- Use **no-think** for simple routing, format, tool-call tasks (fast, efficient)
-- Use **thinking** for complex reasoning: data transforms, logic puzzles, multi-constraint problems
-- The model's multi-turn capability is strong in both modes (80-85%)
+**Thinking is the only path to 85%+ on Phase E** — the reasoning chain is essential for data transforms, logic puzzles, and instruction chains.

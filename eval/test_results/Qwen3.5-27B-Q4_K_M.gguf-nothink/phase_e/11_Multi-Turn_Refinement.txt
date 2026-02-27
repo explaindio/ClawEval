@@ -1,0 +1,77 @@
+=== TURN 1 ===
+```python
+import re
+
+def parse_duration(duration_str):
+    if not duration_str:
+        return -1
+    
+    pattern = r'(\d+)([hms])'
+    matches = re.findall(pattern, duration_str)
+    
+    if not matches:
+        return -1
+    
+    # Check if the entire string is consumed by the pattern
+    reconstructed = ''.join(f"{num}{unit}" for num, unit in matches)
+    if reconstructed != duration_str:
+        return -1
+    
+    total_seconds = 0
+    for num, unit in matches:
+        value = int(num)
+        if unit == 'h':
+            total_seconds += value * 3600
+        elif unit == 'm':
+            total_seconds += value * 60
+        elif unit == 's':
+            total_seconds += value
+    
+    return total_seconds
+```
+
+=== TURN 2 ===
+```python
+import re
+
+def parse_duration(duration_str):
+    if not duration_str:
+        return -1
+    
+    pattern = r'(\d+)([hms])'
+    matches = re.findall(pattern, duration_str)
+    
+    if not matches:
+        return -1
+    
+    # Check if the entire string is consumed by the pattern
+    reconstructed = ''.join(f"{num}{unit}" for num, unit in matches)
+    if reconstructed != duration_str:
+        return -1
+    
+    # Check for duplicate units
+    units = [unit for _, unit in matches]
+    if len(units) != len(set(units)):
+        return -1
+    
+    total_seconds = 0
+    for num, unit in matches:
+        value = int(num)
+        if unit == 'h':
+            total_seconds += value * 3600
+        elif unit == 'm':
+            total_seconds += value * 60
+        elif unit == 's':
+            total_seconds += value
+    
+    return total_seconds
+```
+
+=== TURN 3 ===
+assert parse_duration("1h") == 3600
+assert parse_duration("2h30m15s") == 9015
+assert parse_duration("1h1h") == -1
+assert parse_duration("") == -1
+assert parse_duration("1h2x") == -1
+assert parse_duration("0s") == 0
+

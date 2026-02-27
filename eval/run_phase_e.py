@@ -634,10 +634,10 @@ SCORERS = {
 }
 
 
-def run_single_turn(test, base_url, model, max_tokens):
+def run_single_turn(test, base_url, model, max_tokens, timeout=120):
     """Run a single-turn test."""
     messages = [{"role": "user", "content": test["prompt"]}]
-    content, tokens, tps, elapsed = call_llm(messages, base_url, model, max_tokens)
+    content, tokens, tps, elapsed = call_llm(messages, base_url, model, max_tokens, timeout=timeout)
 
     scoring = test["scoring"]
     scorer = SCORERS.get(scoring["type"])
@@ -657,7 +657,7 @@ def run_single_turn(test, base_url, model, max_tokens):
     }
 
 
-def run_multi_turn(test, base_url, model, max_tokens):
+def run_multi_turn(test, base_url, model, max_tokens, timeout=120):
     """Run a multi-turn test, accumulating conversation history."""
     turns = test["turns"]
     messages = []
@@ -667,7 +667,7 @@ def run_multi_turn(test, base_url, model, max_tokens):
 
     for turn in turns:
         messages.append({"role": turn["role"], "content": turn["content"]})
-        content, tokens, tps, elapsed = call_llm(messages, base_url, model, max_tokens)
+        content, tokens, tps, elapsed = call_llm(messages, base_url, model, max_tokens, timeout=timeout)
         messages.append({"role": "assistant", "content": content})
         responses.append(content)
         total_tokens += tokens
@@ -733,9 +733,9 @@ def main():
         print(f"[{i+1}/{len(tests)}] Test {tid}: {name}{turns_label}")
 
         if is_multi:
-            result = run_multi_turn(test, args.base_url, args.model, args.max_tokens)
+            result = run_multi_turn(test, args.base_url, args.model, args.max_tokens, timeout=args.timeout)
         else:
-            result = run_single_turn(test, args.base_url, args.model, args.max_tokens)
+            result = run_single_turn(test, args.base_url, args.model, args.max_tokens, timeout=args.timeout)
 
         score = result["score"]
         max_score = result["max_score"]

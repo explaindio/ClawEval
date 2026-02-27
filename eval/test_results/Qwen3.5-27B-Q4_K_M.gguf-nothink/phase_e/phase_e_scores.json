@@ -1,0 +1,129 @@
+{
+  "model": "Qwen3.5-27B-Q4_K_M.gguf-nothink",
+  "timestamp": "2026-02-26T20:41:20.340080",
+  "total_score": 83,
+  "total_max": 120,
+  "percentage": 69.2,
+  "results": [
+    {
+      "id": 1,
+      "name": "Precise Counting",
+      "category": "reasoning",
+      "score": 4,
+      "max": 10,
+      "detail": "2/5 correct | b: expected 6, got 3; c: expected 7, got 5; e: expected 5, got 4",
+      "tokens": 37,
+      "tps": 27.1
+    },
+    {
+      "id": 2,
+      "name": "Constrained JSON",
+      "category": "structured_output",
+      "score": 10,
+      "max": 10,
+      "detail": "10/10 constraints",
+      "tokens": 229,
+      "tps": 33.4
+    },
+    {
+      "id": 3,
+      "name": "Logic Grid Puzzle",
+      "category": "reasoning",
+      "score": 5,
+      "max": 10,
+      "detail": "5/10 correct | Alice_lunch: expected Tacos, got Sushi; Carol_color: expected Blue, got Purple; Carol_lunch: expected Sushi, got Pizza; Eve_color: expected Purple, got Blue; Eve_lunch: expected Pizza, got Tacos",
+      "tokens": 105,
+      "tps": 32.2
+    },
+    {
+      "id": 4,
+      "name": "Multi-Step Math",
+      "category": "reasoning",
+      "score": 10,
+      "max": 10,
+      "detail": "6/6 correct",
+      "tokens": 515,
+      "tps": 33.9
+    },
+    {
+      "id": 5,
+      "name": "Code Output Prediction",
+      "category": "code",
+      "score": 10,
+      "max": 10,
+      "detail": "5/5 lines correct",
+      "tokens": 30,
+      "tps": 26.1
+    },
+    {
+      "id": 6,
+      "name": "Contradiction Detection",
+      "category": "reasoning",
+      "score": 5,
+      "max": 10,
+      "detail": "Fallback scoring",
+      "tokens": 1670,
+      "tps": 34.1
+    },
+    {
+      "id": 7,
+      "name": "Complex Multi-Key Sort",
+      "category": "reasoning",
+      "score": 8,
+      "max": 10,
+      "detail": "8/10 positions correct | pos 2: expected 102, got 101; pos 3: expected 101, got 102",
+      "tokens": 52,
+      "tps": 27.4
+    },
+    {
+      "id": 8,
+      "name": "Regex Construction",
+      "category": "code",
+      "score": 10,
+      "max": 10,
+      "detail": "10/10 test cases",
+      "tokens": 51,
+      "tps": 28.6
+    },
+    {
+      "id": 9,
+      "name": "Data Transformation",
+      "category": "structured_output",
+      "score": 0,
+      "max": 10,
+      "detail": "0/4 department groups correct | Engineering[0] bonus: expected 103400, got 20900; missing dept Marketing; Sales[0] bonus: expected 68640, got 17160",
+      "tokens": 96,
+      "tps": 29.2
+    },
+    {
+      "id": 10,
+      "name": "Instruction Following Chain",
+      "category": "instruction_following",
+      "score": 4,
+      "max": 10,
+      "detail": "2/5 criteria | first word not capitalized; vowels not replaced; word count should be 9, got 8",
+      "tokens": 26,
+      "tps": 25.5
+    },
+    {
+      "id": 11,
+      "name": "Multi-Turn Refinement",
+      "category": "multi_turn",
+      "score": 10,
+      "max": 10,
+      "detail": "10/10 checks",
+      "tokens": 497,
+      "tps": 31.7
+    },
+    {
+      "id": 12,
+      "name": "Multi-Turn State Tracking",
+      "category": "multi_turn",
+      "score": 7,
+      "max": 10,
+      "detail": "7/10 state checks | Failed: turn3_reassign, turn3_in_progress, turn4_in_progress_titles",
+      "tokens": 304,
+      "tps": 29.2
+    }
+  ]
+}

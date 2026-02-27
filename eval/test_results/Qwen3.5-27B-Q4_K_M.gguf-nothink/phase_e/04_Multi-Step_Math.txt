@@ -1,0 +1,44 @@
+Let's break down the problem step by step.
+
+### Step 1: Determine the price per widget
+- Base price: $24.99
+- Quantity purchased: 7 widgets
+- Discount rule: Buy 6+ widgets → 25% off each widget
+- Discounted price per widget = $24.99 × (1 - 0.25) = $24.99 × 0.75 = $18.7425
+- Rounded to 2 decimal places: **$18.74**
+
+### Step 2: Calculate subtotal before coupon
+- Subtotal before coupon = Price per widget × Quantity
+- Subtotal before coupon = $18.74 × 7 = $131.18
+
+### Step 3: Apply loyalty coupon
+- Coupon: $10 off the subtotal (applied after quantity discounts, before tax)
+- Subtotal after coupon = $131.18 - $10.00 = $121.18
+- Since $121.18 > $0, no adjustment needed.
+
+### Step 4: Calculate sales tax
+- Tax rate: 8.25%
+- Tax = Subtotal after coupon × 0.0825
+- Tax = $121.18 × 0.0825 = $9.99735
+- Rounded to 2 decimal places: **$10.00**
+
+### Step 5: Determine shipping cost
+- Quantity: 7 widgets
+- Shipping rule: $3.99 for 5-8 items
+- Shipping = **$3.99**
+
+### Step 6: Calculate total
+- Total = Subtotal after coupon + Tax + Shipping
+- Total = $121.18 + $10.00 + $3.99 = $135.17
+
+### Final JSON Output:
+```json
+{
+  "price_per_widget": 18.74,
+  "subtotal_before_coupon": 131.18,
+  "subtotal_after_coupon": 121.18,
+  "tax": 10.00,
+  "shipping": 3.99,
+  "total": 135.17
+}
+```
