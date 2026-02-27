@@ -6,7 +6,7 @@
 >
 > 📬 **[Subscribe to AIgenteur Dispatch](https://aigenteurdispatch.substack.com/)** — get new benchmark results, local AI guides, and agent workflows delivered to your inbox.
 
-> 💡 **You'd be surprised** how well some small, fast models handle sub-agent tasks — even on a 5-year-old RTX 3090 (which you can pick up on eBay for cheap). Before you rent cloud GPUs, check the scores below.
+> 💡 **You'd be surprised** how well some small, fast models handle sub-agent tasks — even on an RTX 3090 (we got ours for $799). Before you rent cloud GPUs, check the scores below.
 
 ### Why ClawEval?
 
