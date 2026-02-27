@@ -12,7 +12,7 @@ Most benchmarks tell you a model is "smart." ClawEval tells you if it can **do t
 
 We test quantized open-source models that fit on hardware you already own. Find out which model is best for each agent role **before you commit your VRAM.**
 
-| 🟢 24GB VRAM (single RTX 4090 / 3090) | 🔵 96GB VRAM (2×48GB / A6000s) |
+| 🟢 24GB VRAM | 🔵 96GB VRAM |
 |---|---|
 | Qwen3.5-35B-A3B Q4_K_M | Qwen3.5-122B-A10B NVFP4 |
 | Qwen3.5-27B Q4_K_M | More models coming |
