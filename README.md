@@ -3,6 +3,8 @@
 **The only deterministic benchmark that tests LLMs as real AI agents** — not trivia, not chat, not vibes. 59 specialized roles. Hard, verifiable tasks. Every score is reproducible.
 
 > 🔥 **New models added regularly.** Star ⭐ this repo to get notified when new results drop.
+>
+> 📬 **[Subscribe to AIgenteur Dispatch](https://aigenteurdispatch.substack.com/)** — get new benchmark results, local AI guides, and agent workflows delivered to your inbox.
 
 > 💡 **You'd be surprised** how well some small, fast models handle sub-agent tasks — even on a 5-year-old RTX 3090 (which you can pick up on eBay for cheap). Before you rent cloud GPUs, check the scores below.
 
@@ -266,5 +268,6 @@ MIT
 
 ## 🔗 Links
 
+- **Newsletter**: [AIgenteur Dispatch](https://aigenteurdispatch.substack.com/) — subscribe for new benchmark results and AI agent guides
 - **Website**: [claweval.com](https://claweval.com)
 - **GitHub**: [github.com/explaindio/ClawEval](https://github.com/explaindio/ClawEval)
