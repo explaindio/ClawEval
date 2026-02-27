@@ -4,7 +4,7 @@
 
 > 🔥 **New models added regularly.** Star ⭐ this repo to get notified when new results drop.
 
-> 💡 **You'd be surprised** how well some small, blazing-fast models handle sub-agent tasks — even on a 5-year-old RTX 3090 (which you can pick up on eBay for cheap). Before you rent cloud GPUs, check the scores below.
+> 💡 **You'd be surprised** how well some small, fast models handle sub-agent tasks — even on a 5-year-old RTX 3090 (which you can pick up on eBay for cheap). Before you rent cloud GPUs, check the scores below.
 
 ### Why ClawEval?
 
