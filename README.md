@@ -18,11 +18,16 @@ Unlike vibes-based benchmarks, ClawEval uses **deterministic, auto-scored tests*
 
 ### Phase F — 59-Role Deterministic Hard Tests
 
-| Model | Think | Score |
-|---|---|---|
-| **Qwen3.5-122B-A10B NVFP4** | 16K | **~441/590 (74.7%)** |
+| Model | Think | Score | T1 | T2 | T3 | T4 | T5 |
+|---|---|---|---|---|---|---|---|
+| **Qwen3.5-122B-A10B NVFP4** | 16K | **~443/590 (75.1%)** | 59% | 69% | 71% | 53% | 65% |
 
-> Phase F scores for the 122B model have been adjusted after scorer bug fixes. Other models pending Phase F evaluation.
+**Perfect 10/10 scores:** Router, Validator, Sentiment, Research, Content Planner, Web Scraping, Customer Support, Sprint Summarizer, Transaction, Home Automation, News Aggregation, Shopping, Code Gen, Code Review, Fact-Check, Algorithm, Legal, Software Architect, STEM Analysis
+
+> **Scorer fixes applied:** 6 tests originally scored 0/10 due to scorer bugs (case-sensitive keys, strict keyword matching, flat JSON assumptions). After fixing, they scored 8–10/10. See commit `362ee3a` for details.
+
+> **64K re-run finding:** Tests #31 (Recipe) and #42 (Market Research) were re-tested with 64K max_tokens to rule out thinking overflow. Recipe scored 2/10 (model answered but miscalculated scaling math). Market Research timed out at 1200s with 0 tokens returned. Both are **genuine model limitations**, not scorer or truncation issues.
+
 
 ## 📦 Evaluation Phases
 
