@@ -1,0 +1,82 @@
+{
+  "components": [
+    {
+      "name": "API Gateway",
+      "technology": "AWS API Gateway / Kong",
+      "purpose": "Entry point for all requests, handles SSL termination, rate limiting, and routing to microservices.",
+      "scaling_strategy": "Auto-scaling based on request throughput and latency metrics."
+    },
+    {
+      "name": "WebSocket Gateway",
+      "technology": "Go (Gorilla WebSocket) on Kubernetes",
+      "purpose": "Maintains persistent connections for real-time messaging and presence updates.",
+      "scaling_strategy": "Horizontal pod autoscaling (HPA) based on active connections and CPU usage."
+    },
+    {
+      "name": "Message Broker",
+      "technology": "Apache Kafka",
+      "purpose": "Decouples message ingestion from storage, ensures durability and ordering for high throughput.",
+      "scaling_strategy": "Partitioning by chat ID to allow parallel processing and replication."
+    },
+    {
+      "name": "Presence Service",
+      "technology": "Redis Cluster",
+      "purpose": "Manages online/offline status, last seen timestamps, and active session tracking.",
+      "scaling_strategy": "Sharded Redis nodes with active-active replication across regions."
+    },
+    {
+      "name": "Chat Database",
+      "technology": "Apache Cassandra",
+      "purpose": "Stores message history, read receipts, and group metadata with high write throughput.",
+      "scaling_strategy": "Token-aware routing and automatic compaction; sharded by user ID and chat ID."
+    },
+    {
+      "name": "User Metadata DB",
+      "technology": "PostgreSQL (RDS Aurora)",
+      "purpose": "Stores user profiles, authentication tokens, and relationship data.",
+      "scaling_strategy": "Read replicas for query distribution; primary instance for writes."
+    },
+    {
+      "name": "File Storage",
+      "technology": "AWS S3 + CloudFront",
+      "purpose": "Stores encrypted file attachments and serves them via CDN for low latency.",
+      "scaling_strategy": "Serverless scaling; lifecycle policies to move old files to Glacier."
+    },
+    {
+      "name": "Search Service",
+      "technology": "Elasticsearch",
+      "purpose": "Enables message search (metadata only for E2EE chats) and user discovery.",
+      "scaling_strategy": "Multi-node cluster with dedicated master and data nodes."
+    },
+    {
+      "name": "Encryption Service",
+      "technology": "HashiCorp Vault + Client-side SDK",
+      "purpose": "Manages public key distribution and session keys; ensures E2EE keys never touch server memory.",
+      "scaling_strategy": "High availability cluster with auto-failover."
+    },
+    {
+      "name": "Compliance Service",
+      "technology": "Custom Microservice + Data Residency Tags",
+      "purpose": "Enforces GDPR rules, data retention policies, and right-to-be-forgotten workflows.",
+      "scaling_strategy": "Event-driven scaling triggered by data deletion requests."
+    }
+  ],
+  "data_flow": "Client initiates connection via TLS to API Gateway -> WebSocket Gateway authenticates user -> Client establishes E2EE session keys via Encryption Service -> User sends message -> Gateway forwards to Kafka -> Chat Service persists message to Cassandra -> Read Receipts updated in Redis -> Recipient WebSocket receives push -> Client decrypts locally -> File uploads go directly to S3 via pre-signed URL -> CDN caches files for delivery.",
+  "infrastructure": {
+    "cloud": "AWS",
+    "regions": 3
+  },
+  "estimated_monthly_cost": "$120,000",
+  "bottlenecks": [
+    "Database write throughput during peak hours",
+    "Key distribution latency for E2EE session setup",
+    "Network egress costs for global file delivery",
+    "Search indexing delay for large group chat history"
+  ],
+  "tradeoffs": [
+    "E2EE prevents server-side message search and content moderation",
+    "High availability requires eventual consistency for read receipts",
+    "GDPR data residency increases infrastructure complexity and cost",
+    "Client-side encryption increases client device battery and CPU usage"
+  ]
+}

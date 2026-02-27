@@ -1,0 +1,115 @@
+```python
+import pytest
+from your_module import calculate_tax  # Replace with actual module name
+
+
+class TestCalculateTax:
+    
+    def test_zero_income_single(self):
+        """Test with zero income for single filer"""
+        tax, effective_rate = calculate_tax(0, 'single')
+        assert tax == 0
+        assert effective_rate == 0
+    
+    def test_zero_income_married(self):
+        """Test with zero income for married filer"""
+        tax, effective_rate = calculate_tax(0, 'married')
+        assert tax == 0
+        assert effective_rate == 0
+    
+    def test_typical_single_income(self):
+        """Test typical single income in middle bracket"""
+        tax, effective_rate = calculate_tax(50000, 'single')
+        assert tax > 0
+        assert effective_rate > 0
+        assert effective_rate < 100
+    
+    def test_typical_married_income(self):
+        """Test typical married income in middle bracket"""
+        tax, effective_rate = calculate_tax(100000, 'married')
+        assert tax > 0
+        assert effective_rate > 0
+        assert effective_rate < 100
+    
+    def test_high_income_top_bracket(self):
+        """Test high income in top tax bracket"""
+        tax, effective_rate = calculate_tax(1000000, 'single')
+        assert tax > 0
+        assert effective_rate > 0
+        assert effective_rate < 100
+    
+    def test_negative_income_raises_error(self):
+        """Test that negative income raises ValueError"""
+        with pytest.raises(ValueError, match="Income must be non-negative number"):
+            calculate_tax(-1000, 'single')
+    
+    def test_string_income_raises_error(self):
+        """Test that string income raises ValueError"""
+        with pytest.raises(ValueError, match="Income must be non-negative number"):
+            calculate_tax("abc", 'single')
+    
+    def test_none_income_raises_error(self):
+        """Test that None income raises ValueError"""
+        with pytest.raises(ValueError, match="Income must be non-negative number"):
+            calculate_tax(None, 'single')
+    
+    def test_invalid_filing_status_raises_error(self):
+        """Test that invalid filing status raises ValueError"""
+        with pytest.raises(ValueError, match="Invalid filing status"):
+            calculate_tax(50000, 'divorced')
+    
+    def test_invalid_filing_status_uppercase(self):
+        """Test that uppercase filing status raises ValueError"""
+        with pytest.raises(ValueError, match="Invalid filing status"):
+            calculate_tax(50000, 'SINGLE')
+    
+    def test_bracket_boundary_single(self):
+        """Test income exactly at first bracket boundary for single"""
+        tax, effective_rate = calculate_tax(11600, 'single')
+        assert tax > 0
+        assert effective_rate > 0
+    
+    def test_bracket_boundary_married(self):
+        """Test income exactly at first bracket boundary for married"""
+        tax, effective_rate = calculate_tax(23200, 'married')
+        assert tax > 0
+        assert effective_rate > 0
+    
+    def test_single_vs_married_different(self):
+        """Test that single and married have different tax for same income"""
+        tax_single, rate_single = calculate_tax(50000, 'single')
+        tax_married, rate_married = calculate_tax(50000, 'married')
+        assert tax_single != tax_married
+        assert rate_single != rate_married
+    
+    def test_float_income(self):
+        """Test with float income value"""
+        tax, effective_rate = calculate_tax(50000.50, 'single')
+        assert tax > 0
+        assert effective_rate > 0
+    
+    def test_effective_rate_rounding(self):
+        """Test that effective rate is rounded to 2 decimal places"""
+        tax, effective_rate = calculate_tax(50000, 'single')
+        assert isinstance(effective_rate, float)
+        assert effective_rate == round(effective_rate, 2)
+    
+    def test_tax_rounding(self):
+        """Test that tax amount is rounded to 2 decimal places"""
+        tax, effective_rate = calculate_tax(50000, 'single')
+        assert isinstance(tax, float)
+        assert tax == round(tax, 2)
+    
+    def test_very_low_income(self):
+        """Test with very low income (below first bracket)"""
+        tax, effective_rate = calculate_tax(1000, 'single')
+        assert tax > 0
+        assert effective_rate > 0
+    
+    def test_very_high_income_married(self):
+        """Test very high income for married filer"""
+        tax, effective_rate = calculate_tax(2000000, 'married')
+        assert tax > 0
+        assert effective_rate > 0
+        assert effective_rate < 100
+```

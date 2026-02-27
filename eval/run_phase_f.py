@@ -83,7 +83,7 @@ def extract_json(text):
 # ============================================================
 
 def _find_value_in_json(data, key):
-    """Flexibly find a value in JSON — handles case-insensitive keys, nested dicts, etc."""
+    """Flexibly find a value in JSON — handles case-insensitive keys, nested dicts, composite keys."""
     if not isinstance(data, dict):
         return None
     key_lower = key.lower()
@@ -91,6 +91,23 @@ def _find_value_in_json(data, key):
     for k, v in data.items():
         if k.lower() == key_lower:
             return v
+    # Try underscore-split: "1_category" → look for "1" then "category" in nested dicts
+    if "_" in key:
+        parts = key.split("_", 1)
+        # Try data[parts[0]][parts[1]]
+        for k, v in data.items():
+            if k.lower() == parts[0].lower() and isinstance(v, dict):
+                for k2, v2 in v.items():
+                    if k2.lower() == parts[1].lower():
+                        return v2
+        # Try data[any_container][parts[0]][parts[1]] (e.g. tickets.1.category)
+        for k, v in data.items():
+            if isinstance(v, dict):
+                for k2, v2 in v.items():
+                    if k2.lower() == parts[0].lower() and isinstance(v2, dict):
+                        for k3, v3 in v2.items():
+                            if k3.lower() == parts[1].lower():
+                                return v3
     # Try nested: look inside all sub-dicts
     for k, v in data.items():
         if isinstance(v, dict):

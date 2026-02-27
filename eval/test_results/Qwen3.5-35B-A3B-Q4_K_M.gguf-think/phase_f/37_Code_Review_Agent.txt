@@ -1,0 +1,30 @@
+{
+  "bugs": [
+    {
+      "line": 18,
+      "issue": "ZeroDivisionError occurs if no orders are pending (len(processed) is 0)",
+      "fix": "Check if len(processed) > 0 before dividing, or set avg to 0 if empty."
+    },
+    {
+      "line": 23,
+      "issue": "Returns total input count instead of processed order count",
+      "fix": "Change len(orders) to len(processed) for consistency with the returned orders list."
+    },
+    {
+      "line": 8,
+      "issue": "Discount validation missing; discount > 100% causes negative price logic issues",
+      "fix": "Validate discount is between 0 and 100 before applying calculation."
+    },
+    {
+      "line": 14,
+      "issue": "Function mutates the input order dictionary (side effect)",
+      "fix": "Create a copy of the order dict (e.g., order.copy()) before modifying it."
+    },
+    {
+      "line": 8,
+      "issue": "No type checking or key existence check for price/quantity (KeyError/TypeError risk)",
+      "fix": "Use order.get('price') and order.get('quantity') with default values or check types."
+    }
+  ],
+  "count": 5
+}

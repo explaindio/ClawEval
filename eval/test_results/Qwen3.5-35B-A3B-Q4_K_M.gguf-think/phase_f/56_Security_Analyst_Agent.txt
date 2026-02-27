@@ -1,0 +1,75 @@
+{
+  "vulnerabilities": [
+    {
+      "id": 1,
+      "type": "Hardcoded Secret",
+      "severity": "high",
+      "location": "app.secret_key assignment",
+      "fix": "Use environment variables or a secure random generator for the secret key."
+    },
+    {
+      "id": 2,
+      "type": "Server-Side Template Injection (SSTI)",
+      "severity": "critical",
+      "location": "search function (render_template_string)",
+      "fix": "Use render_template with a separate template file and avoid f-string interpolation in templates."
+    },
+    {
+      "id": 3,
+      "type": "SQL Injection",
+      "severity": "critical",
+      "location": "get_user function (db.execute)",
+      "fix": "Use parameterized queries (e.g., ? placeholders) instead of string formatting."
+    },
+    {
+      "id": 4,
+      "type": "Insecure Deserialization",
+      "severity": "critical",
+      "location": "upload function (pickle.loads)",
+      "fix": "Use JSON or another safe serialization format instead of pickle for untrusted data."
+    },
+    {
+      "id": 5,
+      "type": "Command Injection",
+      "severity": "critical",
+      "location": "run_cmd function (subprocess with shell=True)",
+      "fix": "Avoid shell=True and pass arguments as a list to subprocess.run/check_output."
+    },
+    {
+      "id": 6,
+      "type": "Path Traversal / LFI",
+      "severity": "high",
+      "location": "read_file function (open(path))",
+      "fix": "Validate and sanitize the path input, ensuring it is within a specific allowed directory."
+    },
+    {
+      "id": 7,
+      "type": "Weak Default Password",
+      "severity": "high",
+      "location": "login function (ADMIN_PW default)",
+      "fix": "Enforce strong password policy and require environment variables without weak defaults."
+    },
+    {
+      "id": 8,
+      "type": "Information Disclosure",
+      "severity": "medium",
+      "location": "debug function (os.environ)",
+      "fix": "Remove debug endpoints in production environments."
+    },
+    {
+      "id": 9,
+      "type": "Insecure Transport",
+      "severity": "medium",
+      "location": "Application Configuration (No HTTPS)",
+      "fix": "Enforce HTTPS via WSGI proxy (e.g., Nginx) or Flask extensions."
+    },
+    {
+      "id": 10,
+      "type": "Missing Rate Limiting",
+      "severity": "medium",
+      "location": "Application Configuration (No Rate Limiting)",
+      "fix": "Implement rate limiting middleware (e.g., Flask-Limiter) to prevent brute force and DoS."
+    }
+  ],
+  "count": 10
+}

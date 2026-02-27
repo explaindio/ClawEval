@@ -29,6 +29,7 @@ Unlike vibes-based benchmarks, ClawEval uses **deterministic, auto-scored tests*
 | Model | Think | Score | T1 | T2 | T3 | T4 | T5 |
 |---|---|---|---|---|---|---|---|
 | **Qwen3.5-122B-A10B NVFP4** | 16K | **~443/590 (75%)** | 59% | 69% | 71% | 53% | 65% |
+| Qwen3.5-35B-A3B Q4_K_M | ∞ | **405/582 (70%)** | 70% | 58% | 74% | 87% | 80% |
 
 > 📊 **[Full per-role breakdown →](RESULTS.md)** — All 59 roles scored individually with tier grouping
 

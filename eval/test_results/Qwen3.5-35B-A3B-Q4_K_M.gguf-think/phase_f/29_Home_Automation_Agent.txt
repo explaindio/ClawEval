@@ -1,0 +1,300 @@
+[
+  {
+    "id": "rule_01",
+    "name": "Morning Routine",
+    "trigger": {
+      "type": "time",
+      "times": [
+        {
+          "time": "06:30",
+          "days": ["monday", "tuesday", "wednesday", "thursday", "friday"]
+        },
+        {
+          "time": "08:00",
+          "days": ["saturday", "sunday"]
+        }
+      ]
+    },
+    "conditions": [],
+    "actions": [
+      {
+        "device": "living_room_lights",
+        "action": "dim_ramp_up",
+        "value": "100%",
+        "duration": "30 minutes"
+      },
+      {
+        "device": "bedroom_lights",
+        "action": "dim_ramp_up",
+        "value": "100%",
+        "duration": "30 minutes"
+      }
+    ]
+  },
+  {
+    "id": "rule_02",
+    "name": "Thermostat Management",
+    "trigger": {
+      "type": "state_change",
+      "entity": "occupancy_sensor"
+    },
+    "conditions": [
+      {
+        "entity": "time",
+        "operator": "between",
+        "value": "23:00 to 06:00",
+        "result": "sleeping_mode"
+      },
+      {
+        "entity": "occupancy_status",
+        "operator": "equals",
+        "value": "occupied"
+      }
+    ],
+    "actions": [
+      {
+        "device": "thermostat",
+        "action": "set_temperature",
+        "value": "68"
+      }
+    ]
+  },
+  {
+    "id": "rule_03",
+    "name": "Thermostat - Away/Empty",
+    "trigger": {
+      "type": "state_change",
+      "entity": "occupancy_sensor"
+    },
+    "conditions": [
+      {
+        "entity": "occupancy_status",
+        "operator": "equals",
+        "value": "empty"
+      }
+    ],
+    "actions": [
+      {
+        "device": "thermostat",
+        "action": "set_temperature",
+        "value": "65"
+      }
+    ]
+  },
+  {
+    "id": "rule_04",
+    "name": "Security Geofencing",
+    "trigger": {
+      "type": "geofence",
+      "entities": ["alice_phone", "bob_phone"]
+    },
+    "conditions": [
+      {
+        "entity": "people_count",
+        "operator": "equals",
+        "value": 0
+      }
+    ],
+    "actions": [
+      {
+        "device": "security_system",
+        "action": "arm",
+        "mode": "away"
+      }
+    ]
+  },
+  {
+    "id": "rule_05",
+    "name": "Security - Disarm on Return",
+    "trigger": {
+      "type": "geofence",
+      "entities": ["alice_phone", "bob_phone"]
+    },
+    "conditions": [
+      {
+        "entity": "people_count",
+        "operator": "greater_than",
+        "value": 0
+      }
+    ],
+    "actions": [
+      {
+        "device": "security_system",
+        "action": "disarm"
+      }
+    ]
+  },
+  {
+    "id": "rule_06",
+    "name": "Pet Care Routine",
+    "trigger": {
+      "type": "combined",
+      "triggers": [
+        {
+          "type": "time",
+          "times": ["07:00", "18:00"]
+        },
+        {
+          "type": "geofence",
+          "entities": ["alice_phone", "bob_phone"],
+          "condition": "both_away"
+        }
+      ]
+    },
+    "conditions": [],
+    "actions": [
+      {
+        "device": "auto_feeder",
+        "action": "dispense_food"
+      },
+      {
+        "device": "cat_camera",
+        "action": "turn_on",
+        "condition": "both_away"
+      }
+    ]
+  },
+  {
+    "id": "rule_07",
+    "name": "Energy Management",
+    "trigger": {
+      "type": "time",
+      "times": [
+        {
+          "start": "14:00",
+          "end": "19:00"
+        }
+      ]
+    },
+    "conditions": [
+      {
+        "entity": "solar_production",
+        "operator": "greater_than",
+        "value": 0
+      }
+    ],
+    "actions": [
+      {
+        "device": "energy_system",
+        "action": "set_priority",
+        "value": "solar"
+      },
+      {
+        "device": "battery_storage",
+        "action": "charge"
+      }
+    ]
+  },
+  {
+    "id": "rule_08",
+    "name": "Hallway Lighting",
+    "trigger": {
+      "type": "motion",
+      "entity": "hallway_motion_sensor"
+    },
+    "conditions": [
+      {
+        "entity": "time",
+        "operator": "between",
+        "value": "22:00 to 06:00"
+      }
+    ],
+    "actions": [
+      {
+        "device": "hallway_lights",
+        "action": "turn_on",
+        "value": "20%"
+      },
+      {
+        "device": "hallway_lights",
+        "action": "turn_off",
+        "delay": "5 minutes"
+      }
+    ]
+  },
+  {
+    "id": "rule_09",
+    "name": "Bob's Office Setup",
+    "trigger": {
+      "type": "device_state",
+      "entity": "office_computer",
+      "state": "on"
+    },
+    "conditions": [],
+    "actions": [
+      {
+        "device": "desk_lamp",
+        "action": "turn_on"
+      },
+      {
+        "device": "thermostat",
+        "action": "set_temperature",
+        "value": "70"
+      }
+    ]
+  },
+  {
+    "id": "rule_10",
+    "name": "Laundry Notification",
+    "trigger": {
+      "type": "device_state",
+      "entity": "washer_dryer",
+      "state": "cycle_complete"
+    },
+    "conditions": [],
+    "actions": [
+      {
+        "device": "notification_service",
+        "action": "send_alert",
+        "recipients": ["alice", "bob"],
+        "message": "Laundry cycle complete"
+      }
+    ]
+  },
+  {
+    "id": "rule_11",
+    "name": "Water Leak Safety",
+    "trigger": {
+      "type": "sensor",
+      "entity": "water_leak_detector",
+      "state": "leak_detected"
+    },
+    "conditions": [],
+    "actions": [
+      {
+        "device": "main_water_valve",
+        "action": "close"
+      },
+      {
+        "device": "notification_service",
+        "action": "send_alert",
+        "recipients": ["alice", "bob"],
+        "priority": "high",
+        "message": "Water leak detected! Main valve closed."
+      }
+    ]
+  },
+  {
+    "id": "rule_12",
+    "name": "Guest Mode Activation",
+    "trigger": {
+      "type": "smart_lock",
+      "entity": "front_door",
+      "event": "code_used",
+      "code_type": "temporary_guest"
+    },
+    "conditions": [],
+    "actions": [
+      {
+        "device": "thermostat",
+        "action": "set_temperature",
+        "value": "72"
+      },
+      {
+        "device": "wifi_network",
+        "action": "enable",
+        "ssid": "Guest_WiFi"
+      }
+    ]
+  }
+]
