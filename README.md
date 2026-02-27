@@ -4,6 +4,8 @@
 
 > 🔥 **New models added regularly.** Star ⭐ this repo to get notified when new results drop.
 
+> 💡 **You'd be surprised** how well some small, blazing-fast models handle sub-agent tasks — even on a 5-year-old RTX 3090. Before you rent cloud GPUs, check the scores below.
+
 ### Why ClawEval?
 
 Most benchmarks tell you a model is "smart." ClawEval tells you if it can **do the work** — route tickets, review code, analyze financials, draft legal docs, plan sprints, and 54 more agent roles. Each test has an exact expected answer. No LLM-as-judge. No vibes.
