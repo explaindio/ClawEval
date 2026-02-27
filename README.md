@@ -269,5 +269,4 @@ MIT
 ## 🔗 Links
 
 - **Newsletter**: [AIgenteur Dispatch](https://aigenteurdispatch.substack.com/) — subscribe for new benchmark results and AI agent guides
-- **Website**: [claweval.com](https://claweval.com)
 - **GitHub**: [github.com/explaindio/ClawEval](https://github.com/explaindio/ClawEval)
