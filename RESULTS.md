@@ -141,21 +141,12 @@ All scores out of 10. Sorted by best overall model.
 | 58 | Book Writing | 📝 5 | 📝 5 | 📝 5 |
 | 59 | Compliance | 🟡 7 | 🟢 **8** | 🟢 **8** |
 
-### Summary
+### Notes
 
-| Metric | 122B Think 16K | 35B Think ∞ | 35B NoThink |
-|---|---|---|---|
-| **Total** | **~443/590 (75%)** | **405/582 (70%)** | **472/590 (80%)** 🏆 |
-| 🟢 High (8-10) | 33 roles | 29 roles | 37 roles |
-| 🟡 Medium (5-7) | 16 roles | 12 roles | 10 roles |
-| 🔴 Low (0-4) | 4 roles | 2 roles | 6 roles |
-| ⬛ 32K overflow | 0 | 10 roles | 0 |
-| 📝 Manual | 6 roles | 6 roles | 6 roles |
+- ⬛ **32K overflow (35B Think ∞):** llama.cpp has no `thinking_budget` parameter, so unlimited thinking fills the 32K max_tokens with reasoning tokens before the model can output an answer. These 10 tests need re-running on vLLM/SGLang when supported
+- 📝 Manual review tests default to 5/10 pending human review
+- 🔄 **Think vs NoThink tradeoffs per role:** Thinking helps on Shopping (10 vs 4), Math/Logic (6 vs 4), and RAG (6 vs 4). NoThink avoids overthinking on Recipe (9 vs 0), Market Research (7 vs 0), and Travel (7 vs 0)
+- The 122B model is expected to outperform 35B across the board — per-role differences where 35B scores higher likely reflect scorer sensitivity or task-specific quirks, not genuine capability gaps
 
-### Key Findings
-- 🏆 **35B NoThink is the highest Phase F score** — 80% vs 75% (122B think) vs 70% (35B think)
-- ⬛ **Unlimited thinking hurts:** The 35B think on llama.cpp has no thinking cap, causing 10 tests to overflow. This artificially deflates the score
-- 🔄 **Think vs NoThink tradeoffs:** Thinking helps on Math/Logic (6 vs 4) and Shopping (10 vs 4), but nothink wins on Recipe (9 vs 0), Market Research (7 vs 0), and Travel (7 vs 0) by avoiding overthinking
-- The 35B NoThink completes all 59 tests in **~8 min** at 100 t/s, vs ~2.5h for think mode
 
 

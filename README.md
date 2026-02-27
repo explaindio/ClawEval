@@ -26,17 +26,12 @@ Unlike vibes-based benchmarks, ClawEval uses **deterministic, auto-scored tests*
 
 ### Phase F — 59-Role Deterministic Hard Tests
 
-| Model | Think | Score | T1 | T2 | T3 | T4 | T5 |
-|---|---|---|---|---|---|---|---|
-| **Qwen3.5-35B-A3B Q4_K_M** | OFF | **472/590 (80%)** 🏆 | 70% | 80% | 84% | 80% | 84% |
-| **Qwen3.5-122B-A10B NVFP4** | 16K | **~443/590 (75%)** | 59% | 69% | 71% | 53% | 65% |
-| Qwen3.5-35B-A3B Q4_K_M | ∞ | **405/582 (70%)** | 70% | 58% | 74% | 87% | 80% |
+> 📊 **[Full per-role scores →](RESULTS.md)** — All 59 agent roles scored side-by-side across models
 
-> 📊 **[Full per-role breakdown →](RESULTS.md)** — All 59 roles scored individually with tier grouping
+**Models tested:** Qwen3.5-122B-A10B (think 16K), Qwen3.5-35B-A3B (think ∞ + nothink)
 
-**Perfect 10/10:** Router, Validator, Sentiment, Research, Content Planner, Web Scraping, Customer Support, Sprint Summarizer, Transaction, Home Automation, News, Shopping, Code Gen, Code Review, Fact-Check, Algorithm, Legal, Architect, STEM, Debugger, Financial, Security
+The only useful metric is **per-role score** — aggregate totals are misleading due to infrastructure differences (thinking overflow on llama.cpp, thinking budget caps on SGLang). See [RESULTS.md](RESULTS.md) for the full comparison.
 
-> **64K re-run:** Recipe (#31) = genuine math error (2/10). Market Research (#42) = timeout. Both are model limitations.
 
 
 
