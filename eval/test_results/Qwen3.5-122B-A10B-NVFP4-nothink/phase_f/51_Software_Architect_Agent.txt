@@ -1,0 +1,70 @@
+{
+  "components": [
+    {
+      "name": "API Gateway & Load Balancer",
+      "technology": "NGINX / AWS ALB + Envoy",
+      "purpose": "Route traffic, handle SSL termination, rate limiting, and distribute connections across WebSocket servers.",
+      "scaling_strategy": "Auto-scaling based on CPU and active connection count; DNS-based global load balancing (GSLB) for regional routing."
+    },
+    {
+      "name": "WebSocket Connection Servers",
+      "technology": "Go (Gorilla WebSocket) or Elixir (Phoenix Channels)",
+      "purpose": "Maintain persistent TCP connections for real-time bi-directional messaging and status updates.",
+      "scaling_strategy": "Stateless horizontal scaling; user sessions sharded by User ID across cluster nodes; Redis Pub/Sub for inter-node message routing."
+    },
+    {
+      "name": "Message Queue & Event Bus",
+      "technology": "Apache Kafka",
+      "purpose": "Decouple message ingestion from processing, ensure ordering, and handle backpressure during traffic spikes.",
+      "scaling_strategy": "Partitioned topics per chat room/user; increase partition count and consumer groups to handle throughput."
+    },
+    {
+      "name": "Real-time Database (Hot Path)",
+      "technology": "Redis (Cluster Mode)",
+      "purpose": "Store online status, read receipts, ephemeral message queues, and active session data for sub-millisecond access.",
+      "scaling_strategy": "Redis Cluster with automatic sharding; data eviction policies for non-critical ephemeral data."
+    },
+    {
+      "name": "Persistent Storage (Cold Path)",
+      "technology": "ScyllaDB or Cassandra",
+      "purpose": "Store immutable message history, group metadata, and file references with high write throughput and eventual consistency.",
+      "scaling_strategy": "Add nodes to the ring; data partitioned by Chat ID to ensure locality and efficient group chat retrieval."
+    },
+    {
+      "name": "File Storage Service",
+      "technology": "AWS S3 (with CloudFront CDN)",
+      "purpose": "Store encrypted file attachments (up to 50MB) and serve them via CDN for low-latency downloads.",
+      "scaling_strategy": "Serverless object storage with automatic replication; CDN caching for static assets."
+    },
+    {
+      "name": "Encryption Service",
+      "technology": "Client-side WebCrypto + Server-side Key Management (AWS KMS)",
+      "purpose": "Manage key exchange (X3DH/Double Ratchet) and store encrypted payloads; keys never leave the client or are stored in HSM.",
+      "scaling_strategy": "Stateless cryptographic operations; key rotation handled via KMS policies."
+    },
+    {
+      "name": "Search & Analytics Engine",
+      "technology": "Elasticsearch",
+      "purpose": "Index message content (post-decryption on client or via secure enclave) for search and compliance auditing.",
+      "scaling_strategy": "Sharded indices per region; read replicas for query load."
+    }
+  ],
+  "data_flow": "Client (E2E Encrypted) -> Global Load Balancer -> WebSocket Server (Auth & Session Check) -> Kafka (Message Ingestion) -> Consumer Service (Validation, Group Logic, Persistence to Cassandra/Redis) -> Redis Pub/Sub (Broadcast to Online Recipients) -> WebSocket Server -> Client. File uploads follow: Client -> Pre-signed URL (S3) -> Direct Upload -> Callback to Kafka -> Metadata Update.",
+  "infrastructure": {
+    "cloud": "Multi-Cloud (AWS + GCP) or Single Cloud with Multi-Region Active-Active",
+    "regions": 4
+  },
+  "estimated_monthly_cost": "$450,000 - $650,000",
+  "bottlenecks": [
+    "WebSocket connection limits per node (memory/CPU constraints)",
+    "Kafka partition limits for massive group chats (500 members)",
+    "Database write contention on highly active group chats",
+    "E2E Encryption key distribution latency for large groups"
+  ],
+  "tradeoffs": [
+    "Using E2E encryption prevents server-side search indexing without complex secure enclave solutions or client-side search.",
+    "Active-Active multi-region setup increases complexity in data consistency (eventual consistency for message history) but improves latency and availability.",
+    "Storing 50MB files directly in object storage reduces DB load but increases CDN costs and requires robust pre-signed URL security.",
+    "Prioritizing <100ms latency may require sacrificing strong consistency for message delivery order in favor of causal consistency."
+  ]
+}

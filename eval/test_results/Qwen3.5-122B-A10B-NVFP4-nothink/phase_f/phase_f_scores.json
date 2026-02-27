@@ -1,0 +1,180 @@
+{
+  "model": "Qwen3.5-122B-A10B-NVFP4-nothink",
+  "timestamp": "2026-02-26T22:28:08.791364",
+  "total_score": 107,
+  "total_max": 170,
+  "percentage": 62.9,
+  "manual_tests": 1,
+  "results": [
+    {
+      "id": 43,
+      "role": "Synthesizer / Aggregator",
+      "tier": 3,
+      "scoring_type": "exact",
+      "score": 7,
+      "max": 10,
+      "detail": "5/7 found | missed: innovation; missed: all types",
+      "tokens": 243
+    },
+    {
+      "id": 44,
+      "role": "Curriculum / Course Designer",
+      "tier": 3,
+      "scoring_type": "constraint",
+      "score": 5,
+      "max": 10,
+      "detail": "5/10 constraints | Missing: prerequisites_ordered, covers_all_topics, has_quizzes_assignments, monotonic_difficulty, time_balance",
+      "tokens": 2299
+    },
+    {
+      "id": 45,
+      "role": "Prototype Generator",
+      "tier": 3,
+      "scoring_type": "code",
+      "score": 5,
+      "max": 10,
+      "detail": "5/10 constraints | Missing: has_get_single, has_put, has_validation, has_404_handling, has_pagination",
+      "tokens": 1091
+    },
+    {
+      "id": 46,
+      "role": "DevOps Agent",
+      "tier": 3,
+      "scoring_type": "exact",
+      "score": 8,
+      "max": 10,
+      "detail": "8/10 found | missed: password plaintext; missed: redis exposed",
+      "tokens": 562
+    },
+    {
+      "id": 47,
+      "role": "Math / Logic Reasoning",
+      "tier": 4,
+      "scoring_type": "exact",
+      "score": 4,
+      "max": 10,
+      "detail": "2/5 correct | p1: expected 10:53 AM, got 11:00 AM; p2: expected 70.6, got 70.6%; p3: expected 439805, got 44000",
+      "tokens": 67
+    },
+    {
+      "id": 48,
+      "role": "STEM Analysis",
+      "tier": 4,
+      "scoring_type": "exact",
+      "score": 0,
+      "max": 10,
+      "detail": "0/5 correct | p1: missing; p2: missing; p3: missing; p4: missing; p5: missing",
+      "tokens": 66
+    },
+    {
+      "id": 49,
+      "role": "Algorithm Exploration",
+      "tier": 4,
+      "scoring_type": "code",
+      "score": 10,
+      "max": 10,
+      "detail": "10/10 test cases passed",
+      "tokens": 387
+    },
+    {
+      "id": 50,
+      "role": "Orchestrator / Manager Agent",
+      "tier": 5,
+      "scoring_type": "constraint",
+      "score": 8,
+      "max": 10,
+      "detail": "8/10 constraints | Missing: seo_before_web, no_circular_deps",
+      "tokens": 606
+    },
+    {
+      "id": 51,
+      "role": "Software Architect Agent",
+      "tier": 5,
+      "scoring_type": "constraint",
+      "score": 9,
+      "max": 10,
+      "detail": "9/10 constraints | Missing: has_cache_layer",
+      "tokens": 1028
+    },
+    {
+      "id": 52,
+      "role": "Complex Debugger Agent",
+      "tier": 5,
+      "scoring_type": "exact",
+      "score": 10,
+      "max": 10,
+      "detail": "5/5 found",
+      "tokens": 630
+    },
+    {
+      "id": 53,
+      "role": "Legal Document Review",
+      "tier": 5,
+      "scoring_type": "exact",
+      "score": 7,
+      "max": 10,
+      "detail": "7/10 found | missed: payment terms; missed: unlimited liability; missed: one-sided termination",
+      "tokens": 773
+    },
+    {
+      "id": 54,
+      "role": "Medical / Health Analysis",
+      "tier": 5,
+      "scoring_type": "exact",
+      "score": 7,
+      "max": 10,
+      "detail": "7/10 found | missed: troponin elevated; missed: BNP elevated; missed: LDL high",
+      "tokens": 422
+    },
+    {
+      "id": 55,
+      "role": "Financial Analysis / Stock Research",
+      "tier": 5,
+      "scoring_type": "exact",
+      "score": 10,
+      "max": 10,
+      "detail": "10/10 correct",
+      "tokens": 133
+    },
+    {
+      "id": 56,
+      "role": "Security Analyst Agent",
+      "tier": 5,
+      "scoring_type": "exact",
+      "score": 6,
+      "max": 10,
+      "detail": "6/10 found | missed: XSS/template injection; missed: pickle deserialization; missed: weak default password; missed: env variable leak",
+      "tokens": 869
+    },
+    {
+      "id": 57,
+      "role": "SRE / Incident Response",
+      "tier": 5,
+      "scoring_type": "exact",
+      "score": 6,
+      "max": 10,
+      "detail": "5/9 correct | time_to_respond_min: expected 20, got 5; time_to_resolve_min: expected 35, got 15; root_cause: expected memory leak, got Memory leak in new caching layer causing OOM kills; detection_method: expected monitoring, got Automated monitoring alert (PagerDuty) triggered by error rate spike",
+      "tokens": 138
+    },
+    {
+      "id": 58,
+      "role": "Book / Long-Form Writing",
+      "tier": 5,
+      "scoring_type": "manual",
+      "score": 5,
+      "max": 10,
+      "detail": "MANUAL \u2014 10 criteria to review",
+      "tokens": 993
+    },
+    {
+      "id": 59,
+      "role": "Compliance / Regulatory Agent",
+      "tier": 5,
+      "scoring_type": "exact",
+      "score": 0,
+      "max": 10,
+      "detail": "0/10 found | missed: no consent; missed: no encryption; missed: no deletion right; missed: unauthorized sharing; missed: no DPO",
+      "tokens": 753
+    }
+  ]
+}

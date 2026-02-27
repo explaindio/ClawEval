@@ -1,0 +1,77 @@
+```json
+{
+  "vulnerabilities": [
+    {
+      "id": 1,
+      "type": "Hardcoded Secret",
+      "severity": "high",
+      "location": "Line 5: app.secret_key = \"password123\"",
+      "fix": "Generate a strong, random secret key and store it in an environment variable (e.g., os.environ.get('SECRET_KEY'))."
+    },
+    {
+      "id": 2,
+      "type": "Server-Side Template Injection (SSTI)",
+      "severity": "critical",
+      "location": "Line 10: render_template_string(f\"Results for: {q}\")",
+      "fix": "Avoid passing user input directly into template strings. Use safe rendering methods or escape input, or pass variables as a dictionary to the template engine."
+    },
+    {
+      "id": 3,
+      "type": "SQL Injection",
+      "severity": "critical",
+      "location": "Line 15: db.execute(f\"SELECT * FROM users WHERE id = {id}\")",
+      "fix": "Use parameterized queries: db.execute(\"SELECT * FROM users WHERE id = ?\", (id,))."
+    },
+    {
+      "id": 4,
+      "type": "Arbitrary Code Execution (Deserialization)",
+      "severity": "critical",
+      "location": "Line 21: obj = pickle.loads(data)",
+      "fix": "Do not use pickle for untrusted data. Use safe serialization formats like JSON."
+    },
+    {
+      "id": 5,
+      "type": "Command Injection",
+      "severity": "critical",
+      "location": "Line 26: subprocess.check_output(cmd, shell=True)",
+      "fix": "Avoid shell=True. Pass command and arguments as a list to subprocess, e.g., subprocess.check_output(cmd.split())."
+    },
+    {
+      "id": 6,
+      "type": "Path Traversal / Local File Inclusion",
+      "severity": "high",
+      "location": "Line 31: return open(path).read()",
+      "fix": "Validate and sanitize the 'path' input. Ensure it stays within a designated directory and does not contain '../' or absolute paths."
+    },
+    {
+      "id": 7,
+      "type": "Weak Authentication / Hardcoded Credentials",
+      "severity": "high",
+      "location": "Line 36: if pw == os.environ.get(\"ADMIN_PW\", \"admin\")",
+      "fix": "Remove the default fallback value 'admin'. Ensure the environment variable is always set securely, and implement proper password hashing and salting."
+    },
+    {
+      "id": 8,
+      "type": "Information Disclosure",
+      "severity": "medium",
+      "location": "Line 40: return str(os.environ)",
+      "fix": "Remove the endpoint or restrict access to authorized users only. Never expose environment variables containing secrets to the public."
+    },
+    {
+      "id": 9,
+      "type": "Insecure Transport (No HTTPS)",
+      "severity": "medium",
+      "location": "Global Configuration (V9)",
+      "fix": "Enforce HTTPS by configuring the web server (e.g., Nginx/Apache) to redirect HTTP to HTTPS and use valid SSL/TLS certificates."
+    },
+    {
+      "id": 10,
+      "type": "Denial of Service (No Rate Limiting)",
+      "severity": "medium",
+      "location": "Global Configuration (V10)",
+      "fix": "Implement rate limiting using middleware (e.g., Flask-Limiter) or a reverse proxy to prevent abuse and brute-force attacks."
+    }
+  ],
+  "count": 10
+}
+```

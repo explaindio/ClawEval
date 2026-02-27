@@ -20,16 +20,23 @@ import requests
 from phase_f import PHASE_F_TESTS
 
 
-def call_llm(messages, base_url, model, max_tokens=4000, timeout=120):
+def call_llm(messages, base_url, model, max_tokens=4000, timeout=120, extra_body=None):
     """Send messages and return response content."""
     headers = {"Content-Type": "application/json", "Authorization": "Bearer not-needed"}
     body = {"model": model, "messages": messages, "max_tokens": max_tokens, "temperature": 0.1}
+    if extra_body:
+        body.update(extra_body)
     start = time.time()
     try:
         r = requests.post(f"{base_url}/chat/completions", headers=headers, json=body, timeout=timeout)
         r.raise_for_status()
         data = r.json()
         content = data["choices"][0]["message"]["content"]
+        # Strip SGLang thinking content — model may output </think> with no opening tag
+        if "</think>" in content:
+            content = content.split("</think>")[-1].strip()
+        elif "<think>" in content:
+            content = re.sub(r'<think>.*?</think>\s*', '', content, flags=re.DOTALL).strip()
         elapsed = time.time() - start
         tokens = data.get("usage", {}).get("completion_tokens", 0)
         tps = tokens / elapsed if elapsed > 0 else 0
@@ -397,15 +404,15 @@ SCORERS = {
     "architecture_constraints": score_generic_constraints,
     "code_structure": score_generic_constraints,
     "code_exec_tests": score_generic_constraints,
-    "synthesis": score_generic_constraints,
+    "synthesis": lambda c, s: score_keyword_detection(c, {"issues": s.get("key_agreements", []) + s.get("key_disagreements", [])}),
     "recipe_scaling": lambda c, s: score_json_numeric(c, s),
 }
 
 
-def run_test(test, base_url, model, max_tokens, timeout):
+def run_test(test, base_url, model, max_tokens, timeout, extra_body=None):
     """Run a single test and score it."""
     messages = [{"role": "user", "content": test["prompt"]}]
-    content, tokens, tps, elapsed = call_llm(messages, base_url, model, max_tokens, timeout=timeout)
+    content, tokens, tps, elapsed = call_llm(messages, base_url, model, max_tokens, timeout=timeout, extra_body=extra_body)
 
     scoring = test["scoring"]
     stype = scoring["type"]
@@ -431,11 +438,21 @@ def main():
     parser = argparse.ArgumentParser(description="Phase F: 59-Role Deterministic Hard Evaluation")
     parser.add_argument("--base-url", required=True, help="LLM server base URL")
     parser.add_argument("--model", required=True, help="Model name for output directory")
+    parser.add_argument("--api-model", help="Model name to send in API requests (defaults to --model)")
     parser.add_argument("--max-tokens", type=int, default=4000, help="Max tokens per response")
     parser.add_argument("--timeout", type=int, default=300, help="Request timeout in seconds")
+    parser.add_argument("--thinking-budget", type=int, help="SGLang thinking token budget")
+    parser.add_argument("--nothink", action="store_true", help="SGLang: disable thinking (enable_thinking=false)")
     parser.add_argument("--test-ids", type=int, nargs="*", help="Run only these test IDs")
     parser.add_argument("--tier", type=int, help="Run only this tier")
     args = parser.parse_args()
+
+    api_model = args.api_model or args.model
+    extra_body = None
+    if args.nothink:
+        extra_body = {"chat_template_kwargs": {"enable_thinking": False}}
+    elif args.thinking_budget:
+        extra_body = {"chat_template_kwargs": {"enable_thinking": True, "thinking_budget": args.thinking_budget}}
 
     out_dir = Path(f"test_results/{args.model}/phase_f")
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -446,10 +463,12 @@ def main():
     if args.tier:
         tests = [t for t in tests if t["tier"] == args.tier]
 
+    think_label = f", thinking_budget={args.thinking_budget}" if args.thinking_budget else ""
     print(f"=== Phase F: 59-Role Deterministic Hard Evaluation ===")
     print(f"Model: {args.model}")
+    print(f"API Model: {api_model}")
     print(f"Base URL: {args.base_url}")
-    print(f"Max Tokens: {args.max_tokens}")
+    print(f"Max Tokens: {args.max_tokens}{think_label}")
     print(f"Timeout: {args.timeout}s")
     print(f"Tests: {len(tests)}")
     print(f"{'='*60}\n")
@@ -468,7 +487,7 @@ def main():
 
         print(f"[{i+1}/{len(tests)}] #{tid} T{tier}: {role}{manual_tag}")
 
-        result = run_test(test, args.base_url, args.model, args.max_tokens, args.timeout)
+        result = run_test(test, args.base_url, api_model, args.max_tokens, args.timeout, extra_body=extra_body)
 
         score = result["score"]
         max_score = result["max_score"]

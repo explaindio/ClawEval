@@ -1,0 +1,84 @@
+```python
+import pytest
+from your_module import calculate_tax  # Replace 'your_module' with the actual file name
+
+def test_zero_income_single():
+    assert calculate_tax(0, 'single') == (0, 0)
+
+def test_zero_income_married():
+    assert calculate_tax(0, 'married') == (0, 0)
+
+def test_negative_income():
+    with pytest.raises(ValueError, match="Income must be non-negative number"):
+        calculate_tax(-100, 'single')
+
+def test_invalid_filing_status():
+    with pytest.raises(ValueError, match="Invalid filing status"):
+        calculate_tax(50000, 'head_of_household')
+
+def test_invalid_income_type():
+    with pytest.raises(ValueError, match="Income must be non-negative number"):
+        calculate_tax("50000", 'single')
+
+def test_single_first_bracket():
+    # Income $10,000 falls entirely in 10% bracket
+    tax, rate = calculate_tax(10000, 'single')
+    assert tax == 1000.0
+    assert rate == 10.0
+
+def test_married_first_bracket():
+    # Income $20,000 falls entirely in 10% bracket for married
+    tax, rate = calculate_tax(20000, 'married')
+    assert tax == 2000.0
+    assert rate == 10.0
+
+def test_single_second_bracket_boundary():
+    # Income exactly at the end of 10% bracket ($11,600)
+    tax, rate = calculate_tax(11600, 'single')
+    assert tax == 1160.0
+    assert rate == 10.0
+
+def test_single_crossing_brackets():
+    # Income $50,000 crosses 10% and 12% brackets
+    # 11600 * 0.10 + (50000 - 11600) * 0.12
+    tax, rate = calculate_tax(50000, 'single')
+    expected_tax = 1160 + (38400 * 0.12)
+    assert abs(tax - round(expected_tax, 2)) < 0.01
+    assert rate == round((expected_tax / 50000) * 100, 2)
+
+def test_married_high_income():
+    # High income crossing multiple brackets
+    tax, rate = calculate_tax(500000, 'married')
+    assert tax > 0
+    assert 0 < rate < 37.0
+
+def test_single_max_bracket():
+    # Income in the highest bracket (37%)
+    tax, rate = calculate_tax(1000000, 'single')
+    assert tax > 0
+    assert rate < 37.0  # Effective rate is always less than marginal rate
+
+def test_float_income():
+    tax, rate = calculate_tax(12345.67, 'single')
+    assert isinstance(tax, float)
+    assert isinstance(rate, float)
+    assert tax > 0
+
+def test_married_second_bracket_boundary():
+    # Income exactly at the end of 10% bracket for married ($23,200)
+    tax, rate = calculate_tax(23200, 'married')
+    assert tax == 2320.0
+    assert rate == 10.0
+
+def test_single_third_bracket():
+    # Income $100,525 (end of 22% bracket)
+    tax, rate = calculate_tax(100525, 'single')
+    assert tax > 0
+    assert rate > 12.0
+
+def test_married_third_bracket():
+    # Income $201,050 (end of 22% bracket for married)
+    tax, rate = calculate_tax(201050, 'married')
+    assert tax > 0
+    assert rate > 12.0
+```

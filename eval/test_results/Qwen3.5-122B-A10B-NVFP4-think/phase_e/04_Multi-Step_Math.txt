@@ -1,0 +1,48 @@
+**Step 1: Determine the Discounted Price Per Widget**
+*   Base Price: $24.99
+*   Quantity: 7 widgets
+*   Discount Tier: 6+ widgets qualifies for 25% off.
+*   Discount Calculation: $24.99 \times (1 - 0.25) = 24.99 \times 0.75 = 18.7425$
+*   Rounding: Round to 2 decimal places.
+*   **Price Per Widget:** $18.74
+
+**Step 2: Calculate Subtotal Before Coupon**
+*   Quantity: 7
+*   Price Per Widget: $18.74
+*   Calculation: $18.74 \times 7 = 131.18$
+*   **Subtotal Before Coupon:** $131.18
+
+**Step 3: Apply Loyalty Coupon**
+*   Coupon Value: $10.00
+*   Condition: Applied after quantity discounts, before tax. Subtotal floor is $0.
+*   Calculation: $131.18 - 10.00 = 121.18$
+*   **Subtotal After Coupon:** $121.18
+
+**Step 4: Calculate Sales Tax**
+*   Tax Rate: 8.25% (0.0825)
+*   Tax Base: Subtotal After Coupon ($121.18)
+*   Calculation: $121.18 \times 0.0825 = 9.99735$
+*   Rounding: Round to 2 decimal places.
+*   **Tax:** $10.00
+
+**Step 5: Determine Shipping Cost**
+*   Quantity: 7 items
+*   Tier: 5-8 items
+*   Cost: $3.99
+*   **Shipping:** $3.99
+
+**Step 6: Calculate Total**
+*   Formula: Subtotal After Coupon + Tax + Shipping
+*   Calculation: $121.18 + 10.00 + 3.99 = 135.17$
+*   **Total:** $135.17
+
+```json
+{
+  "price_per_widget": 18.74,
+  "subtotal_before_coupon": 131.18,
+  "subtotal_after_coupon": 121.18,
+  "tax": 10.00,
+  "shipping": 3.99,
+  "total": 135.17
+}
+```

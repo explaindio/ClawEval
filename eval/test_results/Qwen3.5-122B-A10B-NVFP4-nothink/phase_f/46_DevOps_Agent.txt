@@ -1,0 +1,57 @@
+```json
+{
+  "issues": [
+    {
+      "line": "1",
+      "problem": "version '2' is outdated",
+      "fix": "Update 'version' to '3.8' or remove the version key entirely as modern Docker Compose versions infer compatibility."
+    },
+    {
+      "line": "4",
+      "problem": "'latest' tag is non-deterministic",
+      "fix": "Pin the image to a specific version, e.g., 'node:20-alpine'."
+    },
+    {
+      "line": "7",
+      "problem": "DB password in plaintext (should use secrets)",
+      "fix": "Remove 'DB_PASSWORD' from environment and use Docker secrets or an external secrets manager."
+    },
+    {
+      "line": "8",
+      "problem": "NODE_ENV should be 'production'",
+      "fix": "Change 'NODE_ENV' value from 'development' to 'production'."
+    },
+    {
+      "line": "10",
+      "problem": "Source volume mount (.:/app) in production",
+      "fix": "Remove the volume mount or replace it with a build context and copy files during image build."
+    },
+    {
+      "line": "11",
+      "problem": "restart: no — should be 'unless-stopped' or 'always'",
+      "fix": "Change 'restart' policy to 'unless-stopped'."
+    },
+    {
+      "line": "14",
+      "problem": "MySQL 5.6 is EOL",
+      "fix": "Upgrade 'mysql' image to a supported version, e.g., 'mysql:8.0'."
+    },
+    {
+      "line": "16",
+      "problem": "DB port 3306 exposed publicly",
+      "fix": "Remove the 'ports' mapping for the database service to prevent external access."
+    },
+    {
+      "line": "20",
+      "problem": "/tmp for persistent data (will be lost)",
+      "fix": "Change '/tmp/mysql-data' to a named volume or a persistent host path."
+    },
+    {
+      "line": "24",
+      "problem": "Redis port exposed publicly + no auth",
+      "fix": "Remove the 'ports' mapping and configure a password via 'command' or environment variables."
+    }
+  ],
+  "count": 10
+}
+```

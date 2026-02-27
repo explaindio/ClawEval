@@ -1,0 +1,72 @@
+=== TURN 1 ===
+```python
+import re
+
+def parse_duration(duration_str):
+    if not isinstance(duration_str, str):
+        return -1
+    
+    pattern = r'(?:(\d+)h)?(?:(\d+)m)?(?:(\d+)s)?'
+    match = re.fullmatch(pattern, duration_str)
+    
+    if not match:
+        return -1
+    
+    hours, minutes, seconds = match.groups()
+    
+    if hours is None and minutes is None and seconds is None:
+        return -1
+    
+    try:
+        h = int(hours) if hours else 0
+        m = int(minutes) if minutes else 0
+        s = int(seconds) if seconds else 0
+        
+        if h < 0 or m < 0 or s < 0:
+            return -1
+            
+        return h * 3600 + m * 60 + s
+    except ValueError:
+        return -1
+```
+
+=== TURN 2 ===
+```python
+import re
+
+def parse_duration(duration_str):
+    if not isinstance(duration_str, str) or not duration_str:
+        return -1
+    
+    pattern = r'^(?:(\d+)h)?(?:(\d+)m)?(?:(\d+)s)?$'
+    match = re.fullmatch(pattern, duration_str)
+    
+    if not match:
+        return -1
+    
+    hours, minutes, seconds = match.groups()
+    
+    if hours is None and minutes is None and seconds is None:
+        return -1
+    
+    try:
+        h = int(hours) if hours else 0
+        m = int(minutes) if minutes else 0
+        s = int(seconds) if seconds else 0
+        
+        if h < 0 or m < 0 or s < 0:
+            return -1
+            
+        return h * 3600 + m * 60 + s
+    except ValueError:
+        return -1
+```
+
+=== TURN 3 ===
+assert parse_duration("30m") == 1800
+assert parse_duration("2h30m15s") == 8415
+assert parse_duration("1h1h") == -1
+assert parse_duration("") == -1
+assert parse_duration("1h30x") == -1
+assert parse_duration("0s") == 0
+

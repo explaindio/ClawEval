@@ -1,0 +1,30 @@
+{
+  "bugs": [
+    {
+      "line": 18,
+      "issue": "ZeroDivisionError occurs when 'processed' list is empty because dividing by len(processed) is unsafe.",
+      "fix": "Check if processed is not empty before calculating average, or use a conditional expression: avg = total / len(processed) if processed else 0"
+    },
+    {
+      "line": 23,
+      "issue": "Returns len(orders) instead of len(processed), which misrepresents the count of actually processed items.",
+      "fix": "Change 'count': len(orders) to 'count': len(processed)"
+    },
+    {
+      "line": 8,
+      "issue": "No validation that discount is <= 100, which could result in negative prices if discount > 100.",
+      "fix": "Add validation: if discount > 100: discount = 100, or raise an error if discount is invalid"
+    },
+    {
+      "line": 12,
+      "issue": "The function mutates the input 'orders' list by modifying dictionaries in place (adding 'final_price' and changing 'status').",
+      "fix": "Create a deep copy of the order dictionary before modifying it, or return new dictionaries instead of modifying the original ones"
+    },
+    {
+      "line": 7,
+      "issue": "No type checking on 'price' and 'quantity'; if they are None or non-numeric, multiplication will fail.",
+      "fix": "Add validation to ensure 'price' and 'quantity' are numeric types before calculation, e.g., if not isinstance(order['price'], (int, float)) or not isinstance(order['quantity'], (int, float)): raise TypeError"
+    }
+  ],
+  "count": 5
+}

@@ -21,16 +21,25 @@ import requests
 from phase_e_prompts import PHASE_E_TESTS
 
 
-def call_llm(messages, base_url, model, max_tokens=4000, timeout=120):
+def call_llm(messages, base_url, model, max_tokens=4000, timeout=120, extra_body=None):
     """Send messages and return response content."""
     headers = {"Content-Type": "application/json", "Authorization": "Bearer not-needed"}
     body = {"model": model, "messages": messages, "max_tokens": max_tokens, "temperature": 0.1}
+    if extra_body:
+        body.update(extra_body)
     start = time.time()
     try:
         r = requests.post(f"{base_url}/chat/completions", headers=headers, json=body, timeout=timeout)
         r.raise_for_status()
         data = r.json()
         content = data["choices"][0]["message"]["content"]
+        # Strip SGLang thinking content — model may use <think>...</think> or output
+        # "Thinking Process:..." followed by </think> before the actual answer
+        if "</think>" in content:
+            # Take everything after the last </think>
+            content = content.split("</think>")[-1].strip()
+        elif "<think>" in content:
+            content = re.sub(r'<think>.*?</think>\s*', '', content, flags=re.DOTALL).strip()
         elapsed = time.time() - start
         tokens = data.get("usage", {}).get("completion_tokens", 0)
         tps = tokens / elapsed if elapsed > 0 else 0
@@ -634,10 +643,10 @@ SCORERS = {
 }
 
 
-def run_single_turn(test, base_url, model, max_tokens, timeout=120):
+def run_single_turn(test, base_url, model, max_tokens, timeout=120, extra_body=None):
     """Run a single-turn test."""
     messages = [{"role": "user", "content": test["prompt"]}]
-    content, tokens, tps, elapsed = call_llm(messages, base_url, model, max_tokens, timeout=timeout)
+    content, tokens, tps, elapsed = call_llm(messages, base_url, model, max_tokens, timeout=timeout, extra_body=extra_body)
 
     scoring = test["scoring"]
     scorer = SCORERS.get(scoring["type"])
@@ -657,7 +666,7 @@ def run_single_turn(test, base_url, model, max_tokens, timeout=120):
     }
 
 
-def run_multi_turn(test, base_url, model, max_tokens, timeout=120):
+def run_multi_turn(test, base_url, model, max_tokens, timeout=120, extra_body=None):
     """Run a multi-turn test, accumulating conversation history."""
     turns = test["turns"]
     messages = []
@@ -667,7 +676,7 @@ def run_multi_turn(test, base_url, model, max_tokens, timeout=120):
 
     for turn in turns:
         messages.append({"role": turn["role"], "content": turn["content"]})
-        content, tokens, tps, elapsed = call_llm(messages, base_url, model, max_tokens, timeout=timeout)
+        content, tokens, tps, elapsed = call_llm(messages, base_url, model, max_tokens, timeout=timeout, extra_body=extra_body)
         messages.append({"role": "assistant", "content": content})
         responses.append(content)
         total_tokens += tokens
@@ -702,10 +711,20 @@ def main():
     parser = argparse.ArgumentParser(description="Phase E: Killer Evaluation Runner")
     parser.add_argument("--base-url", required=True, help="LLM server base URL (e.g., http://host:8080/v1)")
     parser.add_argument("--model", required=True, help="Model name for output directory")
+    parser.add_argument("--api-model", help="Model name to send in API requests (defaults to --model)")
     parser.add_argument("--max-tokens", type=int, default=4000, help="Max tokens per response")
     parser.add_argument("--timeout", type=int, default=120, help="Request timeout in seconds")
+    parser.add_argument("--thinking-budget", type=int, help="SGLang thinking token budget (enables thinking with limit)")
+    parser.add_argument("--nothink", action="store_true", help="SGLang: disable thinking (enable_thinking=false)")
     parser.add_argument("--test-ids", type=int, nargs="*", help="Run only these test IDs")
     args = parser.parse_args()
+
+    api_model = args.api_model or args.model
+    extra_body = None
+    if args.nothink:
+        extra_body = {"chat_template_kwargs": {"enable_thinking": False}}
+    elif args.thinking_budget:
+        extra_body = {"chat_template_kwargs": {"enable_thinking": True, "thinking_budget": args.thinking_budget}}
 
     out_dir = Path(f"test_results/{args.model}/phase_e")
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -714,10 +733,12 @@ def main():
     if args.test_ids:
         tests = [t for t in tests if t["id"] in args.test_ids]
 
+    think_label = f", thinking_budget={args.thinking_budget}" if args.thinking_budget else ""
     print(f"=== Phase E Killer Evaluation ===")
     print(f"Model: {args.model}")
+    print(f"API Model: {api_model}")
     print(f"Base URL: {args.base_url}")
-    print(f"Max Tokens: {args.max_tokens}")
+    print(f"Max Tokens: {args.max_tokens}{think_label}")
     print(f"Tests: {len(tests)}")
     print(f"{'='*50}\n")
 
@@ -733,9 +754,9 @@ def main():
         print(f"[{i+1}/{len(tests)}] Test {tid}: {name}{turns_label}")
 
         if is_multi:
-            result = run_multi_turn(test, args.base_url, args.model, args.max_tokens, timeout=args.timeout)
+            result = run_multi_turn(test, args.base_url, api_model, args.max_tokens, timeout=args.timeout, extra_body=extra_body)
         else:
-            result = run_single_turn(test, args.base_url, args.model, args.max_tokens, timeout=args.timeout)
+            result = run_single_turn(test, args.base_url, api_model, args.max_tokens, timeout=args.timeout, extra_body=extra_body)
 
         score = result["score"]
         max_score = result["max_score"]
