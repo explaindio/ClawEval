@@ -1,0 +1,88 @@
+# Phase D Hard Test — #23 Website Scraping / Understanding
+# Tier: 2 | Score: 5/10 | No automated constraints to check
+# Tokens: 1597 | Speed: 33.7 t/s | Time: 47.3s
+
+## PROMPT:
+Extract job information from this HTML AND identify ALL red flags. There are at least 6 problematic elements, some subtle.
+
+<div class='job-listing'>
+<h2>Full-Stack Ninja Rockstar Developer</h2>
+<p class='company'>Stealth Startup (unnamed)</p>
+<p class='location'>Remote* (*must be available 6am-midnight PT for "flexibility")</p>
+<p class='salary'>Competitive salary (equity-heavy compensation)</p>
+<p class='experience'>Entry level (5+ years experience required)</p>
+<p class='requirements'>Must know: React, Vue, Angular, Svelte, Python, Go, Rust, Java, C++, Kubernetes, Terraform, AWS, GCP, Azure, PostgreSQL, MongoDB, Redis, Elasticsearch, GraphQL, REST, gRPC, Docker, CircleCI, Jenkins</p>
+<p class='perks'>Unlimited PTO (average team usage: 5 days/year). Fast-paced environment (mandatory 60hr weeks during "crunch" — approximately 48 weeks/year). We're like a family!</p>
+<p class='equity'>0.001% equity vesting over 6 years with 2-year cliff</p>
+<p class='application'>Apply with cover letter, 3 references, coding challenge (estimated 40 hours), and personality assessment</p>
+</div>
+
+Extract structured data AND write a detailed red flag analysis. Flag every manipulative or unreasonable element.
+
+## RESPONSE:
+### Structured Job Data Extraction
+
+| Field | Extracted Value |
+| :--- | :--- |
+| **Job Title** | Full-Stack Ninja Rockstar Developer |
+| **Company** | Stealth Startup (unnamed) |
+| **Location** | Remote (with strict time constraints) |
+| **Salary** | "Competitive" (Equity-heavy) |
+| **Experience Level** | Entry Level (contradictory requirement) |
+| **Tech Stack** | React, Vue, Angular, Svelte, Python, Go, Rust, Java, C++, Kubernetes, Terraform, AWS, GCP, Azure, PostgreSQL, MongoDB, Redis, Elasticsearch, GraphQL, REST, gRPC, Docker, CircleCI, Jenkins |
+| **Benefits** | Unlimited PTO (5 days avg), "Family" culture |
+| **Equity** | 0.001% (6-year vesting, 2-year cliff) |
+| **Application Requirements** | Cover letter, 3 references, 40-hour coding challenge, personality assessment |
+
+---
+
+### Red Flag Analysis
+
+This job listing contains **8 distinct red flags**, ranging from obvious exploitation to subtle psychological manipulation.
+
+#### 1. The "Ninja/Rockstar" Title (Cultural Red Flag)
+*   **The Element:** "Full-Stack Ninja Rockstar Developer"
+*   **Why it's a problem:** This is outdated, toxic industry jargon. Legitimate companies use clear, professional titles (e.g., "Senior Software Engineer"). Using terms like "Ninja," "Rockstar," or "Guru" often signals a culture that values hype over substance, expects unpaid overtime, and lacks professional maturity. It is frequently used to mask a lack of defined roles or to attract candidates who are easily impressed by buzzwords.
+
+#### 2. The "Remote" Lie (Time Zone Exploitation)
+*   **The Element:** "Remote* (*must be available 6am-midnight PT for 'flexibility')"
+*   **Why it's a problem:** This is a classic bait-and-switch. A 16-hour window (6 AM to Midnight) is not flexibility; it is a requirement to be "on-call" for the vast majority of the day. It effectively destroys work-life balance, implying that the employee is expected to be available at a moment's notice for nearly two-thirds of a 24-hour cycle. The asterisk is a deceptive tactic to hide the true nature of the role until the candidate is already invested.
+
+#### 3. The Impossible Tech Stack (Scope Creep/Unrealistic Expectations)
+*   **The Element:** Requirement to know 25+ distinct technologies (React, Vue, Angular, Svelte, Python, Go, Rust, Java, C++, etc.)
+*   **Why it's a problem:** No single human being can be an expert in all these technologies simultaneously.
+    *   **Frontend:** Asking for React, Vue, Angular, *and* Svelte is absurd; these are competing frameworks.
+    *   **Backend:** Asking for Python, Go, Rust, Java, *and* C++ implies the role requires deep expertise in five different paradigms.
+    *   **Infrastructure:** Listing AWS, GCP, *and* Azure suggests the company expects you to manage three cloud providers at once.
+    *   **Conclusion:** This indicates the company has no idea what they need, plans to hire one person to do the work of a 10-person team, or is using the list to filter out anyone who knows enough to say "no."
+
+#### 4. The Experience Paradox (Targeting Desperation)
+*   **The Element:** "Entry level (5+ years experience required)"
+*   **Why it's a problem:** This is a logical contradiction designed to confuse candidates. "Entry level" implies 0–2 years of experience. Requiring 5+ years targets mid-to-senior engineers.
+    *   **The Trap:** By labeling it "Entry level," they likely intend to pay entry-level wages while demanding senior-level output. It suggests they want a senior engineer who is desperate enough to accept a junior salary, or they are trying to justify a low budget by claiming the role is "entry" despite the heavy requirements.
+
+#### 5. The "Unlimited PTO" Trap (Exploitative Culture)
+*   **The Element:** "Unlimited PTO (average team usage: 5 days/year)"
+*   **Why it's a problem:** "Unlimited PTO" is often a mechanism to discourage taking time off. By explicitly stating the average usage is only 5 days (less than the legal minimum in many countries), they are signaling that taking time off is culturally frowned upon. It creates a guilt-trap where employees feel they are "slacking" if they take more than a few days, leading to burnout.
+
+#### 6. The "Crunch" Normalization (Burnout Factory)
+*   **The Element:** "Mandatory 60hr weeks during 'crunch' — approximately 48 weeks/year"
+*   **Why it's a problem:**
+    *   **Frequency:** "Crunch time" is supposed to be a rare, emergency event (e.g., 2–4 weeks a year). Scheduling it for 48 weeks a year means the company operates in a permanent state of emergency.
+    *   **Mandatory:** Explicitly stating "mandatory" 60-hour weeks is a violation of standard labor norms and potentially local labor laws depending on the jurisdiction. It indicates a complete disregard for employee health and sustainability.
+
+#### 7. The Equity Scam (Financial Manipulation)
+*   **The Element:** "0.001% equity vesting over 6 years with 2-year cliff"
+*   **Why it's a problem:**
+    *   **Value:** 0.001% is virtually worthless unless the company is a unicorn valued at billions, which is unlikely for a "Stealth Startup."
+    *   **Vesting:** A 6-year vesting schedule is predatory. Standard is 4 years. A 2-year cliff means you work for two years and get *nothing* if you leave before day 730.
+    *   **The Math:** You are trading 6 years of your life for a fraction of a penny, with a high risk of getting zero return. This is a tactic to pay you in "hope" rather than cash.
+
+#### 8. The Predatory Application Process (Free Labor & Privacy)
+*   **The Element:** "Coding challenge (estimated 40 hours)" and "Personality assessment"
+*   **Why it's a problem:**
+    *   **Unpaid Labor:** Asking for a 40-hour coding challenge is essentially asking for a free 1-week internship. This is unethical and often illegal in some jurisdictions (like California). They are extracting value from you without compensation.
+    *   **Privacy:** A "personality assessment" for a technical role is often a red flag for a company that cares more about "culture fit" (i.e., finding people who won't complain) than actual skills. It can be used to discriminate against candidates based on non-job-related traits.
+
+### Summary
+This job listing is a textbook example of a **predatory startup**. It combines impossible technical requirements, exploitative working hours, deceptive compensation, and a predatory application process to extract maximum value from a candidate while offering minimum return. **Do not apply.**

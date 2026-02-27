@@ -1,0 +1,52 @@
+# Phase D Hard Test — #13 Email Drafting / Summarization
+# Tier: 2 | Score: 5/10 | No automated constraints to check
+# Tokens: 853 | Speed: 32.5 t/s | Time: 26.3s
+
+## PROMPT:
+Prioritize these 8 emails. WARNING: 2 emails have HIDDEN urgency clues buried in the text that change their priority. Read carefully.
+
+1. Subject: "Team lunch Friday" — "Hey, let's do Thai food this week!"
+2. Subject: "Quick question" — "The board presentation is tomorrow and slide 14 has last quarter's numbers instead of this quarter's. Can someone fix?"
+3. Subject: "FYI - vendor update" — "Just letting you know Acme renewed. PS: They mentioned in passing that they're evaluating competitors and their contract has a 30-day termination clause that activates next week."
+4. Subject: "URGENT: Office supplies" — "We're running low on printer paper!!!!"
+5. Subject: "Re: Project timeline" — "Looks good, no changes needed from my end."
+6. Subject: "Meeting notes from Tuesday" — "Attached are the notes. Also, I noticed during the meeting that the CFO mentioned they're freezing all new hires starting Monday — might affect our expansion plans."
+7. Subject: "Newsletter subscription" — "Thanks for subscribing to TechDigest!"
+8. Subject: "Parking lot maintenance" — "Lot B will be closed Saturday for restriping."
+
+Rank P1-P4. Explain the hidden urgency in the emails where it exists.
+
+## RESPONSE:
+Here is the prioritization of the 8 emails, ranked from **P1 (Critical/Immediate Action Required)** to **P4 (Low Priority/Informational)**.
+
+### **Priority Ranking**
+
+| Rank | Email # | Subject | Priority Level | Reason |
+| :--- | :--- | :--- | :--- | :--- |
+| **1** | **2** | Quick question | **P1** | **Critical Error:** Board presentation is tomorrow with wrong data. |
+| **2** | **3** | FYI - vendor update | **P1** | **Hidden Urgency:** Contract termination clause activates next week. |
+| **3** | **6** | Meeting notes from Tuesday | **P2** | **Hidden Urgency:** Hiring freeze starts Monday; affects expansion plans. |
+| **4** | **4** | URGENT: Office supplies | **P2** | **False Urgency:** "URGENT" in subject, but printer paper is low-priority compared to financial/strategic risks. |
+| **5** | **1** | Team lunch Friday | **P3** | **Social:** Needs coordination, but not business-critical. |
+| **6** | **5** | Re: Project timeline | **P3** | **Confirmation:** No action needed, just acknowledgment. |
+| **7** | **8** | Parking lot maintenance | **P4** | **Logistical:** Affects Saturday only; no immediate work impact. |
+| **8** | **7** | Newsletter subscription | **P4** | **Spam/Info:** Purely informational, no action required. |
+
+---
+
+### **Analysis of Hidden Urgency Clues**
+
+You requested an explanation of the two emails containing hidden urgency clues that alter their standard priority.
+
+#### **1. Email #3: "FYI - vendor update"**
+*   **Surface Reading:** This looks like a standard "FYI" (For Your Information) email. Typically, FYIs are low priority (P3 or P4) because they require no immediate action.
+*   **The Hidden Clue:** The text states: *"...their contract has a 30-day termination clause that activates next week."*
+*   **Why it changes priority:** This is a **P1** issue. The vendor is evaluating competitors, and the contract is on the verge of becoming terminable. If the company does not act immediately (likely by next week) to negotiate, lock in the deal, or find a backup, they risk losing a critical vendor or facing a sudden service interruption. The "FYI" subject line is a trap; the content requires immediate strategic intervention.
+
+#### **2. Email #6: "Meeting notes from Tuesday"**
+*   **Surface Reading:** This appears to be a standard administrative email distributing meeting notes. Usually, these are read when convenient (P3).
+*   **The Hidden Clue:** The text states: *"...the CFO mentioned they're freezing all new hires starting Monday — might affect our expansion plans."*
+*   **Why it changes priority:** This is a **P2** (High Priority) issue. A hiring freeze starting "Monday" (implying very soon) directly impacts the team's ability to execute "expansion plans." This requires immediate review of current hiring pipelines, potential cancellation of interviews, and a strategy adjustment for the expansion project. Ignoring this could lead to wasted resources or compliance issues.
+
+### **Note on the "False Urgent" Email (#4)**
+While Email #4 has the word **"URGENT"** in the subject line, it is ranked lower (P2) than the emails with hidden clues. In professional prioritization, **context overrides labels**. Running low on printer paper is an annoyance, but it does not carry the financial or strategic risk of a botched board presentation (Email #2), a losing vendor contract (Email #3), or a hiring freeze (Email #6). The "URGENT" tag here is likely an overreaction by the sender.

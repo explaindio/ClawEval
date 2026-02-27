@@ -1,0 +1,190 @@
+# Phase D Hard Test — #50 Orchestrator / Manager Agent
+# Tier: 5 | Score: 5/10 | No automated constraints to check
+# Tokens: 4617 | Speed: 26.5 t/s | Time: 174.0s
+
+## PROMPT:
+Design an orchestration plan for a complex multi-agent workflow. You MUST include failure handling, because Agent C is known to fail 20% of the time.
+
+Task: Generate a comprehensive quarterly business review (QBR) document.
+
+Available agents and their capabilities:
+- Agent A (Data): Pulls metrics from databases. Takes 2 min. Never fails.
+- Agent B (Finance): Analyzes financial data. Takes 3 min. Requires Agent A output. Fails 5% of time.
+- Agent C (Market): Researches market trends. Takes 8 min. Independent. Fails 20% of time.
+- Agent D (Writer): Writes document sections. Takes 5 min per section. Requires relevant agent output.
+- Agent E (Designer): Creates charts/visuals. Takes 3 min. Requires Agent A data.
+- Agent F (Reviewer): Reviews final document. Takes 4 min. Requires all sections.
+
+Constraints:
+- Total wall-clock time budget: 25 minutes
+- If Agent C fails, the QBR must still be produced (with a note about missing market data)
+- Agent D can write sections in parallel if given different inputs
+
+Design:
+1. Execution DAG with parallel groups and dependencies
+2. Critical path analysis (what's the minimum time?)
+3. Failure handling for each agent (retry? fallback? skip?)
+4. If Agent C fails twice, what's the Plan B?
+5. Show the timeline (Gantt-chart style) for both success and failure scenarios
+
+## RESPONSE:
+# Orchestration Plan: Quarterly Business Review (QBR) Workflow
+
+## 1. Execution DAG (Directed Acyclic Graph)
+
+The workflow is structured into parallel stages to maximize throughput within the 25-minute budget.
+
+**Nodes:**
+*   **Start:** T=0
+*   **A (Data):** 2m (Input: None)
+*   **C (Market):** 8m (Input: None)
+*   **B (Finance):** 3m (Input: A)
+*   **E (Designer):** 3m (Input: A)
+*   **D_Fin (Writer):** 5m (Input: B)
+*   **D_Mkt (Writer):** 5m (Input: C or Fallback)
+*   **D_Vis (Writer):** 5m (Input: E)
+*   **F (Reviewer):** 4m (Input: D_Fin, D_Mkt, D_Vis)
+*   **End:** Final Document
+
+**Dependencies:**
+1.  **Stage 1 (Parallel):** `A` and `C` start immediately.
+2.  **Stage 2 (Parallel):** `B` and `E` start after `A` completes.
+3.  **Stage 3 (Parallel):** `D_Fin`, `D_Mkt`, `D_Vis` start after their respective inputs (`B`, `C`, `E`) are ready.
+4.  **Stage 4 (Final):** `F` starts after **all** `D` tasks complete.
+
+```mermaid
+graph TD
+    Start --> A
+    Start --> C
+    
+    A --> B
+    A --> E
+    
+    B --> D_Fin
+    E --> D_Vis
+    C --> D_Mkt
+    
+    D_Fin --> F
+    D_Vis --> F
+    D_Mkt --> F
+    
+    F --> End
+```
+
+---
+
+## 2. Critical Path Analysis
+
+We calculate the minimum time required to complete the workflow under different conditions.
+
+### Best Case (No Failures)
+*   **Path 1 (Data/Finance):** A(2) + B(3) + D_Fin(5) + F(4) = **14 mins**
+*   **Path 2 (Data/Design):** A(2) + E(3) + D_Vis(5) + F(4) = **14 mins**
+*   **Path 3 (Market):** C(8) + D_Mkt(5) + F(4) = **17 mins**
+*   **Bottleneck:** Agent C (Market Research).
+*   **Total Time:** **17 Minutes** (8 mins buffer remaining).
+
+### Worst Case (Agent C Fails Twice)
+*   **Path 3 (Market w/ Retries):** C(8) + Retry_C(8) + Fallback(0) + D_Mkt(5) + F(4) = **25 mins**
+*   **Other Paths:** Still complete by T=14 mins.
+*   **Total Time:** **25 Minutes** (0 mins buffer remaining).
+
+**Conclusion:** The 25-minute budget is tight but sufficient to accommodate exactly one retry for Agent C. A third attempt is not possible.
+
+---
+
+## 3. Failure Handling Strategy
+
+| Agent | Failure Rate | Strategy | Logic |
+| :--- | :--- | :--- | :--- |
+| **Agent A** | 0% | N/A | No handling required. |
+| **Agent B** | 5% | **Retry Once** | If B fails, retry immediately. If B fails twice, inject "Financial Data Unavailable" placeholder. *Note: B's path is shorter than C's, so retries do not impact the critical path.* |
+| **Agent C** | 20% | **Retry Once + Fallback** | **Attempt 1:** Run C. <br> **If Fail:** Run Retry C immediately. <br> **If Retry Fail:** Trigger **Plan B** (Skip C, generate placeholder). |
+| **Agent D** | N/A | **Parallel Execution** | D_Fin, D_Mkt, and D_Vis run concurrently. If C fails, D_Mkt receives a "Missing Data" flag instead of raw data. |
+| **Agent E** | N/A | **Standard** | Depends on A. If A is stable, E is stable. |
+| **Agent F** | N/A | **Aggregation** | Waits for all D outputs. If D_Mkt has a placeholder, F adds a disclaimer to the final doc. |
+
+---
+
+## 4. Plan B: Agent C Double Failure Protocol
+
+If Agent C fails the initial run **and** the retry run, the following protocol activates to ensure the QBR is delivered within the 25-minute limit.
+
+1.  **Trigger:** At T=16 (after 2nd failure), the Orchestrator marks `C_Status` as `CRITICAL_FAIL`.
+2.  **Input Generation:** Instead of waiting for C, the Orchestrator generates a static JSON payload:
+    ```json
+    {
+      "status": "MISSING",
+      "message": "Market trend data unavailable due to system error.",
+      "recommendation": "Refer to previous quarter's market analysis."
+    }
+    ```
+3.  **Agent D Instruction:** `D_Mkt` is instructed to write a "Market Overview" section based on the static payload. It must explicitly state that live data is missing.
+4.  **Agent F Instruction:** `F` is instructed to add a **Red Banner** to the final document header: *"Warning: Market Data Section is based on fallback logic."*
+5.  **Time Budget:** This path consumes exactly 25 minutes (8m + 8m + 5m + 4m). No further retries are permitted.
+
+---
+
+## 5. Timeline Visualization (Gantt-Style)
+
+### Scenario A: Success (No Failures)
+*Total Time: 17 Minutes*
+
+```text
+Time (Min) ->  0   2   4   6   8  10  12  14  16  18  20  22  24  25
+---------------------------------------------------------------
+Agent A       [===]
+Agent C                   [==================]
+Agent B         [===]
+Agent E         [===]
+D_Fin             [=====]
+D_Vis             [=====]
+D_Mkt                     [=====]
+Agent F                               [====]
+---------------------------------------------------------------
+Status: SUCCESS (8 min slack)
+```
+
+### Scenario B: Agent C Fails Twice (Worst Case)
+*Total Time: 25 Minutes*
+
+```text
+Time (Min) ->  0   2   4   6   8  10  12  14  16  18  20  22  24  25
+---------------------------------------------------------------
+Agent A       [===]
+Agent C       [===] (FAIL)
+Retry C               [==================] (FAIL)
+Agent B         [===]
+Agent E         [===]
+D_Fin             [=====]
+D_Vis             [=====]
+D_Mkt                             [=====] (Uses Fallback)
+Agent F                                     [====]
+---------------------------------------------------------------
+Status: DELIVERED (0 min slack)
+```
+
+### Scenario C: Agent C Fails Once (Retry Succeeds)
+*Total Time: 25 Minutes*
+
+```text
+Time (Min) ->  0   2   4   6   8  10  12  14  16  18  20  22  24  25
+---------------------------------------------------------------
+Agent A       [===]
+Agent C       [===] (FAIL)
+Retry C               [==================] (SUCCESS)
+Agent B         [===]
+Agent E         [===]
+D_Fin             [=====]
+D_Vis             [=====]
+D_Mkt                             [=====]
+Agent F                                     [====]
+---------------------------------------------------------------
+Status: DELIVERED (0 min slack)
+```
+
+## Implementation Notes for Orchestrator
+1.  **Timeout Enforcement:** Set a hard timeout on Agent C at T=16. If not resolved by then, force Plan B.
+2.  **State Management:** The Orchestrator must track `C_Attempts`. If `C_Attempts == 2`, bypass C and inject Fallback Data.
+3.  **Parallelism:** Ensure the infrastructure supports at least 3 concurrent instances of Agent D to prevent serialization of writing tasks.
+4.  **Alerting:** If Plan B is triggered, send an immediate alert to the Operations Team to investigate Agent C, but **do not** block the QBR generation.

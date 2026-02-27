@@ -1,0 +1,135 @@
+# Phase D Hard Test — #29 Home Automation Agent
+# Tier: 2 | Score: 10/10 | 4/4 constraints met
+# Tokens: 1854 | Speed: 33.3 t/s | Time: 55.7s
+
+## PROMPT:
+Create an automation routine from this description. WARNING: There are 3 logical conflicts in the requirements that you must identify and resolve.
+
+"When we say 'movie night': dim all lights to 5%, close all blinds, set thermostat to 72°F, turn on the sound system, start the projector, lock all doors, activate security cameras, and set the house to 'do not disturb' mode.
+
+Also when we say 'movie night': open the living room windows for fresh air, leave the dog door unlocked so Max can go out, and keep the hallway lights at full brightness so the kids can see.
+
+Additional rules: 
+- If CO2 sensor reads above 1000ppm, force-open windows regardless of other settings
+- If smoke detector triggers, all automations must stop and all lights go to 100%
+- If nobody has moved in 2 hours, assume everyone fell asleep and turn everything off
+
+Identify the conflicts, explain how you'd resolve each, and provide the final automation logic.
+
+## RESPONSE:
+Here is the analysis of the logical conflicts, the proposed resolutions, and the final automation routine.
+
+### 1. Identification of Logical Conflicts
+
+There are three distinct contradictions in the requirements provided:
+
+**Conflict A: Window State (Closed vs. Open)**
+*   **Requirement 1:** "Close all blinds" (implies a desire for darkness/seclusion) and "lock all doors" (implies security).
+*   **Requirement 2:** "Open the living room windows for fresh air."
+*   **The Conflict:** While blinds and windows are technically different devices, the intent of "Movie Night" usually implies a sealed, dark environment. However, the explicit instruction to "open windows" contradicts the standard "secure and dark" setup. More critically, if the CO2 rule forces windows open, it conflicts with the "close blinds" aesthetic if the user expects a fully sealed room, but the primary conflict is between the **Security/Privacy** intent (locking doors, closing blinds) and the **Ventilation** intent (opening windows).
+*   *Refinement:* Actually, the prompt says "Close all blinds" and "Open living room windows." These are not mutually exclusive physically. The real conflict is between **Security** and **Ventilation**.
+    *   *Requirement 1:* "Lock all doors."
+    *   *Requirement 2:* "Leave the dog door unlocked."
+    *   *Requirement 2:* "Open living room windows."
+    *   *Conflict:* You cannot "Lock all doors" if you must leave the dog door unlocked. "All" is an absolute quantifier that conflicts with the specific exception required for the dog.
+
+**Conflict B: Lighting State (Dim vs. Bright)**
+*   **Requirement 1:** "Dim all lights to 5%."
+*   **Requirement 2:** "Keep the hallway lights at full brightness."
+*   **The Conflict:** The command "Dim **all** lights" is an absolute instruction that directly contradicts the instruction to keep specific lights (hallway) at 100%. The system cannot simultaneously set *all* lights to 5% and specific lights to 100%.
+
+**Conflict C: Security vs. Safety/Emergency Override**
+*   **Requirement 1:** "Activate security cameras" and "Lock all doors."
+*   **Requirement 2:** "If smoke detector triggers... all automations must stop."
+*   **The Conflict:** While "stopping automations" is a standard safety feature, there is a logical gap in the *sequence*. If the smoke detector triggers, the system must unlock doors (for evacuation) and turn lights to 100%. However, the "Movie Night" routine explicitly locks doors and dims lights. The conflict is that the **Emergency Rule** must override the **Routine Rule**, but the prompt lists them as parallel rules without defining the hierarchy. If the automation runs linearly, the "Movie Night" lock command might execute *after* the smoke check, or vice versa, leading to a dangerous state where doors remain locked during a fire.
+
+---
+
+### 2. Resolution Strategy
+
+To resolve these conflicts, we must apply **Priority Hierarchy** and **Specific Overrides**.
+
+**Resolution for Conflict A (The "All" vs. Exception Conflict):**
+*   **Logic:** Change "Lock all doors" to "Lock all exterior doors *except* the pet door."
+*   **Logic:** Change "Close all blinds" to "Close all blinds *except* those covering open windows" (or simply acknowledge that blinds close while windows open is acceptable, but the door lock is the hard conflict).
+*   **Decision:** The "Lock all doors" command is modified to "Lock all doors except the dog door."
+
+**Resolution for Conflict B (The Lighting Conflict):**
+*   **Logic:** Change "Dim all lights to 5%" to "Dim all lights to 5% *except* hallway lights."
+*   **Decision:** The "All" quantifier is scoped to exclude the hallway. The hallway lights remain at 100% as a safety exception for the kids.
+
+**Resolution for Conflict C (The Hierarchy Conflict):**
+*   **Logic:** Establish a strict **Priority Ladder**.
+    1.  **Level 1 (Critical Safety):** Smoke/Fire (Overrides everything).
+    2.  **Level 2 (Health):** CO2 Levels (Overrides ventilation settings).
+    3.  **Level 3 (User Routine):** "Movie Night" (Overrides default states).
+    4.  **Level 4 (Inactivity):** Sleep Mode (Overrides Routine).
+*   **Decision:** The automation must check for Smoke and CO2 *before* executing the "Movie Night" routine. If Smoke triggers, the routine is aborted immediately, doors unlock, and lights go to 100%.
+
+---
+
+### 3. Final Automation Logic
+
+Here is the resolved automation routine, structured with conditional logic and priority handling.
+
+#### **Trigger:** Voice Command "Movie Night"
+
+#### **Step 1: Safety & Health Pre-Check (Highest Priority)**
+*   **Check Smoke Detector:**
+    *   *IF* Smoke Detected:
+        *   **ABORT** "Movie Night" routine immediately.
+        *   **Action:** Unlock ALL doors (including dog door).
+        *   **Action:** Set ALL lights to 100%.
+        *   **Action:** Turn OFF sound system and projector.
+        *   **Action:** Send emergency alert to user.
+        *   **STOP** execution.
+    *   *ELSE:* Proceed to Step 2.
+
+*   **Check CO2 Sensor:**
+    *   *IF* CO2 > 1000ppm:
+        *   **Action:** Force Open Living Room Windows (regardless of other settings).
+        *   **Action:** Set Blinds to "Closed" (to maintain darkness while ventilating).
+        *   **Flag:** `Ventilation_Active = True`.
+    *   *ELSE:*
+        *   **Action:** Close Living Room Windows (per standard routine).
+        *   **Flag:** `Ventilation_Active = False`.
+
+#### **Step 2: Execute "Movie Night" Routine**
+*   **Lighting:**
+    *   Set **All Lights** to 5%.
+    *   **EXCEPTION:** Set **Hallway Lights** to 100% (Safety override for kids).
+*   **Climate & Blinds:**
+    *   Set Thermostat to 72°F.
+    *   Close **All Blinds**.
+*   **Entertainment:**
+    *   Turn **ON** Sound System.
+    *   Start **Projector**.
+*   **Security & Access:**
+    *   Lock **All Exterior Doors**.
+    *   **EXCEPTION:** Keep **Dog Door** Unlocked (for Max).
+    *   Activate **Security Cameras** (Motion detection enabled).
+*   **System Mode:**
+    *   Set House Mode to "Do Not Disturb" (Silence notifications, block calls).
+
+#### **Step 3: Background Monitoring (Continuous Loop)**
+*   **Monitor Inactivity:**
+    *   *IF* No motion detected for 2 hours:
+        *   **Action:** Turn OFF Projector and Sound System.
+        *   **Action:** Set ALL Lights to 0% (including hallway).
+        *   **Action:** Set House Mode to "Sleep" (Disable "Do Not Disturb", enable motion sensors).
+        *   **Action:** Close Dog Door (Optional safety, or leave open if preferred).
+        *   **Action:** Send notification: "Everyone appears asleep; system powered down."
+
+*   **Monitor CO2 (Continuous):**
+    *   *IF* CO2 rises above 1000ppm during the movie:
+        *   **Action:** Open Living Room Windows immediately.
+        *   **Action:** Keep Blinds Closed.
+
+*   **Monitor Smoke (Continuous):**
+    *   *IF* Smoke triggers at any time:
+        *   **Action:** Immediate override (See Step 1).
+
+### Summary of Changes Made
+1.  **Resolved "All Doors" vs. "Dog Door":** Changed the lock command to explicitly exclude the dog door.
+2.  **Resolved "All Lights" vs. "Hallway Lights":** Changed the dim command to explicitly exclude hallway lights.
+3.  **Resolved Security vs. Safety:** Implemented a pre-check hierarchy where Smoke and CO2 sensors are evaluated *before* the routine locks doors or closes windows, ensuring safety is never compromised by a "Movie Night" setting.

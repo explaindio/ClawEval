@@ -1,0 +1,70 @@
+# Phase D Hard Test — #46 DevOps Agent
+# Tier: 3 | Score: 5/10 | No automated constraints to check
+# Tokens: 32000 | Speed: 30.6 t/s | Time: 1044.6s
+
+## PROMPT:
+Debug this GitHub Actions workflow. It has 3 SYNTAX errors and 2 LOGIC errors. Find all 5.
+
+```yaml
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - run: npm install
+      - run: npm test
+      
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: npm install
+        - run: npm run build  # Syntax error 1
+      - uses: docker/build-push-action@v5
+        with:
+          push: true
+          tags: myapp:${{ github.sha }}
+
+  deploy-staging:
+    needs: build
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: staging
+    steps:
+      - run: |
+          kubectl set image deployment/myapp             myapp=myapp:${{ github.sha }}
+  
+  deploy-production:
+    needs: build  # Logic error: should this depend on staging?
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - run: kubectl set image deployment/myapp myapp=myapp:${{ github.sha }}
+      
+  notify:
+    needs: [deploy-staging deploy-production]  # Syntax error 2
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - run: curl -X POST $SLACK_WEBHOOK -d '{"text": "Deployment complete"}'
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }  # Syntax error 3
+```
+
+Find all 5 errors (3 syntax, 2 logic), explain each, and provide the corrected YAML.
+
+## RESPONSE:
+

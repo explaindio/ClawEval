@@ -1,0 +1,113 @@
+# Phase D Hard Test — #33 SEO Optimization Agent
+# Tier: 2 | Score: 10/10 | 2/2 constraints met
+# Tokens: 3149 | Speed: 30.1 t/s | Time: 104.5s
+
+## PROMPT:
+Audit this website's SEO. The site has 3 pages targeting similar keywords (cannibalization) and uses 2 black-hat techniques. Identify everything.
+
+Page 1: "/blog/best-ai-tools-2025"
+- Title: "Best AI Tools 2025 | Best AI Tools | AI Tools Best | Top AI Tools"
+- H1: "Best AI Tools 2025"
+- Content: 2000 words, keyword "best AI tools" appears 47 times
+- Hidden text: white text on white background listing 500 AI-related keywords
+- Internal links: links to Page 2 and Page 3
+
+Page 2: "/blog/top-ai-tools-guide"  
+- Title: "Top AI Tools Guide 2025"
+- H1: "The Ultimate Guide to Top AI Tools"
+- Content: 1500 words, very similar content to Page 1 with slight rewording
+- Links: 15 outbound links to unrelated gambling sites in footer
+
+Page 3: "/blog/ai-tools-compared"
+- Title: "AI Tools Compared — Which Is Best?"
+- H1: "Comparing the Best AI Tools"
+- Content: 800 words, overlaps 60% with Page 1
+
+Identify: keyword stuffing, cloaking/hidden text, link schemes, keyword cannibalization, and provide a remediation plan that uses ONLY white-hat techniques.
+
+## RESPONSE:
+# SEO Audit Report
+
+Based on the provided details, this website is currently violating multiple Google Search Essentials (formerly Webmaster Guidelines). The site is at high risk of receiving a **Manual Action** penalty or severe algorithmic devaluation.
+
+Below is the detailed identification of issues followed by a strict white-hat remediation plan.
+
+---
+
+## Part 1: Issue Identification
+
+### 1. Keyword Stuffing (Black Hat)
+*   **Location:** Page 1 Title Tag & Body Content.
+*   **Evidence:**
+    *   **Title Tag:** "Best AI Tools 2025 | Best AI Tools | AI Tools Best | Top AI Tools". This is repetitive and unnatural. It attempts to rank for multiple variations of the same phrase in a single tag.
+    *   **Body Content:** The keyword "best AI tools" appears 47 times in 2,000 words (~2.35% density). While density alone isn't always a penalty, the context combined with the title suggests forced repetition rather than natural usage.
+*   **Risk:** High. Google's SpamBrain algorithm detects unnatural repetition and may filter the page from results.
+
+### 2. Cloaking / Hidden Text (Black Hat)
+*   **Location:** Page 1.
+*   **Evidence:** "White text on white background listing 500 AI-related keywords."
+*   **Risk:** **Critical.** This is a direct violation of Google's Spam Policies. It is designed to trick crawlers into seeing content that users cannot see. This is the fastest way to get a site manually penalized and de-indexed.
+
+### 3. Link Schemes / Unnatural Links (Black Hat)
+*   **Location:** Page 2 Footer.
+*   **Evidence:** 15 outbound links to unrelated gambling sites.
+*   **Risk:** High. Linking to unrelated, low-quality, or spammy niches (gambling) suggests link selling or participation in a link scheme. It dilutes the site's topical authority and signals to Google that the site is not trustworthy.
+
+### 4. Keyword Cannibalization (Technical/Structural)
+*   **Location:** All 3 Pages.
+*   **Evidence:**
+    *   Page 1 targets "Best AI Tools."
+    *   Page 2 targets "Top AI Tools" (Semantic match to Page 1).
+    *   Page 3 targets "Comparing the Best AI Tools" (Semantic match to Page 1).
+    *   **Content Overlap:** Page 3 overlaps 60% with Page 1; Page 2 is "very similar" to Page 1.
+*   **Risk:** High. Search engines cannot determine which page is the "canonical" authority for the query. This splits ranking signals (backlinks, internal equity) across three weak pages instead of one strong page.
+
+---
+
+## Part 2: White-Hat Remediation Plan
+
+To recover the site's health and rankings, you must remove all black-hat elements immediately and consolidate content to fix cannibalization.
+
+### Phase 1: Emergency Cleanup (Do this immediately)
+1.  **Remove Hidden Text:** Delete the white-on-white text on Page 1 immediately. Do not replace it with anything.
+2.  **Remove Spammy Links:** Remove all 15 gambling links from the footer of Page 2. If these links were paid, consider using the `rel="nofollow"` or `rel="sponsored"` attribute if they must remain for business reasons, but removal is preferred.
+3.  **Fix Title Tags:** Rewrite Page 1's title to be natural and descriptive.
+    *   *Bad:* "Best AI Tools 2025 | Best AI Tools | AI Tools Best..."
+    *   *Good:* "Best AI Tools for 2025: A Comprehensive Guide"
+
+### Phase 2: Fix Keyword Cannibalization (Consolidation Strategy)
+Since the content overlaps significantly (60%+), the best white-hat strategy is to **merge** the pages into one definitive "Pillar Page."
+
+1.  **Select the Primary Page:** Choose **Page 1** (`/blog/best-ai-tools-2025`) as the canonical page because it has the most content (2,000 words).
+2.  **Merge Content:**
+    *   Take the unique value from Page 2 (the "Guide" aspect) and Page 3 (the "Comparison" aspect) and integrate them into Page 1.
+    *   Ensure the final content is unique, high-quality, and provides E-E-A-T (Experience, Expertise, Authoritativeness, Trustworthiness).
+3.  **301 Redirect:**
+    *   Set up a **301 Permanent Redirect** from Page 2 (`/blog/top-ai-tools-guide`) to Page 1.
+    *   Set up a **301 Permanent Redirect** from Page 3 (`/blog/ai-tools-compared`) to Page 1.
+    *   *Why:* This passes the link equity (ranking power) from the old pages to the new master page and tells Google which URL to index.
+4.  **Update Internal Links:** Search the entire site for links pointing to Page 2 or Page 3 and update them to point to the new consolidated Page 1.
+
+### Phase 3: Content Optimization (White-Hat)
+1.  **Natural Keyword Usage:** Rewrite the content on Page 1. Remove the forced repetition of "best AI tools." Use synonyms and natural language (e.g., "top-rated AI software," "leading artificial intelligence solutions," "AI platform recommendations").
+2.  **Add Value:** Ensure the content answers user intent. Include:
+    *   Original screenshots or demos of the tools.
+    *   Pros and Cons lists.
+    *   Pricing comparisons.
+    *   Author byline with credentials (to boost E-E-A-T).
+3.  **Meta Data:** Ensure the Meta Description is unique and compelling, summarizing the content without keyword stuffing.
+
+### Phase 4: Verification & Recovery
+1.  **Google Search Console (GSC):**
+    *   Check the **Security & Manual Actions** report. If a Manual Penalty exists, you must submit a **Reconsideration Request** after completing the cleanup above.
+    *   Use the **URL Inspection Tool** to request re-indexing of the consolidated Page 1.
+2.  **Monitor Traffic:** Expect a temporary dip in traffic while Google re-crawls the site after the redirects and content changes. Rankings should stabilize and improve over 4–8 weeks as the authority consolidates.
+
+### Summary Checklist
+- [ ] **Delete** hidden text on Page 1.
+- [ ] **Remove** gambling links on Page 2.
+- [ ] **Rewrite** Page 1 Title Tag.
+- [ ] **Merge** Page 2 & 3 content into Page 1.
+- [ ] **301 Redirect** Page 2 & 3 to Page 1.
+- [ ] **Update** internal links to point to Page 1.
+- [ ] **Submit** Reconsideration Request in GSC (if penalized).

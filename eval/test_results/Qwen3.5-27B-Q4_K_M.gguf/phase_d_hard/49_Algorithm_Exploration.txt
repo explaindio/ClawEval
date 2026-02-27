@@ -1,0 +1,189 @@
+# Phase D Hard Test — #49 Algorithm Exploration
+# Tier: 4 | Score: 5/10 | No automated constraints to check
+# Tokens: 7538 | Speed: 27.0 t/s | Time: 279.5s
+
+## PROMPT:
+Design an algorithm for this problem. There's an O(n) solution but most people give O(n log n) or O(n²). Find the optimal one.
+
+Problem: Given an array of n integers, find the maximum difference arr[j] - arr[i] such that j > i (the larger element must come AFTER the smaller element). If no positive difference exists, return 0.
+
+Example: [2, 3, 10, 6, 4, 8, 1] → Answer: 8 (10-2)
+Example: [7, 9, 5, 6, 3, 2] → Answer: 2 (9-7, not 5-2 because 5 comes after 9)
+Example: [10, 8, 6, 4, 2] → Answer: 0 (strictly decreasing)
+
+Requirements:
+1. Give the naive O(n²) solution and explain why it's slow
+2. Give an O(n log n) solution using a common technique
+3. Give the OPTIMAL O(n) solution — track minimum so far
+4. Prove the O(n) solution is correct with a formal argument
+5. Handle edge cases: empty array, single element, all same values, all negative
+6. Provide Python implementation of the O(n) solution with tests
+
+## RESPONSE:
+# Algorithm Design: Maximum Difference with Index Constraint
+
+## 1. Naive $O(n^2)$ Solution
+
+**Approach:**
+The most straightforward way to solve this is to check every possible pair of indices $(i, j)$ where $i < j$. For each pair, calculate the difference `arr[j] - arr[i]` and keep track of the maximum value found.
+
+**Pseudocode:**
+```python
+max_diff = 0
+for i from 0 to n-1:
+    for j from i+1 to n-1:
+        diff = arr[j] - arr[i]
+        if diff > max_diff:
+            max_diff = diff
+return max_diff
+```
+
+**Why it's slow:**
+This approach uses two nested loops. The outer loop runs $n$ times, and the inner loop runs roughly $n/2$ times on average.
+*   **Time Complexity:** $O(n^2)$.
+*   **Space Complexity:** $O(1)$.
+*   **Performance Issue:** For an input size of $n = 10^5$, the number of operations is approximately $5 \times 10^9$, which will exceed typical time limits (usually $\approx 10^8$ operations per second) in competitive programming or production systems.
+
+---
+
+## 2. $O(n \log n)$ Solution (Divide and Conquer)
+
+**Approach:**
+A common technique for array problems is **Divide and Conquer** (similar to Merge Sort). While sorting the array is an $O(n \log n)$ operation, it destroys the index constraint ($j > i$), making it invalid for this specific problem. Instead, we can split the array into two halves and solve recursively.
+
+The maximum difference can occur in three places:
+1.  Entirely in the **Left** half.
+2.  Entirely in the **Right** half.
+3.  **Crossing** the midpoint (minimum in Left, maximum in Right).
+
+**Algorithm:**
+1.  Divide the array into `left` and `right` halves.
+2.  Recursively find the max difference in `left` and `right`.
+3.  Find the minimum value in the `left` half and the maximum value in the `right` half.
+4.  The crossing difference is `max(right) - min(left)`.
+5.  Return the maximum of the three values.
+
+**Complexity:**
+*   **Time:** $T(n) = 2T(n/2) + O(n)$. By the Master Theorem, this resolves to **$O(n \log n)$**.
+*   **Space:** $O(\log n)$ for the recursion stack.
+
+---
+
+## 3. Optimal $O(n)$ Solution (Greedy / One Pass)
+
+**Approach:**
+We can solve this in a single pass by realizing that for any element `arr[j]`, the best candidate for `arr[i]` (where $i < j$) is simply the **minimum element seen so far**.
+
+**Algorithm:**
+1.  Initialize `min_so_far` to the first element.
+2.  Initialize `max_diff` to 0.
+3.  Iterate through the array starting from the second element:
+    *   Calculate the potential profit: `current_element - min_so_far`.
+    *   Update `max_diff` if this potential profit is larger.
+    *   Update `min_so_far` if `current_element` is smaller than the current minimum.
+4.  Return `max_diff`.
+
+**Complexity:**
+*   **Time:** $O(n)$ (Single pass).
+*   **Space:** $O(1)$ (Only two variables).
+
+---
+
+## 4. Formal Proof of Correctness ($O(n)$ Solution)
+
+**Theorem:** The $O(n)$ algorithm returns the maximum difference `arr[j] - arr[i]` such that $j > i$.
+
+**Proof:**
+Let the optimal solution be a pair of indices $(i^*, j^*)$ such that $i^* < j^*$ and `arr[j^*] - arr[i^*]` is maximized. Let this maximum value be $OPT$.
+
+1.  **Lower Bound:** At step $j^*$ of the algorithm, the variable `min_so_far` holds the value $\min(arr[0], arr[1], \dots, arr[j^*-1])$. Since $i^* < j^*$, it follows that `min_so_far` $\le arr[i^*]$.
+    Therefore, the difference calculated at step $j^*$ is:
+    $$ \text{current\_diff} = arr[j^*] - \text{min\_so\_far} \ge arr[j^*] - arr[i^*] = OPT $$
+    Since the algorithm tracks the maximum of all `current_diff` values, the final `max_diff` $\ge OPT$.
+
+2.  **Upper Bound:** The algorithm only considers differences of the form `arr[j] - arr[i]` where $i < j$ (because `min_so_far` is updated from elements strictly preceding the current element). Therefore, any value stored in `max_diff` corresponds to a valid pair. Thus, `max_diff` $\le OPT$.
+
+3.  **Conclusion:** Since `max_diff` $\ge OPT$ and `max_diff` $\le OPT$, it must be that `max_diff` $= OPT$.
+
+---
+
+## 5. Edge Cases Handling
+
+1.  **Empty Array:** The loop will not execute. `max_diff` remains 0. Return 0.
+2.  **Single Element:** The loop range is empty (start from index 1). `max_diff` remains 0. Return 0.
+3.  **All Same Values:** `current - min_so_far` will always be 0. `max_diff` remains 0. Return 0.
+4.  **Strictly Decreasing:** `current - min_so_far` will always be negative (since `current < min_so_far`). `max_diff` remains 0. Return 0.
+5.  **All Negative Numbers:**
+    *   Example: `[-5, -2]`. `min_so_far` = -5. `diff` = -2 - (-5) = 3. `max_diff` = 3. Correct.
+    *   Example: `[-2, -5]`. `min_so_far` = -2. `diff` = -5 - (-2) = -3. `max_diff` = 0. Correct.
+6.  **Large Integers:** Python handles arbitrarily large integers automatically, so overflow is not an issue.
+
+---
+
+## 6. Python Implementation
+
+```python
+def max_difference(arr):
+    """
+    Finds the maximum difference arr[j] - arr[i] such that j > i.
+    Returns 0 if no positive difference exists.
+    Time Complexity: O(n)
+    Space Complexity: O(1)
+    """
+    if not arr or len(arr) < 2:
+        return 0
+
+    min_so_far = arr[0]
+    max_diff = 0
+
+    for i in range(1, len(arr)):
+        # Calculate difference with the minimum element seen so far
+        current_diff = arr[i] - min_so_far
+        
+        # Update global max difference if current is better
+        if current_diff > max_diff:
+            max_diff = current_diff
+        
+        # Update minimum element seen so far
+        if arr[i] < min_so_far:
+            min_so_far = arr[i]
+
+    return max_diff
+
+# --- Test Suite ---
+def run_tests():
+    test_cases = [
+        # (Input, Expected Output, Description)
+        ([2, 3, 10, 6, 4, 8, 1], 8, "Standard Example"),
+        ([7, 9, 5, 6, 3, 2], 2, "Local Max/Min"),
+        ([10, 8, 6, 4, 2], 0, "Strictly Decreasing"),
+        ([1, 2, 3, 4, 5], 4, "Strictly Increasing"),
+        ([5, 5, 5, 5], 0, "All Same Values"),
+        ([], 0, "Empty Array"),
+        ([10], 0, "Single Element"),
+        ([-5, -2, -8, -1], 6, "All Negative (Increasing)"),
+        ([-1, -5, -2, -8], 0, "All Negative (Decreasing)"),
+        ([2, 4, 1, 10], 9, "Min in middle, Max at end"),
+        ([100, 1, 100], 99, "High start, low middle, high end"),
+    ]
+
+    print("Running Tests...\n")
+    all_passed = True
+    for i, (input_arr, expected, desc) in enumerate(test_cases, 1):
+        result = max_difference(input_arr)
+        status = "PASS" if result == expected else "FAIL"
+        if status == "FAIL":
+            all_passed = False
+        print(f"Test {i}: {desc}")
+        print(f"  Input:    {input_arr}")
+        print(f"  Expected: {expected}, Got: {result} -> [{status}]")
+        print()
+
+    if all_passed:
+        print("All tests passed!")
+    else:
+        print("Some tests failed.")
+
+if __name__ == "__main__":
+    run_tests()
+```

@@ -1,0 +1,49 @@
+# Phase D Hard Test — #20 Memory / Knowledge Management
+# Tier: 2 | Score: 5/10 | No automated constraints to check
+# Tokens: 3986 | Speed: 31.0 t/s | Time: 128.7s
+
+## PROMPT:
+Extract and merge knowledge from these 5 conversation snippets. There are 3 contradictions — resolve each by using the MOST RECENT information and flag what changed.
+
+Jan 2: "I'm a senior developer at Acme Corp working on their Python backend."
+Jan 15: "We decided to migrate from PostgreSQL to MongoDB for the user service."
+Feb 1: "Got promoted to Tech Lead! Managing a team of 4 developers now."
+Feb 20: "After benchmarking, we're actually sticking with PostgreSQL — MongoDB wasn't right for our consistency requirements. Also, we hired 2 more people, team is now 6."
+Mar 5: "Acme Corp got acquired by MegaTech. I'm now technically a MegaTech employee but same role. Oh, and 1 person left, so team is 5. We're also evaluating MySQL as finance wants to standardize."
+
+Produce a final knowledge profile, clearly marking:
+1. What the CURRENT truth is for each fact
+2. What changed and when (changelog)
+3. What is UNCERTAIN (e.g., MySQL evaluation — in progress, not decided)
+
+## RESPONSE:
+### 1. Current Knowledge Profile
+*Based on the most recent information (Mar 5)*
+
+| Fact | Current Truth | Status |
+| :--- | :--- | :--- |
+| **Role** | Tech Lead | Stable |
+| **Employer** | MegaTech (Acme Corp acquired) | **Updated** |
+| **Team Size** | 5 Developers | **Updated** |
+| **Primary Database** | PostgreSQL | **Updated** |
+| **Tech Stack** | Python Backend | Stable |
+| **Future DB Plan** | Evaluating MySQL | Uncertain |
+
+---
+
+### 2. Contradiction Resolution Log (Changelog)
+*Three contradictions were identified and resolved using the most recent data.*
+
+| # | Contradiction | Old Information (Resolved) | New Information (Current) | Resolution Date | Reason for Change |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **1** | **Database Choice** | Migrating to **MongoDB** (Jan 15) | Sticking with **PostgreSQL** (Feb 20) | **Feb 20** | Benchmarking showed MongoDB failed consistency requirements. |
+| **2** | **Team Headcount** | **6** Developers (Feb 20) | **5** Developers (Mar 5) | **Mar 5** | 1 team member left the company. |
+| **3** | **Employer Identity** | **Acme Corp** (Jan 2 – Feb 20) | **MegaTech** (Mar 5) | **Mar 5** | Acme Corp was acquired by MegaTech. |
+
+---
+
+### 3. Uncertain / In-Progress Information
+*Facts that are currently evolving or not yet finalized.*
+
+*   **MySQL Adoption:** While PostgreSQL is the current standard, the team is **evaluating MySQL** due to finance wanting to standardize. A final decision has not been made.
+*   **Team Stability:** The team size is currently 5, but fluctuation is possible given the recent acquisition and attrition.

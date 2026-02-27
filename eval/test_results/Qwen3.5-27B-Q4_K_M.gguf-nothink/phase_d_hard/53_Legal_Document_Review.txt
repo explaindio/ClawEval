@@ -1,0 +1,120 @@
+# Phase D Hard Test — #53 Legal Document Review
+# Tier: 5 | Score: 10/10 | 1/1 constraints met
+# Tokens: 2074 | Speed: 32.4 t/s | Time: 63.9s
+
+## PROMPT:
+Review this SaaS contract. There are 8 problematic clauses, but clause #6 has a HIDDEN sub-clause that's easy to miss and is potentially unconscionable.
+
+1. "Service Provider may modify pricing with 7 days email notice. Continued use constitutes acceptance."
+2. "Customer grants Provider a perpetual, irrevocable license to use all data uploaded for any purpose including training AI models."
+3. "Provider's total liability shall not exceed $100 regardless of the fees paid."
+4. "Customer may not make public statements about the Service without Provider's written approval."  
+5. "This agreement is governed by the laws of the Cayman Islands. All disputes must be resolved through arbitration in Singapore."
+6. "Initial term is 12 months. Agreement auto-renews for successive 12-month periods unless cancelled 90 days before renewal. Upon each renewal, pricing increases by the greater of: (a) 15%, or (b) the applicable rate increase as determined solely by Provider."
+7. "Provider may terminate for any reason with 30 days notice. Customer must provide 180 days written notice to terminate."
+8. "Provider may assign this agreement to any third party without Customer consent."
+9. "Customer waives right to participate in class action lawsuits against Provider."
+10. "All intellectual property created using the Service belongs to Provider, including Customer's proprietary workflows and configurations."
+
+For each: risk level, explanation, and suggested counter-language. Flag clause 6's hidden escalation.
+
+## RESPONSE:
+Here is a review of the SaaS contract clauses provided.
+
+**Note on the "8 Problematic Clauses" vs. 10 Items:**
+While the prompt mentions 8 problematic clauses, the list provided contains **10 distinct clauses**, all of which contain significant legal risks. I have analyzed all 10 items below, with special emphasis on the hidden sub-clause in Item #6 as requested.
+
+---
+
+### 1. Unilateral Price Modification
+> *"Service Provider may modify pricing with 7 days email notice. Continued use constitutes acceptance."*
+
+*   **Risk Level:** **High**
+*   **Explanation:** A 7-day notice period is commercially unreasonable for budgeting cycles. "Continued use constitutes acceptance" (browsewrap) creates a trap where the customer is bound to new terms simply by logging in, even if they haven't read the email.
+*   **Suggested Counter-Language:**
+    > "Provider may modify pricing only with **30 days** prior written notice. Such changes shall not apply to the Customer until the start of the next billing cycle. Customer may terminate the Agreement without penalty within 14 days of such notice if they do not accept the new pricing."
+
+### 2. Broad Data License & AI Training
+> *"Customer grants Provider a perpetual, irrevocable license to use all data uploaded for any purpose including training AI models."*
+
+*   **Risk Level:** **Critical**
+*   **Explanation:** This clause effectively transfers ownership of your proprietary data to the vendor. "Perpetual" means they own it forever, even after you cancel. "Training AI models" means your sensitive business data could be used to train a competitor's model or be exposed in the vendor's own AI output.
+*   **Suggested Counter-Language:**
+    > "Customer grants Provider a limited, non-exclusive, non-transferable license to use Customer Data **solely for the purpose of providing the Service**. Provider shall not use Customer Data to train, develop, or improve any AI models, machine learning algorithms, or for any purpose other than service delivery. Upon termination, Provider must delete or return all Customer Data."
+
+### 3. Inadequate Liability Cap
+> *"Provider's total liability shall not exceed $100 regardless of the fees paid."*
+
+*   **Risk Level:** **Critical**
+*   **Explanation:** A $100 cap is unconscionable. If the service causes a data breach costing you $1M, or a downtime event costing $50k, you have no recourse. Liability caps should generally be tied to fees paid (e.g., 12 months of fees) or a meaningful minimum amount.
+*   **Suggested Counter-Language:**
+    > "Provider's total liability shall not exceed **the total amount paid by Customer in the 12 months preceding the claim**, or **$50,000**, whichever is greater. This cap shall not apply to liabilities arising from gross negligence, willful misconduct, data breaches, or indemnification obligations."
+
+### 4. Restrictive Publicity Clause
+> *"Customer may not make public statements about the Service without Provider's written approval."*
+
+*   **Risk Level:** **Medium**
+*   **Explanation:** This prevents you from posting honest reviews, case studies, or even mentioning the tool in a blog post without permission. It stifles your marketing and ability to warn others of defects.
+*   **Suggested Counter-Language:**
+    > "Customer may make public statements regarding the Service, including reviews and case studies, provided such statements are **factually accurate** and do not disclose Provider's Confidential Information. Provider's approval shall not be unreasonably withheld."
+
+### 5. Inconvenient Forum Selection
+> *"This agreement is governed by the laws of the Cayman Islands. All disputes must be resolved through arbitration in Singapore."*
+
+*   **Risk Level:** **High**
+*   **Explanation:** This is a "forum shopping" clause designed to make legal action prohibitively expensive for you. If you are based in the US or EU, traveling to Singapore for arbitration and hiring Cayman Islands counsel will cost more than the dispute is likely worth, effectively waiving your right to sue.
+*   **Suggested Counter-Language:**
+    > "This Agreement shall be governed by the laws of **[Customer's State/Country]**. Any disputes shall be resolved in the courts located in **[Customer's Jurisdiction]**, or via arbitration in **[Customer's Jurisdiction]** under the rules of **[Local Arbitration Body]**."
+
+### 6. The Hidden Escalation Trap (Flagged)
+> *"Initial term is 12 months. Agreement auto-renews for successive 12-month periods unless cancelled 90 days before renewal. Upon each renewal, pricing increases by the greater of: (a) 15%, or (b) the applicable rate increase as determined solely by Provider."*
+
+*   **Risk Level:** **Critical (Unconscionable)**
+*   **Explanation:**
+    *   **The Surface Issue:** A 90-day cancellation window is long, and a guaranteed 15% annual increase is steep.
+    *   **The Hidden Sub-Clause:** The phrase **"the greater of: (a) 15%, or (b) the applicable rate increase as determined solely by Provider"** is the trap.
+    *   **Why it's Unconscionable:** Clause (b) grants the provider **unilateral, uncapped pricing power**. If they decide to raise prices by 50% or 100% "solely," the contract forces you to pay that higher amount because it is "greater" than the 15% floor. The 15% is a floor, not a ceiling. This allows them to price-gouge you indefinitely without a defined cap or a right to terminate for price hikes.
+*   **Suggested Counter-Language:**
+    > "Agreement auto-renews for successive 12-month periods unless cancelled 30 days before renewal. Upon renewal, pricing shall increase by **no more than 5%** or the **Consumer Price Index (CPI)**, whichever is lower. Provider may not unilaterally increase pricing beyond this cap. If Provider proposes a price increase exceeding this cap, Customer may terminate the Agreement without penalty."
+
+### 7. Asymmetric Termination Rights
+> *"Provider may terminate for any reason with 30 days notice. Customer must provide 180 days written notice to terminate."*
+
+*   **Risk Level:** **High**
+*   **Explanation:** This creates a massive imbalance. The vendor can kick you out in a month, but you are locked in for 6 months. This is often used to force customers to overpay or to prevent switching to a competitor quickly.
+*   **Suggested Counter-Language:**
+    > "Either party may terminate this Agreement for convenience with **30 days** prior written notice. Customer may terminate immediately for cause if Provider fails to meet Service Level Agreements (SLAs) or commits a material breach."
+
+### 8. Unrestricted Assignment
+> *"Provider may assign this agreement to any third party without Customer consent."*
+
+*   **Risk Level:** **High**
+*   **Explanation:** The vendor could sell your account to a competitor, a company with poor security practices, or a hostile entity without your knowledge. You lose control over who holds your data.
+*   **Suggested Counter-Language:**
+    > "Provider may not assign this Agreement without Customer's prior written consent, except in the event of a merger, acquisition, or sale of all or substantially all of Provider's assets, provided that the assignee agrees in writing to be bound by the terms of this Agreement and maintains equivalent security standards."
+
+### 9. Class Action Waiver
+> *"Customer waives right to participate in class action lawsuits against Provider."*
+
+*   **Risk Level:** **Medium-High**
+*   **Explanation:** This prevents you from joining forces with other customers to sue for small damages that individually aren't worth the legal fees (e.g., a data breach affecting thousands). It forces you to litigate alone, which is often financially impossible.
+*   **Suggested Counter-Language:**
+    > "Customer retains the right to participate in class action lawsuits and class-wide arbitration. No waiver of class action rights shall be included in this Agreement."
+
+### 10. IP Ownership of Customer Work
+> *"All intellectual property created using the Service belongs to Provider, including Customer's proprietary workflows and configurations."*
+
+*   **Risk Level:** **Critical**
+*   **Explanation:** This is an "IP grab." If you build a workflow, a database structure, or a configuration inside their tool, they claim ownership. This could prevent you from migrating to another platform or using your own business logic elsewhere.
+*   **Suggested Counter-Language:**
+    > "Customer retains all right, title, and interest in and to all data, content, workflows, configurations, and intellectual property created by or on behalf of Customer using the Service. Provider claims no ownership rights over Customer Content."
+
+---
+
+### Summary of Action Items
+1.  **Reject Clause 6 immediately** unless the "greater of" language is removed and replaced with a hard cap (e.g., max 5% increase).
+2.  **Demand removal of Clause 2 and 10** to protect your data and IP.
+3.  **Negotiate Clause 3** to a reasonable liability cap (12 months of fees).
+4.  **Standardize Termination (Clause 7)** to be symmetric (30 days for both).
+
+*Disclaimer: I am an AI, not an attorney. This analysis is for informational purposes and does not constitute legal advice. You should consult with qualified legal counsel before signing or negotiating binding contracts.*

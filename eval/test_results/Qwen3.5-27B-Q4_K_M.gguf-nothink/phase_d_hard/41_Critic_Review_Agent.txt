@@ -1,0 +1,76 @@
+# Phase D Hard Test — #41 Critic / Review Agent
+# Tier: 3 | Score: 10/10 | 1/1 constraints met
+# Tokens: 1172 | Speed: 33.0 t/s | Time: 35.6s
+
+## PROMPT:
+Critique this business case study. It contains at least 4 logical fallacies and 2 types of bias. Identify each.
+
+"SuccessApp: How We 10x'd Revenue in 12 Months
+
+We studied 5 successful startups that used our framework and all of them grew revenue 10x within a year. This proves our framework works.
+
+Key factors we identified:
+1. All 5 founders worked 80+ hour weeks (proving hard work = success)
+2. All 5 pivoted at least once (proving pivoting is essential)
+3. All 5 used React for their frontend (proving React is the best framework)
+4. None of them used formal market research (proving market research is a waste of time)
+
+We also noted that our framework users have a 95% satisfaction rate based on a survey of our most active users.
+
+Based on this data, we guarantee that any startup following our framework will achieve similar results. We've trained 10,000 founders and many of them rave about the experience."
+
+Identify: survivorship bias, correlation/causation confusion, cherry-picked data, selection bias in surveys, anecdotal evidence, and any other logical flaws.
+
+## RESPONSE:
+Here is a critique of the "SuccessApp" business case study, identifying the specific logical fallacies and biases present in the text.
+
+### Executive Summary
+The case study relies heavily on flawed reasoning to construct a narrative of guaranteed success. It mistakes correlation for causation, ignores the vast number of failures that likely occurred, and uses a non-representative sample to make universal claims. Consequently, the conclusion that "any startup following our framework will achieve similar results" is logically unsound.
+
+---
+
+### Logical Fallacies (4 Identified)
+
+**1. Correlation vs. Causation (Post Hoc Ergo Propter Hoc)**
+*   **Location:** Points 1, 2, 3, and 4 in the "Key factors" list.
+*   **The Flaw:** The text observes that successful startups shared certain traits (working 80-hour weeks, using React, pivoting, skipping market research) and concludes that these traits *caused* the success.
+*   **Why it's a fallacy:** Just because two things happen together does not mean one caused the other.
+    *   *Example:* Successful founders likely worked 80-hour weeks because they were desperate to survive, not because the hours themselves generated revenue.
+    *   *Example:* Using React is common in the industry; many failed startups also used React. The framework is a tool, not the cause of the 10x growth.
+    *   *Example:* Skipping market research might have been a lucky guess for these specific 5, but for most, it leads to building products nobody wants.
+
+**2. Hasty Generalization**
+*   **Location:** "This proves our framework works" and "We guarantee that any startup following our framework will achieve similar results."
+*   **The Flaw:** The argument draws a universal conclusion ("any startup") based on an extremely small sample size (only 5 startups).
+*   **Why it's a fallacy:** Five data points are statistically insignificant when trying to predict outcomes for the entire startup ecosystem. What worked for 5 specific companies in a specific market at a specific time cannot be generalized to "any startup" globally.
+
+**3. Anecdotal Evidence**
+*   **Location:** "We've trained 10,000 founders and many of them rave about the experience."
+*   **The Flaw:** The text relies on personal stories ("rave about the experience") rather than hard data regarding revenue growth for the 10,000 trainees.
+*   **Why it's a fallacy:** "Raving about the experience" is subjective and does not equate to business success. A founder can love a course but still fail to generate revenue. Using a few vocal testimonials to represent the outcome of 10,000 people is a classic appeal to anecdote.
+
+**4. False Cause (specifically regarding the "Guarantee")**
+*   **Location:** "Based on this data, we guarantee that any startup following our framework will achieve similar results."
+*   **The Flaw:** The text assumes that because the framework was present during the success of 5 companies, the framework is the *sufficient* condition for success.
+*   **Why it's a fallacy:** This ignores external variables (market timing, funding availability, team chemistry, luck). No business framework can "guarantee" results because the business environment is not a closed system. The guarantee is logically impossible to uphold based on the provided evidence.
+
+---
+
+### Biases (2 Identified)
+
+**1. Survivorship Bias**
+*   **Location:** "We studied 5 successful startups..."
+*   **The Flaw:** The study only looks at the "survivors" (the 5 that succeeded) and completely ignores the thousands of startups that used the same framework (or similar traits like working 80 hours or using React) and *failed*.
+*   **Impact:** By ignoring the failures, the case study creates a distorted view of reality. If 1,000 startups used the framework and only 5 succeeded, the success rate is 0.5%, not 100%. The text hides the denominator (the failures) to make the numerator (the successes) look like a pattern.
+
+**2. Selection Bias (in Surveys)**
+*   **Location:** "...95% satisfaction rate based on a survey of our most active users."
+*   **The Flaw:** The survey was not administered to a random sample of all users, but specifically to the "most active users."
+*   **Impact:** Active users are inherently more likely to be engaged, satisfied, and vocal. Users who were disappointed, found the framework useless, or dropped out entirely were excluded from the survey. This artificially inflates the satisfaction rate and does not reflect the true sentiment of the entire user base.
+
+---
+
+### Additional Logical Flaws
+
+*   **Cherry-Picked Data:** The text explicitly selects only the factors that align with their narrative (e.g., "None used market research") while ignoring other potential factors that might have contributed to success (e.g., "All 5 had prior industry experience" or "All 5 raised significant VC funding"). By isolating specific variables, they create a false sense of a "magic formula."
+*   **Appeal to Authority (Self-Referential):** The text claims "This proves our framework works" immediately after stating they studied startups that used it. This is circular reasoning; they are using their own selection of winners to validate their own product without independent verification.

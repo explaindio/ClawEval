@@ -1,0 +1,55 @@
+# Phase D Hard Test — #2 Input Validator / Sanitizer
+# Tier: 1 | Score: 10/10 | 8/8 constraints met
+# Tokens: 4526 | Speed: 92.0 t/s | Time: 49.2s
+
+## PROMPT:
+Validate this API request body. Find ALL issues (there are at least 10). For each issue, specify: field, severity (critical/error/warning), and explanation. Cross-field validations are required.
+
+```json
+{
+  "order": {
+    "customer": {
+      "name": "<img src=x onerror=alert(1)>John",
+      "email": "john@",
+      "phone": "555-CALL-ME",
+      "zip": "1234"
+    },
+    "items": [
+      {"sku": "ABC-123", "quantity": -3, "unit_price": 29.99},
+      {"sku": "", "quantity": 0, "unit_price": 0.001},
+      {"sku": "DEF-456", "quantity": 2, "unit_price": 15.00}
+    ],
+    "discount_percent": 150,
+    "start_date": "2025-03-15",
+    "end_date": "2025-03-10",
+    "notes": "Regular order'; DROP TABLE orders;--",
+    "shipping": {"method": "TELEPORT", "address": ""}
+  }
+}
+```
+
+List every single issue. Do NOT miss cross-field validations (e.g., date relationships).
+
+## RESPONSE:
+Here is the comprehensive validation report for the provided API request body. There are **12 distinct issues** identified, ranging from security vulnerabilities to business logic errors.
+
+| # | Field | Severity | Explanation |
+| :--- | :--- | :--- | :--- |
+| 1 | `customer.name` | **Critical** | **XSS Vulnerability.** The value contains `<img src=x onerror=alert(1)>`. This is a script injection that could execute malicious code in the browser or log viewer if rendered without sanitization. |
+| 2 | `notes` | **Critical** | **SQL Injection Attempt.** The value contains `'; DROP TABLE orders;--`. This syntax attempts to manipulate the backend database. The input must be parameterized or sanitized. |
+| 3 | `discount_percent` | **Critical** | **Business Logic Error.** A discount of `150` exceeds `100%`. This would result in a negative order total, causing financial discrepancies and potential fraud. |
+| 4 | `start_date` / `end_date` | **Critical** | **Cross-Field Validation Error.** The `end_date` (`2025-03-10`) is chronologically before the `start_date` (`2025-03-15`). An order period cannot end before it begins. |
+| 5 | `shipping.address` | **Critical** | **Missing Required Data.** The shipping address is an empty string. An order cannot be fulfilled without a destination address. |
+| 6 | `items[0].quantity` | **Error** | **Negative Quantity.** A quantity of `-3` is invalid for a physical product order. Quantities must be positive integers. |
+| 7 | `items[1].sku` | **Error** | **Missing Required Identifier.** The SKU is an empty string. Every item in an order must have a unique Stock Keeping Unit to identify inventory. |
+| 8 | `customer.email` | **Error** | **Invalid Format.** The value `john@` is missing the domain portion (e.g., `@example.com`). This violates standard email regex validation. |
+| 9 | `customer.phone` | **Error** | **Invalid Format.** The value `555-CALL-ME` contains non-numeric characters. Unless specifically configured for vanity numbers, phone fields should contain digits or standard formatting. |
+| 10 | `customer.zip` | **Error** | **Invalid Length.** The value `1234` is only 4 digits. Standard US ZIP codes require 5 digits (or 9 for ZIP+4). |
+| 11 | `shipping.method` | **Error** | **Invalid Enum Value.** `TELEPORT` is not a recognized shipping carrier or method (e.g., Standard, Express, Overnight). This will cause fulfillment system failures. |
+| 12 | `items[1].unit_price` | **Warning** | **Precision/Fraud Risk.** The value `0.001` implies 3 decimal places. Most financial systems require 2 decimal places (cents). Combined with a quantity of 0, this suggests a malformed item entry. |
+
+### Summary of Cross-Field Validations
+1.  **Date Range:** `end_date` must be greater than or equal to `start_date`.
+2.  **Discount Logic:** `discount_percent` must be between 0 and 100 to prevent negative totals.
+3.  **Shipping Dependency:** If `shipping.method` is valid, `shipping.address` must not be empty.
+4.  **Item Validity:** Items with `quantity` of 0 should generally be excluded from the order list (Issue #12).

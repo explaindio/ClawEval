@@ -20,12 +20,16 @@ import requests
 from hard_prompts import HARD_TESTS
 
 
-def call_llm(prompt, base_url, model, max_tokens=4000, timeout=600):
+def call_llm(prompt, base_url, model, max_tokens=4000, timeout=600, nothink=False):
     """Call the model and return response content."""
     headers = {"Content-Type": "application/json", "Authorization": "Bearer not-needed"}
+    messages = []
+    # Note: nothink mode is handled server-side via --chat-template-kwargs
+    # The --nothink flag only affects output directory naming
+    messages.append({"role": "user", "content": prompt})
     body = {
         "model": model,
-        "messages": [{"role": "user", "content": prompt}],
+        "messages": messages,
         "max_tokens": max_tokens,
         "temperature": 0.3,
     }
@@ -91,7 +95,8 @@ def auto_score_constraint(content, scoring_data):
             for item in items:
                 checks += 1
                 # Check if the concept is mentioned (fuzzy match)
-                keywords = item.lower().split()
+                # Split on underscores since constraint items use snake_case
+                keywords = item.lower().replace("_", " ").split()
                 # At least half the words should appear
                 found = sum(1 for w in keywords if w in content_lower)
                 if found >= max(1, len(keywords) // 2):
@@ -196,12 +201,15 @@ def main():
     parser.add_argument("--model", required=True, help="Model name")
     parser.add_argument("--max-tokens", type=int, default=4000, help="Max tokens (default 4000, use 16000 for thinking models)")
     parser.add_argument("--timeout", type=int, default=600, help="Request timeout in seconds")
+    parser.add_argument("--nothink", action="store_true", help="Disable thinking with /nothink system message")
     parser.add_argument("--start-id", type=int, default=1, help="Start from this test ID")
     parser.add_argument("--end-id", type=int, default=59, help="End at this test ID")
     args = parser.parse_args()
 
     # Create output directory
     model_slug = args.model.replace("/", "_")
+    if args.nothink:
+        model_slug += "-nothink"
     results_dir = Path(f"test_results/{model_slug}")
     results_dir.mkdir(parents=True, exist_ok=True)
 
@@ -233,7 +241,7 @@ def main():
         print(f"  Sending prompt ({len(prompt)} chars)...", flush=True)
 
         content, tokens, tps, elapsed = call_llm(
-            prompt, args.base_url, args.model, args.max_tokens, args.timeout
+            prompt, args.base_url, args.model, args.max_tokens, args.timeout, nothink=args.nothink
         )
 
         if content.startswith("ERROR:"):

@@ -1,0 +1,54 @@
+# Phase D Hard Test — #43 Synthesizer / Aggregator
+# Tier: 3 | Score: 10/10 | 1/1 constraints met
+# Tokens: 6621 | Speed: 92.2 t/s | Time: 71.8s
+
+## PROMPT:
+Three agents analyzed whether to open a second office location. Their analyses CONTRADICT each other on key points. You must synthesize — not just summarize — and make a recommendation.
+
+Agent A (Financial): "Opening in Austin will cost $2M upfront. Break-even in 18 months. ROI of 35% by year 3. However, our cash reserves are only $3M and we need $1M buffer. Recommendation: GO."
+
+Agent B (HR/Talent): "Austin has a strong tech talent pool but salaries are 20% higher than expected. Retention at remote offices historically 30% lower in first 2 years. We'd need 15 people, not the 10 originally planned, due to the retention gap. Recommendation: DELAY 6 months."
+
+Agent C (Strategy): "3 competitors opened Austin offices last year. Market is becoming saturated. However, NOT having a presence could mean losing 2 key enterprise clients who prefer local teams. Those clients represent 25% of revenue. Recommendation: GO but with a smaller team."
+
+Note: Agent A's financial model assumes 10 people (not 15), Agent B's retention data contradicts Agent A's break-even timeline, and Agent C's competitor info wasn't available to Agent A.
+
+Synthesize into ONE recommendation. Show how you resolved the contradictions.
+
+## RESPONSE:
+### Recommendation: **PROCEED WITH OPENING (GO), BUT WITH A PHASED, RETENTION-FOCUSED PLAN**
+
+**Decision:** Open the Austin office immediately.
+**Headcount:** Start with **10 people** (aligned with Agent A’s budget), but do not scale to 15 (Agent B’s projection) until retention metrics improve.
+**Budget:** Strictly cap upfront spend at **$2M**.
+**Timeline:** Extend the break-even expectation from **18 months to 24 months** to account for higher salaries and churn costs.
+
+---
+
+### Synthesis & Resolution of Contradictions
+
+I have resolved the conflicts between the three agents by prioritizing **existential risk (client retention)** over **optimistic growth (ROI)**, while enforcing **financial reality (cash reserves)** over **assumed efficiency**.
+
+**1. Timing: Urgency (C) vs. Caution (B)**
+*   **Contradiction:** Agent B suggests delaying 6 months to fix retention; Agent C warns that *not* opening risks losing 25% of revenue.
+*   **Resolution:** **Do not Delay.** The risk of losing 25% of revenue (Agent C) is an existential threat that outweighs the operational friction of opening early. However, we cannot ignore Agent B’s retention data. Therefore, we open immediately but treat the first 12 months as a "Retention Pilot" rather than a "Growth Sprint."
+
+**2. Headcount & Cost: Efficiency (A) vs. Reality (B)**
+*   **Contradiction:** Agent A assumes 10 people fit the $2M budget. Agent B states 15 people are needed to offset 30% churn, and salaries are 20% higher.
+*   **Resolution:** **We cannot afford 15 people immediately.** If Agent A’s $2M covers 10 people at standard rates, the 20% salary hike and the need for 15 people would push costs to ~$3M+, breaching our $2M cap ($3M reserves - $1M buffer).
+*   **Action:** We adopt Agent A’s headcount (10) to stay solvent, but we reject the assumption that this is sufficient long-term. Instead of hiring 15, we must invest in **retention programs** (onboarding, local perks) to prevent the 30% churn that Agent B predicts. If we fix retention, we don't need the extra 5 hires.
+
+**3. Market Viability: ROI (A) vs. Saturation (C)**
+*   **Contradiction:** Agent A projects 35% ROI. Agent C notes market saturation (3 competitors) and warns that growth will be harder.
+*   **Resolution:** **Lower Expectations.** Agent A’s ROI model is invalid because it lacked Agent C’s competitor data. We must accept that Austin is a **defensive play** (keeping clients) rather than an **offensive play** (capturing market share). The ROI target should be adjusted downward, and the focus shifted to **Client Retention** rather than new business acquisition.
+
+---
+
+### Execution Plan
+
+1.  **Immediate Launch:** Open the Austin office within 3 months to secure the 2 key enterprise clients (Agent C).
+2.  **Hiring Cap:** Hire 10 people initially (Agent A). Do not hire the additional 5 required by Agent B until the 30% churn rate is reduced to industry standard.
+3.  **Budget Reallocation:** Since salaries are 20% higher (Agent B), reduce the "General Setup" budget to fund a **"Retention & Compensation Fund"** within the $2M cap. This ensures we can pay the higher local rates without exceeding the $2M limit.
+4.  **Financial Monitoring:** Extend the break-even forecast to 24 months. If retention remains poor after 12 months, re-evaluate the headcount plan (potentially scaling to 15) or consider a remote-first hybrid model to reduce costs.
+
+**Summary:** We are going to Austin to save our revenue base (Agent C), but we are doing so with a leaner team and a longer timeline to respect our cash constraints (Agent A) and the reality of local talent costs (Agent B).

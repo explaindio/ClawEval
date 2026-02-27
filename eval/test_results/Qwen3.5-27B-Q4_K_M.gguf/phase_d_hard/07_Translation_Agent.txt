@@ -1,0 +1,49 @@
+# Phase D Hard Test — #7 Translation Agent
+# Tier: 1 | Score: 5/10 | No automated constraints to check
+# Tokens: 6237 | Speed: 31.0 t/s | Time: 201.0s
+
+## PROMPT:
+Translate this marketing copy to Spanish AND Japanese. This text contains: 1 pun, 1 culture-specific reference, and 1 idiom. You MUST add translator notes explaining how you handled each.
+
+"Our new Cloud9 hosting puts your website on cloud nine! Like a good neighbor, ServerFarm is there. Don't put all your eggs in one basket — our multi-region failover means your data is always safe. With speeds that would make Usain Bolt jealous, your pages load before you can say 'supercalifragilisticexpialidocious.'"
+
+Requirements:
+- Translate the full text to both languages
+- Add [TRANSLATOR NOTE] for EACH culturally-specific element explaining your adaptation
+- The pun "Cloud9/cloud nine" must be addressed — explain if you preserved it or adapted it
+- The "good neighbor" is a State Farm insurance slogan reference — explain how you handled it
+
+## RESPONSE:
+### Spanish Translation
+
+"Nuestro nuevo hosting Cloud9 pone tu sitio web en la nube nueve. Como un buen vecino, ServerFarm está ahí. No pongas todos los huevos en una canasta: nuestro failover multi-región significa que tus datos siempre están seguros. Con velocidades que harían envidiar a Usain Bolt, tus páginas cargan antes de que puedas decir 'supercalifragilísticoespialidocioso'."
+
+**[TRANSLATOR NOTE] - Pun (Cloud9 / on cloud nine):**
+The original text relies on a pun between the product name "Cloud9" and the English idiom "on cloud nine" (meaning extremely happy). In Spanish, the standard idiom is "en la séptima nube" (on the seventh cloud). To preserve the pun and link it to the brand name "Cloud9," I adapted the idiom to "en la nube nueve." While less idiomatic than "séptima nube," this choice maintains the wordplay intended by the marketing copy.
+
+**[TRANSLATOR NOTE] - Culture-Specific Reference (State Farm / ServerFarm):**
+The phrase "Like a good neighbor... is there" is a direct reference to the famous State Farm Insurance slogan. The brand name "ServerFarm" is a parody of "State Farm." I translated the slogan literally ("Como un buen vecino... ServerFarm está ahí") to preserve the reference for those who recognize it, while keeping the brand name "ServerFarm" intact to maintain the parody connection.
+
+**[TRANSLATOR NOTE] - Idiom (Eggs in one basket):**
+The idiom "Don't put all your eggs in one basket" has a direct equivalent in Spanish: "No pongas todos los huevos en una canasta." I used this standard translation to ensure the meaning of risk diversification is immediately understood by the target audience.
+
+**[TRANSLATOR NOTE] - Culture-Specific References (Usain Bolt & Mary Poppins):**
+"Usain Bolt" and the word "supercalifragilísticoespialidocioso" are global pop culture references (the fastest sprinter and a famous word from *Mary Poppins*). I kept "Usain Bolt" as is and transliterated the long word into Spanish phonetics. These are widely recognized in Spanish-speaking markets, so no localization was necessary.
+
+***
+
+### Japanese Translation
+
+"新しい Cloud9 ホスティングは、あなたのサイトを雲の 9 番目に上げます！良い隣人のように、ServerFarm はそこにいます。卵を一つのカゴに盛るな——マルチリージョンフェイルオーバーにより、データは常に安全です。ウサイン・ボルトが嫉妬するほどのスピードで、ページは「スーパーカリフラジリスティックエクスピアリドシャス」と言える前に読み込まれます。"
+
+**[TRANSLATOR NOTE] - Pun (Cloud9 / on cloud nine):**
+The English idiom "on cloud nine" does not exist in Japanese. To preserve the pun with the brand name "Cloud9," I adapted the phrase to "雲の 9 番目" (the 9th level of the cloud). This is not a standard Japanese idiom for happiness, but it creates a linguistic link between the product name and the sentiment, prioritizing the brand pun over natural idiom usage.
+
+**[TRANSLATOR NOTE] - Culture-Specific Reference (State Farm / ServerFarm):**
+The phrase "Like a good neighbor" references the State Farm Insurance slogan. While less iconic in Japan than in the US, I translated it literally ("良い隣人のように") to maintain the original tone. The brand name "ServerFarm" is kept in English to preserve the wordplay on "State Farm," which would be lost if translated to Japanese (e.g., サーバー農場).
+
+**[TRANSLATOR NOTE] - Idiom (Eggs in one basket):**
+The idiom "Don't put all your eggs in one basket" has a direct equivalent in Japanese: "卵を一つのカゴに盛るな" (Don't put eggs in one basket). I used this established idiom to ensure the concept of redundancy and safety is clearly communicated.
+
+**[TRANSLATOR NOTE] - Culture-Specific References (Usain Bolt & Mary Poppins):**
+"Usain Bolt" is a globally recognized figure, so I transliterated his name as "ウサイン・ボルト." The word "supercalifragilisticexpialidocious" is also known in Japan due to the film's popularity. I transliterated it phonetically ("スーパーカリフラジリスティックエクスピアリドシャス") to preserve the humor of the long word representing speed.

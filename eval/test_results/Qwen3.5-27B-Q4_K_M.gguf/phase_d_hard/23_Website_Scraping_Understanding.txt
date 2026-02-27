@@ -1,0 +1,91 @@
+# Phase D Hard Test — #23 Website Scraping / Understanding
+# Tier: 2 | Score: 5/10 | No automated constraints to check
+# Tokens: 2810 | Speed: 30.8 t/s | Time: 91.2s
+
+## PROMPT:
+Extract job information from this HTML AND identify ALL red flags. There are at least 6 problematic elements, some subtle.
+
+<div class='job-listing'>
+<h2>Full-Stack Ninja Rockstar Developer</h2>
+<p class='company'>Stealth Startup (unnamed)</p>
+<p class='location'>Remote* (*must be available 6am-midnight PT for "flexibility")</p>
+<p class='salary'>Competitive salary (equity-heavy compensation)</p>
+<p class='experience'>Entry level (5+ years experience required)</p>
+<p class='requirements'>Must know: React, Vue, Angular, Svelte, Python, Go, Rust, Java, C++, Kubernetes, Terraform, AWS, GCP, Azure, PostgreSQL, MongoDB, Redis, Elasticsearch, GraphQL, REST, gRPC, Docker, CircleCI, Jenkins</p>
+<p class='perks'>Unlimited PTO (average team usage: 5 days/year). Fast-paced environment (mandatory 60hr weeks during "crunch" — approximately 48 weeks/year). We're like a family!</p>
+<p class='equity'>0.001% equity vesting over 6 years with 2-year cliff</p>
+<p class='application'>Apply with cover letter, 3 references, coding challenge (estimated 40 hours), and personality assessment</p>
+</div>
+
+Extract structured data AND write a detailed red flag analysis. Flag every manipulative or unreasonable element.
+
+## RESPONSE:
+### 1. Structured Job Data Extraction
+
+| Field | Extracted Value |
+| :--- | :--- |
+| **Job Title** | Full-Stack Ninja Rockstar Developer |
+| **Company** | Stealth Startup (unnamed) |
+| **Location** | Remote (with 6am–midnight PT availability requirement) |
+| **Salary** | Competitive (Equity-heavy compensation) |
+| **Experience Level** | Entry Level (Contradicts 5+ years requirement) |
+| **Tech Stack** | React, Vue, Angular, Svelte, Python, Go, Rust, Java, C++, Kubernetes, Terraform, AWS, GCP, Azure, PostgreSQL, MongoDB, Redis, Elasticsearch, GraphQL, REST, gRPC, Docker, CircleCI, Jenkins |
+| **Work Hours** | Mandatory 60-hour weeks (48 weeks/year) |
+| **PTO Policy** | Unlimited (Average usage: 5 days/year) |
+| **Equity Package** | 0.001% vesting over 6 years with 2-year cliff |
+| **Application Requirements** | Cover letter, 3 references, 40-hour coding challenge, personality assessment |
+
+---
+
+### 2. Detailed Red Flag Analysis
+
+This job posting contains **10 distinct red flags**, ranging from exploitative labor practices to technical impossibilities. Below is a breakdown of the manipulative and unreasonable elements.
+
+#### 🚩 1. The "Unicorn" Tech Stack (Technical Impossibility)
+*   **The Flag:** The requirements list asks for mastery of mutually exclusive or overly broad technologies (e.g., React, Vue, Angular, *and* Svelte; Python, Go, Rust, Java, *and* C++; AWS, GCP, *and* Azure).
+*   **Why it's problematic:** No single human being can be an expert in all these technologies. This indicates the hiring manager does not understand the industry, is looking for a "magic bullet" employee to do the work of a whole team, or is intentionally setting the bar so high that they can reject everyone without interviewing.
+
+#### 🚩 2. The "Flexibility" Trap (18-Hour Availability Window)
+*   **The Flag:** "Remote* (*must be available 6am-midnight PT for 'flexibility')."
+*   **Why it's problematic:** This is not remote work; this is an on-call requirement. An 18-hour window (6am to midnight) implies you must be reachable for the vast majority of the day. It effectively destroys work-life balance and suggests an "always-on" culture disguised as flexibility.
+
+#### 🚩 3. Unpaid Labor (40-Hour Coding Challenge)
+*   **The Flag:** "Coding challenge (estimated 40 hours)."
+*   **Why it's problematic:** A 40-hour challenge is equivalent to a full work week of unpaid labor. This is exploitative. Legitimate companies use 1-2 hour take-home tests or live pair programming sessions. Asking for 40 hours is a way to get free development work or filter out candidates who value their time.
+
+#### 🚩 4. The "Unlimited PTO" Lie
+*   **The Flag:** "Unlimited PTO (average team usage: 5 days/year)."
+*   **Why it's problematic:** Unlimited PTO is often a trap. By explicitly stating the average usage is 5 days (far below the standard 15-20), they are admitting that the culture discourages taking time off. This is a psychological tactic to make employees feel guilty for resting.
+
+#### 🚩 5. Permanent "Crunch" Culture
+*   **The Flag:** "Mandatory 60hr weeks during 'crunch' — approximately 48 weeks/year."
+*   **Why it's problematic:** Crunch time is supposed to be temporary. 48 weeks out of 52 means the company operates in a state of emergency almost the entire year. This is a direct admission of a burnout-inducing environment.
+
+#### 🚩 6. Experience Contradiction (Bait and Switch)
+*   **The Flag:** "Entry level (5+ years experience required)."
+*   **Why it's problematic:** These terms are mutually exclusive. "Entry level" implies junior status, while "5+ years" implies senior status. This suggests they want senior-level output for junior-level pay, or they are confused about the role's seniority.
+
+#### 🚩 7. Predatory Equity Structure
+*   **The Flag:** "0.001% equity vesting over 6 years with 2-year cliff."
+*   **Why it's problematic:**
+    *   **Percentage:** 0.001% is negligible and likely worthless.
+    *   **Vesting:** 6 years is excessive (standard is 4 years).
+    *   **Cliff:** A 2-year cliff is aggressive (standard is 1 year). This means if you leave or get fired before 2 years, you get *nothing*. This is designed to lock you in.
+
+#### 🚩 8. Company Anonymity (Stealth/Unnamed)
+*   **The Flag:** "Stealth Startup (unnamed)."
+*   **Why it's problematic:** You cannot perform due diligence on a company you cannot name. This prevents you from checking Glassdoor reviews, verifying funding, or checking for legal disputes. It is a common tactic for scams or high-risk ventures.
+
+#### 🚩 9. "Family" Culture Manipulation
+*   **The Flag:** "We're like a family!"
+*   **Why it's problematic:** In a professional context, "family" is often code for "we expect you to sacrifice personal boundaries for the company." Families do not fire each other; companies do. This phrase is often used to guilt-trip employees into working overtime or accepting lower pay.
+
+#### 🚩 10. Invasive Application Process
+*   **The Flag:** "Personality assessment" and "3 references" at the application stage.
+*   **Why it's problematic:**
+    *   **Personality Assessment:** Often used to screen for "culture fit" in a discriminatory way or to gather psychological data without consent.
+    *   **3 References:** Asking for references before an interview is premature and invasive. It puts pressure on your current network before you have even secured a job offer.
+
+### Summary Verdict
+**DO NOT APPLY.**
+This job posting exhibits the classic signs of a **high-risk, exploitative environment**. It demands senior-level output for entry-level pay, requires unpaid labor, enforces a 60-hour work week, and offers negligible equity with predatory vesting terms. The combination of anonymity ("Stealth") and impossible requirements suggests a lack of professional management.

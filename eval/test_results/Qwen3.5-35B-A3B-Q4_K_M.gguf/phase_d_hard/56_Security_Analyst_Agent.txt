@@ -1,0 +1,193 @@
+# Phase D Hard Test — #56 Security Analyst Agent
+# Tier: 5 | Score: 10/10 | 1/1 constraints met
+# Tokens: 12614 | Speed: 93.0 t/s | Time: 135.6s
+
+## PROMPT:
+Security audit this code. There are 7 vulnerabilities. Most are obvious, but ONE is subtle (prototype pollution). Find all 7.
+
+```javascript
+const express = require('express');
+const app = express();
+app.use(express.json());
+
+// Utility: deep merge objects
+function merge(target, source) {
+  for (let key in source) {
+    if (typeof source[key] === 'object' && source[key] !== null) {
+      target[key] = target[key] || {};
+      merge(target[key], source[key]);
+    } else {
+      target[key] = source[key];
+    }
+  }
+  return target;
+}
+
+const users = {};
+
+app.post('/register', (req, res) => {
+  const defaults = { role: 'user', active: true };
+  const userData = merge(defaults, req.body);
+  users[userData.email] = userData;
+  res.json({ message: `Welcome ${userData.name}!`, role: userData.role });
+});
+
+app.get('/user/:email', (req, res) => {
+  const user = users[req.params.email];
+  if (!user) return res.status(404).send('Not found');
+  res.json(user);
+});
+
+app.post('/admin/config', (req, res) => {
+  if (users[req.body.email]?.role !== 'admin') {
+    return res.status(403).send('Forbidden');
+  }
+  const config = require(req.body.configPath);
+  res.json(config);
+});
+
+app.listen(3000);
+```
+
+For each vulnerability:
+1. OWASP category
+2. Severity (Critical/High/Medium/Low)  
+3. Exploitation example (show the malicious request)
+4. Fix
+
+The SUBTLE one: How can an attacker make themselves admin using only the /register endpoint? (Hint: __proto__)
+
+## RESPONSE:
+Here is the security audit of the provided code, identifying 7 vulnerabilities.
+
+### 1. Prototype Pollution (The Subtle Vulnerability)
+*   **OWASP Category:** A03:2021 - Injection (specifically Prototype Pollution)
+*   **Severity:** Critical
+*   **Exploitation Example:**
+    An attacker sends a POST request to `/register` with a payload that targets the object prototype chain via the `__proto__` key.
+    ```http
+    POST /register
+    Content-Type: application/json
+
+    {
+      "email": "attacker@example.com",
+      "name": "Hacker",
+      "__proto__": {
+        "role": "admin"
+      }
+    }
+    ```
+    **Why it works:** The `merge` function iterates over `req.body` keys without checking `hasOwnProperty`. When it encounters `__proto__`, it executes `target['__proto__'] = source['__proto__']`. In JavaScript, assigning to `__proto__` modifies the prototype of the target object (`defaults`). Consequently, `userData.role` resolves to `'admin'` instead of `'user'`, and the user is registered with admin privileges.
+*   **Fix:**
+    *   Use a safe merge library (e.g., `lodash.merge`) which handles `__proto__` safely.
+    *   Or, in the `merge` function, add `if (!source.hasOwnProperty(key)) continue;` to prevent prototype chain traversal.
+    *   Or, use `Object.create(null)` for the `defaults` object and `users` store to avoid prototype inheritance entirely.
+
+### 2. Arbitrary Code Execution / Path Traversal
+*   **OWASP Category:** A03:2021 - Injection
+*   **Severity:** Critical
+*   **Exploitation Example:**
+    An attacker sends a POST request to `/admin/config` with a malicious file path.
+    ```http
+    POST /admin/config
+    Content-Type: application/json
+
+    {
+      "email": "admin@example.com",
+      "configPath": "../../etc/passwd"
+    }
+    ```
+    **Why it works:** The `require()` function resolves relative paths. If the attacker can read `server.js` or any other JS file on the server, they can execute code. Even reading `package.json` can leak sensitive dependency information.
+*   **Fix:**
+    *   Do not use `require()` with user input.
+    *   Implement a strict whitelist of allowed configuration file paths.
+    *   Use `path.resolve` and verify the resolved path is within a safe directory.
+
+### 3. Insecure Direct Object Reference (IDOR)
+*   **OWASP Category:** A01:2021 - Broken Access Control
+*   **Severity:** High
+*   **Exploitation Example:**
+    An attacker enumerates user emails and retrieves data without authentication.
+    ```http
+    GET /user/admin@example.com
+    ```
+    **Why it works:** The `/user/:email` endpoint has no authentication or authorization check. Any user can query the `users` object directly using any email address.
+*   **Fix:**
+    *   Implement authentication middleware (e.g., JWT, Session).
+    *   Verify that the authenticated user is authorized to access the requested resource (e.g., `if (req.user.id !== user.id) return 403`).
+
+### 4. Broken Access Control (Admin Endpoint)
+*   **OWASP Category:** A01:2021 - Broken Access Control
+*   **Severity:** High
+*   **Exploitation Example:**
+    An attacker accesses the admin configuration endpoint without a valid session.
+    ```http
+    POST /admin/config
+    Content-Type: application/json
+
+    {
+      "email": "admin@example.com",
+      "configPath": "config.js"
+    }
+    ```
+    **Why it works:** The endpoint relies solely on checking the `role` property in the `users` object. It does not verify if the request is authenticated or if the session belongs to the user identified by `req.body.email`.
+*   **Fix:**
+    *   Implement session-based authentication.
+    *   Check `req.session.user.role` instead of `users[req.body.email].role`.
+    *   Ensure the logged-in user is the one requesting the action.
+
+### 5. Denial of Service (DoS) via Recursion
+*   **OWASP Category:** A10:2021 - Server-Side Request Forgery (SSRF) / A09:2021 - Security Misconfiguration (Resource Exhaustion)
+*   **Severity:** Medium
+*   **Exploitation Example:**
+    An attacker sends a deeply nested JSON payload to `/register`.
+    ```http
+    POST /register
+    Content-Type: application/json
+
+    {
+      "email": "test@test.com",
+      "data": {
+        "a": { "b": { "c": { ... } } } // Deep nesting
+      }
+    }
+    ```
+    **Why it works:** The `merge` function is recursive and has no depth limit. A deeply nested object will cause the call stack to overflow, crashing the Node.js process.
+*   **Fix:**
+    *   Add a maximum depth limit to the `merge` function.
+    *   Use a library that handles deep merging safely (e.g., `lodash`).
+    *   Implement rate limiting on the `/register` endpoint.
+
+### 6. Sensitive Data Exposure
+*   **OWASP Category:** A02:2021 - Cryptographic Failures / A05:2021 - Security Misconfiguration
+*   **Severity:** Medium
+*   **Exploitation Example:**
+    An attacker requests the admin config and receives the raw contents of a configuration file.
+    ```http
+    POST /admin/config
+    Content-Type: application/json
+
+    {
+      "email": "admin@example.com",
+      "configPath": "./config.js"
+    }
+    ```
+    **Why it works:** `res.json(config)` returns the entire contents of the loaded file. If `config.js` contains database credentials, API keys, or secrets, they are exposed to the attacker.
+*   **Fix:**
+    *   Do not return the full configuration object in the response.
+    *   Only return specific, non-sensitive fields if necessary.
+    *   Store secrets in environment variables, not in loadable JS files.
+
+### 7. Security Misconfiguration (Missing Headers)
+*   **OWASP Category:** A05:2021 - Security Misconfiguration
+*   **Severity:** Low/Medium
+*   **Exploitation Example:**
+    The server runs without security headers (e.g., `X-Content-Type-Options`, `X-Frame-Options`, `Strict-Transport-Security`).
+    ```http
+    GET /register
+    ```
+    **Why it works:** Without `helmet()` or similar middleware, the application is vulnerable to Clickjacking, MIME-type sniffing attacks, and other header-based exploits.
+*   **Fix:**
+    *   Install and configure `helmet` middleware: `app.use(require('helmet')());`.
+    *   Ensure HTTPS is enforced in production.
+    *   Disable server version headers (`app.disable('x-powered-by')`).

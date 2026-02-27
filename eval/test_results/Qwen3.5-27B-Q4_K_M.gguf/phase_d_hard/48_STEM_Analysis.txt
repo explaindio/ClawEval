@@ -1,0 +1,69 @@
+# Phase D Hard Test — #48 STEM Analysis
+# Tier: 4 | Score: 10/10 | 2/2 constraints met
+# Tokens: 3158 | Speed: 27.1 t/s | Time: 116.5s
+
+## PROMPT:
+Analyze this experimental data. There's a CONFOUNDING VARIABLE that invalidates the researcher's conclusion. Find it.
+
+Experiment: Testing whether a new fertilizer increases crop yield.
+
+Group A (fertilizer): 20 plots, avg yield 8.2 tons/hectare, std dev 1.1
+Group B (control): 20 plots, avg yield 6.4 tons/hectare, std dev 1.3
+
+Researcher's conclusion: "The fertilizer increased yield by 28% (p < 0.01). The fertilizer clearly works."
+
+Hidden data (not in the paper's abstract):
+- Group A plots: southern slope, clay soil, received 20% more sunlight in May
+- Group B plots: northern slope, sandy soil
+- The study was not randomized — farmers who CHOSE the fertilizer happened to own the better plots
+- 3 of the 20 control plots had a pest outbreak mid-season
+
+Questions:
+1. Is the p-value meaningful given the experimental design? Why or why not?
+2. List ALL confounding variables
+3. What type of bias is present? (selection bias, measurement bias, etc.)
+4. Design a proper experiment that would actually test the fertilizer
+5. Calculate: IF we remove the 3 pest-affected plots, what is the new control average? (remaining 17 plots had avg 7.1 tons) Does this change the conclusion?
+
+## RESPONSE:
+Here is the analysis of the experimental data.
+
+### 1. Is the p-value meaningful given the experimental design?
+**No, the p-value is not meaningful.**
+A p-value calculates the probability of observing the data (or more extreme data) assuming the null hypothesis is true **and** that the experimental design is valid (specifically, that the groups are comparable).
+*   **Violation of Assumptions:** Statistical tests like t-tests assume random assignment. Because the plots were not randomized, the groups differ systematically in ways unrelated to the treatment.
+*   **Result:** The p-value (< 0.01) indicates that the difference between Group A and Group B is statistically unlikely to be due to random chance *within this specific dataset*. However, it does not prove causation. It simply confirms that "Good Plots" yield significantly more than "Bad Plots." It measures the difference in plot quality, not the efficacy of the fertilizer.
+
+### 2. List ALL confounding variables
+A confounding variable is an extraneous factor that correlates with both the independent variable (fertilizer application) and the dependent variable (crop yield).
+1.  **Soil Type:** Group A has clay soil (typically retains water/nutrients better); Group B has sandy soil (drains quickly, less nutrient retention).
+2.  **Slope Orientation:** Group A is on a southern slope (warmer, more sun in Northern Hemisphere); Group B is on a northern slope.
+3.  **Sunlight Exposure:** Group A received 20% more sunlight in May (critical growth period).
+4.  **Plot Quality/Selection:** The farmers selected the "better" plots for the fertilizer, meaning baseline fertility was higher in Group A before the experiment began.
+5.  **Pest Pressure:** The control group suffered a pest outbreak, artificially lowering their yield (though this is technically an outlier/threat to internal validity, it confounds the comparison of "healthy" crops).
+
+### 3. What type of bias is present?
+**Selection Bias (specifically Allocation Bias).**
+The farmers self-selected which plots received the fertilizer. They allocated the treatment to the plots they believed were already superior. This creates a systematic difference between the treatment and control groups before the experiment even begins.
+
+### 4. Design a proper experiment that would actually test the fertilizer
+To isolate the effect of the fertilizer, the experiment must control for the confounding variables identified above.
+
+*   **Site Selection:** Choose a single large field with uniform soil type and slope, or select multiple fields that are statistically similar.
+*   **Randomization:** Divide the field into 40 plots of equal size. Use a random number generator to assign 20 plots to **Group A (Fertilizer)** and 20 plots to **Group B (Control)**.
+*   **Blocking (Optional but recommended):** If the field has a slope gradient, use "blocking." Divide the field into zones (e.g., North, South, East, West) and randomize the fertilizer assignment *within* each zone to ensure both groups get equal representation of sun and slope.
+*   **Standardization:** Ensure all plots receive identical water, pest management, and planting dates.
+*   **Blinding:** If possible, have a third party harvest and weigh the crops without knowing which plots received fertilizer to prevent measurement bias.
+*   **Replication:** Repeat the experiment over multiple growing seasons to account for weather variability.
+
+### 5. Calculation and Conclusion Impact
+**New Control Average:** **7.1 tons/hectare** (as stated in the hidden data for the remaining 17 plots).
+
+**Does this change the conclusion?**
+**No, the researcher's conclusion remains invalid.**
+
+*   **Mathematical Change:**
+    *   Original Difference: 8.2 - 6.4 = 1.8 tons (28% increase).
+    *   New Difference: 8.2 - 7.1 = 1.1 tons (15.5% increase).
+*   **Scientific Validity:** While removing the pest-affected plots makes the control group look "healthier" and reduces the observed effect size, it **does not fix the fundamental design flaw.**
+*   **Reasoning:** Group A still has clay soil, southern slope, and extra sunlight compared to Group B. Even with the pest issue removed, the 1.1 ton difference is likely still caused by the superior land quality (confounding variables) rather than the fertilizer. The researcher cannot claim the fertilizer works until the soil and slope variables are randomized.

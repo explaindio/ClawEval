@@ -1,0 +1,64 @@
+# Phase D Hard Test — #20 Memory / Knowledge Management
+# Tier: 2 | Score: 5/10 | No automated constraints to check
+# Tokens: 640 | Speed: 33.1 t/s | Time: 19.3s
+
+## PROMPT:
+Extract and merge knowledge from these 5 conversation snippets. There are 3 contradictions — resolve each by using the MOST RECENT information and flag what changed.
+
+Jan 2: "I'm a senior developer at Acme Corp working on their Python backend."
+Jan 15: "We decided to migrate from PostgreSQL to MongoDB for the user service."
+Feb 1: "Got promoted to Tech Lead! Managing a team of 4 developers now."
+Feb 20: "After benchmarking, we're actually sticking with PostgreSQL — MongoDB wasn't right for our consistency requirements. Also, we hired 2 more people, team is now 6."
+Mar 5: "Acme Corp got acquired by MegaTech. I'm now technically a MegaTech employee but same role. Oh, and 1 person left, so team is 5. We're also evaluating MySQL as finance wants to standardize."
+
+Produce a final knowledge profile, clearly marking:
+1. What the CURRENT truth is for each fact
+2. What changed and when (changelog)
+3. What is UNCERTAIN (e.g., MySQL evaluation — in progress, not decided)
+
+## RESPONSE:
+Here is the consolidated knowledge profile based on the conversation snippets, resolving contradictions by prioritizing the most recent information (Mar 5).
+
+### 1. Current Knowledge Profile (The Truth as of Mar 5)
+
+| Category | Current Fact | Source Date |
+| :--- | :--- | :--- |
+| **Employer** | **MegaTech** (Acme Corp was acquired) | Mar 5 |
+| **Role** | **Tech Lead** | Feb 1 |
+| **Team Size** | **5 Developers** | Mar 5 |
+| **Primary Database** | **PostgreSQL** | Feb 20 |
+| **Tech Stack** | **Python Backend** | Jan 2 |
+| **Project Status** | **Evaluating MySQL** (for standardization) | Mar 5 |
+
+---
+
+### 2. Changelog: Resolved Contradictions
+
+The following three contradictions were identified and resolved using the **Most Recent Information** principle:
+
+**Contradiction 1: Database Technology**
+*   **Initial State (Jan 15):** Migration from PostgreSQL to MongoDB was decided.
+*   **Correction (Feb 20):** Migration reversed. The team decided to stick with **PostgreSQL** because MongoDB failed to meet consistency requirements.
+*   **Final State (Mar 5):** PostgreSQL remains the primary database, though MySQL is now under evaluation.
+*   **Change Flag:** `Database` changed from *MongoDB (planned)* to *PostgreSQL (confirmed)* on **Feb 20**.
+
+**Contradiction 2: Team Size**
+*   **Initial State (Feb 1):** Team size was **4** developers (after promotion to Tech Lead).
+*   **Correction (Feb 20):** Two new hires were added, increasing the team to **6**.
+*   **Final State (Mar 5):** One person left the team, reducing the count to **5**.
+*   **Change Flag:** `Team Size` changed from *6* to *5* on **Mar 5**.
+
+**Contradiction 3: Employer Identity**
+*   **Initial State (Jan 2):** Employee of **Acme Corp**.
+*   **Correction (Mar 5):** Acme Corp was acquired by **MegaTech**. The user is now technically a MegaTech employee, though the role remains the same.
+*   **Change Flag:** `Employer` changed from *Acme Corp* to *MegaTech* on **Mar 5**.
+
+---
+
+### 3. Uncertain / Pending Items
+
+The following facts are currently in flux or represent a state of evaluation rather than a finalized decision:
+
+*   **MySQL Adoption:** The team is currently **evaluating** MySQL due to finance's desire to standardize.
+    *   *Status:* **In Progress / Undecided**.
+    *   *Context:* It is not yet confirmed if PostgreSQL will be replaced by MySQL; this is an active evaluation phase as of Mar 5.

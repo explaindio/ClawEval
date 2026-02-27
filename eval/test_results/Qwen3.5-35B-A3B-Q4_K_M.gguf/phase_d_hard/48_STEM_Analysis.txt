@@ -1,0 +1,81 @@
+# Phase D Hard Test — #48 STEM Analysis
+# Tier: 4 | Score: 10/10 | 2/2 constraints met
+# Tokens: 2834 | Speed: 91.7 t/s | Time: 30.9s
+
+## PROMPT:
+Analyze this experimental data. There's a CONFOUNDING VARIABLE that invalidates the researcher's conclusion. Find it.
+
+Experiment: Testing whether a new fertilizer increases crop yield.
+
+Group A (fertilizer): 20 plots, avg yield 8.2 tons/hectare, std dev 1.1
+Group B (control): 20 plots, avg yield 6.4 tons/hectare, std dev 1.3
+
+Researcher's conclusion: "The fertilizer increased yield by 28% (p < 0.01). The fertilizer clearly works."
+
+Hidden data (not in the paper's abstract):
+- Group A plots: southern slope, clay soil, received 20% more sunlight in May
+- Group B plots: northern slope, sandy soil
+- The study was not randomized — farmers who CHOSE the fertilizer happened to own the better plots
+- 3 of the 20 control plots had a pest outbreak mid-season
+
+Questions:
+1. Is the p-value meaningful given the experimental design? Why or why not?
+2. List ALL confounding variables
+3. What type of bias is present? (selection bias, measurement bias, etc.)
+4. Design a proper experiment that would actually test the fertilizer
+5. Calculate: IF we remove the 3 pest-affected plots, what is the new control average? (remaining 17 plots had avg 7.1 tons) Does this change the conclusion?
+
+## RESPONSE:
+Here is the analysis of the experimental data.
+
+### 1. Is the p-value meaningful given the experimental design? Why or why not?
+
+**No, the p-value is not meaningful.**
+
+A p-value measures the probability that the observed difference between two groups occurred by chance, assuming the **Null Hypothesis** is true. However, statistical tests (like the t-test implied here) rely on the assumption that the groups are comparable except for the treatment being tested.
+
+In this experiment, the groups differ fundamentally in environmental conditions (soil, slope, sunlight) and exposure to pests. The p-value of < 0.01 simply confirms that Group A and Group B are statistically different. It does **not** prove the fertilizer caused the difference. It is a "statistically significant" difference between two non-equivalent populations, rendering the p-value scientifically useless for establishing causality.
+
+### 2. List ALL confounding variables
+
+A confounding variable is an extraneous variable that correlates with both the dependent variable (yield) and the independent variable (fertilizer application).
+
+1.  **Soil Type:** Group A had clay soil (usually retains nutrients and water better); Group B had sandy soil (drains faster, holds fewer nutrients).
+2.  **Topography/Slope:** Group A was on a southern slope; Group B was on a northern slope.
+3.  **Sunlight Exposure:** Group A received 20% more sunlight in May.
+4.  **Pest Outbreak:** An event occurred exclusively in the control group (Group B), artificially suppressing their yield.
+5.  **Selection/Plot Quality:** The farmers chose the fertilizer, implying they likely selected their best land for the new treatment (Self-selection bias).
+
+### 3. What type of bias is present?
+
+**Selection Bias** (specifically, **Self-Selection Bias** or **Allocation Bias**).
+
+Because the farmers *chose* which plots received the fertilizer, the treatment group was not randomly assigned. The farmers likely assigned the fertilizer to the plots they believed were most productive (better soil, better sun). This creates a systematic difference between the groups before the experiment even began.
+
+### 4. Design a proper experiment that would actually test the fertilizer
+
+To validly test the fertilizer, the researcher must conduct a **Randomized Controlled Trial (RCT)**.
+
+1.  **Homogeneity:** Select a large number of plots that are as similar as possible regarding soil type, slope, and sunlight exposure.
+2.  **Randomization:** Randomly assign each plot to either the Treatment Group (Fertilizer) or the Control Group (No Fertilizer) using a random number generator. This ensures that environmental variables are distributed equally between groups.
+3.  **Replication:** Ensure there are enough plots in each group to account for natural variability.
+4.  **Blinding:** If possible, the people measuring the yield should not know which plots received the fertilizer to prevent measurement bias.
+5.  **Monitoring:** Monitor both groups for pests and weather events equally. If pests attack, treat both groups identically (or record the data and exclude affected plots from both groups).
+
+### 5. Calculation and Conclusion Re-evaluation
+
+**Calculation:**
+*   **Original Control Average:** 6.4 tons/ha (20 plots)
+*   **New Control Average (after removing 3 pest plots):** 7.1 tons/ha (17 plots)
+*   **Treatment Average:** 8.2 tons/ha (20 plots)
+
+**New Comparison:**
+*   Difference: $8.2 - 7.1 = 1.1$ tons/ha
+*   Percentage Increase: $(1.1 / 7.1) \times 100 \approx \mathbf{15.5\%}$
+
+**Does this change the conclusion?**
+
+**Yes, significantly.**
+
+1.  **Magnitude:** The claimed yield increase drops from **28%** to roughly **15.5%**. The fertilizer is still showing a positive correlation, but the effect size is much smaller than originally reported.
+2.  **Validity:** However, the conclusion that "The fertilizer clearly works" remains **scientifically invalid**. Even with the pest data removed, the groups are still confounded by soil type, slope, and sunlight. It is highly probable that the 15.5% increase is actually due to the superior soil and sunlight of the southern slope, not the fertilizer.

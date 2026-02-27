@@ -1,0 +1,118 @@
+# Phase D Hard Test — #19 Shopping / Price Comparison
+# Tier: 2 | Score: 10/10 | 1/1 constraints met
+# Tokens: 1682 | Speed: 33.5 t/s | Time: 50.2s
+
+## PROMPT:
+Compare these 4 products. WARNING: The cheapest option is NOT the best value when you calculate total cost of ownership. Show your math.
+
+Product A — Laptop Alpha: $899
+- 8GB RAM (non-upgradable), 256GB SSD
+- Battery: 6 hours, replacement cost $200
+- Expected lifespan: 3 years, no extended warranty available
+- Required accessories: $150 dock, $80 adapter
+
+Product B — Laptop Beta: $1,299
+- 16GB RAM, 512GB SSD (user upgradable)
+- Battery: 10 hours, replaceable ($80)
+- Expected lifespan: 5 years, extended warranty $100/year
+- All ports included, no accessories needed
+
+Product C — Laptop Gamma: $749
+- 8GB RAM, 128GB SSD
+- Battery: 4 hours, non-replaceable
+- Expected lifespan: 2 years, no warranty
+- Required: $200 external SSD, $150 dock, $80 adapter
+
+Product D — Laptop Delta: $1,099
+- 16GB RAM, 256GB SSD
+- Battery: 8 hours, replacement $150
+- Expected lifespan: 4 years, warranty included
+- Required: $80 adapter
+
+Calculate 5-year total cost of ownership for each (include purchase + accessories + replacements + warranty). Recommend the best value.
+
+## RESPONSE:
+To determine the best value, we must calculate the **5-Year Total Cost of Ownership (TCO)** for each laptop. This includes the initial purchase price, required accessories, battery replacements (if the battery life is shorter than the 5-year period), and warranty costs.
+
+**Assumptions for Calculation:**
+*   **Timeframe:** 5 years.
+*   **Battery Replacement Logic:** If the battery lifespan is less than the laptop's expected lifespan (or the 5-year window), we assume one replacement is needed to maintain functionality for the full period.
+    *   *Note:* If a laptop has a 2-year lifespan, it must be replaced entirely after 2 years to reach the 5-year mark.
+*   **Warranty:** Calculated only if explicitly stated as an annual cost or required for the lifespan.
+
+---
+
+### 1. Product A — Laptop Alpha
+*   **Base Price:** $899
+*   **Accessories:** $150 (Dock) + $80 (Adapter) = **$230**
+*   **Lifespan & Replacement:** Expected lifespan is 3 years. To reach 5 years, you must buy a second unit.
+    *   Unit 1: $899
+    *   Unit 2 (Year 3): $899
+    *   *Total Hardware Cost:* $1,798
+*   **Battery:** 6-hour battery. Assuming it degrades significantly by year 3, we need a replacement for the second unit (or the first if it lasts). However, since we are buying a whole new laptop at year 3, the new laptop comes with a new battery.
+    *   *Battery Cost:* $0 (Included in second unit).
+*   **Warranty:** None available.
+*   **Total TCO:** $1,798 (Hardware) + $230 (Accessories) = **$2,028**
+
+### 2. Product B — Laptop Beta
+*   **Base Price:** $1,299
+*   **Accessories:** $0 (All ports included).
+*   **Lifespan & Replacement:** Expected lifespan is 5 years. No replacement unit needed.
+    *   *Total Hardware Cost:* $1,299
+*   **Battery:** 10-hour battery. Likely lasts the full 5 years, but if it fails, replacement is $80. Let's assume a conservative scenario where one replacement is needed at year 4 to ensure full 5-year utility.
+    *   *Battery Cost:* $80
+*   **Warranty:** Extended warranty is $100/year.
+    *   *Warranty Cost:* $100 × 5 years = $500
+*   **Total TCO:** $1,299 + $0 + $80 + $500 = **$1,879**
+
+### 3. Product C — Laptop Gamma
+*   **Base Price:** $749
+*   **Accessories:** $200 (External SSD) + $150 (Dock) + $80 (Adapter) = **$430**
+*   **Lifespan & Replacement:** Expected lifespan is 2 years. To reach 5 years, you need:
+    *   Unit 1 (Years 1-2): $749
+    *   Unit 2 (Years 3-4): $749
+    *   Unit 3 (Year 5): $749 (Partial year, but full unit cost applies)
+    *   *Total Hardware Cost:* $2,247
+*   **Battery:** Non-replaceable. Since the battery is non-replaceable and the lifespan is only 2 years, the battery failure is factored into the need to buy a new unit every 2 years.
+    *   *Battery Cost:* $0 (Included in new units).
+*   **Warranty:** None.
+*   **Total TCO:** $2,247 (Hardware) + $430 (Accessories) = **$2,677**
+
+### 4. Product D — Laptop Delta
+*   **Base Price:** $1,099
+*   **Accessories:** $80 (Adapter).
+*   **Lifespan & Replacement:** Expected lifespan is 4 years. To reach 5 years, you need:
+    *   Unit 1 (Years 1-4): $1,099
+    *   Unit 2 (Year 5): $1,099
+    *   *Total Hardware Cost:* $2,198
+*   **Battery:** 8-hour battery. Likely needs replacement once during the 4-year life of the first unit.
+    *   *Battery Cost:* $150
+*   **Warranty:** Included (No extra cost).
+*   **Total TCO:** $2,198 (Hardware) + $80 (Accessories) + $150 (Battery) = **$2,428**
+
+---
+
+### Comparison Summary
+
+| Product | Base Price | Accessories | Replacement Units | Battery/Warranty | **5-Year TCO** |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **A (Alpha)** | $899 | $230 | $899 (1 extra unit) | $0 | **$2,028** |
+| **B (Beta)** | $1,299 | $0 | $0 | $580 (Warranty + Batt) | **$1,879** |
+| **C (Gamma)** | $749 | $430 | $1,498 (2 extra units)| $0 | **$2,677** |
+| **D (Delta)** | $1,099 | $80 | $1,099 (1 extra unit) | $150 (Battery) | **$2,428** |
+
+### Analysis of the "Cheapest" Trap
+*   **Product C** appears cheapest at **$749**, but due to its short 2-year lifespan and high accessory requirements, it becomes the **most expensive** option over 5 years ($2,677).
+*   **Product A** is the second cheapest upfront ($899) but requires a full replacement unit and expensive accessories, totaling $2,028.
+
+### Final Recommendation
+
+**Best Value: Product B — Laptop Beta**
+
+**Why?**
+1.  **Lowest Total Cost:** At **$1,879**, it is $149 cheaper than the next best option (Product A) and significantly cheaper than C and D.
+2.  **No Replacement Needed:** It is the only laptop with a 5-year expected lifespan, meaning you avoid the massive cost of buying a second or third unit.
+3.  **Future-Proofing:** The 16GB RAM and 512GB SSD (upgradable) ensure it remains functional for the full 5 years, whereas the 8GB/128GB models (A and C) would likely become obsolete before the 5-year mark, forcing earlier replacements not even calculated here.
+4.  **Warranty Value:** While the $500 warranty cost seems high, it protects the $1,299 investment over the full 5 years, whereas the other options have no warranty or require buying new hardware to cover the gap.
+
+**Conclusion:** Do not buy Product C just because it is $749. **Product B** is the only rational choice for a 5-year ownership horizon.

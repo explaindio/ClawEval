@@ -1,0 +1,124 @@
+# Phase D Hard Test — #33 SEO Optimization Agent
+# Tier: 2 | Score: 10/10 | 2/2 constraints met
+# Tokens: 3075 | Speed: 81.9 t/s | Time: 37.5s
+
+## PROMPT:
+Audit this website's SEO. The site has 3 pages targeting similar keywords (cannibalization) and uses 2 black-hat techniques. Identify everything.
+
+Page 1: "/blog/best-ai-tools-2025"
+- Title: "Best AI Tools 2025 | Best AI Tools | AI Tools Best | Top AI Tools"
+- H1: "Best AI Tools 2025"
+- Content: 2000 words, keyword "best AI tools" appears 47 times
+- Hidden text: white text on white background listing 500 AI-related keywords
+- Internal links: links to Page 2 and Page 3
+
+Page 2: "/blog/top-ai-tools-guide"  
+- Title: "Top AI Tools Guide 2025"
+- H1: "The Ultimate Guide to Top AI Tools"
+- Content: 1500 words, very similar content to Page 1 with slight rewording
+- Links: 15 outbound links to unrelated gambling sites in footer
+
+Page 3: "/blog/ai-tools-compared"
+- Title: "AI Tools Compared — Which Is Best?"
+- H1: "Comparing the Best AI Tools"
+- Content: 800 words, overlaps 60% with Page 1
+
+Identify: keyword stuffing, cloaking/hidden text, link schemes, keyword cannibalization, and provide a remediation plan that uses ONLY white-hat techniques.
+
+## RESPONSE:
+# SEO Audit Report
+
+## 1. Critical Issues Identified
+
+Based on the provided data, the website is currently at high risk of a Google Manual Action or Algorithmic Penalty. The following issues have been identified:
+
+### A. Black-Hat Techniques (2 Identified)
+1.  **Hidden Text / Cloaking (Page 1):**
+    *   **Evidence:** White text on a white background listing 500 AI-related keywords.
+    *   **Violation:** This is a direct violation of Google's Spam Policies. It attempts to deceive search engines by showing content to crawlers that users cannot see.
+    *   **Risk:** High risk of a Manual Action for "Cloaking and/or Hidden Text."
+
+2.  **Link Schemes / Unnatural Outbound Links (Page 2):**
+    *   **Evidence:** 15 outbound links to unrelated gambling sites located in the footer.
+    *   **Violation:** This suggests a paid link scheme or participation in a Private Blog Network (PBN). Linking to gambling sites from a generic AI blog is irrelevant and looks manipulative.
+    *   **Risk:** High risk of a Manual Action for "Unnatural Links" (both inbound and outbound associations).
+
+### B. On-Page & Content Issues
+3.  **Keyword Cannibalization:**
+    *   **Evidence:** All three pages (`/best-ai-tools-2025`, `/top-ai-tools-guide`, `/ai-tools-compared`) target nearly identical keywords ("Best AI Tools," "Top AI Tools").
+    *   **Impact:** The site is competing against itself. Google cannot determine which page to rank, diluting the PageRank of all three and preventing any single page from ranking #1.
+
+4.  **Keyword Stuffing (Page 1):**
+    *   **Evidence:** The phrase "best AI tools" appears 47 times in 2,000 words (approx. 2.35% density).
+    *   **Impact:** Combined with the repetitive Title Tag, this signals spammy content intent to search engines. It degrades user experience and readability.
+
+5.  **Duplicate / Thin Content:**
+    *   **Evidence:** Page 2 is "very similar" to Page 1; Page 3 overlaps 60% with Page 1.
+    *   **Impact:** Search engines will likely index only one version and devalue the others as "duplicate content," wasting crawl budget.
+
+---
+
+## 2. Remediation Plan (White-Hat Only)
+
+To recover and improve rankings, you must align with Google's Search Essentials. The following plan focuses on consolidation, quality, and transparency.
+
+### Phase 1: Immediate Cleanup (Days 1-3)
+**Goal:** Remove all penalties and spam signals.
+
+1.  **Remove Hidden Text:**
+    *   **Action:** Delete the white-on-white keyword block from Page 1 immediately.
+    *   **White-Hat Standard:** All content visible to crawlers must be visible to users.
+2.  **Audit Outbound Links:**
+    *   **Action:** Remove the 15 links to gambling sites from Page 2's footer.
+    *   **White-Hat Standard:** Only link to relevant, high-authority resources that add value to the reader. If links must remain, add `rel="nofollow"` (though removal is preferred for unrelated niches).
+3.  **Fix Title Tags:**
+    *   **Action:** Rewrite Page 1's title to be unique and descriptive.
+    *   **Example:** "Best AI Tools 2025: Top Picks for Productivity & Creativity" (Remove repetitive keywords).
+
+### Phase 2: Content Consolidation (Days 4-10)
+**Goal:** Resolve keyword cannibalization and duplicate content.
+
+1.  **Merge Content Strategy:**
+    *   **Decision:** Do not keep all three pages. Create **one** definitive "Pillar Page."
+    *   **Action:** Combine the best data from Page 1, Page 2, and Page 3 into a single, comprehensive article.
+    *   **Target URL:** Keep `/blog/best-ai-tools-2025` as the canonical URL (highest word count).
+    *   **Content:** Ensure the merged article is 3,000+ words of unique, high-quality content. No overlap.
+2.  **Update Internal Linking:**
+    *   **Action:** Remove internal links pointing to Page 2 and Page 3 from the new merged page.
+    *   **Reasoning:** You no longer need to link to the pages you are deleting.
+
+### Phase 3: Technical Implementation (Days 11-14)
+**Goal:** Preserve link equity and signal changes to Google.
+
+1.  **301 Redirects:**
+    *   **Action:** Set up 301 redirects from Page 2 (`/top-ai-tools-guide`) and Page 3 (`/ai-tools-compared`) to the main Page 1 (`/best-ai-tools-2025`).
+    *   **Why:** This transfers the ranking authority of the old pages to the new consolidated page and prevents 404 errors for users.
+2.  **Canonical Tags:**
+    *   **Action:** Ensure the new merged page has a self-referencing canonical tag.
+    *   **Why:** Prevents any future indexing issues if the content is syndicated elsewhere.
+
+### Phase 4: Optimization & Monitoring (Ongoing)
+**Goal:** Sustainable growth.
+
+1.  **Keyword Usage:**
+    *   **Action:** Use "best AI tools" naturally. Aim for a density of under 1% (approx. 20-30 times max in 3,000 words).
+    *   **Focus:** Use semantic variations (e.g., "AI software," "artificial intelligence platforms," "top-rated tools") rather than exact match repetition.
+2.  **User Intent:**
+    *   **Action:** Structure the content with clear H2s and H3s (e.g., "Top Tools for Design," "Best for Coding," "Pricing Comparison").
+    *   **Focus:** Answer the user's question completely in one place.
+3.  **Disavow File (Optional):**
+    *   **Action:** If the gambling links were part of a larger pattern of bad backlinks, consider submitting a Disavow file to Google Search Console.
+    *   **Note:** Only do this if you have evidence of a manual penalty regarding links.
+
+## 3. Summary of Changes
+
+| Feature | Current State (Black-Hat) | Future State (White-Hat) |
+| :--- | :--- | :--- |
+| **Hidden Text** | 500 keywords hidden in background | **Removed.** All text visible to users. |
+| **Outbound Links** | 15 links to gambling sites | **Removed.** Only relevant, high-quality links. |
+| **Pages** | 3 pages competing for same keywords | **1 Page.** Consolidated for authority. |
+| **Keyword Density** | 2.35% (Stuffing) | **<1%** (Natural usage). |
+| **Content** | 60% duplicate across pages | **100% Unique.** Comprehensive guide. |
+| **Redirects** | None (Duplicate URLs) | **301 Redirects** from old URLs to new. |
+
+**Estimated Recovery Time:** 2 to 6 months, depending on the severity of the existing penalty. Consistent white-hat content publishing will signal to Google that the site is now trustworthy.

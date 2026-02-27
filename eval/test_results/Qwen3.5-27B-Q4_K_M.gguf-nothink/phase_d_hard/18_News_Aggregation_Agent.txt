@@ -1,0 +1,94 @@
+# Phase D Hard Test — #18 News Aggregation Agent
+# Tier: 2 | Score: 5/10 | No automated constraints to check
+# Tokens: 1249 | Speed: 33.5 t/s | Time: 37.2s
+
+## PROMPT:
+Process these 8 headlines. Some are about the SAME story from different angles (identify which). One pair contains contradictory information (flag it). Assess source reliability.
+
+1. Reuters: "TechCorp reports Q4 revenue of $12.3B, beating estimates by 8%"
+2. BlogSpam.io: "SHOCKING: TechCorp hiding massive losses behind revenue numbers!!"
+3. WSJ: "TechCorp Q4 revenue misses analyst expectations, stock drops 3%"
+4. AP: "EU announces new AI regulation framework affecting US tech companies"
+5. TechCrunch: "TechCorp's cloud division drives Q4 beat, revenue hits $12.3B"
+6. Reuters: "European Commission proposes AI Act amendments with stricter compliance timelines"
+7. RandomBlog2024.com: "AI regulations will DESTROY the tech industry forever!!!"
+8. Bloomberg: "TechCorp CEO discusses AI strategy after strong Q4 earnings"
+
+Tasks:
+1. Group stories that cover the same event
+2. Identify the contradictory pair (headline 1 vs 3) and assess which is more likely accurate
+3. Rate each source's reliability (1-10)
+4. Create a briefing with only the verified, deduplicated information
+
+## RESPONSE:
+Here is the analysis of the provided headlines, grouped by event, assessed for contradictions and reliability, and synthesized into a final briefing.
+
+### 1. Grouping Stories by Event
+
+The headlines cover two distinct events: **TechCorp's Q4 Earnings** and **New EU AI Regulations**.
+
+**Event A: TechCorp Q4 Earnings Report**
+*   **Headline 1 (Reuters):** Reports $12.3B revenue, beating estimates by 8%.
+*   **Headline 2 (BlogSpam.io):** Claims TechCorp is hiding massive losses behind revenue numbers.
+*   **Headline 3 (WSJ):** Claims revenue missed expectations, stock dropped 3%.
+*   **Headline 5 (TechCrunch):** Confirms $12.3B revenue, attributes beat to cloud division.
+*   **Headline 8 (Bloomberg):** Mentions CEO discussing strategy after "strong Q4 earnings."
+
+**Event B: EU AI Regulation Framework**
+*   **Headline 4 (AP):** EU announces new AI regulation framework affecting US tech.
+*   **Headline 6 (Reuters):** European Commission proposes AI Act amendments with stricter timelines.
+*   **Headline 7 (RandomBlog2024.com):** Claims regulations will "DESTROY" the industry.
+
+---
+
+### 2. Contradictory Pair Analysis
+
+**The Contradiction:**
+There is a direct contradiction regarding TechCorp's financial performance between **Headline 1 (Reuters)** and **Headline 3 (WSJ)**.
+*   **Headline 1:** States revenue **beat** estimates by 8% ($12.3B).
+*   **Headline 3:** States revenue **missed** expectations.
+
+**Assessment of Accuracy:**
+*   **Headline 1 (Reuters) is likely accurate.**
+    *   **Corroboration:** Headline 5 (TechCrunch) explicitly confirms the $12.3B figure and the "beat." Headline 8 (Bloomberg) describes the earnings as "strong."
+    *   **Source Consensus:** Three reputable sources (Reuters, TechCrunch, Bloomberg) align on the positive outcome.
+    *   **Likely Error in Headline 3:** The WSJ headline may be referring to a specific *segment* that missed expectations (e.g., mobile hardware) while the overall company beat, or it may be an error in the headline's phrasing relative to the specific consensus estimates used. However, given the specific dollar figure ($12.3B) appearing in both the Reuters and TechCrunch headlines, the "beat" narrative is the dominant and verified fact.
+
+---
+
+### 3. Source Reliability Rating (1-10)
+
+| Source | Headline | Rating | Rationale |
+| :--- | :--- | :--- | : |
+| **Reuters** | 1 & 6 | **10** | Global wire service; gold standard for financial data and regulatory reporting. High editorial standards. |
+| **AP (Associated Press)** | 4 | **10** | Non-profit news cooperative; highly reliable for factual reporting on government actions. |
+| **Bloomberg** | 8 | **9** | Premier financial news source; highly reliable for market data and executive commentary. |
+| **WSJ (Wall St. Journal)** | 3 | **9** | Highly reputable financial publication. *Note: The contradiction suggests a potential nuance in their specific analysis or a headline error, but the source itself remains high integrity.* |
+| **TechCrunch** | 5 | **8** | Leading tech industry publication. Reliable for product/earnings specifics, though slightly more opinionated than wire services. |
+| **BlogSpam.io** | 2 | **2** | Name suggests low credibility; sensationalist language ("SHOCKING", "!!") indicates clickbait or misinformation. |
+| **RandomBlog2024.com** | 7 | **1** | Generic name, hyperbolic language ("DESTROY... forever"), zero editorial oversight. Likely misinformation. |
+
+---
+
+### 4. Verified Briefing
+
+**Subject:** TechCorp Q4 Performance & EU AI Regulatory Updates
+**Date:** [Current Date]
+**Status:** Verified / Deduplicated
+
+#### **A. TechCorp Q4 Financial Results**
+*   **Revenue:** TechCorp reported Q4 revenue of **$12.3 billion**.
+*   **Performance:** The company **beat analyst estimates by 8%**.
+*   **Key Driver:** The **cloud division** was the primary contributor to the revenue beat.
+*   **Market Reaction:** Following the strong earnings, the CEO held a discussion regarding the company's AI strategy.
+*   *Note: While one source (WSJ) initially suggested a miss, the consensus across Reuters, TechCrunch, and Bloomberg confirms a beat on the $12.3B figure.*
+
+#### **B. EU AI Regulatory Developments**
+*   **Action:** The European Commission has proposed amendments to the **AI Act**.
+*   **Key Details:** The new framework includes **stricter compliance timelines** for AI development and deployment.
+*   **Impact:** These regulations are expected to affect US-based technology companies operating in the EU.
+*   *Note: Claims that these regulations will "destroy" the industry are unsupported by factual reporting and reflect hyperbolic opinion rather than verified analysis.*
+
+#### **C. Excluded Information**
+*   Claims of "massive hidden losses" (BlogSpam.io) and "industry destruction" (RandomBlog2024.com) were excluded due to lack of evidence and low source reliability.
+*   Conflicting reports of a "revenue miss" (WSJ) were resolved in favor of the corroborated "revenue beat" reported by three other major outlets.

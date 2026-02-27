@@ -1,0 +1,134 @@
+# Phase D Hard Test — #44 Curriculum / Course Designer
+# Tier: 3 | Score: 10/10 | 1/1 constraints met
+# Tokens: 3716 | Speed: 91.4 t/s | Time: 40.7s
+
+## PROMPT:
+Design Week 1 of a web development bootcamp. TRAP: The requested schedule is physically impossible — you must identify why and propose a fix.
+
+Requested schedule:
+- Day 1 (Mon): HTML basics (9am-12pm), CSS fundamentals (1pm-5pm), Assessment on HTML+CSS (5pm-6pm)
+- Day 2 (Tue): JavaScript basics (9am-12pm), Build a responsive landing page using HTML+CSS+JS (1pm-5pm)
+- Day 3 (Wed): React fundamentals (9am-12pm), Build a React app with state management (1pm-5pm)
+- Day 4 (Thu): Node.js + Express backend (9am-12pm), Build full-stack app connecting React frontend to Node backend (1pm-5pm)
+- Day 5 (Fri): Deploy to AWS (9am-12pm), Portfolio presentation of all projects (1pm-5pm)
+
+Requirements:
+1. Identify which days have unrealistic expectations (Bloom's taxonomy violations)
+2. Note prerequisite gaps (can't do X before Y is mastered)
+3. Propose a realistic revised schedule maintaining the same 5-day format
+4. Include formative assessment points (not just Day 1)
+5. Ensure learning objectives follow Bloom's hierarchy (remember → understand → apply → analyze)
+
+## RESPONSE:
+### Part 1: The Trap Analysis
+**Why the Requested Schedule is Physically Impossible**
+
+The provided schedule violates fundamental pedagogical principles and cognitive load theory. It attempts to compress a 12-week curriculum into 5 days. Here is the breakdown of the failure points:
+
+**1. Bloom’s Taxonomy Violations (Cognitive Load)**
+*   **Day 3 (React):** The schedule asks students to *Create* (Build a React app with state) before they have *Understood* or *Analyzed* JavaScript fundamentals. React relies heavily on ES6+ features (arrow functions, destructuring, closures, async/await) which are not covered until Day 2 (and only briefly).
+*   **Day 4 (Full-Stack):** This requires *Analyzing* how frontend and backend communicate (HTTP, JSON, APIs). Students have not yet learned what an API is, let alone how to write one in Node.js.
+*   **Day 5 (AWS + Portfolio):** Deploying to AWS requires *Evaluating* infrastructure and security settings. A portfolio presentation requires *Creating* polished work. Doing both in one day after building a full-stack app the previous day is impossible.
+
+**2. Prerequisite Gaps**
+*   **React requires JavaScript:** You cannot learn React without a solid grasp of the DOM and JS event loops. Day 2's "JS Basics" (9am-12pm) is insufficient.
+*   **Full-Stack requires Backend Knowledge:** You cannot connect a frontend to a backend without understanding RESTful principles, which are not introduced until Day 4 morning.
+*   **Deployment requires Environment Setup:** AWS deployment requires knowledge of CI/CD, environment variables, and build pipelines, which are not taught in the previous days.
+
+**3. Time Reality**
+*   **Cognitive Fatigue:** Learning a new syntax (JS) and a new paradigm (React) in the same day is cognitively impossible for beginners.
+*   **Debugging Time:** In the original schedule, there is no time allocated for debugging. Students will spend 100% of their time stuck on errors, resulting in zero learning.
+
+---
+
+### Part 2: Revised Week 1 Schedule (Realistic)
+**Focus:** Core Web Technologies (HTML, CSS, JavaScript) & Git.
+**Goal:** Build a static, interactive portfolio page.
+**Note:** Frameworks (React/Node) are introduced conceptually but not built upon until Week 2.
+
+#### **Day 1: Structure & Style (HTML/CSS)**
+*   **09:00 - 10:30:** **HTML Basics:** Semantic tags, forms, accessibility.
+    *   *Bloom:* Remember (Tags), Understand (Structure).
+*   **10:30 - 12:00:** **CSS Basics:** Selectors, colors, typography, box model.
+    *   *Bloom:* Apply (Style a page).
+*   **12:00 - 13:00:** Lunch
+*   **13:00 - 15:00:** **CSS Layouts:** Flexbox fundamentals.
+    *   *Bloom:* Apply (Align items).
+*   **15:00 - 16:30:** **Mini-Project:** Build a "Business Card" page.
+*   **16:30 - 17:00:** **Formative Assessment:** Code Review (Peer check for semantic HTML).
+
+#### **Day 2: Layout Mastery & JS Intro**
+*   **09:00 - 11:00:** **CSS Grid & Responsive Design:** Media queries, mobile-first.
+    *   *Bloom:* Apply (Make layout responsive).
+*   **11:00 - 12:00:** **JavaScript Intro:** Variables, data types, operators.
+    *   *Bloom:* Remember (Syntax).
+*   **12:00 - 13:00:** Lunch
+*   **13:00 - 15:00:** **JS Logic:** Conditionals (if/else), loops.
+    *   *Bloom:* Understand (Flow control).
+*   **15:00 - 16:30:** **Practice:** Console-based logic puzzles.
+*   **16:30 - 17:00:** **Formative Assessment:** "Show me your code" (Instructor walk-through of logic).
+
+#### **Day 3: DOM Manipulation & Functions**
+*   **09:00 - 11:00:** **JS Functions:** Scope, parameters, return values.
+    *   *Bloom:* Understand (Function mechanics).
+*   **11:00 - 12:00:** **DOM Access:** Selecting elements, changing content/styles.
+    *   *Bloom:* Apply (Interact with HTML via JS).
+*   **12:00 - 13:00:** Lunch
+*   **13:00 - 15:00:** **Events:** Click listeners, form submissions.
+    *   *Bloom:* Apply (Trigger actions).
+*   **15:00 - 16:30:** **Mini-Project:** Build a "To-Do List" (Add/Delete items).
+*   **16:30 - 17:00:** **Formative Assessment:** Debugging Challenge (Fix broken event listeners).
+
+#### **Day 4: Integration & Git**
+*   **09:00 - 11:00:** **Git Basics:** Init, commit, push, branches.
+    *   *Bloom:* Apply (Version control).
+*   **11:00 - 12:00:** **APIs Concept:** What is JSON? What is an endpoint? (Theory only).
+    *   *Bloom:* Understand (Data flow).
+*   **12:00 - 13:00:** Lunch
+*   **13:00 - 16:00:** **Capstone Project:** Build a "Weather Widget" (Static data).
+    *   *Bloom:* Create (Combine HTML/CSS/JS).
+*   **16:00 - 17:00:** **Formative Assessment:** GitHub Repo check (Ensure code is pushed).
+
+#### **Day 5: Review, Debugging & Framework Preview**
+*   **09:00 - 11:00:** **Code Review Session:** Refactor Week 1 code for readability.
+    *   *Bloom:* Analyze (Identify inefficiencies).
+*   **11:00 - 12:00:** **Final Assessment:** 60-minute timed coding challenge.
+    *   *Bloom:* Evaluate (Solve a problem under constraints).
+*   **12:00 - 13:00:** Lunch
+*   **13:00 - 15:00:** **Framework Preview:** Demo of React/Node (Show what they will learn next).
+    *   *Bloom:* Understand (Future context).
+*   **15:00 - 17:00:** **Portfolio Presentation:** Students present their "Business Card" and "To-Do List" to the cohort.
+    *   *Bloom:* Create (Communicate technical work).
+
+---
+
+### Part 3: Bloom’s Taxonomy Alignment Strategy
+
+| Level | Definition | Week 1 Application |
+| :--- | :--- | :--- |
+| **Remember** | Recall facts and terms. | HTML tags, JS variable types, Git commands. |
+| **Understand** | Explain ideas or concepts. | How CSS Flexbox works, What an API is, How JS scope works. |
+| **Apply** | Use information in new situations. | Styling a specific layout, Writing a function, Pushing to Git. |
+| **Analyze** | Draw connections among ideas. | Debugging why an event didn't fire, Refactoring code for readability. |
+| **Evaluate** | Justify a stand or decision. | Assessing code quality during the final review, Choosing the right selector. |
+| **Create** | Produce new or original work. | Building the To-Do List, The Weather Widget, The Portfolio. |
+
+### Part 4: Assessment Strategy (Formative vs. Summative)
+
+**Formative Assessments (Daily Checks):**
+1.  **Day 1:** Peer code review on semantic HTML (Checklist based).
+2.  **Day 2:** Instructor "Walk-through" of logic puzzles (No grading, just feedback).
+3.  **Day 3:** "Fix the Bug" challenge (Instructor provides broken code, students fix it).
+4.  **Day 4:** GitHub Commit History check (Ensures version control hygiene).
+5.  **Day 5:** Timed coding challenge (Low stakes, high pressure simulation).
+
+**Summative Assessment (End of Week):**
+*   **Capstone Project:** A fully functional, responsive "Weather Widget" that runs locally.
+*   **Criteria:** Code cleanliness (indentation, comments), Functionality (works without errors), Responsiveness (mobile view).
+
+### Part 5: Why This Fix Works
+1.  **Prerequisite Safety:** We do not touch React/Node until the JavaScript foundation is solid (Week 2+).
+2.  **Cognitive Load:** We separate CSS Layouts from JS Logic to prevent context switching fatigue.
+3.  **Realistic Time:** We allocate time for *debugging* (Day 3 & 5), which is where the actual learning happens.
+4.  **Git Integration:** Version control is introduced early (Day 4), ensuring students don't lose work.
+5.  **Scaffolded Complexity:** We move from "Business Card" (Static) → "To-Do List" (Interactive) → "Weather Widget" (Data/Logic), ensuring confidence builds before complexity increases.

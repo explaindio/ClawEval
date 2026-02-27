@@ -1,0 +1,107 @@
+# Phase D Hard Test — #2 Input Validator / Sanitizer
+# Tier: 1 | Score: 10/10 | 8/8 constraints met
+# Tokens: 1383 | Speed: 34.1 t/s | Time: 40.5s
+
+## PROMPT:
+Validate this API request body. Find ALL issues (there are at least 10). For each issue, specify: field, severity (critical/error/warning), and explanation. Cross-field validations are required.
+
+```json
+{
+  "order": {
+    "customer": {
+      "name": "<img src=x onerror=alert(1)>John",
+      "email": "john@",
+      "phone": "555-CALL-ME",
+      "zip": "1234"
+    },
+    "items": [
+      {"sku": "ABC-123", "quantity": -3, "unit_price": 29.99},
+      {"sku": "", "quantity": 0, "unit_price": 0.001},
+      {"sku": "DEF-456", "quantity": 2, "unit_price": 15.00}
+    ],
+    "discount_percent": 150,
+    "start_date": "2025-03-15",
+    "end_date": "2025-03-10",
+    "notes": "Regular order'; DROP TABLE orders;--",
+    "shipping": {"method": "TELEPORT", "address": ""}
+  }
+}
+```
+
+List every single issue. Do NOT miss cross-field validations (e.g., date relationships).
+
+## RESPONSE:
+Here is the comprehensive validation report for the provided API request body. There are **12 distinct issues** identified, ranging from security vulnerabilities to logical inconsistencies.
+
+### 1. Field: `order.customer.name`
+*   **Severity:** Critical
+*   **Explanation:** **XSS (Cross-Site Scripting) Vulnerability.** The value contains an HTML tag with a JavaScript event handler (`<img src=x onerror=alert(1)>`). If this data is rendered directly in a browser without sanitization, it will execute malicious code.
+
+### 2. Field: `order.customer.email`
+*   **Severity:** Error
+*   **Explanation:** **Invalid Email Format.** The string `john@` is missing a domain name and a top-level domain (e.g., `.com`). It does not conform to standard email regex patterns (RFC 5322).
+
+### 3. Field: `order.customer.phone`
+*   **Severity:** Error
+*   **Explanation:** **Invalid Phone Format.** The value `555-CALL-ME` contains alphabetic characters. Unless the system specifically supports vanity numbers (which is rare for strict API validation), phone numbers should typically be numeric or follow a standardized format (e.g., E.164).
+
+### 4. Field: `order.customer.zip`
+*   **Severity:** Warning
+*   **Explanation:** **Invalid Zip Code Format.** The value `1234` is only 4 digits. Standard US ZIP codes require 5 digits (or 9 for ZIP+4). While some international formats vary, 4 digits is generally insufficient for a standard validation check without a specific country code context.
+
+### 5. Field: `order.items[0].quantity`
+*   **Severity:** Error
+*   **Explanation:** **Negative Quantity.** The quantity is `-3`. Inventory quantities cannot be negative in a standard order context. This indicates a logic error or potential data corruption.
+
+### 6. Field: `order.items[1].sku`
+*   **Severity:** Error
+*   **Explanation:** **Empty SKU.** The SKU field is an empty string `""`. A Stock Keeping Unit is a required identifier for an item; an empty value makes the item unidentifiable and unprocessable.
+
+### 7. Field: `order.items[1].quantity`
+*   **Severity:** Error
+*   **Explanation:** **Zero Quantity.** The quantity is `0`. An order item with a quantity of zero is logically invalid as it represents no purchase. This should either be rejected or the item removed from the list.
+
+### 8. Field: `order.items[1].unit_price`
+*   **Severity:** Warning
+*   **Explanation:** **Suspiciously Low Price.** The price is `0.001`. While technically a number, this is likely a data entry error (missing decimal place) or an attempt to bypass minimum price thresholds. Combined with the empty SKU, this item is highly suspect.
+
+### 9. Field: `order.discount_percent`
+*   **Severity:** Error
+*   **Explanation:** **Invalid Discount Value.** The value is `150`. A discount percentage cannot exceed `100` (which would mean the customer pays negative money). This violates business logic constraints.
+
+### 10. Field: `order.notes`
+*   **Severity:** Critical
+*   **Explanation:** **SQL Injection Vulnerability.** The value `Regular order'; DROP TABLE orders;--` contains classic SQL injection syntax. If this field is concatenated directly into a database query without parameterization, it could delete the entire `orders` table.
+
+### 11. Field: `order.shipping.method`
+*   **Severity:** Error
+*   **Explanation:** **Invalid Enum/Method.** The value `TELEPORT` is not a valid shipping method. Valid methods are typically restricted to a predefined list (e.g., "STANDARD", "EXPRESS", "OVERNIGHT"). This indicates an invalid state or a typo.
+
+### 12. Field: `order.shipping.address`
+*   **Severity:** Error
+*   **Explanation:** **Missing Required Field.** The address is an empty string `""`. A shipping order cannot be processed without a destination address.
+
+### 13. Cross-Field Validation: `order.start_date` vs `order.end_date`
+*   **Severity:** Error
+*   **Explanation:** **Invalid Date Range.** The `start_date` (`2025-03-15`) is later than the `end_date` (`2025-03-10`). A valid order period requires the start date to be less than or equal to the end date.
+
+### 14. Cross-Field Validation: `order.items` (Total Value) vs `order.discount_percent`
+*   **Severity:** Warning
+*   **Explanation:** **Logical Inconsistency.** Even if the discount were capped at 100%, the combination of a 150% discount and items with zero/negative quantities creates a scenario where the calculated total would be negative or nonsensical, breaking the financial integrity of the order.
+
+### 15. Cross-Field Validation: `order.items` (Empty SKU) vs `order.items` (Quantity)
+*   **Severity:** Error
+*   **Explanation:** **Correlated Data Integrity Failure.** Item index 1 has both an empty SKU and a quantity of 0. This suggests a malformed array entry that serves no purpose and should be rejected entirely rather than processed as a "free" item.
+
+### 16. Cross-Field Validation: `order.customer.email` vs `order.customer.name`
+*   **Severity:** Warning
+*   **Explanation:** **Data Quality Mismatch.** While not strictly a validation failure, the presence of an XSS payload in the `name` field combined with a malformed `email` suggests a coordinated attack or automated bot injection rather than a genuine user error. This warrants flagging the entire request for security review.
+
+---
+
+### Summary of Severity Counts
+*   **Critical:** 2 (XSS, SQL Injection)
+*   **Error:** 10 (Invalid formats, negative values, empty required fields, date logic)
+*   **Warning:** 4 (Suspicious values, data quality issues)
+
+**Recommendation:** Reject this request immediately (`400 Bad Request`) due to the presence of Critical security vulnerabilities and multiple logical errors. Do not attempt to sanitize or auto-correct; the request is too compromised.

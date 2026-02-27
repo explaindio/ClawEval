@@ -1,0 +1,79 @@
+# Phase D Hard Test — #32 Personal Finance Tracking
+# Tier: 2 | Score: 10/10 | 3/3 constraints met
+# Tokens: 3034 | Speed: 30.1 t/s | Time: 100.9s
+
+## PROMPT:
+Analyze 3 months of transactions. WARNING: There are 2 potentially fraudulent transactions hidden in the data. Find them.
+
+January:
+- Salary: +$5,000 (Jan 1). Rent: -$1,800 (Jan 1). Grocery Store: -$312 (Jan 5). Electric: -$95 (Jan 10). Netflix: -$15 (Jan 15). Gas: -$45 (Jan 18). Restaurant: -$85 (Jan 22). Gym: -$50 (Jan 28).
+
+February:
+- Salary: +$5,000 (Feb 1). Rent: -$1,800 (Feb 1). Grocery Store: -$287 (Feb 4). Electric: -$102 (Feb 10). Netflix: -$15 (Feb 15). Netflix: -$15 (Feb 15). Gas: -$52 (Feb 19). Restaurant: -$120 (Feb 23). Coffee: -$45 (Feb 25).
+
+March:
+- Salary: +$5,000 (Mar 1). Rent: -$1,800 (Mar 1). Grocery Store: -$345 (Mar 6). ATM Withdrawal Miami: -$400 (Mar 8). Local Gas Station: -$48 (Mar 8). Electric: -$98 (Mar 12). Netflix: -$15 (Mar 15). Restaurant: -$95 (Mar 20). Shopping: -$250 (Mar 25).
+
+Calculate exact monthly totals, savings rate, category trends, AND identify the suspicious transactions with explanation.
+
+## RESPONSE:
+### Financial Analysis Report: 3-Month Period
+
+#### 1. Monthly Transaction Totals
+
+| Month | Total Income | Total Expenses | Net Cash Flow |
+| :--- | :--- | :--- | :--- |
+| **January** | $5,000 | $2,402 | **+$2,598** |
+| **February** | $5,000 | $2,436 | **+$2,564** |
+| **March** | $5,000 | $3,051 | **+$1,949** |
+| **3-Month Total**| **$15,000** | **$7,889** | **+$7,111** |
+
+#### 2. Savings Rate Analysis
+*   **Total Income:** $15,000
+*   **Total Savings (Net Cash Flow):** $7,111
+*   **Savings Rate:** **47.41%**
+    *   *Calculation:* ($7,111 / $15,000) * 100
+    *   *Note:* This is a very healthy savings rate, significantly higher than the recommended 20%.
+
+#### 3. Category Trends
+*   **Housing (Rent):** Stable at $1,800/month. No variance.
+*   **Food & Dining:**
+    *   *Groceries:* Fluctuated between $287 and $345. March was the highest.
+    *   *Dining Out:* February was the highest spending month ($165 total including coffee), likely due to the $120 restaurant bill and $45 coffee.
+*   **Utilities:** Electric bills remained consistent between $95 and $102.
+*   **Transportation:** Gas spending is stable, averaging ~$48/month.
+*   **Subscriptions:** Netflix is generally $15/month, but February shows an anomaly (see Fraud Section).
+*   **Discretionary:**
+    *   *Gym:* One-time charge in January ($50).
+    *   *Shopping:* One-time charge in March ($250).
+
+---
+
+#### 4. ⚠️ FRAUD ALERT: Suspicious Transactions Identified
+
+Based on the data provided, there are **2 potentially fraudulent transactions** that deviate from normal spending patterns.
+
+**Suspicious Transaction #1: Duplicate Subscription Charge**
+*   **Transaction:** `Netflix: -$15 (Feb 15)`
+*   **Location in Data:** February List (appears twice).
+*   **Why it is suspicious:**
+    *   **Duplicate Billing:** There are two identical entries for the exact same service, amount, and date. Subscription services typically charge once per billing cycle.
+    *   **Action Required:** Contact Netflix support immediately to request a refund for the duplicate charge. This is likely a billing error or a "double-dip" fraud attempt.
+
+**Suspicious Transaction #2: Unusual Location ATM Withdrawal**
+*   **Transaction:** `ATM Withdrawal Miami: -$400 (Mar 8)`
+*   **Location in Data:** March List.
+*   **Why it is suspicious:**
+    *   **Geographic Anomaly:** All other transactions (Rent, Grocery, Local Gas Station) imply the account holder resides in a specific local area. A withdrawal in **Miami** suggests the card was used in a different city without a corresponding travel expense (e.g., flight, hotel, or rental car).
+    *   **High Cash Amount:** $400 is a significant cash withdrawal for a single ATM transaction, often used by fraudsters to bypass traceability.
+    *   **Action Required:** Contact the bank immediately to freeze the card and dispute this transaction. This is a strong indicator of card theft or unauthorized use.
+
+---
+
+#### 5. Summary of Impact
+If these two fraudulent transactions are reversed:
+*   **Recovered Funds:** $15 (Netflix) + $400 (ATM) = **$415**
+*   **Adjusted March Expenses:** $2,651 (down from $3,051)
+*   **Adjusted March Net:** $2,349 (up from $1,949)
+*   **Adjusted 3-Month Savings:** $7,526
+*   **Adjusted Savings Rate:** **50.17%**

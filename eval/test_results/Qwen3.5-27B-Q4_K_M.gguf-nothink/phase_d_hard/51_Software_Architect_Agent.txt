@@ -1,0 +1,164 @@
+# Phase D Hard Test — #51 Software Architect Agent
+# Tier: 5 | Score: 10/10 | 4/4 constraints met
+# Tokens: 2873 | Speed: 32.6 t/s | Time: 88.1s
+
+## PROMPT:
+Design a system architecture. WARNING: The requirements contain 3 CONTRADICTORY pairs. You must identify them and propose tradeoffs instead of pretending all requirements can be met simultaneously.
+
+Requirements:
+1. Process 50,000 events per second in real-time (< 100ms latency)
+2. Also support batch processing of historical data (millions of records)
+3. Zero downtime during deployments AND database schema migrations
+4. Store data in a strongly consistent SQL database with ACID transactions
+5. Horizontally scale to handle 10x traffic spikes within 30 seconds
+6. Multi-region deployment with data residency compliance (EU data stays in EU)
+7. Total infrastructure cost under $5,000/month at current scale
+8. 99.999% availability (five nines = ~5 minutes downtime/year)
+
+For each contradictory pair:
+1. Explain WHY they conflict
+2. Propose a compromise or phased approach
+3. What would you prioritize and why?
+
+Then provide the architecture diagram (text format) with the tradeoffs built in.
+
+## RESPONSE:
+This is a classic system design challenge where the requirements push against fundamental limits of distributed systems (CAP theorem, cost-performance tradeoffs, and consistency-latency tradeoffs).
+
+Below is the analysis of the three contradictory pairs, followed by the proposed architecture.
+
+### Part 1: Contradictory Pairs Analysis
+
+#### Contradiction Pair 1: Strong Consistency vs. Multi-Region Residency & High Availability
+*   **Requirements:**
+    *   Req 4: Store data in a **strongly consistent SQL database** with ACID transactions.
+    *   Req 6: **Multi-region deployment** with data residency (EU data stays in EU).
+    *   Req 8: **99.999% availability** (Five Nines).
+*   **Why they conflict:**
+    *   **CAP Theorem:** In a distributed system (Multi-region), you cannot simultaneously guarantee Consistency (C) and Availability (A) during a network partition.
+    *   **Latency:** Strong consistency across regions requires synchronous replication (2-phase commit or similar) between regions. The speed of light adds ~50-100ms latency between regions (e.g., US-East to EU-West). This violates Req 1 (<100ms latency) and makes Req 4 (ACID) extremely slow.
+    *   **Availability:** If one region goes down, a strongly consistent system must block writes to prevent data divergence, violating Req 8 (Five Nines).
+*   **Compromise/Phased Approach:**
+    *   **Adopt Eventual Consistency for Cross-Region:** Use a "Write-Local, Sync-Async" model. Writes are ACID-consistent *within* a region but eventually consistent across regions.
+    *   **Data Residency via Sharding:** Strictly shard data by region. EU users write to EU nodes; US users write to US nodes. No cross-region writes for user data.
+    *   **Global Read-Only Replicas:** For reporting, use asynchronous replication to a global read-only store (violating strict real-time consistency for global views but preserving local ACID).
+*   **Prioritization:**
+    *   **Prioritize Req 4 (Local ACID) and Req 6 (Residency).**
+    *   **Sacrifice:** Global Strong Consistency and strict 99.999% availability *across* regions. We will aim for 99.99% (Four Nines) globally, accepting that a region failure isolates that region's data until recovery.
+
+#### Contradiction Pair 2: Real-Time Low Latency vs. Cost Constraints
+*   **Requirements:**
+    *   Req 1: Process **50,000 events/sec** with <100ms latency.
+    *   Req 7: Total cost **under $5,000/month**.
+    *   Req 5: Scale **10x** (500k events/sec) within 30 seconds.
+*   **Why they conflict:**
+    *   **Compute Cost:** Processing 50k events/sec with <100ms latency requires significant CPU/RAM. To handle a 10x spike (500k/sec) instantly, you need pre-warmed capacity or extremely fast auto-scaling.
+    *   **Database Cost:** A single SQL instance capable of 50k writes/sec with low latency (and ACID overhead) is expensive. A managed SQL service (e.g., Aurora, Cloud SQL) at this throughput often exceeds $2,000/month alone.
+    *   **Scaling Speed:** Scaling 10x in 30 seconds usually requires "over-provisioning" (keeping idle resources ready) or using serverless (which has cold start latency issues). Over-provisioning for 10x spikes violates the $5k budget.
+*   **Compromise/Phased Approach:**
+    *   **Hybrid Storage:** Offload the heavy write load to a high-throughput, low-cost NoSQL buffer (e.g., Kafka + ClickHouse or Cassandra) for the "events." Only aggregate/critical data hits the expensive SQL DB.
+    *   **Serverless Compute:** Use FaaS (Lambda/Cloud Functions) for the ingestion layer to handle the 10x spike without paying for idle VMs.
+    *   **Relax Latency for Non-Critical Paths:** Accept that the *batch* processing (Req 2) and *historical* aggregation will not be <100ms. Only the "hot path" (ingestion) gets the <100ms SLA.
+*   **Prioritization:**
+    *   **Prioritize Req 1 (Ingestion Latency) and Req 7 (Cost).**
+    *   **Sacrifice:** The requirement that *all* data be in the SQL DB immediately. We will use a "Lambda Architecture" pattern: Fast path (NoSQL/Stream) for real-time, Slow path (SQL) for consistency.
+
+#### Contradiction Pair 3: Zero Downtime Migrations vs. Strong Consistency & Schema Changes
+*   **Requirements:**
+    *   Req 3: **Zero downtime** during deployments and **database schema migrations**.
+    *   Req 4: **Strongly consistent SQL** with ACID.
+    *   Req 1: **Real-time processing** (<100ms).
+*   **Why they conflict:**
+    *   **Locking:** In a strongly consistent SQL DB, adding a column or changing a type often requires a table lock or a background rewrite that consumes I/O.
+    *   **Latency Spike:** During a migration, the database I/O is saturated. This causes latency to spike, violating the <100ms requirement for the 50k events/sec.
+    *   **Zero Downtime:** True zero downtime requires a "dual-write" strategy (writing to old and new schema simultaneously) and a "backfill" phase. This doubles the write load on the DB, potentially crashing it under the 50k/sec load.
+*   **Compromise/Phased Approach:**
+    *   **Expand/Contract Pattern:** Add new columns as nullable (no lock), deploy code to write to both, backfill data, then drop old columns. This takes time but avoids locking.
+    *   **Read-Only Migrations:** Perform schema changes on a read-replica first, promote it, then switch traffic.
+    *   **Acceptance of "Micro-Downtime":** Acknowledge that "Zero Downtime" is a theoretical ideal. We will target <1 second of latency degradation, not zero impact.
+*   **Prioritization:**
+    *   **Prioritize Req 4 (Data Integrity) and Req 1 (Latency).**
+    *   **Sacrifice:** The strict "Zero Downtime" guarantee during schema changes. We will schedule migrations during low-traffic windows or accept a brief latency spike (e.g., 200ms for 5 seconds) during the backfill phase.
+
+---
+
+### Part 2: Proposed System Architecture
+
+**Design Philosophy:** Lambda Architecture with Regional Sharding.
+*   **Hot Path (Real-time):** Kafka -> Stream Processor -> NoSQL (for speed) + SQL (for critical ACID).
+*   **Cold Path (Batch):** Kafka -> Batch Processor -> Data Warehouse.
+*   **Scaling:** Serverless ingestion + Auto-scaling Stream processors.
+
+#### Architecture Diagram (Text Format)
+
+```text
+[ User Clients ]
+       |
+       | (HTTPS / gRPC)
+       v
+[ Global Load Balancer (Geo-DNS) ]
+       |
+       +---[ Region: EU (Frankfurt) ]----------------+---[ Region: US (N. Virginia) ]
+       |                                              |
+       | [ API Gateway (Serverless/Edge) ]            | [ API Gateway (Serverless/Edge) ]
+       |       |                                      |       |
+       |       v (Route by User-ID/Region)            |       v
+       | [ Ingestion Service (K8s/Serverless) ]       | [ Ingestion Service (K8s/Serverless) ]
+       |       |                                      |       |
+       |       +---> [ Kafka Cluster (EU) ] <--------+---> [ Kafka Cluster (US) ]
+       |       |          (Event Buffer)             |          (Event Buffer)
+       |       |                                      |
+       |       +---> [ Stream Processor (Flink/Spark) ]<---+
+       |       |       (Real-time Aggregation)             |
+       |       |       - Filter, Enrich, Transform         |
+       |       |       - < 100ms Latency                  |
+       |       |                                          |
+       |       +---> [ Hot Storage: NoSQL (DynamoDB/Cassandra) ]
+       |       |       (High Write Throughput, Low Cost)   |
+       |       |       - Stores raw events for <100ms read |
+       |       |                                          |
+       |       +---> [ Critical ACID DB: SQL (Aurora/Postgres) ]
+       |       |       (Sharded by Region)                |
+       |       |       - Only writes critical state (Orders, Auth) |
+       |       |       - Async Replication to Global Read-Only    |
+       |       |                                          |
+       |       +---> [ Batch Processor (Airflow/EMR) ]    |
+       |       |       (Historical Data)                  |
+       |       |       - Reads from Kafka S3 Archive      |
+       |       |       - Loads into Data Warehouse (Snowflake/Redshift) |
+       |       |                                          |
+       |       +---> [ Monitoring & Alerting (Prometheus/Grafana) ]
+       |
+       +--------------------------------------------------+
+```
+
+### Key Tradeoffs Implemented in this Design
+
+1.  **Cost vs. Scale (Req 1, 5, 7):**
+    *   **Solution:** We do not put all 50k events/sec into the SQL database.
+    *   **Tradeoff:** The SQL database only handles "Critical State" (e.g., user balance, order status). The bulk of the 50k events go to a NoSQL store (DynamoDB/Cassandra) which is cheaper and scales horizontally without locking. This keeps the SQL bill low and allows the 10x spike to be handled by the NoSQL layer and Kafka.
+
+2.  **Consistency vs. Availability (Req 4, 6, 8):**
+    *   **Solution:** Data is strictly sharded by region. EU users write to EU SQL; US users write to US SQL.
+    *   **Tradeoff:** We sacrifice **Global Strong Consistency**. A user in the US cannot see a transaction made by a user in the EU in real-time (eventual consistency only). This satisfies Residency (Req 6) and keeps Latency low (Req 1), but we cannot guarantee 99.999% availability *globally* if one region fails (that region's users are down).
+
+3.  **Zero Downtime vs. Schema Changes (Req 3, 4):**
+    *   **Solution:** The "Expand/Contract" pattern is used for the SQL DB.
+    *   **Tradeoff:** We accept that during the "Backfill" phase of a migration, the database will experience higher I/O, potentially causing latency to briefly exceed 100ms. We will schedule these migrations during off-peak hours to minimize impact, rather than promising true "Zero Downtime" during peak load.
+
+4.  **Real-time vs. Batch (Req 1, 2):**
+    *   **Solution:** Lambda Architecture.
+    *   **Tradeoff:** The "Batch" processing (Req 2) is decoupled. It does not block the real-time path. Historical analysis is done on the Data Warehouse, not the live SQL DB.
+
+### Cost Estimation Check (Approximate)
+*   **Compute (Serverless/K8s):** $1,500/mo (Handling 50k/sec spikes efficiently).
+*   **Kafka (Managed):** $1,000/mo.
+*   **NoSQL (Hot Storage):** $1,000/mo (High write volume).
+*   **SQL (Critical Data Only):** $800/mo (Smaller dataset, less write load).
+*   **Data Warehouse (Batch):** $500/mo.
+*   **Networking/Other:** $200/mo.
+*   **Total:** ~$5,000/mo.
+*   *Note: If we tried to put all 50k events/sec into the SQL DB, the cost would likely exceed $15,000/mo.*
+
+### Final Conclusion
+This architecture satisfies the **hard constraints** (Cost, Residency, Latency for the hot path) by relaxing the **soft constraints** (Global Strong Consistency, Zero Downtime during migrations, and 5-Nines global availability). It prioritizes the user experience (fast ingestion) and legal compliance (data residency) over theoretical perfection in consistency and availability.

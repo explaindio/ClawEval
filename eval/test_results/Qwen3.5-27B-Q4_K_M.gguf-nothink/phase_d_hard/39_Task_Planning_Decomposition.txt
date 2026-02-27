@@ -1,0 +1,166 @@
+# Phase D Hard Test — #39 Task Planning / Decomposition
+# Tier: 3 | Score: 10/10 | 1/1 constraints met
+# Tokens: 1857 | Speed: 33.1 t/s | Time: 56.2s
+
+## PROMPT:
+Decompose this project into tasks with dependencies. WARNING: The requirements as stated contain a CIRCULAR DEPENDENCY. You must detect it and propose a resolution.
+
+Project: Build a real-time dashboard
+- Task A (Auth system): "Requires the notification service (Task C) to send verification emails"
+- Task B (Data pipeline): "Requires the auth system (Task A) to validate data sources"
+- Task C (Notification service): "Requires the data pipeline (Task B) to know what events to notify about"
+- Task D (Dashboard UI): "Requires A, B, and C to be complete"
+- Task E (Testing): "Requires D to be complete, plus access to A, B, C independently"
+- Task F (Deployment): "Requires E to pass, but also needs to deploy A, B, C as separate services"
+
+Team: 2 backend devs, 1 frontend dev, 1 QA. Timeline: 8 weeks.
+
+1. Draw the dependency graph (text format)
+2. Identify the circular dependency
+3. Propose how to break the cycle (e.g., mock service, interface-first approach)
+4. Create a realistic 8-week schedule with parallel work
+
+## RESPONSE:
+Here is the breakdown of the project, the analysis of the circular dependency, the proposed resolution, and a realistic 8-week schedule.
+
+### 1. Dependency Graph (Text Format)
+
+Based on the requirements provided, the dependencies form the following directed graph:
+
+```text
+Task A (Auth)  --> Requires Task C (Notif)
+Task B (Data)  --> Requires Task A (Auth)
+Task C (Notif) --> Requires Task B (Data)
+Task D (UI)    --> Requires A, B, C
+Task E (Test)  --> Requires D, A, B, C
+Task F (Deploy)--> Requires E, A, B, C
+```
+
+**Visual Representation:**
+```mermaid
+graph TD
+    A[Task A: Auth] -->|Needs| C[Task C: Notif]
+    B[Task B: Data] -->|Needs| A[Task A: Auth]
+    C[Task C: Notif] -->|Needs| B[Task B: Data]
+    D[Task D: UI] -->|Needs| A
+    D -->|Needs| B
+    D -->|Needs| C
+    E[Task E: Test] -->|Needs| D
+    E -->|Needs| A
+    E -->|Needs| B
+    E -->|Needs| C
+    F[Task F: Deploy] -->|Needs| E
+    F -->|Needs| A
+    F -->|Needs| B
+    F -->|Needs| C
+```
+
+---
+
+### 2. Identification of Circular Dependency
+
+**The Cycle:**
+There is a direct circular dependency between **Task A**, **Task B**, and **Task C**.
+*   **A** cannot start without **C**.
+*   **C** cannot start without **B**.
+*   **B** cannot start without **A**.
+
+**Logic:**
+`A → C → B → A`
+
+This creates a deadlock where no task in this trio can begin development or completion until the others are finished, which is impossible in a linear workflow.
+
+---
+
+### 3. Proposed Resolution: Interface-First & Mocking Strategy
+
+To break the cycle, we must decouple the **implementation** of the services from their **interfaces**. We will use an **Interface-First (Contract-First)** approach combined with **Mock Services**.
+
+**Resolution Steps:**
+
+1.  **Define Contracts (Week 1):** Before writing logic, define the API contracts (OpenAPI/Swagger) for Auth, Data, and Notification services.
+    *   *Auth Contract:* Defines the endpoint to send emails.
+    *   *Data Contract:* Defines the endpoint to validate sources.
+    *   *Notif Contract:* Defines the event schema to listen for.
+2.  **Implement Mocks/Stubs:**
+    *   **Task A (Auth):** Develop against a **Mock Notification Service**. The Auth system calls a local stub that logs the email to a file/console instead of sending it.
+    *   **Task C (Notif):** Develop against a **Mock Data Pipeline**. The Notification service listens to a local message queue (e.g., Redis or a simple in-memory list) populated by a script, rather than waiting for the real Data Pipeline.
+    *   **Task B (Data):** Develop against a **Mock Auth System**. The Data pipeline uses a hardcoded "Admin" token or a local validation stub to bypass the real Auth check initially.
+3.  **Integration Phase:** Once individual services are stable, replace the mocks with the real services in a specific order:
+    *   Deploy **Auth** (real) + **Mock Notif**.
+    *   Deploy **Data** (real) + **Mock Auth** (or connect to real Auth if ready).
+    *   Deploy **Notif** (real) + **Mock Data** (or connect to real Data).
+    *   Finally, wire them all together.
+
+**Revised Dependency Graph (Logical Flow):**
+*   **Phase 1 (Design):** Define Interfaces (No dependencies).
+*   **Phase 2 (Dev):** A, B, C develop in parallel using Mocks.
+*   **Phase 3 (Integration):** Wire real services.
+*   **Phase 4 (UI/Test):** D, E, F proceed.
+
+---
+
+### 4. Realistic 8-Week Schedule
+
+**Team Allocation:**
+*   **Backend Dev 1:** Focus on Task A (Auth) & Task C (Notif).
+*   **Backend Dev 2:** Focus on Task B (Data Pipeline).
+*   **Frontend Dev:** Focus on Task D (UI).
+*   **QA:** Focus on Task E (Testing) & Integration support.
+
+**Timeline:**
+
+#### **Week 1: Architecture & Contracts (Breaking the Cycle)**
+*   **All Team:** Define API Contracts (OpenAPI specs) for A, B, and C.
+*   **Backend Dev 1:** Set up Mock Notification Service (stub).
+*   **Backend Dev 2:** Set up Mock Auth Validator (stub).
+*   **Frontend:** Design UI wireframes and set up project scaffolding.
+*   **QA:** Define test cases based on contracts.
+
+#### **Week 2: Parallel Development (Mock-Driven)**
+*   **Backend Dev 1 (Task A):** Build Auth logic. Uses Mock Notif for emails.
+*   **Backend Dev 2 (Task B):** Build Data Pipeline logic. Uses Mock Auth for validation.
+*   **Backend Dev 1 (Task C):** Build Notification logic. Uses Mock Data events (scripted inputs).
+*   **Frontend:** Build Dashboard shell and static components.
+
+#### **Week 3: Parallel Development (Core Logic)**
+*   **Backend Dev 1:** Complete Auth logic; integrate real email provider (e.g., SendGrid) but keep logic isolated.
+*   **Backend Dev 2:** Complete Data Pipeline logic; implement real data ingestion.
+*   **Backend Dev 1:** Complete Notification service; implement real event listeners.
+*   **Frontend:** Connect UI to Mock APIs (using tools like MSW or MockServer) to simulate data flow.
+
+#### **Week 4: Integration Sprint 1 (Auth & Data)**
+*   **Backend Dev 1 & 2:** Connect **Real Auth** with **Real Data Pipeline**.
+    *   *Action:* Remove Mock Auth from Data Pipeline.
+    *   *Action:* Remove Mock Notif from Auth (switch to real email provider).
+*   **Frontend:** Connect UI to Real Auth endpoints (Login/Register).
+*   **QA:** Begin Unit Testing on A and B.
+
+#### **Week 5: Integration Sprint 2 (Notifications & Full Loop)**
+*   **Backend Dev 1 & 2:** Connect **Real Notification Service** to **Real Data Pipeline**.
+    *   *Action:* Remove Mock Data from Notif service.
+    *   *Action:* Ensure Data Pipeline triggers events that Notif picks up.
+*   **Frontend:** Connect UI to Real Data endpoints (Charts/Tables).
+*   **QA:** Integration Testing on A+B+C loop.
+
+#### **Week 6: UI Completion & End-to-End Testing**
+*   **Frontend:** Finalize Dashboard UI (Task D). Ensure real-time updates work.
+*   **QA (Task E):** Execute full E2E tests.
+    *   Verify: User signs up (A) -> Email sent (C) -> Data ingested (B) -> Dashboard updates (D).
+*   **Backend:** Fix bugs found during QA.
+
+#### **Week 7: Deployment Prep & Staging**
+*   **Backend:** Containerize services (Docker) for A, B, C.
+*   **DevOps/Backend:** Set up CI/CD pipeline.
+*   **QA:** Regression testing on Staging environment.
+*   **Frontend:** Performance optimization and final polish.
+
+#### **Week 8: Production Deployment & Handover**
+*   **Team:** Execute **Task F (Deployment)**.
+    *   Deploy A, B, C as separate microservices.
+    *   Deploy D (UI).
+*   **QA:** Smoke testing on Production.
+*   **All:** Documentation and Project Handover.
+
+### Summary of Resolution
+By shifting the dependency from **"Requires Implementation"** to **"Requires Interface Definition,"** we allow the three backend tasks (A, B, C) to run in parallel during Weeks 2-3. The circular dependency is broken by using mocks for the missing pieces until the integration phase (Weeks 4-5), where the real services are wired together sequentially.

@@ -1,0 +1,173 @@
+# Phase D Hard Test — #51 Software Architect Agent
+# Tier: 5 | Score: 10/10 | 4/4 constraints met
+# Tokens: 9573 | Speed: 92.1 t/s | Time: 103.9s
+
+## PROMPT:
+Design a system architecture. WARNING: The requirements contain 3 CONTRADICTORY pairs. You must identify them and propose tradeoffs instead of pretending all requirements can be met simultaneously.
+
+Requirements:
+1. Process 50,000 events per second in real-time (< 100ms latency)
+2. Also support batch processing of historical data (millions of records)
+3. Zero downtime during deployments AND database schema migrations
+4. Store data in a strongly consistent SQL database with ACID transactions
+5. Horizontally scale to handle 10x traffic spikes within 30 seconds
+6. Multi-region deployment with data residency compliance (EU data stays in EU)
+7. Total infrastructure cost under $5,000/month at current scale
+8. 99.999% availability (five nines = ~5 minutes downtime/year)
+
+For each contradictory pair:
+1. Explain WHY they conflict
+2. Propose a compromise or phased approach
+3. What would you prioritize and why?
+
+Then provide the architecture diagram (text format) with the tradeoffs built in.
+
+## RESPONSE:
+# System Architecture Design & Contradiction Analysis
+
+## 1. Contradictory Pairs Analysis
+
+### Pair 1: Cost vs. Availability & Scale
+*   **Requirements:** Req 7 ($5,000/month) vs. Req 8 (99.999% Availability) & Req 1 (50k events/sec).
+*   **Why they conflict:**
+    *   **50k events/sec** implies ~129 billion events/month. At even 1KB/event, this is ~129TB of data/month.
+    *   **99.999% Availability** (Five Nines) requires redundant infrastructure (Active/Active or Active/Passive with fast failover) across regions to survive regional outages.
+    *   **Cost:** Enterprise-grade managed services (e.g., AWS RDS Multi-AZ, Kinesis, Lambda) for this volume typically cost $10k–$20k/month. Achieving 99.999% at $5k is mathematically impossible without significant risk of downtime or throttling.
+*   **Tradeoff:**
+    *   **Reduce Availability Target:** Drop from 99.999% to **99.99% (Four Nines)**. This allows for Active/Passive failover instead of Active/Active, reducing compute costs by ~40%.
+    *   **Cost Optimization:** Use Spot Instances for batch processing and non-critical scaling, reserving On-Demand only for the real-time ingestion path.
+*   **Priority:** **Availability (Req 8)** is prioritized over Cost (Req 7). Downtime costs more than infrastructure in a real-time event system. The $5k budget is treated as a "target" to be optimized, not a hard limit that compromises safety.
+
+### Pair 2: Strong Consistency vs. Multi-Region & Latency
+*   **Requirements:** Req 4 (Strongly Consistent SQL) & Req 6 (Multi-Region Data Residency) vs. Req 1 (<100ms Latency) & Req 8 (High Availability).
+*   **Why they conflict:**
+    *   **CAP Theorem:** To maintain Strong Consistency (ACID) across regions (EU vs. US), you need synchronous replication. This adds network latency, violating the <100ms requirement.
+    *   **Availability Risk:** If the network partition occurs between regions, a strongly consistent system must block writes to maintain integrity, violating High Availability.
+    *   **Data Residency:** EU data must stay in EU. If the primary DB is in EU, US users experience high latency. If the primary is US, EU data residency is violated.
+*   **Tradeoff:**
+    *   **Local Strong Consistency:** Enforce ACID transactions **within** a region (e.g., EU writes to EU DB).
+    *   **Global Eventual Consistency:** Replicate data asynchronously to other regions for read-only access or backup.
+    *   **Architecture:** Use a "Leader-Follower" model per region. Writes are local; reads can be local or cross-region (with stale data warning).
+*   **Priority:** **Data Residency (Req 6)** and **Latency (Req 1)** are prioritized over Global Strong Consistency (Req 4). Compliance is a legal requirement; latency is a user experience requirement. Global ACID is sacrificed for regional performance.
+
+### Pair 3: Real-Time vs. Batch Processing
+*   **Requirements:** Req 1 (Real-time <100ms) vs. Req 2 (Batch Processing Millions of Records).
+*   **Why they conflict:**
+    *   **Resource Contention:** Batch processing millions of records requires high I/O and CPU. If run on the same database or compute cluster as the real-time stream, it causes "noisy neighbor" effects, spiking latency beyond 100ms.
+    *   **Locking:** Long-running batch transactions can lock tables, blocking real-time writes (violating Req 1).
+*   **Tradeoff:**
+    *   **Separation of Concerns (OLTP vs. OLAP):** Use a **Strongly Consistent SQL DB** for real-time (OLTP) and a **Data Lake/Columnar Store** (e.g., S3 + Athena/Redshift) for Batch (OLAP).
+    *   **Async Pipeline:** Real-time events stream to the SQL DB. A separate ETL job copies data to the Data Lake for batch processing.
+*   **Priority:** **Real-Time Processing (Req 1)** is prioritized. The system is defined as a "Real-Time Event System." Batch processing is a secondary analytical capability.
+
+---
+
+## 2. Prioritization Summary
+
+| Priority | Requirement | Reason |
+| :--- | :--- | :--- |
+| **1** | **Data Residency (Req 6)** | Legal/Compliance requirement; cannot be violated. |
+| **2** | **Availability (Req 8)** | Business continuity; downtime impacts revenue/reputation. |
+| **3** | **Latency (Req 1)** | Core product value proposition (Real-time). |
+| **4** | **Strong Consistency (Req 4)** | Important, but scoped to *local* region to save latency. |
+| **5** | **Zero Downtime Migrations (Req 3)** | Operational necessity, solved via Blue/Green deployment. |
+| **6** | **Cost (Req 7)** | Constraint to be optimized, not a hard blocker for stability. |
+
+---
+
+## 3. System Architecture Diagram
+
+```text
++---------------------------+       +---------------------------+
+|      EU Region (Primary)  |       |      US Region (Secondary)|
+|   (Data Residency: EU)    |       |   (Data Residency: US)    |
++---------------------------+       +---------------------------+
+|                           |       |                           |
+|  [Load Balancer]          |       |  [Load Balancer]          |
+|         |                 |       |         |                 |
+|         v                 |       |         v                 |
+|  [API Gateway / Ingest]   |       |  [API Gateway / Ingest]   |
+|         |                 |       |         |                 |
+|         v                 |       |         v                 |
+|  [Event Stream]           |       |  [Event Stream]           |
+|  (Kinesis / Kafka)        |       |  (Kinesis / Kafka)        |
+|         |                 |       |         |                 |
+|         +-------+---------+       |         +-------+---------+
+|                 |                 |                 |
+|                 v                 |                 v
+|  +-----------------------+       |  +-----------------------+
+|  |  Real-Time Worker     |       |  |  Real-Time Worker     |
+|  |  (Serverless/Fargate) |       |  |  (Serverless/Fargate) |
+|  +-----------------------+       |  +-----------------------+
+|                 |                 |                 |
+|                 v                 |                 v
+|  +-----------------------+       |  +-----------------------+
+|  |  OLTP Database        |       |  |  OLTP Database        |
+|  |  (PostgreSQL Aurora)  |       |  |  (PostgreSQL Aurora)  |
+|  |  [Strong Consistency] |       |  |  [Strong Consistency] |
+|  |  [Multi-AZ Enabled]   |       |  |  [Multi-AZ Enabled]   |
+|  +-----------------------+       |  +-----------------------+
+|         |                         |         |
+|         | (Async Replication)     |         |
+|         +-------------------------+         |
+|                 |                         |
+|                 v                         |
+|  +-----------------------+       +-----------------------+
+|  |  Data Lake / Batch    |       |  [Batch Processor]    |
+|  |  (S3 + Athena/Spark)  |       |  (Spot Instances)     |
+|  |  [Eventual Consistency]|       |  [Read-Only Access]   |
+|  +-----------------------+       +-----------------------+
+|                           |       |                           |
++---------------------------+       +---------------------------+
+
++---------------------------+
+|      Global Control       |
+|      (CI/CD & Monitoring) |
++---------------------------+
+|                           |
+|  [Blue/Green Deployment]  |
+|  [Schema Migration Tool]  |
+|  [Cost Monitoring]        |
++---------------------------+
+```
+
+---
+
+## 4. Architecture Tradeoff Implementation Details
+
+### A. Handling Cost vs. Availability (Req 7 vs Req 8)
+*   **Implementation:** We use **Multi-AZ** (Availability Zone) within the EU region for the OLTP database, not Multi-Region Active/Active.
+*   **Why:** Multi-AZ provides high availability (failover in <60s) at a lower cost than Multi-Region.
+*   **Tradeoff:** We accept a slight increase in failover time compared to Active/Active to stay within budget. We use **Spot Instances** for the Batch Processor (Req 2) and **On-Demand** for the Real-Time Worker (Req 1).
+
+### B. Handling Consistency vs. Multi-Region (Req 4 vs Req 6)
+*   **Implementation:** **Regional Leaders.** EU writes go to the EU DB. US writes go to the US DB. Data is replicated asynchronously from EU to US.
+*   **Why:** This ensures EU data stays in EU (Req 6) and writes are fast (<100ms) (Req 1).
+*   **Tradeoff:** Global Strong Consistency (Req 4) is relaxed to **Local Strong Consistency**. Cross-region reads may be slightly stale.
+
+### C. Handling Real-Time vs. Batch (Req 1 vs Req 2)
+*   **Implementation:** **OLTP/OLAP Split.**
+    *   **Real-Time:** Ingests to Stream -> Worker -> SQL DB.
+    *   **Batch:** SQL DB -> ETL -> Data Lake (S3) -> Athena/Spark.
+*   **Why:** Heavy batch queries on the Data Lake do not impact the I/O of the SQL DB used for real-time events.
+*   **Tradeoff:** Batch data is not immediately available in the SQL DB for complex analytics; it must be queried via the Data Lake layer.
+
+### D. Handling Zero Downtime Migrations (Req 3)
+*   **Implementation:** **Blue/Green Database Strategy.**
+    *   New schema is deployed to a "Green" DB.
+    *   Traffic is switched via Load Balancer.
+    *   Old "Blue" DB is kept for rollback.
+    *   For schema changes, we use **Expand/Contract** pattern (add column, backfill, switch, remove) to avoid locking tables during high throughput.
+*   **Why:** Ensures Req 3 is met without blocking the 50k events/sec stream.
+
+### E. Handling Scalability (Req 5)
+*   **Implementation:** **Serverless Compute.**
+    *   Real-Time Workers run on AWS Lambda or Fargate Tasks with Auto-Scaling.
+    *   Scaling to 10x traffic happens automatically within 30 seconds as the event queue grows.
+*   **Why:** Serverless scales instantly without pre-provisioning capacity, meeting the 30-second spike requirement.
+
+### F. Handling Compliance (Req 6)
+*   **Implementation:** **Geo-Fencing.**
+    *   API Gateway routes EU traffic to EU Region.
+    *   Data residency is enforced at the storage layer (S3 Buckets/DB Instances are region-locked).
+*   **Why:** Ensures legal compliance is maintained regardless of user location.

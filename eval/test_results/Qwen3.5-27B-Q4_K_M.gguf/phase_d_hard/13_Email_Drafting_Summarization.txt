@@ -1,0 +1,58 @@
+# Phase D Hard Test — #13 Email Drafting / Summarization
+# Tier: 2 | Score: 5/10 | No automated constraints to check
+# Tokens: 4931 | Speed: 25.9 t/s | Time: 190.4s
+
+## PROMPT:
+Prioritize these 8 emails. WARNING: 2 emails have HIDDEN urgency clues buried in the text that change their priority. Read carefully.
+
+1. Subject: "Team lunch Friday" — "Hey, let's do Thai food this week!"
+2. Subject: "Quick question" — "The board presentation is tomorrow and slide 14 has last quarter's numbers instead of this quarter's. Can someone fix?"
+3. Subject: "FYI - vendor update" — "Just letting you know Acme renewed. PS: They mentioned in passing that they're evaluating competitors and their contract has a 30-day termination clause that activates next week."
+4. Subject: "URGENT: Office supplies" — "We're running low on printer paper!!!!"
+5. Subject: "Re: Project timeline" — "Looks good, no changes needed from my end."
+6. Subject: "Meeting notes from Tuesday" — "Attached are the notes. Also, I noticed during the meeting that the CFO mentioned they're freezing all new hires starting Monday — might affect our expansion plans."
+7. Subject: "Newsletter subscription" — "Thanks for subscribing to TechDigest!"
+8. Subject: "Parking lot maintenance" — "Lot B will be closed Saturday for restriping."
+
+Rank P1-P4. Explain the hidden urgency in the emails where it exists.
+
+## RESPONSE:
+### Priority Ranking
+
+**P1 (Critical - Immediate Action Required)**
+*   **Email 2:** "Quick question" (Board presentation tomorrow with wrong data).
+*   **Email 3:** "FYI - vendor update" (Contract termination risk).
+*   **Email 6:** "Meeting notes from Tuesday" (Hiring freeze starting Monday).
+
+**P2 (High - Action Required Soon)**
+*   **Email 5:** "Re: Project timeline" (Approval needed to keep workflow moving).
+
+**P3 (Medium - Informational/Logistical)**
+*   **Email 1:** "Team lunch Friday" (Morale/Team building).
+*   **Email 8:** "Parking lot maintenance" (Logistics for weekend).
+
+**P4 (Low - Noise/Spam)**
+*   **Email 4:** "URGENT: Office supplies" (False urgency).
+*   **Email 7:** "Newsletter subscription" (Irrelevant marketing).
+
+***
+
+### Hidden Urgency Explanation
+
+Two emails contain urgency clues buried in the text that elevate them from "Informational" to "Critical" (P1):
+
+1.  **Email 3 ("FYI - vendor update"):**
+    *   **Surface Priority:** P3 (FYI/Informational).
+    *   **Hidden Clue:** The urgency is buried in the **PS**. While the email starts with good news ("Acme renewed"), the postscript reveals a **30-day termination clause activates next week** and the vendor is evaluating competitors.
+    *   **Impact:** This requires immediate relationship management or backup planning to prevent losing a vendor within days, despite the "renewal."
+
+2.  **Email 6 ("Meeting notes from Tuesday"):**
+    *   **Surface Priority:** P3 (Administrative/Notes).
+    *   **Hidden Clue:** The urgency is buried in the **"Also..."** sentence. While the email is framed as sharing notes, it reveals the **CFO is freezing all new hires starting Monday**.
+    *   **Impact:** This immediately halts expansion plans and requires urgent strategic adjustment to staffing and hiring pipelines.
+
+***
+
+### Additional Analysis Notes
+*   **Email 2 ("Quick question"):** While the urgency is explicit in the body ("tomorrow"), the subject line ("Quick question") is a **misleading subject** designed to lower priority. It is P1 due to the reputational risk of presenting wrong data to the Board.
+*   **Email 4 ("URGENT: Office supplies"):** This is a **false urgency** trap. The subject line screams "URGENT," but printer paper is rarely a business-critical blocker compared to financial data, contracts, or hiring freezes. It is ranked P4.

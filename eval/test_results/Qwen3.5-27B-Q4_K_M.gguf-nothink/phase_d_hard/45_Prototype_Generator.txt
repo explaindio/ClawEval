@@ -1,0 +1,131 @@
+# Phase D Hard Test — #45 Prototype Generator
+# Tier: 3 | Score: 5/10 | No test code provided
+# Tokens: 943 | Speed: 33.0 t/s | Time: 28.6s
+
+## PROMPT:
+Write a COMPLETE, RUNNABLE Streamlit prototype that actually works when executed. I will run it with `streamlit run app.py`.
+
+Requirements:
+1. A form to input expense data (date, category dropdown, amount, description)
+2. Store entries in session state (persist within session)
+3. A pie chart showing spending by category (use st.pyplot or plotly)
+4. A date range filter that updates the chart
+5. Display total spending prominently
+6. An "Export CSV" button that generates and downloads data
+
+The code must be a SINGLE FILE with ALL imports. It must run without errors on a fresh Python environment with only streamlit, pandas, and matplotlib/plotly installed. No placeholder — working code only.
+
+## RESPONSE:
+```python
+import streamlit as st
+import pandas as pd
+import plotly.express as px
+from datetime import datetime
+
+# Page configuration
+st.set_page_config(page_title="Expense Tracker", layout="wide")
+
+# Initialize session state for expenses if not already present
+if 'expenses' not in st.session_state:
+    st.session_state.expenses = []
+
+# Sidebar for Date Range Filter
+st.sidebar.header("Filters")
+min_date = datetime(2020, 1, 1)
+max_date = datetime.now()
+
+start_date = st.sidebar.date_input("Start Date", value=min_date, min_value=min_date, max_value=max_date)
+end_date = st.sidebar.date_input("End Date", value=max_date, min_value=min_date, max_value=max_date)
+
+# Convert dates to datetime objects for comparison
+start_dt = pd.to_datetime(start_date)
+end_dt = pd.to_datetime(end_date)
+
+# Main Header
+st.title("💰 Expense Tracker")
+
+# --- Form Section ---
+with st.form("expense_form", clear_on_submit=True):
+    col1, col2, col3, col4 = st.columns(4)
+    
+    with col1:
+        date_input = st.date_input("Date", value=datetime.now())
+    
+    with col2:
+        category_input = st.selectbox("Category", ["Food", "Transport", "Housing", "Entertainment", "Health", "Utilities", "Other"])
+    
+    with col3:
+        amount_input = st.number_input("Amount", min_value=0.0, format="%.2f")
+    
+    with col4:
+        desc_input = st.text_input("Description")
+    
+    submitted = st.form_submit_button("Add Expense")
+
+    if submitted:
+        if amount_input > 0:
+            new_expense = {
+                "Date": date_input,
+                "Category": category_input,
+                "Amount": amount_input,
+                "Description": desc_input
+            }
+            st.session_state.expenses.append(new_expense)
+            st.success(f"Added {category_input} expense of ${amount_input:.2f}")
+        else:
+            st.error("Amount must be greater than 0.")
+
+# --- Data Processing ---
+# Create DataFrame from session state
+df = pd.DataFrame(st.session_state.expenses)
+
+# Apply Date Filter
+if not df.empty:
+    df['Date'] = pd.to_datetime(df['Date'])
+    filtered_df = df[(df['Date'] >= start_dt) & (df['Date'] <= end_dt)]
+else:
+    filtered_df = pd.DataFrame(columns=['Date', 'Category', 'Amount', 'Description'])
+
+# --- Metrics Section ---
+st.header("Summary")
+total_spending = filtered_df['Amount'].sum() if not filtered_df.empty else 0.0
+st.metric(label="Total Spending (Filtered)", value=f"${total_spending:,.2f}")
+
+# --- Chart Section ---
+st.header("Spending by Category")
+
+if not filtered_df.empty:
+    # Aggregate data for Pie Chart
+    category_totals = filtered_df.groupby('Category')['Amount'].sum().reset_index()
+    category_totals.columns = ['Category', 'Amount']
+    
+    fig = px.pie(category_totals, values='Amount', names='Category', title="Expense Distribution")
+    st.plotly_chart(fig, use_container_width=True)
+else:
+    st.info("No data available for the selected date range.")
+
+# --- Data Table Section ---
+st.header("Expense Log")
+if not filtered_df.empty:
+    # Sort by date descending
+    display_df = filtered_df.sort_values(by='Date', ascending=False)
+    # Format date for display
+    display_df['Date'] = display_df['Date'].dt.strftime('%Y-%m-%d')
+    st.dataframe(display_df, use_container_width=True)
+else:
+    st.write("No expenses recorded yet.")
+
+# --- Export Section ---
+st.header("Export Data")
+if not df.empty:
+    # Export the FULL dataset, not just filtered
+    csv = df.to_csv(index=False).encode('utf-8')
+    st.download_button(
+        label="Download All Data as CSV",
+        data=csv,
+        file_name='expenses.csv',
+        mime='text/csv',
+    )
+else:
+    st.write("No data to export.")
+```

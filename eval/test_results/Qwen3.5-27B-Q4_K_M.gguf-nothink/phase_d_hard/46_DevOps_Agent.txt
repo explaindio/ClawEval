@@ -1,0 +1,186 @@
+# Phase D Hard Test — #46 DevOps Agent
+# Tier: 3 | Score: 5/10 | No automated constraints to check
+# Tokens: 1272 | Speed: 32.8 t/s | Time: 38.8s
+
+## PROMPT:
+Debug this GitHub Actions workflow. It has 3 SYNTAX errors and 2 LOGIC errors. Find all 5.
+
+```yaml
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - run: npm install
+      - run: npm test
+      
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: npm install
+        - run: npm run build  # Syntax error 1
+      - uses: docker/build-push-action@v5
+        with:
+          push: true
+          tags: myapp:${{ github.sha }}
+
+  deploy-staging:
+    needs: build
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: staging
+    steps:
+      - run: |
+          kubectl set image deployment/myapp             myapp=myapp:${{ github.sha }}
+  
+  deploy-production:
+    needs: build  # Logic error: should this depend on staging?
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - run: kubectl set image deployment/myapp myapp=myapp:${{ github.sha }}
+      
+  notify:
+    needs: [deploy-staging deploy-production]  # Syntax error 2
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - run: curl -X POST $SLACK_WEBHOOK -d '{"text": "Deployment complete"}'
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }  # Syntax error 3
+```
+
+Find all 5 errors (3 syntax, 2 logic), explain each, and provide the corrected YAML.
+
+## RESPONSE:
+Here is the breakdown of the 5 errors found in the GitHub Actions workflow, followed by the corrected YAML.
+
+### Error Analysis
+
+#### **Syntax Errors (3)**
+
+1.  **Invalid List Item Indentation (in `build` job)**
+    *   **Location:** `build` job, steps section.
+    *   **Code:**
+        ```yaml
+        - run: npm install
+          - run: npm run build  # Syntax error 1
+        ```
+    *   **Explanation:** In YAML, list items (steps) must be at the same indentation level. The second `run` step is indented as if it were a child property of the `npm install` step, but it is a separate step. It must be aligned with the previous `- run:`.
+
+2.  **Missing Comma in `needs` Array (in `notify` job)**
+    *   **Location:** `notify` job, `needs` property.
+    *   **Code:** `needs: [deploy-staging deploy-production]`
+    *   **Explanation:** YAML arrays require elements to be separated by commas. Without the comma, the parser treats `deploy-staging deploy-production` as a single string or fails to parse the array correctly.
+    *   **Correction:** `needs: [deploy-staging, deploy-production]`
+
+3.  **Unclosed Expression in `env` Variable (in `notify` job)**
+    *   **Location:** `notify` job, `env` section.
+    *   **Code:** `SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }`
+    *   **Explanation:** The GitHub Actions expression syntax requires a closing curly brace `}`. The current line is missing the final `}`, causing a parsing error.
+    *   **Correction:** `SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}`
+
+---
+
+#### **Logic Errors (2)**
+
+4.  **Missing `context` for Docker Build (in `build` job)**
+    *   **Location:** `build` job, `docker/build-push-action` step.
+    *   **Code:**
+        ```yaml
+        - uses: docker/build-push-action@v5
+          with:
+            push: true
+            tags: myapp:${{ github.sha }}
+        ```
+    *   **Explanation:** The `docker/build-push-action` requires a `context` input to know where the Dockerfile and build files are located. Without it, the action defaults to the current directory but often fails or behaves unexpectedly if the context isn't explicitly defined, especially if the Dockerfile isn't in the root or if the action expects a specific path. While sometimes it defaults to `.`, explicitly defining `context: .` is best practice and often required for the action to function reliably in CI environments.
+    *   **Correction:** Add `context: .` to the `with` block.
+
+5.  **Incorrect Dependency Chain for Production Deployment (in `deploy-production` job)**
+    *   **Location:** `deploy-production` job, `needs` property.
+    *   **Code:** `needs: build`
+    *   **Explanation:** The comment in the code hints at the issue: `# Logic error: should this depend on staging?`. In a standard CI/CD pipeline, production deployments should typically only occur after the staging deployment has succeeded. Currently, `deploy-production` runs immediately after `build`, running in parallel with `deploy-staging`. If staging fails, production will still attempt to deploy, which is a risky deployment strategy.
+    *   **Correction:** Change `needs: build` to `needs: deploy-staging` to ensure production only deploys if staging succeeds.
+
+---
+
+### Corrected YAML
+
+```yaml
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - run: npm install
+      - run: npm test
+      
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: npm install
+      # Fixed Syntax Error 1: Aligned indentation for the new step
+      - run: npm run build
+      - uses: docker/build-push-action@v5
+        with:
+          push: true
+          tags: myapp:${{ github.sha }}
+          # Fixed Logic Error 1: Added missing context
+          context: .
+
+  deploy-staging:
+    needs: build
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: staging
+    steps:
+      - run: |
+          kubectl set image deployment/myapp myapp=myapp:${{ github.sha }}
+  
+  deploy-production:
+    # Fixed Logic Error 2: Changed dependency from 'build' to 'deploy-staging'
+    needs: deploy-staging
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - run: kubectl set image deployment/myapp myapp=myapp:${{ github.sha }}
+      
+  notify:
+    # Fixed Syntax Error 2: Added comma between array items
+    needs: [deploy-staging, deploy-production]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - run: curl -X POST $SLACK_WEBHOOK -d '{"text": "Deployment complete"}'
+        env:
+          # Fixed Syntax Error 3: Added closing curly brace
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+```

@@ -1,0 +1,159 @@
+# Phase D Hard Test — #50 Orchestrator / Manager Agent
+# Tier: 5 | Score: 5/10 | No automated constraints to check
+# Tokens: 9412 | Speed: 91.7 t/s | Time: 102.7s
+
+## PROMPT:
+Design an orchestration plan for a complex multi-agent workflow. You MUST include failure handling, because Agent C is known to fail 20% of the time.
+
+Task: Generate a comprehensive quarterly business review (QBR) document.
+
+Available agents and their capabilities:
+- Agent A (Data): Pulls metrics from databases. Takes 2 min. Never fails.
+- Agent B (Finance): Analyzes financial data. Takes 3 min. Requires Agent A output. Fails 5% of time.
+- Agent C (Market): Researches market trends. Takes 8 min. Independent. Fails 20% of time.
+- Agent D (Writer): Writes document sections. Takes 5 min per section. Requires relevant agent output.
+- Agent E (Designer): Creates charts/visuals. Takes 3 min. Requires Agent A data.
+- Agent F (Reviewer): Reviews final document. Takes 4 min. Requires all sections.
+
+Constraints:
+- Total wall-clock time budget: 25 minutes
+- If Agent C fails, the QBR must still be produced (with a note about missing market data)
+- Agent D can write sections in parallel if given different inputs
+
+Design:
+1. Execution DAG with parallel groups and dependencies
+2. Critical path analysis (what's the minimum time?)
+3. Failure handling for each agent (retry? fallback? skip?)
+4. If Agent C fails twice, what's the Plan B?
+5. Show the timeline (Gantt-chart style) for both success and failure scenarios
+
+## RESPONSE:
+# Orchestration Plan: Quarterly Business Review (QBR) Workflow
+
+## 1. Execution DAG (Directed Acyclic Graph)
+
+The workflow is structured to maximize parallelism while respecting data dependencies.
+
+```mermaid
+graph TD
+    Start((Start)) --> A[Agent A: Data<br/>2 min]
+    A --> B[Agent B: Finance<br/>3 min]
+    A --> E[Agent E: Designer<br/>3 min]
+    A --> C[Agent C: Market<br/>8 min]
+    
+    B --> D[Agent D: Writer<br/>5 min/section]
+    C --> D
+    A -.-> D[Data Section]
+    
+    E --> F[Agent F: Reviewer<br/>4 min]
+    D --> F
+    
+    F --> End((End))
+```
+
+**Dependencies:**
+*   **A (Data):** Root node. No dependencies.
+*   **B (Finance):** Depends on A.
+*   **E (Designer):** Depends on A.
+*   **C (Market):** Independent of A (can run immediately after A starts, or even in parallel if A is fast enough, but logically follows A for context). *Correction:* To optimize, C starts immediately after A finishes (T=2) to allow D to start Market section as soon as possible.
+*   **D (Writer):** Depends on B (Finance Section), C (Market Section), and A (Data Section). Can write these in parallel.
+*   **F (Reviewer):** Depends on D (All Sections) and E (Visuals).
+
+## 2. Critical Path Analysis
+
+**Success Scenario (All Agents Succeed):**
+1.  **A (Data):** 0–2 min
+2.  **C (Market):** 2–10 min (Longest independent task)
+3.  **D (Writer):** Starts Finance at T=5 (after B). Starts Market at T=10 (after C).
+    *   *Parallel Execution:* D finishes Finance (T=10), Data (T=7), and Market (T=15).
+4.  **F (Reviewer):** Starts T=15. Finishes T=19.
+5.  **Total Time:** 19 minutes.
+6.  **Slack:** 6 minutes (25 min budget - 19 min actual).
+
+**Critical Path:** `Agent A (2) -> Agent C (8) -> Agent D (5) -> Agent F (4)` = **19 Minutes**.
+*Note: Agent B is on a non-critical path (3 mins vs C's 8 mins).*
+
+## 3. Failure Handling Strategy
+
+To ensure the 25-minute budget is met despite Agent C's 20% failure rate, we implement a **Circuit Breaker with Timeout** strategy.
+
+| Agent | Failure Rate | Strategy | Logic |
+| :--- | :--- | :--- | :--- |
+| **Agent A** | 0% | None | N/A. |
+| **Agent B** | 5% | **Retry (1x)** | If B fails, retry immediately. If it fails again, use "Finance Placeholder" text. Does not impact Critical Path significantly. |
+| **Agent C** | 20% | **Retry (1x) + Timeout** | **Critical.** If C fails, retry immediately. **Retry Timeout:** 6 minutes. If C does not complete within 6 mins, it counts as the **2nd Failure**. |
+| **Agent D** | N/A | **Fallback Input** | If inputs (B or C) are missing, D writes the section using "Plan B" data (see Section 4). |
+| **Agent E** | N/A | **None** | Assume reliable. |
+| **Agent F** | N/A | **None** | Assume reliable. |
+
+**Why the 6-minute Timeout for C?**
+*   Base Critical Path: 19 mins.
+*   Slack: 6 mins.
+*   If C fails once (8 mins) + Retry (8 mins) = 16 mins for C alone.
+*   2 (A) + 16 (C) + 5 (D) + 4 (F) = **27 Minutes** (Over budget).
+*   **Solution:** Cap the Retry duration at 6 minutes. If C does not finish by T=8 (T=2 start + 6 min timeout), it is treated as a failure, triggering Plan B immediately. This ensures the workflow finishes within 25 minutes even if C fails twice.
+
+## 4. Plan B (Agent C Fails Twice)
+
+If Agent C fails its initial attempt **and** its retry attempt (or times out), the system switches to **Plan B**.
+
+*   **Trigger:** C fails (Attempt 1) AND C fails (Attempt 2/Timeout).
+*   **Action:**
+    1.  **Data Source:** Use Q3 2023 Historical Average for Market Trends.
+    2.  **Documentation:** Agent D writes the Market Section using a standardized template: *"Market trends were analyzed using historical baselines due to real-time data unavailability. No significant deviations from Q3 2023 were observed."*
+    3.  **Flag:** The final document is tagged with `Status: Estimated Market Data`.
+    4.  **Notification:** Alert stakeholders that Market data is estimated.
+*   **Impact:** The QBR is still produced and reviewed, but the Market section is clearly marked as non-real-time.
+
+## 5. Timeline Scenarios (Gantt-Style)
+
+### Scenario A: Success (No Failures)
+*Total Time: 19 Minutes*
+
+| Time | Agent A | Agent B | Agent C | Agent D | Agent E | Agent F |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **0-2** | **Running** | | | | | |
+| **2-5** | Done | **Running** | **Running** | **Running (Data)** | **Running** | |
+| **5-8** | Done | Done | **Running** | **Running (Finance)** | Done | |
+| **8-10** | Done | Done | **Running** | **Running (Finance)** | Done | |
+| **10-15** | Done | Done | Done | **Running (Market)** | Done | |
+| **15-19** | Done | Done | Done | Done | Done | **Running** |
+
+### Scenario B: Agent C Fails Once (Retry Succeeds)
+*Total Time: 25 Minutes (Max Budget)*
+*Assumption: Retry takes full 6 minutes (Timeout limit).*
+
+| Time | Agent A | Agent B | Agent C | Agent D | Agent E | Agent F |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **0-2** | **Running** | | | | | |
+| **2-10** | Done | **Running** | **Running (Fail)** | **Running (Data)** | **Running** | |
+| **10-16** | Done | Done | **Running (Retry)** | **Running (Finance)** | Done | |
+| **16-21** | Done | Done | Done | **Running (Market)** | Done | |
+| **21-25** | Done | Done | Done | Done | Done | **Running** |
+
+*Note: In this scenario, D waits for C's retry to finish at T=16. D finishes Market at T=21. F finishes at T=25.*
+
+### Scenario C: Agent C Fails Twice (Plan B Triggered)
+*Total Time: 20 Minutes*
+*Assumption: Retry times out at T=8 (6 min limit).*
+
+| Time | Agent A | Agent B | Agent C | Agent D | Agent E | Agent F |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **0-2** | **Running** | | | | | |
+| **2-10** | Done | **Running** | **Running (Fail)** | **Running (Data)** | **Running** | |
+| **10-16** | Done | Done | **Running (Retry Timeout)** | **Running (Finance)** | Done | |
+| **16-17** | Done | Done | **Plan B Ready** | **Running (Market)** | Done | |
+| **17-22** | Done | Done | Done | **Running (Market)** | Done | |
+| **22-26** | Done | Done | Done | Done | Done | **Running** |
+*Correction for Plan B:* Plan B is instant. D starts Market at T=16 (after Retry Timeout).
+*Revised Plan B Timeline:*
+*   T=16: Plan B Data Ready.
+*   T=16-21: D writes Market Section.
+*   T=21-25: F Reviews.
+*   **Total:** 25 Minutes. (Fits budget).
+
+### Summary of Risk Mitigation
+1.  **Parallelism:** D writes sections concurrently to minimize wait time.
+2.  **Timeout:** C's retry is capped at 6 minutes to preserve the 25-minute budget.
+3.  **Fallback:** Plan B ensures the document is never blocked by Agent C's unreliability.
+4.  **Slack:** The 6-minute slack is consumed by C's failure/retry logic, ensuring the hard deadline is met.

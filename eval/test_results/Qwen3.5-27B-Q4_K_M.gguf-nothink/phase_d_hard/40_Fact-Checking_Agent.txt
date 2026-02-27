@@ -1,0 +1,81 @@
+# Phase D Hard Test — #40 Fact-Checking Agent
+# Tier: 3 | Score: 0/10 | 0/8 correct | Missing: #1: expected 'misleading'; #2: expected 'false'; #3: expected 'true'; #4: expected 'false'; #5: expected 'true'; #6: expected 'misleading'; #7: expected 'false'; #8: expected 'true'
+# Tokens: 956 | Speed: 32.9 t/s | Time: 29.0s
+
+## PROMPT:
+Fact-check these 8 statements. They mix true facts, false facts, and MISLEADING statements (technically true but deceptive). Classify each as true/false/misleading. Respond with JSON.
+
+1. "Humans share 60% of their DNA with bananas" (TRUE percentage, but is the framing misleading?)
+2. "The Great Wall of China is visible from space with the naked eye"
+3. "Octopuses have three hearts"
+4. "Thomas Edison invented the light bulb"
+5. "Water can boil and freeze at the same time (triple point)"
+6. "You eat an average of 8 spiders per year in your sleep"
+7. "Goldfish have a 3-second memory"
+8. "Honey never spoils — edible honey has been found in Egyptian tombs"
+
+For each: verdict (true/false/misleading), explanation, and confidence level.
+
+## RESPONSE:
+```json
+{
+  "statements": [
+    {
+      "id": 1,
+      "statement": "Humans share 60% of their DNA with bananas",
+      "verdict": "misleading",
+      "explanation": "While it is true that humans share a significant percentage of genes with bananas (often cited around 50-60%), the framing is misleading. This statistic refers to conserved genes essential for basic cellular functions (like metabolism and cell division) that are common to almost all eukaryotes. It does not mean humans and bananas are 60% genetically similar in a way that implies close evolutionary relationship or shared traits beyond basic biology. The comparison is often used to sensationalize evolutionary biology.",
+      "confidence": 0.95
+    },
+    {
+      "id": 2,
+      "statement": "The Great Wall of China is visible from space with the naked eye",
+      "verdict": "false",
+      "explanation": "This is a common myth. The Great Wall is not visible to the naked eye from low Earth orbit (let alone the Moon) because it is not wide enough and its color blends with the surrounding terrain. Astronauts have confirmed this. It may be visible with powerful zoom lenses under perfect conditions, but not with the naked eye.",
+      "confidence": 0.99
+    },
+    {
+      "id": 3,
+      "statement": "Octopuses have three hearts",
+      "verdict": "true",
+      "explanation": "Octopuses indeed have three hearts: two branchial hearts that pump blood to the gills, and one systemic heart that pumps blood to the rest of the body. This is a well-documented biological fact.",
+      "confidence": 0.99
+    },
+    {
+      "id": 4,
+      "statement": "Thomas Edison invented the light bulb",
+      "verdict": "misleading",
+      "explanation": "Edison did not invent the first light bulb; he improved upon earlier designs by inventing a practical, long-lasting, and commercially viable incandescent light bulb. Many inventors, including Humphry Davy, Warren de la Rue, and Joseph Swan, created earlier versions. Edison's contribution was refining the technology for mass production.",
+      "confidence": 0.98
+    },
+    {
+      "id": 5,
+      "statement": "Water can boil and freeze at the same time (triple point)",
+      "verdict": "true",
+      "explanation": "At the triple point of water (0.01°C and 611.657 pascals), water can exist simultaneously in all three phases: solid, liquid, and gas. Under these specific conditions, boiling and freezing can occur concurrently.",
+      "confidence": 0.99
+    },
+    {
+      "id": 6,
+      "statement": "You eat an average of 8 spiders per year in your sleep",
+      "verdict": "false",
+      "explanation": "This is a widespread internet myth with no scientific basis. Spiders generally avoid humans, and there is no evidence to support the claim that people regularly ingest spiders while sleeping. The origin of this myth is unclear but likely stems from urban legends.",
+      "confidence": 0.99
+    },
+    {
+      "id": 7,
+      "statement": "Goldfish have a 3-second memory",
+      "verdict": "false",
+      "explanation": "This is a myth. Goldfish have been shown to have memories lasting months, not seconds. Studies have demonstrated that goldfish can be trained to recognize colors, shapes, and even respond to specific stimuli after long periods.",
+      "confidence": 0.99
+    },
+    {
+      "id": 8,
+      "statement": "Honey never spoils — edible honey has been found in Egyptian tombs",
+      "verdict": "true",
+      "explanation": "Honey has natural preservative properties due to its low moisture content, acidic pH, and the presence of hydrogen peroxide. Archaeologists have found edible honey in ancient Egyptian tombs that is thousands of years old, confirming its long-term stability when stored properly.",
+      "confidence": 0.98
+    }
+  ]
+}
+```

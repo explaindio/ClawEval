@@ -1,0 +1,66 @@
+# Phase D Hard Test — #22 Data Analysis Agent
+# Tier: 2 | Score: 10/10 | 1/1 constraints met
+# Tokens: 1768 | Speed: 88.7 t/s | Time: 19.9s
+
+## PROMPT:
+Analyze this clinical trial data. WARNING: The obvious conclusion from the aggregate data is WRONG. You must analyze the subgroups to find the truth. This is a real statistical phenomenon.
+
+Overall Results:
+- Treatment A: 100 patients, 40 recovered (40%)
+- Treatment B: 100 patients, 50 recovered (50%)
+
+Subgroup breakdown:
+- Mild cases with Treatment A: 10 patients, 8 recovered (80%)
+- Mild cases with Treatment B: 60 patients, 45 recovered (75%)
+- Severe cases with Treatment A: 90 patients, 32 recovered (35.6%)
+- Severe cases with Treatment B: 40 patients, 5 recovered (12.5%)
+
+Questions:
+1. Based on aggregate data alone, which treatment appears better?
+2. When you look at subgroups, which treatment is actually better for mild cases?
+3. Which treatment is actually better for severe cases?
+4. Explain the paradox — why does the aggregate data mislead?
+5. What is the name of this statistical phenomenon?
+6. What is your final recommendation and why?
+
+## RESPONSE:
+Here is the analysis of the clinical trial data.
+
+### 1. Based on aggregate data alone, which treatment appears better?
+Based solely on the aggregate numbers, **Treatment B** appears better.
+*   **Treatment A:** 40% recovery rate.
+*   **Treatment B:** 50% recovery rate.
+*   *Initial Conclusion:* Treatment B has a 10 percentage point advantage.
+
+### 2. When you look at subgroups, which treatment is actually better for mild cases?
+**Treatment A** is better for mild cases.
+*   **Treatment A:** 80% recovery rate (8 out of 10).
+*   **Treatment B:** 75% recovery rate (45 out of 60).
+*   *Result:* Treatment A outperforms Treatment B by 5 percentage points in the mild category.
+
+### 3. Which treatment is actually better for severe cases?
+**Treatment A** is significantly better for severe cases.
+*   **Treatment A:** ~35.6% recovery rate (32 out of 90).
+*   **Treatment B:** 12.5% recovery rate (5 out of 40).
+*   *Result:* Treatment A outperforms Treatment B by over 23 percentage points in the severe category.
+
+### 4. Explain the paradox — why does the aggregate data mislead?
+The aggregate data is misleading because of a massive imbalance in the **patient distribution** between the two groups. This is a classic case of **confounding by indication**.
+
+*   **Treatment A** was assigned almost entirely to the "harder" cases: 90% of its patients were severe, and only 10% were mild.
+*   **Treatment B** was assigned mostly to the "easier" cases: 60% of its patients were mild, and only 40% were severe.
+
+Because mild cases have a much higher natural recovery rate than severe cases, Treatment B's overall average was artificially inflated by the high volume of easy-to-treat patients. Treatment A's overall average was dragged down because it was forced to treat the vast majority of the difficult cases.
+
+### 5. What is the name of this statistical phenomenon?
+This is known as **Simpson's Paradox**.
+
+Simpson's Paradox occurs when a trend appears in different groups of data but disappears or reverses when these groups are combined. It highlights the danger of ignoring confounding variables (in this case, disease severity) when analyzing aggregate data.
+
+### 6. What is your final recommendation and why?
+**Recommendation: Use Treatment A.**
+
+**Reasoning:**
+Treatment A is superior in every clinically relevant context. It yields better outcomes for mild patients and significantly better outcomes for severe patients. The aggregate data is a statistical artifact caused by the non-random allocation of patients (Treatment A received the sicker population).
+
+In a real-world clinical setting, if a doctor were to choose Treatment B based on the aggregate data, they would be choosing the inferior drug. If the trial design was randomized, this data would suggest a massive flaw in the randomization process; if it was observational, it suggests Treatment A is the only logical choice for efficacy regardless of severity.

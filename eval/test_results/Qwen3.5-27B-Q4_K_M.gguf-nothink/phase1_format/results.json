@@ -1,0 +1,91 @@
+{
+  "phase": "phase1_format_compliance",
+  "model": "Qwen3.5-27B-Q4_K_M.gguf",
+  "timestamp": "2026-02-26T11:53:26.505082",
+  "tests": [
+    {
+      "name": "json_simple",
+      "passed": true,
+      "reason": "Valid JSON",
+      "response": "```json\n[\n  {\n    \"language\": \"Python\",\n    \"year\": 1991\n  },\n  {\n    \"language\": \"Java\",\n    \"year\": 1995\n  },\n  {\n    \"language\": \"C\",\n    \"year\": 1972\n  }\n]\n```",
+      "elapsed": 2.45,
+      "tps": 33.4
+    },
+    {
+      "name": "json_nested",
+      "passed": true,
+      "reason": "Valid JSON",
+      "response": "```json\n{\n  \"name\": \"John Doe\",\n  \"age\": 30,\n  \"skills\": [\"JavaScript\", \"Python\", \"React\"],\n  \"address\": {\n    \"city\": \"New York\",\n    \"country\": \"USA\"\n  }\n}\n```",
+      "elapsed": 2.05,
+      "tps": 33.2
+    },
+    {
+      "name": "json_from_text",
+      "passed": true,
+      "reason": "Valid JSON",
+      "response": "```json\n{\n  \"name\": \"John Smith\",\n  \"age\": 34,\n  \"company\": \"Google\",\n  \"title\": \"Senior Engineer\",\n  \"location\": \"Mountain View, CA\",\n  \"email\": \"john@google.com\"\n}\n```",
+      "elapsed": 2.05,
+      "tps": 32.6
+    },
+    {
+      "name": "json_strict_schema",
+      "passed": true,
+      "reason": "Valid JSON",
+      "response": "{\"action\": \"schedule_meeting\", \"target\": \"Bob\", \"confidence\": 0.95}",
+      "elapsed": 0.92,
+      "tps": 27.1
+    },
+    {
+      "name": "json_array_complex",
+      "passed": true,
+      "reason": "Valid JSON",
+      "response": "[\n  {\n    \"id\": 1,\n    \"task\": \"Finalize code freeze and merge all feature branches\",\n    \"priority\": \"high\",\n    \"done\": false\n  },\n  {\n    \"id\": 2,\n    \"task\": \"Run full regression test suite and fix critical bugs\",\n    \"priority\": \"high\",\n    \"done\": false\n  },\n  {\n    \"id\": 3,\n    \"task\": \"Update user documentation and release notes\",\n    \"priority\": \"medium\",\n    \"done\": false\n  },\n  {\n    \"id\": 4,\n    \"task\": \"Configure production environment and database migrations\",\n    \"priority\": \"high\",\n    \"done\": false\n  },\n  {\n    \"id\": 5,\n    \"task\": \"Schedule deployment window and notify stakeholders\",\n    \"priority\": \"medium\",\n    \"done\": false\n  }\n]",
+      "elapsed": 6.43,
+      "tps": 33.6
+    },
+    {
+      "name": "system_prompt_adherence",
+      "passed": true,
+      "reason": "Contains: arr, matey, ye, treasure",
+      "response": "Arrr, ye be askin' about the land of the Frenchies, eh? The capital of that fine kingdom be Paris, matey! A city full of fancy hats and croissants, though I prefer me rum and treasure any day! Shiver me timbers, don't let the fancy folk there steal yer gold! \ud83c\udff4\u200d\u2620\ufe0f\ud83c\uddeb\ud83c\uddf7",
+      "elapsed": 2.55,
+      "tps": 32.6
+    },
+    {
+      "name": "one_word_constraint",
+      "passed": true,
+      "reason": "Word count: 1 (expected ~1)",
+      "response": "Blue",
+      "elapsed": 0.22,
+      "tps": 13.6
+    },
+    {
+      "name": "numbered_list",
+      "passed": true,
+      "reason": "Pattern matches: 7 (min 3)",
+      "response": "1. Gather two slices of bread, a jar of peanut butter, a butter knife, and a clean plate.\n2. Place the two slices of bread side by side on the plate.\n3. Open the jar of peanut butter and use the knife to scoop out a generous amount.\n4. Spread the peanut butter evenly across one side of the first slice of bread.\n5. Repeat the process to spread peanut butter on one side of the second slice of bread.\n6. Press the two slices together with the peanut butter sides facing each other.\n7. Cut the sandwich in half if desired, then serve immediately.",
+      "elapsed": 3.92,
+      "tps": 33.4
+    },
+    {
+      "name": "markdown_table",
+      "passed": true,
+      "reason": "Contains all expected elements",
+      "response": "| Planet | Distance from Sun (AU) | Number of Moons |\n| :--- | :--- | :--- |\n| Mercury | 0.39 | 0 |\n| Venus | 0.72 | 0 |\n| Earth | 1.00 | 1 |\n| Mars | 1.52 | 2 |",
+      "elapsed": 2.44,
+      "tps": 32.8
+    },
+    {
+      "name": "refuse_and_redirect",
+      "passed": true,
+      "reason": "Contains: cooking, can only help",
+      "response": "I can only help with cooking-related questions.",
+      "elapsed": 0.46,
+      "tps": 23.8
+    }
+  ],
+  "passed": 10,
+  "failed": 0,
+  "total": 10,
+  "score_pct": 100.0
+}

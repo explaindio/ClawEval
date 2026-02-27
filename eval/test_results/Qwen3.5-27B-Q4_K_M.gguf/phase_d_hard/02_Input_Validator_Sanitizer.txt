@@ -1,0 +1,71 @@
+# Phase D Hard Test — #2 Input Validator / Sanitizer
+# Tier: 1 | Score: 10/10 | 8/8 constraints met
+# Tokens: 5679 | Speed: 29.6 t/s | Time: 191.9s
+
+## PROMPT:
+Validate this API request body. Find ALL issues (there are at least 10). For each issue, specify: field, severity (critical/error/warning), and explanation. Cross-field validations are required.
+
+```json
+{
+  "order": {
+    "customer": {
+      "name": "<img src=x onerror=alert(1)>John",
+      "email": "john@",
+      "phone": "555-CALL-ME",
+      "zip": "1234"
+    },
+    "items": [
+      {"sku": "ABC-123", "quantity": -3, "unit_price": 29.99},
+      {"sku": "", "quantity": 0, "unit_price": 0.001},
+      {"sku": "DEF-456", "quantity": 2, "unit_price": 15.00}
+    ],
+    "discount_percent": 150,
+    "start_date": "2025-03-15",
+    "end_date": "2025-03-10",
+    "notes": "Regular order'; DROP TABLE orders;--",
+    "shipping": {"method": "TELEPORT", "address": ""}
+  }
+}
+```
+
+List every single issue. Do NOT miss cross-field validations (e.g., date relationships).
+
+## RESPONSE:
+Here is the validation report identifying 13 distinct issues within the API request body, including security vulnerabilities, data integrity errors, and cross-field logic failures.
+
+### Security & Integrity Issues (Critical)
+
+| # | Field | Severity | Explanation |
+| :--- | :--- | :--- | :--- |
+| 1 | `customer.name` | **Critical** | **XSS Vulnerability:** The value contains an HTML script tag (`<img src=x onerror=alert(1)>`). This indicates a Cross-Site Scripting attack attempt that could execute malicious code in the browser of anyone viewing this order. |
+| 2 | `notes` | **Critical** | **SQL Injection Vulnerability:** The value contains a SQL payload (`'; DROP TABLE orders;--`). If not sanitized, this could allow an attacker to manipulate or destroy the database. |
+| 3 | `discount_percent` | **Critical** | **Financial Logic Error:** The discount is set to `150`. Discounts cannot exceed `100%`. This would result in a negative total order value, implying the system pays the customer, which is a financial risk. |
+| 4 | `items[0].quantity` | **Critical** | **Negative Quantity:** The quantity is `-3`. In a standard order creation context, quantities must be positive integers. Negative quantities typically indicate a return or refund, which requires a different endpoint or logic. |
+| 5 | `shipping.address` | **Critical** | **Missing Required Data:** The shipping address is an empty string (`""`). An order cannot be fulfilled or shipped without a valid destination address. |
+
+### Data Validation Issues (Error)
+
+| # | Field | Severity | Explanation |
+| :--- | :--- | :--- | :--- |
+| 6 | `customer.email` | **Error** | **Invalid Email Format:** The value `john@` is missing a domain name (e.g., `.com`). It does not conform to standard email regex patterns. |
+| 7 | `customer.phone` | **Error** | **Invalid Phone Format:** The value `555-CALL-ME` contains alphabetic characters. Phone numbers should typically be numeric (E.164 format) or strictly numeric digits. |
+| 8 | `customer.zip` | **Error** | **Invalid Zip Code Length:** The value `1234` is 4 digits. Standard US ZIP codes require 5 digits (or 9 for ZIP+4). Other international standards typically require 5-6 digits. |
+| 9 | `items[1].sku` | **Error** | **Empty SKU:** The Stock Keeping Unit is an empty string (`""`). Every item in an order must be uniquely identifiable by a valid SKU to locate inventory. |
+| 10 | `items[1].quantity` | **Error** | **Zero Quantity:** The quantity is `0`. An item with zero quantity should not exist in an order payload; it contributes nothing to the total and wastes processing resources. |
+| 11 | `shipping.method` | **Error** | **Invalid Enum Value:** The value `TELEPORT` is not a recognized shipping method (e.g., Standard, Express, Overnight). This will cause the shipping calculator to fail. |
+| 12 | `items[1].unit_price` | **Warning** | **Suspicious Price Precision:** The price `0.001` is below the standard currency precision (usually 2 decimal places, e.g., $0.01). This may cause rounding errors in the total calculation. |
+
+### Cross-Field Validations (Critical/Error)
+
+| # | Field(s) | Severity | Explanation |
+| :--- | :--- | :--- | :--- |
+| 13 | `start_date` / `end_date` | **Critical** | **Invalid Date Range (Cross-Field):** The `end_date` (`2025-03-10`) is earlier than the `start_date` (`2025-03-15`). The end date must be greater than or equal to the start date. |
+| 14 | `items[].quantity` (Aggregate) | **Error** | **Negative Total Quantity (Cross-Field):** Summing all item quantities (`-3` + `0` + `2`) results in `-1`. The total order quantity cannot be negative; this indicates a logic conflict between the items requested. |
+| 15 | `discount_percent` / `items` | **Critical** | **Negative Order Total (Cross-Field):** Combining the `discount_percent` of `150` with the `items` total value results in a negative financial total. The system must reject requests where `discount > 100` or `total < 0`. |
+
+### Summary of Findings
+*   **Total Issues Found:** 15
+*   **Critical:** 7 (Security, Financial, Logic)
+*   **Error:** 6 (Data Validation)
+*   **Warning:** 1 (Precision)
+*   **Cross-Field Validations:** 3 (Dates, Total Quantity, Financial Total)

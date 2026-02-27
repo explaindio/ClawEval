@@ -1,0 +1,55 @@
+# Phase D Hard Test — #16 Social Media Scouting / Monitoring
+# Tier: 2 | Score: 10/10 | 1/1 constraints met
+# Tokens: 2420 | Speed: 89.9 t/s | Time: 26.9s
+
+## PROMPT:
+Analyze these 10 social media mentions. 4 of them are likely bot/fake accounts (coordinated inauthentic behavior). Identify which ones and explain the patterns.
+
+1. @techfan_2024 (joined Jan 2024, 12 followers): "Best product ever! 10/10 recommend! #amazing #bestproduct"
+2. @sarah_designs (joined 2019, 2.3K followers): "Tried the new update. The color picker is improved but the export feature is still broken for SVG files."
+3. @digital_guru_99 (joined Feb 2024, 8 followers): "Amazing product!! Everyone should buy this!! #bestproduct #amazing"
+4. @mike_in_seattle (joined 2020, 890 followers): "Been a customer for 2 years. v3.2 regression in batch processing is killing our workflow. @support any ETA on fix?"
+5. @bestreviews_daily (joined Jan 2024, 15 followers): "This is the best product I've ever used! 10/10!! #amazing #bestproduct"
+6. @jennifer_codes (joined 2021, 1.5K followers): "The API rate limiting is too aggressive at 100/min. We need at least 500 for our use case."
+7. @happy_customer_01 (joined Feb 2024, 5 followers): "Best product!! Amazing quality!! Everyone needs this!! #bestproduct"
+8. @dev_community (joined 2018, 5K followers): "Interesting approach to the caching problem. Would love to see benchmarks."
+9. @alexr_dev (joined 2022, 340 followers): "Support response time has improved a lot. Got my ticket resolved in 2 hours."
+10. @startup_life (joined 2023, 670 followers): "Comparing this vs Competitor X — similar features but the pricing model is confusing."
+
+Identify the fake accounts, explain the coordinated pattern, and provide a clean sentiment analysis using ONLY the authentic mentions.
+
+## RESPONSE:
+### 1. Identification of Fake/Bot Accounts
+The following 4 accounts exhibit high probability of being coordinated inauthentic behavior (bots):
+
+*   **1. @techfan_2024**
+*   **3. @digital_guru_99**
+*   **5. @bestreviews_daily**
+*   **7. @happy_customer_01**
+
+### 2. Pattern Analysis: Coordinated Inauthentic Behavior
+These four accounts display a classic "bot farm" signature characterized by the following patterns:
+
+*   **Account Age & Growth:** All four accounts were created within a very short window (January or February 2024) and have negligible follower counts (5–15 followers). This suggests they were mass-created recently for a specific campaign rather than organic growth.
+*   **Generic Content:** The text is hyperbolic ("Best product ever," "10/10," "Everyone should buy") but lacks specific details about the product, features, or user experience.
+*   **Identical Hashtagging:** All four posts utilize the exact same hashtag set: `#amazing #bestproduct`.
+*   **Punctuation Style:** There is a consistent overuse of exclamation marks (e.g., "Amazing product!!") to simulate enthusiasm.
+*   **Lack of Context:** Unlike the authentic accounts, these posts do not mention specific features, bugs, use cases, or technical constraints. They are designed purely to inflate positive sentiment metrics.
+
+### 3. Sentiment Analysis (Authentic Mentions Only)
+*Excluding the 4 bot accounts identified above, the remaining 6 authentic mentions provide the following sentiment breakdown:*
+
+**Positive (1/6)**
+*   **@alexr_dev:** Praised the improvement in support response times.
+
+**Negative (4/6)**
+*   **@sarah_designs:** Reported a broken export feature for SVG files.
+*   **@mike_in_seattle:** Reported a critical regression in batch processing affecting workflow.
+*   **@jennifer_codes:** Reported API rate limiting is too aggressive for their needs.
+*   **@startup_life:** Expressed confusion regarding the pricing model.
+
+**Neutral/Constructive (1/6)**
+*   **@dev_community:** Expressed technical interest in the caching approach but requested benchmarks.
+
+**Overall Authentic Sentiment: Mixed-Negative**
+While there is isolated praise for customer support, the core product feedback from authentic users highlights significant functional blockers (broken exports, API limits, workflow regressions) and pricing confusion. The removal of the bot accounts reveals that the product currently faces more friction than praise among real users.

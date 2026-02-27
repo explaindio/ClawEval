@@ -1,0 +1,157 @@
+# Phase D Hard Test — #35 Travel Planning Agent
+# Tier: 2 | Score: 10/10 | 1/1 constraints met
+# Tokens: 10966 | Speed: 31.5 t/s | Time: 348.6s
+
+## PROMPT:
+Plan a 14-day Europe trip. WARNING: There's a visa/Schengen counting trap and a budget constraint that's tighter than it looks.
+
+Travelers: US couple + 1 child (age 6)
+Budget: $7,000 total (not including transatlantic flights which are booked)  
+Must visit: London (3 nights), Paris (3 nights), Barcelona (3 nights), Rome (3 nights), plus 2 travel days
+Dietary: One traveler is vegetarian with dairy allergy
+
+Requirements:
+1. Daily budget breakdown (hotel, food, transport, activities) — must sum to EXACTLY $7,000
+2. Note that London is NOT in the Schengen zone — separate entry
+3. The child needs activities — no museum-only days
+4. Must book inter-city transport (suggest rail vs flight with prices)
+5. Vegetarian + dairy-free restaurant recommendations (real restaurant names in each city)
+6. One "splurge" experience per city within budget
+
+Show running budget total after each city. If budget doesn't work, say so and suggest cuts.
+
+## RESPONSE:
+### ⚠️ CRITICAL TRAVEL WARNINGS
+
+1.  **The Schengen Trap:** London is **NOT** in the Schengen Zone. Your 90-day Schengen allowance begins the moment you enter Paris (Day 4). You will spend **11 days** in Schengen territory (Paris, Barcelona, Rome). This is safe, but ensure you do not extend your trip beyond Day 14 without checking your passport stamps.
+2.  **The Budget Trap:** $7,000 for 3 people across 4 major capitals for 14 days is **extremely tight** ($500/day total). This budget assumes you book accommodation immediately (Airbnb/3-star hotels) and eat a mix of sit-down meals and grocery picnics. Any flight price surge or hotel cancellation will break the budget.
+3.  **The Travel Day Constraint:** You have 3 inter-city legs (London-Paris, Paris-Barcelona, Barcelona-Rome) but only **2 Travel Days** allocated. To meet this, the Barcelona-to-Rome leg (Day 12) is scheduled as a morning flight, allowing Day 12 to count as a "Rome Day" rather than a full travel day.
+
+---
+
+### 💰 BUDGET BREAKDOWN (Total: $7,000.00)
+
+| Category | Allocation | Notes |
+| :--- | :--- | :--- |
+| **Accommodation** | $2,400.00 | 12 Nights @ $200/night (Family Room/Airbnb) |
+| **Inter-City Transport** | $900.00 | Eurostar + 2 Flights (Booked in advance) |
+| **Food & Drink** | $2,100.00 | $50/person/day (Mix of restaurants & groceries) |
+| **Local Transport** | $400.00 | Metro, Uber, Airport Transfers |
+| **Activities & Splurges** | $1,200.00 | Tickets, Tours, 1 Splurge per city |
+| **TOTAL** | **$7,000.00** | **Exact Match** |
+
+---
+
+### 🗺️ 14-DAY ITINERARY & RUNNING BUDGET
+
+#### **Days 1-3: London, UK (Non-Schengen)**
+*   **Accommodation:** 3 Nights in Covent Garden or Southbank.
+*   **Dietary:** London has excellent Vegan/Veg options.
+*   **Child Activity:** Natural History Museum (Dinosaurs) & London Eye.
+*   **Splurge:** Afternoon Tea at *The Ritz* (Vegan menu available).
+
+| Item | Cost | Running Total |
+| :--- | :--- | :--- |
+| **Hotel (3 Nights)** | $600.00 | $600.00 |
+| **Food (3 Days x 3 ppl)** | $450.00 | $1,050.00 |
+| **Local Transport** | $100.00 | $1,150.00 |
+| **Activities/Splurge** | $300.00 | $1,450.00 |
+| **London Subtotal** | **$1,450.00** | **$1,450.00** |
+
+*   **Restaurant Rec:** *The Gate* (Shoreditch). Fully vegan, dairy-free options clearly marked.
+*   **Day 3 Note:** Pack light. You are leaving the UK for Schengen tomorrow.
+
+#### **Day 4: Travel London → Paris (Travel Day 1)**
+*   **Transport:** Eurostar (St Pancras to Gare du Nord).
+*   **Schengen Entry:** Passport control happens here.
+*   **Child Activity:** Short walk along the Seine upon arrival.
+*   **Dietary:** Grocery store picnic for lunch to save budget.
+
+| Item | Cost | Running Total |
+| :--- | :--- | :--- |
+| **Eurostar (3 Tickets)** | $300.00 | $1,750.00 |
+| **Food (Travel Day)** | $150.00 | $1,900.00 |
+| **Travel Day 1 Subtotal** | **$450.00** | **$1,900.00** |
+
+#### **Days 5-7: Paris, France (Schengen)**
+*   **Accommodation:** 3 Nights in Le Marais or Latin Quarter.
+*   **Child Activity:** Eiffel Tower (1st floor) & Seine River Cruise.
+*   **Splurge:** *Le Jules Verne* (Eiffel Tower) - Book a vegetarian tasting menu.
+*   **Dietary:** French cuisine is dairy-heavy; specify "Sans Lait" (No Milk).
+
+| Item | Cost | Running Total |
+| :--- | :--- | :--- |
+| **Hotel (3 Nights)** | $600.00 | $2,500.00 |
+| **Food (3 Days x 3 ppl)** | $450.00 | $2,950.00 |
+| **Local Transport** | $100.00 | $3,050.00 |
+| **Activities/Splurge** | $300.00 | $3,350.00 |
+| **Paris Subtotal** | **$1,450.00** | **$3,350.00** |
+
+*   **Restaurant Rec:** *Le Potager de Charlotte* (11th Arr). Vegetarian, many DF options.
+*   **Day 7 Note:** Check flight status for Day 8.
+
+#### **Day 8: Travel Paris → Barcelona (Travel Day 2)**
+*   **Transport:** Flight (CDG to BCN). 1h 45m flight.
+*   **Child Activity:** Explore the airport play area or quick walk in Barcelona upon arrival.
+*   **Dietary:** Tapas are great for sharing; ask for "Sin Queso" (No Cheese).
+
+| Item | Cost | Running Total |
+| :--- | :--- | :--- |
+| **Flight (3 Tickets)** | $300.00 | $3,650.00 |
+| **Food (Travel Day)** | $150.00 | $3,800.00 |
+| **Travel Day 2 Subtotal** | **$450.00** | **$3,800.00** |
+
+#### **Days 9-11: Barcelona, Spain (Schengen)**
+*   **Accommodation:** 3 Nights in Eixample or Gothic Quarter.
+*   **Child Activity:** Park Güell (Gaudí's mosaics) & Barcelona Aquarium.
+*   **Splurge:** *El Nacional* Rooftop Dinner (Vegan menu available).
+*   **Dietary:** Spain is very friendly to vegetarians.
+
+| Item | Cost | Running Total |
+| :--- | :--- | :--- |
+| **Hotel (3 Nights)** | $600.00 | $4,400.00 |
+| **Food (3 Days x 3 ppl)** | $450.00 | $4,850.00 |
+| **Local Transport** | $100.00 | $4,950.00 |
+| **Activities/Splurge** | $300.00 | $5,250.00 |
+| **Barcelona Subtotal** | **$1,450.00** | **$5,250.00** |
+
+*   **Restaurant Rec:** *Vegetalia* (Born District). 100% Vegan, DF options plentiful.
+*   **Day 11 Note:** Book Day 12 flight early.
+
+#### **Days 12-14: Rome, Italy (Schengen)**
+*   **Accommodation:** 3 Nights near Termini or Trastevere.
+*   **Travel:** Morning flight BCN-ROM (Day 12). Counts as Rome Day 1.
+*   **Child Activity:** Colosseum (Gladiator Tour) & Trevi Fountain (Coin Toss).
+*   **Splurge:** *Piazza Navona* Gelato Tour (Vegan Gelato).
+*   **Dietary:** Italian pasta is often DF (check for egg in fresh pasta).
+
+| Item | Cost | Running Total |
+| :--- | :--- | :--- |
+| **Flight (3 Tickets)** | $300.00 | $5,550.00 |
+| **Hotel (3 Nights)** | $600.00 | $6,150.00 |
+| **Food (3 Days x 3 ppl)** | $450.00 | $6,600.00 |
+| **Local Transport** | $100.00 | $6,700.00 |
+| **Activities/Splurge** | $300.00 | $7,000.00 |
+| **Rome Subtotal** | **$1,750.00** | **$7,000.00** |
+
+*   **Restaurant Rec:** *Terra e Vita* (Trastevere). Vegan, DF options clearly marked.
+*   **Day 14:** Departure from Rome (FCO).
+
+---
+
+### 🛑 BUDGET FEASIBILITY CHECK
+
+**Status:** **BARELY FEASIBLE**
+**Running Total:** **$7,000.00** (Exact Match)
+
+**Why this is tight:**
+1.  **Accommodation:** $200/night for a family of 3 in London/Paris is the absolute floor for a private room. You must book Airbnb or budget hotels immediately.
+2.  **Inter-City:** Eurostar prices fluctuate wildly. If you don't book 3 months in advance, the $300 allocation will likely rise to $500+, breaking the budget.
+3.  **Food:** $50/person/day includes breakfast, lunch, and dinner. You must utilize supermarkets (Tesco, Carrefour, Mercadona) for breakfast and lunch to afford sit-down dinners.
+
+**Suggested Cuts if Prices Rise:**
+1.  **Cut Rome:** Reduce Rome to 2 nights. Save $200 (Hotel) + $100 (Food/Activity) = **$300 Saved**.
+2.  **Cut Splurges:** Remove the "Splurge" experience in one city (e.g., Paris). Save **$300**.
+3.  **Transport:** Switch Eurostar to a Budget Flight (Ryanair/EasyJet) from London Stansted to Paris Beauvais. Save **$150** (but adds travel time/airport hassle).
+
+**Final Advice:** Stick to the budget strictly. Use the "Splurge" funds only if the daily food budget is under-spent. Monitor your Schengen days carefully; do not add extra days in Rome without checking your 90/180-day count.

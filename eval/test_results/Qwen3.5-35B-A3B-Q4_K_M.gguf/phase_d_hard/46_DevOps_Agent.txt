@@ -1,0 +1,181 @@
+# Phase D Hard Test — #46 DevOps Agent
+# Tier: 3 | Score: 5/10 | No automated constraints to check
+# Tokens: 9536 | Speed: 91.8 t/s | Time: 103.9s
+
+## PROMPT:
+Debug this GitHub Actions workflow. It has 3 SYNTAX errors and 2 LOGIC errors. Find all 5.
+
+```yaml
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - run: npm install
+      - run: npm test
+      
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: npm install
+        - run: npm run build  # Syntax error 1
+      - uses: docker/build-push-action@v5
+        with:
+          push: true
+          tags: myapp:${{ github.sha }}
+
+  deploy-staging:
+    needs: build
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: staging
+    steps:
+      - run: |
+          kubectl set image deployment/myapp             myapp=myapp:${{ github.sha }}
+  
+  deploy-production:
+    needs: build  # Logic error: should this depend on staging?
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - run: kubectl set image deployment/myapp myapp=myapp:${{ github.sha }}
+      
+  notify:
+    needs: [deploy-staging deploy-production]  # Syntax error 2
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - run: curl -X POST $SLACK_WEBHOOK -d '{"text": "Deployment complete"}'
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }  # Syntax error 3
+```
+
+Find all 5 errors (3 syntax, 2 logic), explain each, and provide the corrected YAML.
+
+## RESPONSE:
+Here are the 3 Syntax errors and 2 Logic errors found in the workflow, followed by the corrected YAML.
+
+### Syntax Errors
+
+1.  **Invalid Step Indentation (Build Job)**
+    *   **Location:** `build` job, `steps` section.
+    *   **Issue:**
+        ```yaml
+        - run: npm install
+          - run: npm run build  # Syntax error 1
+        ```
+        A step (`- run: ...`) cannot be nested inside another step's content. It must be a separate list item at the same indentation level.
+    *   **Fix:** Indent `- run: npm run build` to align with `- run: npm install`.
+
+2.  **Invalid YAML List Syntax (Notify Job)**
+    *   **Location:** `notify` job, `needs` key.
+    *   **Issue:**
+        ```yaml
+        needs: [deploy-staging deploy-production]  # Syntax error 2
+        ```
+        YAML lists require commas to separate items within brackets.
+    *   **Fix:** Change to `needs: [deploy-staging, deploy-production]`.
+
+3.  **Unclosed Expression (Notify Job)**
+    *   **Location:** `notify` job, `env` section.
+    *   **Issue:**
+        ```yaml
+        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }  # Syntax error 3
+        ```
+        The GitHub Actions expression `${{ ... }}` is missing the closing brace `}`.
+    *   **Fix:** Change to `${{ secrets.SLACK_WEBHOOK }}`.
+
+### Logic Errors
+
+4.  **Incorrect Deployment Dependency (Deploy Production)**
+    *   **Location:** `deploy-production` job, `needs` key.
+    *   **Issue:**
+        ```yaml
+        needs: build  # Logic error
+        ```
+        Production deployment should not run immediately after the build finishes. It should wait for the Staging deployment to complete successfully to ensure stability. Currently, `deploy-staging` and `deploy-production` run in parallel.
+    *   **Fix:** Change `needs: build` to `needs: deploy-staging` (since `deploy-staging` already depends on `build`).
+
+5.  **Redundant/Flawed Notification Dependency (Notify Job)**
+    *   **Location:** `notify` job, `needs` key.
+    *   **Issue:**
+        ```yaml
+        needs: [deploy-staging, deploy-production]
+        ```
+        If `deploy-production` is fixed to depend on `deploy-staging` (Logic Error 4 fix), then `notify` only needs to depend on `deploy-production`. Explicitly listing `deploy-staging` is redundant. More importantly, if `deploy-staging` fails, `deploy-production` is skipped. If `deploy-production` is skipped, `notify` is also skipped (due to `needs`), meaning the `if: always()` condition never triggers.
+    *   **Fix:** Change `needs` to `needs: deploy-production`.
+
+### Corrected YAML
+
+```yaml
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - run: npm install
+      - run: npm test
+      
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: npm install
+      - run: npm run build
+      - uses: docker/build-push-action@v5
+        with:
+          push: true
+          tags: myapp:${{ github.sha }}
+
+  deploy-staging:
+    needs: build
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: staging
+    steps:
+      - run: |
+          kubectl set image deployment/myapp myapp=myapp:${{ github.sha }}
+  
+  deploy-production:
+    needs: deploy-staging  # Fixed Logic Error: Depends on staging
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - run: kubectl set image deployment/myapp myapp=myapp:${{ github.sha }}
+      
+  notify:
+    needs: deploy-production  # Fixed Logic Error: Redundant staging dependency removed
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - run: curl -X POST $SLACK_WEBHOOK -d '{"text": "Deployment complete"}'
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}  # Fixed Syntax Error: Added closing brace
+```

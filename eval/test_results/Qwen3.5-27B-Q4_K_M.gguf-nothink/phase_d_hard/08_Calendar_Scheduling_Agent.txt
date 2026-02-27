@@ -1,0 +1,261 @@
+# Phase D Hard Test — #8 Calendar / Scheduling Agent
+# Tier: 1 | Score: 0/10 | Expected '14:00-14:30 UTC' not found
+# Tokens: 4000 | Speed: 33.7 t/s | Time: 118.8s
+
+## PROMPT:
+Find the ONLY valid 30-minute meeting slot for all 4 participants on Monday. Show your work.
+
+Participant calendars (all times in their LOCAL timezone):
+
+Alice (UTC-5, New York):
+- 8:00-9:30 AM: Team standup
+- 10:00-11:00 AM: Client call  
+- 12:00-1:00 PM: Lunch (blocked)
+- 2:00-4:00 PM: Sprint planning
+- Available: 9:30-10:00, 11:00-12:00, 1:00-2:00
+
+Bob (UTC+0, London):
+- 9:00-10:30 AM: Architecture review
+- 11:30 AM-12:30 PM: Lunch
+- 1:00-2:30 PM: Design sync
+- 3:00-5:00 PM: Deep work (blocked)
+- Available: 10:30-11:30, 12:30-1:00, 2:30-3:00
+
+Carol (UTC+1, Berlin):
+- 9:00-10:00 AM: Morning standup
+- 11:00 AM-12:00 PM: 1:1 with manager
+- 1:00-2:00 PM: Lunch
+- 3:30-5:00 PM: Workshop
+- Available: 10:00-11:00, 12:00-1:00, 2:00-3:30
+
+Dave (UTC+5:30, Mumbai):
+- 10:00 AM-12:00 PM: Client workshops
+- 1:00-2:00 PM: Lunch
+- 3:00-4:00 PM: Code review
+- 5:00-7:00 PM: Evening meetings
+- Available: 12:00-1:00, 2:00-3:00, 4:00-5:00, 7:00+
+
+Convert ALL times to UTC first, then find the overlapping 30-minute window. State the answer in UTC.
+
+## RESPONSE:
+To find the valid meeting slot, we must first convert all participants' local times to **UTC** to establish a common timeline.
+
+### Step 1: Convert Local Times to UTC
+
+**Time Zone Offsets:**
+*   **Alice (New York):** UTC-5 $\rightarrow$ Add 5 hours to local time.
+*   **Bob (London):** UTC+0 $\rightarrow$ No change.
+*   **Carol (Berlin):** UTC+1 $\rightarrow$ Subtract 1 hour from local time.
+*   **Dave (Mumbai):** UTC+5:30 $\rightarrow$ Subtract 5 hours 30 minutes from local time.
+
+---
+
+#### **Alice (UTC-5)**
+*   *Blocked:*
+    *   8:00–9:30 AM $\rightarrow$ **13:00–14:30 UTC**
+    *   10:00–11:00 AM $\rightarrow$ **15:00–16:00 UTC**
+    *   12:00–1:00 PM $\rightarrow$ **17:00–18:00 UTC**
+    *   2:00–4:00 PM $\rightarrow$ **19:00–21:00 UTC**
+*   *Available (UTC):*
+    *   9:30–10:00 AM $\rightarrow$ **14:30–15:00 UTC**
+    *   11:00 AM–12:00 PM $\rightarrow$ **16:00–17:00 UTC**
+    *   1:00–2:00 PM $\rightarrow$ **18:00–19:00 UTC**
+
+#### **Bob (UTC+0)**
+*   *Blocked:*
+    *   9:00–10:30 AM $\rightarrow$ **09:00–10:30 UTC**
+    *   11:30 AM–12:30 PM $\rightarrow$ **11:30–12:30 UTC**
+    *   1:00–2:30 PM $\rightarrow$ **13:00–14:30 UTC**
+    *   3:00–5:00 PM $\rightarrow$ **15:00–17:00 UTC**
+*   *Available (UTC):*
+    *   10:30–11:30 AM $\rightarrow$ **10:30–11:30 UTC**
+    *   12:30–1:00 PM $\rightarrow$ **12:30–13:00 UTC**
+    *   2:30–3:00 PM $\rightarrow$ **14:30–15:00 UTC**
+
+#### **Carol (UTC+1)**
+*   *Blocked:*
+    *   9:00–10:00 AM $\rightarrow$ **08:00–09:00 UTC**
+    *   11:00 AM–12:00 PM $\rightarrow$ **10:00–11:00 UTC**
+    *   1:00–2:00 PM $\rightarrow$ **12:00–13:00 UTC**
+    *   3:30–5:00 PM $\rightarrow$ **14:30–16:00 UTC**
+*   *Available (UTC):*
+    *   10:00–11:00 AM $\rightarrow$ **09:00–10:00 UTC**
+    *   12:00–1:00 PM $\rightarrow$ **11:00–12:00 UTC**
+    *   2:00–3:30 PM $\rightarrow$ **13:00–14:30 UTC**
+
+#### **Dave (UTC+5:30)**
+*   *Blocked:*
+    *   10:00 AM–12:00 PM $\rightarrow$ **04:30–06:30 UTC**
+    *   1:00–2:00 PM $\rightarrow$ **07:30–08:30 UTC**
+    *   3:00–4:00 PM $\rightarrow$ **09:30–10:30 UTC**
+    *   5:00–7:00 PM $\rightarrow$ **11:30–13:30 UTC**
+*   *Available (UTC):*
+    *   12:00–1:00 PM $\rightarrow$ **06:30–07:30 UTC**
+    *   2:00–3:00 PM $\rightarrow$ **08:30–09:30 UTC**
+    *   4:00–5:00 PM $\rightarrow$ **10:30–11:30 UTC**
+    *   7:00+ PM $\rightarrow$ **13:30+ UTC**
+
+---
+
+### Step 2: Find the Overlap
+
+We need a 30-minute window where **all four** are available. Let's analyze the available slots chronologically in UTC.
+
+**1. Check 06:30 – 07:30 UTC**
+*   Dave: Available.
+*   Alice: Blocked (13:00–14:30 UTC is her morning, wait, Alice's 8am local is 13:00 UTC. So 06:30 UTC is 01:30 AM New York. Alice is likely asleep, but strictly looking at the provided "Available" list, she is not listed as available here. Her first available slot starts at 14:30 UTC).
+*   **Result:** No overlap.
+
+**2. Check 08:30 – 09:30 UTC**
+*   Dave: Available (08:30–09:30).
+*   Carol: Blocked (08:00–09:00).
+*   **Result:** No overlap.
+
+**3. Check 09:00 – 10:00 UTC**
+*   Carol: Available (09:00–10:00).
+*   Dave: Blocked (09:30–10:30).
+*   **Result:** No overlap.
+
+**4. Check 10:30 – 11:30 UTC**
+*   Bob: Available (10:30–11:30).
+*   Dave: Available (10:30–11:30).
+*   Carol: Blocked (10:00–11:00).
+*   **Result:** No overlap.
+
+**5. Check 11:00 – 12:00 UTC**
+*   Carol: Available (11:00–12:00).
+*   Bob: Blocked (11:30–12:30).
+*   **Result:** No overlap.
+
+**6. Check 12:30 – 13:00 UTC**
+*   Bob: Available (12:30–13:00).
+*   Carol: Blocked (12:00–13:00).
+*   **Result:** No overlap.
+
+**7. Check 13:00 – 14:30 UTC**
+*   Carol: Available (13:00–14:30).
+*   Bob: Blocked (13:00–14:30).
+*   **Result:** No overlap.
+
+**8. Check 14:30 – 15:00 UTC**
+*   **Alice:** Available (14:30–15:00).
+*   **Bob:** Available (14:30–15:00).
+*   **Carol:** Blocked (14:30–16:00).
+*   **Result:** No overlap.
+
+**9. Check 15:00 – 16:00 UTC**
+*   Alice: Blocked (15:00–16:00).
+*   **Result:** No overlap.
+
+**10. Check 16:00 – 17:00 UTC**
+*   **Alice:** Available (16:00–17:00).
+*   **Bob:** Blocked (15:00–17:00).
+*   **Result:** No overlap.
+
+**11. Check 17:00 – 18:00 UTC**
+*   Alice: Blocked (17:00–18:00).
+*   **Result:** No overlap.
+
+**12. Check 18:00 – 19:00 UTC**
+*   **Alice:** Available (18:00–19:00).
+*   **Bob:** Blocked (15:00–17:00, so free after 17:00? Wait, Bob's "Deep work" is 3:00-5:00 PM local = 15:00-17:00 UTC. So Bob is free 17:00 onwards).
+    *   Let's re-verify Bob's availability.
+    *   Bob Local: 3:00-5:00 PM blocked.
+    *   Bob UTC: 15:00-17:00 blocked.
+    *   Bob is free 17:00 UTC onwards.
+*   **Carol:** Blocked (14:30–16:00 UTC). She is free after 16:00 UTC.
+    *   Carol Local: 3:30-5:00 PM blocked.
+    *   Carol UTC: 14:30-16:00 blocked.
+    *   Carol is free 16:00 UTC onwards.
+*   **Dave:**
+    *   Dave Local: 5:00-7:00 PM blocked.
+    *   Dave UTC: 11:30-13:30 blocked.
+    *   Dave is free 13:30 UTC onwards.
+    *   Wait, Dave's "Evening meetings" are 5:00-7:00 PM local.
+    *   5:00 PM Mumbai = 11:30 UTC.
+    *   7:00 PM Mumbai = 13:30 UTC.
+    *   So Dave is blocked 11:30-13:30 UTC.
+    *   Dave is free 13:30 UTC onwards.
+    *   **Wait, let me re-read Dave's schedule carefully.**
+    *   Dave Local: 5:00-7:00 PM blocked.
+    *   Dave Local: 7:00+ Available.
+    *   7:00 PM Mumbai = 13:30 UTC.
+    *   So Dave is available 13:30 UTC onwards.
+
+Let's re-evaluate the **18:00 – 19:00 UTC** slot with this corrected understanding:
+*   **Alice:** Available 18:00–19:00 UTC. (Local 1:00-2:00 PM).
+*   **Bob:** Available. (Local 18:00-19:00 is 6:00-7:00 PM. His block ended at 5:00 PM local / 17:00 UTC).
+*   **Carol:** Available. (Local 18:00-19:00 is 7:00-8:00 PM. Her block ended at 5:00 PM local / 16:00 UTC).
+*   **Dave:** Available?
+    *   Dave Local 18:00 UTC = 23:30 (11:30 PM) Mumbai.
+    *   Dave's "Evening meetings" are 5:00-7:00 PM local (11:30-13:30 UTC).
+    *   Dave is available 7:00+ PM local (13:30+ UTC).
+    *   So Dave is available at 18:00 UTC.
+
+**Wait, is there a conflict I missed?**
+Let's re-check the **14:30-15:00 UTC** slot again.
+*   Alice: Available (14:30-15:00).
+*   Bob: Available (14:30-15:00).
+*   Carol: Blocked (14:30-16:00). **No.**
+
+Let's re-check the **16:00-17:00 UTC** slot.
+*   Alice: Available (16:00-17:00).
+*   Bob: Blocked (15:00-17:00). **No.**
+
+Let's re-check the **18:00-19:00 UTC** slot.
+*   Alice: Available (18:00-19:00).
+*   Bob: Available (17:00+).
+*   Carol: Available (16:00+).
+*   Dave: Available (13:30+).
+*   **This looks like a valid 60-minute window.**
+
+Is there any other constraint?
+Let's re-verify Dave's "Available" list provided in the prompt vs my calculation.
+Prompt says Dave Available: "12:00-1:00, 2:00-3:00, 4:00-5:00, 7:00+".
+*   12:00-1:00 Local = 06:30-07:30 UTC.
+*   2:00-3:00 Local = 08:30-09:30 UTC.
+*   4:00-5:00 Local = 10:30-11:30 UTC.
+*   7:00+ Local = 13:30+ UTC.
+
+Okay, so Dave is available 13:30 UTC onwards.
+Alice is available 18:00-19:00 UTC.
+Bob is available 17:00 UTC onwards.
+Carol is available 16:00 UTC onwards.
+
+So the overlap is **18:00 UTC to 19:00 UTC**.
+This is a 60-minute window. We need a 30-minute slot.
+Any 30-minute slot within 18:00-19:00 UTC works.
+However, the prompt asks for "The ONLY valid 30-minute meeting slot". This implies there might be only one specific 30-minute window, or perhaps I missed a constraint that breaks the 18:00-19:00 block.
+
+Let's re-read the "Available" lists provided in the prompt to ensure I didn't miss a "blocked" time that wasn't explicitly listed as a meeting but implied by the gaps.
+The prompt lists specific meetings and then explicitly lists "Available" slots. I should trust the "Available" lists provided in the prompt as the ground truth, rather than deriving them from the meetings (though they should match).
+
+**Re-evaluating based strictly on the "Available" lists provided in the prompt (converted to UTC):**
+
+**Alice (UTC-5):**
+*   Available: 9:30-10:00, 11:00-12:00, 1:00-2:00 (Local)
+*   UTC:
+    *   14:30–15:00
+    *   16:00–17:00
+    *   18:00–19:00
+
+**Bob (UTC+0):**
+*   Available: 10:30-11:30, 12:30-1:00, 2:30-3:00 (Local)
+*   UTC:
+    *   10:30–11:30
+    *   12:30–13:00
+    *   14:30–15:00
+
+**Carol (UTC+1):**
+*   Available: 10:00-11:00, 12:00-1:00, 2:00-3:30 (Local)
+*   UTC:
+    *   09:00–10:00
+    *   11:00–12:00
+    *   13:00–14:30
+
+**Dave (UTC+5:30):**
+*   Available: 12:00-1:00, 2:00-3:00, 4:00-5:00, 7:00+ (Local)
+*   UTC:
+    *   06:30–07:30
+    *   08:30–09:30
+    *   10:30–11:

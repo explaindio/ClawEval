@@ -1,0 +1,63 @@
+# Phase D Hard Test — #4 Notification / Alert Agent
+# Tier: 1 | Score: 10/10 | 2/2 constraints met
+# Tokens: 13047 | Speed: 90.0 t/s | Time: 144.9s
+
+## PROMPT:
+Process these 7 events into alerts. WATCH OUT: 2 events are duplicates (merge them), 1 is a false positive that should NOT generate an alert. Assign correct priorities.
+
+Events (timestamps in UTC):
+1. 14:00 — "Disk /data at 94% capacity" (source: monitoring)
+2. 14:01 — "SSL certificate for api.example.com expired 2 hours ago" (source: cert-manager)
+3. 14:02 — "CPU spike to 98% on worker-3" (source: monitoring)
+4. 14:02 — "CPU on worker-3 returned to 12% after scheduled batch job completed" (source: monitoring)
+5. 14:03 — "SSL certificate for api.example.com expires in -2 hours" (source: different cert checker)
+6. 14:05 — "New deployment v2.4.1 rolled out successfully" (source: CI/CD)
+7. 14:06 — "Disk /data at 94% — approaching critical threshold" (source: secondary monitoring)
+
+For each alert: priority (P1/P2/P3), channel, message, and reasoning. Explain which events you merged and which you filtered as false positives.
+
+## RESPONSE:
+### Alert Processing Summary
+
+Based on the provided events, here is the processed alerting output.
+
+**Processing Logic:**
+*   **Duplicates Merged:** Event 1 & 7 (Disk Capacity) and Event 2 & 5 (SSL Certificate). *Note: While the prompt specifies "2 events are duplicates," operational best practice dictates merging both pairs of redundant data sources to prevent alert fatigue. Both pairs represent identical states from different monitoring sources.*
+*   **False Positive Filtered:** Event 6 (Deployment Success). This is an informational log, not an incident, and should not trigger an alert channel.
+*   **Resolution Handling:** Event 4 (CPU Recovery) is treated as a resolution to Event 3 (CPU Spike) and is included in the alert lifecycle context rather than as a separate alert.
+
+---
+
+### Generated Alerts
+
+#### Alert 1: Critical SSL Certificate Expiration
+*   **Priority:** **P1** (Critical)
+*   **Channel:** `#security-alerts` / `PagerDuty: Security On-Call`
+*   **Message:** `CRITICAL: SSL certificate for api.example.com has expired (expired 2 hours ago). Service availability at risk.`
+*   **Reasoning:** An expired SSL certificate causes immediate service disruption and security warnings for clients. This is a high-severity issue requiring immediate attention. Merged from Event 2 and Event 5.
+
+#### Alert 2: High Disk Capacity Warning
+*   **Priority:** **P2** (High)
+*   **Channel:** `#infra-alerts` / `Slack: Ops Channel`
+*   **Message:** `WARNING: Disk /data capacity at 94% on primary and secondary monitoring. Approaching critical threshold.`
+*   **Reasoning:** 94% capacity is a critical warning that risks service failure if the disk fills completely. Merged from Event 1 and Event 7.
+
+#### Alert 3: CPU Spike on Worker Node
+*   **Priority:** **P2** (High)
+*   **Channel:** `#infra-alerts` / `Slack: Ops Channel`
+*   **Message:** `WARNING: CPU spike to 98% detected on worker-3. (Resolved: Returned to 12% after batch job completion).`
+*   **Reasoning:** A CPU spike to 98% indicates performance degradation. Event 4 confirms the cause (scheduled batch job) and resolution, so this is treated as a transient incident rather than a persistent failure. Event 4 is merged into this alert as a resolution note.
+
+---
+
+### Explanation of Duplicates and Filtering
+
+**1. Merged Duplicates (2 Pairs Identified):**
+*   **Disk Capacity:** **Event 1** (14:00) and **Event 7** (14:06) report the exact same state (94% capacity) from primary and secondary monitoring systems. These were merged to avoid duplicate tickets for the same issue.
+*   **SSL Certificate:** **Event 2** (14:01) and **Event 5** (14:03) report the exact same status (expired 2 hours ago) from different certificate checkers. These were merged to prevent redundant security alerts.
+
+**2. Filtered False Positive:**
+*   **Event 6** ("New deployment v2.4.1 rolled out successfully") was **filtered**. This is a success-state log from the CI/CD pipeline. It does not indicate an error or incident and should not generate an alert.
+
+**3. Resolution Handling:**
+*   **Event 4** ("CPU returned to 12%") was **not** generated as a separate alert. It serves as a resolution notification for the CPU Spike (Event 3). Generating a separate alert for a return to normal is standard practice to close the incident lifecycle, not to create a new alert.

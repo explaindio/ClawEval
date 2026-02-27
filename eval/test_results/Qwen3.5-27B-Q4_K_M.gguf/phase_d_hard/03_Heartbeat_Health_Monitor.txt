@@ -1,0 +1,73 @@
+# Phase D Hard Test — #3 Heartbeat / Health Monitor
+# Tier: 1 | Score: 10/10 | 4/4 constraints met
+# Tokens: 7770 | Speed: 30.0 t/s | Time: 258.7s
+
+## PROMPT:
+Analyze these 10-minute server metrics sampled every minute. Identify ALL hidden patterns and predict failures. There are at least 3 non-obvious correlations.
+
+Time  | CPU% | Mem%  | Disk% | Conn | Err/s | DiskIO
+00:00 | 45   | 71.0  | 82.0  | 200  | 2     | 10MB/s
+00:01 | 42   | 71.5  | 82.1  | 205  | 1     | 12MB/s
+00:02 | 48   | 72.0  | 82.2  | 198  | 3     | 11MB/s
+00:03 | 95   | 72.5  | 82.3  | 450  | 45    | 150MB/s
+00:04 | 55   | 73.2  | 82.5  | 210  | 5     | 15MB/s
+00:05 | 43   | 73.8  | 82.6  | 195  | 2     | 10MB/s
+00:06 | 44   | 74.5  | 82.8  | 202  | 1     | 11MB/s
+00:07 | 47   | 75.1  | 82.9  | 205  | 3     | 12MB/s
+00:08 | 93   | 75.8  | 83.1  | 440  | 42    | 145MB/s
+00:09 | 52   | 76.4  | 83.2  | 215  | 4     | 14MB/s
+
+Questions to answer:
+1. What recurring event happens and at what interval?
+2. Memory is rising linearly — at this rate, when will it hit 95%?
+3. What is the correlation between connections and error rate?
+4. At the current disk growth rate, how many hours until 95% full?
+Give EXACT numbers for questions 2 and 4.
+
+## RESPONSE:
+### Pattern Analysis & Failure Prediction
+
+Based on the 10-minute dataset, the following hidden patterns and correlations have been identified:
+
+1.  **Periodic Load Burst (5-Minute Interval):**
+    There is a distinct recurring event occurring every **5 minutes** (observed at 00:03 and 00:08). During these minutes, CPU, Connections, Error Rate, and DiskIO spike simultaneously. This suggests a scheduled cron job, batch process, or traffic wave that overwhelms the server's capacity.
+
+2.  **Memory Leak (Non-Obvious Correlation 1):**
+    While CPU and Connections return to baseline after the spikes, **Memory usage does not**. It rises linearly (approx. 0.6% per minute) regardless of the load state. This indicates a memory leak or uncached state accumulation that will eventually cause an Out-Of-Memory (OOM) crash.
+
+3.  **Connection Saturation Threshold (Non-Obvious Correlation 2):**
+    There is a non-linear correlation between **Connections and Error Rate**. When Connections are < 215, Errors are negligible (1-5/s). When Connections spike > 440, Errors jump to > 40/s. This indicates a hard capacity limit or queue saturation point that is currently being breached during every 5-minute burst.
+
+4.  **I/O Bound Spikes (Non-Obvious Correlation 3):**
+    **DiskIO** is perfectly correlated with the Connection spikes (10MB/s baseline vs. 150MB/s spike). This confirms the recurring event is I/O intensive (e.g., log flushing, database writes) rather than purely CPU-bound processing.
+
+**Predicted Failures:**
+*   **Immediate:** Service degradation/errors during every 5-minute spike.
+*   **Short-term:** Memory Exhaustion (OOM) within 31 minutes.
+*   **Medium-term:** Disk Full within ~1.5 hours.
+
+---
+
+### Questions & Answers
+
+**1. What recurring event happens and at what interval?**
+A **periodic load burst** (likely a scheduled task or traffic wave) occurs every **5 minutes**. This is evidenced by simultaneous spikes in CPU, Connections, Errors, and DiskIO at 00:03 and 00:08.
+
+**2. Memory is rising linearly — at this rate, when will it hit 95%?**
+*   **Current Memory (00:09):** 76.4%
+*   **Start Memory (00:00):** 71.0%
+*   **Growth Rate:** $(76.4 - 71.0) / 9 \text{ minutes} = \mathbf{0.6\% \text{ per minute}}$
+*   **Remaining to 95%:** $95.0 - 76.4 = 18.6\%$
+*   **Time Required:** $18.6 / 0.6 = \mathbf{31 \text{ minutes}}$
+*   **Prediction:** Memory will hit 95% at timestamp **00:40** (31 minutes from the last sample).
+
+**3. What is the correlation between connections and error rate?**
+There is a **threshold-based positive correlation**. Errors remain low (1–5/s) when connections are below ~215. However, once connections exceed ~440, the error rate spikes disproportionately (to ~42–45/s). This indicates the system has a capacity ceiling that is breached during the 5-minute bursts, causing timeouts or failures.
+
+**4. At the current disk growth rate, how many hours until 95% full?**
+*   **Current Disk (00:09):** 83.2%
+*   **Start Disk (00:00):** 82.0%
+*   **Growth Rate:** $(83.2 - 82.0) / 9 \text{ minutes} = 1.2 / 9 = \mathbf{0.1333...\% \text{ per minute}}$
+*   **Remaining to 95%:** $95.0 - 83.2 = 11.8\%$
+*   **Minutes Required:** $11.8 / (1.2 / 9) = 88.5 \text{ minutes}$
+*   **Hours Required:** $88.5 / 60 = \mathbf{1.475 \text{ hours}}$

@@ -1,0 +1,53 @@
+{
+  "phase": "automated_role_tests",
+  "model": "Qwen3.5-27B-Q4_K_M.gguf",
+  "timestamp": "2026-02-25T15:12:07.787342",
+  "total": 4,
+  "passed": 3,
+  "score_pct": 75.0,
+  "results": [
+    {
+      "id": 3,
+      "role": "Heartbeat / Health Monitor",
+      "tier": 1,
+      "passed": true,
+      "reason": "Valid JSON",
+      "response": "{\"status\": \"degraded\", \"alerts\": [\"Memory usage high: 91%\", \"API latency exceeded threshold: 2.3s (limit: 1s)\", \"Disk usage elevated: 78%\"]}",
+      "tps": 33.2,
+      "elapsed": 89.44,
+      "completion_tokens": 2965
+    },
+    {
+      "id": 8,
+      "role": "Calendar / Scheduling Agent",
+      "tier": 1,
+      "passed": false,
+      "reason": "Error: Request timed out.",
+      "response": "",
+      "tps": 0,
+      "elapsed": 0
+    },
+    {
+      "id": 40,
+      "role": "Fact-Checking Agent",
+      "tier": 3,
+      "passed": true,
+      "reason": "Valid JSON",
+      "response": "[\n  {\n    \"claim\": \"Python is the most popular programming language in the world\",\n    \"verdict\": \"misleading\",\n    \"explanation\": \"While Python ranks #1 on several indices like TIOBE and PYPL, other metrics such as Stack Overflow's developer survey often rank JavaScript as the most used. Popularity depends heavily on the specific measurement criteria (e.g., search volume vs. active usage).\",\n    \"confidence\": 0.85\n  },\n  {\n    \"claim\": \"The human body has 206 bones\",\n    \"verdict\": \"true\",\n    \"explanation\": \"This is accurate for adult humans. Infants are born with approximately 270 bones, which fuse together during development to reach the standard adult count of 206.\",\n    \"confidence\": 0.95\n  },\n  {\n    \"claim\": \"Einstein failed math in school\",\n    \"verdict\": \"false\",\n    \"explanation\": \"This is a persistent myth. Einstein excelled in mathematics from a young age. The story likely originated from a misunderstanding of a grading scale change or confusion with other subjects.\",\n    \"confidence\": 0.99\n  },\n  {\n    \"claim\": \"Lightning never strikes the same place twice\",\n    \"verdict\": \"false\",\n    \"explanation\": \"Lightning frequently strikes the same location, especially tall structures like skyscrapers and lightning rods. The Empire State Building, for example, is struck dozens of times per year.\",\n    \"confidence\": 0.99\n  }\n]",
+      "tps": 30.5,
+      "elapsed": 118.66,
+      "completion_tokens": 3620
+    },
+    {
+      "id": 52,
+      "role": "Complex Debugger Agent",
+      "tier": 5,
+      "passed": true,
+      "reason": "Valid JSON",
+      "response": "{\n  \"bug_description\": \"The function returns all items instead of unique elements because it fails to add encountered items to the 'seen' set.\",\n  \"root_cause\": \"The line 'seen.add(item)' is missing inside the conditional block.\",\n  \"fix\": \"def get_unique(items):\\n    seen = set()\\n    result = []\\n    for item in items:\\n        if item not in seen:\\n            result.append(item)\\n            seen.add(item)\\n    return result\"\n}",
+      "tps": 30.3,
+      "elapsed": 114.96,
+      "completion_tokens": 3481
+    }
+  ]
+}

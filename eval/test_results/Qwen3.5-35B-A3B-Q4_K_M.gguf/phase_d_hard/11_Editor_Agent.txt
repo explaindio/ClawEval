@@ -1,0 +1,70 @@
+# Phase D Hard Test — #11 Editor Agent
+# Tier: 2 | Score: 5/10 | No automated constraints to check
+# Tokens: 13753 | Speed: 88.3 t/s | Time: 155.8s
+
+## PROMPT:
+This 200-word text contains EXACTLY 15 errors across 4 categories: grammar (5), factual (3), logical (3), and style (4). Find ALL 15.
+
+"The Eiffel Tower, located in Berlin, Germany, was completed in 1889 for the World's Fair. Standing at 1,063 feet tall, their the tallest structure in Europe. The tower was designed by Alexander Eiffel, who also helped designed the Statue of Liberty's internal framework.
+
+Every year, approximately 7 million visitors visits the tower making it the most visited paid monument in the world. The tower has three levels, with restaurants on the first and second levels. Visitors can chose to take the stairs (a total of 1,665 steps to the top) or use the elevators.
+
+Interestingly, the tower was originally intended to be temporary and was suppose to be dismantled after 20 years. However, it was saved because it proved valuable for radio transmissions. If the tower was built today, it would cost approximately $40 million — quite affordable for a city like Berlin.
+
+The tower shrinks by 6 inches in winter due to thermal contraction — despite the fact that metal expands in cold temperatures. It is painted every 7 years using 60 tons of paint, and have been 18 different colors throughout its history."
+
+List each error with: category, location, what's wrong, and the correction.
+
+## RESPONSE:
+**Grammar (5)**
+1.  **Location:** "their the tallest"
+    *   **What's wrong:** Incorrect pronoun/verb usage. "Their" is a possessive pronoun, not a subject/verb contraction.
+    *   **Correction:** "it is the tallest"
+2.  **Location:** "visitors visits"
+    *   **What's wrong:** Subject-verb agreement error. "Visitors" is plural, "visits" is singular.
+    *   **Correction:** "visitors visit"
+3.  **Location:** "helped designed"
+    *   **What's wrong:** Incorrect verb form after "helped".
+    *   **Correction:** "helped design"
+4.  **Location:** "can chose"
+    *   **What's wrong:** Incorrect verb form. "Chose" is past tense; "choose" is needed after modal "can".
+    *   **Correction:** "can choose"
+5.  **Location:** "was suppose to be"
+    *   **What's wrong:** Incorrect verb form. "Suppose" is a verb; "supposed" is the adjective/participle needed.
+    *   **Correction:** "was supposed to be"
+
+**Factual (3)**
+1.  **Location:** "located in Berlin, Germany"
+    *   **What's wrong:** The Eiffel Tower is in Paris, France, not Berlin.
+    *   **Correction:** "located in Paris, France"
+2.  **Location:** "Alexander Eiffel"
+    *   **What's wrong:** The engineer's name was Gustave Eiffel, not Alexander.
+    *   **Correction:** "Gustave Eiffel"
+3.  **Location:** "cost approximately $40 million"
+    *   **What's wrong:** A structure of this magnitude would cost billions to build today, not $40 million.
+    *   **Correction:** "cost approximately $4 billion" (or similar realistic figure)
+
+**Logical (3)**
+1.  **Location:** "shrinks... due to thermal contraction — despite the fact that metal expands in cold temperatures"
+    *   **What's wrong:** Contradictory statement. Metal contracts in cold temperatures, which is why it shrinks.
+    *   **Correction:** "despite the fact that metal contracts in cold temperatures" (or remove the clause).
+2.  **Location:** "quite affordable for a city like Berlin"
+    *   **What's wrong:** Inconsistent with the tower's actual location (Paris).
+    *   **Correction:** "quite affordable for a city like Paris"
+3.  **Location:** "1,665 steps to the top"
+    *   **What's wrong:** The stairs only go to the second floor; the top is accessible by elevator.
+    *   **Correction:** "1,665 steps to the second floor"
+
+**Style (4)**
+1.  **Location:** "making it the most visited paid monument"
+    *   **What's wrong:** Missing comma before the participial phrase.
+    *   **Correction:** "visits the tower, making it..."
+2.  **Location:** "quite affordable"
+    *   **What's wrong:** Informal/subjective tone for a factual text.
+    *   **Correction:** "a significant sum" or remove "quite affordable".
+3.  **Location:** "18 different colors"
+    *   **What's wrong:** Imprecise phrasing; it has been repainted 18 times in shades of the same color.
+    *   **Correction:** "18 different shades"
+4.  **Location:** "and have been 18 different colors"
+    *   **What's wrong:** Awkward phrasing/parallelism with "It is painted".
+    *   **Correction:** "and has been 18 different colors" (Note: Classified as Style for flow/parallelism in this context).

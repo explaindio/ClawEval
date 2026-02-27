@@ -1,0 +1,28 @@
+# Phase D Hard Test — #21 RAG / Retrieval Agent
+# Tier: 2 | Score: 10/10 | 2/2 constraints met
+# Tokens: 130 | Speed: 30.8 t/s | Time: 4.2s
+
+## PROMPT:
+Answer these 4 questions using ONLY the provided chunks. For question 3, the answer is NOT in the context — you must say so. DO NOT make up information.
+
+Chunk A: "The API supports OAuth 2.0 and API key authentication. Rate limits: Free tier 100 req/min, Pro tier 1000 req/min, Enterprise unlimited."
+Chunk B: "Webhooks support events: order.created, order.updated, order.cancelled. Webhook payloads are signed with HMAC-SHA256."
+Chunk C: "Response format is JSON by default. XML is supported by setting Accept: application/xml. Maximum response size is 10MB."
+Chunk D: "The /search endpoint supports full-text search with filters: date_range, status, customer_id. Results are paginated with max 100 per page."
+
+Questions:
+1. What authentication methods are supported and what are the rate limits for each tier?
+2. How are webhook payloads verified for authenticity?
+3. What is the SLA for API uptime? (This is a trap — answer honestly)
+4. How do I search for orders from a specific customer within a date range?
+
+For each answer, cite the specific chunk. For question 3, state clearly that this information is not in the provided context.
+
+## RESPONSE:
+1. The API supports OAuth 2.0 and API key authentication. Rate limits are 100 req/min for the Free tier, 1000 req/min for the Pro tier, and unlimited for Enterprise. (Chunk A)
+
+2. Webhook payloads are verified for authenticity by being signed with HMAC-SHA256. (Chunk B)
+
+3. The provided context does not contain information regarding the SLA for API uptime.
+
+4. To search for orders from a specific customer within a date range, use the /search endpoint which supports filters for customer_id and date_range. (Chunk D)

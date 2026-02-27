@@ -1,0 +1,92 @@
+# Phase D Hard Test — #29 Home Automation Agent
+# Tier: 2 | Score: 10/10 | 4/4 constraints met
+# Tokens: 8819 | Speed: 31.5 t/s | Time: 280.2s
+
+## PROMPT:
+Create an automation routine from this description. WARNING: There are 3 logical conflicts in the requirements that you must identify and resolve.
+
+"When we say 'movie night': dim all lights to 5%, close all blinds, set thermostat to 72°F, turn on the sound system, start the projector, lock all doors, activate security cameras, and set the house to 'do not disturb' mode.
+
+Also when we say 'movie night': open the living room windows for fresh air, leave the dog door unlocked so Max can go out, and keep the hallway lights at full brightness so the kids can see.
+
+Additional rules: 
+- If CO2 sensor reads above 1000ppm, force-open windows regardless of other settings
+- If smoke detector triggers, all automations must stop and all lights go to 100%
+- If nobody has moved in 2 hours, assume everyone fell asleep and turn everything off
+
+Identify the conflicts, explain how you'd resolve each, and provide the final automation logic.
+
+## RESPONSE:
+### Logical Conflict Analysis
+
+Based on the requirements provided, there are three distinct logical conflicts where instructions contradict one another or create unsafe states.
+
+#### Conflict 1: Lighting Priority (Global vs. Local)
+*   **The Conflict:** The "Movie Night" trigger commands to **"Dim all lights to 5%"**, but the secondary requirement states to **"Keep the hallway lights at full brightness."**
+*   **Why it fails:** You cannot simultaneously set *all* lights to 5% and keep specific lights at 100%. A literal interpretation would cause the hallway lights to dim, violating the safety requirement for the kids.
+*   **Resolution:** Define "All lights" as "All lights **except** the Hallway." The Hallway lights must be excluded from the dimming command and set to 100% with higher priority.
+
+#### Conflict 2: Security Scope (Global vs. Exception)
+*   **The Conflict:** The "Movie Night" trigger commands to **"Lock all doors,"** but the secondary requirement states to **"Leave the dog door unlocked."**
+*   **Why it fails:** A dog door is a type of door. Locking "all doors" would logically include the dog door, preventing Max from exiting, which contradicts the specific instruction to leave it unlocked.
+*   **Resolution:** Define "All doors" as "All **exterior** doors **excluding** the pet door." The pet door must be explicitly excluded from the locking command.
+
+#### Conflict 3: Sleep Mode vs. Security State
+*   **The Conflict:** The "Sleep" rule states that if there is no motion for 2 hours, **"turn everything off."** However, the "Movie Night" rule requires **"Lock all doors"** and **"Activate security cameras."**
+*   **Why it fails:** If "turn everything off" is interpreted literally, it would disarm security cameras and potentially unlock doors (reverting to a default state) while the owners are asleep. This creates a security vulnerability during the exact time the house should be secure.
+*   **Resolution:** Scope the "Turn everything off" command to **"Entertainment and Lighting only."** Security systems (locks, cameras) and Climate control (thermostat) must remain active during the sleep timer to maintain safety and comfort.
+
+---
+
+### Final Automation Logic
+
+Below is the resolved automation routine. It uses a hierarchical priority system where **Safety (Smoke/CO2)** > **Security (Locks/Cameras)** > **Comfort (Lights/Thermostat)**.
+
+#### **Trigger: Voice Command "Movie Night"**
+1.  **Lighting:**
+    *   Set **Hallway Lights** to **100%**.
+    *   Set **All Other Lights** to **5%**.
+2.  **Climate & Air:**
+    *   Set **Thermostat** to **72°F**.
+    *   Open **Living Room Windows**.
+    *   Close **All Blinds**.
+3.  **Security & Access:**
+    *   Lock **All Exterior Doors** (Exclude Dog Door).
+    *   Unlock **Dog Door**.
+    *   Activate **Security Cameras**.
+    *   Set House Mode to **'Do Not Disturb'** (Exclude Smoke/CO2 alarms).
+4.  **Entertainment:**
+    *   Turn **On Sound System**.
+    *   Start **Projector**.
+5.  **Timer:**
+    *   Start **Motion Monitor** (2-hour countdown).
+
+#### **Rule 1: CO2 Safety Override**
+*   **Condition:** If **CO2 Sensor > 1000ppm**.
+*   **Action:**
+    *   **Force-Open** Living Room Windows (Ignore "Close Blinds" if linked, but keep Blinds Closed for privacy).
+    *   **Log Alert:** "High CO2 detected, ventilation active."
+    *   *Note: This overrides the "Movie Night" window state if windows were closed for any reason, but aligns with the "Open Windows" requirement.*
+
+#### **Rule 2: Emergency Override (Smoke)**
+*   **Condition:** If **Smoke Detector Triggers**.
+*   **Action:**
+    *   **Stop** all "Movie Night" and "Sleep" automations.
+    *   **Set All Lights** to **100%** (Including Hallway).
+    *   **Unlock All Doors** (Including Dog Door) to facilitate evacuation.
+    *   **Silence** "Do Not Disturb" mode (Ensure alarms are audible).
+    *   **Send Alert** to all household members.
+
+#### **Rule 3: Sleep Timer (No Motion)**
+*   **Condition:** If **No Motion Detected** for **2 Hours** (AND Smoke/CO2 are normal).
+*   **Action:**
+    *   **Turn Off:** Sound System, Projector, All Lights (Except Hallway if needed for safety, but prompt says "everything off" so we assume lights off).
+    *   **Maintain:** Thermostat (72°F), Security Cameras, Locked Doors.
+    *   *Note: "Turn Everything Off" is scoped to Entertainment/Lighting only to preserve security.*
+    *   **Set House Mode** to **'Away/Secure'** (or keep 'Do Not Disturb' but mute notifications).
+
+#### **Rule 4: Motion Reset**
+*   **Condition:** If **Motion Detected** during the 2-hour timer.
+*   **Action:**
+    *   **Reset** the 2-hour timer.
+    *   Maintain current "Movie Night" state.

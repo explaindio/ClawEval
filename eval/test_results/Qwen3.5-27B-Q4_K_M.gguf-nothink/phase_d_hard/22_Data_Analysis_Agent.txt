@@ -1,0 +1,67 @@
+# Phase D Hard Test — #22 Data Analysis Agent
+# Tier: 2 | Score: 10/10 | 1/1 constraints met
+# Tokens: 747 | Speed: 33.2 t/s | Time: 22.5s
+
+## PROMPT:
+Analyze this clinical trial data. WARNING: The obvious conclusion from the aggregate data is WRONG. You must analyze the subgroups to find the truth. This is a real statistical phenomenon.
+
+Overall Results:
+- Treatment A: 100 patients, 40 recovered (40%)
+- Treatment B: 100 patients, 50 recovered (50%)
+
+Subgroup breakdown:
+- Mild cases with Treatment A: 10 patients, 8 recovered (80%)
+- Mild cases with Treatment B: 60 patients, 45 recovered (75%)
+- Severe cases with Treatment A: 90 patients, 32 recovered (35.6%)
+- Severe cases with Treatment B: 40 patients, 5 recovered (12.5%)
+
+Questions:
+1. Based on aggregate data alone, which treatment appears better?
+2. When you look at subgroups, which treatment is actually better for mild cases?
+3. Which treatment is actually better for severe cases?
+4. Explain the paradox — why does the aggregate data mislead?
+5. What is the name of this statistical phenomenon?
+6. What is your final recommendation and why?
+
+## RESPONSE:
+Here is the analysis of the clinical trial data, breaking down the aggregate numbers versus the subgroup realities.
+
+### 1. Based on aggregate data alone, which treatment appears better?
+**Treatment B appears better.**
+*   **Treatment A:** 40% recovery rate (40/100).
+*   **Treatment B:** 50% recovery rate (50/100).
+*   *Observation:* At first glance, Treatment B has a 10 percentage point advantage over Treatment A.
+
+### 2. When you look at subgroups, which treatment is actually better for mild cases?
+**Treatment A is better for mild cases.**
+*   **Treatment A:** 80% recovery rate (8/10).
+*   **Treatment B:** 75% recovery rate (45/60).
+*   *Observation:* Treatment A has a 5 percentage point advantage in this group.
+
+### 3. Which treatment is actually better for severe cases?
+**Treatment A is better for severe cases.**
+*   **Treatment A:** ~35.6% recovery rate (32/90).
+*   **Treatment B:** 12.5% recovery rate (5/40).
+*   *Observation:* Treatment A has a massive 23.1 percentage point advantage in this group.
+
+### 4. Explain the paradox — why does the aggregate data mislead?
+The aggregate data is misleading because of a **confounding variable**: the severity of the illness. The two treatments were not distributed equally across the severity groups.
+
+*   **Treatment B** was given predominantly to patients with **mild cases** (60 out of 100 patients). Since mild cases naturally have a higher chance of recovery, Treatment B's overall success rate is artificially inflated by the fact that it treated an easier group of patients.
+*   **Treatment A** was given predominantly to patients with **severe cases** (90 out of 100 patients). Since severe cases are much harder to treat, Treatment A's overall success rate is dragged down by the difficulty of the patients it was assigned to.
+
+When you combine the groups, the high success rate of the "easy" patients in Treatment B masks the fact that Treatment A is actually superior in *both* categories. The aggregate average fails to account for the imbalance in the baseline risk of the two groups.
+
+### 5. What is the name of this statistical phenomenon?
+This is known as **Simpson's Paradox**.
+It occurs when a trend appears in different groups of data but disappears or reverses when these groups are combined.
+
+### 6. What is your final recommendation and why?
+**Recommendation: Use Treatment A.**
+
+**Reasoning:**
+Despite the lower aggregate recovery rate, Treatment A is the superior treatment for **every single patient type**.
+*   If a patient has a mild case, Treatment A offers an 80% chance of recovery vs. 75% for B.
+*   If a patient has a severe case, Treatment A offers a 35.6% chance of recovery vs. 12.5% for B.
+
+The aggregate data for Treatment B is an illusion created by the fact that doctors likely assigned the milder patients to Treatment B (perhaps thinking they needed less aggressive care, or due to random chance in allocation), while reserving Treatment A for the sickest patients. Therefore, Treatment A is the more effective therapy regardless of the patient's condition.

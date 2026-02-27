@@ -1,0 +1,242 @@
+# Phase D Hard Test — #12 Content Planner
+# Tier: 2 | Score: 5/10 | No automated constraints to check
+# Tokens: 4000 | Speed: 32.9 t/s | Time: 121.4s
+
+## PROMPT:
+Create a 1-month (4-week) content calendar satisfying ALL 8 constraints. If any constraint is violated, the entire plan fails.
+
+Constraints:
+1. Never post the same format 2 days in a row (formats: blog, video, social, newsletter)
+2. Total production budget must equal exactly $5,000 (blog=$200, video=$500, social=$50, newsletter=$100)
+3. Minimum 2 videos per month
+4. Content pillars (A, B, C) must alternate — never 2 of same pillar in a row
+5. No posts on weekends
+6. Every blog must be preceded by a related social post within 2 days before it
+7. Maximum 3 posts per week
+8. Month theme: Week 1=Awareness, Week 2=Education, Week 3=Engagement, Week 4=Conversion
+
+Show the calendar as a table and verify each constraint at the end with a checklist.
+
+## RESPONSE:
+Here is a 4-week content calendar designed to satisfy all 8 constraints.
+
+### **Content Calendar Overview**
+
+**Budget Calculation:**
+*   Blog: $200
+*   Video: $500
+*   Social: $50
+*   Newsletter: $100
+*   **Target Total:** $5,000
+
+**Strategy:**
+To hit exactly $5,000, we need a specific combination of posts.
+Let $b$ = blogs, $v$ = videos, $s$ = social, $n$ = newsletters.
+Equation: $200b + 500v + 50s + 100n = 5000$.
+Dividing by 50: $4b + 10v + s + 2n = 100$.
+
+We also have constraints:
+*   Min 2 videos ($v \ge 2$).
+*   Max 3 posts/week (Total posts $\le 12$).
+*   No weekends (Mon-Fri only).
+*   Constraint 6: Every blog needs a social post within 2 days prior.
+
+**Proposed Mix:**
+Let's try: 2 Videos, 2 Blogs, 1 Newsletter, and enough Social posts to bridge the gap and satisfy the budget.
+If $v=2, b=2, n=1$:
+Cost = $(2 \times 500) + (2 \times 200) + (1 \times 100) = 1000 + 400 + 100 = 1500$.
+Remaining budget = $3500$.
+Social cost = $50$.
+Social posts needed = $3500 / 50 = 70$.
+*Wait, 70 social posts is impossible with a max of 3 posts/week (12 posts total).*
+
+**Re-evaluating the Budget Constraint:**
+The cost per post is high relative to the total budget if we use many posts.
+Let's try to maximize the expensive items (Videos) to reach $5,000 quickly, but we are limited by the "Max 3 posts/week" rule.
+Max posts = 12.
+If we do 12 posts, the average cost per post must be $5000 / 12 \approx \$416$.
+This is very high. The only items over $416 are Videos ($500).
+If we do 10 Videos: $10 \times 500 = 5000$.
+But we need variety (Constraint 1: No same format 2 days in a row). We cannot do 10 videos in a row.
+Also, we need Blogs, Social, Newsletters.
+
+**Let's try a different mix:**
+Maybe the "Social" cost is low, but we need many of them? No, 70 is too many.
+Maybe I misread the math.
+$200b + 500v + 50s + 100n = 5000$.
+Max posts = 12.
+If we have 12 posts, and we want to hit $5000.
+Let's try: 8 Videos ($4000) + 5 Blogs ($1000). Total $5000.
+Total posts = 13. (Violates Max 3/week = 12 posts).
+Let's try: 9 Videos ($4500) + 2 Blogs ($400) + 2 Social ($100). Total $5000.
+Total posts = 13. (Violates Max 3/week).
+
+**Is it possible?**
+Max posts = 12.
+Max possible budget with 12 posts (all videos) = $6000.
+Min possible budget with 12 posts (all social) = $600.
+We need exactly $5000.
+Let $x$ be the number of videos.
+$500x + 200b + 100n + 50s = 5000$.
+$x+b+n+s \le 12$.
+To maximize the sum, we need high value items.
+If $x=10$, cost = 5000. Posts = 10.
+Can we fit 10 videos in 12 slots without 2 in a row?
+Yes: V, B, V, B, V, B, V, B, V, B, V, V (No, last two are V).
+Pattern: V, B, V, B, V, B, V, B, V, B, V, B (12 posts, 6V, 6B).
+Cost: $6(500) + 6(200) = 3000 + 1200 = 4200$. Too low.
+
+We need more Videos.
+Try 8 Videos ($4000). Remaining $1000.
+Need to fill $1000 with non-videos.
+If we use 5 Blogs ($1000). Total posts = 13. (Too many).
+If we use 4 Blogs ($800) + 2 Newsletters ($200). Total posts = 8+4+2 = 14. (Too many).
+If we use 4 Blogs ($800) + 4 Social ($200). Total posts = 8+4+4 = 16.
+
+**Wait, is there a solution?**
+Let's solve $500v + 200b + 100n + 50s = 5000$ with $v+b+n+s \le 12$.
+Divide by 50: $10v + 4b + 2n + s = 100$.
+Max posts $P = v+b+n+s \le 12$.
+Substitute $s = 100 - 10v - 4b - 2n$.
+$P = v + b + n + (100 - 10v - 4b - 2n) = 100 - 9v - 3b - n$.
+We need $P \le 12$.
+$100 - 9v - 3b - n \le 12$.
+$88 \le 9v + 3b + n$.
+Since $v \le 12$ (max posts), let's test max $v$.
+If $v=10$: $90 + 3b + n \ge 88$. (Satisfied).
+Posts = $100 - 90 - 3b - n = 10 - 3b - n$.
+We need $P \ge 10$ (since $v=10$).
+So $10 - 3b - n \ge 10 \implies 3b + n \le 0$.
+So $b=0, n=0$.
+Solution: 10 Videos, 0 Blogs, 0 Newsletters, 0 Social?
+Cost = $5000. Posts = 10.
+**Constraint 1:** Never post same format 2 days in a row.
+If we have 10 Videos and 0 other formats, we MUST post 2 videos in a row. **Impossible.**
+
+**Let's try $v=9$.**
+$9(9) + 3b + n \ge 88 \implies 81 + 3b + n \ge 88 \implies 3b + n \ge 7$.
+Total Posts $P = 100 - 9(9) - 3b - n = 19 - 3b - n$.
+We need $P \ge 9$ (since $v=9$).
+$19 - 3b - n \ge 9 \implies 3b + n \le 10$.
+So we need $7 \le 3b + n \le 10$.
+Possible integer solutions for $(b, n)$:
+1. $b=2, n=1 \implies 3(2)+1 = 7$.
+   $P = 19 - 7 = 12$.
+   $s = 100 - 90 - 8 - 2 = 0$.
+   **Mix:** 9 Videos, 2 Blogs, 1 Newsletter, 0 Social.
+   **Check Constraint 6:** "Every blog must be preceded by a related social post".
+   We have 0 Social posts. **Violates Constraint 6.**
+
+2. $b=2, n=2 \implies 3(2)+2 = 8$.
+   $P = 19 - 8 = 11$.
+   $s = 100 - 90 - 8 - 4 = -2$. (Impossible).
+
+3. $b=3, n=0 \implies 9$.
+   $P = 19 - 9 = 10$.
+   $s = 100 - 90 - 12 - 0 = -2$. (Impossible).
+
+**Let's try $v=8$.**
+$9(8) + 3b + n \ge 88 \implies 72 + 3b + n \ge 88 \implies 3b + n \ge 16$.
+Total Posts $P = 100 - 72 - 3b - n = 28 - 3b - n$.
+We need $P \ge 8$ (since $v=8$).
+$28 - 3b - n \ge 8 \implies 3b + n \le 20$.
+So $16 \le 3b + n \le 20$.
+Also need Social posts for Blogs (Constraint 6).
+If we have $b$ blogs, we need at least $b$ social posts.
+So $s \ge b$.
+$s = 100 - 80 - 4b - 2n = 20 - 4b - 2n$.
+Condition: $20 - 4b - 2n \ge b \implies 20 \ge 5b + 2n$.
+Let's test values for $b$:
+If $b=1$: $5(1) + 2n \le 20 \implies 2n \le 15 \implies n \le 7$.
+   We need $3(1) + n \ge 16 \implies n \ge 13$.
+   Contradiction ($n \le 7$ and $n \ge 13$).
+
+If $b=2$: $5(2) + 2n \le 20 \implies 2n \le 10 \implies n \le 5$.
+   We need $3(2) + n \ge 16 \implies n \ge 10$.
+   Contradiction.
+
+If $b=3$: $5(3) + 2n \le 20 \implies 2n \le 5 \implies n \le 2$.
+   We need $3(3) + n \ge 16 \implies n \ge 7$.
+   Contradiction.
+
+If $b=4$: $5(4) + 2n \le 20 \implies 2n \le 0 \implies n=0$.
+   We need $3(4) + 0 \ge 16 \implies 12 \ge 16$. False.
+
+**Conclusion:** It is mathematically impossible to satisfy the budget of $5,000 with the given unit costs and the "Max 3 posts per week" (12 posts total) constraint while also satisfying the "Social post before Blog" constraint.
+
+**Wait, did I miss something?**
+"Total production budget must equal exactly $5,000".
+Maybe I can have *more* than 12 posts?
+"Maximum 3 posts per week".
+4 weeks * 3 posts = 12 posts.
+Is it possible the user implies "3 posts per week" is a soft limit? No, "Maximum 3".
+Is it possible the costs are different? No, defined in prompt.
+Is it possible "Social" posts are free? No, $50.
+
+**Let's re-read carefully.**
+"Maximum 3 posts per week".
+Does this mean 3 *types* of posts? No, "posts".
+Does "Month" mean 4 weeks? Yes.
+Is it possible to have 13 posts? No, 4*3=12.
+
+**Is there a trick?**
+Maybe "Social" posts don't count towards the "Max 3 posts" limit?
+"Maximum 3 posts per week". Usually implies all posts.
+If Social posts don't count, we can have infinite social posts.
+But the prompt says "formats: blog, video, social, newsletter". It implies they are all posts.
+
+**Let's reconsider the math.**
+Maybe I can have 0 blogs?
+If $b=0$, then $s \ge 0$.
+Constraint 6: "Every blog must be preceded...". If 0 blogs, this is vacuously true.
+Let's try $b=0$.
+Equation: $10v + 2n + s = 100$.
+$P = v + n + s \le 12$.
+$s = 100 - 10v - 2n$.
+$P = v + n + 100 - 10v - 2n = 100 - 9v - n$.
+$100 - 9v - n \le 12 \implies 9v + n \ge 88$.
+Also $P \ge v$.
+$100 - 9v - n \ge v \implies 100 - n \ge 10v \implies 10v + n \le 100$.
+We need $9v + n \ge 88$ and $10v + n \le 100$.
+Subtracting: $(10v+n) - (9v+n) \le 100 - 88 \implies v \le 12$.
+Let's try $v=10$.
+$90 + n \ge 88 \implies n \ge -2$.
+$100 + n \le 100 \implies n \le 0$.
+So $n=0$.
+$s = 100 - 100 - 0 = 0$.
+Mix: 10 Videos, 0 Blogs, 0 Newsletters, 0 Social.
+Posts = 10.
+Constraint 1: No same format 2 days in a row.
+With 10 Videos and 0 other formats, we MUST have consecutive videos.
+**Impossible.**
+
+Let's try $v=9$.
+$81 + n \ge 88 \implies n \ge 7$.
+$90 + n \le 100 \implies n \le 10$.
+So $n \in [7, 10]$.
+If $n=7$: $s = 100 - 90 - 14 = -4$. (Impossible).
+If $n=8$: $s = 100 - 90 - 16 = -6$.
+We need $s \ge 0$.
+$100 - 10v - 2n \ge 0 \implies 10v + 2n \le 100 \implies 5v + n \le 50$.
+We also have $9v + n \ge 88$.
+Subtract: $(9v+n) - (5v+n) \ge 88 - 50 \implies 4v \ge 38 \implies v \ge 9.5$.
+So $v$ must be at least 10.
+If $v=10$: $50 + n \le 50 \implies n=0$.
+Then $s=0$. (Back to 10 videos, impossible).
+
+**Is it possible the budget is $5,000 but the costs are different?**
+No, "blog=$200, video=$500, social=$50, newsletter=$100".
+
+**Is it possible "Maximum 3 posts per week" allows for 13 posts?**
+Week 1: 3, Week 2: 3, Week 3: 3, Week 4: 3. Total 12.
+Maybe the month has 5 weeks? "1-month (4-week)".
+Maybe "posts" excludes something?
+"formats: blog, video, social, newsletter". All seem to be posts.
+
+**Wait, is there a solution with $v=8$ and $b=1$?**
+Let's re-calculate $s \ge b$.
+$10v + 4b + 2n + s = 100$.
+$P = v+b+n+s \le 12$.
+$s = 100 - 10v - 4b - 2n$.
+$P = v+b+n + 100 - 10v - 4b - 2n = 100 - 9v - 3b - n$.
+$100 - 9v - 3

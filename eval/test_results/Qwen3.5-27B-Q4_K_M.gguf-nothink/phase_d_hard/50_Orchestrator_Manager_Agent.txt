@@ -1,0 +1,210 @@
+# Phase D Hard Test — #50 Orchestrator / Manager Agent
+# Tier: 5 | Score: 5/10 | No automated constraints to check
+# Tokens: 2643 | Speed: 32.7 t/s | Time: 80.9s
+
+## PROMPT:
+Design an orchestration plan for a complex multi-agent workflow. You MUST include failure handling, because Agent C is known to fail 20% of the time.
+
+Task: Generate a comprehensive quarterly business review (QBR) document.
+
+Available agents and their capabilities:
+- Agent A (Data): Pulls metrics from databases. Takes 2 min. Never fails.
+- Agent B (Finance): Analyzes financial data. Takes 3 min. Requires Agent A output. Fails 5% of time.
+- Agent C (Market): Researches market trends. Takes 8 min. Independent. Fails 20% of time.
+- Agent D (Writer): Writes document sections. Takes 5 min per section. Requires relevant agent output.
+- Agent E (Designer): Creates charts/visuals. Takes 3 min. Requires Agent A data.
+- Agent F (Reviewer): Reviews final document. Takes 4 min. Requires all sections.
+
+Constraints:
+- Total wall-clock time budget: 25 minutes
+- If Agent C fails, the QBR must still be produced (with a note about missing market data)
+- Agent D can write sections in parallel if given different inputs
+
+Design:
+1. Execution DAG with parallel groups and dependencies
+2. Critical path analysis (what's the minimum time?)
+3. Failure handling for each agent (retry? fallback? skip?)
+4. If Agent C fails twice, what's the Plan B?
+5. Show the timeline (Gantt-chart style) for both success and failure scenarios
+
+## RESPONSE:
+# Orchestration Plan: Quarterly Business Review (QBR) Generation
+
+## 1. Execution DAG (Directed Acyclic Graph)
+
+To meet the 25-minute wall-clock constraint while handling the high failure rate of Agent C, we must maximize parallelism and implement a "Fast-Fail" strategy for Agent C.
+
+**Nodes:**
+*   **Start**: Trigger event.
+*   **A (Data)**: 2 min. (Source)
+*   **B (Finance)**: 3 min. (Depends on A)
+*   **C (Market)**: 8 min. (Independent, High Risk)
+*   **E (Designer)**: 3 min. (Depends on A)
+*   **D1 (Writer - Finance)**: 5 min. (Depends on B)
+*   **D2 (Writer - Market)**: 5 min. (Depends on C)
+*   **D3 (Writer - Data/Overview)**: 5 min. (Depends on A, E)
+*   **F (Reviewer)**: 4 min. (Depends on D1, D2, D3)
+
+**Parallel Groups:**
+*   **Group 1 (Immediate)**: Agent A, Agent C.
+*   **Group 2 (Post-A)**: Agent B, Agent E.
+*   **Group 3 (Post-B/E/C)**: Agent D1, Agent D2, Agent D3.
+*   **Group 4 (Final)**: Agent F.
+
+**Visual Flow:**
+```text
+[Start]
+   |
+   +---> [Agent A: Data] (2m) ----+
+   |                               |
+   +---> [Agent C: Market] (8m) ---+--> [Agent D2: Writer] (5m)
+   |        (Retry x2)             |
+   |                               |
+   +---> [Agent B: Finance] (3m) --+--> [Agent D1: Writer] (5m)
+   |        (Retry x1)             |
+   |                               |
+   +---> [Agent E: Designer] (3m) -+--> [Agent D3: Writer] (5m)
+   |                               |
+   +-------------------------------+
+                                   |
+                                   v
+                           [Agent F: Reviewer] (4m)
+                                   |
+                                   v
+                               [End]
+```
+
+---
+
+## 2. Critical Path Analysis
+
+We calculate the minimum time required in the "Happy Path" (no failures) and the "Failure Path" (Agent C fails twice).
+
+### Scenario A: Happy Path (No Failures)
+1.  **Start**: 0m
+2.  **Parallel Start**:
+    *   Agent A: 0m -> 2m
+    *   Agent C: 0m -> 8m
+3.  **Secondary Parallel** (Starts at 2m):
+    *   Agent B: 2m -> 5m
+    *   Agent E: 2m -> 5m
+4.  **Writing Phase** (Starts when dependencies are met):
+    *   D1 (Finance): Starts at 5m (B done) -> Ends 10m.
+    *   D3 (Data/Vis): Starts at 5m (E done) -> Ends 10m.
+    *   D2 (Market): Starts at 8m (C done) -> Ends 13m.
+    *   *Constraint*: All D agents must finish before F starts. Max time = 13m.
+5.  **Review**:
+    *   Agent F: Starts at 13m -> Ends 17m.
+
+**Minimum Time (Happy Path): 17 Minutes.**
+*Buffer available: 8 minutes.*
+
+### Scenario B: Agent C Fails Twice (Worst Case)
+*Constraint: Agent C takes 8m. If it fails, we retry. We allow 2 retries max.*
+1.  **Start**: 0m
+2.  **Agent C Attempt 1**: 0m -> 8m (FAIL).
+3.  **Agent C Attempt 2**: 8m -> 16m (FAIL).
+4.  **Fallback Trigger**: At 16m, we skip D2 and generate a "Missing Data" placeholder.
+5.  **Other Agents**:
+    *   A, B, E, D1, D3 finish by 10m (as calculated above).
+    *   They wait for the C branch to resolve (either success or fallback).
+6.  **Writing Phase Resolution**:
+    *   D1, D3 finished at 10m.
+    *   D2 (Fallback): Instant generation of "Market Data Unavailable" note (0m).
+    *   *Constraint*: F starts at max(10m, 16m) = 16m.
+7.  **Review**:
+    *   Agent F: Starts at 16m -> Ends 20m.
+
+**Maximum Time (C Fails Twice): 20 Minutes.**
+*Buffer available: 5 minutes.*
+*Result: Within the 25-minute budget.*
+
+---
+
+## 3. Failure Handling Strategy
+
+| Agent | Failure Rate | Strategy | Action on Failure |
+| :--- | :--- | :--- | : |
+| **Agent A** | 0% | None | N/A |
+| **Agent B** | 5% | **Retry (1x)** | If B fails, retry immediately. If 2nd fail, use "Financial Data Pending" placeholder. |
+| **Agent C** | 20% | **Retry (2x) + Fallback** | Retry up to 2 times. If 3rd attempt fails (or 2nd if configured as max 2 attempts), trigger **Plan B** (Skip D2, insert disclaimer). |
+| **Agent D** | Low | **Retry (1x)** | If a specific section fails, retry once. If fail again, insert "Section Generation Error" placeholder. |
+| **Agent E** | Low | **Retry (1x)** | If visuals fail, insert "Chart Generation Error" placeholder. |
+| **Agent F** | Low | **Retry (1x)** | If review fails, retry once. If fail, auto-approve with "Review Pending" flag. |
+
+**Specific Logic for Agent C (The Critical Risk):**
+*   **Timeout**: Set strict timeout of 8 minutes per attempt.
+*   **Retry Logic**:
+    *   Attempt 1: Run 0m-8m.
+    *   Attempt 2: Run 8m-16m.
+    *   Attempt 3: **ABORT**. Do not run a 3rd attempt (would push timeline to 24m+ leaving no buffer for F).
+*   **Fallback**: If 2 attempts fail, the orchestrator injects a pre-written JSON object: `{ "status": "missing", "note": "Market data unavailable due to service outage. Analysis pending." }` into the input for Agent D2.
+
+---
+
+## 4. Plan B: Agent C Fails Twice
+
+If Agent C fails twice (consuming 16 minutes), the workflow enters **Plan B** mode:
+
+1.  **Trigger**: At T=16m, the orchestrator detects the second failure.
+2.  **Action**:
+    *   Cancel any pending 3rd attempt for Agent C.
+    *   Signal Agent D2 to execute a "Fallback Mode".
+    *   **D2 Fallback Logic**: Instead of writing a full market analysis, D2 generates a standardized "Data Unavailable" section (takes <1 min).
+3.  **Impact on Timeline**:
+    *   Agents D1 and D3 have been idle since T=10m.
+    *   Agent F waits until T=16m (when D2 finishes its fallback).
+    *   Agent F runs T=16m to T=20m.
+4.  **Output**: The QBR is generated with a prominent disclaimer in the Market section.
+5.  **Post-Processing**: A separate async task is triggered to retry Agent C later (outside the 25m budget) to update the document if possible, but the immediate deliverable is met.
+
+---
+
+## 5. Timeline Visualization (Gantt-Chart Style)
+
+*Legend: [====] = Active, [ ] = Idle/Waiting, [X] = Failure, [F] = Fallback*
+
+### Scenario 1: Success (All Agents Pass)
+*Total Time: 17 Minutes*
+
+| Time (min) | 0-2 | 2-5 | 5-8 | 8-10 | 10-13 | 13-17 | 17-25 |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| **Agent A** | [====] | | | | | | |
+| **Agent C** | [====] | [====] | | | | | |
+| **Agent B** | | [====] | | | | | |
+| **Agent E** | | [====] | | | | | |
+| **D1 (Fin)** | | | | [====] | | | |
+| **D3 (Data)**| | | | [====] | | | |
+| **D2 (Mkt)** | | | | | [====] | | |
+| **Agent F** | | | | | | [====] | |
+
+*Note: D2 starts at 8m (when C finishes). F starts at 13m (when D2 finishes).*
+
+### Scenario 2: Agent C Fails Twice (Plan B Activated)
+*Total Time: 20 Minutes*
+
+| Time (min) | 0-8 | 8-16 | 16-17 | 17-20 | 20-25 |
+| :--- | :---: | :---: | :---: | :---: | :---: |
+| **Agent A** | [====] | | | | |
+| **Agent C** | [====X] | [====X] | | | |
+| **Agent B** | | [====] | | | |
+| **Agent E** | | [====] | | | |
+| **D1 (Fin)** | | | [====] | | |
+| **D3 (Data)**| | | [====] | | |
+| **D2 (Mkt)** | | | [F] | | |
+| **Agent F** | | | | [====] | |
+
+*Detailed Breakdown of Scenario 2:*
+1.  **0-2m**: A runs. C starts.
+2.  **2-5m**: B and E run. C continues (Attempt 1).
+3.  **5-8m**: D1 and D3 run (using B/E output). C finishes Attempt 1 -> **FAIL**.
+4.  **8-16m**: C runs Attempt 2. D1, D3 are **IDLE** waiting for C branch resolution.
+5.  **16m**: C Attempt 2 -> **FAIL**. Plan B triggers.
+6.  **16-17m**: D2 runs Fallback (generates disclaimer).
+7.  **17-20m**: Agent F runs (Review).
+8.  **20m**: **COMPLETED**. (5 minutes under budget).
+
+### Summary of Constraints Check
+*   **Budget**: 25 mins.
+*   **Worst Case**: 20 mins.
+*   **Status**: **PASS**. The plan successfully handles the 20% failure rate of Agent C without breaching the time limit, ensuring the QBR is delivered even with missing market data.

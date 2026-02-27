@@ -1,0 +1,204 @@
+# Phase D Hard Test — #49 Algorithm Exploration
+# Tier: 4 | Score: 5/10 | No automated constraints to check
+# Tokens: 4040 | Speed: 91.9 t/s | Time: 43.9s
+
+## PROMPT:
+Design an algorithm for this problem. There's an O(n) solution but most people give O(n log n) or O(n²). Find the optimal one.
+
+Problem: Given an array of n integers, find the maximum difference arr[j] - arr[i] such that j > i (the larger element must come AFTER the smaller element). If no positive difference exists, return 0.
+
+Example: [2, 3, 10, 6, 4, 8, 1] → Answer: 8 (10-2)
+Example: [7, 9, 5, 6, 3, 2] → Answer: 2 (9-7, not 5-2 because 5 comes after 9)
+Example: [10, 8, 6, 4, 2] → Answer: 0 (strictly decreasing)
+
+Requirements:
+1. Give the naive O(n²) solution and explain why it's slow
+2. Give an O(n log n) solution using a common technique
+3. Give the OPTIMAL O(n) solution — track minimum so far
+4. Prove the O(n) solution is correct with a formal argument
+5. Handle edge cases: empty array, single element, all same values, all negative
+6. Provide Python implementation of the O(n) solution with tests
+
+## RESPONSE:
+Here is the comprehensive algorithm design for finding the maximum difference between two elements where the larger element appears after the smaller one.
+
+---
+
+### 1. The Naive $O(n^2)$ Solution
+
+**Approach:**
+Brute-force check every possible pair $(i, j)$ such that $j > i$. Calculate the difference `arr[j] - arr[i]` and keep track of the maximum found.
+
+**Algorithm:**
+```python
+def max_diff_naive(arr):
+    n = len(arr)
+    max_diff = 0
+    for i in range(n):
+        for j in range(i + 1, n):
+            diff = arr[j] - arr[i]
+            if diff > max_diff:
+                max_diff = diff
+    return max_diff
+```
+
+**Why it's slow:**
+*   **Complexity:** The nested loops result in $\frac{n(n-1)}{2}$ comparisons, which is $O(n^2)$.
+*   **Redundancy:** For a specific index $j$, we check every previous $i$. However, to maximize `arr[j] - arr[i]`, we only care about the **minimum** value among all previous $i$'s. The naive approach recalculates this minimum repeatedly for every $j$.
+
+---
+
+### 2. The $O(n \log n)$ Solution (Divide and Conquer)
+
+**Approach:**
+This is a classic variation of the Merge Sort algorithm. We divide the array into two halves. The maximum difference exists in one of three places:
+1.  Entirely within the left half.
+2.  Entirely within the right half.
+3.  Crossing the midpoint (the minimum element is in the left half, and the maximum element is in the right half).
+
+**Algorithm:**
+1.  Split array into `left` and `right`.
+2.  Recursively find max diff in `left` and `right`.
+3.  Find `min_left` and `max_right`. Calculate `max_right - min_left`.
+4.  Return the maximum of these three values.
+
+**Complexity:**
+The recurrence relation is $T(n) = 2T(n/2) + O(n)$ (for finding min/max in subarrays). By the Master Theorem, this solves to **$O(n \log n)$**.
+
+*Note: Simply sorting the array does not work because sorting destroys the original indices, violating the $j > i$ constraint.*
+
+---
+
+### 3. The Optimal $O(n)$ Solution (One Pass)
+
+**Approach:**
+We iterate through the array once. At every index $j$, we want to maximize `arr[j] - arr[i]` where $i < j$. This is equivalent to finding `arr[j] - min(arr[0...j-1])`.
+
+We maintain a variable `min_so_far` that tracks the minimum value encountered from the start up to the current position.
+
+**Algorithm:**
+1.  Initialize `min_val` to infinity (or `arr[0]`) and `max_diff` to 0.
+2.  Iterate through the array with element `x`.
+3.  Calculate `diff = x - min_val`.
+4.  Update `max_diff = max(max_diff, diff)`.
+5.  Update `min_val = min(min_val, x)`.
+6.  Return `max_diff`.
+
+**Complexity:**
+*   **Time:** $O(n)$ (Single pass).
+*   **Space:** $O(1)$ (Only two variables).
+
+---
+
+### 4. Proof of Correctness ($O(n)$)
+
+**Claim:** The algorithm returns $\max_{j > i} (arr[j] - arr[i])$.
+
+**Proof by Invariant:**
+Let $S_k = \min(arr[0], arr[1], \dots, arr[k])$. This is the value stored in `min_val` at the end of iteration $k$.
+
+1.  **Invariant:** At the start of iteration $j$ (processing `arr[j]`), `min_val` holds the value $\min_{0 \le i < j} arr[i]$.
+2.  **Candidate Calculation:** At iteration $j$, we compute `diff = arr[j] - min_val`. Since `min_val` is the minimum of all preceding elements, `diff` represents the maximum possible difference ending at index $j$ (i.e., $\max_{0 \le i < j} (arr[j] - arr[i])$).
+3.  **Global Maximum:** The algorithm updates `max_diff` with this candidate at every step. Therefore, after iterating through all $j$ from $1$ to $n-1$, `max_diff` holds $\max_{1 \le j < n} (\max_{0 \le i < j} (arr[j] - arr[i]))$.
+4.  **Conclusion:** This is mathematically equivalent to $\max_{j > i} (arr[j] - arr[i])$.
+
+Since we initialize `max_diff` to 0, if all calculated differences are negative, the function correctly returns 0 as per requirements.
+
+---
+
+### 5. Edge Cases Handling
+
+1.  **Empty Array:** The loop range will be empty. Return 0.
+2.  **Single Element:** Loop runs once (or range is empty depending on implementation). `max_diff` remains 0. Correct.
+3.  **All Same Values:** `diff` is always 0. `max_diff` remains 0. Correct.
+4.  **Strictly Decreasing:** `min_val` updates at every step, `diff` is always negative. `max_diff` remains 0. Correct.
+5.  **All Negative Numbers:** Logic holds. If `arr[j] - min_val` is negative, `max_diff` (initialized to 0) is not updated. Returns 0.
+
+---
+
+### 6. Python Implementation & Tests
+
+```python
+def max_difference(arr):
+    """
+    Finds the maximum difference arr[j] - arr[i] such that j > i.
+    Returns 0 if no positive difference exists.
+    Time Complexity: O(n)
+    Space Complexity: O(1)
+    """
+    if not arr or len(arr) < 2:
+        return 0
+
+    min_val = arr[0]
+    max_diff = 0
+
+    for i in range(1, len(arr)):
+        # Calculate difference with the minimum element seen so far
+        current_diff = arr[i] - min_val
+        
+        # Update global maximum difference
+        if current_diff > max_diff:
+            max_diff = current_diff
+        
+        # Update minimum value seen so far
+        if arr[i] < min_val:
+            min_val = arr[i]
+            
+    return max_diff
+
+# --- Test Suite ---
+
+def run_tests():
+    # Test Case 1: Standard Example
+    assert max_difference([2, 3, 10, 6, 4, 8, 1]) == 8, "Test 1 Failed"
+    
+    # Test Case 2: Multiple valid pairs, specific order matters
+    assert max_difference([7, 9, 5, 6, 3, 2]) == 2, "Test 2 Failed"
+    
+    # Test Case 3: Strictly decreasing (should return 0)
+    assert max_difference([10, 8, 6, 4, 2]) == 0, "Test 3 Failed"
+    
+    # Test Case 4: Empty Array
+    assert max_difference([]) == 0, "Test 4 Failed"
+    
+    # Test Case 5: Single Element
+    assert max_difference([5]) == 0, "Test 5 Failed"
+    
+    # Test Case 6: All same values
+    assert max_difference([5, 5, 5, 5]) == 0, "Test 6 Failed"
+    
+    # Test Case 7: All negative numbers
+    assert max_difference([-5, -2, -9, -1]) == 3, "Test 7 Failed" # -1 - (-5) = 4? No wait.
+    # Correction for Test 7: [-5, -2, -9, -1]
+    # Pairs: (-2)-(-5)=3, (-9)-(-5)=-4, (-1)-(-5)=4. Max is 4.
+    # Let's re-verify logic manually:
+    # i=0, min=-5, diff=0
+    # i=1, val=-2, diff=3, max=3, min=-5
+    # i=2, val=-9, diff=-4, max=3, min=-9
+    # i=3, val=-1, diff=8, max=8, min=-9
+    # Wait, -1 - (-9) = 8.
+    # Let's fix the test case expectation.
+    # Array: [-5, -2, -9, -1]
+    # Pairs: 
+    # -2 - (-5) = 3
+    # -9 - (-5) = -4
+    # -1 - (-5) = 4
+    # -9 - (-2) = -7
+    # -1 - (-2) = 1
+    # -1 - (-9) = 8
+    # Max is 8.
+    assert max_difference([-5, -2, -9, -1]) == 8, "Test 7 Failed"
+    
+    # Test Case 8: Single positive increase
+    assert max_difference([1, 5]) == 4, "Test 8 Failed"
+    
+    # Test Case 9: Large array performance check (implicit)
+    # Just ensuring it doesn't crash
+    large_arr = list(range(10000, 0, -1)) + [100000]
+    assert max_difference(large_arr) == 90000, "Test 9 Failed"
+
+    print("All tests passed successfully.")
+
+if __name__ == "__main__":
+    run_tests()
+```

@@ -1,0 +1,129 @@
+# Phase D Hard Test — #19 Shopping / Price Comparison
+# Tier: 2 | Score: 10/10 | 1/1 constraints met
+# Tokens: 8759 | Speed: 31.5 t/s | Time: 278.4s
+
+## PROMPT:
+Compare these 4 products. WARNING: The cheapest option is NOT the best value when you calculate total cost of ownership. Show your math.
+
+Product A — Laptop Alpha: $899
+- 8GB RAM (non-upgradable), 256GB SSD
+- Battery: 6 hours, replacement cost $200
+- Expected lifespan: 3 years, no extended warranty available
+- Required accessories: $150 dock, $80 adapter
+
+Product B — Laptop Beta: $1,299
+- 16GB RAM, 512GB SSD (user upgradable)
+- Battery: 10 hours, replaceable ($80)
+- Expected lifespan: 5 years, extended warranty $100/year
+- All ports included, no accessories needed
+
+Product C — Laptop Gamma: $749
+- 8GB RAM, 128GB SSD
+- Battery: 4 hours, non-replaceable
+- Expected lifespan: 2 years, no warranty
+- Required: $200 external SSD, $150 dock, $80 adapter
+
+Product D — Laptop Delta: $1,099
+- 16GB RAM, 256GB SSD
+- Battery: 8 hours, replacement $150
+- Expected lifespan: 4 years, warranty included
+- Required: $80 adapter
+
+Calculate 5-year total cost of ownership for each (include purchase + accessories + replacements + warranty). Recommend the best value.
+
+## RESPONSE:
+### 5-Year Total Cost of Ownership (TCO) Analysis
+
+To determine the best value, we must calculate the cost to maintain a functional laptop for a full **5-year period**. This includes the initial purchase, necessary accessories, warranty fees, battery replacements, and the cost of replacing the laptop itself if its lifespan is shorter than 5 years.
+
+**Assumptions:**
+*   **Accessories:** Docks and adapters are assumed to be reusable across laptop generations (one-time cost). External SSDs are assumed to be reusable storage (one-time cost).
+*   **Battery:** Batteries degrade over time. We budget for **1 replacement** for any laptop expected to last more than 3 years.
+*   **Laptop Replacement:** If a laptop's lifespan is less than 5 years, a new unit must be purchased to cover the remaining time.
+*   **Warranty:** For Product B, the extended warranty is included to guarantee the 5-year lifespan against unexpected failures.
+
+---
+
+### 1. Product A — Laptop Alpha
+*   **Sticker Price:** $899
+*   **Lifespan:** 3 Years (Requires 2 units for 5 years)
+*   **Accessories:** $150 Dock + $80 Adapter = $230 (One-time)
+*   **Battery:** Requires 1 replacement ($200) to reach end of lifespan.
+*   **Warranty:** None.
+
+**Math:**
+*   Laptop Unit 1 (Years 1-3): $899
+*   Laptop Unit 2 (Years 4-5): $899
+*   Accessories: $230
+*   Battery Replacement: $200
+*   **Total TCO:** $899 + $899 + $230 + $200 = **$2,228**
+
+### 2. Product B — Laptop Beta
+*   **Sticker Price:** $1,299
+*   **Lifespan:** 5 Years (Requires 1 unit)
+*   **Accessories:** None needed ($0)
+*   **Battery:** Requires 1 replacement ($80) over 5 years.
+*   **Warranty:** $100/year × 5 years = $500 (Required to secure lifespan).
+
+**Math:**
+*   Laptop Unit 1 (Years 1-5): $1,299
+*   Warranty (5 Years): $500
+*   Battery Replacement: $80
+*   Accessories: $0
+*   **Total TCO:** $1,299 + $500 + $80 = **$1,879**
+
+### 3. Product C — Laptop Gamma
+*   **Sticker Price:** $749
+*   **Lifespan:** 2 Years (Requires 3 units for 5 years: 2 + 2 + 1)
+*   **Accessories:** $200 SSD + $150 Dock + $80 Adapter = $430 (One-time)
+*   **Battery:** Non-replaceable (Cost absorbed in laptop replacement).
+*   **Warranty:** None.
+
+**Math:**
+*   Laptop Unit 1 (Years 1-2): $749
+*   Laptop Unit 2 (Years 3-4): $749
+*   Laptop Unit 3 (Year 5): $749
+*   Accessories: $430
+*   Battery Replacement: $0
+*   **Total TCO:** ($749 × 3) + $430 = **$2,677**
+
+### 4. Product D — Laptop Delta
+*   **Sticker Price:** $1,099
+*   **Lifespan:** 4 Years (Requires 2 units for 5 years)
+*   **Accessories:** $80 Adapter (One-time)
+*   **Battery:** Requires 1 replacement ($150) for the first unit.
+*   **Warranty:** Included ($0).
+
+**Math:**
+*   Laptop Unit 1 (Years 1-4): $1,099
+*   Laptop Unit 2 (Year 5): $1,099
+*   Accessories: $80
+*   Battery Replacement: $150
+*   **Total TCO:** $1,099 + $1,099 + $80 + $150 = **$2,428**
+
+---
+
+### Summary Comparison Table
+
+| Product | Sticker Price | 5-Year TCO | Rank |
+| :--- | :--- | :--- | :--- |
+| **Product B (Beta)** | $1,299 | **$1,879** | **1st (Best Value)** |
+| **Product A (Alpha)** | $899 | $2,228 | 2nd |
+| **Product D (Delta)** | $1,099 | $2,428 | 3rd |
+| **Product C (Gamma)** | $749 | $2,677 | 4th (Worst Value) |
+
+---
+
+### Recommendation
+
+**Best Value: Product B (Laptop Beta)**
+
+Despite having the highest sticker price ($1,299), **Product B** is the most cost-effective option over a 5-year period.
+
+**Why Product B Wins:**
+1.  **No Replacement Costs:** It is the only laptop with a 5-year lifespan, eliminating the need to buy a second or third unit.
+2.  **No Accessories:** It includes all necessary ports, saving $80–$430 in peripheral costs compared to the other models.
+3.  **Lower Battery Cost:** The replacement battery is significantly cheaper ($80) compared to Alpha ($200) and Delta ($150).
+
+**Why Product C is the Trap:**
+Product C has the lowest sticker price ($749), but it is the **most expensive** option in the long run ($2,677). Its short 2-year lifespan forces you to buy three laptops in five years, and the required external SSD adds recurring storage costs. This confirms the warning: the cheapest option is not the best value.

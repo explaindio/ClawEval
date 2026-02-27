@@ -1,0 +1,40 @@
+# Phase D Hard Test — #20 Memory / Knowledge Management
+# Tier: 2 | Score: 5/10 | No automated constraints to check
+# Tokens: 4048 | Speed: 88.8 t/s | Time: 45.6s
+
+## PROMPT:
+Extract and merge knowledge from these 5 conversation snippets. There are 3 contradictions — resolve each by using the MOST RECENT information and flag what changed.
+
+Jan 2: "I'm a senior developer at Acme Corp working on their Python backend."
+Jan 15: "We decided to migrate from PostgreSQL to MongoDB for the user service."
+Feb 1: "Got promoted to Tech Lead! Managing a team of 4 developers now."
+Feb 20: "After benchmarking, we're actually sticking with PostgreSQL — MongoDB wasn't right for our consistency requirements. Also, we hired 2 more people, team is now 6."
+Mar 5: "Acme Corp got acquired by MegaTech. I'm now technically a MegaTech employee but same role. Oh, and 1 person left, so team is 5. We're also evaluating MySQL as finance wants to standardize."
+
+Produce a final knowledge profile, clearly marking:
+1. What the CURRENT truth is for each fact
+2. What changed and when (changelog)
+3. What is UNCERTAIN (e.g., MySQL evaluation — in progress, not decided)
+
+## RESPONSE:
+# Final Knowledge Profile
+
+### 1. Current Truth
+*   **Company:** MegaTech (Acquired Acme Corp).
+*   **Role:** Tech Lead.
+*   **Tech Stack:** Python Backend.
+*   **Database:** PostgreSQL (Current), MySQL (Under Evaluation).
+*   **Team Size:** 5 Developers.
+
+### 2. Changelog & Contradiction Resolutions
+*The following changes resolve the 3 identified contradictions using the most recent information.*
+
+| Fact | Contradiction | Resolution (Most Recent Info) | Change Log |
+| :--- | :--- | :--- | :--- |
+| **Role** | **Jan 2:** Senior Developer<br>**Feb 1:** Tech Lead | **Tech Lead** | **Feb 1:** Promoted from Senior Developer to Tech Lead.<br>**Mar 5:** Confirmed role remains Tech Lead ("same role"). |
+| **Database** | **Jan 15:** Migrate to MongoDB<br>**Feb 20:** Stick with PostgreSQL | **PostgreSQL** (Current)<br>**MySQL** (Evaluation) | **Jan 15:** Planned migration to MongoDB.<br>**Feb 20:** Reverted to PostgreSQL due to consistency requirements.<br>**Mar 5:** Finance is evaluating MySQL for standardization. |
+| **Team Size** | **Feb 1:** 4 Developers<br>**Feb 20:** 6 Developers<br>**Mar 5:** 5 Developers | **5 Developers** | **Feb 1:** Team size was 4.<br>**Feb 20:** Hired 2 more (Total 6).<br>**Mar 5:** 1 person left (Total 5). |
+
+### 3. Uncertain Information
+*   **Database Standardization:** While the current database is PostgreSQL, the organization is **evaluating MySQL** per Finance's request. It is **uncertain** if the migration to MySQL will occur or if PostgreSQL will remain the standard.
+*   **Acquisition Impact:** While the company is now MegaTech, specific details on how the acquisition affects the specific "Python backend" role or reporting structure beyond "same role" are not yet defined.

@@ -1,0 +1,91 @@
+{
+  "phase": "phase1_format_compliance",
+  "model": "Qwen3.5-27B-Q4_K_M.gguf",
+  "timestamp": "2026-02-25T11:56:59.319804",
+  "tests": [
+    {
+      "name": "json_simple",
+      "passed": true,
+      "reason": "Valid JSON",
+      "response": "[\n  {\n    \"language\": \"Python\",\n    \"year\": 1991\n  },\n  {\n    \"language\": \"Java\",\n    \"year\": 1995\n  },\n  {\n    \"language\": \"C\",\n    \"year\": 1972\n  }\n]",
+      "elapsed": 13.91,
+      "tps": 34.6
+    },
+    {
+      "name": "json_nested",
+      "passed": true,
+      "reason": "Valid JSON",
+      "response": "{\n  \"name\": \"Jane Smith\",\n  \"age\": 28,\n  \"skills\": [\"React\", \"Node.js\", \"SQL\"],\n  \"address\": {\n    \"city\": \"London\",\n    \"country\": \"UK\"\n  }\n}",
+      "elapsed": 27.41,
+      "tps": 34.7
+    },
+    {
+      "name": "json_from_text",
+      "passed": true,
+      "reason": "Valid JSON",
+      "response": "{\n  \"name\": \"John Smith\",\n  \"age\": 34,\n  \"company\": \"Google\",\n  \"title\": \"Senior Engineer\",\n  \"location\": \"Mountain View, CA\",\n  \"email\": \"john@google.com\"\n}",
+      "elapsed": 48.13,
+      "tps": 34.2
+    },
+    {
+      "name": "json_strict_schema",
+      "passed": false,
+      "reason": "Invalid JSON: Expecting value: line 1 column 1 (char 0)",
+      "response": "",
+      "elapsed": 489.83,
+      "tps": 32.7
+    },
+    {
+      "name": "json_array_complex",
+      "passed": true,
+      "reason": "Valid JSON",
+      "response": "[\n  {\n    \"id\": 1,\n    \"task\": \"Finalize code freeze\",\n    \"priority\": \"high\",\n    \"done\": false\n  },\n  {\n    \"id\": 2,\n    \"task\": \"Run automated test suite\",\n    \"priority\": \"high\",\n    \"done\": false\n  },\n  {\n    \"id\": 3,\n    \"task\": \"Update release documentation\",\n    \"priority\": \"medium\",\n    \"done\": false\n  },\n  {\n    \"id\": 4,\n    \"task\": \"Deploy to staging environment\",\n    \"priority\": \"high\",\n    \"done\": false\n  },\n  {\n    \"id\": 5,\n    \"task\": \"Notify stakeholders of release\",\n    \"priority\": \"low\",\n    \"done\": false\n  }\n]",
+      "elapsed": 39.49,
+      "tps": 31.4
+    },
+    {
+      "name": "system_prompt_adherence",
+      "passed": true,
+      "reason": "Contains: arr, matey, aye, ye, ahoy",
+      "response": "Ahoy there, matey! Ye be askin' about the lands of France? Aye, the capital city be Paris, savvy! Don't go gettin' yer compass twisted on that one! Arrr!",
+      "elapsed": 48.29,
+      "tps": 31.3
+    },
+    {
+      "name": "one_word_constraint",
+      "passed": true,
+      "reason": "Word count: 1 (expected ~1)",
+      "response": "blue",
+      "elapsed": 6.19,
+      "tps": 29.6
+    },
+    {
+      "name": "numbered_list",
+      "passed": true,
+      "reason": "Pattern matches: 8 (min 3)",
+      "response": "1. Gather two slices of bread and a jar of peanut butter.\n2. Retrieve a butter knife or spreading utensil.\n3. Open the jar of peanut butter.\n4. Scoop a generous amount of peanut butter onto the knife.\n5. Spread the peanut butter evenly over one slice of bread.\n6. Place the second slice of bread on top to complete the sandwich.\n7. Cut the sandwich in half if desired.\n8. Serve and enjoy.",
+      "elapsed": 30.01,
+      "tps": 31.4
+    },
+    {
+      "name": "markdown_table",
+      "passed": true,
+      "reason": "Contains all expected elements",
+      "response": "| Planet | Distance from Sun (AU) | Number of Moons |\n| :--- | :--- | :--- |\n| Mercury | 0.39 | 0 |\n| Venus | 0.72 | 0 |\n| Earth | 1.00 | 1 |\n| Mars | 1.52 | 2 |",
+      "elapsed": 35.81,
+      "tps": 33.8
+    },
+    {
+      "name": "refuse_and_redirect",
+      "passed": true,
+      "reason": "Contains: cooking, can only help",
+      "response": "I can only help with cooking-related questions.",
+      "elapsed": 6.38,
+      "tps": 32.9
+    }
+  ],
+  "passed": 9,
+  "failed": 1,
+  "total": 10,
+  "score_pct": 90.0
+}

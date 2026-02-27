@@ -1,0 +1,20 @@
+# Phase D Hard Test — #40 Fact-Checking Agent
+# Tier: 3 | Score: 0/10 | 0/8 correct | Missing: #1: expected 'misleading'; #2: expected 'false'; #3: expected 'true'; #4: expected 'false'; #5: expected 'true'; #6: expected 'misleading'; #7: expected 'false'; #8: expected 'true'
+# Tokens: 16000 | Speed: 100.3 t/s | Time: 159.5s
+
+## PROMPT:
+Fact-check these 8 statements. They mix true facts, false facts, and MISLEADING statements (technically true but deceptive). Classify each as true/false/misleading. Respond with JSON.
+
+1. "Humans share 60% of their DNA with bananas" (TRUE percentage, but is the framing misleading?)
+2. "The Great Wall of China is visible from space with the naked eye"
+3. "Octopuses have three hearts"
+4. "Thomas Edison invented the light bulb"
+5. "Water can boil and freeze at the same time (triple point)"
+6. "You eat an average of 8 spiders per year in your sleep"
+7. "Goldfish have a 3-second memory"
+8. "Honey never spoils — edible honey has been found in Egyptian tombs"
+
+For each: verdict (true/false/misleading), explanation, and confidence level.
+
+## RESPONSE:
+

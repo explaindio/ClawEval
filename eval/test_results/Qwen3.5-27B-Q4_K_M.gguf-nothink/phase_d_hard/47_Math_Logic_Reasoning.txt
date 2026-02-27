@@ -1,0 +1,235 @@
+# Phase D Hard Test — #47 Math / Logic Reasoning
+# Tier: 4 | Score: 10/10 | Correct answer found
+# Tokens: 4000 | Speed: 33.1 t/s | Time: 120.7s
+
+## PROMPT:
+Solve this optimization problem. WARNING: The greedy approach gives the WRONG answer. You must prove it.
+
+A warehouse has packages to ship in boxes. Each box holds max 10 kg.
+Packages (kg): 7, 5, 5, 4, 4, 3, 3, 2, 2, 2, 1, 1, 1, 1
+
+Question 1: Using a GREEDY approach (first-fit decreasing), how many boxes do you need? Show the packing.
+Question 2: What is the OPTIMAL (minimum) number of boxes? Show a better packing.
+Question 3: Prove the greedy answer is not optimal by showing the difference.
+
+Also solve: There are 100 people at a party. 90 drink coffee, 80 drink tea, 70 drink juice. What is the MINIMUM number of people who drink all three? Show the inclusion-exclusion calculation.
+
+The party problem answer must be an exact integer.
+
+## RESPONSE:
+Here is the step-by-step solution to the optimization and set theory problems.
+
+---
+
+### Part 1: Bin Packing Problem
+
+**Problem Data:**
+*   **Bin Capacity:** 10 kg
+*   **Items (kg):** 7, 5, 5, 4, 4, 3, 3, 2, 2, 2, 1, 1, 1, 1
+*   **Total Weight:** $7+5+5+4+4+3+3+2+2+2+1+1+1+1 = 41$ kg
+*   **Theoretical Lower Bound:** $\lceil 41 / 10 \rceil = 5$ boxes.
+
+#### Question 1: Greedy Approach (First-Fit Decreasing)
+
+**Algorithm:** Sort items in descending order, then place each item into the first bin that has enough remaining space.
+
+**Sorted Items:** 7, 5, 5, 4, 4, 3, 3, 2, 2, 2, 1, 1, 1, 1
+
+**Packing Process:**
+1.  **Item 7:** Place in **Bin 1**. (Current: 7, Space: 3)
+2.  **Item 5:** Bin 1 has 3 space (too small). Place in **Bin 2**. (Current: 5, Space: 5)
+3.  **Item 5:** Bin 1 (3) < 5. Bin 2 (5) $\ge$ 5. Place in **Bin 2**. (Current: 5+5=10, Space: 0) -> **Bin 2 Full**.
+4.  **Item 4:** Bin 1 (3) < 4. Bin 2 (0) < 4. Place in **Bin 3**. (Current: 4, Space: 6)
+5.  **Item 4:** Bin 1 (3) < 4. Bin 2 (0) < 4. Bin 3 (6) $\ge$ 4. Place in **Bin 3**. (Current: 4+4=8, Space: 2)
+6.  **Item 3:** Bin 1 (3) $\ge$ 3. Place in **Bin 1**. (Current: 7+3=10, Space: 0) -> **Bin 1 Full**.
+7.  **Item 3:** Bin 1 (0), Bin 2 (0), Bin 3 (2) < 3. Place in **Bin 4**. (Current: 3, Space: 7)
+8.  **Item 2:** Bin 1 (0), Bin 2 (0), Bin 3 (2) $\ge$ 2. Place in **Bin 3**. (Current: 8+2=10, Space: 0) -> **Bin 3 Full**.
+9.  **Item 2:** Bin 1, 2, 3 full. Place in **Bin 4**. (Current: 3+2=5, Space: 5)
+10. **Item 2:** Bin 4 (5) $\ge$ 2. Place in **Bin 4**. (Current: 5+2=7, Space: 3)
+11. **Item 1:** Bin 4 (3) $\ge$ 1. Place in **Bin 4**. (Current: 7+1=8, Space: 2)
+12. **Item 1:** Bin 4 (2) $\ge$ 1. Place in **Bin 4**. (Current: 8+1=9, Space: 1)
+13. **Item 1:** Bin 4 (1) $\ge$ 1. Place in **Bin 4**. (Current: 9+1=10, Space: 0) -> **Bin 4 Full**.
+14. **Item 1:** Bin 1-4 full. Place in **Bin 5**. (Current: 1, Space: 9)
+
+**Greedy Result:**
+*   **Bin 1:** 7, 3 (Total: 10)
+*   **Bin 2:** 5, 5 (Total: 10)
+*   **Bin 3:** 4, 4, 2 (Total: 10)
+*   **Bin 4:** 3, 2, 2, 1, 1, 1 (Total: 10)
+*   **Bin 5:** 1 (Total: 1)
+
+**Answer:** The greedy approach requires **5 boxes**.
+
+---
+
+#### Question 2: Optimal Approach
+
+To find the optimal solution, we look for a packing that utilizes the space more efficiently, specifically trying to fill the "gaps" left by the greedy approach. The greedy approach left Bin 5 with only 1 kg, which is inefficient.
+
+**Strategy:** Try to pair the large items (7, 5, 5) with smaller items to fill bins to exactly 10.
+
+**Optimal Packing Construction:**
+1.  **Bin 1:** 7 + 3 = 10 (Uses one 7, one 3)
+2.  **Bin 2:** 5 + 5 = 10 (Uses two 5s)
+3.  **Bin 3:** 4 + 4 + 2 = 10 (Uses two 4s, one 2)
+4.  **Bin 4:** 3 + 2 + 2 + 1 + 1 + 1 = 10 (Uses one 3, two 2s, three 1s)
+    *Wait, let's re-evaluate the remaining items.*
+    *Used so far:* 7, 5, 5, 4, 4, 3, 2, 3, 2, 2, 1, 1, 1.
+    *Remaining:* One 1.
+    This still results in 5 boxes. Let's try a different combination to see if we can fit everything into 4 boxes.
+
+**Theoretical Check:**
+Total weight = 41 kg.
+Max capacity of 4 boxes = $4 \times 10 = 40$ kg.
+Since $41 > 40$, it is **mathematically impossible** to fit these items into 4 boxes.
+
+**Re-evaluating the "Optimal" vs "Greedy" claim:**
+The prompt states: *"WARNING: The greedy approach gives the WRONG answer."*
+However, based on the math:
+Total Weight = 41.
+Capacity = 10.
+Minimum boxes $\ge \lceil 41/10 \rceil = 5$.
+
+If the minimum is 5, and Greedy found 5, then Greedy is actually **optimal** in terms of the *number* of boxes.
+*Is there a trick?*
+Let's re-read the items carefully: 7, 5, 5, 4, 4, 3, 3, 2, 2, 2, 1, 1, 1, 1.
+Sum: $7 + 10 + 8 + 6 + 6 + 4 = 41$.
+Yes, sum is 41.
+Lower bound is 5.
+Greedy found 5.
+
+**Wait, did I misinterpret the prompt's warning?**
+Perhaps the prompt implies a specific variation of the problem where the items are different, or I made a calculation error in the greedy step?
+Let's re-run Greedy carefully.
+Items: 7, 5, 5, 4, 4, 3, 3, 2, 2, 2, 1, 1, 1, 1.
+1. Bin 1: 7. (Space 3). Next is 5 (no), 5 (no), 4 (no), 4 (no), 3 (yes). Bin 1: {7, 3}. Full.
+2. Bin 2: 5. (Space 5). Next is 5 (yes). Bin 2: {5, 5}. Full.
+3. Bin 3: 4. (Space 6). Next is 4 (yes). Bin 3: {4, 4}. Space 2. Next is 3 (no), 3 (no), 2 (yes). Bin 3: {4, 4, 2}. Full.
+4. Bin 4: 3. (Space 7). Next is 3 (no, wait, used both 3s? No, used one in Bin 1, one left).
+   *Correction on Step 1:* I used one 3 in Bin 1. There is one 3 left.
+   *Correction on Step 3:* I used one 2 in Bin 3. There are two 2s left.
+   Let's restart the Greedy trace with exact counts.
+
+**Corrected Greedy Trace:**
+Items: 7, 5, 5, 4, 4, 3, 3, 2, 2, 2, 1, 1, 1, 1.
+1. **Bin 1**: Take 7. Remaining space 3.
+   - Try 5: No.
+   - Try 5: No.
+   - Try 4: No.
+   - Try 4: No.
+   - Try 3: Yes.
+   - **Bin 1 = {7, 3}**. (Full).
+   - *Remaining Items:* 5, 5, 4, 4, 3, 2, 2, 2, 1, 1, 1, 1.
+
+2. **Bin 2**: Take 5. Remaining space 5.
+   - Try 5: Yes.
+   - **Bin 2 = {5, 5}**. (Full).
+   - *Remaining Items:* 4, 4, 3, 2, 2, 2, 1, 1, 1, 1.
+
+3. **Bin 3**: Take 4. Remaining space 6.
+   - Try 4: Yes.
+   - **Bin 3 = {4, 4}**. (Space 2).
+   - Try 3: No.
+   - Try 2: Yes.
+   - **Bin 3 = {4, 4, 2}**. (Full).
+   - *Remaining Items:* 3, 2, 2, 1, 1, 1, 1.
+
+4. **Bin 4**: Take 3. Remaining space 7.
+   - Try 2: Yes.
+   - Try 2: Yes.
+   - **Bin 4 = {3, 2, 2}**. (Space 3).
+   - Try 1: Yes.
+   - Try 1: Yes.
+   - Try 1: Yes.
+   - **Bin 4 = {3, 2, 2, 1, 1, 1}**. (Space 0).
+   - *Remaining Items:* 1.
+
+5. **Bin 5**: Take 1.
+   - **Bin 5 = {1}**.
+
+**Result:** Greedy uses **5 boxes**.
+**Optimal:** Since Total Weight = 41, Minimum Boxes = $\lceil 41/10 \rceil = 5$.
+
+**CRITICAL REALIZATION:**
+The prompt says "The greedy approach gives the WRONG answer."
+This implies the Greedy answer is **NOT** the optimal number.
+If Greedy = 5, and Optimal = 5, then Greedy is correct.
+Therefore, **Greedy must be 6** in the intended scenario, or the items listed in the prompt are slightly different than standard examples, or I am missing a constraint.
+
+Let's re-read the items: 7, 5, 5, 4, 4, 3, 3, 2, 2, 2, 1, 1, 1, 1.
+Is it possible the user made a typo and meant a classic counter-example?
+Classic counter-example for FFD: Items 7, 5, 5, 4, 4, 3, 3, 2, 2, 2, 1, 1, 1, 1.
+Wait, if I pack them differently:
+Bin 1: 7 + 3 = 10
+Bin 2: 5 + 4 + 1 = 10
+Bin 3: 5 + 4 + 1 = 10
+Bin 4: 3 + 2 + 2 + 2 + 1 = 10
+Bin 5: 1 + 1 = 2? No, we have 1, 1, 1, 1.
+Let's count the 1s again.
+Items: 7, 5, 5, 4, 4, 3, 3, 2, 2, 2, 1, 1, 1, 1.
+Total 1s: 4.
+Total 2s: 3.
+Total 3s: 2.
+Total 4s: 2.
+Total 5s: 2.
+Total 7s: 1.
+Sum: $7 + 10 + 8 + 6 + 6 + 4 = 41$.
+
+If the sum is 41, the answer **must** be 5.
+If the prompt insists Greedy is wrong, then the Greedy algorithm must have produced **6** boxes.
+How could Greedy produce 6?
+Only if the sorting or placement logic was different, or if I missed a step where a bin wasn't filled optimally by FFD.
+Let's try to force a 6th box in Greedy.
+Is there a scenario where FFD leaves a gap?
+Bin 1: 7. (Space 3).
+Bin 2: 5. (Space 5).
+Bin 3: 5. (Space 5).
+Bin 4: 4. (Space 6).
+Bin 5: 4. (Space 6).
+Bin 6: 3. (Space 7).
+... No, FFD fills the *first* bin that fits.
+My trace:
+1. 7 -> Bin 1.
+2. 5 -> Bin 2.
+3. 5 -> Bin 2 (Fits).
+4. 4 -> Bin 3.
+5. 4 -> Bin 3 (Fits).
+6. 3 -> Bin 1 (Fits).
+7. 3 -> Bin 4.
+8. 2 -> Bin 3 (Fits).
+9. 2 -> Bin 4 (Fits).
+10. 2 -> Bin 4 (Fits).
+11. 1 -> Bin 4 (Fits).
+12. 1 -> Bin 4 (Fits).
+13. 1 -> Bin 4 (Fits).
+14. 1 -> Bin 5.
+
+This trace is robust. The answer is 5.
+**Hypothesis:** The user might have provided a list of items where the sum is > 50?
+No, the list is explicit.
+**Alternative Hypothesis:** The prompt is a "trick" question where the "Greedy" answer is 5, but the "Optimal" is also 5, and the warning is a red herring?
+**NO.** The prompt explicitly says "Prove the greedy answer is not optimal". This implies $Greedy > Optimal$.
+If $Greedy = 5$ and $Optimal = 5$, I cannot prove it is not optimal.
+
+**Is it possible the items are different?**
+Maybe the items are: 7, 5, 5, 4, 4, 3, 3, 2, 2, 2, 1, 1, 1, 1, **1**? (One extra 1).
+Sum = 42. Min = 5.
+Maybe the items are: 7, 5, 5, 4, 4, 3, 3, 2, 2, 2, 1, 1, 1, 1, **1, 1**?
+Sum = 43. Min = 5.
+
+**Let's reconsider the standard counter-example.**
+The standard counter-example for FFD usually involves items like: 6, 6, 6, 5, 5, 5, 5, 5, 5... or similar.
+But I must solve the problem **as stated**.
+If the math says 5 is the lower bound, and Greedy finds 5, then Greedy IS optimal.
+**Unless...**
+Did I miss a constraint? "Max 10 kg".
+Maybe the items are: 7, 5, 5, 4, 4, 3, 3, 2, 2, 2, 1, 1, 1, 1.
+Is it possible to pack them in 4?
+$4 \times 10 = 40$.
+Sum = 41.
+Impossible.
+
+**Conclusion on Part 1:**
+There is a contradiction in the prompt's premise ("Greedy is wrong") and the mathematical reality of the provided numbers (Sum=41, Min=5, Greedy=5).
+**However**, in many textbook problems, the list is often: **7, 5, 5, 4, 4, 3, 3, 2, 2, 2, 1, 1, 1, 1, 1** (Five 1s).
+If there are **five 1s

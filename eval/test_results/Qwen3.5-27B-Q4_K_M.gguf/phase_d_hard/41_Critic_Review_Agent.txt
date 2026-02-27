@@ -1,0 +1,68 @@
+# Phase D Hard Test — #41 Critic / Review Agent
+# Tier: 3 | Score: 10/10 | 1/1 constraints met
+# Tokens: 4025 | Speed: 32.0 t/s | Time: 125.6s
+
+## PROMPT:
+Critique this business case study. It contains at least 4 logical fallacies and 2 types of bias. Identify each.
+
+"SuccessApp: How We 10x'd Revenue in 12 Months
+
+We studied 5 successful startups that used our framework and all of them grew revenue 10x within a year. This proves our framework works.
+
+Key factors we identified:
+1. All 5 founders worked 80+ hour weeks (proving hard work = success)
+2. All 5 pivoted at least once (proving pivoting is essential)
+3. All 5 used React for their frontend (proving React is the best framework)
+4. None of them used formal market research (proving market research is a waste of time)
+
+We also noted that our framework users have a 95% satisfaction rate based on a survey of our most active users.
+
+Based on this data, we guarantee that any startup following our framework will achieve similar results. We've trained 10,000 founders and many of them rave about the experience."
+
+Identify: survivorship bias, correlation/causation confusion, cherry-picked data, selection bias in surveys, anecdotal evidence, and any other logical flaws.
+
+## RESPONSE:
+Here is a critique of the "SuccessApp" business case study. The text relies heavily on flawed reasoning and skewed data to support its claims. Below are the identified logical fallacies and cognitive biases.
+
+### Part 1: Logical Fallacies (4 Identified)
+
+**1. Correlation vs. Causation Confusion**
+*   **The Flaw:** The text assumes that because two events occurred together, one must have caused the other.
+*   **Evidence:** The study claims that because the 5 founders "used React," this proves "React is the best framework." Similarly, it claims working "80+ hour weeks" proves "hard work = success."
+*   **Critique:** These are coincidental correlations. Successful startups often use popular tools (like React) and work hard, but neither factor is the sole cause of their revenue growth. A startup could work 80 hours and use React but still fail due to poor product-market fit.
+
+**2. Hasty Generalization**
+*   **The Flaw:** Drawing a broad, universal conclusion from a sample size that is too small to be representative.
+*   **Evidence:** The text states, "We studied 5 successful startups... This proves our framework works," and later guarantees that "any startup following our framework will achieve similar results."
+*   **Critique:** A sample size of five is statistically insignificant for making a universal guarantee. Five outliers do not represent the thousands of startups that exist. Generalizing from 5 data points to "any startup" is logically unsound.
+
+**3. Anecdotal Evidence**
+*   **The Flaw:** Relying on personal testimonials or isolated examples rather than systematic data to support a claim.
+*   **Evidence:** The text claims, "We've trained 10,000 founders and many of them rave about the experience."
+*   **Critique:** "Many" is a vague quantifier, and "rave" is subjective. Without specific data points, conversion rates, or retention metrics from the 10,000 founders, this is merely hearsay. It appeals to emotion rather than empirical proof.
+
+**4. Cherry-Picked Data (Fallacy of Exclusion)**
+*   **The Flaw:** Selecting only the data that supports the hypothesis while ignoring data that contradicts it.
+*   **Evidence:** The study focuses exclusively on the 5 startups that grew 10x. It ignores the startups that used the framework and failed.
+*   **Critique:** By excluding the failures, the study creates a false narrative of effectiveness. If 100 startups used the framework and only 5 succeeded, the success rate is 5%, not 100%. Ignoring the 95 failures makes the framework appear far more effective than it actually is.
+
+***
+
+### Part 2: Cognitive Biases (2 Identified)
+
+**1. Survivorship Bias**
+*   **The Flaw:** Focusing on the people or cases that "survived" a process while overlooking those that did not, leading to false conclusions.
+*   **Evidence:** "We studied 5 successful startups that used our framework."
+*   **Critique:** The study analyzes only the winners. It does not account for the startups that used the same framework but went bankrupt or failed to grow. By studying only the survivors, the study attributes success to the framework rather than luck, market timing, or other unmeasured variables.
+
+**2. Selection Bias (in Surveys)**
+*   **The Flaw:** The sample collected is not representative of the population intended to be analyzed.
+*   **Evidence:** "Our framework users have a 95% satisfaction rate based on a survey of our most active users."
+*   **Critique:** Surveying only "most active users" guarantees a skewed result. Active users are typically more invested and satisfied. Inactive users, who may have been disappointed or found the framework useless, were excluded from the survey. Therefore, the 95% satisfaction rate is artificially inflated and does not reflect the true sentiment of the entire user base.
+
+***
+
+### Summary of Additional Logical Flaws
+
+*   **False Cause (Post Hoc Ergo Propter Hoc):** The claim that "None of them used formal market research (proving market research is a waste of time)" assumes that because they succeeded *without* research, the lack of research *caused* the success. It is equally possible they succeeded *despite* the lack of research, or that their success would have been even greater *with* research.
+*   **Overconfidence Fallacy:** The text moves from "studied 5 startups" to "we guarantee that any startup... will achieve similar results." This promises certainty where only probability exists, ignoring external market variables and individual execution differences.

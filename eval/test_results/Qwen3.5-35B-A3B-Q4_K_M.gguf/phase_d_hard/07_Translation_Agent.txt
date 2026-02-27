@@ -1,0 +1,51 @@
+# Phase D Hard Test — #7 Translation Agent
+# Tier: 1 | Score: 5/10 | No automated constraints to check
+# Tokens: 6505 | Speed: 87.6 t/s | Time: 74.3s
+
+## PROMPT:
+Translate this marketing copy to Spanish AND Japanese. This text contains: 1 pun, 1 culture-specific reference, and 1 idiom. You MUST add translator notes explaining how you handled each.
+
+"Our new Cloud9 hosting puts your website on cloud nine! Like a good neighbor, ServerFarm is there. Don't put all your eggs in one basket — our multi-region failover means your data is always safe. With speeds that would make Usain Bolt jealous, your pages load before you can say 'supercalifragilisticexpialidocious.'"
+
+Requirements:
+- Translate the full text to both languages
+- Add [TRANSLATOR NOTE] for EACH culturally-specific element explaining your adaptation
+- The pun "Cloud9/cloud nine" must be addressed — explain if you preserved it or adapted it
+- The "good neighbor" is a State Farm insurance slogan reference — explain how you handled it
+
+## RESPONSE:
+### Spanish Translation
+
+"Nuestro nuevo hosting Cloud9 ¡pone tu sitio web en el séptimo cielo! Como un buen vecino, ServerFarm está ahí. No pongas todos los huevos en la misma cesta — nuestro failover multi-región significa que tus datos están siempre seguros. Con velocidades que harían celoso a Usain Bolt, tus páginas cargan antes de que puedas decir 'supercalifragilisticexpialidocious'."
+
+### Japanese Translation
+
+「新しい Cloud9 ホスティングで、あなたのウェブサイトを『雲の上』に！良い隣人のように、ServerFarm はそこにいます。卵を一つのカゴに詰め込むな — 当社のマルチリージョンフェイルオーバーにより、データは常に安全です。ウサイン・ボルトがうらやむほどのスピードで、あなたのページは「スーパークリファリスティック・エクスピアリドシオス」と言う前に読み込まれます。」
+
+***
+
+### [TRANSLATOR NOTES]
+
+**1. [PUN] "Cloud9 hosting" / "cloud nine"**
+*   **Handling:** In the source text, "Cloud9" is the brand name, while "cloud nine" is an idiom meaning extreme happiness.
+*   **Spanish:** Translated as "Séptimo cielo" (Seventh Heaven). This is the standard Spanish idiom for extreme happiness. I kept the brand name "Cloud9" intact. The numerical pun (9 vs 7) is lost, but the meaning of "heavenly" is preserved.
+*   **Japanese:** Translated as "Kumo no ue" (On clouds). This preserves the "Cloud" imagery linking to the brand name "Cloud9", though the idiom "cloud nine" isn't a direct equivalent in Japanese. "Tengoku" (Heaven) was considered but "Kumo no ue" better maintains the tech metaphor.
+
+**2. [CULTURE-SPECIFIC REFERENCE] "Like a good neighbor, ServerFarm is there"**
+*   **Handling:** This is a direct reference to the famous State Farm insurance slogan ("Like a good neighbor, State Farm is there").
+*   **Spanish:** Translated literally as "Como un buen vecino". While the specific brand association is lost in translation, the phrase is recognizable as a slogan structure in Spanish marketing.
+*   **Japanese:** Translated as "Yoi rinjin no you ni" (Like a good neighbor). This cultural reference does not exist in Japan. I translated the meaning directly to convey the sentiment of reliability and proximity, as the State Farm brand recognition would not translate.
+
+**3. [IDIOM] "Don't put all your eggs in one basket"**
+*   **Handling:** A common idiom warning against risking everything on a single venture.
+*   **Spanish:** "No pongas todos los huevos en la misma cesta." This is the direct equivalent idiom in Spanish, so no adaptation was needed.
+*   **Japanese:** "Tamago o hitotsu no kago ni tsumekomuna." This is also a direct equivalent idiom in Japanese, so no adaptation was needed.
+
+**4. [CULTURE-SPECIFIC REFERENCE] "Usain Bolt"**
+*   **Handling:** Usain Bolt is a globally recognized sprinter.
+*   **Spanish/Japanese:** Kept as a proper noun ("Usain Bolt" / "ウサイン・ボルト"). His fame is global enough that the reference to "speed" is understood in both languages without localization.
+
+**5. [CULTURE-SPECIFIC REFERENCE] "supercalifragilisticexpialidocious"**
+*   **Handling:** A famous word from the movie *Mary Poppins*.
+*   **Spanish:** Kept as the original English word. It is widely recognized in pop culture.
+*   **Japanese:** Transliterated into Katakana ("スーパークリファリスティック・エクスピアリドシオス"). This preserves the recognizable sound of the word for Japanese audiences familiar with the film.

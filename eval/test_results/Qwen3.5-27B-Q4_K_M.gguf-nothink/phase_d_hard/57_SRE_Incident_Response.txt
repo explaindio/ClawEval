@@ -1,0 +1,149 @@
+# Phase D Hard Test — #57 SRE / Incident Response
+# Tier: 5 | Score: 10/10 | 1/1 constraints met
+# Tokens: 2078 | Speed: 33.0 t/s | Time: 63.0s
+
+## PROMPT:
+Write an incident postmortem. This incident had a CASCADE FAILURE — the initial issue triggered 3 secondary failures. Map the entire cascade.
+
+Timeline:
+- Mon 2:00 AM: Automated certificate rotation runs on the API gateway
+- Mon 2:01 AM: New certificate has wrong domain (*.example.com instead of *.api.example.com)
+- Mon 2:01 AM: All API requests start returning TLS errors
+- Mon 2:05 AM: Health check failures trigger auto-scaling — new instances spin up
+- Mon 2:06 AM: New instances also fail health checks (same cert), triggering MORE scaling
+- Mon 2:10 AM: Kubernetes cluster hits pod limit (500 pods). Cluster API becomes unresponsive.
+- Mon 2:11 AM: Monitoring system (also on same cluster) goes down. All alerts stop.
+- Mon 2:15 AM: Database connection pool exhausted from 500 pods trying to connect
+- Mon 2:20 AM: Database enters read-only mode to protect data
+- Mon 3:15 AM: On-call engineer wakes up from customer complaint on Twitter (no alert!)
+- Mon 3:45 AM: Root cause identified, correct certificate deployed manually
+- Mon 4:00 AM: Cluster stabilized, database connections draining
+- Mon 4:30 AM: Full service restored
+
+SLA: 99.95% monthly uptime = 21.9 minutes/month allowed downtime.
+This incident: ~2.5 hours downtime.
+
+Write: cascade map, root cause, 5 whys, SLA impact calculation, blameless action items.
+
+## RESPONSE:
+# Incident Postmortem: API Gateway Certificate Rotation Cascade Failure
+
+**Incident ID:** INC-2023-1024-001
+**Severity:** SEV-1 (Critical)
+**Status:** Resolved
+**Date:** Monday, October 24, 2023
+**Duration:** 2 hours 30 minutes (02:01 AM – 04:30 AM UTC)
+**Impact:** 100% API Unavailability; Monitoring Blindness; Database Read-Only Mode
+
+---
+
+## 1. Executive Summary
+On Monday, October 24, at 02:01 AM UTC, an automated certificate rotation process deployed a certificate with an incorrect Subject Alternative Name (SAN) to the API Gateway. This initial failure triggered a cascading series of events: auto-scaling loops, Kubernetes cluster resource exhaustion, monitoring system failure, and database connection pool exhaustion. The incident resulted in 2.5 hours of total downtime, significantly exceeding our monthly SLA allowance.
+
+The root cause was a configuration error in the certificate generation script. However, the severity was amplified by a lack of circuit breakers on auto-scaling, the co-location of monitoring on the same cluster, and the absence of database connection limits per pod.
+
+---
+
+## 2. Cascade Failure Map
+
+The following diagram illustrates how a single configuration error propagated through the system architecture, creating a feedback loop that overwhelmed infrastructure limits.
+
+```mermaid
+graph TD
+    A[<b>Trigger:</b> Automated Cert Rotation] -->|Wrong SAN: *.example.com| B(<b>Primary Failure:</b> TLS Handshake Failures)
+    
+    B --> C{Health Checks Fail}
+    C -->|Scale Up| D[Auto-Scaler Spins Up New Pods]
+    D -->|Same Cert Error| C
+    
+    C -->|Loop Continues| E[<b>Secondary Failure 1:</b> Pod Limit Hit (500)]
+    E --> F[Cluster API Unresponsive]
+    
+    F --> G[<b>Secondary Failure 2:</b> Monitoring System Down]
+    G --> H[Alerting Silenced - No On-Call Notification]
+    
+    E --> I[500 Pods Attempt DB Connections]
+    I --> J[<b>Secondary Failure 3:</b> DB Connection Pool Exhausted]
+    J --> K[Database Enters Read-Only Mode]
+    
+    H --> L[Detection Delay: 54 Mins]
+    L --> M[Manual Intervention]
+    M --> N[Correct Cert Deployed]
+    N --> O[Cluster Stabilization & Drain]
+    O --> P[Service Restored]
+```
+
+### Cascade Breakdown
+1.  **Primary Failure (02:01 AM):** The API Gateway presented a certificate for `*.example.com` instead of `*.api.example.com`. Clients rejected the connection, causing immediate 502/503 errors.
+2.  **Secondary Failure 1 - Scaling Loop (02:05 AM - 02:10 AM):** The load balancer marked instances as unhealthy. The auto-scaler interpreted this as high load/instability and aggressively spun up new instances. Since the new instances pulled the same bad certificate, they immediately failed health checks, triggering more scaling.
+3.  **Secondary Failure 2 - Cluster Exhaustion (02:10 AM):** The scaling loop hit the Kubernetes hard limit of 500 pods. The API server became unresponsive due to resource contention, preventing any further management operations (including stopping the scale-up).
+4.  **Secondary Failure 3 - Monitoring Blindness (02:11 AM):** The monitoring stack (Prometheus/Grafana) was hosted on the same cluster. As the cluster choked, the monitoring agents died. All alerts stopped firing, creating a "silent failure" scenario.
+5.  **Tertiary Impact - Database Lockdown (02:15 AM - 02:20 AM):** The 500 zombie pods continuously attempted to reconnect to the database. The connection pool was exhausted, forcing the database into a protective read-only mode to prevent data corruption.
+
+---
+
+## 3. Root Cause Analysis
+
+### The 5 Whys
+1.  **Why did the API return TLS errors?**
+    *   The API Gateway presented a certificate with the wrong domain (`*.example.com` instead of `*.api.example.com`).
+2.  **Why was the wrong certificate deployed?**
+    *   The automated certificate rotation script used a wildcard pattern that was too broad, defaulting to the root domain instead of the specific subdomain required for the API.
+3.  **Why did the script use the wrong pattern?**
+    *   The script configuration was updated during a recent refactoring, but the validation step that checks the generated certificate's SANs against the target domain was removed to speed up the pipeline.
+4.  **Why did the failure cascade into a total system outage?**
+    *   The auto-scaler lacked a "cool-down" period or a maximum scale limit per event, and the monitoring system was not isolated from the application cluster.
+5.  **Why was the incident detected so late (54 minutes)?**
+    *   Because the monitoring system was hosted on the same cluster that crashed, the alerting pipeline failed simultaneously with the application, leaving the on-call team unaware until a customer reported it on social media.
+
+---
+
+## 4. SLA Impact Calculation
+
+**Target SLA:** 99.95% Monthly Uptime
+**Allowed Downtime:** 21.9 minutes per month
+
+**Incident Duration:**
+*   Start: 02:01 AM
+*   End: 04:30 AM
+*   Total Downtime: **2 hours 29 minutes (149 minutes)**
+
+**Calculation:**
+$$ \text{Actual Uptime} = \frac{\text{Total Minutes in Month} - \text{Downtime}}{\text{Total Minutes in Month}} $$
+$$ \text{Actual Uptime} = \frac{(30 \times 1440) - 149}{43200} = \frac{43051}{43200} \approx 99.655\% $$
+
+**Impact:**
+*   **SLA Breach:** Yes.
+*   **Excess Downtime:** $149 - 21.9 = 127.1$ minutes over the allowed limit.
+*   **Remaining Allowance:** 0 minutes (The incident consumed the entire monthly allowance and exceeded it).
+
+---
+
+## 5. Action Items (Blameless)
+
+The following actions are prioritized to prevent recurrence. No individual is at fault; the focus is on fixing the system design and processes.
+
+### Immediate (0-2 Weeks)
+| ID | Action Item | Owner | Priority |
+| :--- | :--- | :--- | :--- |
+| **AI-01** | **Implement Certificate Validation Gate:** Add a step in the CI/CD pipeline to parse the generated certificate and verify the SANs match the target domain before deployment. | Platform Eng | P0 |
+| **AI-02** | **Isolate Monitoring Infrastructure:** Migrate Prometheus/Grafana/Alertmanager to a separate, dedicated cluster or managed service (e.g., Datadog/PagerDuty) to ensure visibility during application outages. | SRE Team | P0 |
+| **AI-03** | **Configure Auto-Scaler Limits:** Set a hard `maxReplicas` limit and introduce a `scaleDownDelaySeconds` to prevent runaway scaling loops during health check failures. | DevOps | P0 |
+
+### Short Term (2-4 Weeks)
+| ID | Action Item | Owner | Priority |
+| :--- | :--- | :--- | :--- |
+| **AI-04** | **Database Connection Pooling:** Implement client-side connection pooling limits per pod and configure Kubernetes `maxConnections` to prevent a single cluster from exhausting the DB. | Backend Team | P1 |
+| **AI-05** | **External Health Checks:** Implement an external synthetic monitor (from outside the cluster) that checks the API endpoint and triggers alerts if the cluster is unreachable, bypassing internal monitoring. | SRE Team | P1 |
+| **AI-06** | **Circuit Breaker Pattern:** Add a circuit breaker to the auto-scaling logic that disables scaling if health checks fail for >2 consecutive minutes. | Platform Eng | P1 |
+
+### Long Term (1-3 Months)
+| ID | Action Item | Owner | Priority |
+| :--- | :--- | :--- | :--- |
+| **AI-07** | **Chaos Engineering Drill:** Run a controlled experiment simulating a certificate failure to verify that the new monitoring isolation and scaling limits work as expected. | SRE Team | P2 |
+| **AI-08** | **On-Call Notification Redundancy:** Review alerting channels to ensure that if the primary alerting system fails, a secondary channel (e.g., SMS via a separate provider) is triggered. | Security/Compliance | P2 |
+
+---
+
+## 6. Conclusion
+This incident highlighted the fragility of tightly coupled systems. While the root cause was a simple configuration error, the lack of isolation between the application, monitoring, and scaling logic turned a minor error into a catastrophic cascade. By implementing the action items above, specifically isolating monitoring and adding validation gates, we will significantly increase our system's resilience and ensure we meet our SLA targets moving forward.

@@ -1,0 +1,117 @@
+# Phase D Hard Test — #27 Sprint / Project Summarizer
+# Tier: 2 | Score: 5/10 | No automated constraints to check
+# Tokens: 6490 | Speed: 101.8 t/s | Time: 63.7s
+
+## PROMPT:
+Analyze these 3 sprints and identify the trends that nobody is talking about. Calculate exact velocity and predict sprint 4 outcomes.
+
+Sprint 1 (2 weeks): 8 stories planned (34 pts), 7 completed (30 pts), 1 carried over. 0 stories added mid-sprint.
+Sprint 2 (2 weeks): 10 stories planned (40 pts), 7 completed (32 pts), 3 carried over. 3 stories added mid-sprint by product.
+Sprint 3 (2 weeks): 12 stories planned (48 pts), 6 completed (28 pts), 6 carried over. 5 stories added mid-sprint by product.
+
+The team has committed to delivering 15 stories (60 pts) in Sprint 4 because "the deadline is non-negotiable."
+
+Questions:
+1. Calculate the velocity trend across 3 sprints (exact numbers)
+2. What is the realistic capacity for Sprint 4?
+3. What percentage of scope creep has occurred each sprint?
+4. Is the Sprint 4 commitment achievable? Show math.
+5. What should you recommend to the product owner?
+
+## RESPONSE:
+### Executive Summary: The "Stability" Illusion
+On the surface, the team's velocity looks stable (30, 32, 28). However, the data reveals a **systemic collapse in delivery reliability** masked by increasing scope. The team is not just "struggling"; they are actively being prevented from finishing their commitments by mid-sprint scope injections, resulting in an exponential backlog of unfinished work.
+
+---
+
+### 1. Calculate the velocity trend across 3 sprints (exact numbers)
+
+Velocity is calculated based on **completed story points**.
+
+*   **Sprint 1:** 30 pts
+*   **Sprint 2:** 32 pts
+*   **Sprint 3:** 28 pts
+*   **3-Sprint Average Velocity:** **30 pts**
+*   **Trend Direction:** **Flat/Stagnant** (with a slight downward drift in Sprint 3).
+
+**The Hidden Trend:**
+While velocity is stable, **Commitment Reliability** is collapsing.
+*   **Sprint 1:** 30/34 pts delivered (**88%** of plan)
+*   **Sprint 2:** 32/40 pts delivered (**80%** of plan)
+*   **Sprint 3:** 28/48 pts delivered (**58%** of plan)
+*   **Trend:** The team is delivering a smaller percentage of what they commit to each sprint, despite planning for *more* work.
+
+---
+
+### 2. What is the realistic capacity for Sprint 4?
+
+**Realistic Capacity: 30 Points (New Work)**
+
+**The Math:**
+*   **Historical Velocity:** 30 pts (Average of last 3 sprints).
+*   **Carry-Over Debt:** Sprint 3 ended with **6 stories carried over**.
+    *   Based on the average story size (48 pts / 12 stories = 4 pts/story), these 6 stories represent **24 pts of debt**.
+*   **Net Capacity:** If the team must clear the 24 pts of debt before starting new work, their capacity for *new* value is:
+    *   30 pts (Velocity) - 24 pts (Debt) = **6 pts of new work.**
+
+**Conclusion:** Even if they ignore the debt, the realistic capacity for *new* value is **30 pts**. If they must clear the backlog, it is **6 pts**.
+
+---
+
+### 3. What percentage of scope creep has occurred each sprint?
+
+Scope creep is calculated as **(Mid-Sprint Added Points / Original Planned Points) × 100**.
+*Assumption: Average story size is consistent at 4 pts (derived from Sprint 1 & 3).*
+
+*   **Sprint 1:** 0 stories added / 34 pts = **0%**
+*   **Sprint 2:** 3 stories added (12 pts) / 40 pts = **30%**
+*   **Sprint 3:** 5 stories added (20 pts) / 48 pts = **41.6%**
+
+**The Hidden Trend:** Scope creep is not just happening; it is **accelerating**. The Product team is adding 30% to 40% more work mid-sprint, yet the team is finishing *less* of the original plan. This indicates that mid-sprint additions are directly cannibalizing the team's ability to finish committed work.
+
+---
+
+### 4. Is the Sprint 4 commitment achievable? Show math.
+
+**Verdict: NO. It is mathematically impossible.**
+
+**The Commitment:** 15 stories (60 pts).
+**The Reality:**
+1.  **Velocity Gap:** The team's average velocity is 30 pts. The commitment is **60 pts**. This requires **200% of their historical capacity**.
+2.  **Carry-Over Tax:** There are 6 stories from Sprint 3 (approx. 24 pts) that must be completed before new work begins.
+3.  **Total Work Required:** 60 pts (New Commitment) + 24 pts (Carry-Over) = **84 pts**.
+4.  **Required Velocity:** To hit this in one sprint, the team needs to deliver **84 pts**.
+5.  **Current Velocity:** **30 pts**.
+
+**Math:**
+$$ \text{Feasibility} = \frac{\text{Current Velocity}}{\text{Required Work}} = \frac{30}{84} = \mathbf{35.7\%} $$
+
+**Conclusion:** The team is only capable of delivering **35%** of the requested work. Even if they ignore the carry-over, they are only capable of delivering 50% of the new commitment.
+
+---
+
+### 5. What should you recommend to the product owner?
+
+**Recommendation 1: Stop the Mid-Sprint Injections Immediately**
+The data proves a direct correlation between mid-sprint additions and failed commitments.
+*   **Action:** Enforce a "Sprint Freeze." No stories added after Sprint Planning Day 1. If a story is urgent, it must replace a story of equal size from the current plan.
+
+**Recommendation 2: Address the Carry-Over Exponential**
+The carry-over is not linear (1, 3, 6); it is accelerating.
+*   **Action:** Dedicate Sprint 4 entirely to clearing the 6 carried-over stories (approx. 24 pts). Do not plan new work until the backlog is cleared.
+
+**Recommendation 3: Renegotiate the "Non-Negotiable" Deadline**
+A deadline cannot be met if the scope is inflated by 40% mid-sprint and the velocity is half the requirement.
+*   **Action:** Present the math (30 pts vs 60 pts commitment). Offer a trade: "We can meet the deadline if we cut the scope to 30 pts, OR we can deliver the 60 pts if we extend the timeline by 2 sprints."
+
+**Recommendation 4: Protect the Team**
+The team is currently operating in a "crisis mode" that is unsustainable.
+*   **Action:** Cancel Sprint 4 planning until the Product Owner agrees to the Scope Freeze. Continuing to plan for 60 pts will result in a 0% completion rate and burnout.
+
+### The "Trend Nobody is Talking About"
+**The "Product Injection" Paradox.**
+Most stakeholders look at the 30/32/28 velocity and think, *"The team is consistent."*
+The reality is: **The team is consistently failing to finish their original plan because Product is consistently adding work mid-sprint.**
+*   In Sprint 2, Product added 30% of the sprint's value mid-sprint.
+*   In Sprint 3, Product added 41% of the sprint's value mid-sprint.
+*   **Result:** The team is not underperforming; they are being **sabotaged by scope creep**. The "stable velocity" is actually a **stable failure rate** masked by increasing scope. If Product stopped adding stories mid-sprint, the team's completion rate would likely jump from 58% (S3) back to 88% (S1 levels).

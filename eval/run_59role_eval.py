@@ -25,10 +25,12 @@ from role_prompts import ROLE_TESTS
 
 DEFAULT_BASE_URL = "http://192.168.1.9:8080/v1"
 RESULTS_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "test_results")
+NOTHINK = False  # Global flag for /nothink mode
+MAX_TOKENS_OVERRIDE = 0  # Global override for max_tokens (0 = no override)
 
 
 def get_client(base_url):
-    return OpenAI(base_url=base_url, api_key="not-needed", timeout=120)
+    return OpenAI(base_url=base_url, api_key="not-needed", timeout=600)
 
 
 def get_model_name(client):
@@ -37,6 +39,11 @@ def get_model_name(client):
 
 
 def timed_completion(client, model, messages, max_tokens=512, temperature=0):
+    # Note: nothink mode is handled server-side via --chat-template-kwargs
+    # The --nothink flag only affects output directory naming
+    # Apply global token override
+    if MAX_TOKENS_OVERRIDE > 0:
+        max_tokens = max(max_tokens, MAX_TOKENS_OVERRIDE)
     start = time.time()
     response = client.chat.completions.create(
         model=model, messages=messages,
@@ -360,11 +367,19 @@ def main():
     parser.add_argument("--quality-only", action="store_true", help="Run only quality prompts")
     parser.add_argument("--roles", nargs="+", type=int, help="Test specific role IDs only")
     parser.add_argument("--tier", type=int, help="Test only roles from this tier (1-5)")
+    parser.add_argument("--nothink", action="store_true", help="Disable thinking with /nothink system message")
+    parser.add_argument("--max-tokens", type=int, default=0, help="Override min max_tokens (e.g. 16000 for thinking models)")
     args = parser.parse_args()
-    
+
+    global NOTHINK, MAX_TOKENS_OVERRIDE
+    NOTHINK = args.nothink
+    MAX_TOKENS_OVERRIDE = args.max_tokens
+
     client = get_client(args.url)
     model = get_model_name(client)
     model_id = model.replace("/", "_").replace("\\", "_").replace(" ", "_")
+    if args.nothink:
+        model_id += "-nothink"
     
     role_ids = args.roles
     if args.tier:

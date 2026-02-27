@@ -1,0 +1,110 @@
+# Phase D Hard Test — #28 Transaction / Approval Agent
+# Tier: 2 | Score: 0/10 | 0/8 correct | Missing: #1: expected 'approve'; #2: expected 'reject'; #3: expected 'reject'; #4: expected 'reject'; #5: expected 'approve'; #6: expected 'reject'; #7: expected 'approve'; #8: expected 'reject'
+# Tokens: 1280 | Speed: 33.2 t/s | Time: 38.5s
+
+## PROMPT:
+Process these 8 transactions against company policy. Several are edge cases designed to test your understanding. Respond with JSON mapping transaction number to approve/reject with reasoning.
+
+POLICY:
+- Individual transaction limit: $5,000
+- Department monthly limit: $25,000/month  
+- New vendors require VP approval (not present here)
+- Splitting a purchase into multiple transactions to avoid limits is prohibited
+- Travel requires pre-approval (attach approval code)
+- Software subscriptions require IT review for security
+- Reimbursements must be within 30 days of expense
+
+CONTEXT: Engineering department has spent $21,000 this month already.
+
+Transactions:
+1. $4,999 to approved vendor for server hardware
+2. $3,000 to approved vendor for server hardware (same vendor, same day as #1 — smells like split purchase)
+3. $2,500 software subscription to new SaaS vendor (no IT review)
+4. $1,200 flight to NYC for conference (no pre-approval code)
+5. $800 reimbursement for team dinner last week (receipt attached, within 30 days)
+6. $4,500 to approved vendor for cloud hosting (would put dept at $25,500 — over monthly limit)
+7. $150 office supplies from approved vendor
+8. $3,200 reimbursement for laptop purchased 45 days ago
+
+## RESPONSE:
+```json
+{
+  "1": {
+    "decision": "approve",
+    "reasoning": "Transaction is under the $5,000 individual limit. The vendor is approved. While it is close to the limit, there is no evidence of splitting in isolation. However, combined with transaction #2, it forms a split purchase pattern. But as a standalone transaction processed first, it technically meets limits. Wait, policy prohibits splitting. If #1 and #2 are the same purchase, the total is $7,999. Since #2 is flagged as a split, #1 is part of that prohibited split. Therefore, #1 should be rejected as part of the split scheme."
+  },
+  "2": {
+    "decision": "reject",
+    "reasoning": "Combined with transaction #1 ($4,999 + $3,000 = $7,999), this constitutes splitting a purchase to avoid the $5,000 individual transaction limit. Policy explicitly prohibits splitting purchases."
+  },
+  "3": {
+    "decision": "reject",
+    "reasoning": "Software subscriptions require IT review for security. No IT review is present for this new SaaS vendor."
+  },
+  "4": {
+    "decision": "reject",
+    "reasoning": "Travel expenses require pre-approval with an attached approval code. No approval code is present."
+  },
+  "5": {
+    "decision": "approve",
+    "reasoning": "Reimbursement is within the 30-day window (last week), receipt is attached, and the amount ($800) is well within limits. Department total remains under $25,000."
+  },
+  "6": {
+    "decision": "reject",
+    "reasoning": "The Engineering department has already spent $21,000. Adding $4,500 would bring the total to $25,500, exceeding the $25,000 monthly department limit."
+  },
+  "7": {
+    "decision": "approve",
+    "reasoning": "Amount ($150) is under the individual limit. Vendor is approved. Adding this to the current spend ($21,000 + $150 = $21,150) keeps the department under the $25,000 monthly limit."
+  },
+  "8": {
+    "decision": "reject",
+    "reasoning": "Reimbursements must be within 30 days of the expense. This laptop was purchased 45 days ago, exceeding the 30-day window."
+  }
+}
+```
+
+*Correction on Transaction #1 Logic:*
+Upon re-evaluation, if #1 and #2 are the same purchase split to avoid limits, *both* should be rejected. The prompt says "smells like split purchase" for #2, implying the intent is to test the detection of the split. If I approve #1 and reject #2, the company still pays $4,999 for half the purchase, which might be acceptable if the split is caught, but usually, the entire split transaction is voided or the first one is held pending investigation. However, strictly speaking, #1 *itself* is under $5k. But the policy says "Splitting... is prohibited". If the system detects #2 as a split, #1 is the first leg of that split. To be safe and adhere to the spirit of the policy, #1 should be rejected as part of the prohibited split activity.
+
+*Refined JSON for #1:*
+"1": { "decision": "reject", "reasoning": "Combined with transaction #2, this appears to be a split purchase ($7,999 total) designed to circumvent the $5,000 individual transaction limit. Policy prohibits splitting purchases." }
+
+Let's finalize the JSON.
+
+```json
+{
+  "1": {
+    "decision": "reject",
+    "reasoning": "Combined with transaction #2, this constitutes a split purchase totaling $7,999 to circumvent the $5,000 individual transaction limit. Policy prohibits splitting purchases."
+  },
+  "2": {
+    "decision": "reject",
+    "reasoning": "Part of a split purchase with transaction #1 totaling $7,999, exceeding the $5,000 individual limit. Policy prohibits splitting purchases."
+  },
+  "3": {
+    "decision": "reject",
+    "reasoning": "Software subscriptions require IT review for security. No IT review is attached."
+  },
+  "4": {
+    "decision": "reject",
+    "reasoning": "Travel requires pre-approval with an attached approval code. No code is present."
+  },
+  "5": {
+    "decision": "approve",
+    "reasoning": "Amount is within limits, vendor is approved, and reimbursement is within the 30-day window (last week)."
+  },
+  "6": {
+    "decision": "reject",
+    "reasoning": "Department has spent $21,000. Adding $4,500 results in $25,500, exceeding the $25,000 monthly department limit."
+  },
+  "7": {
+    "decision": "approve",
+    "reasoning": "Amount is within limits, vendor is approved, and total department spend ($21,150) remains under the $25,000 monthly limit."
+  },
+  "8": {
+    "decision": "reject",
+    "reasoning": "Reimbursement is for an expense incurred 45 days ago, exceeding the 30-day policy window."
+  }
+}
+```

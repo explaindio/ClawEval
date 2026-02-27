@@ -1,0 +1,167 @@
+# Phase D Hard Test — #52 Complex Debugger Agent
+# Tier: 5 | Score: 10/10 | 1/1 constraints met
+# Tokens: 6562 | Speed: 91.7 t/s | Time: 71.6s
+
+## PROMPT:
+Debug this distributed system issue. You must identify the EXACT thread interleaving that causes the bug.
+
+```python
+# Simplified payment processing service
+import threading
+import time
+
+class PaymentProcessor:
+    def __init__(self):
+        self.processed = set()
+        self.lock = threading.Lock()
+    
+    def process_payment(self, payment_id, amount):
+        # Step 1: Check if already processed (idempotency check)
+        if payment_id in self.processed:
+            return {"status": "duplicate", "charged": False}
+        
+        # Step 2: Charge the payment gateway (takes ~200ms)
+        result = self._charge_gateway(payment_id, amount)
+        
+        # Step 3: Mark as processed
+        with self.lock:
+            self.processed.add(payment_id)
+        
+        return {"status": "success", "charged": True}
+    
+    def _charge_gateway(self, payment_id, amount):
+        time.sleep(0.2)  # Simulates API call
+        return True
+```
+
+Scenario: Two webhook retries arrive 50ms apart for the same payment_id.
+
+Questions:
+1. Show the exact thread interleaving (T1 step X, T2 step Y...) that causes double charging
+2. Why doesn't the idempotency check prevent it?
+3. Why doesn't the lock prevent it?
+4. Provide 3 different fixes with tradeoffs (pessimistic lock, optimistic lock, idempotency key at gateway level)
+5. Which fix would you choose for a system processing $10M/day? Why?
+
+## RESPONSE:
+### 1. Exact Thread Interleaving Causing Double Charging
+
+The bug is a classic **Time-of-Check to Time-of-Use (TOCTOU)** race condition. Because the state update (`self.processed.add`) happens *after* the expensive I/O operation (`_charge_gateway`), a second request can pass the idempotency check while the first request is still charging.
+
+**Timeline:**
+*   **T=0ms:** Thread 1 (T1) arrives.
+*   **T=50ms:** Thread 2 (T2) arrives.
+*   **T=200ms:** T1 finishes charging.
+
+| Time | Thread | Action | State (`self.processed`) | Result |
+| :--- | :--- | :--- | :--- | :--- |
+| **0ms** | **T1** | `if payment_id in self.processed` | `set()` | **False** (Passes check) |
+| **0ms** | **T1** | `_charge_gateway()` (Starts, 200ms) | `set()` | **Charging...** |
+| **50ms** | **T2** | `if payment_id in self.processed` | `set()` | **False** (Passes check) |
+| **50ms** | **T2** | `_charge_gateway()` (Starts, 200ms) | `set()` | **Charging...** |
+| **200ms** | **T1** | `self.processed.add(payment_id)` | `{payment_id}` | **Success** |
+| **250ms** | **T2** | `self.processed.add(payment_id)` | `{payment_id}` | **Success** |
+
+**Result:** Both threads successfully charge the gateway. The payment is processed twice.
+
+---
+
+### 2. Why doesn't the idempotency check prevent it?
+
+The idempotency check (`if payment_id in self.processed`) is **stale**.
+It checks the state *before* the critical action (charging) occurs. Since the state is only updated *after* the charge completes, the check does not reflect the "in-flight" status of the payment. It only knows about *completed* payments.
+
+---
+
+### 3. Why doesn't the lock prevent it?
+
+There are two reasons the lock fails here:
+
+1.  **Wrong Scope (Logic Bug):** The lock is acquired **after** the charge (`_charge_gateway`). It only protects the `self.processed.add` line. It does not protect the check or the charge. Therefore, T1 and T2 can both pass the check and start charging before either acquires the lock.
+2.  **Wrong Scope (Architecture Bug):** `threading.Lock` is **process-local**. In a distributed system (multiple pods/servers), T1 might be on Server A and T2 on Server B. Server A's lock does not block Server B's threads. Even if the lock were placed correctly, it would not work across network boundaries.
+
+---
+
+### 4. Three Different Fixes
+
+#### Fix 1: Pessimistic Locking (Distributed Lock)
+Wrap the **check** and the **charge** inside a distributed lock (e.g., Redis `SETNX`).
+
+```python
+# Pseudo-code using Redis Lock
+def process_payment(self, payment_id, amount):
+    lock_key = f"lock:{payment_id}"
+    # Try to acquire lock for 200ms + buffer
+    if not self.redis_lock.acquire(lock_key, timeout=0.5):
+        return {"status": "retry", "charged": False}
+    
+    try:
+        # Check again inside lock (double-check pattern)
+        if payment_id in self.processed:
+            return {"status": "duplicate", "charged": False}
+        
+        result = self._charge_gateway(payment_id, amount)
+        
+        self.processed.add(payment_id)
+        return {"status": "success", "charged": True}
+    finally:
+        self.redis_lock.release(lock_key)
+```
+*   **Tradeoff:** **High Safety, Low Throughput.** The lock is held for the duration of the gateway call (~200ms). This serializes all requests for the same payment ID, creating a bottleneck. If the gateway times out, you risk deadlocks or long waits.
+
+#### Fix 2: Optimistic Locking (Database Unique Constraint)
+Move the idempotency state to a database with a unique index on `payment_id`.
+
+```python
+# Pseudo-code
+def process_payment(self, payment_id, amount):
+    try:
+        # Attempt to log the attempt in DB
+        db.execute("INSERT INTO payments (id, amount) VALUES (?, ?)", (payment_id, amount))
+        
+        # If unique constraint fails, it's a duplicate
+    except IntegrityError:
+        return {"status": "duplicate", "charged": False}
+    
+    # Proceed to charge
+    result = self._charge_gateway(payment_id, amount)
+    
+    # Update status in DB
+    db.execute("UPDATE payments SET status = 'charged' WHERE id = ?", (payment_id,))
+    return {"status": "success", "charged": True}
+```
+*   **Tradeoff:** **Medium Safety, Medium Throughput.** The database handles the concurrency control. However, it adds database write latency to every request and requires a transactional DB. If the gateway fails after the DB insert, you have a "phantom" record that needs cleanup.
+
+#### Fix 3: Idempotency Key at Gateway Level
+Pass the `payment_id` as an idempotency key to the payment gateway (e.g., Stripe, PayPal).
+
+```python
+def process_payment(self, payment_id, amount):
+    # Check local cache first (optional optimization)
+    if payment_id in self.processed:
+        return {"status": "duplicate", "charged": False}
+    
+    # Send ID to gateway. Gateway guarantees it won't charge twice.
+    result = self._charge_gateway(payment_id, amount, idempotency_key=payment_id)
+    
+    # Only mark local state after successful gateway response
+    self.processed.add(payment_id)
+    return {"status": "success", "charged": True}
+```
+*   **Tradeoff:** **High Safety, High Throughput.** The gateway handles the duplicate prevention logic. Your service doesn't need to serialize requests. However, it relies on the gateway supporting idempotency keys and returning the same result for the same key.
+
+---
+
+### 5. Recommendation for $10M/Day System
+
+**Choice:** **Fix 3 (Idempotency Key at Gateway Level)**
+
+**Reasoning:**
+1.  **Throughput:** $10M/day implies high transaction volume (potentially thousands of TPS during peaks).
+    *   **Fix 1 (Pessimistic Lock):** Serializes the 200ms gateway call. Max throughput per instance is ~5 requests/second. You would need hundreds of instances just to handle the lock contention, which is inefficient.
+    *   **Fix 2 (DB Lock):** Adds database write latency to every request. Database I/O is slower than memory, and high contention on the `payment_id` row will become a bottleneck.
+    *   **Fix 3 (Gateway):** Offloads the concurrency control to the payment provider. Your application remains stateless regarding idempotency. It allows horizontal scaling without serializing the expensive I/O operation.
+2.  **Correctness:** Payment gateways are designed to handle idempotency. Relying on their native mechanism is safer than trying to replicate it in your own application logic, which is prone to race conditions (as seen in the bug).
+3.  **Operational Simplicity:** You avoid managing distributed locks or complex database transactions for this specific flow.
+
+**Caveat:** You must ensure your application handles the response correctly. If the gateway returns "Already Processed" (status 200 OK with existing transaction ID), your app must recognize this as success, not an error.

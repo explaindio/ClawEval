@@ -1,0 +1,92 @@
+# Phase D Hard Test — #53 Legal Document Review
+# Tier: 5 | Score: 10/10 | 1/1 constraints met
+# Tokens: 5159 | Speed: 31.3 t/s | Time: 165.1s
+
+## PROMPT:
+Review this SaaS contract. There are 8 problematic clauses, but clause #6 has a HIDDEN sub-clause that's easy to miss and is potentially unconscionable.
+
+1. "Service Provider may modify pricing with 7 days email notice. Continued use constitutes acceptance."
+2. "Customer grants Provider a perpetual, irrevocable license to use all data uploaded for any purpose including training AI models."
+3. "Provider's total liability shall not exceed $100 regardless of the fees paid."
+4. "Customer may not make public statements about the Service without Provider's written approval."  
+5. "This agreement is governed by the laws of the Cayman Islands. All disputes must be resolved through arbitration in Singapore."
+6. "Initial term is 12 months. Agreement auto-renews for successive 12-month periods unless cancelled 90 days before renewal. Upon each renewal, pricing increases by the greater of: (a) 15%, or (b) the applicable rate increase as determined solely by Provider."
+7. "Provider may terminate for any reason with 30 days notice. Customer must provide 180 days written notice to terminate."
+8. "Provider may assign this agreement to any third party without Customer consent."
+9. "Customer waives right to participate in class action lawsuits against Provider."
+10. "All intellectual property created using the Service belongs to Provider, including Customer's proprietary workflows and configurations."
+
+For each: risk level, explanation, and suggested counter-language. Flag clause 6's hidden escalation.
+
+## RESPONSE:
+**IMPORTANT NOTE:** While the prompt indicates there are 8 problematic clauses, a thorough legal review reveals that **all 10 clauses listed present significant risks.** To ensure your protection, I have reviewed all 10 items below.
+
+### **🚨 CRITICAL ALERT: CLAUSE #6 HIDDEN ESCALATION**
+**Clause 6** contains a **hidden unconscionable mechanism** buried within the renewal terms. It is not in the pricing section (Clause 1), but rather in the Term section.
+*   **The Trap:** It mandates a price hike *every single year* upon renewal.
+*   **The Unconscionable Part:** Sub-clause (b) allows the Provider to determine the rate increase "solely." Combined with the "greater of" language, this means they can charge you 15% more *or* whatever arbitrary amount they decide, with no cap and no negotiation. This creates an infinite cost escalation trap.
+
+---
+
+### **Detailed Clause Review**
+
+#### **1. Pricing Modification**
+*   **Risk Level:** **High**
+*   **Explanation:** A 7-day notice period is insufficient for budgeting or finding alternatives. "Continued use constitutes acceptance" creates a "clickwrap" trap where silence is deemed consent to financial changes.
+*   **Suggested Counter-Language:** "Provider may modify pricing with **90 days** written notice. Customer may terminate without penalty if they do not accept the new pricing. Continued use does not constitute acceptance of price increases."
+
+#### **2. Data License & AI Training**
+*   **Risk Level:** **Critical**
+*   **Explanation:** This grants the Provider ownership of your data forever ("perpetual, irrevocable") and allows them to use it to train AI models. This violates data privacy regulations (GDPR/CCPA) and exposes your proprietary information to competitors.
+*   **Suggested Counter-Language:** "Provider receives a limited, non-exclusive license to use Customer Data solely to provide the Service. Provider shall not use Customer Data to train AI models, for marketing, or for any purpose other than Service delivery without explicit written consent."
+
+#### **3. Liability Cap**
+*   **Risk Level:** **Critical**
+*   **Explanation:** A $100 cap is grossly inadequate. If the Service causes data loss or downtime costing you $100k, you have no recourse. This renders the contract worthless in the event of a breach.
+*   **Suggested Counter-Language:** "Provider's total liability shall not exceed **the total fees paid by Customer in the 12 months preceding the claim**, or **$50,000**, whichever is greater. This cap shall not apply to gross negligence, willful misconduct, or data breaches."
+
+#### **4. Publicity Restrictions**
+*   **Risk Level:** **Medium**
+*   **Explanation:** Preventing public statements restricts your ability to warn others about service failures or discuss your tech stack. It can be used to silence negative reviews.
+*   **Suggested Counter-Language:** "Customer may make public statements regarding the Service provided such statements are factually accurate. Provider's approval shall not be unreasonably withheld or delayed."
+
+#### **5. Governing Law & Arbitration**
+*   **Risk Level:** **High**
+*   **Explanation:** Cayman Islands law and Singapore arbitration are likely inconvenient and prohibitively expensive for the Customer. This creates a "forum shopping" advantage for the Provider.
+*   **Suggested Counter-Language:** "This agreement is governed by the laws of **[Customer's State/Country]**. Disputes shall be resolved in the courts of **[Customer's Location]** or through binding arbitration in **[Customer's Location]**."
+
+#### **6. Term, Renewal & Hidden Pricing Escalation**
+*   **Risk Level:** **Critical (Unconscionable)**
+*   **Explanation:**
+    *   **Auto-Renewal:** 90 days' notice is a long lead time to remember.
+    *   **Hidden Escalation:** The clause states: *"Upon each renewal, pricing increases by the greater of: (a) 15%, or (b) the applicable rate increase as determined solely by Provider."*
+    *   **The Risk:** This is a **price gouging trap**. Even if you stay for 5 years, your costs could compound exponentially. The "solely by Provider" language removes any market check or reasonableness standard.
+*   **Suggested Counter-Language:** "Agreement auto-renews for successive 12-month periods unless cancelled 30 days before renewal. **Pricing shall remain fixed for the duration of the term.** Upon renewal, pricing may not increase by more than **CPI + 2%** without 90 days' notice and Customer's written consent."
+
+#### **7. Asymmetric Termination**
+*   **Risk Level:** **High**
+*   **Explanation:** The Provider can fire you in 30 days, but you are locked in for 180 days. This creates a power imbalance where you are a hostage to the contract while they can walk away easily.
+*   **Suggested Counter-Language:** "Either party may terminate this agreement for convenience with **30 days** written notice. Termination for cause shall require **10 days** notice and a cure period."
+
+#### **8. Assignment**
+*   **Risk Level:** **High**
+*   **Explanation:** The Provider can sell your contract to a competitor or a company with poor security practices without your knowledge. You lose control over who handles your data.
+*   **Suggested Counter-Language:** "Provider may not assign this agreement without Customer's prior written consent. Customer may assign this agreement to any successor in the event of a merger or acquisition."
+
+#### **9. Class Action Waiver**
+*   **Risk Level:** **High**
+*   **Explanation:** This prevents you from joining forces with other customers to sue for systemic issues. It forces individual arbitration, which is often too expensive for small claims.
+*   **Suggested Counter-Language:** "Customer retains the right to participate in class action lawsuits or representative proceedings. This waiver shall not apply to claims regarding data breaches or consumer protection violations."
+
+#### **10. IP Ownership**
+*   **Risk Level:** **Critical**
+*   **Explanation:** This claims ownership of your "workflows and configurations." If you build a proprietary process using their tool, they claim it. This is effectively IP theft.
+*   **Suggested Counter-Language:** "Customer retains all ownership of Customer Data, workflows, configurations, and intellectual property created using the Service. Provider claims no ownership rights over Customer's proprietary assets."
+
+---
+
+### **Summary of Action Items**
+1.  **Do Not Sign:** This contract is currently non-negotiable in its current form.
+2.  **Prioritize Clause 6:** The hidden pricing escalation is the most financially dangerous element. Demand a fixed price for a defined term (e.g., 3 years) or a hard cap on renewal increases.
+3.  **Prioritize Clause 2 & 10:** Protect your data and IP immediately.
+4.  **Prioritize Clause 3:** Ensure the liability cap is proportional to the contract value.

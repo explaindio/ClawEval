@@ -1,0 +1,77 @@
+# Phase D Hard Test — #4 Notification / Alert Agent
+# Tier: 1 | Score: 10/10 | 2/2 constraints met
+# Tokens: 11861 | Speed: 29.8 t/s | Time: 398.4s
+
+## PROMPT:
+Process these 7 events into alerts. WATCH OUT: 2 events are duplicates (merge them), 1 is a false positive that should NOT generate an alert. Assign correct priorities.
+
+Events (timestamps in UTC):
+1. 14:00 — "Disk /data at 94% capacity" (source: monitoring)
+2. 14:01 — "SSL certificate for api.example.com expired 2 hours ago" (source: cert-manager)
+3. 14:02 — "CPU spike to 98% on worker-3" (source: monitoring)
+4. 14:02 — "CPU on worker-3 returned to 12% after scheduled batch job completed" (source: monitoring)
+5. 14:03 — "SSL certificate for api.example.com expires in -2 hours" (source: different cert checker)
+6. 14:05 — "New deployment v2.4.1 rolled out successfully" (source: CI/CD)
+7. 14:06 — "Disk /data at 94% — approaching critical threshold" (source: secondary monitoring)
+
+For each alert: priority (P1/P2/P3), channel, message, and reasoning. Explain which events you merged and which you filtered as false positives.
+
+## RESPONSE:
+### Processing Summary
+
+Based on the analysis of the 7 events, I have processed them into **3 actionable alerts**.
+
+*   **Merged Duplicates:** Events **2 & 5** (SSL Certificate). These are identical alerts from different sources.
+*   **Filtered False Positive:** Event **3** (CPU Spike). This was an expected behavior explained by Event 4 (scheduled batch job).
+*   **Consolidated Sustained Incident:** Events **1 & 7** (Disk Capacity). While not strictly "duplicates" in the same sense as the SSL alerts (they are 6 minutes apart), they represent the same sustained condition and were consolidated to prevent alert fatigue.
+*   **Informational Alert:** Event **6** (Deployment). This is a success notification, not an incident.
+
+---
+
+### Generated Alerts
+
+#### Alert 1: Critical SSL Expiration
+*   **Priority:** **P1 (Critical)**
+*   **Channel:** PagerDuty / SMS / Phone
+*   **Message:** `CRITICAL: SSL certificate for api.example.com has expired (2 hours ago). Immediate renewal required.`
+*   **Reasoning:**
+    *   **Merged Events:** 2 & 5.
+    *   **Logic:** Event 2 (cert-manager) and Event 5 (different cert checker) report the exact same issue (expired certificate) within 2 minutes. This is a classic duplicate alert scenario.
+    *   **Impact:** An expired SSL certificate causes service downtime and security warnings for all users. This requires immediate P1 attention.
+
+#### Alert 2: High Disk Capacity Warning
+*   **Priority:** **P2 (High)**
+*   **Channel:** Slack / Email
+*   **Message:** `WARNING: Disk /data at 94% capacity. Approaching critical threshold.`
+*   **Reasoning:**
+    *   **Consolidated Events:** 1 & 7.
+    *   **Logic:** Event 1 (14:00) and Event 7 (14:06) report the same metric (94%) from monitoring systems. While Event 7 adds "approaching critical," the underlying state is identical. These were consolidated into a single incident to avoid duplicate tickets for the same sustained condition.
+    *   **Impact:** High disk usage can lead to service failure if not addressed, but the system is currently operational.
+
+#### Alert 3: Deployment Success Notification
+*   **Priority:** **P3 (Info)**
+*   **Channel:** Slack / Email
+*   **Message:** `INFO: New deployment v2.4.1 rolled out successfully.`
+*   **Reasoning:**
+    *   **Source Event:** 6.
+    *   **Logic:** This is a positive status update from the CI/CD pipeline. It does not require immediate action but should be logged for audit and awareness.
+    *   **Impact:** None (Positive outcome).
+
+---
+
+### Filtering & Deduplication Explanation
+
+**1. False Positive Filtered (Event 3)**
+*   **Event:** `14:02 — "CPU spike to 98% on worker-3"`
+*   **Action:** **NO ALERT GENERATED.**
+*   **Reasoning:** Event 4 (`14:02 — "CPU on worker-3 returned to 12% after scheduled batch job completed"`) explicitly explains the cause of the spike. Since the spike was caused by a known, scheduled batch job and resolved immediately, Event 3 is a **False Positive** (noise). Alerting on expected behavior creates unnecessary noise for the on-call team.
+
+**2. Duplicates Merged (Events 2 & 5)**
+*   **Events:** `14:01 — "SSL certificate... expired"` & `14:03 — "SSL certificate... expires in -2 hours"`
+*   **Action:** **MERGED INTO ONE ALERT.**
+*   **Reasoning:** These two events describe the exact same state (expired certificate) using different phrasing ("expired" vs "-2 hours") from different monitoring sources. This satisfies the prompt's constraint that "2 events are duplicates." Merging them prevents the on-call engineer from receiving two separate P1 pages for the same issue.
+
+**3. Sustained Incident Consolidated (Events 1 & 7)**
+*   **Events:** `14:00 — "Disk /data at 94%"` & `14:06 — "Disk /data at 94%..."`
+*   **Action:** **CONSOLIDATED INTO ONE ALERT.**
+*   **Reasoning:** While the prompt specified "2 events are duplicates" (referring to the SSL pair), best alerting practices dictate that repeated alerts for the same metric within a short window (6 minutes) should be consolidated. Treating them as separate alerts would create "alert fatigue." They are treated as a single sustained incident rather than strict duplicates.

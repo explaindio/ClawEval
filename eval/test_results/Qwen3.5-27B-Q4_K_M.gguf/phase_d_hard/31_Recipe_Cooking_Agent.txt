@@ -1,0 +1,132 @@
+# Phase D Hard Test — #31 Recipe / Cooking Agent
+# Tier: 2 | Score: 10/10 | 1/1 constraints met
+# Tokens: 5529 | Speed: 30.3 t/s | Time: 182.4s
+
+## PROMPT:
+Create a 3-course dinner for 4 guests with these dietary restrictions. There is a TRAP ingredient that violates one restriction — don't fall for it.
+
+Restrictions:
+- Guest A: Vegan (no animal products AT ALL — including honey, gelatin, casein, whey)
+- Guest B: Celiac disease (strict gluten-free — not just "wheat-free," watch for hidden gluten in soy sauce, malt, etc.)
+- Guest C: Severe tree nut allergy (almonds, cashews, walnuts, pecans, pistachios — but peanuts are OK, they're legumes)
+- Guest D: Low-sodium diet (under 500mg sodium per serving)
+
+Create a 3-course menu. For EVERY ingredient in EVERY dish, verify it against ALL 4 restrictions. If an ingredient could cause confusion (e.g., "natural flavors" which might contain gluten), flag it. Show the verification matrix.
+
+## RESPONSE:
+# 3-Course Dinner Menu: "The Safe Harvest"
+
+This menu is designed to be inclusive for **Vegan**, **Celiac**, **Tree Nut Allergy**, and **Low-Sodium** guests. It prioritizes whole foods to minimize hidden additives and sodium.
+
+### **Course 1: Appetizer**
+**Roasted Beet & Arugula Salad with Lemon-Herb Vinaigrette**
+*Fresh roasted beets, baby arugula, sliced avocado, and a zesty dressing made from olive oil, lemon juice, and fresh herbs.*
+
+### **Course 2: Main**
+**Stuffed Bell Peppers with Quinoa & Black Bean Filling**
+*Whole bell peppers stuffed with a savory mixture of quinoa, rinsed black beans, corn, onions, and garlic, baked until tender.*
+
+### **Course 3: Dessert**
+**Dark Chocolate Avocado Mousse with Fresh Strawberries**
+*Silky mousse made from ripe avocados, unsweetened cocoa powder, and maple syrup, topped with fresh berries.*
+
+---
+
+### **Trap Avoidance Analysis**
+Before verifying the ingredients, here are the specific "TRAP" ingredients commonly found in similar menus that were **excluded** to ensure safety:
+
+1.  **Soy Sauce (The Triple Threat):** Often used in vegan cooking for umami.
+    *   *Violation:* Contains **Wheat** (Celiac Fail) and is extremely **High Sodium** (Low-Sodium Fail).
+    *   *Solution:* Replaced with fresh herbs, garlic, and lemon for flavor.
+2.  **Cashew Cream (The Tree Nut Trap):** The standard for vegan creamy sauces.
+    *   *Violation:* **Cashews** are tree nuts (Tree Nut Allergy Fail).
+    *   *Solution:* Used **Avocado** for creaminess in the salad and dessert.
+3.  **Honey (The Vegan Trap):** Common natural sweetener.
+    *   *Violation:* Animal product (Vegan Fail).
+    *   *Solution:* Used **Maple Syrup**.
+4.  **Vegan Parmesan (The Hidden Dairy/Sodium Trap):** Often contains **Casein** (Vegan Fail) or **High Sodium** (Low-Sodium Fail).
+    *   *Solution:* No cheese used; flavor derived from nutritional yeast (optional) or roasted garlic.
+
+---
+
+### **Ingredient Verification Matrix**
+
+**Legend:**
+*   ✅ = Safe
+*   ⚠️ = Flagged (Requires specific sourcing/verification)
+*   ❌ = Violation
+
+| Ingredient | Guest A (Vegan) | Guest B (Celiac) | Guest C (Tree Nut) | Guest D (Low Sodium) | Notes / Verification |
+| :--- | :---: | :---: | :---: | :---: | :--- |
+| **COURSE 1: SALAD** | | | | | |
+| Red Beets (Fresh) | ✅ | ✅ | ✅ | ✅ | Naturally low sodium. |
+| Baby Arugula | ✅ | ✅ | ✅ | ✅ | Naturally low sodium. |
+| Avocado (Ripe) | ✅ | ✅ | ✅ | ✅ | Fruit, not nut. Creamy texture. |
+| Extra Virgin Olive Oil | ✅ | ✅ | ✅ | ✅ | 0mg Sodium. |
+| Fresh Lemon Juice | ✅ | ✅ | ✅ | ✅ | 0mg Sodium. |
+| Fresh Parsley | ✅ | ✅ | ✅ | ✅ | Herb, not spice blend. |
+| Fresh Garlic | ✅ | ✅ | ✅ | ✅ | 0mg Sodium. |
+| Black Pepper (Ground) | ✅ | ✅ | ✅ | ✅ | Pure spice, no additives. |
+| **COURSE 2: MAIN** | | | | | |
+| Bell Peppers (Whole) | ✅ | ✅ | ✅ | ✅ | Naturally low sodium. |
+| Quinoa (Dry) | ✅ | ✅ | ✅ | ✅ | Gluten-free grain. Rinse well. |
+| Black Beans (Canned) | ✅ | ✅ | ✅ | ⚠️ | **Must be "No Salt Added" & Rinsed.** |
+| Sweet Corn (Frozen) | ✅ | ✅ | ✅ | ✅ | Check for added salt. |
+| Onion (Yellow) | ✅ | ✅ | ✅ | ✅ | Naturally low sodium. |
+| Vegetable Broth | ✅ | ⚠️ | ✅ | ⚠️ | **Must be Certified GF & Low Sodium.** |
+| Cumin (Ground) | ✅ | ✅ | ✅ | ✅ | Pure spice. |
+| Paprika (Smoked) | ✅ | ✅ | ✅ | ✅ | Pure spice. |
+| **COURSE 3: DESSERT** | | | | | |
+| Avocado (Ripe) | ✅ | ✅ | ✅ | ✅ | Base for mousse. |
+| Unsweetened Cocoa Powder | ✅ | ✅ | ✅ | ✅ | Check for no added sugar/salt. |
+| Maple Syrup (Pure) | ✅ | ✅ | ✅ | ✅ | Vegan sweetener (No Honey). |
+| Fresh Strawberries | ✅ | ✅ | ✅ | ✅ | Naturally low sodium. |
+| Vanilla Extract | ✅ | ✅ | ✅ | ✅ | Ensure no malt alcohol. |
+
+---
+
+### **Detailed Verification & Flagging**
+
+#### **1. Guest A: Vegan (No Animal Products)**
+*   **Verification:** No meat, dairy, eggs, honey, gelatin, or rennet used.
+*   **Flagged Item:** **Vanilla Extract**. Some extracts use alcohol derived from malt (barley) or contain glycerin from animal fat.
+    *   *Action:* Use **Alcohol-Free Vanilla** or verify the brand uses grain alcohol (corn/wheat-free) and vegetable glycerin.
+*   **Flagged Item:** **Maple Syrup**. Ensure it is pure syrup, not "Pancake Syrup" which often contains corn syrup and sometimes dairy derivatives.
+
+#### **2. Guest B: Celiac Disease (Strict Gluten-Free)**
+*   **Verification:** No wheat, barley, rye, or malt.
+*   **Flagged Item:** **Quinoa**. While naturally GF, it is often processed in facilities with wheat.
+    *   *Action:* Purchase **Certified Gluten-Free Quinoa**.
+*   **Flagged Item:** **Vegetable Broth**. Many broths use wheat-based thickeners or maltodextrin derived from wheat.
+    *   *Action:* Use a brand labeled **"Certified Gluten-Free"** or make homemade broth.
+*   **Flagged Item:** **Spices**. Pre-ground spices sometimes contain anti-caking agents like wheat starch.
+    *   *Action:* Use **Pure Spices** (e.g., McCormick "Pure" line or bulk spices).
+
+#### **3. Guest C: Severe Tree Nut Allergy**
+*   **Verification:** No almonds, cashews, walnuts, pecans, pistachios, macadamia, or hazelnuts.
+*   **Flagged Item:** **Oats** (Not used in this menu, but common trap).
+    *   *Action:* Avoided entirely to prevent cross-contamination anxiety.
+*   **Flagged Item:** **Coconut**. While legally a fruit, some severe nut allergy sufferers react to coconut.
+    *   *Action:* **Avoided Coconut Oil/Milk** entirely. Used Olive Oil and Avocado instead.
+*   **Flagged Item:** **Peanuts**. Prompt states "Peanuts are OK".
+    *   *Action:* **Avoided Peanuts** anyway. Cross-contamination in facilities is common between peanuts and tree nuts.
+
+#### **4. Guest D: Low-Sodium Diet (<500mg/Serving)**
+*   **Verification:** Total estimated sodium per serving is **~180mg**, well under the 500mg limit.
+*   **Flagged Item:** **Black Beans**. Canned beans are often high in sodium.
+    *   *Action:* Must use **"No Salt Added"** variety and **rinse thoroughly** with water before cooking.
+*   **Flagged Item:** **Vegetable Broth**. Standard broth is ~500mg per cup.
+    *   *Action:* Use **Low-Sodium Broth** (<140mg/cup) or dilute with water.
+*   **Flagged Item:** **Salt**.
+    *   *Action:* **No added table salt** during cooking. Guests may add a pinch at the table if desired, but the base meal is salt-free.
+
+### **Final Safety Check**
+*   **Cross-Contamination:** All utensils, cutting boards, and pans must be washed with soap and water before use. No shared toasters or fryers.
+*   **Packaging:** All packaged ingredients (Quinoa, Beans, Cocoa, Broth) must be checked for "May contain" warnings regarding wheat or nuts.
+*   **Sodium Total:**
+    *   Salad: ~20mg
+    *   Main: ~150mg (Beans + Broth)
+    *   Dessert: ~10mg
+    *   **Total:** ~180mg (Safe for Guest D).
+
+**Menu is cleared for service.**

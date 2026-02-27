@@ -1,0 +1,58 @@
+# Phase D Hard Test — #26 Lead Scoring / Prospecting
+# Tier: 2 | Score: 10/10 | 1/1 constraints met
+# Tokens: 3137 | Speed: 32.7 t/s | Time: 95.9s
+
+## PROMPT:
+Score these 5 leads. WARNING: The lead with the MOST engagement is actually a tire-kicker, not your best prospect. Identify them.
+
+Lead 1: "CTO at a 50-person startup. Downloaded every whitepaper (12 total), attended 3 webinars, watches all YouTube content. Has been doing this for 18 months. No demo request. When sales reached out, said 'just researching, no timeline.'"
+
+Lead 2: "VP Engineering at 200-person company. Visited pricing page once 3 months ago. No other activity."
+
+Lead 3: "Developer at enterprise company (5000 employees). Created free account, built a POC over 2 weeks, invited 3 teammates. Just asked about SSO integration."
+
+Lead 4: "Procurement manager at 300-person company. First visit to site yesterday, immediately went to pricing, downloaded security whitepaper, submitted a form asking about SOC 2 compliance and volume discounts. Mentioned Q2 budget allocation."
+
+Lead 5: "Founder of 10-person agency. Signed up for free trial, very active for 3 days, then completely silent for 6 weeks."
+
+Score each 1-100, identify the tire-kicker, rank them, and explain your reasoning.
+
+## RESPONSE:
+### **The Tire-Kicker: Lead 1**
+**Lead 1** is the tire-kicker. Despite having the highest volume of content consumption (12 whitepapers, 3 webinars, all YouTube content), they have zero purchase intent. They have been "researching" for 18 months and explicitly told sales there is "no timeline." This behavior indicates they are using your content as a free resource for education or competitive analysis without any plan to buy.
+
+***
+
+### **Lead Ranking & Scores**
+
+| Rank | Lead | Score | Status |
+| :--- | :--- | :--- | :--- |
+| **1** | **Lead 4** | **95** | **Hot / SQL** |
+| **2** | **Lead 3** | **85** | **Warm / PQL** |
+| **3** | **Lead 5** | **35** | **Cold / Churned** |
+| **4** | **Lead 2** | **20** | **Stale** |
+| **5** | **Lead 1** | **15** | **Tire-Kicker** |
+
+***
+
+### **Detailed Reasoning**
+
+**1. Lead 4 (Score: 95) – The Best Prospect**
+*   **Why:** This lead checks every box in the BANT framework (Budget, Authority, Need, Timeline). They are in Procurement (Authority), mentioned Q2 budget (Budget/Timeline), and asked about SOC 2/Volume discounts (Need).
+*   **Action:** Immediate sales outreach. They are ready to close.
+
+**2. Lead 3 (Score: 85) – The Product-Led Winner**
+*   **Why:** This is a high-quality Product Qualified Lead (PQL). They aren't just reading about the product; they built a POC and invited teammates. Asking about SSO integration signals they are moving from "testing" to "enterprise deployment."
+*   **Action:** Engage the developer to facilitate the handoff to procurement/security. High conversion probability.
+
+**3. Lead 5 (Score: 35) – The Churned Trialist**
+*   **Why:** A Founder is a decision-maker, which is good. However, 6 weeks of silence after a trial indicates they either didn't find value or lost interest. They are salvageable with a re-engagement campaign, but the probability of conversion is low.
+*   **Action:** Send a "We miss you" email with a case study, but do not prioritize over Leads 3 or 4.
+
+**4. Lead 2 (Score: 20) – The Stale Lead**
+*   **Why:** A pricing page visit is a strong signal, but it happened 3 months ago. Without any follow-up activity, the intent has likely evaporated.
+*   **Action:** Add to a nurture stream. Do not waste sales time calling them yet.
+
+**5. Lead 1 (Score: 15) – The Tire-Kicker**
+*   **Why:** This lead is the trap. Their engagement metrics (12 whitepapers, 18 months) look impressive on a dashboard, but they are **negative signals**. They are hoarding information without acting. They have explicitly stated they have no timeline.
+*   **Action:** **Stop calling.** Move them to a long-term nurture list. If you chase them, you will waste resources on a lead that is using your content for free without intending to pay.

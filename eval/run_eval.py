@@ -23,6 +23,8 @@ except ImportError:
 # ============================================================
 DEFAULT_BASE_URL = "http://192.168.1.9:8080/v1"
 RESULTS_DIR = os.path.join(os.path.dirname(__file__), "test_results")
+NOTHINK = False  # Global flag for /nothink mode
+MAX_TOKENS_OVERRIDE = 0  # Global override for max_tokens (0 = no override)
 
 def get_client(base_url=DEFAULT_BASE_URL):
     return OpenAI(base_url=base_url, api_key="not-needed")
@@ -33,6 +35,11 @@ def get_model_name(client):
 
 def timed_completion(client, model, messages, max_tokens=512, temperature=0.7):
     """Send a chat completion and measure timing."""
+    # Note: nothink mode is handled server-side via --chat-template-kwargs
+    # The --nothink flag only affects output directory naming
+    # Apply global token override (ensures thinking models have enough budget)
+    if MAX_TOKENS_OVERRIDE > 0:
+        max_tokens = max(max_tokens, MAX_TOKENS_OVERRIDE)
     start = time.time()
     response = client.chat.completions.create(
         model=model,
@@ -453,15 +460,17 @@ def run_phase2(client, model):
         
         try:
             start = time.time()
+            msgs = []
+            sys_content = "You are a helpful assistant with access to tools. Use the appropriate tool when the user's request requires it. If no tool is needed, respond normally."
+            # Note: nothink mode is handled server-side
+            msgs.append({"role": "system", "content": sys_content})
+            msgs.append({"role": "user", "content": test["user"]})
             response = client.chat.completions.create(
                 model=model,
-                messages=[
-                    {"role": "system", "content": "You are a helpful assistant with access to tools. Use the appropriate tool when the user's request requires it. If no tool is needed, respond normally."},
-                    {"role": "user", "content": test["user"]},
-                ],
+                messages=msgs,
                 tools=AVAILABLE_TOOLS,
                 tool_choice="auto",
-                max_tokens=512,
+                max_tokens=max(512, MAX_TOKENS_OVERRIDE) if MAX_TOKENS_OVERRIDE > 0 else 512,
                 temperature=0,
             )
             elapsed = time.time() - start
@@ -815,12 +824,17 @@ def run_phase4(client, model):
 # ============================================================
 # MAIN
 # ============================================================
-def run_all(base_url=DEFAULT_BASE_URL, phases=None):
+def run_all(base_url=DEFAULT_BASE_URL, phases=None, nothink=False, max_tokens=0):
+    global NOTHINK, MAX_TOKENS_OVERRIDE
+    NOTHINK = nothink
+    MAX_TOKENS_OVERRIDE = max_tokens
     client = get_client(base_url)
     model = get_model_name(client)
     
     # Sanitize model name for directory
     model_id = model.replace("/", "_").replace("\\", "_").replace(" ", "_")
+    if nothink:
+        model_id += "-nothink"
     
     print(f"\n{'#'*60}")
     print(f"# OpenClaw Model Evaluation")
@@ -883,6 +897,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="OpenClaw Model Evaluation")
     parser.add_argument("--url", default=DEFAULT_BASE_URL, help="API base URL")
     parser.add_argument("--phases", nargs="+", type=int, help="Specific phases to run (0-4)")
+    parser.add_argument("--nothink", action="store_true", help="Disable thinking with /nothink system message")
+    parser.add_argument("--max-tokens", type=int, default=0, help="Override min max_tokens for all phases (e.g. 16000 for thinking models)")
     args = parser.parse_args()
     
-    run_all(base_url=args.url, phases=args.phases)
+    run_all(base_url=args.url, phases=args.phases, nothink=args.nothink, max_tokens=args.max_tokens)

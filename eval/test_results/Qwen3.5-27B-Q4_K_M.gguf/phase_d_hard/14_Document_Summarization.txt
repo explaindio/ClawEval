@@ -1,0 +1,21 @@
+# Phase D Hard Test — #14 Document Summarization
+# Tier: 2 | Score: 5/10 | No automated constraints to check
+# Tokens: 3808 | Speed: 25.9 t/s | Time: 147.2s
+
+## PROMPT:
+Summarize this document in exactly 5 bullet points. ONE critical fact is buried in the middle paragraph that most people miss — your summary MUST include it.
+
+"Our platform migration is proceeding on schedule. The frontend team completed the React 18 upgrade last week, achieving a 30% improvement in initial load times. User testing shows 92% satisfaction with the new UI components. The design system now includes 47 reusable components.
+
+The backend infrastructure has been moved to Kubernetes across 3 availability zones. Database replication lag is under 50ms. We implemented automated API key rotation every 90 days, which means any integration partner who has hardcoded their API keys will experience authentication failures. This needs to be communicated before the next rotation on March 15th. Redis caching reduced average response time from 340ms to 45ms.
+
+Deployment frequency increased from weekly to daily with the new CI/CD pipeline. The error rate dropped from 2.1% to 0.3%. Mobile app downloads grew 25% month over month. Revenue is up 18% YoY with 340 enterprise customers now on the platform."
+
+Which fact is the most operationally critical and time-sensitive? It should be in your summary.
+
+## RESPONSE:
+- Frontend migration to React 18 is complete, resulting in 30% faster load times and 92% user satisfaction.
+- Backend infrastructure is now on Kubernetes across three availability zones with sub-50ms database replication lag.
+- Automated API key rotation will cause authentication failures for hardcoded keys, requiring communication before the March 15th deadline.
+- Redis caching implementation reduced average response time from 340ms to 45ms.
+- Daily CI/CD deployments lowered error rates to 0.3% while revenue increased 18% year-over-year.

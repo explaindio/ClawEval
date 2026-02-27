@@ -1,0 +1,525 @@
+{
+  "all_phases": {
+    "model": "Qwen3.5-35B-A3B-Q4_K_M.gguf",
+    "model_id": "Qwen3.5-35B-A3B-Q4_K_M.gguf",
+    "base_url": "http://192.168.1.7:8080/v1",
+    "phase0": {
+      "phase": "phase0_baseline",
+      "model": "Qwen3.5-35B-A3B-Q4_K_M.gguf",
+      "timestamp": "2026-02-26T15:04:27.396223",
+      "tests": [
+        {
+          "name": "warmup",
+          "content": "hello",
+          "elapsed_seconds": 1.95,
+          "prompt_tokens": 18,
+          "completion_tokens": 211,
+          "total_tokens": 229,
+          "tokens_per_second": 108.2
+        },
+        {
+          "name": "short_gen",
+          "content": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24\n25\n26\n27\n28\n29\n30\n31\n32\n33\n34\n35\n36\n37\n38\n39\n40\n41\n42\n43\n44\n45\n46\n47\n48\n49\n50",
+          "elapsed_seconds": 2.94,
+          "prompt_tokens": 24,
+          "completion_tokens": 330,
+          "total_tokens": 354,
+          "tokens_per_second": 112.1
+        },
+        {
+          "name": "medium_gen",
+          "content": "The history of computing represents a profound evolution from mechanical abstraction to ubiquitous digital intelligence, rooted in the 19th century when Charles Babbage conceptualized the Analytical Engine and Ada Lovelace penned the first algorithm intended for machine processing, while Alan Turing later formalized the theoretical underpinnings of the universal machine that could execute any logical sequence. Although these early ideas remained largely dormant, the mid-20th century saw a rapid acceleration driven by the demands of World War II, resulting in the creation of electromechanical and electronic predecessors like the Colossus and the ENIAC, which relied on massive arrays of vacuum tubes to execute complex calculations at unprecedented speeds. The landscape was fundamentally altered in 1947 by the invention of the transistor at Bell Labs, which eliminated the need for bulky, heat-generating tubes and paved the way for Jack Kilby and Robert Noyce to develop the integrated circuit, exponentially increasing processing power while drastically reducing physical size and cost. This miniaturization culminated in the 1970s microprocessor revolution, which enabled the proliferation of personal computers by companies like Apple and IBM, placing significant computing power directly into the hands of individuals rather than just government and corporate institutions. Subsequently, the transition from isolated mainframes to interconnected networks through ARPANET and the subsequent development of the World Wide Web in the 1990s created the modern internet, while the 21st century has been defined by the rise of cloud computing, mobile ubiquity, and the emergence of artificial intelligence, continuing the trajectory toward a future where computation is seamlessly integrated into the fabric of daily life, scientific research, and biological systems.",
+          "elapsed_seconds": 18.44,
+          "prompt_tokens": 23,
+          "completion_tokens": 2105,
+          "total_tokens": 2128,
+          "tokens_per_second": 114.2
+        },
+        {
+          "name": "long_gen",
+          "content": "# The Engine of Tomorrow: A Comprehensive Analysis of Artificial Intelligence\n\nArtificial Intelligence (AI) has transitioned from the realm of speculative science fiction to the bedrock of modern technological infrastructure. Once a theoretical curiosity discussed in academic papers, AI now powers the search engines we use, the financial markets we trade, and the healthcare systems that diagnose diseases. This transformation is the result of decades of research, oscillating between periods of intense optimism and the \"AI winters\" of disappointment. To understand where AI is going, one must understand where it came from. This essay explores the trajectory of artificial intelligence, examining its historical roots, its current technological dominance, and the profound ethical and societal implications of its future development.\n\n### The Dawn of the Machine Mind (1950s\u20131970s)\n\nThe conceptual history of AI begins not with code, but with philosophy. In 1950, the British mathematician Alan Turing published his seminal paper, *\"Computing Machinery and Intelligence.\"* Turing proposed a criterion for machine intelligence, later known as the Turing Test, which suggested that if a machine could hold a conversation with a human without being distinguished as a machine, it could be considered intelligent. This paper laid the intellectual groundwork for the field.\n\nHowever, the formal birth of AI as a scientific discipline occurred at the Dartmouth Summer Research Project on Artificial Intelligence in 1956. Hosted by John McCarthy, Marvin Minsky, Nathaniel Rochester, and Claude Shannon, this conference is widely regarded as the moment AI was established as a field of study. The optimism was palpant; the organizers predicted that \"a significant advance in artificial intelligence would be made within a generation.\"\n\nThe 1960s saw the development of early \"expert systems\" and natural language programs. In 1966, Joseph Weizenbaum created ELIZA, a program that simulated a psychotherapist using pattern matching. While rudimentary, ELIZA demonstrated that users could anthropomorphize machines, forming a bond with a simple script. Conversely, the 1970s marked the beginning of the first \"AI Winter.\" Promises of general intelligence had not been met, and the limitations of computing power became apparent. Funding for AI research dried up in the United States and the United Kingdom as the government realized that the \"General Purpose AI\" envisioned by the 1950s was far more complex than anticipated.\n\n### The Rise of Machine Learning and Neural Networks (1980s\u20132000s)\n\nThe resurgence of AI in the 1980s was driven by a shift from symbolic logic (programming rules explicitly) to statistical learning (programming machines to find rules in data). This era saw the commercialization of expert systems used in business and industry. However, the true catalyst for the modern era was the advancement of neural networks.\n\nA pivotal moment in this transition occurred in 1997. IBM\u2019s Deep Blue, a chess-playing computer, defeated the world chess champion, Garry Kasparov. While Deep Blue relied heavily on brute-force calculation rather than learning, it served as a powerful symbol that a machine could outperform a human in a complex cognitive task.\n\nDuring the 1990s and early 2000s, the focus shifted toward \"Machine Learning,\" where algorithms improve automatically through experience. In 2006, Geoffrey Hinton and colleagues popularized the term \"deep learning,\" demonstrating that multi-layered neural networks could learn complex representations of data. Despite this progress, the field remained constrained by a lack of data and processing power. It would take the explosion of the internet and the availability of high-performance graphics processing units (GPUs) to unlock the true potential of deep learning.\n\n### The Deep Learning Revolution (2010s\u2013Present)\n\nThe 2010s marked the \"Golden Age\" of AI, characterized by the convergence of big data, cloud computing, and improved algorithms. In 2012, a neural network called AlexNet won the ImageNet Large Scale Visual Recognition Challenge, drastically outperforming traditional computer vision methods. This victory signaled that deep learning could solve real-world perception problems.\n\nThe subsequent years saw AI move from perception to generation. In 2016, DeepMind\u2019s AlphaGo defeated the world champion in the game of Go, a feat previously thought impossible for machines due to the game's astronomical complexity. Unlike Deep Blue, AlphaGo learned through reinforcement learning, demonstrating a form of intuition.\n\nHowever, the most significant recent development has been the advent of Large Language Models (LLMs). In 2020, OpenAI released GPT-3, a model with 175 billion parameters that could generate human-like text. This was followed by the public release of ChatGPT in November 2022, which brought generative AI into the mainstream consciousness. The impact was immediate; within two months, ChatGPT reached 100 million users. By 2023, the technology had expanded beyond text; DALL-E 2 and Midjourney allowed users to generate photorealistic images from text prompts, fundamentally altering the creative landscape.\n\n### The Current State of AI Applications\n\nToday, AI is ubiquitous, often invisible, yet integral to daily life. Its applications span multiple sectors, each with distinct impacts:\n\n1.  **Healthcare:** In 2020, DeepMind released AlphaFold, an AI system that solved the 50-year-old biological problem of protein folding. This breakthrough allows scientists to predict the 3D structures of proteins, accelerating drug discovery and our understanding of diseases like Alzheimer's.\n2.  **Transportation:** Autonomous vehicle technology, led by companies like Tesla and Waymo, utilizes AI for real-time perception and decision-making. While fully autonomous Level 5 vehicles are not yet widespread, Level 2 and 3 systems (lane keeping, self-parking) are standard in modern vehicles.\n3.  **Finance:** Algorithmic trading systems manage trillions of dollars in assets, executing trades in milliseconds based on patterns invisible to human traders.\n4.  **Consumer Technology:** Virtual assistants like Siri (introduced 2011) and Alexa (introduced 2014) utilize AI for voice recognition and command processing, acting as gateways to the digital home.\n\n### Future Implications and Ethical Challenges\n\nAs AI capabilities scale, the implications for society become increasingly complex. The discourse has shifted from \"how smart is the machine?\" to \"what does the machine mean for us?\"\n\n**Economic Disruption:** The most immediate concern is labor displacement. A 2023 report by Goldman Sachs estimated that generative AI could expose the equivalent of 300 million full-time jobs to automation. While history suggests technology creates more jobs than it destroys, the transition period poses significant risks for white-collar workers in coding, writing, and customer service.\n\n**Bias and Fairness:** AI systems are only as unbiased as the data they are trained on. In 2018, the COMPAS recidivism algorithm used by the U.S. court system was found to falsely flag Black defendants as future risks at nearly twice the rate of White defendants. As AI is integrated into hiring, lending, and policing, ensuring algorithmic fairness becomes a critical regulatory priority.\n\n**Existential Risk and Alignment:** The long-term concern is the development of Artificial General Intelligence (AGI)\u2014an AI that matches or exceeds human intelligence across all domains. Prominent figures, including Elon Musk and Geoffrey Hinton, have warned of the \"alignment problem\": ensuring that a superintelligent AI's goals remain aligned with human values. In 2023, the Future of Life Institute issued a \"Pause Giant AI Experiments\" statement, calling for a six-month halt on training powerful models to allow time for safety protocols to be established.\n\n**Regulation:** Governments are beginning to catch up with the technology. The European Union passed the EU AI Act in 2024, the world's first comprehensive AI law, which categorizes AI systems by risk and bans those deemed unacceptable (e.g., social scoring systems). Similarly, the U.S. has issued Executive Orders on AI safety, focusing on transparency and watermarking of AI-generated content.\n\n### Conclusion\n\nThe history of artificial intelligence is a testament to human ingenuity and perseverance. From the theoretical musings of Alan Turing in 1950 to the generative masterpieces of 2023, AI has evolved from a niche academic pursuit to a global utility. We stand at a precipice where AI is no longer just a tool for calculation but a collaborator in creativity and a potential architect of the future economy.\n\nThe trajectory of AI is not predetermined. Its future implications depend heavily on the governance, ethics, and stewardship humans apply to its development. If managed with foresight and regulation, AI promises to solve some of humanity's most intractable problems, from climate change to cancer. If left unchecked, it risks exacerbating inequality and destabilizing social structures. Ultimately, AI is a mirror reflecting our own intelligence, values, and intentions. As we build machines that think, we must ensure that we are building a future that serves us.",
+          "elapsed_seconds": 29.36,
+          "prompt_tokens": 35,
+          "completion_tokens": 3326,
+          "total_tokens": 3361,
+          "tokens_per_second": 113.3
+        }
+      ],
+      "summary": {
+        "avg_tps": 112.0,
+        "max_tps": 114.2,
+        "min_tps": 108.2
+      }
+    },
+    "phase1": {
+      "phase": "phase1_format_compliance",
+      "model": "Qwen3.5-35B-A3B-Q4_K_M.gguf",
+      "timestamp": "2026-02-26T15:05:20.092403",
+      "tests": [
+        {
+          "name": "json_simple",
+          "passed": false,
+          "reason": "Invalid JSON: Expecting value: line 1 column 1 (char 0)",
+          "response": "",
+          "elapsed": 152.51,
+          "tps": 104.9
+        },
+        {
+          "name": "json_nested",
+          "passed": true,
+          "reason": "Valid JSON",
+          "response": "{\n  \"name\": \"Jane Doe\",\n  \"age\": 25,\n  \"skills\": [\"Python\", \"Java\", \"SQL\"],\n  \"address\": {\n    \"city\": \"Toronto\",\n    \"country\": \"Canada\"\n  }\n}",
+          "elapsed": 8.53,
+          "tps": 98.9
+        },
+        {
+          "name": "json_from_text",
+          "passed": true,
+          "reason": "Valid JSON",
+          "response": "{\n  \"name\": \"John Smith\",\n  \"age\": 34,\n  \"company\": \"Google\",\n  \"title\": \"Senior Engineer\",\n  \"location\": \"Mountain View, CA\",\n  \"email\": \"john@google.com\"\n}",
+          "elapsed": 14.02,
+          "tps": 98.2
+        },
+        {
+          "name": "json_strict_schema",
+          "passed": true,
+          "reason": "Valid JSON",
+          "response": "{\"action\": \"schedule_meeting\", \"target\": \"Bob\", \"confidence\": 0.95}",
+          "elapsed": 8.53,
+          "tps": 97.2
+        },
+        {
+          "name": "json_array_complex",
+          "passed": true,
+          "reason": "Valid JSON",
+          "response": "[\n  {\n    \"id\": 1,\n    \"task\": \"Finalize code freeze and merge all pending PRs\",\n    \"priority\": \"high\",\n    \"done\": false\n  },\n  {\n    \"id\": 2,\n    \"task\": \"Execute automated regression test suite\",\n    \"priority\": \"high\",\n    \"done\": false\n  },\n  {\n    \"id\": 3,\n    \"task\": \"Deploy to staging environment for UAT\",\n    \"priority\": \"high\",\n    \"done\": false\n  },\n  {\n    \"id\": 4,\n    \"task\": \"Update release notes and API documentation\",\n    \"priority\": \"medium\",\n    \"done\": false\n  },\n  {\n    \"id\": 5,\n    \"task\": \"Notify stakeholders and schedule launch meeting\",\n    \"priority\": \"low\",\n    \"done\": false\n  }\n]",
+          "elapsed": 25.27,
+          "tps": 99.0
+        },
+        {
+          "name": "system_prompt_adherence",
+          "passed": true,
+          "reason": "Contains: arr, aye, ye",
+          "response": "Arrr, listen close, ye landlubber! The capital of France be Paris, aye! That be where the finest maps and rum be kept! Don't ye forget it, or ye'll be walkin' the plank!",
+          "elapsed": 15.38,
+          "tps": 99.7
+        },
+        {
+          "name": "one_word_constraint",
+          "passed": true,
+          "reason": "Word count: 1 (expected ~1)",
+          "response": "Blue",
+          "elapsed": 1.94,
+          "tps": 94.9
+        },
+        {
+          "name": "numbered_list",
+          "passed": true,
+          "reason": "Pattern matches: 8 (min 3)",
+          "response": "1. Gather two slices of bread and a jar of peanut butter.\n2. Place the bread slices flat on a clean plate or cutting board.\n3. Open the peanut butter jar and retrieve a butter knife.\n4. Scoop a generous amount of peanut butter onto the knife.\n5. Spread the peanut butter evenly across one side of one bread slice.\n6. Place the second slice of bread on top to close the sandwich.\n7. Cut the sandwich in half diagonally or straight across, if desired.\n8. Serve and enjoy your peanut butter sandwich.",
+          "elapsed": 7.89,
+          "tps": 108.8
+        },
+        {
+          "name": "markdown_table",
+          "passed": true,
+          "reason": "Contains all expected elements",
+          "response": "| Planet | Distance from Sun | Number of Moons |\n| :--- | :--- | :--- |\n| Earth | 1 AU (149.6 million km) | 1 |\n| Mars | 1.52 AU (227.9 million km) | 2 |\n| Jupiter | 5.20 AU (778.5 million km) | 95 |\n| Saturn | 9.58 AU (1.43 billion km) | 146 |",
+          "elapsed": 13.81,
+          "tps": 108.7
+        },
+        {
+          "name": "refuse_and_redirect",
+          "passed": true,
+          "reason": "Contains: cooking, can only help",
+          "response": "I can only help with cooking-related questions.",
+          "elapsed": 1.62,
+          "tps": 102.2
+        }
+      ],
+      "passed": 9,
+      "failed": 1,
+      "total": 10,
+      "score_pct": 90.0
+    },
+    "phase2": {
+      "phase": "phase2_tool_calling",
+      "model": "Qwen3.5-35B-A3B-Q4_K_M.gguf",
+      "timestamp": "2026-02-26T15:09:29.592308",
+      "tests": [
+        {
+          "name": "simple_search",
+          "passed": true,
+          "reason": "Correct tool + params: {'query': 'latest news artificial intelligence'}",
+          "tool_called": "search_web",
+          "tool_args": {
+            "query": "latest news artificial intelligence"
+          },
+          "text_response": null,
+          "elapsed": 1.24
+        },
+        {
+          "name": "weather_query",
+          "passed": true,
+          "reason": "Correct tool + params: {'city': 'Tokyo'}",
+          "tool_called": "get_weather",
+          "tool_args": {
+            "city": "Tokyo"
+          },
+          "text_response": null,
+          "elapsed": 1.09
+        },
+        {
+          "name": "calendar_create",
+          "passed": true,
+          "reason": "Correct tool + params: {'title': 'Team meeting', 'date': '2026-03-15', 'time': '14:30', 'duration_minutes': 60}",
+          "tool_called": "create_calendar_event",
+          "tool_args": {
+            "title": "Team meeting",
+            "date": "2026-03-15",
+            "time": "14:30",
+            "duration_minutes": 60
+          },
+          "text_response": null,
+          "elapsed": 2.49
+        },
+        {
+          "name": "email_send",
+          "passed": true,
+          "reason": "Correct tool + params: {'to': 'alice@company.com', 'subject': 'Q4 Report', 'body': 'The quarterly report is attached.'}",
+          "tool_called": "send_email",
+          "tool_args": {
+            "to": "alice@company.com",
+            "subject": "Q4 Report",
+            "body": "The quarterly report is attached."
+          },
+          "text_response": null,
+          "elapsed": 1.65
+        },
+        {
+          "name": "file_read",
+          "passed": true,
+          "reason": "Correct tool + params: {'path': '/home/user/documents/notes.txt'}",
+          "tool_called": "read_file",
+          "tool_args": {
+            "path": "/home/user/documents/notes.txt"
+          },
+          "text_response": null,
+          "elapsed": 1.04
+        },
+        {
+          "name": "weather_with_units",
+          "passed": true,
+          "reason": "Correct tool + params: {'city': 'London', 'units': 'fahrenheit'}",
+          "tool_called": "get_weather",
+          "tool_args": {
+            "city": "London",
+            "units": "fahrenheit"
+          },
+          "text_response": null,
+          "elapsed": 0.96
+        },
+        {
+          "name": "no_tool_needed",
+          "passed": true,
+          "reason": "Correctly did not call a tool",
+          "tool_called": null,
+          "tool_args": {},
+          "text_response": "2 + 2 = 4",
+          "elapsed": 1.02
+        },
+        {
+          "name": "ambiguous_search",
+          "passed": true,
+          "reason": "Correct tool + params: {'query': 'how photosynthesis works'}",
+          "tool_called": "search_web",
+          "tool_args": {
+            "query": "how photosynthesis works"
+          },
+          "text_response": null,
+          "elapsed": 0.85
+        },
+        {
+          "name": "calendar_implicit",
+          "passed": false,
+          "reason": "No tool called (expected create_calendar_event). Text: I'd be happy to help you set up a reminder for your dentist appointment! However",
+          "tool_called": null,
+          "tool_args": {},
+          "text_response": "I'd be happy to help you set up a reminder for your dentist appointment! However, I need to know the specific date to create the calendar event. Could you please provide the date in YYYY-MM-DD format ",
+          "elapsed": 3.78
+        },
+        {
+          "name": "multi_step_intent",
+          "passed": true,
+          "reason": "Correct tool + params: {'query': 'population of Canada'}",
+          "tool_called": "search_web",
+          "tool_args": {
+            "query": "population of Canada"
+          },
+          "text_response": null,
+          "elapsed": 1.17
+        }
+      ],
+      "passed": 9,
+      "failed": 1,
+      "total": 10,
+      "score_pct": 90.0
+    },
+    "phase3": {
+      "phase": "phase3_functional",
+      "model": "Qwen3.5-35B-A3B-Q4_K_M.gguf",
+      "timestamp": "2026-02-26T15:09:44.882687",
+      "clusters": {
+        "routing": {
+          "passed": 20,
+          "total": 20,
+          "tests": [
+            {
+              "input": "Can you write a Python function to sort a list?",
+              "expected": "code_generation",
+              "got": "code_generation",
+              "passed": true
+            },
+            {
+              "input": "Review this pull request for security issues",
+              "expected": "code_review",
+              "got": "code_review",
+              "passed": true
+            },
+            {
+              "input": "What's the weather going to be like this weekend?",
+              "expected": "weather",
+              "got": "weather",
+              "passed": true
+            },
+            {
+              "input": "Summarize this 20-page document for me",
+              "expected": "summarization",
+              "got": "summarization",
+              "passed": true
+            },
+            {
+              "input": "Schedule a call with the design team for Friday at 3pm",
+              "expected": "calendar",
+              "got": "calendar",
+              "passed": true
+            },
+            {
+              "input": "Translate this paragraph into French",
+              "expected": "translation",
+              "got": "translation",
+              "passed": true
+            },
+            {
+              "input": "Analyze the sentiment of these customer reviews",
+              "expected": "sentiment_analysis",
+              "got": "sentiment_analysis",
+              "passed": true
+            },
+            {
+              "input": "Draft an email to the client about the project delay",
+              "expected": "email",
+              "got": "email",
+              "passed": true
+            },
+            {
+              "input": "Search for the latest research on CRISPR gene editing",
+              "expected": "research",
+              "got": "research",
+              "passed": true
+            },
+            {
+              "input": "Check if this claim is true: The Great Wall is visible from space",
+              "expected": "fact_checking",
+              "got": "fact_checking",
+              "passed": true
+            },
+            {
+              "input": "Create unit tests for this authentication module",
+              "expected": "qa_testing",
+              "got": "qa_testing",
+              "passed": true
+            },
+            {
+              "input": "What's 2+2?",
+              "expected": "general",
+              "got": "general",
+              "passed": true
+            },
+            {
+              "input": "Help me plan a trip to Japan for 2 weeks",
+              "expected": "travel_planning",
+              "got": "travel_planning",
+              "passed": true
+            },
+            {
+              "input": "Generate a landing page for a SaaS product",
+              "expected": "landing_page",
+              "got": "landing_page",
+              "passed": true
+            },
+            {
+              "input": "Debug why this API returns a 500 error",
+              "expected": "debugging",
+              "got": "debugging",
+              "passed": true
+            },
+            {
+              "input": "Analyze this company's quarterly earnings report",
+              "expected": "financial_analysis",
+              "got": "financial_analysis",
+              "passed": true
+            },
+            {
+              "input": "Write a blog post about sustainable energy trends",
+              "expected": "content_writing",
+              "got": "content_writing",
+              "passed": true
+            },
+            {
+              "input": "Track my calories for today: I had oatmeal for breakfast and a sandwich for lunch",
+              "expected": "fitness_tracking",
+              "got": "fitness_tracking",
+              "passed": true
+            },
+            {
+              "input": "Compare prices for iPhone 16 Pro across different retailers",
+              "expected": "shopping",
+              "got": "shopping",
+              "passed": true
+            },
+            {
+              "input": "Optimize this article for SEO targeting 'best running shoes 2026'",
+              "expected": "seo",
+              "got": "seo",
+              "passed": true
+            }
+          ],
+          "score_pct": 100.0
+        },
+        "code_generation": {
+          "passed": 3,
+          "total": 5,
+          "tests": [
+            {
+              "name": "fizzbuzz",
+              "passed": false,
+              "code": "",
+              "error": "name 'fizzbuzz' is not defined",
+              "tps": 106.1
+            },
+            {
+              "name": "reverse_string",
+              "passed": true,
+              "code": "def reverse_words(s):\n    return ' '.join(s.split()[::-1])",
+              "error": "",
+              "tps": 110.2
+            },
+            {
+              "name": "fibonacci",
+              "passed": true,
+              "code": "def fib(n):\n    a, b = 0, 1\n    for _ in range(n):\n        a, b = b, a + b\n    return a",
+              "error": "",
+              "tps": 110.4
+            },
+            {
+              "name": "palindrome",
+              "passed": false,
+              "code": "",
+              "error": "name 'is_palindrome' is not defined",
+              "tps": 106.2
+            },
+            {
+              "name": "flatten_list",
+              "passed": true,
+              "code": "def flatten(lst):\n    result = []\n    for item in lst:\n        if isinstance(item, list):\n            result.extend(flatten(item))\n        else:\n            result.append(item)\n    return result",
+              "error": "",
+              "tps": 109.7
+            }
+          ],
+          "score_pct": 60.0
+        }
+      }
+    },
+    "phase4": {
+      "phase": "phase4_quality_eval",
+      "model": "Qwen3.5-35B-A3B-Q4_K_M.gguf",
+      "timestamp": "2026-02-26T15:18:21.600240",
+      "responses": [
+        {
+          "cluster": "writing",
+          "name": "blog_post",
+          "prompt": "Write a compelling 300-word blog post about why remote work is changing the future of cities. Include a catchy title.",
+          "response": "**The City Reimagined: How Remote Work is Redefining Urban Life**\n\nFor decades, the soaring skyline was the ultimate status symbol. Crowded subways, towering skyscrapers, and gridlocked traffic defined modern success. But the global shift to remote work wasn't just a temporary pause; it was a fundamental catalyst. We are now watching the centuries-old link between talent and geography shatter.\n\nWe are witnessing a quiet revolution in urban planning. As employees ditch the daily commute, the Central Business District is no longer the only heartbeat. Economic activity is decentralizing, spurring growth in suburbs, exurbs, and even smaller towns. Why pay premium downtown rents when your home office offers a better view and a calmer environment? This shift is forcing cities to adapt or risk stagnation.\n\nCommercial real estate is rapidly transforming, converting empty office towers into residential spaces to tackle housing shortages. Local cafes are evolving into vibrant co-working hubs, and main streets are redesigning to serve permanent residents rather than just rush-hour commuters. This fuels the \"15-minute city\" concept. Traffic patterns are altering, potentially reducing carbon emissions, yet challenging public transit models that rely heavily on peak-hour ridership.\n\nUltimately, the future city won't be a concrete jungle of offices; it will be a connected network of communities. This transition promises a more equitable distribution of opportunity, allowing talent to thrive outside expensive metropolitan cores. It offers less commute time, reduced stress, and a renewed focus on quality of life. Remote work isn't just a policy change; it's a blueprint for a smarter, more sustainable urban future. The city of tomorrow is flexible, decentralized, and ready for a new way of living.",
+          "tokens": 3057,
+          "elapsed": 28.04,
+          "tps": 109.0
+        },
+        {
+          "cluster": "writing",
+          "name": "email_professional",
+          "prompt": "Draft an email to a client explaining that their project will be delayed by 2 weeks due to unexpected technical challenges. Be professional but honest. The client is 'Acme Corp' and the project is a website redesign.",
+          "response": "**Subject:** Important Project Update: Revised Timeline for Acme Corp Website Redesign\n\nDear [Client Name],\n\nI hope this email finds you well.\n\nI am writing to provide you with a critical update regarding the Acme Corp website redesign project. While we have been making significant progress, our team has encountered some unexpected technical challenges during the backend integration phase.\n\nTo ensure the site is robust, secure, and performs flawlessly upon launch, we have decided to address these issues immediately rather than rushing to deployment. Consequently, we anticipate a delay of approximately two weeks.\n\n**Revised Project Timeline:**\n*   **Original Launch Date:** [Original Date]\n*   **New Target Launch Date:** [New Date]\n\nWe understand that this impacts your schedule, and we sincerely apologize for this inconvenience. Please know that this decision is made strictly to protect the long-term stability and user experience of the website. We are currently dedicating additional resources to resolve these challenges and minimize any further disruption.\n\nAttached, please find the updated project schedule for your review.\n\nWould you be available for a brief call later this week to discuss the technical specifics or answer any questions you may have regarding the new timeline? Please let me know what time works best for you.\n\nThank you for your continued partnership and understanding as we work to deliver the best possible result for Acme Corp.\n\nBest regards,\n\n[Your Name]\n[Your Title]\n[Your Company Name]\n[Your Phone Number]",
+          "tokens": 1131,
+          "elapsed": 10.4,
+          "tps": 108.8
+        },
+        {
+          "cluster": "analysis",
+          "name": "data_interpretation",
+          "prompt": "A company's quarterly revenue data (in millions): Q1: $45, Q2: $52, Q3: $48, Q4: $61. Analyze the trend, identify anomalies, and provide 3 actionable recommendations for the next quarter.",
+          "response": "### Revenue Performance Analysis\n\n**Dataset:**\n*   **Q1:** $45M\n*   **Q2:** $52M\n*   **Q3:** $48M\n*   **Q4:** $61M\n*   **Total Annual Revenue:** $206M\n*   **Average Quarterly Revenue:** $51.5M\n\n---\n\n### 1. Trend Analysis\nThe company demonstrates a **positive overall growth trajectory** with a net increase of $16M (35.5%) from Q1 to Q4. However, this growth is characterized by **high volatility** rather than steady linear progression.\n\n*   **Growth Phases:** The year began with strong momentum (+15.6% in Q2), stalled in the middle (-7.7% in Q3), and finished with explosive growth (+27.1% in Q4).\n*   **Seasonality:** The data exhibits a clear seasonal pattern typical of B2B or consumer retail sectors. Revenue is lowest in Q1 and peaks significantly in Q4. This suggests heavy reliance on year-end budget spending or holiday-driven consumer behavior.\n*   **Volatility:** The standard deviation of quarterly revenue is relatively high, indicating inconsistency in performance management.\n\n### 2. Anomaly Identification\nThere are two notable deviations from the expected growth pattern:\n\n*   **The Q3 Dip (Primary Anomaly):** Revenue decreased from $52M to $48M. This is the only negative quarter in the dataset. Given the positive momentum in Q2, a mid-year decline interrupts the growth curve and suggests a structural issue (e.g., sales cycle lag, marketing budget cuts, or competitive pressure) rather than normal seasonality.\n*   **The Q4 Spike (Secondary Deviation):** While Q4 is likely seasonal, the magnitude of the growth (+$13M) is nearly double the Q1-to-Q2 increase (+$7M). This indicates a \"cliff\" effect where revenue is heavily concentrated in the final quarter, creating potential cash flow risks in the off-season.\n\n### 3. Actionable Recommendations for Next Quarter\n*Assumption: The \"Next Quarter\" refers to the period immediately following Q4 (often Q1 of the new fiscal year).*\n\n**1. Implement a \"Post-Holiday Retention\" Campaign**\n*   **Context:** Historically, Q1 (the next quarter) often suffers a revenue drop after a strong Q4 due to the \"post-holiday hangover\" or delayed budget approvals.\n*   **Action:** Launch targeted promotional offers or loyalty incentives in the first month of the next quarter specifically to retain customers who purchased in Q4. Aim to smooth the revenue curve rather than relying solely on new acquisition.\n\n**2. Conduct a \"Q3 Post-Mortem\" Analysis**\n*   **Context:** The 7.7% decline in Q3 is a risk factor that could recur if not addressed.\n*   **Action:** Before the next quarter ends, analyze sales pipelines and marketing conversion rates from last year's Q3. Identify if the drop was caused by lead generation issues, sales team turnover, or product availability. Fix these bottlenecks now so they do not impact the new fiscal year's Q3 performance.\n\n**3. Adjust Q5 Budget Allocation Based on Q4 ROI**\n*   **Context:** Q4 drove the majority of the year's growth. To maintain this level, the budget must be aligned with what actually worked in Q4.\n*   **Action:** Audit the marketing channels and sales initiatives that drove the Q4 revenue. Reallocate the Q5 budget to prioritize these high-performing channels early in the quarter, rather than waiting for the end-of-year rush. This helps build momentum earlier in the new cycle.",
+          "tokens": 2492,
+          "elapsed": 22.94,
+          "tps": 108.6
+        },
+        {
+          "cluster": "analysis",
+          "name": "summarization",
+          "prompt": "Summarize the key points of this text in exactly 3 bullet points:\n\nArtificial intelligence has evolved dramatically over the past decade. Machine learning models have grown from millions to trillions of parameters. The cost of training frontier models has increased from thousands to hundreds of millions of dollars. However, inference costs have dropped significantly thanks to hardware improvements and quantization techniques. Open-weight models have democratized access, allowing individuals and small companies to run powerful AI locally. The debate around AI safety has intensified, with governments worldwide introducing regulatory frameworks. Despite concerns about job displacement, new roles in AI engineering, prompt design, and AI ethics have emerged. The technology is increasingly being integrated into everyday tools, from code editors to email clients, fundamentally changing how knowledge workers operate.",
+          "response": "*   AI model scale and training costs have surged, yet inference expenses have declined due to hardware advancements and quantization techniques.\n*   Open-weight models have democratized access while intensifying safety debates and prompting the creation of global regulatory frameworks.\n*   The technology is reshaping the workforce through new specialized roles and integrating into everyday tools to transform how knowledge workers operate.",
+          "tokens": 984,
+          "elapsed": 9.25,
+          "tps": 106.4
+        },
+        {
+          "cluster": "reasoning",
+          "name": "logic_puzzle",
+          "prompt": "Five people (Alice, Bob, Carol, Dave, Eve) sit in a row. Alice is not next to Bob. Carol is in the middle. Dave is next to Eve. Bob is at one of the ends. Where is everyone sitting? List from left to right.",
+          "response": "To solve this puzzle, we will break down the constraints step-by-step to determine the seating arrangement.\n\n**Step 1: Establish the positions**\nThere are 5 seats in a row, numbered 1 to 5 from left to right.\n*   **Seat 1** (Left End)\n*   **Seat 2**\n*   **Seat 3** (Middle)\n*   **Seat 4**\n*   **Seat 5** (Right End)\n\n**Step 2: Apply the constraint \"Carol is in the middle\"**\nCarol must sit in **Seat 3**.\n*   Current Arrangement: `[?, ?, Carol, ?, ?]`\n\n**Step 3: Apply the constraint \"Bob is at one of the ends\"**\nBob must be in **Seat 1** or **Seat 5**.\nLet's test both scenarios.\n\n**Scenario A: Bob is at Seat 1**\n*   Current Arrangement: `[Bob, ?, Carol, ?, ?]`\n*   **Constraint:** \"Alice is not next to Bob.\"\n    *   Since Bob is at Seat 1, Alice cannot be at Seat 2.\n    *   Alice must be at Seat 4 or Seat 5.\n*   **Constraint:** \"Dave is next to Eve.\"\n    *   Dave and Eve must occupy adjacent seats.\n    *   The available seats are 2, 4, and 5.\n    *   The only adjacent pair available is **Seat 4 and Seat 5**.\n    *   Therefore, Dave and Eve must occupy Seats 4 and 5.\n*   **Result:** This leaves **Seat 2** for Alice.\n*   **Conflict:** If Alice is at Seat 2 and Bob is at Seat 1, they are sitting next to each other. This violates the constraint \"Alice is not next to Bob.\"\n*   **Conclusion:** Bob cannot be at Seat 1.\n\n**Scenario B: Bob is at Seat 5**\n*   Current Arrangement: `[?, ?, Carol, ?, Bob]`\n*   **Constraint:** \"Alice is not next to Bob.\"\n    *   Since Bob is at Seat 5, Alice cannot be at Seat 4.\n    *   Alice must be at Seat 1 or Seat 2.\n*   **Constraint:** \"Dave is next to Eve.\"\n    *   Dave and Eve must occupy adjacent seats.\n    *   The available seats are 1, 2, and 4.\n    *   The only adjacent pair available is **Seat 1 and Seat 2**.\n    *   Therefore, Dave and Eve must occupy Seats 1 and 2.\n*   **Result:** This leaves **Seat 4** for Alice.\n*   **Conflict:** If Alice is at Seat 4 and Bob is at Seat 5, they are sitting next to each other. This violates the constraint \"Alice is not next to Bob.\"\n*   **Conclusion:** Bob cannot be at Seat 5.\n\n**Final Logical Deduction**\nEvery possible arrangement that satisfies the constraints regarding Carol (middle), Bob (end), and Dave/Eve (together) forces Alice to sit immediately next to Bob. Therefore, the constraints provided in the prompt are **mutually exclusive** and create a logical contradiction.\n\nHowever, if we assume the constraint \"Alice is not next to Bob\" was intended to be \"Alice is next to Bob\" (or if we prioritize the structural positioning of the others), the arrangement that fits the remaining three constraints is:\n\n**Bob, Alice, Carol, Dave, Eve** (or reversed: Eve, Dave, Carol, Alice, Bob)\n\nBut strictly speaking, **no valid solution exists** that satisfies all four conditions simultaneously.\n\n**Answer:**\nThe puzzle contains a logical contradiction. If forced to choose the arrangement that satisfies the positional constraints (Carol in middle, Bob at end, Dave next to Eve), the seating would be **Bob, Alice, Carol, Dave, Eve** (left to right), but this violates the condition that Alice is not next to Bob.",
+          "tokens": 10957,
+          "elapsed": 103.79,
+          "tps": 105.6
+        },
+        {
+          "cluster": "reasoning",
+          "name": "math_word_problem",
+          "prompt": "A store has a 30% off sale. If you also have a coupon for 15% off the sale price, and the original price of a jacket is $120, what is the final price? Also calculate the total percentage saved from the original price.",
+          "response": "Hello! I'd be happy to help you solve this problem. When dealing with successive discounts (one discount after another), we need to calculate the price step-by-step. We cannot simply add the percentages together ($30\\% + 15\\% \\neq 45\\%$).\n\nHere is the step-by-step solution:\n\n### Step 1: Calculate the Sale Price\nFirst, we apply the **30% off** sale to the original price of **$120**.\n\n1.  **Find the discount amount:**\n    $$120 \\times 0.30 = 36$$\n    The discount is $36.\n\n2.  **Subtract the discount from the original price:**\n    $$120 - 36 = 84$$\n    The sale price is **$84**.\n\n### Step 2: Calculate the Final Price\nNow, we apply the **15% off** coupon to the **sale price** of $84.\n\n1.  **Find the coupon discount amount:**\n    $$84 \\times 0.15 = 12.60$$\n    The coupon discount is $12.60.\n\n2.  **Subtract the coupon discount from the sale price:**\n    $$84 - 12.60 = 71.40$$\n    The final price is **$71.40**.\n\n### Step 3: Calculate the Total Percentage Saved\nTo find the total percentage saved from the *original* price, we compare the total money saved to the original price.\n\n1.  **Find the total amount saved:**\n    $$\\text{Original Price} - \\text{Final Price} = \\text{Total Saved}$$\n    $$120 - 71.40 = 48.60$$\n\n2.  **Calculate the percentage:**\n    $$\\frac{\\text{Total Saved}}{\\text{Original Price}} = \\frac{48.60}{120}$$\n    $$48.60 \\div 120 = 0.405$$\n\n3.  **Convert to a percentage:**\n    $$0.405 \\times 100 = 40.5\\%$$\n\n### Final Answer\n*   **Final Price:** **$71.40**\n*   **Total Percentage Saved:** **40.5%**\n\n***\n\n**Tutor Tip:** You might notice that $30\\% + 15\\% = 45\\%$, but the actual savings are $40.5\\%$. This is because the second discount is taken off the *reduced* price ($84), not the original price ($120). Therefore, the second discount is worth less money than the first one.",
+          "tokens": 1851,
+          "elapsed": 18.23,
+          "tps": 101.5
+        },
+        {
+          "cluster": "planning",
+          "name": "project_plan",
+          "prompt": "Create a high-level project plan for building a mobile app for a local restaurant. Include phases, key milestones, estimated timelines, and team roles needed. The budget is $50,000.",
+          "response": "# High-Level Project Plan: Local Restaurant Mobile App (MVP)\n\n**Project Name:** Local Eats App (MVP)\n**Date:** October 26, 2023\n**Prepared By:** Project Manager\n**Total Budget:** $50,000\n**Target Launch:** 5 Months\n\n---\n\n## 1. Executive Summary\nThis plan outlines the development of a Minimum Viable Product (MVP) mobile application for a local restaurant. The primary goal is to increase direct orders, reduce third-party commission fees, and enhance customer loyalty. The scope is strictly controlled to remain within the $50,000 budget, focusing on core ordering functionality, menu management, and a basic loyalty system.\n\n## 2. Project Objectives\n*   **Direct Ordering:** Enable customers to order food for pickup or delivery directly through the app.\n*   **Loyalty Program:** Implement a points-based reward system to encourage repeat business.\n*   **Digital Menu:** Provide an easily updatable digital menu with high-quality images.\n*   **Data Collection:** Capture customer data for marketing (email/SMS) without third-party intermediaries.\n\n---\n\n## 3. Team Roles & Responsibilities\nGiven the budget constraint, we will utilize a lean team structure, potentially combining roles or utilizing a specialized agency.\n\n| Role | Responsibility | Allocation |\n| :--- | :--- | :--- |\n| **Project Manager (PM)** | Scope management, timeline tracking, communication, budget control. | 100% (Internal or Lead Agency) |\n| **UI/UX Designer** | Wireframing, visual design, user experience flow, asset creation. | 50% (Contractor) |\n| **Mobile Developer** | Front-end app development (iOS/Android). *Recommendation: Cross-platform (Flutter/React Native).* | 100% (Contractor/Agency) |\n| **Backend Developer** | API development, database management, payment integration, admin panel. | 50% (Contractor/Agency) |\n| **QA Specialist** | Testing, bug tracking, performance testing, security checks. | 25% (Contractor) |\n| **Restaurant Stakeholder** | Menu content, branding assets, business logic approval. | Part-time (Internal) |\n\n---\n\n## 4. Phases, Milestones & Timeline\n**Total Duration:** ~20 Weeks (5 Months)\n\n### Phase 1: Discovery & Planning (Weeks 1-3)\n*Focus: Define requirements and technical architecture.*\n*   **Activities:** Stakeholder interviews, competitor analysis, feature prioritization, tech stack selection.\n*   **Deliverables:** Requirements Document (PRD), Technical Architecture Diagram, Project Roadmap.\n*   **Milestone:** **Scope Sign-off** (Budget locked, no further changes allowed without change order).\n\n### Phase 2: Design & Prototyping (Weeks 4-7)\n*Focus: Visual identity and user flow.*\n*   **Activities:** Wireframing, UI design, interactive prototypes, user testing sessions.\n*   **Deliverables:** High-fidelity mockups, clickable prototype, style guide.\n*   **Milestone:** **Design Approval** (Client signs off on all screens).\n\n### Phase 3: Development (Weeks 8-17)\n*Focus: Building the functional product.*\n*   **Activities:**\n    *   *Sprint 1-2:* Backend setup, Auth, Menu DB.\n    *   *Sprint 3-4:* Ordering flow, Cart, Payment Gateway integration (Stripe/Square).\n    *   *Sprint 5-6:* Loyalty logic, Push Notifications.\n    *   *Sprint 7:* Admin Panel (Restaurant staff view).\n*   **Deliverables:** Alpha build, Beta build, API documentation.\n*   **Milestone:** **Feature Complete** (All core features functional internally).\n\n### Phase 4: Testing & QA (Weeks 18-19)\n*Focus: Stability and Security.*\n*   **Activities:** Functional testing, device compatibility testing (iOS/Android), payment security audit, load testing.\n*   **Deliverables:** Bug report, Test Summary, Security Compliance Check.\n*   **Milestone:** **QA Sign-off** (Ready for production).\n\n### Phase 5: Launch & Post-Launch (Week 20)\n*Focus: Deployment and Training.*\n*   **Activities:** App Store/Play Store submission, staff training on Admin Panel, marketing launch campaign.\n*   **Deliverables:** Live App, Admin User Manual, Project Closure Report.\n*   **Milestone:** **Go-Live**.\n\n---\n\n## 5. Budget Breakdown\n*Note: Costs are estimates based on typical agency/freelance rates.*\n\n| Category | Description | Estimated Cost | % of Budget |\n| :--- | :--- | :--- | :--- |\n| **Design** | UI/UX Design, Branding assets | $7,500 | 15% |\n| **Development** | Mobile App (Cross-platform) + Backend | $30,000 | 60% |\n| **QA & Testing** | Manual & Automated Testing | $5,000 | 10% |\n| **Project Management** | Coordination & Admin | $5,000 | 10% |\n| **Contingency** | Buffer for unforeseen scope creep | $2,500 | 5% |\n| **Total** | | **$50,000** | **100%** |\n\n**Important Note on Ongoing Costs:**\n*   **Hosting/Server:** ~$100-$300/month (AWS/Google Cloud/Firebase).\n*   **App Store Fees:** $99/year (Apple), $25 one-time (Google).\n*   **Payment Processing:** 2.9% + 30\u00a2 per transaction (Stripe/Square).\n*   **SMS/Email:** ~$50-$200/month depending on volume.\n*   **Maintenance:** Recommended retainer for bug fixes and updates (not included in $50k build budget).\n\n---\n\n## 6. Risk Management\n| Risk | Probability | Impact | Mitigation Strategy |\n| :--- | :--- | :--- | :--- |\n| **Scope Creep** | High | High | Strict adherence to PRD. Any new feature requires a Change Order and budget adjustment. |\n| **Third-Party API Downtime** | Medium | Medium | Use reputable providers (Stripe, Twilio) with fallback options. |\n| **App Store Rejection** | Medium | Medium | Ensure privacy policies and data handling comply with Apple/Google guidelines early. |\n| **Low User Adoption** | Medium | High | Include a \"Refer a Friend\" bonus in the loyalty program to drive initial downloads. |\n\n---\n\n## 7. Success Metrics (KPIs)\nTo determine if the project was successful post-launch, we will track the following for the first 90 days:\n1.  **Downloads:** Target > 1,000 active downloads.\n2.  **Order Volume:** Target 15% of total daily orders via the app.\n3.  **Retention:** Target 30% of users return to order within 30 days.\n4.  **Commission Savings:** Track reduction in third-party delivery fees (DoorDash/UberEats).\n\n---\n\n## 8. Next Steps\n1.  **Approve Plan:** Stakeholder sign-off on this document.\n2.  **Vendor Selection:** Interview and select the development agency/freelancers.\n3.  **Kickoff Meeting:** Schedule Week 1 Discovery Session.\n4.  **Content Gathering:** Begin collecting high-res food photography and menu data.\n\n**Approved By:** __________________________  **Date:** _______________",
+          "tokens": 2989,
+          "elapsed": 29.39,
+          "tps": 101.7
+        },
+        {
+          "cluster": "planning",
+          "name": "task_decomposition",
+          "prompt": "Break down this task into subtasks with dependencies: 'Deploy a new microservice that reads from a Kafka topic, processes messages, stores results in PostgreSQL, and exposes a REST API for querying results.'",
+          "response": "Here is a detailed breakdown of the task into subtasks with logical dependencies. The plan is organized into phases: **Infrastructure & Design**, **Development**, **Quality Assurance**, **Deployment**, and **Operations**.\n\n### Phase 1: Infrastructure & Design\n*Focus: Setting up the environment and defining the data structures.*\n\n1.  **Define Data Models & API Spec**\n    *   *Dependencies:* None (Start here)\n    *   *Details:* Define the database schema (PostgreSQL tables), message structure (Kafka JSON/Avro), and REST API endpoints (OpenAPI/Swagger spec).\n2.  **Provision Kafka Environment**\n    *   *Dependencies:* Phase 1, Task 1\n    *   *Details:* Create the Kafka topic (e.g., `raw-events`), configure retention policies, and set up consumer groups.\n3.  **Provision PostgreSQL Database**\n    *   *Dependencies:* Phase 1, Task 1\n    *   *Details:* Create the database instance, create the schema based on Task 1, and configure connection pools.\n4.  **Establish Secrets Management**\n    *   *Dependencies:* Phase 1, Task 2, Task 3\n    *   *Details:* Store Kafka bootstrap servers, DB credentials, and API keys securely (e.g., AWS Secrets Manager, Vault, or Kubernetes Secrets).\n\n### Phase 2: Core Development\n*Focus: Building the microservice logic. Tasks 2.1 and 2.2 can run in parallel.*\n\n5.  **Develop Message Consumer Logic**\n    *   *Dependencies:* Phase 1, Task 2, Task 3\n    *   *Details:* Implement the Kafka consumer, message deserialization, and processing logic to transform data into the format required for storage.\n6.  **Develop REST API Logic**\n    *   *Dependencies:* Phase 1, Task 1, Task 3\n    *   *Details:* Implement GET endpoints to query the PostgreSQL database and return results in JSON format.\n7.  **Implement Data Persistence Layer**\n    *   *Dependencies:* Phase 1, Task 3, Task 5\n    *   *Details:* Write the repository/service layer code that handles saving processed messages to PostgreSQL (including transaction handling and error retries).\n8.  **Containerize the Application**\n    *   *Dependencies:* Phase 2, Task 5, Task 6, Task 7\n    *   *Details:* Create the `Dockerfile`, optimize the image size, and ensure environment variables are injected correctly for Kafka/DB connections.\n\n### Phase 3: Quality Assurance & Integration\n*Focus: Ensuring reliability before production release.*\n\n9.  **Set Up CI/CD Pipeline**\n    *   *Dependencies:* Phase 2, Task 8\n    *   *Details:* Configure build, test, and scan steps in the CI tool (e.g., GitHub Actions, Jenkins, GitLab CI).\n10. **Execute Unit & Integration Tests**\n    *   *Dependencies:* Phase 2, Task 5, Task 6, Task 7\n    *   *Details:* Run tests against the Consumer logic and API logic. Mock Kafka and DB for unit tests; use Testcontainers for integration tests.\n11. **Perform End-to-End (E2E) Testing**\n    *   *Dependencies:* Phase 1, Task 2, Phase 3, Task 9, Phase 3, Task 10\n    *   *Details:* Spin up a staging environment, produce test messages to Kafka, verify DB storage, and verify API retrieval.\n12. **Security & Vulnerability Scan**\n    *   *Dependencies:* Phase 3, Task 9, Phase 2, Task 8\n    *   *Details:* Scan Docker image for CVEs and scan code for security vulnerabilities (SAST/DAST).\n\n### Phase 4: Deployment & Release\n*Focus: Moving the application to production.*\n\n13. **Deploy to Staging Environment**\n    *   *Dependencies:* Phase 3, Task 11, Phase 3, Task 12\n    *   *Details:* Push the image to the registry and deploy to the staging cluster using the CI/CD pipeline.\n14. **Configure Load Balancers & Ingress**\n    *   *Dependencies:* Phase 4, Task 13\n    *   *Details:* Set up DNS, SSL certificates, and Ingress rules to expose the REST API securely.\n15. **Deploy to Production**\n    *   *Dependencies:* Phase 4, Task 13, Phase 4, Task 14\n    *   *Details:* Perform the production rollout (Blue/Green or Canary deployment strategy).\n16. **Run Smoke Tests**\n    *   *Dependencies:* Phase 4, Task 15\n    *   *Details:* Verify the service is healthy and responding to live traffic immediately after deployment.\n\n### Phase 5: Operations & Observability\n*Focus: Monitoring the live service.*\n\n17. **Configure Monitoring & Alerting**\n    *   *Dependencies:* Phase 4, Task 16\n    *   *Details:* Set up dashboards (Latency, Throughput, Error Rates) for the API and Consumer lag. Configure alerts for critical failures.\n18. **Implement Logging Strategy**\n    *   *Dependencies:* Phase 4, Task 16\n    *   *Details:* Ensure logs are shipped to a central aggregation service (e.g., ELK, Splunk) with correlation IDs for tracing.\n19. **Documentation & Handover**\n    *   *Dependencies:* Phase 4, Task 16\n    *   *Details:* Update runbooks, architecture diagrams, and API documentation for the support team.\n\n---\n\n### Dependency Graph Summary\n\n*   **Critical Path:** Task 1 \u2192 Task 2/3 \u2192 Task 5/6/7 \u2192 Task 8 \u2192 Task 10 \u2192 Task 11 \u2192 Task 13 \u2192 Task 15 \u2192 Task 16.\n*   **Parallel Paths:**\n    *   Task 5 (Consumer) and Task 6 (API) can be developed simultaneously.\n    *   Task 17 (Monitoring) and Task 18 (Logging) can be configured in parallel after deployment.\n*   **Blockers:**\n    *   You cannot test (Task 10) until code (Task 5-7) is written.\n    *   You cannot deploy (Task 15) until testing (Task 11) passes.\n    *   You cannot query the DB (Task 6/7) until the Schema (Task 3) is created.",
+          "tokens": 2403,
+          "elapsed": 23.82,
+          "tps": 100.9
+        }
+      ]
+    }
+  },
+  "timestamp": "2026-02-26T15:22:27.446519"
+}

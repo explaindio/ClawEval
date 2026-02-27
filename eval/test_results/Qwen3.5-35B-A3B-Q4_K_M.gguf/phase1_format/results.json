@@ -1,0 +1,91 @@
+{
+  "phase": "phase1_format_compliance",
+  "model": "Qwen3.5-35B-A3B-Q4_K_M.gguf",
+  "timestamp": "2026-02-26T15:05:20.092403",
+  "tests": [
+    {
+      "name": "json_simple",
+      "passed": false,
+      "reason": "Invalid JSON: Expecting value: line 1 column 1 (char 0)",
+      "response": "",
+      "elapsed": 152.51,
+      "tps": 104.9
+    },
+    {
+      "name": "json_nested",
+      "passed": true,
+      "reason": "Valid JSON",
+      "response": "{\n  \"name\": \"Jane Doe\",\n  \"age\": 25,\n  \"skills\": [\"Python\", \"Java\", \"SQL\"],\n  \"address\": {\n    \"city\": \"Toronto\",\n    \"country\": \"Canada\"\n  }\n}",
+      "elapsed": 8.53,
+      "tps": 98.9
+    },
+    {
+      "name": "json_from_text",
+      "passed": true,
+      "reason": "Valid JSON",
+      "response": "{\n  \"name\": \"John Smith\",\n  \"age\": 34,\n  \"company\": \"Google\",\n  \"title\": \"Senior Engineer\",\n  \"location\": \"Mountain View, CA\",\n  \"email\": \"john@google.com\"\n}",
+      "elapsed": 14.02,
+      "tps": 98.2
+    },
+    {
+      "name": "json_strict_schema",
+      "passed": true,
+      "reason": "Valid JSON",
+      "response": "{\"action\": \"schedule_meeting\", \"target\": \"Bob\", \"confidence\": 0.95}",
+      "elapsed": 8.53,
+      "tps": 97.2
+    },
+    {
+      "name": "json_array_complex",
+      "passed": true,
+      "reason": "Valid JSON",
+      "response": "[\n  {\n    \"id\": 1,\n    \"task\": \"Finalize code freeze and merge all pending PRs\",\n    \"priority\": \"high\",\n    \"done\": false\n  },\n  {\n    \"id\": 2,\n    \"task\": \"Execute automated regression test suite\",\n    \"priority\": \"high\",\n    \"done\": false\n  },\n  {\n    \"id\": 3,\n    \"task\": \"Deploy to staging environment for UAT\",\n    \"priority\": \"high\",\n    \"done\": false\n  },\n  {\n    \"id\": 4,\n    \"task\": \"Update release notes and API documentation\",\n    \"priority\": \"medium\",\n    \"done\": false\n  },\n  {\n    \"id\": 5,\n    \"task\": \"Notify stakeholders and schedule launch meeting\",\n    \"priority\": \"low\",\n    \"done\": false\n  }\n]",
+      "elapsed": 25.27,
+      "tps": 99.0
+    },
+    {
+      "name": "system_prompt_adherence",
+      "passed": true,
+      "reason": "Contains: arr, aye, ye",
+      "response": "Arrr, listen close, ye landlubber! The capital of France be Paris, aye! That be where the finest maps and rum be kept! Don't ye forget it, or ye'll be walkin' the plank!",
+      "elapsed": 15.38,
+      "tps": 99.7
+    },
+    {
+      "name": "one_word_constraint",
+      "passed": true,
+      "reason": "Word count: 1 (expected ~1)",
+      "response": "Blue",
+      "elapsed": 1.94,
+      "tps": 94.9
+    },
+    {
+      "name": "numbered_list",
+      "passed": true,
+      "reason": "Pattern matches: 8 (min 3)",
+      "response": "1. Gather two slices of bread and a jar of peanut butter.\n2. Place the bread slices flat on a clean plate or cutting board.\n3. Open the peanut butter jar and retrieve a butter knife.\n4. Scoop a generous amount of peanut butter onto the knife.\n5. Spread the peanut butter evenly across one side of one bread slice.\n6. Place the second slice of bread on top to close the sandwich.\n7. Cut the sandwich in half diagonally or straight across, if desired.\n8. Serve and enjoy your peanut butter sandwich.",
+      "elapsed": 7.89,
+      "tps": 108.8
+    },
+    {
+      "name": "markdown_table",
+      "passed": true,
+      "reason": "Contains all expected elements",
+      "response": "| Planet | Distance from Sun | Number of Moons |\n| :--- | :--- | :--- |\n| Earth | 1 AU (149.6 million km) | 1 |\n| Mars | 1.52 AU (227.9 million km) | 2 |\n| Jupiter | 5.20 AU (778.5 million km) | 95 |\n| Saturn | 9.58 AU (1.43 billion km) | 146 |",
+      "elapsed": 13.81,
+      "tps": 108.7
+    },
+    {
+      "name": "refuse_and_redirect",
+      "passed": true,
+      "reason": "Contains: cooking, can only help",
+      "response": "I can only help with cooking-related questions.",
+      "elapsed": 1.62,
+      "tps": 102.2
+    }
+  ],
+  "passed": 9,
+  "failed": 1,
+  "total": 10,
+  "score_pct": 90.0
+}

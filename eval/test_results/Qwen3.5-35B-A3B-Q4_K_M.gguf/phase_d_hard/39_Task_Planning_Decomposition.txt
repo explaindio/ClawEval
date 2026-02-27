@@ -1,0 +1,113 @@
+# Phase D Hard Test — #39 Task Planning / Decomposition
+# Tier: 3 | Score: 10/10 | 1/1 constraints met
+# Tokens: 3477 | Speed: 92.4 t/s | Time: 37.6s
+
+## PROMPT:
+Decompose this project into tasks with dependencies. WARNING: The requirements as stated contain a CIRCULAR DEPENDENCY. You must detect it and propose a resolution.
+
+Project: Build a real-time dashboard
+- Task A (Auth system): "Requires the notification service (Task C) to send verification emails"
+- Task B (Data pipeline): "Requires the auth system (Task A) to validate data sources"
+- Task C (Notification service): "Requires the data pipeline (Task B) to know what events to notify about"
+- Task D (Dashboard UI): "Requires A, B, and C to be complete"
+- Task E (Testing): "Requires D to be complete, plus access to A, B, C independently"
+- Task F (Deployment): "Requires E to pass, but also needs to deploy A, B, C as separate services"
+
+Team: 2 backend devs, 1 frontend dev, 1 QA. Timeline: 8 weeks.
+
+1. Draw the dependency graph (text format)
+2. Identify the circular dependency
+3. Propose how to break the cycle (e.g., mock service, interface-first approach)
+4. Create a realistic 8-week schedule with parallel work
+
+## RESPONSE:
+### 1. Dependency Graph
+
+```text
+      [Task C: Notification Service]
+      /          |          \
+     /           |           \
+    v            v            v
+[Task A: Auth]  [Task B: Data Pipeline]
+    \            |            /
+     \           |           /
+      \          |          /
+       v         v         v
+      [Task D: Dashboard UI]
+                |
+                v
+           [Task E: Testing]
+                |
+                v
+           [Task F: Deployment]
+```
+
+**Explicit Edges:**
+*   A → C (A requires C for verification emails)
+*   B → A (B requires A for source validation)
+*   C → B (C requires B for event definitions)
+*   A, B, C → D (D requires A, B, C)
+*   D → E (E requires D)
+*   E, A, B, C → F (F requires E + deployment of A, B, C)
+
+---
+
+### 2. Circular Dependency Identification
+
+**The Cycle:**
+There is a **Hard Circular Dependency** among Tasks A, B, and C.
+1.  **Task A** cannot start until **Task C** is ready (to send emails).
+2.  **Task C** cannot start until **Task B** is ready (to know events).
+3.  **Task B** cannot start until **Task A** is ready (to validate sources).
+
+**Path:** `A → C → B → A`
+
+**Impact:** If followed literally, the project cannot begin. No backend work can start on A, B, or C without the others being finished, creating a deadlock.
+
+---
+
+### 3. Resolution Strategy
+
+To break the cycle, we must decouple the dependencies during the **Development Phase** while maintaining the logical flow for the **Production Phase**.
+
+**Proposed Resolution: Contract-First & Mocking**
+
+1.  **Define Interfaces First (Week 1):**
+    *   Define the API contracts between A, B, and C before writing code.
+    *   *Example:* Task C defines an "Event Schema." Task B agrees to emit events in that schema. Task A agrees to call a standard "Email Service" interface.
+
+2.  **Mocking for Development:**
+    *   **Task A (Auth):** Implement a **Mock Email Provider** (e.g., logs to console or saves to a file) instead of waiting for Task C. This allows Auth to be built and tested independently.
+    *   **Task C (Notification):** Implement a **Mock Data Listener** that accepts predefined JSON payloads instead of waiting for the live Data Pipeline (Task B).
+    *   **Task B (Data):** Implement a **Mock Auth Validator** that accepts all requests during development, switching to the real Auth API once Task A is deployed.
+
+3.  **Architectural Decoupling (Production):**
+    *   Move Task C (Notifications) to an **Event Bus** (e.g., Kafka/RabbitMQ) rather than a direct API call from Task B. Task B publishes events; Task C subscribes. This removes the direct "Task B must be done before Task C" dependency.
+    *   Task A (Auth) should treat Task C as an optional dependency for the "Onboarding" flow, not the core "Login" flow.
+
+---
+
+### 4. 8-Week Realistic Schedule
+
+**Team Allocation:**
+*   **BE Dev 1:** Task A (Auth) & Task B (Data Pipeline)
+*   **BE Dev 2:** Task C (Notification) & Infrastructure/CI/CD
+*   **FE Dev:** Task D (Dashboard UI)
+*   **QA:** Task E (Testing) & Automation
+
+| Week | Phase | Task A (Auth) | Task B (Data) | Task C (Notify) | Task D (UI) | Task E (QA) | Task F (Deploy) |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **1** | **Design** | **Define Auth API Contracts** | **Define Event Schema** | **Define Event Schema** | **Wireframes & UI Kit** | **Test Plan & CI Setup** | - |
+| **2** | **Dev** | **Build Core Auth (Mock C)** | **Build Ingestion (Mock A)** | **Build Listener (Mock B)** | **Build UI Skeleton (Mock APIs)** | **Write Unit Tests** | - |
+| **3** | **Dev** | **Add Email Logic (Mock C)** | **Add Validation (Mock A)** | **Add Processing Logic** | **Connect to Mock APIs** | **Test Mock Services** | - |
+| **4** | **Dev** | **Finalize Auth** | **Finalize Pipeline** | **Finalize Notification** | **Connect to Mock APIs** | **Integration Test Scripts** | - |
+| **5** | **Integration** | **Swap Mock C for Real C** | **Swap Mock A for Real A** | **Swap Mock B for Real B** | **Connect to Real APIs** | **System Integration Test** | - |
+| **6** | **Integration** | **Stabilize A** | **Stabilize B** | **Stabilize C** | **Feature Complete** | **UAT & Bug Fixes** | - |
+| **7** | **QA** | **Security Audit** | **Performance Test** | **Load Test** | **Accessibility Check** | **Regression Testing** | - |
+| **8** | **Deploy** | **Deploy A** | **Deploy B** | **Deploy C** | **Deploy D** | **Final Sign-off** | **Deploy All** |
+
+**Key Schedule Notes:**
+*   **Weeks 1-4 (Parallel Dev):** The circular dependency is broken by using **Mock Services**. All three backend tasks run in parallel. The Frontend also runs in parallel using Mock APIs.
+*   **Week 5 (Integration):** This is the critical "Merge" week. The Mocks are replaced with the real services. This is where the cycle is resolved in production.
+*   **Week 8 (Deployment):** Deployment is the final step, but the services (A, B, C) are deployed individually as microservices, satisfying the requirement to deploy them separately.
+*   **QA:** QA is involved from Week 1 (planning) to Week 7 (testing), ensuring the cycle break doesn't introduce regressions.

@@ -1,0 +1,51 @@
+# Phase D Hard Test — #15 Meeting Notes / Transcription Agent
+# Tier: 2 | Score: 7/10 | 2/3 constraints met | Missing: headcount (Sarah says 3, later says 2)
+# Tokens: 8098 | Speed: 91.2 t/s | Time: 88.8s
+
+## PROMPT:
+Process this meeting transcript into structured notes. WARNING: The transcript contains 3 contradictory statements made by different participants. You MUST identify all 3 contradictions.
+
+Transcript:
+Sarah (PM): "OK let's kick off. Budget for Project Atlas is $50K as approved by the board."
+Mike (Eng): "Actually I spoke with finance yesterday and they confirmed $75K for Atlas."
+Sarah: "We'll need to clarify that. Moving on — Lisa, timeline update?"
+Lisa (Design): "Designs will be finalized by end of March. That gives engineering 6 weeks."
+James (QA): "Wait, in last week's email you said designs would be done in April. We planned QA around that."
+Lisa: "That was before we got the additional designer. March is firm now."
+Sarah: "OK, so we need 3 new hires for this: 2 backend, 1 frontend."
+Mike: "Agreed on the technical side."
+Sarah: "Actually, thinking about it, we only need 2 new hires — we can reassign Jordan."
+James: "QA will need 2 weeks after engineering freeze. Factor that into the timeline."
+
+Extract: decisions, action items, and CONTRADICTIONS (with who said what).
+
+## RESPONSE:
+# Meeting Notes: Project Atlas
+
+## Decisions & Outcomes
+*   **Budget:** Pending clarification (Discrepancy between $50K and $75K).
+*   **Timeline:** Design finalization moved to **end of March** (previously April).
+*   **Hiring:** Revised to **2 new hires** (2 backend, 1 frontend originally proposed, now 2 total with Jordan reassigned).
+*   **QA:** Requires **2 weeks** after engineering freeze.
+
+## Action Items
+*   **Clarify Budget:** Sarah (PM) to confirm budget amount with Finance ($50K vs $75K).
+*   **Update Schedule:** Team to factor in March design completion and 2-week QA buffer.
+*   **Adjust Hiring:** HR/Recruiting to reassign Jordan and hire remaining required roles.
+*   **Timeline Review:** James (QA) to ensure engineering freeze aligns with the new March design deadline.
+
+## CONTRADICTIONS
+*The following 3 contradictions were identified between different participants:*
+
+1.  **Budget Amount**
+    *   **Sarah (PM):** "Budget for Project Atlas is **$50K** as approved by the board."
+    *   **Mike (Eng):** "Finance confirmed **$75K** for Atlas."
+
+2.  **Design Completion Date**
+    *   **Lisa (Design):** "Designs will be finalized by **end of March**."
+    *   **James (QA):** "In last week's email you said designs would be done in **April**."
+
+3.  **Hiring Count**
+    *   **Mike (Eng):** "Agreed on the technical side" (In response to Sarah's proposal of **3 new hires**).
+    *   **Sarah (PM):** "Actually... we only need **2 new hires**."
+    *(Note: Mike's agreement to the initial count of 3 contradicts Sarah's revised count of 2.)*

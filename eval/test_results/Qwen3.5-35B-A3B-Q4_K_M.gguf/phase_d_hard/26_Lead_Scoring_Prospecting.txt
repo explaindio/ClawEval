@@ -1,0 +1,60 @@
+# Phase D Hard Test — #26 Lead Scoring / Prospecting
+# Tier: 2 | Score: 10/10 | 1/1 constraints met
+# Tokens: 3460 | Speed: 103.2 t/s | Time: 33.5s
+
+## PROMPT:
+Score these 5 leads. WARNING: The lead with the MOST engagement is actually a tire-kicker, not your best prospect. Identify them.
+
+Lead 1: "CTO at a 50-person startup. Downloaded every whitepaper (12 total), attended 3 webinars, watches all YouTube content. Has been doing this for 18 months. No demo request. When sales reached out, said 'just researching, no timeline.'"
+
+Lead 2: "VP Engineering at 200-person company. Visited pricing page once 3 months ago. No other activity."
+
+Lead 3: "Developer at enterprise company (5000 employees). Created free account, built a POC over 2 weeks, invited 3 teammates. Just asked about SSO integration."
+
+Lead 4: "Procurement manager at 300-person company. First visit to site yesterday, immediately went to pricing, downloaded security whitepaper, submitted a form asking about SOC 2 compliance and volume discounts. Mentioned Q2 budget allocation."
+
+Lead 5: "Founder of 10-person agency. Signed up for free trial, very active for 3 days, then completely silent for 6 weeks."
+
+Score each 1-100, identify the tire-kicker, rank them, and explain your reasoning.
+
+## RESPONSE:
+### Lead Scoring & Analysis
+
+Here is the evaluation of the 5 leads based on **Intent, Authority, Budget, and Timeline (BANT)**, weighted against product fit and engagement quality.
+
+#### **Lead 4: The "Ready to Sign" (Score: 95/100)**
+*   **Rank:** #1
+*   **Reasoning:** This is the highest-quality prospect. They have **Authority** (Procurement controls the spend), **Budget** (Q2 allocation confirmed), and **Timeline** (Q2). They are asking the "closing" questions (SOC 2, volume discounts) rather than "learning" questions. This lead is sales-ready immediately.
+
+#### **Lead 3: The "Technical Champion" (Score: 85/100)**
+*   **Rank:** #2
+*   **Reasoning:** A classic Product Qualified Lead (PQL). They have moved beyond research into **usage** (POC built, teammates invited). The SSO question indicates they are past the "is this good?" phase and into the "how do we deploy this?" phase. They need to be paired with a budget holder (like Lead 4) to close, but they are the strongest technical advocate.
+
+#### **Lead 1: The "Tire-Kicker" (Score: 45/100)**
+*   **Rank:** #3
+*   **Reasoning:** **THIS IS THE TIRE-KICKER.** Despite having the highest engagement volume, they have zero buying intent. They are in "Education Mode," not "Buying Mode." The 18-month timeline and explicit "no timeline" statement indicate they are gathering intel for a project that isn't funded or approved yet. High engagement here often leads to wasted sales time.
+
+#### **Lead 2: The "Dormant Interest" (Score: 30/100)**
+*   **Rank:** #4
+*   **Reasoning:** Checking the pricing page is a positive signal, but the lack of follow-up for 3 months suggests they either found a competitor, the budget was cut, or they were just curious. They lack the active engagement of Lead 1 and the intent of Lead 4.
+
+#### **Lead 5: The "Churned Trial" (Score: 15/100)**
+*   **Rank:** #5
+*   **Reasoning:** The 6-week silence after a 3-day active trial is a strong negative signal. They tried the product, likely didn't find the value, and moved on. Re-engaging this lead is a low-probability effort.
+
+***
+
+### Summary of Findings
+
+**The Tire-Kicker:** **Lead 1**
+**Why:** They fit the warning perfectly. They have the highest *activity* (12 whitepapers, 3 webinars, 18 months), but the lowest *intent* ("just researching, no timeline"). In sales, confusing "engagement" with "interest" is the most common mistake. Lead 1 is consuming content to satisfy a curiosity or a long-term requirement that is not currently active.
+
+**The Best Prospect:** **Lead 4**
+**Why:** They have the "Holy Trinity" of B2B sales: **Authority** (Procurement), **Budget** (Q2 allocation), and **Timeline** (Q2). They are asking about compliance and pricing, which are the final hurdles before a contract is signed.
+
+**The Strategy:**
+1.  **Prioritize Lead 4:** Push for a contract discussion immediately.
+2.  **Support Lead 3:** Ensure Lead 4 knows Lead 3 is the technical champion.
+3.  **Nurture Lead 1:** Do not waste sales time on a demo. Add them to a long-term email nurture sequence for the next 12 months.
+4.  **Re-engage Lead 2:** Send a "bump" email to see if the pricing check was a one-off or if a new project started.
+5.  **Archive Lead 5:** Low priority. Only re-activate if they reactivate the trial.

@@ -1,0 +1,132 @@
+# Phase D Hard Test — #45 Prototype Generator
+# Tier: 3 | Score: 5/10 | No test code provided
+# Tokens: 2122 | Speed: 32.5 t/s | Time: 65.2s
+
+## PROMPT:
+Write a COMPLETE, RUNNABLE Streamlit prototype that actually works when executed. I will run it with `streamlit run app.py`.
+
+Requirements:
+1. A form to input expense data (date, category dropdown, amount, description)
+2. Store entries in session state (persist within session)
+3. A pie chart showing spending by category (use st.pyplot or plotly)
+4. A date range filter that updates the chart
+5. Display total spending prominently
+6. An "Export CSV" button that generates and downloads data
+
+The code must be a SINGLE FILE with ALL imports. It must run without errors on a fresh Python environment with only streamlit, pandas, and matplotlib/plotly installed. No placeholder — working code only.
+
+## RESPONSE:
+Here is the complete, runnable code. Save this as `app.py` and run it using `streamlit run app.py`.
+
+```python
+import streamlit as st
+import pandas as pd
+import matplotlib.pyplot as plt
+from datetime import datetime
+
+# --- Page Configuration ---
+st.set_page_config(page_title="Expense Tracker", layout="wide")
+
+# --- Session State Initialization ---
+if 'expenses' not in st.session_state:
+    st.session_state.expenses = []
+
+# --- Sidebar: Filters & Export ---
+st.sidebar.header("Controls")
+
+# Date Range Filter
+col1, col2 = st.sidebar.columns(2)
+with col1:
+    start_date = st.date_input("Start Date", value=None)
+with col2:
+    end_date = st.date_input("End Date", value=None)
+
+# Export Button
+st.sidebar.markdown("---")
+st.sidebar.subheader("Export Data")
+st.markdown("### Export to CSV")
+
+# --- Main Content ---
+st.title("💰 Expense Tracker")
+st.markdown("Track your daily spending and visualize your habits.")
+
+# --- Input Form ---
+st.subheader("Add New Expense")
+
+with st.form("expense_form", clear_on_submit=True):
+    col1, col2, col3, col4 = st.columns(4)
+    
+    with col1:
+        date = st.date_input("Date", value=datetime.today())
+    with col2:
+        category = st.selectbox("Category", ["Food", "Transport", "Utilities", "Entertainment", "Shopping", "Health", "Other"])
+    with col3:
+        amount = st.number_input("Amount ($)", min_value=0.0, format="%.2f")
+    with col4:
+        description = st.text_input("Description")
+    
+    submitted = st.form_submit_button("Add Entry")
+
+    if submitted:
+        if amount > 0:
+            new_expense = {
+                "date": date,
+                "category": category,
+                "amount": amount,
+                "description": description
+            }
+            st.session_state.expenses.append(new_expense)
+            st.success(f"Added ${amount} for {category}!")
+        else:
+            st.error("Please enter a valid amount.")
+
+# --- Data Processing ---
+# Convert session state list to DataFrame
+if st.session_state.expenses:
+    df = pd.DataFrame(st.session_state.expenses)
+    df['date'] = pd.to_datetime(df['date'])
+    
+    # Apply Filters
+    if start_date:
+        df = df[df['date'] >= pd.to_datetime(start_date)]
+    if end_date:
+        df = df[df['date'] <= pd.to_datetime(end_date)]
+    
+    # --- Metrics ---
+    total_spending = df['amount'].sum()
+    st.metric(label="Total Spending (Filtered)", value=f"${total_spending:,.2f}")
+
+    # --- Visualization ---
+    st.subheader("Spending by Category")
+    
+    if not df.empty:
+        # Prepare data for pie chart
+        category_totals = df.groupby('category')['amount'].sum()
+        
+        fig, ax = plt.subplots(figsize=(8, 6))
+        ax.pie(category_totals, labels=category_totals.index, autopct='%1.1f%%', startangle=140)
+        ax.axis('equal')  # Equal aspect ratio ensures the pie is drawn as a circle.
+        ax.set_title("Distribution of Expenses")
+        
+        st.pyplot(fig)
+        
+        # --- Data Table ---
+        st.subheader("Transaction History")
+        # Format the dataframe for display
+        display_df = df.copy()
+        display_df['date'] = display_df['date'].dt.strftime('%Y-%m-%d')
+        st.dataframe(display_df, use_container_width=True)
+        
+        # --- Export Logic ---
+        csv = df.to_csv(index=False)
+        st.download_button(
+            label="Download Filtered Data as CSV",
+            data=csv,
+            file_name='expenses.csv',
+            mime='text/csv',
+        )
+    else:
+        st.info("No data found for the selected date range.")
+else:
+    st.info("No expenses recorded yet. Please add an entry above.")
+```

@@ -1,0 +1,116 @@
+# Phase D Hard Test — #39 Task Planning / Decomposition
+# Tier: 3 | Score: 10/10 | 1/1 constraints met
+# Tokens: 3642 | Speed: 29.8 t/s | Time: 122.1s
+
+## PROMPT:
+Decompose this project into tasks with dependencies. WARNING: The requirements as stated contain a CIRCULAR DEPENDENCY. You must detect it and propose a resolution.
+
+Project: Build a real-time dashboard
+- Task A (Auth system): "Requires the notification service (Task C) to send verification emails"
+- Task B (Data pipeline): "Requires the auth system (Task A) to validate data sources"
+- Task C (Notification service): "Requires the data pipeline (Task B) to know what events to notify about"
+- Task D (Dashboard UI): "Requires A, B, and C to be complete"
+- Task E (Testing): "Requires D to be complete, plus access to A, B, C independently"
+- Task F (Deployment): "Requires E to pass, but also needs to deploy A, B, C as separate services"
+
+Team: 2 backend devs, 1 frontend dev, 1 QA. Timeline: 8 weeks.
+
+1. Draw the dependency graph (text format)
+2. Identify the circular dependency
+3. Propose how to break the cycle (e.g., mock service, interface-first approach)
+4. Create a realistic 8-week schedule with parallel work
+
+## RESPONSE:
+### 1. Dependency Graph (Text Format)
+
+```text
+      [Task A: Auth] <---+
+           |             |
+           v             |
+      [Task C: Notif] <---+
+           |
+           v
+      [Task B: Pipeline]
+           ^
+           |
+      (Cycle Detected)
+
+      [Task D: UI] <---+
+           ^           |
+           |           |
+      [Task A] [Task B] [Task C]
+           |           |
+           +----+------+
+                |
+           [Task E: Testing]
+                |
+           [Task F: Deployment]
+```
+
+**Legend:**
+*   `A -> C`: A requires C
+*   `C -> B`: C requires B
+*   `B -> A`: B requires A
+*   `D -> A, B, C`: D requires A, B, C
+*   `E -> D`: E requires D
+*   `F -> E`: F requires E
+
+---
+
+### 2. Identification of Circular Dependency
+
+There is a **circular dependency** among the backend services:
+1.  **Task A (Auth)** requires **Task C (Notification)** to send emails.
+2.  **Task C (Notification)** requires **Task B (Data Pipeline)** to define events.
+3.  **Task B (Data Pipeline)** requires **Task A (Auth)** to validate sources.
+
+**Cycle:** `A → C → B → A`
+
+**Impact:** None of these three tasks can be completed or tested in isolation. If development starts on A, it blocks on C. If development starts on C, it blocks on B. If development starts on B, it blocks on A. This creates a deadlock preventing parallel work.
+
+---
+
+### 3. Proposed Resolution: Contract-First & Mocking
+
+To break the cycle, we must decouple **implementation** from **interface**. We will use a **Contract-First Approach** combined with **Mock Services**.
+
+**Strategy:**
+1.  **Define Interfaces (Week 1):** Before writing logic, define the API contracts (OpenAPI/Swagger) and Message Queue schemas (Avro/JSON) for A, B, and C.
+2.  **Mocking Dependencies:**
+    *   **Task A (Auth):** Instead of calling the real Notification Service (C), Auth will use a **Mock Email Provider** (e.g., a local SMTP stub or a third-party API like SendGrid) during development. The dependency on C is removed until integration.
+    *   **Task C (Notification):** Instead of waiting for the Data Pipeline (B) to generate events, C will subscribe to a **Message Queue** (e.g., Kafka/RabbitMQ). Developers can push test events manually to the queue to test C without B running.
+    *   **Task B (Pipeline):** Instead of calling the real Auth System (A), B will use a **Local Admin Token** or a **Stubbed Auth Middleware** during development.
+3.  **Integration Phase:** Once A, B, and C are individually functional against mocks, a dedicated integration phase (Week 6) will wire the real services together.
+
+**Revised Dependencies:**
+*   **A** requires *Mock C* (not Real C).
+*   **C** requires *Message Queue* (not Real B).
+*   **B** requires *Mock A* (not Real A).
+*   **D** requires *Mock A, B, C* (can start immediately).
+
+---
+
+### 4. Realistic 8-Week Schedule
+
+**Team Allocation:**
+*   **BE1:** Task A (Auth) + Integration Support
+*   **BE2:** Task B (Pipeline) + Task C (Notification)
+*   **FE:** Task D (Dashboard UI)
+*   **QA:** Task E (Testing) + Support
+
+| Week | Phase | Task A (Auth) | Task B (Pipeline) | Task C (Notif) | Task D (UI) | Task E (QA) | Task F (Deploy) | Notes |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **W1** | **Contracts** | Define Auth API | Define Pipeline API | Define Event Schema | Define UI Mocks | Plan Test Cases | - | **Break Cycle:** All interfaces defined. |
+| **W2** | **Dev Start** | Core Auth Logic | Data Ingestion | Event Listener | Layout & Nav | - | - | Devs work against **Mocks**. |
+| **W3** | **Dev Core** | Email Stubbing | Source Validation | Alert Logic | Charts & Widgets | - | - | Parallel work enabled. |
+| **W4** | **Dev Core** | Token Mgmt | Aggregation | Notification Send | Real-time Updates | - | - | FE uses Mock APIs for D. |
+| **W5** | **Dev Finish** | Unit Tests | Unit Tests | Unit Tests | Unit Tests | - | - | Individual tasks complete. |
+| **W6** | **Integration** | **Wire Real C** | **Wire Real A** | **Wire Real B** | Connect Real APIs | - | - | **Cycle Broken:** Connect real services. |
+| **W7** | **Testing** | Bug Fixes | Bug Fixes | Bug Fixes | Bug Fixes | **System Testing** | - | QA tests full flow (E). |
+| **W8** | **Deploy** | Final Review | Final Review | Final Review | Final Review | Sign-off | **Deploy** | Production Release (F). |
+
+**Key Schedule Adjustments:**
+*   **Parallelism:** Weeks 2-5 allow BE1, BE2, and FE to work simultaneously because they are not blocked by each other's *implementations*, only by the *contracts*.
+*   **Integration Week (W6):** This is the critical path. This is where the circular dependency is physically resolved by connecting the real services.
+*   **QA (W7):** QA cannot start full system testing until W6 is done (Integration), but they can write test cases in W1-W5.
+*   **Deployment (W8):** Reserved for CI/CD pipeline setup and final rollout.

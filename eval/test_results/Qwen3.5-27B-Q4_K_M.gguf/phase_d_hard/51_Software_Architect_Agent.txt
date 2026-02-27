@@ -1,0 +1,154 @@
+# Phase D Hard Test — #51 Software Architect Agent
+# Tier: 5 | Score: 10/10 | 4/4 constraints met
+# Tokens: 6011 | Speed: 26.6 t/s | Time: 225.7s
+
+## PROMPT:
+Design a system architecture. WARNING: The requirements contain 3 CONTRADICTORY pairs. You must identify them and propose tradeoffs instead of pretending all requirements can be met simultaneously.
+
+Requirements:
+1. Process 50,000 events per second in real-time (< 100ms latency)
+2. Also support batch processing of historical data (millions of records)
+3. Zero downtime during deployments AND database schema migrations
+4. Store data in a strongly consistent SQL database with ACID transactions
+5. Horizontally scale to handle 10x traffic spikes within 30 seconds
+6. Multi-region deployment with data residency compliance (EU data stays in EU)
+7. Total infrastructure cost under $5,000/month at current scale
+8. 99.999% availability (five nines = ~5 minutes downtime/year)
+
+For each contradictory pair:
+1. Explain WHY they conflict
+2. Propose a compromise or phased approach
+3. What would you prioritize and why?
+
+Then provide the architecture diagram (text format) with the tradeoffs built in.
+
+## RESPONSE:
+### System Architecture Analysis & Tradeoff Report
+
+It is technically and economically impossible to satisfy all 8 requirements simultaneously. The constraints form an "Impossible Triangle" involving **Cost**, **Availability**, and **Performance/Consistency**. Below are the three primary contradictory pairs identified, followed by the proposed architecture that resolves these conflicts through prioritization.
+
+---
+
+### Contradictory Pair 1: Cost ($5k/mo) vs. 5 Nines Availability + Multi-region + High Scale
+**Requirements:** 7 (Cost), 8 (99.999% Availability), 6 (Multi-region), 5 (10x Scale).
+
+1.  **Why they conflict:**
+    *   **Economic Reality:** Achieving 99.999% availability ("Five Nines") requires an Active-Active Multi-Region architecture with automatic failover. This effectively doubles or triples infrastructure costs (compute, storage, networking).
+    *   **Scale Cost:** Processing 50,000 events per second (EPS) requires significant compute resources. Handling a 10x spike (500k EPS) requires over-provisioning or aggressive auto-scaling.
+    *   **The Math:** $5,000/month is approximately $166/day. To support 50k EPS with 5 Nines redundancy across multiple regions, the minimum infrastructure cost (managed DB, load balancers, compute instances, data transfer) typically exceeds $15,000–$20,000/month.
+
+2.  **Proposed Compromise:**
+    *   **Reduce Availability:** Target **99.9% (Three Nines)** instead of 99.999%. This allows for planned maintenance windows and reduces the need for complex Active-Active failover logic.
+    *   **Single Region (EU):** Deploy primarily in the EU region to satisfy Data Residency (Req 6). Use Multi-AZ (Availability Zones) within that region for redundancy, rather than Multi-Region.
+    *   **Scale Strategy:** Use serverless compute (e.g., AWS Lambda/Knative) for the 10x spikes to pay only for usage, rather than maintaining idle capacity.
+
+3.  **Priority:**
+    *   **Prioritize Cost & Data Residency.**
+    *   **Reason:** Budget is a hard constraint. If the system costs $20k/mo, the project fails immediately. Data Residency is a legal requirement. Availability can be negotiated to 99.9% (43 mins downtime/year), which is acceptable for most non-critical applications.
+
+---
+
+### Contradictory Pair 2: Strong Consistency (ACID) vs. Multi-region + <100ms Latency
+**Requirements:** 4 (Strongly Consistent SQL), 6 (Multi-region), 1 (<100ms Latency).
+
+1.  **Why they conflict:**
+    *   **CAP Theorem:** In a distributed system, you can only guarantee two of three: Consistency, Availability, and Partition Tolerance.
+    *   **Physics:** To maintain Strong Consistency across regions (e.g., EU and US), every write must propagate to all regions before confirming. The speed of light introduces ~60ms+ latency for cross-Atlantic round trips.
+    *   **Latency Budget:** If the network latency alone consumes 60ms, there is only 40ms left for processing, serialization, and database I/O. This makes <100ms end-to-end latency virtually impossible to guarantee consistently during network hiccups.
+
+2.  **Proposed Compromise:**
+    *   **Regional Strong Consistency:** Enforce ACID transactions **only within the primary EU region**.
+    *   **Eventual Consistency for Cross-Region:** If other regions are needed for read scaling, use asynchronous replication. Users outside the EU will see eventual consistency (data may be seconds/minutes old).
+    *   **Read-Local, Write-EU:** Route all writes to the EU region. Route reads to the nearest region, accepting that they might not see the very latest write immediately.
+
+3.  **Priority:**
+    *   **Prioritize Latency & Data Residency.**
+    *   **Reason:** Real-time processing (<100ms) is a core functional requirement. Data Residency is legal. Strong Consistency can be relaxed for read operations outside the primary region without breaking the core business logic.
+
+---
+
+### Contradictory Pair 3: Zero Downtime Migrations vs. ACID Schema Changes
+**Requirements:** 3 (Zero Downtime), 4 (ACID SQL).
+
+1.  **Why they conflict:**
+    *   **Locking:** ACID databases often require table locks or exclusive locks during schema migrations (e.g., adding a `NOT NULL` column, changing data types, or adding indexes on large tables).
+    *   **Blocking:** These locks block read/write operations, violating the "Zero Downtime" requirement for the API layer.
+    *   **Backfilling:** Migrating data in-place on a high-throughput system (50k EPS) degrades performance significantly, risking latency SLAs.
+
+2.  **Proposed Compromise:**
+    *   **Expand/Contract Pattern:** Do not modify the existing table directly.
+        1.  **Expand:** Create a new table/column structure.
+        2.  **Dual Write:** Update the application to write to both old and new schemas.
+        3.  **Backfill:** Copy historical data in the background (low priority).
+        4.  **Contract:** Switch reads to the new schema, then drop the old one.
+    *   **Acceptance:** "Zero Downtime" applies to the **API**, not the **Database**. The DB may experience temporary load, but the system remains available.
+
+3.  **Priority:**
+    *   **Prioritize Zero Downtime for Users.**
+    *   **Reason:** Users cannot tolerate API outages. Database internal locking is an implementation detail that can be managed via the Expand/Contract pattern, even if it takes longer to complete.
+
+---
+
+### Proposed System Architecture
+
+**Design Philosophy:** Cost-Optimized, Single-Region (EU) Primary, Eventual Consistency for Analytics.
+
+```text
+[ CLIENTS ] (Global)
+      |
+      +---> [ CDN / Edge Cache ] (CloudFront/Cloudflare)
+      |       (Static Assets, Read-Through Cache)
+      |
+      +---> [ API Gateway / Load Balancer ] (EU Region Only)
+      |       (Rate Limiting, Auth, SSL Termination)
+      |
+      +---> [ Application Layer ] (Kubernetes / Serverless)
+      |       (Auto-scaling Group: Min 2, Max 50)
+      |       |
+      |       +---> [ Real-Time Processor ] (Flink / Kinesis Data Streams)
+      |       |       (Handles 50k EPS, <100ms logic)
+      |       |
+      |       +---> [ Batch Processor ] (Spark / EMR)
+      |               (Runs on schedule, separate cluster)
+      |
+      +---> [ Message Queue ] (Kafka / SQS)
+              (Decouples Ingestion from Processing)
+              |
+              +---> [ Primary Data Store ] (PostgreSQL - EU Region)
+                      (Multi-AZ for HA, NOT Multi-Region)
+                      (ACID Transactions, Strong Consistency)
+                      |
+                      +---> [ Analytics Store ] (Data Warehouse / S3)
+                              (Async Replication from Primary)
+                              (Eventual Consistency, Batch Processing)
+```
+
+### Key Tradeoffs Implemented in Diagram
+
+1.  **Single Region (EU):**
+    *   *Satisfies:* Req 6 (Data Residency), Req 7 (Cost).
+    *   *Violates:* Req 6 (Multi-region deployment), Req 8 (5 Nines).
+    *   *Mitigation:* Uses Multi-AZ (Availability Zones) within EU for High Availability (99.9%).
+
+2.  **Asynchronous Analytics:**
+    *   *Satisfies:* Req 2 (Batch Processing), Req 4 (ACID for Primary).
+    *   *Violates:* Req 4 (Strong Consistency for Analytics).
+    *   *Mitigation:* Analytics data is eventually consistent. Real-time data goes to SQL; historical aggregation goes to Warehouse/S3.
+
+3.  **Serverless/Container Scaling:**
+    *   *Satisfies:* Req 5 (10x Scale), Req 7 (Cost).
+    *   *Violates:* Req 8 (5 Nines).
+    *   *Mitigation:* Auto-scaling handles spikes. Cold-start latency is managed via provisioned concurrency.
+
+4.  **Expand/Contract Migrations:**
+    *   *Satisfies:* Req 3 (Zero Downtime API).
+    *   *Violates:* Req 4 (Strict ACID during migration window).
+    *   *Mitigation:* Schema changes happen in parallel with dual-writes to ensure no user-facing downtime.
+
+### Final Cost & Performance Estimate
+*   **Compute:** ~$1,500/mo (Kubernetes/Serverless mix).
+*   **Database:** ~$2,000/mo (Managed PostgreSQL, Multi-AZ, High IOPS).
+*   **Storage/Network:** ~$1,000/mo (S3, Data Transfer, Kafka).
+*   **Total:** ~$4,500/mo (Fits within $5k budget).
+*   **Availability:** 99.9% (3 Nines) - ~8.7 hours downtime/year.
+*   **Latency:** <100ms (EU Users), >200ms (Non-EU Users).

@@ -1,0 +1,87 @@
+# Phase D Hard Test — #48 STEM Analysis
+# Tier: 4 | Score: 10/10 | 2/2 constraints met
+# Tokens: 1337 | Speed: 32.7 t/s | Time: 40.9s
+
+## PROMPT:
+Analyze this experimental data. There's a CONFOUNDING VARIABLE that invalidates the researcher's conclusion. Find it.
+
+Experiment: Testing whether a new fertilizer increases crop yield.
+
+Group A (fertilizer): 20 plots, avg yield 8.2 tons/hectare, std dev 1.1
+Group B (control): 20 plots, avg yield 6.4 tons/hectare, std dev 1.3
+
+Researcher's conclusion: "The fertilizer increased yield by 28% (p < 0.01). The fertilizer clearly works."
+
+Hidden data (not in the paper's abstract):
+- Group A plots: southern slope, clay soil, received 20% more sunlight in May
+- Group B plots: northern slope, sandy soil
+- The study was not randomized — farmers who CHOSE the fertilizer happened to own the better plots
+- 3 of the 20 control plots had a pest outbreak mid-season
+
+Questions:
+1. Is the p-value meaningful given the experimental design? Why or why not?
+2. List ALL confounding variables
+3. What type of bias is present? (selection bias, measurement bias, etc.)
+4. Design a proper experiment that would actually test the fertilizer
+5. Calculate: IF we remove the 3 pest-affected plots, what is the new control average? (remaining 17 plots had avg 7.1 tons) Does this change the conclusion?
+
+## RESPONSE:
+Here is the analysis of the experimental data and the identification of the flaws in the researcher's conclusion.
+
+### 1. Is the p-value meaningful given the experimental design?
+**No, the p-value is not meaningful.**
+
+*   **Reasoning:** A p-value assumes that the only systematic difference between the two groups is the independent variable (the fertilizer) and that the groups are comparable (exchangeable).
+*   **The Flaw:** Because the study was **not randomized** and the farmers *chose* which plots received the fertilizer, the groups differ systematically in multiple ways (soil type, slope, sunlight) before the experiment even began.
+*   **Result:** The statistical test calculates the probability of seeing this difference *if* the fertilizer had no effect and the groups were identical. Since the groups are not identical, the p-value is calculating the probability of a difference caused by a mix of fertilizer, soil, slope, and sunlight. Therefore, the $p < 0.01$ is statistically valid for the *data provided* but logically invalid for the *conclusion drawn*. It is a "statistically significant" result of a biased design.
+
+### 2. List ALL Confounding Variables
+A confounding variable is an extraneous factor that correlates with both the independent variable (fertilizer use) and the dependent variable (crop yield), making it impossible to isolate the effect of the fertilizer.
+
+1.  **Soil Type:** Group A has clay soil (often retains more water/nutrients) vs. Group B's sandy soil (drains quickly, often less fertile).
+2.  **Slope/Orientation:** Group A is on a southern slope (warmer, better drainage in some contexts, different microclimate) vs. Group B on a northern slope.
+3.  **Sunlight Exposure:** Group A received 20% more sunlight in May (critical for photosynthesis and early growth).
+4.  **Farmer Selection/Management:** The farmers who chose the fertilizer likely have higher motivation, better management skills, or more resources, leading to better care overall (the "better plots" comment implies this).
+5.  **Pest Outbreaks:** The control group suffered a specific negative event (pests) that the treatment group did not, artificially depressing the control average.
+
+### 3. What type of bias is present?
+The primary bias is **Selection Bias** (specifically, **Self-Selection Bias**).
+
+*   **Explanation:** The assignment of the treatment (fertilizer) was not random. The farmers selected the plots based on their perceived quality ("better plots"). This created a non-representative sample where the treatment group started with a distinct advantage unrelated to the fertilizer itself.
+*   **Secondary Bias:** There is also **History Bias** (an external event, the pest outbreak, affected only one group during the study period).
+
+### 4. Design a Proper Experiment
+To validly test the fertilizer, the experiment must isolate the fertilizer as the *only* variable.
+
+**Proposed Design: Randomized Controlled Trial (RCT)**
+1.  **Site Selection:** Select a large field or multiple fields with uniform soil type and slope characteristics.
+2.  **Randomization:** Divide the area into 40 plots of equal size. Use a random number generator to assign 20 plots to **Group A (Fertilizer)** and 20 plots to **Group B (Control)**.
+    *   *Crucial Step:* Ensure the assignment is done by a third party or a computer algorithm, not by the farmers.
+3.  **Blocking (Optional but recommended):** If the field has a known gradient (e.g., wetter at the bottom), use a **Randomized Block Design**. Divide the field into blocks of similar soil/slope, then randomize fertilizer vs. control *within* each block.
+4.  **Standardization:**
+    *   Apply identical amounts of water, pest control, and labor to all plots.
+    *   Ensure the "Control" group receives a placebo (e.g., watered soil without fertilizer) to blind the farmers if possible, preventing them from treating the "fertilizer" plots with extra care.
+5.  **Replication:** Repeat the experiment over multiple seasons or in different locations to ensure the results are generalizable.
+6.  **Analysis:** Compare the mean yields using a t-test, now that the assumption of group equivalence is met.
+
+### 5. Calculation and Conclusion Change
+
+**Scenario:** Remove the 3 pest-affected plots from Group B.
+*   **Original Group B:** 20 plots, Avg = 6.4 tons.
+*   **New Group B:** 17 plots, Avg = 7.1 tons.
+*   **Group A:** 20 plots, Avg = 8.2 tons.
+
+**New Comparison:**
+*   **Group A (Fertilizer):** 8.2 tons
+*   **Group B (Control - Cleaned):** 7.1 tons
+*   **New Difference:** $8.2 - 7.1 = 1.1$ tons.
+*   **New Percentage Increase:** $(1.1 / 7.1) \times 100 \approx 15.5\%$.
+
+**Does this change the conclusion?**
+**Yes, significantly.**
+
+1.  **Magnitude of Effect:** The claimed benefit drops from **28%** to **15.5%**. While still positive, the economic viability of the fertilizer might change drastically depending on the cost of the fertilizer.
+2.  **Validity:** Even with the pest plots removed, the conclusion remains **invalid** because the other confounding variables (Soil, Slope, Sunlight, Selection Bias) are still present.
+    *   The remaining 17 control plots are still on the "Northern slope" with "Sandy soil" and less sunlight.
+    *   The 15.5% difference is likely still largely due to the superior natural conditions of Group A, not the fertilizer.
+    *   **Final Verdict:** Removing the pest plots makes the data *cleaner* regarding the pest variable, but it does **not** fix the fundamental flaw of the non-randomized design. The researcher cannot claim the fertilizer works based on this data alone.

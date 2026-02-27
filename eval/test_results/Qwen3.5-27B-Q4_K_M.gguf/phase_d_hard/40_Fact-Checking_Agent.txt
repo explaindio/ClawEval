@@ -1,0 +1,71 @@
+# Phase D Hard Test — #40 Fact-Checking Agent
+# Tier: 3 | Score: 0/10 | 0/8 correct | Missing: #1: expected 'misleading'; #2: expected 'false'; #3: expected 'true'; #4: expected 'false'; #5: expected 'true'; #6: expected 'misleading'; #7: expected 'false'; #8: expected 'true'
+# Tokens: 4793 | Speed: 29.9 t/s | Time: 160.5s
+
+## PROMPT:
+Fact-check these 8 statements. They mix true facts, false facts, and MISLEADING statements (technically true but deceptive). Classify each as true/false/misleading. Respond with JSON.
+
+1. "Humans share 60% of their DNA with bananas" (TRUE percentage, but is the framing misleading?)
+2. "The Great Wall of China is visible from space with the naked eye"
+3. "Octopuses have three hearts"
+4. "Thomas Edison invented the light bulb"
+5. "Water can boil and freeze at the same time (triple point)"
+6. "You eat an average of 8 spiders per year in your sleep"
+7. "Goldfish have a 3-second memory"
+8. "Honey never spoils — edible honey has been found in Egyptian tombs"
+
+For each: verdict (true/false/misleading), explanation, and confidence level.
+
+## RESPONSE:
+{
+  "fact_check_results": [
+    {
+      "statement": "Humans share 60% of their DNA with bananas",
+      "verdict": "misleading",
+      "explanation": "While humans and bananas share homologous genes involved in basic cellular functions, the '60% of DNA' figure is an oversimplification. It typically refers to specific gene sequences rather than the entire genome, and the actual percentage varies by study (often cited as 50%). The framing exaggerates the genetic similarity.",
+      "confidence": 0.90
+    },
+    {
+      "statement": "The Great Wall of China is visible from space with the naked eye",
+      "verdict": "false",
+      "explanation": "This is a common myth. The Wall is too narrow and blends with the surrounding terrain. Astronauts in low Earth orbit have confirmed it is generally not visible to the naked eye without aid.",
+      "confidence": 0.98
+    },
+    {
+      "statement": "Octopuses have three hearts",
+      "verdict": "true",
+      "explanation": "Octopuses possess three hearts: two branchial hearts pump blood to the gills, and one systemic heart pumps blood to the rest of the body.",
+      "confidence": 0.99
+    },
+    {
+      "statement": "Thomas Edison invented the light bulb",
+      "verdict": "misleading",
+      "explanation": "Edison did not invent the first light bulb; predecessors like Humphry Davy and Joseph Swan created earlier versions. Edison developed the first commercially practical incandescent bulb, but claiming he 'invented' it erases prior contributions.",
+      "confidence": 0.95
+    },
+    {
+      "statement": "Water can boil and freeze at the same time (triple point)",
+      "verdict": "true",
+      "explanation": "Under specific low-pressure conditions (often demonstrated in a vacuum chamber), water boils due to low pressure and freezes due to evaporative cooling. While the 'triple point' refers to equilibrium of all three phases, the simultaneous boiling and freezing phenomenon is scientifically valid.",
+      "confidence": 0.95
+    },
+    {
+      "statement": "You eat an average of 8 spiders per year in your sleep",
+      "verdict": "false",
+      "explanation": "This is an internet myth with no scientific basis. Spiders generally avoid humans, and there is no evidence supporting the claim that people swallow spiders in their sleep.",
+      "confidence": 0.99
+    },
+    {
+      "statement": "Goldfish have a 3-second memory",
+      "verdict": "false",
+      "explanation": "Scientific studies demonstrate goldfish can remember information for months, recognize faces, and learn complex tasks. The 3-second memory claim is a debunked myth.",
+      "confidence": 0.98
+    },
+    {
+      "statement": "Honey never spoils — edible honey has been found in Egyptian tombs",
+      "verdict": "true",
+      "explanation": "Due to low moisture content, acidity, and hydrogen peroxide production, honey is resistant to bacterial growth. Archaeologists have indeed found edible honey in ancient Egyptian tombs dating back thousands of years.",
+      "confidence": 0.97
+    }
+  ]
+}

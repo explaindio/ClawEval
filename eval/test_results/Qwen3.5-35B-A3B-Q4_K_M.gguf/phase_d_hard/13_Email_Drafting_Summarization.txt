@@ -1,0 +1,37 @@
+# Phase D Hard Test — #13 Email Drafting / Summarization
+# Tier: 2 | Score: 5/10 | No automated constraints to check
+# Tokens: 6059 | Speed: 85.9 t/s | Time: 70.5s
+
+## PROMPT:
+Prioritize these 8 emails. WARNING: 2 emails have HIDDEN urgency clues buried in the text that change their priority. Read carefully.
+
+1. Subject: "Team lunch Friday" — "Hey, let's do Thai food this week!"
+2. Subject: "Quick question" — "The board presentation is tomorrow and slide 14 has last quarter's numbers instead of this quarter's. Can someone fix?"
+3. Subject: "FYI - vendor update" — "Just letting you know Acme renewed. PS: They mentioned in passing that they're evaluating competitors and their contract has a 30-day termination clause that activates next week."
+4. Subject: "URGENT: Office supplies" — "We're running low on printer paper!!!!"
+5. Subject: "Re: Project timeline" — "Looks good, no changes needed from my end."
+6. Subject: "Meeting notes from Tuesday" — "Attached are the notes. Also, I noticed during the meeting that the CFO mentioned they're freezing all new hires starting Monday — might affect our expansion plans."
+7. Subject: "Newsletter subscription" — "Thanks for subscribing to TechDigest!"
+8. Subject: "Parking lot maintenance" — "Lot B will be closed Saturday for restriping."
+
+Rank P1-P4. Explain the hidden urgency in the emails where it exists.
+
+## RESPONSE:
+**P1: Email 2** ("Quick question" — Board presentation error)
+**P2: Email 6** ("Meeting notes from Tuesday" — Hiring freeze)
+**P3: Email 3** ("FYI - vendor update" — Contract termination risk)
+**P4: Email 4** ("URGENT: Office supplies" — Printer paper)
+
+### Explanation of Hidden Urgency
+
+Two emails contain **hidden urgency clues** buried within their text that elevate them from routine updates to critical priorities:
+
+1.  **Email 6 (P2):** The subject line ("Meeting notes") and opening ("Attached are the notes") suggest a routine, read-only communication. However, the **hidden urgency** is buried in the second sentence: *"the CFO mentioned they're freezing all new hires starting Monday."* This is a critical strategic decision impacting expansion plans with an immediate deadline (Monday), requiring immediate review of hiring pipelines.
+2.  **Email 3 (P3):** The subject line ("FYI") and opening ("Just letting you know Acme renewed") suggest a low-priority administrative update. However, the **hidden urgency** is in the PS: *"their contract has a 30-day termination clause that activates next week."* This indicates a significant business risk where a key vendor could leave or renegotiate terms very soon, requiring immediate retention or contingency action.
+
+**Ranking Logic:**
+*   **P1 (Email 2):** Immediate deadline ("tomorrow") with high-stakes consequences (Board presentation with wrong data).
+*   **P2 (Email 6):** Strategic impact with a near-term deadline ("Monday").
+*   **P3 (Email 3):** Strategic risk with a short-term deadline ("next week").
+*   **P4 (Email 4):** Operational necessity marked "URGENT" in the subject, but lower business impact than the strategic risks above.
+*   **Emails 1, 5, 7, 8:** Lower priority (Social, Confirmation, Automated, Future Notice).

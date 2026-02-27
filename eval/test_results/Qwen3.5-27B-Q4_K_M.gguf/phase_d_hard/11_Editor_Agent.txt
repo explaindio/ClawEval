@@ -1,0 +1,70 @@
+# Phase D Hard Test — #11 Editor Agent
+# Tier: 2 | Score: 5/10 | No automated constraints to check
+# Tokens: 15049 | Speed: 26.6 t/s | Time: 565.4s
+
+## PROMPT:
+This 200-word text contains EXACTLY 15 errors across 4 categories: grammar (5), factual (3), logical (3), and style (4). Find ALL 15.
+
+"The Eiffel Tower, located in Berlin, Germany, was completed in 1889 for the World's Fair. Standing at 1,063 feet tall, their the tallest structure in Europe. The tower was designed by Alexander Eiffel, who also helped designed the Statue of Liberty's internal framework.
+
+Every year, approximately 7 million visitors visits the tower making it the most visited paid monument in the world. The tower has three levels, with restaurants on the first and second levels. Visitors can chose to take the stairs (a total of 1,665 steps to the top) or use the elevators.
+
+Interestingly, the tower was originally intended to be temporary and was suppose to be dismantled after 20 years. However, it was saved because it proved valuable for radio transmissions. If the tower was built today, it would cost approximately $40 million — quite affordable for a city like Berlin.
+
+The tower shrinks by 6 inches in winter due to thermal contraction — despite the fact that metal expands in cold temperatures. It is painted every 7 years using 60 tons of paint, and have been 18 different colors throughout its history."
+
+List each error with: category, location, what's wrong, and the correction.
+
+## RESPONSE:
+**Grammar (5)**
+1.  **Location:** Sentence 2 ("their the tallest")
+    *   **What's wrong:** Incorrect pronoun/contraction.
+    *   **Correction:** "it's" (or "it is")
+2.  **Location:** Sentence 3 ("helped designed")
+    *   **What's wrong:** Incorrect verb form after "helped".
+    *   **Correction:** "helped design"
+3.  **Location:** Sentence 4 ("visitors visits")
+    *   **What's wrong:** Subject-verb agreement error.
+    *   **Correction:** "visitors visit"
+4.  **Location:** Sentence 6 ("can chose")
+    *   **What's wrong:** Incorrect verb tense/form.
+    *   **Correction:** "can choose"
+5.  **Location:** Sentence 7 ("was suppose")
+    *   **What's wrong:** Incorrect participle form.
+    *   **Correction:** "was supposed"
+
+**Factual (3)**
+6.  **Location:** Sentence 1 ("located in Berlin, Germany")
+    *   **What's wrong:** Incorrect location.
+    *   **Correction:** "located in Paris, France"
+7.  **Location:** Sentence 3 ("Alexander Eiffel")
+    *   **What's wrong:** Incorrect designer's name.
+    *   **Correction:** "Gustave Eiffel"
+8.  **Location:** Sentence 6 ("1,665 steps")
+    *   **What's wrong:** Incorrect number of steps to the top.
+    *   **Correction:** "674 steps"
+
+**Logical (3)**
+9.  **Location:** Sentence 2 ("tallest structure in Europe")
+    *   **What's wrong:** Contradicts current reality (Ostankino Tower is taller).
+    *   **Correction:** "one of the tallest structures" or remove claim.
+10. **Location:** Sentence 9 ("city like Berlin")
+    *   **What's wrong:** Inconsistent with the actual location (Paris) established in Sentence 1.
+    *   **Correction:** "city like Paris"
+11. **Location:** Sentence 10 ("metal expands in cold temperatures")
+    *   **What's wrong:** Scientifically incorrect; metal contracts in cold.
+    *   **Correction:** "metal contracts in cold temperatures"
+
+**Style (4)**
+12. **Location:** Sentence 4 ("visits the tower making it")
+    *   **What's wrong:** Missing comma before the participle phrase.
+    *   **Correction:** "visits the tower, making it"
+13. **Location:** Sentence 5 ("three levels... first and second levels")
+    *   **What's wrong:** Unnecessary repetition of the word "levels".
+    *   **Correction:** "three levels, with restaurants on the first and second"
+14. **Location:** Sentence 9 ("quite affordable")
+    *   **What's wrong:** Subjective/Informal tone for an informational text.
+    *   **Correction:** "relatively affordable" or remove.
+15. **Location:** Sentence 10 ("despite the fact that")
+    *   **What's wrong:** Wordy phrasing.
+    *   **Correction:** "although"

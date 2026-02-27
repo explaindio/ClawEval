@@ -1,0 +1,50 @@
+# Phase D Hard Test — #43 Synthesizer / Aggregator
+# Tier: 3 | Score: 10/10 | 1/1 constraints met
+# Tokens: 1024 | Speed: 32.8 t/s | Time: 31.3s
+
+## PROMPT:
+Three agents analyzed whether to open a second office location. Their analyses CONTRADICT each other on key points. You must synthesize — not just summarize — and make a recommendation.
+
+Agent A (Financial): "Opening in Austin will cost $2M upfront. Break-even in 18 months. ROI of 35% by year 3. However, our cash reserves are only $3M and we need $1M buffer. Recommendation: GO."
+
+Agent B (HR/Talent): "Austin has a strong tech talent pool but salaries are 20% higher than expected. Retention at remote offices historically 30% lower in first 2 years. We'd need 15 people, not the 10 originally planned, due to the retention gap. Recommendation: DELAY 6 months."
+
+Agent C (Strategy): "3 competitors opened Austin offices last year. Market is becoming saturated. However, NOT having a presence could mean losing 2 key enterprise clients who prefer local teams. Those clients represent 25% of revenue. Recommendation: GO but with a smaller team."
+
+Note: Agent A's financial model assumes 10 people (not 15), Agent B's retention data contradicts Agent A's break-even timeline, and Agent C's competitor info wasn't available to Agent A.
+
+Synthesize into ONE recommendation. Show how you resolved the contradictions.
+
+## RESPONSE:
+### Executive Recommendation: **Proceed with a Phased "Lite" Launch in Austin, but Delay Full Staffing by 6 Months.**
+
+We cannot simply choose between "Go" or "Delay" because the data reveals a critical misalignment: **The financial model (Agent A) is built on optimistic assumptions that are invalidated by HR realities (Agent B) and strategic market shifts (Agent C).** A standard launch would likely burn through the $3M cash reserve before reaching break-even, while a total delay risks losing the 25% revenue stake identified by Strategy.
+
+Here is the synthesis of the contradictions and the resulting action plan:
+
+### 1. Resolving the Financial vs. HR Contradiction
+*   **The Conflict:** Agent A assumes a 10-person team and an 18-month break-even. Agent B predicts a 50% increase in headcount (15 people) due to retention issues and 20% higher salaries.
+*   **The Resolution:** Agent A's $2M upfront cost and 35% ROI are **invalid** under Agent B's scenario. Adding 5 people at 20% higher salaries, combined with the cost of replacing 30% of the team in Year 1, will likely push the break-even timeline past 24 months and consume the $1M cash buffer.
+*   **The Fix:** We must decouple the *office opening* from *full staffing*. We cannot afford to hire 15 people immediately. We must adopt Agent C's suggestion of a "smaller team" to align with Agent A's cash constraints, while acknowledging Agent B's retention risks by treating the first 6 months as a pilot phase rather than a full-scale operation.
+
+### 2. Resolving the Strategic vs. Financial Contradiction
+*   **The Conflict:** Agent C warns of market saturation (bad for growth) but highlights an existential threat: losing 25% of revenue if we don't have a local presence. Agent A ignores this saturation risk.
+*   **The Resolution:** The "Go" recommendation is non-negotiable due to the revenue risk, but the *scale* must be adjusted. We cannot compete on volume (saturated market) or speed (high turnover); we must compete on **strategic necessity**. The office is not a growth engine yet; it is a defensive asset to secure the enterprise clients.
+*   **The Fix:** The office opens immediately to satisfy the enterprise clients' requirement for a "local team," but the team size is capped at 5–6 key roles (not 10 or 15) initially. This satisfies the "local presence" requirement without triggering the full cost of the 15-person scenario.
+
+### 3. The Integrated Action Plan
+
+**Phase 1: Immediate "Strategic Presence" Launch (Months 0–6)**
+*   **Action:** Open the Austin office immediately to secure the two key enterprise clients (satisfying Agent C).
+*   **Staffing:** Hire only **5 critical roles** (e.g., 1 Account Director, 2 Senior Engineers, 1 Sales Lead, 1 Ops). Do not hire the full 10 or 15.
+*   **Financial Impact:** This reduces the upfront cost from $2M to approximately **$1.2M**, preserving the $1M cash buffer (satisfying Agent A's safety constraint).
+*   **Talent Strategy:** Use the 6-month delay suggested by Agent B not as a postponement of the office, but as a **probationary period** for the initial hires. This allows us to test the retention hypothesis and refine the compensation package before scaling.
+
+**Phase 2: Re-evaluation and Scaling (Month 6)**
+*   **Trigger:** If the 2 key clients are secured and retention of the initial 5 is >80%, proceed to hire the remaining 5–10 staff.
+*   **Financial Adjustment:** If retention is poor (validating Agent B), do not scale. Instead, pivot to a "hub-and-spoke" model where senior staff travel to Austin, keeping the permanent footprint small.
+
+### Final Verdict
+**Do not follow Agent A's "Go" blindly** (it ignores the cash burn risk of higher headcount). **Do not follow Agent B's "Delay" blindly** (it risks losing 25% of revenue). **Do not follow Agent C's "Smaller Team" without financial guardrails.**
+
+**The Path Forward:** Open the office **now** to secure revenue, but launch with a **skeleton crew** (5 people) to protect cash reserves. Use the next 6 months to validate the talent market before committing to the full 15-person headcount. This approach mitigates the cash risk, secures the strategic revenue, and allows time to solve the retention puzzle.

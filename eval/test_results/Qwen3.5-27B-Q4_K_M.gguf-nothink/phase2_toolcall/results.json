@@ -1,0 +1,123 @@
+{
+  "phase": "phase2_tool_calling",
+  "model": "Qwen3.5-27B-Q4_K_M.gguf",
+  "timestamp": "2026-02-26T11:53:49.998297",
+  "tests": [
+    {
+      "name": "simple_search",
+      "passed": true,
+      "reason": "Correct tool + params: {'query': 'latest news about artificial intelligence'}",
+      "tool_called": "search_web",
+      "tool_args": {
+        "query": "latest news about artificial intelligence"
+      },
+      "text_response": "The user wants me to search the web for the latest news about artificial intelligence. I should use the search_web function with a query about AI news.",
+      "elapsed": 2.54
+    },
+    {
+      "name": "weather_query",
+      "passed": true,
+      "reason": "Correct tool + params: {'city': 'Tokyo'}",
+      "tool_called": "get_weather",
+      "tool_args": {
+        "city": "Tokyo"
+      },
+      "text_response": "The user is asking about the current weather in Tokyo. I have a tool called `get_weather` that can provide this information. I need to call this function with the city parameter set to \"Tokyo\". The un",
+      "elapsed": 3.07
+    },
+    {
+      "name": "calendar_create",
+      "passed": true,
+      "reason": "Correct tool + params: {'title': 'Team Meeting', 'date': '2026-03-15', 'time': '14:30', 'duration_minutes': 60}",
+      "tool_called": "create_calendar_event",
+      "tool_args": {
+        "title": "Team Meeting",
+        "date": "2026-03-15",
+        "time": "14:30",
+        "duration_minutes": 60
+      },
+      "text_response": "I'll schedule the team meeting for you using the calendar event creation tool.",
+      "elapsed": 3.25
+    },
+    {
+      "name": "email_send",
+      "passed": true,
+      "reason": "Correct tool + params: {'to': 'alice@company.com', 'subject': 'Q4 Report', 'body': 'The quarterly report is attached.'}",
+      "tool_called": "send_email",
+      "tool_args": {
+        "to": "alice@company.com",
+        "subject": "Q4 Report",
+        "body": "The quarterly report is attached."
+      },
+      "text_response": "I'll send an email to alice@company.com with the subject 'Q4 Report' and a message stating that the quarterly report is attached.",
+      "elapsed": 3.24
+    },
+    {
+      "name": "file_read",
+      "passed": true,
+      "reason": "Correct tool + params: {'path': '/home/user/documents/notes.txt'}",
+      "tool_called": "read_file",
+      "tool_args": {
+        "path": "/home/user/documents/notes.txt"
+      },
+      "text_response": "The user wants me to read a file at the path `/home/user/documents/notes.txt`. I have a `read_file` function available that can do this. Let me call it with the specified path.",
+      "elapsed": 2.6
+    },
+    {
+      "name": "weather_with_units",
+      "passed": false,
+      "reason": "No tool called (expected get_weather). Text: The user wants to know the current temperature in London in Fahrenheit. I have a",
+      "tool_called": null,
+      "tool_args": {},
+      "text_response": "The user wants to know the current temperature in London in Fahrenheit. I have a tool called `get_weather` that can provide this information. I need to call it with:\n- city: \"London\"\n- units: \"fahrenh",
+      "elapsed": 2.2
+    },
+    {
+      "name": "no_tool_needed",
+      "passed": true,
+      "reason": "Correctly did not call a tool",
+      "tool_called": null,
+      "tool_args": {},
+      "text_response": "2 + 2 equals 4.",
+      "elapsed": 0.76
+    },
+    {
+      "name": "ambiguous_search",
+      "passed": false,
+      "reason": "No tool called (expected search_web). Text: The user is asking for information about how photosynthesis works. This is a gen",
+      "tool_called": null,
+      "tool_args": {},
+      "text_response": "The user is asking for information about how photosynthesis works. This is a general knowledge question that I can answer without needing to use any tools. Photosynthesis is a well-documented biologic",
+      "elapsed": 2.2
+    },
+    {
+      "name": "calendar_implicit",
+      "passed": true,
+      "reason": "Correct tool + params: {'title': 'Dentist Appointment', 'date': '2024-01-16', 'time': '09:00', 'duration_minutes': 60}",
+      "tool_called": "create_calendar_event",
+      "tool_args": {
+        "title": "Dentist Appointment",
+        "date": "2024-01-16",
+        "time": "09:00",
+        "duration_minutes": 60
+      },
+      "text_response": "I'll create a calendar event to remind you about your dentist appointment tomorrow at 9 AM.",
+      "elapsed": 3.37
+    },
+    {
+      "name": "multi_step_intent",
+      "passed": true,
+      "reason": "Correct tool + params: {'query': 'population of Canada'}",
+      "tool_called": "search_web",
+      "tool_args": {
+        "query": "population of Canada"
+      },
+      "text_response": "I need to first search for the population of Canada, and then send an email with that information to bob@example.com.\n\nLet me start by searching for the population of Canada.",
+      "elapsed": 2.41
+    }
+  ],
+  "passed": 8,
+  "failed": 2,
+  "total": 10,
+  "score_pct": 80.0
+}

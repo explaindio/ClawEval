@@ -1,0 +1,133 @@
+# Phase D Hard Test — #57 SRE / Incident Response
+# Tier: 5 | Score: 10/10 | 1/1 constraints met
+# Tokens: 3317 | Speed: 94.2 t/s | Time: 35.2s
+
+## PROMPT:
+Write an incident postmortem. This incident had a CASCADE FAILURE — the initial issue triggered 3 secondary failures. Map the entire cascade.
+
+Timeline:
+- Mon 2:00 AM: Automated certificate rotation runs on the API gateway
+- Mon 2:01 AM: New certificate has wrong domain (*.example.com instead of *.api.example.com)
+- Mon 2:01 AM: All API requests start returning TLS errors
+- Mon 2:05 AM: Health check failures trigger auto-scaling — new instances spin up
+- Mon 2:06 AM: New instances also fail health checks (same cert), triggering MORE scaling
+- Mon 2:10 AM: Kubernetes cluster hits pod limit (500 pods). Cluster API becomes unresponsive.
+- Mon 2:11 AM: Monitoring system (also on same cluster) goes down. All alerts stop.
+- Mon 2:15 AM: Database connection pool exhausted from 500 pods trying to connect
+- Mon 2:20 AM: Database enters read-only mode to protect data
+- Mon 3:15 AM: On-call engineer wakes up from customer complaint on Twitter (no alert!)
+- Mon 3:45 AM: Root cause identified, correct certificate deployed manually
+- Mon 4:00 AM: Cluster stabilized, database connections draining
+- Mon 4:30 AM: Full service restored
+
+SLA: 99.95% monthly uptime = 21.9 minutes/month allowed downtime.
+This incident: ~2.5 hours downtime.
+
+Write: cascade map, root cause, 5 whys, SLA impact calculation, blameless action items.
+
+## RESPONSE:
+# Incident Postmortem: API Gateway Certificate Rotation Cascade Failure
+
+| **Incident ID** | INC-2023-10-27-001 |
+| :--- | :--- |
+| **Date** | Monday, October 27, 2023 |
+| **Severity** | P1 (Critical) |
+| **Duration** | 2 hours 30 minutes (2:00 AM – 4:30 AM UTC) |
+| **Status** | Resolved |
+| **Author** | Incident Commander |
+
+---
+
+## 1. Executive Summary
+On Monday at 2:00 AM, an automated certificate rotation process deployed an invalid TLS certificate to the API Gateway. This triggered a cascade of failures: an auto-scaling storm, Kubernetes cluster saturation, and a complete loss of observability. The service remained unavailable for 150 minutes, significantly exceeding the monthly SLA allowance. The root cause was a configuration error in the certificate rotation script that was not caught by pre-deployment validation.
+
+---
+
+## 2. Cascade Failure Map
+The incident did not occur in isolation. The initial certificate error triggered three distinct secondary failures that compounded the outage.
+
+```mermaid
+graph TD
+    A[INITIAL FAILURE: Invalid Cert Deployed<br/>2:01 AM] -->|TLS Handshake Fail| B[Health Checks Fail]
+    B -->|Trigger| C[CASCADE 1: Auto-Scaling Storm<br/>2:05 AM]
+    C -->|Spin up new pods| D[Cascade 1 Continues: New Pods Fail Health]
+    D -->|Resource Exhaustion| E[CASCADE 2: Cluster Saturation<br/>2:10 AM]
+    E -->|Pod Limit Hit<br/>500/500| F[Cluster API Unresponsive]
+    F -->|Eviction of System Pods| G[CASCADE 3: Observability Blackout<br/>2:11 AM]
+    G -->|Alerts Stop| H[No Internal Detection]
+    C -->|Connection Spikes| I[Database Connection Pool Exhaustion<br/>2:15 AM]
+    I -->|Protection Mechanism| J[DB Enters Read-Only Mode<br/>2:20 AM]
+```
+
+**The 3 Secondary Failures:**
+1.  **Scaling Storm (2:05 AM):** Health check failures triggered the Horizontal Pod Autoscaler (HPA) to spin up new instances. Since the new instances inherited the bad certificate, they immediately failed health checks, triggering *more* scaling.
+2.  **Cluster Saturation (2:10 AM):** The unbounded scaling hit the Kubernetes cluster's hard limit (500 pods). The control plane became unresponsive, preventing any further orchestration or manual intervention.
+3.  **Observability Blackout (2:11 AM):** The monitoring system, running on the same cluster, was evicted due to the pod limit. All internal alerts ceased, leaving the team blind to the outage until external customer complaints arrived.
+
+---
+
+## 3. Root Cause Analysis (RCA)
+
+**Technical Root Cause:**
+The automated certificate rotation script (`rotate-cert.sh`) was configured to use a wildcard pattern `*.example.com` instead of the required `*.api.example.com`. This configuration error was introduced during a recent update to the rotation logic.
+
+**Process Root Cause:**
+There was no **pre-flight validation** step in the CI/CD pipeline for certificate rotation. The script was allowed to deploy to production without verifying that the certificate CN/SAN matched the active ingress rules. Additionally, the monitoring system was co-located on the same cluster as the production workloads, creating a single point of failure for observability.
+
+---
+
+## 4. The 5 Whys
+
+1.  **Why did API requests fail?**
+    *   Because the API Gateway presented an invalid TLS certificate, causing clients to reject the connection.
+2.  **Why was the certificate invalid?**
+    *   Because the automated rotation script deployed a certificate with the wrong domain (`*.example.com` instead of `*.api.example.com`).
+3.  **Why did the script deploy the wrong certificate?**
+    *   Because the configuration variable for the target domain was not updated in the rotation script during the last refactor.
+4.  **Why was the configuration error not caught before deployment?**
+    *   Because the CI/CD pipeline lacked a validation step to verify certificate SANs against the expected ingress domains prior to rotation.
+5.  **Why did the outage last 2.5 hours instead of minutes?**
+    *   Because the cascade (Scaling Storm + Cluster Saturation + Monitoring Blackout) prevented the team from detecting and mitigating the issue until customers reported it.
+
+---
+
+## 5. SLA Impact Calculation
+
+**Monthly SLA Target:** 99.95% Uptime
+**Allowed Downtime:** 21.9 minutes per month
+
+**Incident Metrics:**
+*   **Start Time:** 2:00 AM (Certificate Rotation Initiated)
+*   **End Time:** 4:30 AM (Full Service Restored)
+*   **Total Duration:** 150 minutes
+
+**Impact:**
+$$ \text{Downtime} = 150 \text{ minutes} $$
+$$ \text{Allowed} = 21.9 \text{ minutes} $$
+$$ \text{Overage} = 150 - 21.9 = 128.1 \text{ minutes} $$
+$$ \text{SLA Breach} = \frac{150}{21.9} \approx 685\% \text{ of allowed downtime} $$
+
+**Result:** **SLA Breached.** This single incident consumed the entire month's allowed downtime budget.
+
+---
+
+## 6. Action Items (Blameless)
+
+The following actions focus on system resilience and process improvement, not individual accountability.
+
+| ID | Action Item | Owner | Priority | Target Date |
+| :--- | :--- | :--- | :--- | :--- |
+| **AI-01** | **Add Pre-Flight Validation:** Implement a CI/CD gate that validates the certificate CN/SAN against the expected ingress domain before allowing the rotation script to run. | Platform Team | High | Oct 30 |
+| **AI-02** | **Implement Circuit Breaker for Scaling:** Configure the HPA to include a "max scale" limit based on cluster capacity, preventing the scaling storm from hitting the pod limit. | SRE Team | High | Nov 03 |
+| **AI-03** | **Decouple Observability:** Migrate critical monitoring and alerting infrastructure to a separate, isolated cluster to prevent cluster saturation from causing an observability blackout. | Infra Team | High | Nov 10 |
+| **AI-04** | **External Alerting Channel:** Configure a secondary alerting channel (e.g., SMS/PagerDuty) that is independent of the internal cluster to ensure alerts fire even if the monitoring stack is down. | SRE Team | Medium | Nov 03 |
+| **AI-05** | **Database Connection Limits:** Review and enforce connection pool limits on the application side to prevent a sudden influx of pods from exhausting the DB immediately. | Backend Team | Medium | Nov 17 |
+
+---
+
+## 7. Lessons Learned
+
+1.  **Automation requires Guardrails:** Fully automated processes (like cert rotation) must have validation steps that prevent bad data from propagating to production.
+2.  **Observability Independence:** Critical infrastructure (like monitoring) should never share the same resource constraints as the services it is monitoring.
+3.  **Scaling Safety:** Auto-scaling policies must account for the health of the *new* instances, not just the failure of the old ones, to prevent infinite loops.
+4.  **Detection Gap:** Relying solely on internal monitoring creates a blind spot. External synthetic monitoring or customer feedback loops are essential backups for incident detection.

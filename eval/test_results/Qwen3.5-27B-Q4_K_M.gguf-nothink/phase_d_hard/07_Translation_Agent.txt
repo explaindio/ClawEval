@@ -1,0 +1,52 @@
+# Phase D Hard Test — #7 Translation Agent
+# Tier: 1 | Score: 5/10 | No automated constraints to check
+# Tokens: 1052 | Speed: 33.0 t/s | Time: 31.8s
+
+## PROMPT:
+Translate this marketing copy to Spanish AND Japanese. This text contains: 1 pun, 1 culture-specific reference, and 1 idiom. You MUST add translator notes explaining how you handled each.
+
+"Our new Cloud9 hosting puts your website on cloud nine! Like a good neighbor, ServerFarm is there. Don't put all your eggs in one basket — our multi-region failover means your data is always safe. With speeds that would make Usain Bolt jealous, your pages load before you can say 'supercalifragilisticexpialidocious.'"
+
+Requirements:
+- Translate the full text to both languages
+- Add [TRANSLATOR NOTE] for EACH culturally-specific element explaining your adaptation
+- The pun "Cloud9/cloud nine" must be addressed — explain if you preserved it or adapted it
+- The "good neighbor" is a State Farm insurance slogan reference — explain how you handled it
+
+## RESPONSE:
+Here are the translations for your marketing copy, including the required translator notes for each culturally specific element, pun, and idiom.
+
+### **Spanish Translation**
+
+"Nuestro nuevo alojamiento Cloud9 pone tu sitio web en las nubes de la felicidad. Como un buen vecino, ServerFarm está ahí. No pongas todos los huevos en una sola cesta: nuestro fallo de redundancia multi-región significa que tus datos siempre están seguros. Con velocidades que harían envidiar a Usain Bolt, tus páginas cargan antes de que puedas decir 'supercalifragilisticexpialidocious'."
+
+***
+
+### **Japanese Translation**
+
+「新しい Cloud9 ホスティングは、あなたのウェブサイトを『雲の上』の幸せな状態にします。良い隣人のように、ServerFarm はいつもそばにいます。すべての卵を一つのカゴに盛るな——私たちのマルチリージョンフェイルオーバーにより、データは常に安全です。ウサイン・ボルトも嫉妬するほどのスピードで、ページは『スーパーカリフラジリスティック・エクスピアリドシャス』と言う前に読み込まれます。」
+
+***
+
+### **Translator Notes**
+
+#### **1. The Pun: "Cloud9" / "cloud nine"**
+*   **Original:** "puts your website on cloud nine"
+*   **Spanish Adaptation:** "pone tu sitio web en las nubes de la felicidad" (puts your site in the clouds of happiness).
+    *   **[TRANSLATOR NOTE]:** The English idiom "on cloud nine" (meaning extremely happy) relies on the homophone with the brand name "Cloud9." In Spanish, the idiom is "estar en la séptima nube" (to be in the seventh cloud). However, using "séptima nube" would break the brand name connection. I chose to adapt the idiom to "nubes de la felicidad" (clouds of happiness) to maintain the literal "cloud" imagery required by the brand name while conveying the feeling of euphoria, sacrificing the strict idiomatic match for brand consistency.
+*   **Japanese Adaptation:** "『雲の上』の幸せな状態にします" (puts it in a happy state 'above the clouds').
+    *   **[TRANSLATOR NOTE]:** Japanese does not have a direct equivalent idiom for "cloud nine." The phrase "雲の上" (kumo no ue) literally means "above the clouds" and is often used poetically to describe a dreamlike or happy state. I used this literal translation to preserve the "Cloud" brand name connection while adding "幸せな状態" (happy state) to ensure the meaning of the idiom is understood by the reader.
+
+#### **2. Culture-Specific Reference: "Like a good neighbor"**
+*   **Original:** "Like a good neighbor, ServerFarm is there." (Reference to State Farm Insurance).
+*   **Spanish Adaptation:** "Como un buen vecino, ServerFarm está ahí."
+    *   **[TRANSLATOR NOTE]:** The State Farm slogan "Like a good neighbor, State Farm is there" is iconic in the US but not universally known in Spanish-speaking markets. I translated it literally. While the specific cultural reference to State Farm may be lost on the audience, the phrase "como un buen vecino" is a universally understood metaphor for reliability and helpfulness in Spanish, ensuring the *sentiment* of the reference remains intact even if the specific brand allusion does not land.
+*   **Japanese Adaptation:** "良い隣人のように、ServerFarm はいつもそばにいます。"
+    *   **[TRANSLATOR NOTE]:** Similar to the Spanish version, the State Farm slogan is not a cultural touchstone in Japan. I translated it literally as "like a good neighbor." In Japanese marketing, the concept of a "good neighbor" (良い隣人) implies trustworthiness and proximity. I added "いつもそばにいます" (is always by your side) to reinforce the "is there" aspect of the original slogan, ensuring the message of reliability is clear despite the lack of the specific US cultural context.
+
+#### **3. The Idiom: "Don't put all your eggs in one basket"**
+*   **Original:** "Don't put all your eggs in one basket"
+*   **Spanish Adaptation:** "No pongas todos los huevos en una sola cesta"
+    *   **[TRANSLATOR NOTE]:** This idiom is a direct cognate and is widely used in Spanish with the exact same meaning. No adaptation was necessary; I preserved the original imagery to maintain the rhetorical impact.
+*   **Japanese Adaptation:** "すべての卵を一つのカゴに盛るな"
+    *   **[TRANSLATOR NOTE]:** This idiom is also well-known in Japan, often translated directly from English or used in similar contexts regarding risk management. I used the direct translation ("Do not put all eggs in one basket") as it is the standard way to express this concept in Japanese business contexts.

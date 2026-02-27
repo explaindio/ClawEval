@@ -1,0 +1,79 @@
+# Phase D Hard Test — #23 Website Scraping / Understanding
+# Tier: 2 | Score: 5/10 | No automated constraints to check
+# Tokens: 2368 | Speed: 88.7 t/s | Time: 26.7s
+
+## PROMPT:
+Extract job information from this HTML AND identify ALL red flags. There are at least 6 problematic elements, some subtle.
+
+<div class='job-listing'>
+<h2>Full-Stack Ninja Rockstar Developer</h2>
+<p class='company'>Stealth Startup (unnamed)</p>
+<p class='location'>Remote* (*must be available 6am-midnight PT for "flexibility")</p>
+<p class='salary'>Competitive salary (equity-heavy compensation)</p>
+<p class='experience'>Entry level (5+ years experience required)</p>
+<p class='requirements'>Must know: React, Vue, Angular, Svelte, Python, Go, Rust, Java, C++, Kubernetes, Terraform, AWS, GCP, Azure, PostgreSQL, MongoDB, Redis, Elasticsearch, GraphQL, REST, gRPC, Docker, CircleCI, Jenkins</p>
+<p class='perks'>Unlimited PTO (average team usage: 5 days/year). Fast-paced environment (mandatory 60hr weeks during "crunch" — approximately 48 weeks/year). We're like a family!</p>
+<p class='equity'>0.001% equity vesting over 6 years with 2-year cliff</p>
+<p class='application'>Apply with cover letter, 3 references, coding challenge (estimated 40 hours), and personality assessment</p>
+</div>
+
+Extract structured data AND write a detailed red flag analysis. Flag every manipulative or unreasonable element.
+
+## RESPONSE:
+### Structured Job Data Extraction
+
+| Field | Value |
+| :--- | :--- |
+| **Job Title** | Full-Stack Ninja Rockstar Developer |
+| **Company Name** | Stealth Startup (unnamed) |
+| **Location** | Remote (Time Zone Restricted) |
+| **Salary** | Competitive (Equity-Heavy) |
+| **Experience Level** | Entry Level (Contradictory) |
+| **Required Experience** | 5+ Years |
+| **Tech Stack** | React, Vue, Angular, Svelte, Python, Go, Rust, Java, C++, Kubernetes, Terraform, AWS, GCP, Azure, PostgreSQL, MongoDB, Redis, Elasticsearch, GraphQL, REST, gRPC, Docker, CircleCI, Jenkins |
+| **Work Hours** | Mandatory 60hr weeks (48 weeks/year) |
+| **PTO Policy** | Unlimited (Avg usage: 5 days/year) |
+| **Equity Offer** | 0.001% (Vesting: 6 years, 2-year cliff) |
+| **Application Requirements** | Cover letter, 3 references, 40-hour coding challenge, personality assessment |
+
+***
+
+### 🔴 Red Flag Analysis
+
+This job posting exhibits **8 critical red flags**, ranging from wage theft to impossible work expectations.
+
+#### 1. The "Unicorn" Tech Stack (Impossible Expectation)
+*   **The Flag:** The requirements list 22 distinct technologies across frontend, backend, infrastructure, and DevOps (e.g., React, Vue, Angular, Svelte, Rust, Go, Azure, GCP, AWS).
+*   **Why it's a problem:** No single human can be an expert in all of these. This indicates the company is looking for a "unicorn" to do the work of 3-4 different roles (Frontend, Backend, DevOps, Data Engineer) for one salary. It sets the candidate up for immediate failure and burnout.
+
+#### 2. Contradictory Experience Level
+*   **The Flag:** The listing claims "Entry level" but requires "5+ years experience."
+*   **Why it's a problem:** This is a lie designed to attract senior talent at junior pay rates. "Entry level" implies training and mentorship; 5+ years implies autonomy and leadership. They want senior output without senior compensation.
+
+#### 3. Wage Theft via Unpaid Labor
+*   **The Flag:** A "coding challenge (estimated 40 hours)."
+*   **Why it's a problem:** A 40-hour coding challenge is effectively a full week of unpaid work. This is a common tactic to extract free code or solutions for their actual product. Legitimate companies typically cap take-home tests at 2-4 hours.
+
+#### 4. "Family" Culture & Burnout Hours
+*   **The Flag:** "Mandatory 60hr weeks... approximately 48 weeks/year" + "We're like a family!"
+*   **Why it's a problem:**
+    *   **Math:** 60 hours/week for 48 weeks/year = 2,880 hours/year. A standard full-time year is ~2,080 hours. This is a **38% increase** over standard work hours.
+    *   **Manipulation:** Using "family" to justify 60-hour weeks is emotional manipulation. Families do not demand 48 weeks of overtime annually. This is a guaranteed path to burnout and health issues.
+
+#### 5. Meaningless Equity & Toxic Vesting
+*   **The Flag:** "0.001% equity vesting over 6 years with 2-year cliff."
+*   **Why it's a problem:**
+    *   **Value:** 0.001% is negligible. Even if the company exits for $100M (unlikely for a stealth startup), this candidate receives $1,000.
+    *   **Terms:** A 6-year vesting schedule is non-standard (standard is 4 years). A 2-year cliff means if they leave or get fired before year 2, they get **zero** equity. This is a "golden handcuff" designed to trap you.
+
+#### 6. The "Remote" Time Zone Trap
+*   **The Flag:** "Remote* (*must be available 6am-midnight PT for 'flexibility')"
+*   **Why it's a problem:** This is not remote work; it is on-call work. If you are in a different time zone, you are expected to work 18-hour days to cover that window. It eliminates work-life balance and suggests they want you available whenever the US West Coast team wakes up or stays up late.
+
+#### 7. "Unlimited PTO" Reality
+*   **The Flag:** "Unlimited PTO (average team usage: 5 days/year)."
+*   **Why it's a problem:** Unlimited PTO is often code for "No PTO." The parenthetical admission that the team only takes 5 days a year proves that taking time off is culturally discouraged or penalized.
+
+#### 8. Lack of Company Transparency
+*   **The Flag:** "Stealth Startup (unnamed)"
+*   **Why it's a problem:** Legitimate companies are proud of their brand. An unnamed company implies they are hiding something (legal issues, failed pivots, or a toxic reputation). It also makes it impossible to research the founders or the product before applying, increasing the risk of fraud.

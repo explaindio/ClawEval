@@ -1,0 +1,36 @@
+# Phase D Hard Test — #36 Code Generation Agent
+# Tier: 3 | Score: 10/10 | All tests passed
+# Tokens: 6471 | Speed: 93.0 t/s | Time: 69.6s
+
+## PROMPT:
+Write a Python function `flatten_dict(d, sep=".")` that flattens a nested dictionary. Requirements:
+1. Nested keys joined with separator: {"a": {"b": 1}} → {"a.b": 1}
+2. Handle arbitrary depth
+3. Lists should NOT be flattened — keep as values
+4. Handle None values correctly
+5. Support custom separator via `sep` parameter
+6. Empty dicts at leaves should be included as empty dict values
+7. Handle mixed types (int, str, bool, float, list, None)
+
+Return ONLY the function code. It will be tested against 8 edge cases including: empty dict, already flat, lists, None values, custom separator, 5-level nesting, and mixed types.
+
+## RESPONSE:
+```python
+def flatten_dict(d, sep="."):
+    result = {}
+    
+    def recurse(current_dict, prefix=""):
+        for key, value in current_dict.items():
+            new_key = f"{prefix}{sep}{key}" if prefix else key
+            
+            if isinstance(value, dict):
+                if not value:
+                    result[new_key] = value
+                else:
+                    recurse(value, new_key)
+            else:
+                result[new_key] = value
+                
+    recurse(d)
+    return result
+```

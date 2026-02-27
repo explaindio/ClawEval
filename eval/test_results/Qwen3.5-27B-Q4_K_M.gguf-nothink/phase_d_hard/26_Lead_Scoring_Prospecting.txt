@@ -1,0 +1,76 @@
+# Phase D Hard Test — #26 Lead Scoring / Prospecting
+# Tier: 2 | Score: 10/10 | 1/1 constraints met
+# Tokens: 1195 | Speed: 33.5 t/s | Time: 35.7s
+
+## PROMPT:
+Score these 5 leads. WARNING: The lead with the MOST engagement is actually a tire-kicker, not your best prospect. Identify them.
+
+Lead 1: "CTO at a 50-person startup. Downloaded every whitepaper (12 total), attended 3 webinars, watches all YouTube content. Has been doing this for 18 months. No demo request. When sales reached out, said 'just researching, no timeline.'"
+
+Lead 2: "VP Engineering at 200-person company. Visited pricing page once 3 months ago. No other activity."
+
+Lead 3: "Developer at enterprise company (5000 employees). Created free account, built a POC over 2 weeks, invited 3 teammates. Just asked about SSO integration."
+
+Lead 4: "Procurement manager at 300-person company. First visit to site yesterday, immediately went to pricing, downloaded security whitepaper, submitted a form asking about SOC 2 compliance and volume discounts. Mentioned Q2 budget allocation."
+
+Lead 5: "Founder of 10-person agency. Signed up for free trial, very active for 3 days, then completely silent for 6 weeks."
+
+Score each 1-100, identify the tire-kicker, rank them, and explain your reasoning.
+
+## RESPONSE:
+Here is the scoring, identification, and ranking of the leads based on B2B sales qualification principles (BANT: Budget, Authority, Need, Timeline) and behavioral intent signals.
+
+### 1. The Tire-Kicker Identification
+**The Tire-Kicker is Lead 1.**
+
+*   **Reasoning:** This lead exhibits the classic "Researcher" or "Information Hoarder" profile. They have high *volume* of engagement (12 whitepapers, 3 webinars, all YouTube videos) but zero *conversion* signals.
+*   **The Trap:** High engagement often feels like high intent, but in this context, it indicates a lack of urgency or a genuine need. They have been doing this for 18 months without a demo request. When challenged by sales, they explicitly stated "no timeline." This is a textbook case of someone using your content to solve a problem they don't currently have the budget or authority to fix, or they are simply gathering information for a future role. They are consuming resources without moving toward a transaction.
+
+---
+
+### 2. Lead Scoring & Analysis
+
+#### **Lead 4: The High-Intent Buyer**
+*   **Score:** **92/100**
+*   **Role:** Procurement Manager (Gatekeeper/Buyer).
+*   **Signals:** Immediate pricing visit, specific compliance questions (SOC 2), volume discount inquiry, and explicit mention of **Q2 budget**.
+*   **Reasoning:** This is the strongest lead. While Procurement isn't the technical user, they are the ones with the **Budget** and the **Timeline** (Q2). Asking about SOC 2 and volume discounts implies they are ready to move to a contract stage. The "First visit yesterday" combined with immediate form submission shows high urgency.
+
+#### **Lead 3: The Product-Led Growth (PLG) Winner**
+*   **Score:** **88/100**
+*   **Role:** Developer (User/Champion).
+*   **Signals:** Built a POC (Proof of Concept), invited teammates (social proof/expansion), asked about SSO (technical integration for enterprise).
+*   **Reasoning:** This is a "bottom-up" sale. The user has already validated the product value by building a POC over 2 weeks. Inviting 3 teammates indicates they are trying to get internal buy-in. Asking about SSO is a "pre-sales" question that usually precedes a contract negotiation. They have **Need** and **Authority** (to influence), and likely **Budget** (since it's an enterprise).
+
+#### **Lead 5: The "Ghost" (High Risk)**
+*   **Score:** **35/100**
+*   **Role:** Founder (Decision Maker).
+*   **Signals:** Active for 3 days, then silent for 6 weeks.
+*   **Reasoning:** Founders are great targets, but the 6-week silence is a massive red flag. The initial activity suggests interest, but the drop-off indicates they either found a competitor, lost interest, or the "free trial" was a distraction. Without a re-engagement trigger, this lead is cold.
+
+#### **Lead 2: The Cold Lead**
+*   **Score:** **15/100**
+*   **Role:** VP Engineering (Decision Maker).
+*   **Signals:** One pricing visit 3 months ago.
+*   **Reasoning:** While the title is impressive (VP Eng), the activity is negligible and stale. A single pricing visit 3 months ago with no follow-up suggests a casual browse or a mistake. There is no current intent signal.
+
+#### **Lead 1: The Tire-Kicker**
+*   **Score:** **10/100**
+*   **Role:** CTO (Decision Maker).
+*   **Signals:** High content consumption, 18-month duration, no demo, "no timeline."
+*   **Reasoning:** As identified above, this is the most deceptive lead. The high activity score is a trap. In a real scoring model, you would heavily penalize the "18-month duration" and "no timeline" statement. They are a resource drain with near-zero probability of closing in the current quarter.
+
+---
+
+### 3. Final Ranking (Best to Worst)
+
+1.  **Lead 4** (Score: 92) - *Immediate Sales Opportunity.* Has Budget, Timeline, and is asking contract-level questions.
+2.  **Lead 3** (Score: 88) - *Strong Pipeline Opportunity.* Product validation is done; now needs sales to handle the enterprise integration/commercial side.
+3.  **Lead 5** (Score: 35) - *Nurture/Re-engage.* Needs a "We missed you" campaign to see if the interest is still alive.
+4.  **Lead 2** (Score: 15) - *Cold.* Needs a fresh trigger event to become viable.
+5.  **Lead 1** (Score: 10) - *Tire-Kicker.* **Do not waste sales time.** Move to a long-term nurture stream or disqualify.
+
+### Summary of Strategy
+*   **Immediate Action:** Sales to call Lead 4 today regarding the Q2 budget.
+*   **Secondary Action:** Sales to contact Lead 3 to discuss the SSO integration and help them finalize the POC presentation for their leadership.
+*   **Avoid:** Do not call Lead 1. They have explicitly said they have no timeline. Calling them again will likely annoy them and damage brand perception.

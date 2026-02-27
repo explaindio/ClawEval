@@ -1,0 +1,44 @@
+# Phase D Hard Test — #15 Meeting Notes / Transcription Agent
+# Tier: 2 | Score: 7/10 | 2/3 constraints met | Missing: headcount (Sarah says 3, later says 2)
+# Tokens: 420 | Speed: 31.9 t/s | Time: 13.2s
+
+## PROMPT:
+Process this meeting transcript into structured notes. WARNING: The transcript contains 3 contradictory statements made by different participants. You MUST identify all 3 contradictions.
+
+Transcript:
+Sarah (PM): "OK let's kick off. Budget for Project Atlas is $50K as approved by the board."
+Mike (Eng): "Actually I spoke with finance yesterday and they confirmed $75K for Atlas."
+Sarah: "We'll need to clarify that. Moving on — Lisa, timeline update?"
+Lisa (Design): "Designs will be finalized by end of March. That gives engineering 6 weeks."
+James (QA): "Wait, in last week's email you said designs would be done in April. We planned QA around that."
+Lisa: "That was before we got the additional designer. March is firm now."
+Sarah: "OK, so we need 3 new hires for this: 2 backend, 1 frontend."
+Mike: "Agreed on the technical side."
+Sarah: "Actually, thinking about it, we only need 2 new hires — we can reassign Jordan."
+James: "QA will need 2 weeks after engineering freeze. Factor that into the timeline."
+
+Extract: decisions, action items, and CONTRADICTIONS (with who said what).
+
+## RESPONSE:
+Here are the structured notes from the meeting transcript, including the required identification of contradictions.
+
+### **Meeting Notes: Project Atlas Kickoff**
+
+#### **1. Decisions**
+*   **Timeline:** Design finalization is confirmed for the **end of March** (Lisa).
+*   **QA Schedule:** QA will require **2 weeks** following the engineering freeze (James).
+*   **Staffing:** The team will proceed with **2 new hires** (reassigning Jordan instead of hiring a third person) (Sarah).
+
+#### **2. Action Items**
+*   **Clarify Budget:** Sarah and Mike must resolve the discrepancy between the $50K and $75K figures with Finance.
+*   **Update Planning:** James needs to adjust QA planning to align with the new March design deadline (if applicable) or confirm the impact of the timeline shift.
+*   **Hiring:** Initiate recruitment for 2 new engineers (1 Backend, 1 Frontend) and reassign Jordan.
+
+#### **3. Contradictions Identified**
+*Per instructions, the following three contradictory statements have been identified:*
+
+| # | Topic | Contradiction Details |
+| :--- | :--- | :--- |
+| **1** | **Project Budget** | **Sarah** stated the approved budget is **$50K**. <br> **Mike** contradicted this, stating Finance confirmed **$75K**. |
+| **2** | **Design Timeline** | **Lisa** initially stated designs would be finalized by the **end of March**. <br> **James** contradicted this, citing a previous email where Lisa said designs would be done in **April**. |
+| **3** | **Hiring Requirements** | **Sarah** initially stated the project needs **3 new hires** (2 backend, 1 frontend). <br> **Sarah** immediately contradicted her own statement, revising the requirement to **2 new hires** (reassigning Jordan). |

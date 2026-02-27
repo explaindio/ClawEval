@@ -1,0 +1,92 @@
+# Phase D Hard Test — #29 Home Automation Agent
+# Tier: 2 | Score: 10/10 | 4/4 constraints met
+# Tokens: 11544 | Speed: 91.6 t/s | Time: 126.0s
+
+## PROMPT:
+Create an automation routine from this description. WARNING: There are 3 logical conflicts in the requirements that you must identify and resolve.
+
+"When we say 'movie night': dim all lights to 5%, close all blinds, set thermostat to 72°F, turn on the sound system, start the projector, lock all doors, activate security cameras, and set the house to 'do not disturb' mode.
+
+Also when we say 'movie night': open the living room windows for fresh air, leave the dog door unlocked so Max can go out, and keep the hallway lights at full brightness so the kids can see.
+
+Additional rules: 
+- If CO2 sensor reads above 1000ppm, force-open windows regardless of other settings
+- If smoke detector triggers, all automations must stop and all lights go to 100%
+- If nobody has moved in 2 hours, assume everyone fell asleep and turn everything off
+
+Identify the conflicts, explain how you'd resolve each, and provide the final automation logic.
+
+## RESPONSE:
+### 1. Identification and Resolution of Logical Conflicts
+
+There are three primary logical conflicts within the requirements that must be resolved for the automation to function correctly.
+
+#### Conflict 1: Lighting Contradiction (Dim All vs. Hallway Full)
+*   **The Conflict:** The first requirement states "dim all lights to 5%," while the second requirement states "keep the hallway lights at full brightness."
+*   **Resolution:** Define the scope of "all lights." "All lights" applies to the **viewing area** (living room) to ensure a cinematic experience. "Hallway lights" are classified as **safety/transition lighting** and must remain at full brightness to prevent tripping hazards in the dark.
+*   **Logic:** `IF "Movie Night" THEN Set Living Room Lights = 5% AND Set Hallway Lights = 100%`.
+
+#### Conflict 2: Ventilation Contradiction (Close Blinds vs. Open Windows)
+*   **The Conflict:** The first requirement states "close all blinds," while the second states "open the living room windows for fresh air." Physically, closing blinds over an open window blocks airflow and defeats the purpose of opening the window.
+*   **Resolution:** Prioritize **Air Quality** over Light Blocking for the specific room mentioned. The "Open Windows" command takes precedence for the living room. The "Close all blinds" command applies to all *other* windows in the house to maintain projector contrast.
+*   **Logic:** `IF "Movie Night" THEN Open Living Room Windows AND Close All Other Blinds`.
+
+#### Conflict 3: Inactivity Timeout vs. Movie Duration
+*   **The Conflict:** The "Additional Rules" state "If nobody has moved in 2 hours... turn everything off." However, movies often exceed 2 hours. If the system relies on motion to stay on, it will kill the projector and sound system in the middle of a film, breaking the core feature.
+*   **Resolution:** Implement a **Session State Flag**. If "Movie Night" is active, the system must ignore the 2-hour motion timeout or extend it significantly (e.g., to 4 hours) to accommodate long films.
+*   **Logic:** `IF "Movie Night" Active THEN Disable 2-Hour Motion Timeout`.
+
+*(Note: A fourth potential conflict exists between "Lock all doors" and "Leave dog door unlocked." This is resolved by defining "All doors" as "All human-accessible doors" and explicitly excluding the dog door actuator from the lock command.)*
+
+---
+
+### 2. Final Automation Logic
+
+**Trigger:** Voice Command "Movie Night"
+
+**Safety Overrides (Highest Priority):**
+1.  **Smoke Detector:**
+    *   **IF** Smoke Detected:
+        *   Stop all automations immediately.
+        *   Set all lights to 100% (Evacuation mode).
+        *   Unlock all doors (except dog door if locked).
+        *   Send emergency alert.
+2.  **CO2 Sensor:**
+    *   **IF** CO2 > 1000ppm:
+        *   Force-open living room windows (Override "Close Blinds").
+        *   Turn on ventilation fan.
+
+**Main Routine (Movie Night Mode):**
+1.  **Lighting:**
+    *   Set Living Room lights to 5%.
+    *   Set Hallway lights to 100%.
+    *   Set Bedroom lights to Off.
+2.  **Windows & Blinds:**
+    *   Open Living Room Windows (for air).
+    *   Close Blinds on all other windows (for projector contrast).
+    *   *Note: If CO2 > 1000ppm, ensure windows remain open.*
+3.  **Climate:**
+    *   Set Thermostat to 72°F.
+4.  **AV System:**
+    *   Turn on Sound System.
+    *   Start Projector.
+    *   Set TV to "Movie Mode" (if applicable).
+5.  **Security:**
+    *   Lock all human-accessible doors.
+    *   **Exclude** Dog Door (Leave unlocked for Max).
+    *   Activate Security Cameras (Record mode).
+    *   Set House to "Do Not Disturb" (Silence notifications).
+
+**Session Management (Inactivity Rule):**
+*   **Condition:** If Motion Sensor = No Movement for 2 Hours.
+*   **Check:** Is "Movie Night Session" Active?
+    *   **YES:** Ignore motion timeout. (Extend session timer to 4 hours).
+    *   **NO:** Turn off all lights, projector, sound, and windows. Set thermostat to Eco mode.
+
+**Exit Routine (Voice Command "Movie Night Over"):**
+*   Turn off Projector and Sound System.
+*   Turn on Living Room lights to 50%.
+*   Close Living Room Windows.
+*   Unlock all doors.
+*   Deactivate Security Cameras.
+*   Reset "Movie Night Session" flag.

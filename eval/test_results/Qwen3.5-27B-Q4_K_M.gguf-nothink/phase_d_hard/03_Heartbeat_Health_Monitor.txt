@@ -1,0 +1,83 @@
+# Phase D Hard Test — #3 Heartbeat / Health Monitor
+# Tier: 1 | Score: 10/10 | 4/4 constraints met
+# Tokens: 1228 | Speed: 33.4 t/s | Time: 36.8s
+
+## PROMPT:
+Analyze these 10-minute server metrics sampled every minute. Identify ALL hidden patterns and predict failures. There are at least 3 non-obvious correlations.
+
+Time  | CPU% | Mem%  | Disk% | Conn | Err/s | DiskIO
+00:00 | 45   | 71.0  | 82.0  | 200  | 2     | 10MB/s
+00:01 | 42   | 71.5  | 82.1  | 205  | 1     | 12MB/s
+00:02 | 48   | 72.0  | 82.2  | 198  | 3     | 11MB/s
+00:03 | 95   | 72.5  | 82.3  | 450  | 45    | 150MB/s
+00:04 | 55   | 73.2  | 82.5  | 210  | 5     | 15MB/s
+00:05 | 43   | 73.8  | 82.6  | 195  | 2     | 10MB/s
+00:06 | 44   | 74.5  | 82.8  | 202  | 1     | 11MB/s
+00:07 | 47   | 75.1  | 82.9  | 205  | 3     | 12MB/s
+00:08 | 93   | 75.8  | 83.1  | 440  | 42    | 145MB/s
+00:09 | 52   | 76.4  | 83.2  | 215  | 4     | 14MB/s
+
+Questions to answer:
+1. What recurring event happens and at what interval?
+2. Memory is rising linearly — at this rate, when will it hit 95%?
+3. What is the correlation between connections and error rate?
+4. At the current disk growth rate, how many hours until 95% full?
+Give EXACT numbers for questions 2 and 4.
+
+## RESPONSE:
+Here is the analysis of the server metrics based on the provided 10-minute sample.
+
+### **Hidden Patterns & Correlations**
+
+Before answering the specific questions, here are the **3 non-obvious correlations** identified in the data:
+
+1.  **The "Spike" Cascade Effect:** There is a perfect temporal correlation between **Connection Spikes**, **CPU Spikes**, **DiskIO Spikes**, and **Error Spikes**.
+    *   *Observation:* At 00:03 and 00:08, Connections jump from ~200 to ~445. Simultaneously, CPU jumps from ~45% to ~94%, DiskIO jumps from ~11MB/s to ~147MB/s, and Errors jump from ~2 to ~43.
+    *   *Insight:* This is not random noise; it indicates a specific event (likely a scheduled batch job, a cron task, or a bot attack) that triggers a resource-heavy process, overwhelming the system and causing errors.
+
+2.  **Memory Leak vs. Disk Growth Decoupling:**
+    *   *Observation:* Memory is rising steadily (linear leak) regardless of the CPU/Connection spikes. Disk usage is also rising steadily, but the *rate* of disk growth is constant even during the high-IO spikes.
+    *   *Insight:* The high DiskIO during spikes (150MB/s) is likely **read/write thrashing** (swapping or log flushing) rather than permanent data accumulation. The actual permanent disk growth (0.1% per minute) is independent of the traffic spikes, suggesting a separate logging or data ingestion process running continuously.
+
+3.  **Error Rate Threshold:**
+    *   *Observation:* Errors are negligible (<5) when Connections are ~200. Errors explode (>40) only when Connections exceed ~440.
+    *   *Insight:* The system has a hard capacity limit. It handles ~200 connections gracefully but fails catastrophically once the load exceeds ~440 connections, suggesting a connection pool exhaustion or thread limit.
+
+---
+
+### **Answers to Specific Questions**
+
+#### **1. What recurring event happens and at what interval?**
+A **high-load event** (likely a scheduled batch job, backup, or traffic surge) occurs every **5 minutes**.
+*   *Evidence:* The system exhibits identical behavior at **00:03** and **00:08**. Both timestamps show a sudden spike in Connections (~440-450), CPU (~93-95%), DiskIO (~145-150MB/s), and Error Rate (~42-45). The interval between these two events is exactly 5 minutes.
+
+#### **2. Memory is rising linearly — at this rate, when will it hit 95%?**
+*   **Current Memory (00:00):** 71.0%
+*   **Current Memory (00:09):** 76.4%
+*   **Total Growth:** $76.4 - 71.0 = 5.4\%$
+*   **Time Elapsed:** 9 minutes
+*   **Growth Rate:** $5.4\% / 9 \text{ min} = 0.6\% \text{ per minute}$
+*   **Target:** 95%
+*   **Remaining Growth Needed:** $95.0 - 76.4 = 18.6\%$
+*   **Time to Failure:** $18.6 / 0.6 = 31 \text{ minutes}$
+
+**Answer:** It will hit 95% in **31 minutes** (at approximately **00:40**).
+
+#### **3. What is the correlation between connections and error rate?**
+There is a **non-linear, threshold-based correlation**.
+*   **Normal State:** When Connections are between 195 and 215, the Error Rate is low and stable (1–5 errors/s).
+*   **Failure State:** When Connections spike to ~440–450, the Error Rate increases exponentially (to ~42–45 errors/s).
+*   **Conclusion:** The system is stable up to ~220 connections but experiences a **catastrophic failure mode** (likely resource exhaustion) once connections exceed ~440.
+
+#### **4. At the current disk growth rate, how many hours until 95% full?**
+*   **Current Disk (00:00):** 82.0%
+*   **Current Disk (00:09):** 83.2%
+*   **Total Growth:** $83.2 - 82.0 = 1.2\%$
+*   **Time Elapsed:** 9 minutes
+*   **Growth Rate:** $1.2\% / 9 \text{ min} = 0.1333...\% \text{ per minute}$
+*   **Target:** 95%
+*   **Remaining Growth Needed:** $95.0 - 83.2 = 11.8\%$
+*   **Time to Failure (minutes):** $11.8 / 0.1333... = 88.5 \text{ minutes}$
+*   **Time to Failure (hours):** $88.5 / 60 = 1.475 \text{ hours}$
+
+**Answer:** It will hit 95% in **1.475 hours** (or **1 hour and 28.5 minutes**).
