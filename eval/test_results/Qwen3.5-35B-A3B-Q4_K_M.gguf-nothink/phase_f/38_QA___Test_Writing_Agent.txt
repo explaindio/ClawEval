@@ -1,0 +1,124 @@
+```python
+import pytest
+from your_module import calculate_tax  # Replace 'your_module' with actual module name
+
+class TestCalculateTax:
+    """Unit tests for calculate_tax function covering all edge cases."""
+
+    def test_zero_income_single(self):
+        """Test with zero income for single filer."""
+        tax, rate = calculate_tax(0, 'single')
+        assert tax == 0.0
+        assert rate == 0
+
+    def test_zero_income_married(self):
+        """Test with zero income for married filer."""
+        tax, rate = calculate_tax(0, 'married')
+        assert tax == 0.0
+        assert rate == 0
+
+    def test_typical_single_income(self):
+        """Test typical income within second bracket for single filer."""
+        tax, rate = calculate_tax(30000, 'single')
+        assert tax == 3000.0  # 11600*0.10 + (30000-11600)*0.12 = 1160 + 2208 = 3368
+        assert tax == pytest.approx(3368.0, rel=0.01)
+        assert rate == pytest.approx(11.23, rel=0.01)
+
+    def test_typical_married_income(self):
+        """Test typical income within second bracket for married filer."""
+        tax, rate = calculate_tax(50000, 'married')
+        # 23200*0.10 + (50000-23200)*0.12 = 2320 + 3216 = 5536
+        assert tax == pytest.approx(5536.0, rel=0.01)
+        assert rate == pytest.approx(11.07, rel=0.01)
+
+    def test_high_income_single(self):
+        """Test high income in top bracket for single filer."""
+        tax, rate = calculate_tax(1000000, 'single')
+        assert tax > 0
+        assert rate == pytest.approx(37.0, rel=0.01)
+
+    def test_high_income_married(self):
+        """Test high income in top bracket for married filer."""
+        tax, rate = calculate_tax(1000000, 'married')
+        assert tax > 0
+        assert rate == pytest.approx(37.0, rel=0.01)
+
+    def test_invalid_income_negative(self):
+        """Test with negative income should raise ValueError."""
+        with pytest.raises(ValueError, match="Income must be non-negative number"):
+            calculate_tax(-1000, 'single')
+
+    def test_invalid_income_string(self):
+        """Test with string income should raise ValueError."""
+        with pytest.raises(ValueError, match="Income must be non-negative number"):
+            calculate_tax("abc", 'single')
+
+    def test_invalid_filing_status(self):
+        """Test with invalid filing status should raise ValueError."""
+        with pytest.raises(ValueError, match="Invalid filing status"):
+            calculate_tax(50000, 'divorced')
+
+    def test_bracket_boundary_single(self):
+        """Test income exactly at bracket boundary for single filer."""
+        # At 11600, should be exactly 10%
+        tax, rate = calculate_tax(11600, 'single')
+        assert tax == pytest.approx(1160.0, rel=0.01)
+        assert rate == pytest.approx(10.0, rel=0.01)
+
+    def test_bracket_boundary_married(self):
+        """Test income exactly at bracket boundary for married filer."""
+        # At 23200, should be exactly 10%
+        tax, rate = calculate_tax(23200, 'married')
+        assert tax == pytest.approx(2320.0, rel=0.01)
+        assert rate == pytest.approx(10.0, rel=0.01)
+
+    def test_float_income_single(self):
+        """Test with float income for single filer."""
+        tax, rate = calculate_tax(12345.67, 'single')
+        assert tax > 0
+        assert isinstance(tax, float)
+
+    def test_float_income_married(self):
+        """Test with float income for married filer."""
+        tax, rate = calculate_tax(23456.78, 'married')
+        assert tax > 0
+        assert isinstance(tax, float)
+
+    def test_minimum_taxable_single(self):
+        """Test minimum taxable income for single filer."""
+        tax, rate = calculate_tax(1, 'single')
+        assert tax == pytest.approx(0.10, rel=0.01)
+        assert rate == pytest.approx(10.0, rel=0.01)
+
+    def test_minimum_taxable_married(self):
+        """Test minimum taxable income for married filer."""
+        tax, rate = calculate_tax(1, 'married')
+        assert tax == pytest.approx(0.10, rel=0.01)
+        assert rate == pytest.approx(10.0, rel=0.01)
+
+    def test_large_income_single(self):
+        """Test very large income for single filer."""
+        tax, rate = calculate_tax(10000000, 'single')
+        assert tax > 0
+        assert rate == pytest.approx(37.0, rel=0.01)
+
+    def test_large_income_married(self):
+        """Test very large income for married filer."""
+        tax, rate = calculate_tax(10000000, 'married')
+        assert tax > 0
+        assert rate == pytest.approx(37.0, rel=0.01)
+
+    def test_exact_bracket_limit_single(self):
+        """Test income exactly at second bracket limit for single."""
+        tax, rate = calculate_tax(47150, 'single')
+        # 11600*0.10 + (47150-11600)*0.12 = 1160 + 4266 = 5426
+        assert tax == pytest.approx(5426.0, rel=0.01)
+        assert rate == pytest.approx(11.50, rel=0.01)
+
+    def test_exact_bracket_limit_married(self):
+        """Test income exactly at second bracket limit for married."""
+        tax, rate = calculate_tax(94300, 'married')
+        # 23200*0.10 + (94300-23200)*0.12 = 2320 + 8520 = 10840
+        assert tax == pytest.approx(10840.0, rel=0.01)
+        assert rate == pytest.approx(11.50, rel=0.01)
+```

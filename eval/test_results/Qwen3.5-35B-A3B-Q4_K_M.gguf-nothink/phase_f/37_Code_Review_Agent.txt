@@ -1,0 +1,32 @@
+```json
+{
+  "bugs": [
+    {
+      "line": 18,
+      "issue": "ZeroDivisionError when no orders are pending",
+      "fix": "Add check: avg = total / len(processed) if processed else 0"
+    },
+    {
+      "line": 23,
+      "issue": "Returns len(orders) instead of len(processed)",
+      "fix": "Change to 'count': len(processed)"
+    },
+    {
+      "line": 8,
+      "issue": "Discount could be > 100 causing negative prices",
+      "fix": "Add validation: discount = min(order.get('discount', 0), 100)"
+    },
+    {
+      "line": 1,
+      "issue": "Mutates input orders dict (side effect)",
+      "fix": "Create a copy: order_copy = order.copy() and use order_copy instead"
+    },
+    {
+      "line": 7,
+      "issue": "No type checking on price/quantity (could be None)",
+      "fix": "Add validation: if not isinstance(order.get('price'), (int, float)) or not isinstance(order.get('quantity'), (int, float)): continue"
+    }
+  ],
+  "count": 5
+}
+```

@@ -1,0 +1,433 @@
+```json
+[
+  {
+    "id": "morning_routine",
+    "name": "Morning Routine Lighting",
+    "trigger": {
+      "type": "time",
+      "time": "06:30",
+      "days": ["monday", "tuesday", "wednesday", "thursday", "friday"]
+    },
+    "conditions": [
+      {
+        "type": "time",
+        "operator": "is_after",
+        "value": "06:00"
+      }
+    ],
+    "actions": [
+      {
+        "device": "living_room_lights",
+        "action": "turn_on",
+        "params": { "brightness": 10, "transition": 300 }
+      },
+      {
+        "device": "bedroom_lights",
+        "action": "turn_on",
+        "params": { "brightness": 10, "transition": 300 }
+      },
+      {
+        "device": "kitchen_lights",
+        "action": "turn_on",
+        "params": { "brightness": 20, "transition": 300 }
+      }
+    ]
+  },
+  {
+    "id": "morning_routine_weekend",
+    "name": "Weekend Morning Routine Lighting",
+    "trigger": {
+      "type": "time",
+      "time": "08:00",
+      "days": ["saturday", "sunday"]
+    },
+    "conditions": [],
+    "actions": [
+      {
+        "device": "living_room_lights",
+        "action": "turn_on",
+        "params": { "brightness": 10, "transition": 300 }
+      },
+      {
+        "device": "bedroom_lights",
+        "action": "turn_on",
+        "params": { "brightness": 10, "transition": 300 }
+      },
+      {
+        "device": "kitchen_lights",
+        "action": "turn_on",
+        "params": { "brightness": 20, "transition": 300 }
+      }
+    ]
+  },
+  {
+    "id": "thermostat_occupancy",
+    "name": "Thermostat Occupancy Control",
+    "trigger": {
+      "type": "device_state",
+      "device": "occupancy_sensor",
+      "state": "occupied"
+    },
+    "conditions": [
+      {
+        "type": "time",
+        "operator": "is_between",
+        "value": "23:00-06:00"
+      }
+    ],
+    "actions": [
+      {
+        "device": "thermostat",
+        "action": "set_temperature",
+        "params": { "target": 68 }
+      }
+    ]
+  },
+  {
+    "id": "thermostat_away",
+    "name": "Thermostat Away Mode",
+    "trigger": {
+      "type": "device_state",
+      "device": "occupancy_sensor",
+      "state": "empty"
+    },
+    "conditions": [],
+    "actions": [
+      {
+        "device": "thermostat",
+        "action": "set_temperature",
+        "params": { "target": 65 }
+      }
+    ]
+  },
+  {
+    "id": "thermostat_home",
+    "name": "Thermostat Home Mode",
+    "trigger": {
+      "type": "device_state",
+      "device": "occupancy_sensor",
+      "state": "occupied"
+    },
+    "conditions": [
+      {
+        "type": "time",
+        "operator": "is_between",
+        "value": "06:00-23:00"
+      }
+    ],
+    "actions": [
+      {
+        "device": "thermostat",
+        "action": "set_temperature",
+        "params": { "target": 72 }
+      }
+    ]
+  },
+  {
+    "id": "security_geofence",
+    "name": "Security Geofencing Arm/Disarm",
+    "trigger": {
+      "type": "geofence",
+      "device": "alice_phone",
+      "event": "exit"
+    },
+    "conditions": [
+      {
+        "type": "device_state",
+        "device": "bob_phone",
+        "state": "away"
+      }
+    ],
+    "actions": [
+      {
+        "device": "security_system",
+        "action": "arm_away"
+      }
+    ]
+  },
+  {
+    "id": "security_geofence_disarm",
+    "name": "Security Geofencing Disarm",
+    "trigger": {
+      "type": "geofence",
+      "device": "alice_phone",
+      "event": "enter"
+    },
+    "conditions": [],
+    "actions": [
+      {
+        "device": "security_system",
+        "action": "disarm"
+      }
+    ]
+  },
+  {
+    "id": "security_geofence_disarm_bob",
+    "name": "Security Geofencing Disarm Bob",
+    "trigger": {
+      "type": "geofence",
+      "device": "bob_phone",
+      "event": "enter"
+    },
+    "conditions": [],
+    "actions": [
+      {
+        "device": "security_system",
+        "action": "disarm"
+      }
+    ]
+  },
+  {
+    "id": "pet_feeder",
+    "name": "Pet Auto-Feeder Schedule",
+    "trigger": {
+      "type": "time",
+      "time": "07:00",
+      "days": ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
+    },
+    "conditions": [],
+    "actions": [
+      {
+        "device": "auto_feeder",
+        "action": "dispense_food",
+        "params": { "amount": "1_cup" }
+      }
+    ]
+  },
+  {
+    "id": "pet_feeder_evening",
+    "name": "Pet Auto-Feeder Evening",
+    "trigger": {
+      "type": "time",
+      "time": "18:00",
+      "days": ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
+    },
+    "conditions": [],
+    "actions": [
+      {
+        "device": "auto_feeder",
+        "action": "dispense_food",
+        "params": { "amount": "1_cup" }
+      }
+    ]
+  },
+  {
+    "id": "pet_camera",
+    "name": "Pet Camera Activation",
+    "trigger": {
+      "type": "device_state",
+      "device": "occupancy_sensor",
+      "state": "empty"
+    },
+    "conditions": [],
+    "actions": [
+      {
+        "device": "cat_camera",
+        "action": "start_recording"
+      }
+    ]
+  },
+  {
+    "id": "energy_solar_priority",
+    "name": "Solar Panel Priority Peak Hours",
+    "trigger": {
+      "type": "time",
+      "time": "14:00",
+      "days": ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
+    },
+    "conditions": [
+      {
+        "type": "device_state",
+        "device": "solar_production",
+        "operator": "greater_than",
+        "value": 500
+      }
+    ],
+    "actions": [
+      {
+        "device": "energy_manager",
+        "action": "set_priority",
+        "params": { "source": "solar" }
+      }
+    ]
+  },
+  {
+    "id": "energy_battery_backup",
+    "name": "Battery Backup Evening",
+    "trigger": {
+      "type": "time",
+      "time": "19:00",
+      "days": ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
+    },
+    "conditions": [],
+    "actions": [
+      {
+        "device": "energy_manager",
+        "action": "switch_source",
+        "params": { "source": "battery" }
+      }
+    ]
+  },
+  {
+    "id": "lighting_motion_night",
+    "name": "Nighttime Motion Hallway Lights",
+    "trigger": {
+      "type": "device_state",
+      "device": "hallway_motion_sensor",
+      "state": "motion_detected"
+    },
+    "conditions": [
+      {
+        "type": "time",
+        "operator": "is_between",
+        "value": "22:00-06:00"
+      }
+    ],
+    "actions": [
+      {
+        "device": "hallway_lights",
+        "action": "turn_on",
+        "params": { "brightness": 20 }
+      }
+    ]
+  },
+  {
+    "id": "lighting_motion_timeout",
+    "name": "Hallway Lights Timeout",
+    "trigger": {
+      "type": "device_state",
+      "device": "hallway_lights",
+      "state": "on"
+    },
+    "conditions": [
+      {
+        "type": "time",
+        "operator": "is_between",
+        "value": "22:00-06:00"
+      },
+      {
+        "type": "device_state",
+        "device": "hallway_motion_sensor",
+        "state": "no_motion",
+        "duration": 300
+      }
+    ],
+    "actions": [
+      {
+        "device": "hallway_lights",
+        "action": "turn_off"
+      }
+    ]
+  },
+  {
+    "id": "bobs_office_computer",
+    "name": "Bob's Office Computer Automation",
+    "trigger": {
+      "type": "device_state",
+      "device": "office_computer",
+      "state": "on"
+    },
+    "conditions": [
+      {
+        "type": "device_state",
+        "device": "occupancy_sensor",
+        "state": "occupied"
+      }
+    ],
+    "actions": [
+      {
+        "device": "desk_lamp",
+        "action": "turn_on"
+      },
+      {
+        "device": "thermostat",
+        "action": "set_temperature",
+        "params": { "target": 70 }
+      }
+    ]
+  },
+  {
+    "id": "laundry_notification",
+    "name": "Laundry Cycle Complete Notification",
+    "trigger": {
+      "type": "device_state",
+      "device": "washer",
+      "state": "cycle_complete"
+    },
+    "conditions": [],
+    "actions": [
+      {
+        "device": "notification_service",
+        "action": "send_alert",
+        "params": { "message": "Washer cycle complete", "recipients": ["alice", "bob"] }
+      }
+    ]
+  },
+  {
+    "id": "laundry_dryer_notification",
+    "name": "Dryer Cycle Complete Notification",
+    "trigger": {
+      "type": "device_state",
+      "device": "dryer",
+      "state": "cycle_complete"
+    },
+    "conditions": [],
+    "actions": [
+      {
+        "device": "notification_service",
+        "action": "send_alert",
+        "params": { "message": "Dryer cycle complete", "recipients": ["alice", "bob"] }
+      }
+    ]
+  },
+  {
+    "id": "water_leak_shutoff",
+    "name": "Water Leak Emergency Shutoff",
+    "trigger": {
+      "type": "device_state",
+      "device": "water_leak_detector",
+      "state": "leak_detected"
+    },
+    "conditions": [],
+    "actions": [
+      {
+        "device": "main_water_valve",
+        "action": "close"
+      },
+      {
+        "device": "notification_service",
+        "action": "send_alert",
+        "params": { "message": "WATER LEAK DETECTED! Main valve closed.", "recipients": ["alice", "bob"], "priority": "high" }
+      }
+    ]
+  },
+  {
+    "id": "guest_mode_entry",
+    "name": "Guest Mode Activation",
+    "trigger": {
+      "type": "device_state",
+      "device": "smart_lock",
+      "state": "code_entered",
+      "params": { "code": "guest_temp_code" }
+    },
+    "conditions": [],
+    "actions": [
+      {
+        "device": "thermostat",
+        "action": "set_temperature",
+        "params": { "target": 72 }
+      },
+      {
+        "device": "wifi_network",
+        "action": "enable_network",
+        "params": { "ssid": "Guest_WiFi" }
+      },
+      {
+        "device": "notification_service",
+        "action": "send_alert",
+        "params": { "message": "Guest mode activated", "recipients": ["alice", "bob"] }
+      }
+    ]
+  }
+]
+```

@@ -1,0 +1,65 @@
+{
+  "violations": [
+    {
+      "id": 1,
+      "article": "Article 6(1)(a) & Article 7",
+      "practice": "User data is collected without any consent form or notice.",
+      "fix": "Implement a clear, affirmative consent mechanism (e.g., opt-in checkboxes) and provide a transparent notice before data collection begins."
+    },
+    {
+      "id": 2,
+      "article": "Article 32",
+      "practice": "Personal data is stored in plain text in the database.",
+      "fix": "Encrypt all personal data at rest using strong encryption standards (e.g., AES-256) and manage keys securely."
+    },
+    {
+      "id": 3,
+      "article": "Article 17",
+      "practice": "Users cannot request deletion of their data — 'we keep everything forever.'",
+      "fix": "Establish a process to honor 'Right to Erasure' requests within one month, deleting data unless a legal retention obligation exists."
+    },
+    {
+      "id": 4,
+      "article": "Article 13 & Article 28",
+      "practice": "Data is shared with 15 third-party vendors without user knowledge.",
+      "fix": "Update privacy notices to list all processors, obtain specific consent for sharing, and sign Data Processing Agreements (DPAs) with all vendors."
+    },
+    {
+      "id": 5,
+      "article": "Article 37",
+      "practice": "There is no Data Protection Officer appointed.",
+      "fix": "Appoint a DPO if the company engages in large-scale systematic monitoring or processes special categories of data on a large scale."
+    },
+    {
+      "id": 6,
+      "article": "Chapter V (Articles 44-49)",
+      "practice": "The company transfers EU user data to servers in a country without adequacy decision, with no safeguards.",
+      "fix": "Implement Standard Contractual Clauses (SCCs) or obtain Binding Corporate Rules (BCRs) before transferring data to non-adequate countries."
+    },
+    {
+      "id": 7,
+      "article": "Article 33",
+      "practice": "Data breaches are reported to authorities 'when we get around to it, usually within 6 months.'",
+      "fix": " Report eligible breaches to the supervisory authority within 72 hours of becoming aware of the breach."
+    },
+    {
+      "id": 8,
+      "article": "Article 8",
+      "practice": "Children under 16 can sign up without parental consent.",
+      "fix": "Implement age verification and require verifiable parental consent for users under the applicable age threshold (13-16 depending on member state)."
+    },
+    {
+      "id": 9,
+      "article": "Article 20",
+      "practice": "Users cannot export their data in any format.",
+      "fix": "Develop a feature allowing users to download their personal data in a structured, commonly used, and machine-readable format."
+    },
+    {
+      "id": 10,
+      "article": "Article 12 & Article 13",
+      "practice": "Privacy policy was last updated in 2015 and doesn't mention half these practices.",
+      "fix": "Revise the privacy policy immediately to reflect current practices, legal basis, and rights, ensuring it is concise, transparent, and easily accessible."
+    }
+  ],
+  "count": 10
+}

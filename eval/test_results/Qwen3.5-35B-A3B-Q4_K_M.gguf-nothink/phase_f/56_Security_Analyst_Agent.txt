@@ -1,0 +1,75 @@
+{
+  "vulnerabilities": [
+    {
+      "id": 1,
+      "type": "Hardcoded Secret",
+      "severity": "critical",
+      "location": "app.secret_key = \"password123\"",
+      "fix": "Use environment variables or a secrets manager to store the secret key; never hardcode it in source code."
+    },
+    {
+      "id": 2,
+      "type": "Server-Side Template Injection (SSTI)",
+      "severity": "critical",
+      "location": "render_template_string(f\"Results for: {q}\")",
+      "fix": "Use a safe template rendering method that does not allow arbitrary code execution, such as passing user input as context variables rather than interpolating into the template string."
+    },
+    {
+      "id": 3,
+      "type": "SQL Injection",
+      "severity": "critical",
+      "location": "db.execute(f\"SELECT * FROM users WHERE id = {id}\")",
+      "fix": "Use parameterized queries (e.g., `db.execute(\"SELECT * FROM users WHERE id = ?\", (id,))`) to prevent SQL injection attacks."
+    },
+    {
+      "id": 4,
+      "type": "Deserialization of Untrusted Data",
+      "severity": "critical",
+      "location": "pickle.loads(data)",
+      "fix": "Avoid using pickle for untrusted data; use safer serialization formats like JSON, or implement strict validation and sandboxing if pickle is absolutely necessary."
+    },
+    {
+      "id": 5,
+      "type": "Command Injection",
+      "severity": "critical",
+      "location": "subprocess.check_output(cmd, shell=True)",
+      "fix": "Avoid using `shell=True`; instead, pass the command and arguments as a list to `subprocess.run()` and validate/sanitize all inputs."
+    },
+    {
+      "id": 6,
+      "type": "Path Traversal / Arbitrary File Read",
+      "severity": "high",
+      "location": "open(path).read()",
+      "fix": "Validate and sanitize the file path to ensure it is within an allowed directory; use `os.path.realpath()` and check against a whitelist of allowed paths."
+    },
+    {
+      "id": 7,
+      "type": "Hardcoded Default Password",
+      "severity": "high",
+      "location": "if pw == os.environ.get(\"ADMIN_PW\", \"admin\")",
+      "fix": "Remove the default password fallback; enforce that `ADMIN_PW` is always set via environment variables and fail securely if it is missing."
+    },
+    {
+      "id": 8,
+      "type": "Information Disclosure",
+      "severity": "medium",
+      "location": "return str(os.environ)",
+      "fix": "Do not expose environment variables to users; implement proper access controls and remove debug endpoints in production."
+    },
+    {
+      "id": 9,
+      "type": "Missing HTTPS Enforcement",
+      "severity": "medium",
+      "location": "No HTTPS enforcement",
+      "fix": "Enforce HTTPS using server configuration (e.g., redirect HTTP to HTTPS) and use secure cookies with the `Secure` flag."
+    },
+    {
+      "id": 10,
+      "type": "Missing Rate Limiting",
+      "severity": "medium",
+      "location": "No rate limiting",
+      "fix": "Implement rate limiting on all endpoints to prevent brute-force attacks, DoS, and abuse using middleware or a dedicated rate-limiting service."
+    }
+  ],
+  "count": 10
+}

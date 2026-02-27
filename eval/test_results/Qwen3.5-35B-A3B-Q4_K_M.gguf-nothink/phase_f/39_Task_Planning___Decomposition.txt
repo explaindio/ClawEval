@@ -1,0 +1,98 @@
+{
+  "tasks": [
+    {
+      "id": "T1",
+      "name": "Initialize project structure and dependencies",
+      "depends_on": [],
+      "estimated_hours": 4,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T2",
+      "name": "Design and create PostgreSQL database schema",
+      "depends_on": ["T1"],
+      "estimated_hours": 6,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T3",
+      "name": "Implement database connection and migrations",
+      "depends_on": ["T2"],
+      "estimated_hours": 4,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T4",
+      "name": "Implement User Registration and Login (JWT)",
+      "depends_on": ["T3"],
+      "estimated_hours": 8,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T5",
+      "name": "Implement Todo CRUD operations",
+      "depends_on": ["T4"],
+      "estimated_hours": 10,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T6",
+      "name": "Implement Todo Categories/Tags",
+      "depends_on": ["T5"],
+      "estimated_hours": 6,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T7",
+      "name": "Implement Due Date Reminders (Background Job)",
+      "depends_on": ["T6"],
+      "estimated_hours": 8,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T8",
+      "name": "Implement Rate Limiting Middleware",
+      "depends_on": ["T4"],
+      "estimated_hours": 4,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T9",
+      "name": "Write Unit Tests for Auth and CRUD",
+      "depends_on": ["T4", "T5"],
+      "estimated_hours": 12,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T10",
+      "name": "Write Unit Tests for Categories and Reminders",
+      "depends_on": ["T6", "T7"],
+      "estimated_hours": 8,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T11",
+      "name": "Generate OpenAPI Documentation",
+      "depends_on": ["T5", "T6", "T7"],
+      "estimated_hours": 6,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T12",
+      "name": "Create Dockerfile and docker-compose.yml",
+      "depends_on": ["T7"],
+      "estimated_hours": 4,
+      "assignable_to": "devops"
+    },
+    {
+      "id": "T13",
+      "name": "Configure CI/CD Pipeline",
+      "depends_on": ["T9", "T10", "T12"],
+      "estimated_hours": 6,
+      "assignable_to": "devops"
+    }
+  ],
+  "critical_path": ["T1", "T2", "T3", "T4", "T5", "T6", "T7", "T12", "T13"],
+  "total_hours": 82,
+  "parallel_tracks": 3
+}

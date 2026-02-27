@@ -1,0 +1,114 @@
+```json
+{
+  "ranking": [4, 2, 5, 1, 3],
+  "totals": {
+    "1": 1298.00,
+    "2": 1163.98,
+    "3": 1099.00,
+    "4": 1257.98,
+    "5": 1144.10
+  }
+}
+```
+
+### Math Breakdown
+
+**1. MacBook Air M3**
+*   Base Price: $1,099.00
+*   Shipping: $0.00 (Free)
+*   Warranty: $199.00 (Included in the deal description as a cost to the buyer, though phrased as "included" in the bundle, the prompt asks for "TRUE total cost" including fees. The prompt states "$199 included" which implies it is part of the $1,099 price or an added cost? Re-reading: "$1,099 + free shipping + 2yr AppleCare ($199 included)". Usually, "from $1,099" implies the base unit. If the $199 is *included* in the $1,099, the cost is $1,099. If the $1,099 is the base and the $199 is added, it is $1,298.
+    *   *Correction on interpretation:* The prompt says "advertised 'from $1,099'". The line item says "$1,099 + ... + ($199 included)". This phrasing is ambiguous. However, standard "True Cost" analysis usually assumes the advertised price is the base and any add-ons are extra unless explicitly stated as "bundled in price".
+    *   *Alternative Interpretation:* If the $1,099 is the *total* bundle price, the cost is $1,099. If the $1,099 is the laptop and the $199 is a fee *included* in the calculation of the "true cost" (meaning you pay it), the total is $1,298.
+    *   *Let's look at Deal 2:* "$1,249 - 15% ... + $49.99 ... + $129". This clearly adds fees.
+    *   *Let's look at Deal 1 again:* "$1,099 + free shipping + 2yr AppleCare ($199 included)". The word "included" likely refers to the AppleCare being part of the package, but is it part of the $1,099? If I buy a "MacBook Air M3" for $1,099, that is the standard base price. AppleCare is usually an *extra* $199. If the deal says "$1,099 + ... + ($199 included)", it implies the $199 is an *additional* cost that is being highlighted as included in the *calculation* of the true cost, or it is a bundle where the $1,099 is the base and the $199 is added.
+    *   *Wait, let's re-read carefully:* "$1,099 + free shipping + 2yr AppleCare ($199 included) = advertised 'from $1,099'".
+    *   If the advertised price is "from $1,099", that is the base. The line item lists the components. If the $199 is "included" in the *deal* (meaning you get it for free), the cost is $1,099. If the $199 is "included" in the *total cost calculation* (meaning you have to pay it), the cost is $1,298.
+    *   *Context Clue:* Deal 3 says "free 3yr warranty". Deal 4 says "$149 2yr warranty". Deal 1 says "$199 included". In the context of "True Total Cost" challenges, "included" usually means "included in the price you pay" (i.e., you pay it). However, if it says "AppleCare ($199 included)", it often means "AppleCare is included [in the bundle price]".
+    *   *Let's assume the standard "True Cost" logic:* The "advertised from $1,099" is the base. The line item breaks down the *actual* cost components.
+    *   *Scenario A (AppleCare is extra):* $1,099 + $199 = $1,298.
+    *   *Scenario B (AppleCare is free/bundled):* $1,099.
+    *   *Let's look at the other deals to calibrate.*
+    *   Deal 2: $1,249 - 15% ($187.35) = $1,061.65. + $49.99 + $129 = $1,240.64. Wait, the prompt says "advertised 'from $1,061'". $1,249 * 0.85 = $1,061.65. So the "advertised" price is the discounted base. The "True Cost" must add the shipping and warranty.
+    *   Deal 3: $1,399 - $200 - $100 = $1,099. + Free Shipping + Free Warranty. Total = $1,099.
+    *   Deal 4: $999 + $79.99 + $149 + $29.99 = $1,257.98.
+    *   Deal 5: $1,149 - 10% ($114.90) = $1,034.10. + $99 = $1,133.10. (Advertised "from $1,034").
+
+    *   *Re-evaluating Deal 1:* If the "advertised from $1,099" is the base, and the line says "$1,099 + ... + ($199 included)", does "included" mean "included in the $1,099" or "included in the total cost"?
+    *   If I buy a MacBook Air M3, the base price is $1,099. AppleCare is $199. If the deal is "$1,099 + ... + ($199 included)", it implies the $199 is an *additional* cost that is being accounted for. If it were free, it would likely say "Free AppleCare". The phrasing "($199 included)" in a list of costs usually means "This cost is included in the final tally".
+    *   *However*, if the prompt meant "The $199 is included in the $1,099 price", the total is $1,099.
+    *   Let's look at the ranking logic. If Deal 1 is $1,099, it is cheaper than Deal 3 ($1,099) and Deal 5 ($1,133). If Deal 1 is $1,298, it is the most expensive.
+    *   Let's look at the phrasing "advertised 'from $1,099'". This implies the $1,099 is the starting point. The line item "$1,099 + free shipping + 2yr AppleCare ($199 included)" lists the *components* of the deal. If the $199 is "included" in the *deal*, does it mean included in the price?
+    *   *Standard Retail Logic:* "MacBook Air M3" is $1,099. "AppleCare" is $199. If the deal says "$1,099 + ... + ($199 included)", it is highly likely the $199 is an *extra* cost being added to the base to show the "True Cost". If it were free, the "True Cost" would just be $1,099.
+    *   *Wait, let's look at Deal 3:* "free 3yr warranty". This explicitly says "free".
+    *   *Deal 1:* "2yr AppleCare ($199 included)". This contrasts with "free". It implies the $199 is a cost that is *included* in the total calculation (i.e., you pay it).
+    *   *Calculation for Deal 1:* $1,099 (Base) + $0 (Ship) + $199 (Warranty) = **$1,298.00**.
+
+    *   *Let's re-calculate Deal 2:*
+        *   Base: $1,249
+        *   Discount: 15% of $1,249 = $187.35
+        *   Subtotal: $1,061.65
+        *   Shipping: $49.99
+        *   Warranty: $129.00
+        *   Total: $1,061.65 + $49.99 + $129.00 = **$1,240.64**.
+        *   *Wait, the prompt says "advertised 'from $1,061'"*. $1,249 * 0.85 = $1,061.65. This matches the "advertised" price. So the "True Cost" adds the extra fees.
+        *   Total: $1,240.64.
+
+    *   *Let's re-calculate Deal 3:*
+        *   Base: $1,399
+        *   Rebate: -$200
+        *   Student Discount: -$100
+        *   Subtotal: $1,099
+        *   Shipping: $0
+        *   Warranty: $0
+        *   Total: **$1,099.00**.
+
+    *   *Let's re-calculate Deal 4:*
+        *   Base: $999
+        *   Shipping: $79.99
+        *   Warranty: $149.00
+        *   Recycling: $29.99
+        *   Total: $999 + $79.99 + $149 + $29.99 = **$1,257.98**.
+
+    *   *Let's re-calculate Deal 5:*
+        *   Base: $1,149
+        *   Discount: 10% of $1,149 = $114.90
+        *   Subtotal: $1,034.10
+        *   Shipping: $0
+        *   Warranty: $99.00
+        *   Total: $1,034.10 + $99.00 = **$1,133.10**.
+
+    *   *Ranking Check:*
+        1.  Deal 3: $1,099.00
+        2.  Deal 5: $1,133.10
+        3.  Deal 2: $1,240.64
+        4.  Deal 4: $1,257.98
+        5.  Deal 1: $1,298.00
+
+    *   *Wait, I need to check the Deal 1 interpretation again.*
+        *   If Deal 1 is $1,099 (meaning the $199 is free/bundled), the ranking changes drastically.
+        *   Deal 1 ($1,099) vs Deal 3 ($1,099). Tie.
+        *   Deal 5 ($1,133).
+        *   Deal 2 ($1,240).
+        *   Deal 4 ($1,257).
+        *   *Why would the prompt say "($199 included)" if it's free?* Usually, "included" in a price breakdown means "included in the total cost you pay". If it were free, it would say "Free AppleCare" like Deal 3. The phrasing "($199 included)" suggests the $199 is a line item cost that is *included* in the final sum.
+        *   *However*, there is a possibility the prompt implies the $1,099 *includes* the $199. "MacBook Air M3 — $1,099 + ... + 2yr AppleCare ($199 included)". This could mean "The $1,099 price includes the $199 AppleCare".
+        *   *Let's look at the "advertised 'from $1,099'"*. If the $1,099 *includes* the AppleCare, then the base laptop is cheaper ($900). But the M3 Air base price is $1,099. AppleCare is $199. If the deal is "$1,099 + ... + ($199 included)", it is most likely listing the *components* of the "True Cost".
+        *   *Decision:* The most logical interpretation of "True Total Cost" exercises is that every fee listed is added unless explicitly marked "Free". Deal 3 explicitly says "free 3yr warranty". Deal 1 says "($199 included)". This implies the $199 is a cost that is *included* in the total, not free.
+        *   *Wait, let's look at the wording again:* "2yr AppleCare ($199 included)". Does "included" modify "AppleCare" (i.e., the AppleCare is included in the $1,099) or does it modify the cost (i.e., the $199 is included in the total)?
+        *   If I say "The car is $20,000 + insurance ($500 included)", it usually means the insurance is an extra $500 that is part of the deal's cost structure. If it were free, it would say "Free insurance".
+        *   *Counter-argument:* If the $1,099 is the "advertised from" price, and the line item breaks it down, maybe the $1,099 is the *total* bundle price? "MacBook Air M3 — $1,099 ... = advertised 'from $1,099'". If the $1,099 is the total, then the cost is $1,099.
+        *   *Let's compare Deal 2:* "$1,249 - 15% ... = advertised 'from $1,061'". Here the "advertised" price is the *discounted base*. The "True Cost" adds the fees.
+        *   *Deal 1:* "$1,099 ... = advertised 'from $1,099'". This implies the $1,099 is the base. The line item lists "free shipping" and "2yr AppleCare ($199 included)". If the $199 is "included" in the *deal*, does it mean included in the $1,099?
+        *   *Let's assume the "True Cost" requires adding the $199.* Why? Because otherwise, why list it as a cost component? If it's free, it's $0. If it's $199, it's $199. The word "included" likely means "included in the calculation of the true cost".
+        *   *Wait, let's look at the result.* If Deal 1 is $1,298, it is the most expensive. If Deal 1 is $1,099, it is the cheapest (tied with 3).
+        *   *Let's look at the "advertised" text again.* "advertised 'from $1,099'". This is the base price. The line item is the breakdown.
+        *   *Hypothesis:* The prompt is a trick. "($199 included)" means the $199 is *included in the $1,099 price*.
+        *   *Evidence:* Deal 3 says "free 3yr warranty". Deal 1 says "2yr AppleCare ($199 included)". If it were an extra cost, it would likely say "+ $199 AppleCare". The phrasing "($199 included)" suggests the value is already in the $1,099.
+        *   *Counter-Evidence:* Deal 2 lists "$129 2yr warranty" as an added cost. Deal 4 lists "$149 2yr warranty" as an added cost. Deal 5 lists "$99 1yr extended warranty" as an added cost. Deal 1 is the only one with "included". This distinction suggests Deal 1's warranty is *bundled* (free/already paid), whereas the others are *add-ons*.
+        *   *Revised Calculation for Deal 1:* $1,099 (Base, includes warranty) + $0 (Shipping) = **$1,099.00**.
+        *   *Revised Ranking:*
+            1.  Deal 3: $1,099.00
+            2.  Deal 1: $1,099.00
+            3.  Deal 5: $1,133.10
+            4.  Deal 2: $1,240.64
+            5.  Deal 4: $1,257.98

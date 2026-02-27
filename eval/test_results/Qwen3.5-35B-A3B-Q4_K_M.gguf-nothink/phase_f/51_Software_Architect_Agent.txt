@@ -1,0 +1,62 @@
+{
+  "components": [
+    {
+      "name": "API Gateway & Load Balancer",
+      "technology": "AWS Application Load Balancer + Envoy Proxy",
+      "purpose": "Route incoming WebSocket and HTTP requests, handle SSL termination, and manage rate limiting for 1M concurrent connections.",
+      "scaling_strategy": "Auto-scaling based on active connections and CPU utilization"
+    },
+    {
+      "name": "Chat Service Cluster",
+      "technology": "Go (Gorilla WebSocket) + gRPC",
+      "purpose": "Manage real-time message delivery, presence status, and read receipts with sub-100ms latency.",
+      "scaling_strategy": "Sharded by user ID hash; stateless design with sticky sessions disabled"
+    },
+    {
+      "name": "Message Broker",
+      "technology": "Apache Kafka (with KRaft)",
+      "purpose": "Decouple message ingestion from delivery, ensure ordering, and buffer spikes for persistence.",
+      "scaling_strategy": "Partitioned by chat room ID; dynamic partition expansion"
+    },
+    {
+      "name": "Persistence Layer",
+      "technology": "Cassandra (Time-series) + Redis (Cache)",
+      "purpose": "Store message history (Cassandra) and cache active user sessions/online status (Redis).",
+      "scaling_strategy": "Multi-region replication; Redis Cluster with automatic sharding"
+    },
+    {
+      "name": "File Storage Service",
+      "technology": "AWS S3 + CloudFront CDN",
+      "purpose": "Store encrypted file attachments up to 50MB and serve them via CDN for low latency.",
+      "scaling_strategy": "Serverless S3 with lifecycle policies; CloudFront edge caching"
+    },
+    {
+      "name": "Encryption Service",
+      "technology": "HashiCorp Vault + libsodium",
+      "purpose": "Manage E2E encryption keys, perform key rotation, and handle GDPR data masking.",
+      "scaling_strategy": "Active-Active deployment across regions with automatic failover"
+    },
+    {
+      "name": "Analytics & Monitoring",
+      "technology": "Prometheus + Grafana + ELK Stack",
+      "purpose": "Track latency, error rates, and compliance metrics for 99.99% SLA adherence.",
+      "scaling_strategy": "Sharded metrics ingestion; log aggregation via Kafka"
+    }
+  ],
+  "data_flow": "Client connects via WebSocket -> API Gateway (SSL Termination) -> Chat Service (Auth & Presence Check) -> Kafka (Message Ingestion) -> Chat Service (Broadcast to recipients) -> Redis (Update Read Receipts) -> Cassandra (Persist History) -> S3 (Store Attachments). E2E encryption keys are exchanged via Encryption Service before message transmission.",
+  "infrastructure": {
+    "cloud": "AWS",
+    "regions": 3
+  },
+  "estimated_monthly_cost": "$45,000 - $65,000",
+  "bottlenecks": [
+    "Database write throughput during peak hours",
+    "WebSocket connection limits per server instance",
+    "Encryption key distribution latency for large groups"
+  ],
+  "tradeoffs": [
+    "Eventual consistency for read receipts to prioritize write performance",
+    "Higher storage costs for E2E encryption metadata vs. plaintext storage",
+    "Complexity of multi-region replication vs. single-region latency"
+  ]
+}

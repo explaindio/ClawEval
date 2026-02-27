@@ -1,0 +1,57 @@
+```json
+{
+  "issues": [
+    {
+      "line": "1",
+      "problem": "version '2' is outdated",
+      "fix": "Update to version '3.8' or higher for better security and feature support"
+    },
+    {
+      "line": "3",
+      "problem": "'latest' tag is non-deterministic",
+      "fix": "Pin to a specific version like 'node:18-alpine' for reproducible builds"
+    },
+    {
+      "line": "8",
+      "problem": "DB password in plaintext (should use secrets)",
+      "fix": "Use Docker secrets or environment variable references instead of hardcoding credentials"
+    },
+    {
+      "line": "9",
+      "problem": "NODE_ENV should be 'production'",
+      "fix": "Change NODE_ENV to 'production' for security and performance"
+    },
+    {
+      "line": "11",
+      "problem": "Source volume mount (.:/app) in production",
+      "fix": "Remove host volume mounts in production; use build context or read-only volumes"
+    },
+    {
+      "line": "12",
+      "problem": "restart: no — should be 'unless-stopped' or 'always'",
+      "fix": "Set restart policy to 'unless-stopped' for better reliability"
+    },
+    {
+      "line": "16",
+      "problem": "MySQL 5.6 is EOL",
+      "fix": "Upgrade to MySQL 8.0 or a supported LTS version"
+    },
+    {
+      "line": "18",
+      "problem": "DB port 3306 exposed publicly",
+      "fix": "Remove port mapping or restrict to localhost only (e.g., '127.0.0.1:3306:3306')"
+    },
+    {
+      "line": "21",
+      "problem": "/tmp for persistent data (will be lost)",
+      "fix": "Use a named volume like 'mysql-data' instead of /tmp for persistence"
+    },
+    {
+      "line": "25",
+      "problem": "Redis port exposed publicly + no auth",
+      "fix": "Remove port mapping and configure Redis with password authentication"
+    }
+  ],
+  "count": 10
+}
+```

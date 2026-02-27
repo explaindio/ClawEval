@@ -59,103 +59,103 @@ All scores out of 10. Sorted by best overall model.
 
 ### Tier 1 — Utility Agents
 
-| # | Role | 122B Think 16K | 35B Think ∞ |
-|---|---|---|---|
-| 1 | Router / Triage Agent | 🟢 **10** | 🟢 **10** |
-| 2 | Input Validator / Sanitizer | 🟢 **10** | 🟢 **10** |
-| 3 | Heartbeat / Health Monitor | 🔴 3 | ⬛ 0 |
-| 4 | Notification / Alert Agent | 🟢 **8** | 🟢 **8** |
-| 5 | Sentiment Analysis Agent | 🟢 **10** | 🟢 **10** |
-| 6 | FAQ Generation Agent | 🟡 5 | 🟡 6 |
-| 7 | Translation Agent | 🟢 **10** | 🟢 **9** |
-| 8 | Calendar / Scheduling Agent | 🔴 0 | 🔴 0 |
+| # | Role | 122B Think 16K | 35B Think ∞ | 35B NoThink |
+|---|---|---|---|---|
+| 1 | Router / Triage | 🟢 **10** | 🟢 **10** | 🟢 **10** |
+| 2 | Input Validator | 🟢 **10** | 🟢 **10** | 🟢 **10** |
+| 3 | Health Monitor | 🔴 3 | ⬛ 0 | 🔴 3 |
+| 4 | Notification | 🟢 **8** | 🟢 **8** | 🟢 **8** |
+| 5 | Sentiment | 🟢 **10** | 🟢 **10** | 🟢 **10** |
+| 6 | FAQ Generation | 🟡 5 | 🟡 6 | 🟡 6 |
+| 7 | Translation | 🟢 **10** | 🟢 **9** | 🟢 **9** |
+| 8 | Calendar | 🔴 0 | 🔴 0 | 🔴 0 |
 
 ### Tier 2 — Moderate Complexity Agents
 
-| # | Role | 122B Think 16K | 35B Think ∞ |
-|---|---|---|---|
-| 9 | Research / Web Search Agent | 🟢 **10** | ⬛ 0 |
-| 10 | Content Writer / Blog Writer | 📝 5 | 📝 5 |
-| 11 | Editor Agent | 🟡 7 | 🟢 **9** |
-| 12 | Content Planner | 🟢 **10** | 🟢 **10** |
-| 13 | Email Drafting / Summarization | 🟢 **8** | ⬛ 0 |
-| 14 | Document Summarization | 🟢 **8** | 🟢 **8** |
-| 15 | Meeting Notes / Transcription | 🟢 **9** | 🟢 **9** |
-| 16 | Social Media Scouting | 🟢 **10** | 🟢 **10** |
-| 17 | Social Media Content Agent | 📝 5 | 📝 5 |
-| 18 | News Aggregation Agent | 🟢 **10** | 🟢 **10** |
-| 19 | Shopping / Price Comparison | 🟢 **10** | 🟢 **10** |
-| 20 | Memory / Knowledge Management | 🟢 **9** | 🟢 **9** |
-| 21 | RAG / Retrieval Agent | 🟡 6 | 🟡 6 |
-| 22 | Data Analysis Agent | 🔴 2 | ⬛ 0 |
-| 23 | Website Scraping / Understanding | 🟢 **10** | 🟢 **10** |
-| 24 | Image Description / Understanding | 📝 5 | 📝 5 |
-| 25 | Customer Support Agent | 🟢 **10** | 🟢 **10** |
-| 26 | Lead Scoring / Prospecting | 🟢 **8** | 🟢 **8** |
-| 27 | Sprint / Project Summarizer | 🟢 **10** | ⬛ 0 |
-| 28 | Transaction / Approval Agent | 🟢 **10** | ⬛ 0 |
-| 29 | Home Automation Agent | 🟢 **10** | 🟢 **10** |
-| 30 | Fitness / Health Tracking | 🟢 **9** | 🟢 **9** |
-| 31 | Recipe / Cooking Agent | 🔴 2 | ⬛ 0 |
-| 32 | Personal Finance Tracking | 🟡 7 | ⬛ 0 |
-| 33 | SEO Optimization Agent | 🟢 **9** | 🟢 **9** |
-| 34 | Landing Page Generator | 📝 5 | 📝 5 |
-| 35 | Travel Planning Agent | 🟢 **8** | 🔴 0 |
+| # | Role | 122B Think 16K | 35B Think ∞ | 35B NoThink |
+|---|---|---|---|---|
+| 9 | Research Agent | 🟢 **10** | ⬛ 0 | 🟢 **10** |
+| 10 | Content Writer | 📝 5 | 📝 5 | 📝 5 |
+| 11 | Editor | 🟡 7 | 🟢 **9** | 🟢 **10** |
+| 12 | Content Planner | 🟢 **10** | 🟢 **10** | 🟢 **10** |
+| 13 | Email Drafting | 🟢 **8** | ⬛ 0 | 🟢 **10** |
+| 14 | Doc Summary | 🟢 **8** | 🟢 **8** | 🟢 **10** |
+| 15 | Meeting Notes | 🟢 **9** | 🟢 **9** | 🟢 **9** |
+| 16 | Social Scouting | 🟢 **10** | 🟢 **10** | 🟢 **10** |
+| 17 | Social Content | 📝 5 | 📝 5 | 📝 5 |
+| 18 | News Aggregation | 🟢 **10** | 🟢 **10** | 🟢 **10** |
+| 19 | Shopping | 🟢 **10** | 🟢 **10** | 🔴 4 |
+| 20 | Memory Mgmt | 🟢 **9** | 🟢 **9** | 🟢 **9** |
+| 21 | RAG / Retrieval | 🟡 6 | 🟡 6 | 🔴 4 |
+| 22 | Data Analysis | 🔴 2 | ⬛ 0 | 🔴 3 |
+| 23 | Web Scraping | 🟢 **10** | 🟢 **10** | 🟢 **10** |
+| 24 | Image Description | 📝 5 | 📝 5 | 📝 5 |
+| 25 | Customer Support | 🟢 **10** | 🟢 **10** | 🟢 **10** |
+| 26 | Lead Scoring | 🟢 **8** | 🟢 **8** | 🟢 **8** |
+| 27 | Sprint Summary | 🟢 **10** | ⬛ 0 | 🟡 5 |
+| 28 | Transaction | 🟢 **10** | ⬛ 0 | 🟢 **9** |
+| 29 | Home Automation | 🟢 **10** | 🟢 **10** | 🟢 **9** |
+| 30 | Fitness Tracking | 🟢 **9** | 🟢 **9** | 🟡 7 |
+| 31 | Recipe / Cooking | 🔴 2 | ⬛ 0 | 🟢 **9** |
+| 32 | Personal Finance | 🟡 7 | ⬛ 0 | 🔴 4 |
+| 33 | SEO Optimization | 🟢 **9** | 🟢 **9** | 🟢 **9** |
+| 34 | Landing Page | 📝 5 | 📝 5 | 📝 5 |
+| 35 | Travel Planning | 🟢 **8** | 🔴 0 | 🟡 7 |
 
 ### Tier 3 — Advanced Agents
 
-| # | Role | 122B Think 16K | 35B Think ∞ |
-|---|---|---|---|
-| 36 | Code Generation Agent | 🟢 **10** | 🟢 **10** |
-| 37 | Code Review Agent | 🟢 **10** | 🟢 **8** |
-| 38 | QA / Test Writing Agent | 🟢 **8** | 🟢 **8** |
-| 39 | Task Planning / Decomposition | 🟢 **9** | 🟢 **9** |
-| 40 | Fact-Checking Agent | 🟢 **10** | 🟢 **10** |
-| 41 | Critic / Review Agent | 📝 5 | 📝 5 |
-| 42 | Market Research Agent | 🔴 0 | ⬛ 0 |
-| 43 | Synthesizer / Aggregator | 🟡 7 | 🟢 **9** |
-| 44 | Curriculum / Course Designer | 🟡 6 | 🟡 6 |
-| 45 | Prototype Generator | 🟡 6 | 🟡 6 |
-| 46 | DevOps Agent | 🟡 7 | 🟢 **10** |
+| # | Role | 122B Think 16K | 35B Think ∞ | 35B NoThink |
+|---|---|---|---|---|
+| 36 | Code Generation | 🟢 **10** | 🟢 **10** | 🟢 **10** |
+| 37 | Code Review | 🟢 **10** | 🟢 **8** | 🟢 **10** |
+| 38 | QA / Test Writing | 🟢 **8** | 🟢 **8** | 🟢 **10** |
+| 39 | Task Planning | 🟢 **9** | 🟢 **9** | 🟢 **10** |
+| 40 | Fact-Checking | 🟢 **10** | 🟢 **10** | 🟢 **10** |
+| 41 | Critic / Review | 📝 5 | 📝 5 | 📝 5 |
+| 42 | Market Research | 🔴 0 | ⬛ 0 | 🟡 7 |
+| 43 | Synthesizer | 🟡 7 | 🟢 **9** | 🟢 **9** |
+| 44 | Curriculum Design | 🟡 6 | 🟡 6 | 🟡 6 |
+| 45 | Prototype Gen | 🟡 6 | 🟡 6 | 🟡 6 |
+| 46 | DevOps | 🟡 7 | 🟢 **10** | 🟢 **9** |
 
 ### Tier 4 — Expert Agents
 
-| # | Role | 122B Think 16K | 35B Think ∞ |
-|---|---|---|---|
-| 47 | Math / Logic Reasoning | 🟡 6 | 🟡 6 |
-| 48 | STEM Analysis | 🟢 **10** | 🟢 **10** |
-| 49 | Algorithm Exploration | 🟢 **10** | 🟢 **10** |
+| # | Role | 122B Think 16K | 35B Think ∞ | 35B NoThink |
+|---|---|---|---|---|
+| 47 | Math / Logic | 🟡 6 | 🟡 6 | 🔴 4 |
+| 48 | STEM Analysis | 🟢 **10** | 🟢 **10** | 🟢 **10** |
+| 49 | Algorithm | 🟢 **10** | 🟢 **10** | 🟢 **10** |
 
 ### Tier 5 — Complex / Senior Agents
 
-| # | Role | 122B Think 16K | 35B Think ∞ |
-|---|---|---|---|
-| 50 | Orchestrator / Manager Agent | 🟢 **8** | 🟢 **8** |
-| 51 | Software Architect Agent | 🟢 **10** | 🟢 **10** |
-| 52 | Complex Debugger Agent | 🟢 **10** | 🟢 **8** |
-| 53 | Legal Document Review | 🟢 **10** | 🟢 **10** |
-| 54 | Medical / Health Analysis | 🟡 7 | 🟢 **10** |
-| 55 | Financial Analysis / Stock Research | 🟢 **10** | 🟢 **10** |
-| 56 | Security Analyst Agent | 🟡 6 | 🟢 **10** |
-| 57 | SRE / Incident Response | 🟡 6 | ⬛ 0 |
-| 58 | Book / Long-Form Writing | 📝 5 | 📝 5 |
-| 59 | Compliance / Regulatory Agent | 🟡 7 | 🟢 **8** |
+| # | Role | 122B Think 16K | 35B Think ∞ | 35B NoThink |
+|---|---|---|---|---|
+| 50 | Orchestrator | 🟢 **8** | 🟢 **8** | 🟢 **8** |
+| 51 | Architect | 🟢 **10** | 🟢 **10** | 🟢 **10** |
+| 52 | Debugger | 🟢 **10** | 🟢 **8** | 🟢 **10** |
+| 53 | Legal Review | 🟢 **10** | 🟢 **10** | 🟢 **10** |
+| 54 | Medical | 🟡 7 | 🟢 **10** | 🟢 **10** |
+| 55 | Financial | 🟢 **10** | 🟢 **10** | 🟢 **10** |
+| 56 | Security | 🟡 6 | 🟢 **10** | 🟢 **10** |
+| 57 | SRE / Incident | 🟡 6 | ⬛ 0 | 🔴 3 |
+| 58 | Book Writing | 📝 5 | 📝 5 | 📝 5 |
+| 59 | Compliance | 🟡 7 | 🟢 **8** | 🟢 **8** |
 
 ### Summary
 
-| Metric | 122B Think 16K | 35B Think ∞ |
-|---|---|---|
-| **Total** | **~443/590 (75%)** | **405/582 (70%)** |
-| 🟢 High (8-10) | 33 roles | 29 roles |
-| 🟡 Medium (5-7) | 16 roles | 12 roles |
-| 🔴 Low (0-4) | 4 roles | 2 roles |
-| ⬛ 32K overflow | 0 | 10 roles |
-| 📝 Manual review | 6 roles | 6 roles |
+| Metric | 122B Think 16K | 35B Think ∞ | 35B NoThink |
+|---|---|---|---|
+| **Total** | **~443/590 (75%)** | **405/582 (70%)** | **472/590 (80%)** 🏆 |
+| 🟢 High (8-10) | 33 roles | 29 roles | 37 roles |
+| 🟡 Medium (5-7) | 16 roles | 12 roles | 10 roles |
+| 🔴 Low (0-4) | 4 roles | 2 roles | 6 roles |
+| ⬛ 32K overflow | 0 | 10 roles | 0 |
+| 📝 Manual | 6 roles | 6 roles | 6 roles |
 
-### Notes
-- ⬛ **32K overflow:** The 35B model with unlimited thinking (llama.cpp, no thinking cap) fills the 32K max_tokens with reasoning tokens, leaving no room for the actual answer. The 122B model on SGLang has a 16K thinking budget that prevents this.
-- 📝 Manual review tests default to 5/10 pending human review
-- 🔴 Market Research (#42) fails on both models — overthinks and times out or overflows
-- 🔴 Calendar (#8) fails on both models — timezone conversion errors
-- The 35B model **outperforms 122B** on several tests (Editor, Synthesizer, DevOps, Medical, Security, Compliance) despite being ~3× smaller
+### Key Findings
+- 🏆 **35B NoThink is the highest Phase F score** — 80% vs 75% (122B think) vs 70% (35B think)
+- ⬛ **Unlimited thinking hurts:** The 35B think on llama.cpp has no thinking cap, causing 10 tests to overflow. This artificially deflates the score
+- 🔄 **Think vs NoThink tradeoffs:** Thinking helps on Math/Logic (6 vs 4) and Shopping (10 vs 4), but nothink wins on Recipe (9 vs 0), Market Research (7 vs 0), and Travel (7 vs 0) by avoiding overthinking
+- The 35B NoThink completes all 59 tests in **~8 min** at 100 t/s, vs ~2.5h for think mode
+
 
