@@ -1,0 +1,30 @@
+{
+  "bugs": [
+    {
+      "line": 18,
+      "issue": "ZeroDivisionError when no orders are pending (len(processed) is 0)",
+      "fix": "Check if len(processed) > 0 before dividing, default avg to 0"
+    },
+    {
+      "line": 23,
+      "issue": "Returns len(orders) instead of len(processed) in count",
+      "fix": "Change len(orders) to len(processed)"
+    },
+    {
+      "line": 8,
+      "issue": "Discount could be > 100, resulting in negative price logic issues",
+      "fix": "Validate discount is between 0 and 100"
+    },
+    {
+      "line": 14,
+      "issue": "Mutates input orders dict (side effect)",
+      "fix": "Create a copy of the order dict before modifying"
+    },
+    {
+      "line": 8,
+      "issue": "No type checking on price/quantity (could be None or non-numeric)",
+      "fix": "Add type validation for price and quantity before calculation"
+    }
+  ],
+  "count": 5
+}

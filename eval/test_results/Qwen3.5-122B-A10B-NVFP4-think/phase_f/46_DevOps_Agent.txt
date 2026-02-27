@@ -1,0 +1,55 @@
+{
+  "issues": [
+    {
+      "line": "1",
+      "problem": "version '2' is outdated",
+      "fix": "Update version to '3.8' or higher"
+    },
+    {
+      "line": "4",
+      "problem": "'latest' tag is non-deterministic",
+      "fix": "Use specific version tag (e.g., node:18-alpine)"
+    },
+    {
+      "line": "8",
+      "problem": "DB password in plaintext (should use secrets)",
+      "fix": "Use Docker secrets or env_file"
+    },
+    {
+      "line": "9",
+      "problem": "NODE_ENV should be 'production'",
+      "fix": "Set NODE_ENV: production"
+    },
+    {
+      "line": "11",
+      "problem": "Source volume mount (.:/app) in production",
+      "fix": "Copy files into image or use named volumes"
+    },
+    {
+      "line": "12",
+      "problem": "restart: no — should be 'unless-stopped' or 'always'",
+      "fix": "Set restart: unless-stopped"
+    },
+    {
+      "line": "15",
+      "problem": "MySQL 5.6 is EOL",
+      "fix": "Use supported version (e.g., mysql:8.0)"
+    },
+    {
+      "line": "17",
+      "problem": "DB port 3306 exposed publicly",
+      "fix": "Remove ports mapping or restrict network"
+    },
+    {
+      "line": "21",
+      "problem": "/tmp for persistent data (will be lost)",
+      "fix": "Use named volume or persistent path"
+    },
+    {
+      "line": "26",
+      "problem": "Redis port exposed publicly + no auth",
+      "fix": "Remove ports mapping and enable requirepass"
+    }
+  ],
+  "count": 10
+}

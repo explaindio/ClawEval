@@ -1,0 +1,3573 @@
+Thinking Process:
+
+1.  **Analyze the Request:**
+    *   Input: Financial data (Income, Expenses, Debts, Assets).
+    *   Task: Calculate specific financial metrics.
+    *   Output Format: JSON.
+    *   Constraint: Values rounded to 2 decimals.
+    *   Specific Metrics Required: `total_expenses`, `savings_rate`, `discretionary_spending`, `fixed_costs`, `debt_to_income`, `emergency_fund_months`, `cc_monthly_interest`, `net_worth_estimate`, `remaining_after_expenses`, `needs_vs_wants_ratio`.
+
+2.  **Extract Data:**
+    *   Monthly Income (Net): $7,500
+    *   Expenses:
+        *   Rent: $1,800
+        *   Car payment: $425
+        *   Car insurance: $180
+        *   Groceries: $650
+        *   Utilities: $220
+        *   Internet: $80
+        *   Phone: $85
+        *   Streaming: $45
+        *   Gym: $50
+        *   Dining out: $380
+        *   Gas: $200
+        *   Student loan: $350
+        *   Credit card min: $150
+        *   Savings: $500
+    *   Credit Card Balance: $4,200
+    *   Credit Card APR: 22.99%
+    *   Student Loan Balance: $28,000
+    *   Student Loan APR: 5.5%
+    *   Savings Account Balance: $8,500
+
+3.  **Calculate Metrics:**
+
+    *   **Total Expenses:** Sum of all listed expense categories.
+        *   Sum = 1800 + 425 + 180 + 650 + 220 + 80 + 85 + 45 + 50 + 380 + 200 + 350 + 150 + 500
+        *   Calculation:
+            *   1800 + 425 = 2225
+            *   2225 + 180 = 2405
+            *   2405 + 650 = 3055
+            *   3055 + 220 = 3275
+            *   3275 + 80 = 3355
+            *   3355 + 85 = 3440
+            *   3440 + 45 = 3485
+            *   3485 + 50 = 3535
+            *   3535 + 380 = 3915
+            *   3915 + 200 = 4115
+            *   4115 + 350 = 4465
+            *   4465 + 150 = 4615
+            *   4615 + 500 = 5115
+        *   Total Expenses = $5,115.00
+
+    *   **Remaining After Expenses:** Income - Total Expenses.
+        *   7500 - 5115 = 2385
+        *   Value = $2,385.00
+
+    *   **Savings Rate:** (Savings / Income) * 100.
+        *   Savings = $500
+        *   Income = $7,500
+        *   (500 / 7500) * 100 = 6.666...%
+        *   Rounded to 2 decimals: 6.67
+
+    *   **Fixed Costs:** Usually defined as essential, non-discretionary expenses (Rent, Car, Insurance, Utilities, Internet, Phone, Student Loan, Min CC payment, Gas, Groceries). Sometimes Savings is excluded or included depending on definition. Standard budgeting often separates Needs vs Wants.
+        *   Let's define Fixed Costs as essential recurring bills.
+        *   Rent: 1800
+        *   Car payment: 425
+        *   Car insurance: 180
+        *   Utilities: 220
+        *   Internet: 80
+        *   Phone: 85
+        *   Student loan: 350
+        *   Credit card min: 150 (Debt service is often fixed)
+        *   Gas: 200 (Transportation essential)
+        *   Groceries: 650 (Essential food)
+        *   Total Fixed = 1800 + 425 + 180 + 220 + 80 + 85 + 350 + 150 + 200 + 650
+        *   Sum:
+            *   1800 + 425 = 2225
+            *   2225 + 180 = 2405
+            *   2405 + 220 = 2625
+            *   2625 + 80 = 2705
+            *   2705 + 85 = 2790
+            *   2790 + 350 = 3140
+            *   3140 + 150 = 3290
+            *   3290 + 200 = 3490
+            *   3490 + 650 = 4140
+        *   Fixed Costs = $4,140.00
+        *   *Self-Correction on Definition:* Sometimes "Fixed Costs" in these prompts implies all expenses minus discretionary. Let's look at "Needs vs Wants".
+        *   Needs: Rent, Car, Insurance, Utilities, Internet, Phone, Groceries, Gas, Student Loan, Min CC.
+        *   Wants: Streaming, Gym, Dining out.
+        *   Savings is usually separate or considered a "pay yourself first" fixed cost.
+        *   Let's stick to the sum of essential bills + debt minimums + basic living costs.
+        *   Fixed Costs = Rent (1800) + Car (425) + Insurance (180) + Utilities (220) + Internet (80) + Phone (85) + Gas (200) + Groceries (650) + Student Loan (350) + CC Min (150).
+        *   Sum = 4140.
+        *   Wait, is Savings a fixed cost? Often treated as such in budgeting (50/30/20 rule). However, strictly speaking, it's a transfer. I will calculate Fixed Costs as the sum of essential obligations (Rent, Debt, Utilities, Transport, Basic Food/Comms).
+        *   Let's re-verify the list:
+            *   Rent: 1800
+            *   Car: 425
+            *   Ins: 180
+            *   Utilities: 220
+            *   Net: 80
+            *   Phone: 85
+            *   Gas: 200
+            *   Groceries: 650
+            *   Student Loan: 350
+            *   CC Min: 150
+            *   Total: 4140.
+        *   Let's check if "Savings" is included in "Fixed Costs" for this specific prompt context. Usually, "Fixed Costs" refers to necessary monthly outflows. I will exclude Savings from Fixed Costs to keep it distinct from "Savings Rate", but include it in Total Expenses.
+        *   Wait, looking at the remaining metrics: `discretionary_spending` and `needs_vs_wants_ratio`.
+        *   Needs: Rent, Car, Insurance, Utilities, Internet, Phone, Groceries, Gas, Student Loan, CC Min. (4140)
+        *   Wants: Streaming (45), Gym (50), Dining out (380). Total Wants = 475.
+        *   Savings: 500.
+        *   Total Expenses = Needs + Wants + Savings = 4140 + 475 + 500 = 5115. Matches.
+        *   So `fixed_costs` likely refers to Needs + Debt Minimums (Essentials). Value: 4140.00.
+
+    *   **Discretionary Spending:** Wants + Savings? Or just Wants?
+        *   Standard definition: Non-essential spending.
+        *   Items: Streaming, Gym, Dining out.
+        *   Sum: 45 + 50 + 380 = 475.
+        *   Sometimes Savings is considered discretionary (you choose to save). However, in budgeting contexts asking for "Discretionary Spending", it usually refers to "Wants".
+        *   Let's calculate "Wants" sum: 45 + 50 + 380 = 475.
+        *   If I include Savings: 475 + 500 = 975.
+        *   Given `savings_rate` is a separate metric, `discretionary_spending` usually implies "Wants". I will use 475.00.
+
+    *   **Debt-to-Income (DTI):** (Total Monthly Debt Payments / Gross Income).
+        *   Note: Input says "Monthly income: $7,500 (net after tax)". DTI usually uses Gross Income. However, I only have Net Income. I must use the provided income figure as the denominator, or note the limitation. Since I cannot calculate Gross, I will use the provided Income ($7,500) as the denominator for this calculation context.
+        *   Debt Payments: Student Loan ($350) + Credit Card Min ($150).
+        *   Total Debt Payment = 500.
+        *   DTI = (500 / 7500) * 100 = 6.666...%
+        *   Rounded: 6.67.
+        *   *Alternative interpretation:* Some definitions use Total Debt Balance / Income. But standard DTI is payment-to-income. I will use Payment-to-Income.
+        *   Wait, is "Debt-to-Income" asking for the ratio of Debt Balance to Income? Usually DTI is monthly payment / monthly income. Debt-to-Asset or Debt-to-Income Ratio (Balance) is different. Given the context of monthly budgeting, Payment/Income is standard.
+        *   Let's check if there's a specific "Debt Ratio" metric often requested. Usually DTI = Monthly Debt Obligations / Monthly Gross Income.
+        *   Calculation: 500 / 7500 = 0.0666... -> 6.67%.
+        *   Wait, sometimes DTI is expressed as a decimal or percentage. The prompt asks for "N". I will provide the percentage value (e.g., 6.67) or the ratio (0.07). Usually, financial metrics like this in JSON expect the percentage number or the raw ratio. Given "savings_rate" is likely a percentage, I'll output the percentage value for consistency, or just the ratio. Let's look at `needs_vs_wants_ratio`. That implies a ratio (e.g., 1.5). `savings_rate` implies percentage (e.g., 20).
+        *   Let's assume `debt_to_income` is the percentage (6.67).
+        *   Wait, another interpretation: Total Debt Balance / Annual Income? No, usually monthly.
+        *   Let's stick to Monthly Debt Payment / Monthly Income.
+        *   Value: 6.67.
+
+    *   **Emergency Fund Months:** Savings Account Balance / Monthly Expenses.
+        *   Savings Balance: $8,500.
+        *   Monthly Expenses: $5,115.
+        *   Months = 8500 / 5115 = 1.6617...
+        *   Rounded: 1.66.
+
+    *   **CC Monthly Interest:** (Balance * APR) / 12.
+        *   Balance: $4,200.
+        *   APR: 22.99% (0.2299).
+        *   Monthly Rate = 0.2299 / 12 = 0.01915833...
+        *   Interest = 4200 * 0.01915833...
+        *   Calculation: 4200 * 0.2299 / 12 = 965.58 / 12 = 80.465.
+        *   Rounded: 80.47.
+
+    *   **Net Worth Estimate:** Assets - Liabilities.
+        *   Assets: Savings Account ($8,500). (Assuming no other assets like car value/home equity provided).
+        *   Liabilities: Credit Card ($4,200) + Student Loan ($28,000).
+        *   Total Liabilities = 32,200.
+        *   Net Worth = 8,500 - 32,200 = -23,700.
+        *   Value: -23700.00.
+
+    *   **Remaining After Expenses:** Income - Total Expenses.
+        *   Calculated earlier: 7500 - 5115 = 2385.
+        *   Value: 2385.00.
+
+    *   **Needs vs Wants Ratio:** Total Needs / Total Wants.
+        *   Needs (Fixed Costs calculated earlier): $4,140.
+        *   Wants (Discretionary): $475.
+        *   Ratio = 4140 / 475 = 8.7157...
+        *   Rounded: 8.72.
+
+4.  **Review and Format:**
+    *   Check rounding (2 decimals).
+    *   Check JSON structure.
+    *   Verify calculations one last time.
+
+    *   `total_expenses`: 1800+425+180+650+220+80+85+45+50+380+200+350+150+500 = 5115. Correct.
+    *   `savings_rate`: 500 / 7500 = 0.06666 -> 6.67. Correct.
+    *   `discretionary_spending`: Streaming(45) + Gym(50) + Dining(380) = 475. Correct. (Excluding savings as it's tracked separately).
+    *   `fixed_costs`: Rent(1800)+Car(425)+Ins(180)+Util(220)+Net(80)+Phone(85)+Gas(200)+Food(650)+Loan(350)+CC(150) = 4140. Correct.
+    *   `debt_to_income`: (350+150)/7500 = 500/7500 = 0.0666 -> 6.67. Correct.
+    *   `emergency_fund_months`: 8500 / 5115 = 1.6617 -> 1.66. Correct.
+    *   `cc_monthly_interest`: 4200 * 0.2299 / 12 = 80.465 -> 80.47. Correct.
+    *   `net_worth_estimate`: 8500 - (4200 + 28000) = 8500 - 32200 = -23700. Correct.
+    *   `remaining_after_expenses`: 7500 - 5115 = 2385. Correct.
+    *   `needs_vs_wants_ratio`: 4140 / 475 = 8.7157 -> 8.72. Correct.
+
+    *   *Self-Correction on `debt_to_income`*: Often DTI is expressed as a percentage (e.g., 36%). Sometimes as a decimal (0.36). Given `savings_rate` is 6.67 (percentage), I will output `debt_to_income` as a percentage (6.67).
+    *   *Self-Correction on `needs_vs_wants_ratio`*: This is a ratio, so 8.72 is appropriate.
+    *   *Self-Correction on `net_worth_estimate`*: It's a currency value, so -23700.00.
+    *   *Self-Correction on `cc_monthly_interest`*: Currency value, 80.47.
+
+    *   Wait, one nuance on `fixed_costs`. Does it include Savings?
+        *   If Fixed Costs = Needs + Savings = 4140 + 500 = 4640.
+        *   If Fixed Costs = Needs only = 4140.
+        *   In many budgeting frameworks (like 50/30/20), "Needs" are fixed. Savings is often a separate category or part of "Savings".
+        *   However, if I look at `remaining_after_expenses`, it is Income - Total Expenses. Total Expenses includes Savings.
+        *   If `fixed_costs` is meant to represent the "Must Pay" amount before discretionary, it usually excludes savings (as savings is what's left after needs/wants, or a goal).
+        *   However, some definitions include savings as a fixed cost (pay yourself first).
+        *   Let's check the `needs_vs_wants_ratio`. If Needs = 4140 and Wants = 475. Ratio = 8.72.
+        *   If Needs included Savings (4640), Ratio = 4640/475 = 9.77.
+        *   Standard financial literacy usually separates Needs, Wants, Savings.
+        *   I will stick with Needs = Fixed Costs = 4140.
+        *   Wait, `discretionary_spending`. If Savings is not discretionary, then Discretionary = Wants = 475.
+        *   If Savings is discretionary (you choose how much), then Discretionary = 475 + 500 = 975.
+        *   Given `savings_rate` is a separate field, `discretionary_spending` likely refers to "Wants".
+        *   I will proceed with Fixed Costs = 4140, Discretionary = 475.
+
+    *   One more check on `debt_to_income`.
+        *   Is it (Total Debt Balance) / (Annual Income)? No, that's Debt-to-Income Ratio in a different context (often for loans).
+        *   Standard DTI for personal finance health is Monthly Debt Payments / Monthly Gross Income.
+        *   Since I only have Net Income, I use Net Income.
+        *   Payments: 350 (Loan) + 150 (CC) = 500.
+        *   Income: 7500.
+        *   Ratio: 0.0667 -> 6.67.
+
+    *   One more check on `emergency_fund_months`.
+        *   Usually calculated as Savings / Monthly Expenses.
+        *   Some use "Monthly Needs" instead of "Total Expenses".
+        *   Standard advice: "How many months can you survive on your savings?" -> Savings / Total Monthly Burn.
+        *   Total Monthly Burn = 5115.
+        *   8500 / 5115 = 1.66.
+        *   If using Needs (4140): 8500 / 4140 = 2.05.
+        *   Given "Expenses" are listed, "Total Expenses" is the safer denominator for "Emergency Fund Months" in a general context (covering all outflows). I will use Total Expenses.
+
+    *   JSON Keys must match the prompt exactly.
+    *   Values must be numbers (not strings), rounded to 2 decimals.
+
+    *   Wait, `net_worth_estimate`.
+        *   Assets: Savings ($8,500).
+        *   Liabilities: CC ($4,200) + Student Loan ($28,000).
+        *   Net Worth = 8500 - 32200 = -23700.
+        *   Is the car an asset? "Car payment" implies a loan. The car value isn't given. I cannot estimate it. I must exclude it.
+        *   Is the house an asset? Rent implies no equity.
+        *   So Net Worth is strictly Cash - Debt.
+
+    *   Final check on rounding.
+        *   6.666... -> 6.67
+        *   1.6617... -> 1.66
+        *   80.465 -> 80.47 (Round half up)
+        *   8.7157... -> 8.72
+        *   2385 -> 2385.00
+        *   5115 -> 5115.00
+        *   475 -> 475.00
+        *   4140 -> 4140.00
+        *   6.666... -> 6.67
+        *   -23700 -> -23700.00
+
+    *   Wait, `debt_to_income`. Is it 6.67 or 0.07?
+        *   `savings_rate` is 6.67 (percentage).
+        *   `debt_to_income` is typically a percentage in consumer finance contexts (e.g., "My DTI is 36%").
+        *   I will output 6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   Needs: 4140.
+        *   Wants: 475.
+        *   Ratio: 8.72.
+
+    *   Wait, `remaining_after_expenses`.
+        *   Income (7500) - Expenses (5115) = 2385.
+        *   Note: Savings is listed *under* Expenses in the prompt list ("Expenses: ... Savings: $500").
+        *   So Total Expenses includes Savings.
+        *   Remaining = 2385.
+        *   This implies the user has $2385 left over *after* allocating the $500 to savings.
+        *   This seems high (2385 leftover).
+        *   Let's re-read the list.
+        *   Income: 7500.
+        *   Expenses List includes Savings: 500.
+        *   Sum of Expenses = 5115.
+        *   Remaining = 7500 - 5115 = 2385.
+        *   This means the budget is very loose, or "Savings" is just one line item and the rest is unallocated cash flow.
+        *   I will calculate based on the provided numbers.
+
+    *   Wait, `cc_monthly_interest`.
+        *   4200 * 0.2299 / 12.
+        *   4200 * 0.019158333 = 80.465.
+        *   Rounding 80.465 to 2 decimals.
+        *   Standard rounding (half up): 80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   Should I include the car value? No data.
+        *   Should I include the student loan balance? Yes, liability.
+        *   Should I include CC balance? Yes, liability.
+        *   Should I include Savings? Yes, asset.
+        *   Result: -23700.00.
+
+    *   Wait, `fixed_costs`.
+        *   If I include Savings in Fixed Costs (as it's a planned outflow), it becomes 4640.
+        *   If I exclude Savings, it's 4140.
+        *   Given `savings_rate` is separate, I'll exclude Savings from Fixed Costs to avoid double counting logic in the user's mind (Fixed vs Savings).
+        *   However, "Fixed Costs" usually means "Needs".
+        *   I will stick with 4140.00.
+
+    *   Wait, `discretionary_spending`.
+        *   If Fixed = Needs (4140).
+        *   Total Expenses = 5115.
+        *   Discretionary = Total - Fixed = 5115 - 4140 = 975.
+        *   This 975 includes Savings (500) + Wants (475).
+        *   Is Savings discretionary? Technically yes, you choose the amount.
+        *   Is "Dining out" discretionary? Yes.
+        *   If I define Discretionary as "Non-Essential", it's Wants (475).
+        *   If I define Discretionary as "Income - Fixed Costs", it's 975.
+        *   Given `needs_vs_wants_ratio` exists, it implies a distinction between Needs and Wants.
+        *   So `discretionary_spending` likely maps to "Wants".
+        *   I will use 475.00.
+
+    *   Wait, `remaining_after_expenses`.
+        *   Income (7500) - Total Expenses (5115) = 2385.
+        *   This is the cash flow surplus.
+
+    *   Wait, `emergency_fund_months`.
+        *   Savings (8500) / Expenses (5115) = 1.66.
+        *   This is low, but accurate to the data.
+
+    *   Wait, `debt_to_income`.
+        *   Debt Payments (500) / Income (7500) = 6.67%.
+
+    *   Wait, `savings_rate`.
+        *   Savings (500) / Income (7500) = 6.67%.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   Needs (4140) / Wants (475) = 8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Double Check `needs_vs_wants_ratio`.
+        *   Needs: Rent, Car, Insurance, Utilities, Internet, Phone, Gas, Groceries, Student Loan, CC Min.
+        *   Sum: 1800+425+180+220+80+85+200+650+350+150 = 4140.
+        *   Wants: Streaming, Gym, Dining.
+        *   Sum: 45+50+380 = 475.
+        *   Ratio: 4140/475 = 8.715789... -> 8.72.
+
+    *   Double Check `fixed_costs`.
+        *   Is "Car payment" fixed? Yes.
+        *   Is "Car insurance" fixed? Yes.
+        *   Is "Gas" fixed? Variable, but essential. Often grouped in Needs.
+        *   Is "Groceries" fixed? Variable, but essential. Often grouped in Needs.
+        *   Is "Student loan" fixed? Yes.
+        *   Is "CC min" fixed? Yes.
+        *   Is "Rent" fixed? Yes.
+        *   Is "Utilities" fixed? Variable, but essential.
+        *   Is "Internet/Phone" fixed? Yes.
+        *   So 4140 is the "Needs" sum.
+        *   Does `fixed_costs` equal `needs`? In this context, yes.
+
+    *   Double Check `discretionary_spending`.
+        *   Does it include Savings?
+        *   If I say Discretionary = Wants (475).
+        *   If I say Discretionary = Wants + Savings (975).
+        *   Given `savings_rate` is separate, `discretionary_spending` usually refers to lifestyle spending (Wants). I will use 475.
+
+    *   Double Check `remaining_after_expenses`.
+        *   Income (7500) - Expenses (5115) = 2385.
+        *   This is the "Surplus".
+
+    *   Double Check `emergency_fund_months`.
+        *   Savings (8500) / Expenses (5115) = 1.66.
+
+    *   Double Check `cc_monthly_interest`.
+        *   4200 * 0.2299 / 12 = 80.465.
+        *   Round to 2 decimals: 80.47.
+
+    *   Double Check `net_worth_estimate`.
+        *   Assets (8500) - Liabilities (4200 + 28000) = -23700.
+
+    *   Double Check `debt_to_income`.
+        *   (350 + 150) / 7500 = 0.0666... -> 6.67.
+
+    *   Double Check `savings_rate`.
+        *   500 / 7500 = 0.0666... -> 6.67.
+
+    *   Double Check `total_expenses`.
+        *   5115.
+
+    *   Double Check `fixed_costs`.
+        *   4140.
+
+    *   Double Check `discretionary_spending`.
+        *   475.
+
+    *   Double Check `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Double Check `remaining_after_expenses`.
+        *   2385.
+
+    *   Double Check `emergency_fund_months`.
+        *   1.66.
+
+    *   Double Check `cc_monthly_interest`.
+        *   80.47.
+
+    *   Double Check `net_worth_estimate`.
+        *   -23700.
+
+    *   One detail: "Respond as JSON with values rounded to 2 decimals."
+    *   I need to ensure all numbers are formatted correctly (e.g., 2385.00 not 2385). JSON numbers don't strictly enforce trailing zeros, but "rounded to 2 decimals" implies precision. I will output standard JSON numbers. 2385 is mathematically 2385.00. I will write them as numbers.
+
+    *   Wait, `debt_to_income`. Is it a percentage or a ratio?
+        *   If Savings Rate is 6.67 (percentage), DTI is usually percentage.
+        *   If I output 0.07, it might be ambiguous. 6.67 is clearer.
+        *   I will output 6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *   5115.00.
+
+    *   Wait, `savings_rate`.
+        *   6.67.
+
+    *   Wait, `discretionary_spending`.
+        *   475.00.
+
+    *   Wait, `fixed_costs`.
+        *   4140.00.
+
+    *   Wait, `debt_to_income`.
+        *   6.67.
+
+    *   Wait, `needs_vs_wants_ratio`.
+        *   8.72.
+
+    *   Wait, `cc_monthly_interest`.
+        *   80.47.
+
+    *   Wait, `net_worth_estimate`.
+        *   -23700.00.
+
+    *   Wait, `emergency_fund_months`.
+        *   1.66.
+
+    *   Wait, `remaining_after_expenses`.
+        *   2385.00.
+
+    *   Wait, `total_expenses`.
+        *  

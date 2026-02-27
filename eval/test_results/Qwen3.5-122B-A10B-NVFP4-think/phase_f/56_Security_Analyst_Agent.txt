@@ -1,0 +1,75 @@
+{
+  "vulnerabilities": [
+    {
+      "id": 1,
+      "type": "Hardcoded Secret Key",
+      "severity": "high",
+      "location": "app.secret_key = \"password123\"",
+      "fix": "Use a cryptographically secure random secret key stored in environment variables."
+    },
+    {
+      "id": 2,
+      "type": "Server-Side Template Injection (SSTI)",
+      "severity": "critical",
+      "location": "render_template_string(f\"Results for: {q}\")",
+      "fix": "Avoid using render_template_string with user input; use render_template with context or escape input."
+    },
+    {
+      "id": 3,
+      "type": "SQL Injection",
+      "severity": "critical",
+      "location": "db.execute(f\"SELECT * FROM users WHERE id = {id}\")",
+      "fix": "Use parameterized queries (e.g., db.execute(\"SELECT * FROM users WHERE id = ?\", (id,)))"
+    },
+    {
+      "id": 4,
+      "type": "Insecure Deserialization",
+      "severity": "critical",
+      "location": "obj = pickle.loads(data)",
+      "fix": "Do not use pickle for untrusted data; use JSON or other safe serialization formats."
+    },
+    {
+      "id": 5,
+      "type": "Command Injection",
+      "severity": "critical",
+      "location": "subprocess.check_output(cmd, shell=True)",
+      "fix": "Avoid shell=True; pass arguments as a list and validate input strictly."
+    },
+    {
+      "id": 6,
+      "type": "Path Traversal",
+      "severity": "high",
+      "location": "return open(path).read()",
+      "fix": "Validate and sanitize file paths; restrict access to a specific allowed directory."
+    },
+    {
+      "id": 7,
+      "type": "Weak Authentication / Default Credentials",
+      "severity": "high",
+      "location": "if pw == os.environ.get(\"ADMIN_PW\", \"admin\"):",
+      "fix": "Remove default passwords; enforce strong password policies and use secure hashing."
+    },
+    {
+      "id": 8,
+      "type": "Information Disclosure",
+      "severity": "medium",
+      "location": "return str(os.environ)",
+      "fix": "Remove debug endpoints that expose environment variables and sensitive configuration."
+    },
+    {
+      "id": 9,
+      "type": "Insecure Transport",
+      "severity": "medium",
+      "location": "Global Configuration (No HTTPS)",
+      "fix": "Enforce HTTPS/TLS for all traffic to prevent man-in-the-middle attacks."
+    },
+    {
+      "id": 10,
+      "type": "Lack of Rate Limiting",
+      "severity": "medium",
+      "location": "Global Configuration (No Rate Limiting)",
+      "fix": "Implement rate limiting (e.g., Flask-Limiter) to prevent brute force and DoS attacks."
+    }
+  ],
+  "count": 10
+}

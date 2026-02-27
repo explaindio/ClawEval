@@ -1,0 +1,118 @@
+[
+  {
+    "id": 1,
+    "name": "Morning Routine",
+    "trigger": "Time: 06:30 AM (Weekdays), 08:00 AM (Weekends)",
+    "conditions": "Sunrise status: Active",
+    "actions": [
+      "Gradually turn on Living Room Lights (30 min ramp)",
+      "Gradually turn on Bedroom Lights (30 min ramp)"
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Thermostat Schedule",
+    "trigger": "Time Change OR Presence Change",
+    "conditions": [
+      "Time between 11:00 PM and 06:00 AM",
+      "Occupancy Status: Home",
+      "Occupancy Status: Away"
+    ],
+    "actions": [
+      "If Time 11PM-6AM: Set Thermostat to 68°F",
+      "If Occupancy Home: Set Thermostat to 72°F",
+      "If Occupancy Away: Set Thermostat to 65°F"
+    ]
+  },
+  {
+    "id": 3,
+    "name": "Security Arm/Disarm",
+    "trigger": "Geofence Entry/Exit (Alice & Bob)",
+    "conditions": [
+      "Alice Location: Away",
+      "Bob Location: Away"
+    ],
+    "actions": [
+      "If Both Away: Arm Security System (Away Mode)",
+      "If Either Returns: Disarm Security System (Home Mode)"
+    ]
+  },
+  {
+    "id": 4,
+    "name": "Pet Care",
+    "trigger": "Time: 07:00 AM, 06:00 PM OR Presence: Both Away",
+    "conditions": [
+      "Time is 07:00 AM or 06:00 PM",
+      "Occupancy Status: Both Away"
+    ],
+    "actions": [
+      "If Time Match: Activate Auto-Feeder (1 portion)",
+      "If Both Away: Turn On Cat Camera (Live Stream)"
+    ]
+  },
+  {
+    "id": 5,
+    "name": "Energy Management",
+    "trigger": "Time: 02:00 PM - 07:00 PM OR Time: Evening",
+    "conditions": [
+      "Time between 02:00 PM and 07:00 PM",
+      "Time after 07:00 PM"
+    ],
+    "actions": [
+      "If Peak Hours: Prioritize Solar Panels for Grid",
+      "If Evening: Switch to Battery Backup Mode"
+    ]
+  },
+  {
+    "id": 6,
+    "name": "Night Lighting",
+    "trigger": "Motion Detected (Hallway)",
+    "conditions": "Time between 10:00 PM and 06:00 AM",
+    "actions": [
+      "Turn On Hallway Lights (20% Dim)",
+      "Turn Off Hallway Lights (5 Minute Delay)"
+    ]
+  },
+  {
+    "id": 7,
+    "name": "Bob's Office Setup",
+    "trigger": "Computer State: Power On",
+    "conditions": "Device: Bob's Workstation",
+    "actions": [
+      "Turn On Desk Lamp",
+      "Set Office A/C Zone to 70°F"
+    ]
+  },
+  {
+    "id": 8,
+    "name": "Laundry Notification",
+    "trigger": "Device State: Washer Complete OR Dryer Complete",
+    "conditions": "Device: Smart Washer/Dryer",
+    "actions": [
+      "Send Push Notification to Alice Phone",
+      "Send Push Notification to Bob Phone"
+    ]
+  },
+  {
+    "id": 9,
+    "name": "Water Leak Protection",
+    "trigger": "Sensor: Water Leak Detected",
+    "conditions": "Location: Main Water Line",
+    "actions": [
+      "Shut Off Main Water Valve",
+      "Send Critical Alert to Alice Phone",
+      "Send Critical Alert to Bob Phone"
+    ]
+  },
+  {
+    "id": 10,
+    "name": "Guest Mode",
+    "trigger": "Manual Scene: Guest Mode Activated",
+    "conditions": "User: Admin",
+    "actions": [
+      "Generate Temporary Door Code (24hr validity)",
+      "Set Thermostat to 72°F",
+      "Enable Guest WiFi Network"
+    ]
+  }
+]

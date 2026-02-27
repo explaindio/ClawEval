@@ -1,0 +1,84 @@
+{
+  "components": [
+    {
+      "name": "Global Load Balancer",
+      "technology": "Cloudflare / AWS Global Accelerator",
+      "purpose": "Route traffic to nearest region, DDoS protection, SSL termination",
+      "scaling_strategy": "Managed service with automatic global distribution"
+    },
+    {
+      "name": "API Gateway",
+      "technology": "Kong / AWS API Gateway",
+      "purpose": "Authentication, Rate Limiting, Request Routing",
+      "scaling_strategy": "Horizontal auto-scaling based on request count"
+    },
+    {
+      "name": "WebSocket Gateway",
+      "technology": "Go (gorilla/websocket) / Elixir (Phoenix)",
+      "purpose": "Maintain persistent connections, handle real-time message delivery",
+      "scaling_strategy": "Stateless pods behind internal LB, session affinity via Redis"
+    },
+    {
+      "name": "Presence Service",
+      "technology": "Redis Cluster",
+      "purpose": "Track online/offline status, read receipts, typing indicators",
+      "scaling_strategy": "Redis Cluster sharding by UserID"
+    },
+    {
+      "name": "Message Broker",
+      "technology": "Apache Kafka / NATS",
+      "purpose": "Decouple message ingestion from delivery, ensure ordering",
+      "scaling_strategy": "Partitioned topics based on ChatID"
+    },
+    {
+      "name": "Message Store",
+      "technology": "ScyllaDB / Cassandra",
+      "purpose": "High-write throughput message history persistence",
+      "scaling_strategy": "Data modeling by ChatID for partitioning"
+    },
+    {
+      "name": "User Metadata DB",
+      "technology": "PostgreSQL (Citus)",
+      "purpose": "User profiles, group metadata, relationships",
+      "scaling_strategy": "Read replicas, sharding by UserID"
+    },
+    {
+      "name": "File Storage",
+      "technology": "AWS S3 / GCS",
+      "purpose": "Store encrypted file attachments (up to 50MB)",
+      "scaling_strategy": "Managed object storage with lifecycle policies"
+    },
+    {
+      "name": "Key Management Service",
+      "technology": "HashiCorp Vault / AWS KMS",
+      "purpose": "Secure storage for E2EE public keys and device identities",
+      "scaling_strategy": "High-availability cluster with geo-replication"
+    },
+    {
+      "name": "CDN",
+      "technology": "CloudFront / Cloudflare",
+      "purpose": "Cache static assets and encrypted file downloads",
+      "scaling_strategy": "Edge network distribution"
+    }
+  ],
+  "data_flow": "Client connects via WSS to nearest LB -> API Gateway validates JWT -> WebSocket Gateway assigns session -> Client encrypts message (E2EE) -> WS Gateway publishes to Kafka -> Consumer writes to Message Store & updates Redis Presence -> Recipient WS Gateway (via Pub/Sub) pushes to Client -> Client sends Read Receipt -> Receipt updates Redis & DB",
+  "infrastructure": {
+    "cloud": "AWS / GCP Hybrid",
+    "regions": 3
+  },
+  "estimated_monthly_cost": "$120,000 - $180,000",
+  "bottlenecks": [
+    "WebSocket connection overhead (file descriptors/memory per connection)",
+    "Redis Pub/Sub fan-out latency at 1M concurrent connections",
+    "E2EE key synchronization latency for new devices",
+    "Database write throughput for message history",
+    "OS Kernel tuning limits for high concurrency"
+  ],
+  "tradeoffs": [
+    "E2EE prevents server-side message search and content moderation",
+    "Multi-region active-active increases consistency latency (CAP theorem)",
+    "High availability (99.99%) requires significant redundancy costs",
+    "50MB file limit balances storage costs vs user utility",
+    "Client-side encryption shifts security burden to user device management"
+  ]
+}
