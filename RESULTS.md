@@ -1,5 +1,29 @@
 # ClawEval — Detailed Results
 
+## Industry Benchmarks — Context
+
+How the models we test compare on standard benchmarks (higher is better unless noted):
+
+| Benchmark | 35B-A3B | 27B | 122B-A10B | 397B-A17B | Kimi K2.5 | GLM-5 | GPT-OSS-120B |
+|---|---|---|---|---|---|---|---|
+| **AA Intelligence Index** | 37.0 | 42.0 | 41.5 | 45.0 | **46.8** | 40.6 | 33.3 |
+| **AA Coding Index** | 30.3 | 34.9 | 34.7 | **41.3** | 39.5 | 39.0 | 28.6 |
+| **AA Agentic Index** | 44.1 | 54.6 | 53.0 | 55.8 | 58.9 | **60.3** | 37.9 |
+| GPQA Diamond | 84.5% | 85.8% | 85.7% | **89.3%** | 87.9% | 66.6% | 78.2% |
+| HLE (Humanity's Last Exam) | 19.7% | 22.2% | 23.4% | 27.3% | **29.4%** | 7.2% | 18.5% |
+| IFBench | 72.5% | 75.6% | 75.7% | **78.8%** | 70.2% | 55.2% | 69.0% |
+| AA-LCR | 62.7% | **67.3%** | 66.7% | 65.7% | 65.3% | 37.0% | 50.7% |
+| GDPval-AA | 21.3% | 35.0% | 32.3% | 35.4% | 39.1% | **41.9%** | 23.4% |
+| CritPt | 0.9% | 0.9% | 0.6% | 1.7% | **3.1%** | 0.0% | 1.1% |
+| SciCode | 37.7% | 39.5% | 42.0% | 42.0% | **49.0%** | 38.3% | 38.9% |
+| Terminal-Bench Hard | 26.5% | 32.6% | 31.1% | **40.9%** | 34.8% | 39.4% | 23.5% |
+| AA-Omniscience Accuracy | 18.8% | 19.4% | 22.5% | 31.4% | **34.3%** | 22.7% | 21.5% |
+| Hallucination Rate ↓ | 15.9% | 20.0% | 14.7% | 10.9% | 35.4% | 56.1% | **8.8%** |
+
+> **Key insight:** The 122B-A10B model we test on ClawEval scores close to the full 397B model on most benchmarks, while being ~3× smaller. The 35B-A3B is the most efficient option for 24GB VRAM setups.
+
+---
+
 ## Phase E — Per-Test Scores (12 Killer Tests)
 
 All scores out of 10. Sorted by best overall model.
