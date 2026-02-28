@@ -1,0 +1,77 @@
+{
+  "tasks": [
+    {
+      "id": "T1",
+      "agent": "data_analyst",
+      "action": "Analyze Q3 earnings data and extract key metrics",
+      "depends_on": [],
+      "input_from": []
+    },
+    {
+      "id": "T2",
+      "agent": "writer",
+      "action": "Draft blog post based on earnings analysis",
+      "depends_on": ["T1"],
+      "input_from": ["T1"]
+    },
+    {
+      "id": "T3",
+      "agent": "editor",
+      "action": "Edit and finalize blog post content",
+      "depends_on": ["T2"],
+      "input_from": ["T2"]
+    },
+    {
+      "id": "T4",
+      "agent": "seo",
+      "action": "Optimize blog post for search engines",
+      "depends_on": ["T3"],
+      "input_from": ["T3"]
+    },
+    {
+      "id": "T5",
+      "agent": "designer",
+      "action": "Create social media graphics using finalized content",
+      "depends_on": ["T3"],
+      "input_from": ["T3"]
+    },
+    {
+      "id": "T6",
+      "agent": "web_publisher",
+      "action": "Publish optimized blog post to website",
+      "depends_on": ["T4"],
+      "input_from": ["T4"]
+    },
+    {
+      "id": "T7",
+      "agent": "social_media",
+      "action": "Share blog post and graphics on social channels",
+      "depends_on": ["T3", "T5"],
+      "input_from": ["T3", "T5"]
+    },
+    {
+      "id": "T8",
+      "agent": "email_marketing",
+      "action": "Send newsletter summary to subscribers",
+      "depends_on": ["T3"],
+      "input_from": ["T3"]
+    }
+  ],
+  "execution_order": [
+    "T1",
+    "T2",
+    "T3",
+    "T4",
+    "T5",
+    "T8",
+    "T6",
+    "T7"
+  ],
+  "parallel_groups": [
+    ["T1"],
+    ["T2"],
+    ["T3"],
+    ["T4", "T5", "T8"],
+    ["T6", "T7"]
+  ]
+}

@@ -1,0 +1,262 @@
+[
+  {
+    "rule_id": "rule_01",
+    "name": "Morning Routine",
+    "description": "Gradually turn on lights based on weekday/weekend schedule",
+    "trigger": {
+      "type": "time",
+      "schedule": [
+        { "time": "06:30", "days": ["monday", "tuesday", "wednesday", "thursday", "friday"] },
+        { "time": "08:00", "days": ["saturday", "sunday"] }
+      ]
+    },
+    "conditions": [],
+    "actions": [
+      {
+        "device": "living_room_lights",
+        "command": "fade_on",
+        "parameters": { "duration_seconds": 300, "brightness": 100 }
+      },
+      {
+        "device": "bedroom_lights",
+        "command": "fade_on",
+        "parameters": { "duration_seconds": 300, "brightness": 100 }
+      }
+    ]
+  },
+  {
+    "rule_id": "rule_02",
+    "name": "Thermostat Control",
+    "description": "Adjust temperature based on occupancy and sleep schedule",
+    "trigger": {
+      "type": "composite",
+      "events": [
+        { "type": "time", "value": "23:00" },
+        { "type": "time", "value": "06:00" },
+        { "type": "occupancy_change", "sensor": "main_occupancy" }
+      ]
+    },
+    "conditions": [
+      {
+        "type": "time_range",
+        "start": "23:00",
+        "end": "06:00",
+        "action_if_true": { "device": "thermostat", "command": "set_temperature", "value": 68 }
+      },
+      {
+        "type": "occupancy",
+        "sensor": "main_occupancy",
+        "value": "occupied",
+        "action_if_true": { "device": "thermostat", "command": "set_temperature", "value": 72 }
+      },
+      {
+        "type": "occupancy",
+        "sensor": "main_occupancy",
+        "value": "empty",
+        "action_if_true": { "device": "thermostat", "command": "set_temperature", "value": 65 }
+      }
+    ],
+    "actions": []
+  },
+  {
+    "rule_id": "rule_03",
+    "name": "Security System",
+    "description": "Arm when both away, disarm when either returns",
+    "trigger": {
+      "type": "geofence",
+      "devices": ["alice_phone", "bob_phone"]
+    },
+    "conditions": [
+      {
+        "type": "location_count",
+        "outside_home": 2,
+        "action_if_true": { "device": "security_system", "command": "arm" }
+      },
+      {
+        "type": "location_count",
+        "outside_home": 1,
+        "action_if_true": { "device": "security_system", "command": "disarm" }
+      }
+    ],
+    "actions": []
+  },
+  {
+    "rule_id": "rule_04",
+    "name": "Pet Care",
+    "description": "Auto-feeder schedule and camera activation when away",
+    "trigger": {
+      "type": "composite",
+      "events": [
+        { "type": "time", "value": "07:00" },
+        { "type": "time", "value": "18:00" },
+        { "type": "occupancy_change", "sensor": "main_occupancy" }
+      ]
+    },
+    "conditions": [
+      {
+        "type": "time",
+        "value": "07:00",
+        "action_if_true": { "device": "cat_feeder", "command": "dispense" }
+      },
+      {
+        "type": "time",
+        "value": "18:00",
+        "action_if_true": { "device": "cat_feeder", "command": "dispense" }
+      },
+      {
+        "type": "occupancy",
+        "sensor": "main_occupancy",
+        "value": "empty",
+        "action_if_true": { "device": "cat_camera", "command": "turn_on" }
+      }
+    ],
+    "actions": []
+  },
+  {
+    "rule_id": "rule_05",
+    "name": "Energy Management",
+    "description": "Prioritize solar during peak, battery backup in evening",
+    "trigger": {
+      "type": "time",
+      "schedule": [
+        { "time": "14:00" },
+        { "time": "19:00" }
+      ]
+    },
+    "conditions": [
+      {
+        "type": "time_range",
+        "start": "14:00",
+        "end": "19:00",
+        "action_if_true": { "device": "energy_manager", "command": "set_mode", "value": "solar_priority" }
+      },
+      {
+        "type": "time_range",
+        "start": "19:00",
+        "end": "06:00",
+        "action_if_true": { "device": "energy_manager", "command": "set_mode", "value": "battery_backup" }
+      }
+    ],
+    "actions": []
+  },
+  {
+    "rule_id": "rule_06",
+    "name": "Hallway Lighting",
+    "description": "Motion-activated dim lights at night with auto-off",
+    "trigger": {
+      "type": "motion",
+      "sensor": "hallway_motion"
+    },
+    "conditions": [
+      {
+        "type": "time_range",
+        "start": "22:00",
+        "end": "06:00"
+      }
+    ],
+    "actions": [
+      {
+        "device": "hallway_lights",
+        "command": "set_brightness",
+        "value": 20
+      },
+      {
+        "device": "hallway_lights",
+        "command": "turn_off",
+        "delay_seconds": 300
+      }
+    ]
+  },
+  {
+    "rule_id": "rule_07",
+    "name": "Bob's Office",
+    "description": "Activate office environment when computer turns on",
+    "trigger": {
+      "type": "device_state",
+      "device": "bob_computer",
+      "state": "on"
+    },
+    "conditions": [],
+    "actions": [
+      {
+        "device": "office_desk_lamp",
+        "command": "turn_on"
+      },
+      {
+        "device": "office_ac",
+        "command": "set_temperature",
+        "value": 70
+      }
+    ]
+  },
+  {
+    "rule_id": "rule_08",
+    "name": "Laundry Notification",
+    "description": "Alert occupants when washer or dryer cycle completes",
+    "trigger": {
+      "type": "device_state",
+      "devices": ["washer", "dryer"],
+      "state": "cycle_complete"
+    },
+    "conditions": [],
+    "actions": [
+      {
+        "device": "notification_system",
+        "command": "send_push",
+        "recipients": ["alice", "bob"],
+        "message": "Laundry cycle complete"
+      }
+    ]
+  },
+  {
+    "rule_id": "rule_09",
+    "name": "Water Leak Safety",
+    "description": "Shut off main valve and alert both phones immediately",
+    "trigger": {
+      "type": "sensor",
+      "device": "water_leak_detector",
+      "state": "detected"
+    },
+    "conditions": [],
+    "actions": [
+      {
+        "device": "main_water_valve",
+        "command": "close"
+      },
+      {
+        "device": "notification_system",
+        "command": "send_urgent_alert",
+        "recipients": ["alice", "bob"],
+        "message": "Water leak detected! Main valve shut off."
+      }
+    ]
+  },
+  {
+    "rule_id": "rule_10",
+    "name": "Guest Mode",
+    "description": "Enable temporary access, adjust temp, and enable guest WiFi",
+    "trigger": {
+      "type": "manual",
+      "source": "smart_home_app",
+      "action": "activate_guest_mode"
+    },
+    "conditions": [],
+    "actions": [
+      {
+        "device": "smart_lock",
+        "command": "generate_temp_code",
+        "duration_hours": 24
+      },
+      {
+        "device": "thermostat",
+        "command": "set_temperature",
+        "value": 72
+      },
+      {
+        "device": "router",
+        "command": "enable_network",
+        "network_name": "Guest_WiFi"
+      }
+    ]
+  }
+]

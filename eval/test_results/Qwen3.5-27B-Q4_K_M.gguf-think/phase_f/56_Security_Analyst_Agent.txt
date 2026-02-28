@@ -1,0 +1,75 @@
+{
+  "vulnerabilities": [
+    {
+      "id": 1,
+      "type": "Hardcoded Secret Key",
+      "severity": "high",
+      "location": "Line 5",
+      "fix": "Generate a strong, random secret key and store it in an environment variable."
+    },
+    {
+      "id": 2,
+      "type": "Server-Side Template Injection (SSTI)",
+      "severity": "critical",
+      "location": "Line 10",
+      "fix": "Avoid render_template_string with user input; use render_template with proper escaping."
+    },
+    {
+      "id": 3,
+      "type": "SQL Injection",
+      "severity": "critical",
+      "location": "Line 15",
+      "fix": "Use parameterized queries instead of string formatting for SQL statements."
+    },
+    {
+      "id": 4,
+      "type": "Insecure Deserialization",
+      "severity": "critical",
+      "location": "Line 21",
+      "fix": "Do not use pickle for untrusted data; use JSON or a safe serialization library."
+    },
+    {
+      "id": 5,
+      "type": "OS Command Injection",
+      "severity": "critical",
+      "location": "Line 27",
+      "fix": "Avoid shell=True; pass arguments as a list and validate/sanitize input."
+    },
+    {
+      "id": 6,
+      "type": "Path Traversal / Local File Inclusion",
+      "severity": "high",
+      "location": "Line 33",
+      "fix": "Validate file paths, restrict access to a specific directory, and use os.path.realpath."
+    },
+    {
+      "id": 7,
+      "type": "Hardcoded Password / Weak Authentication",
+      "severity": "high",
+      "location": "Line 38",
+      "fix": "Remove default passwords, use secure password hashing (e.g., bcrypt), and store secrets securely."
+    },
+    {
+      "id": 8,
+      "type": "Sensitive Information Disclosure",
+      "severity": "medium",
+      "location": "Line 43",
+      "fix": "Remove debug endpoints in production and sanitize environment variable output."
+    },
+    {
+      "id": 9,
+      "type": "Missing Transport Security (HTTPS)",
+      "severity": "medium",
+      "location": "Line 45",
+      "fix": "Enforce HTTPS using WSGI middleware or reverse proxy configuration."
+    },
+    {
+      "id": 10,
+      "type": "Missing Rate Limiting",
+      "severity": "medium",
+      "location": "Line 46",
+      "fix": "Implement rate limiting middleware (e.g., flask-limiter) to prevent DoS and brute force."
+    }
+  ],
+  "count": 10
+}

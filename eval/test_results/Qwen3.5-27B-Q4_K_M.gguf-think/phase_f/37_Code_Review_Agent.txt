@@ -1,0 +1,30 @@
+{
+  "bugs": [
+    {
+      "line": 8,
+      "issue": "Discount value is not validated; values > 100 can result in negative prices before clamping.",
+      "fix": "Validate discount range: discount = min(discount, 100) or check if discount > 100."
+    },
+    {
+      "line": 8,
+      "issue": "No type checking on 'price' and 'quantity'; None or invalid types will raise TypeError.",
+      "fix": "Add type validation: ensure price and quantity are numeric before calculation."
+    },
+    {
+      "line": 14,
+      "issue": "Mutates input 'order' dictionary directly (side effect), modifying original data.",
+      "fix": "Create a copy of the order dict before modifying: order_copy = order.copy()."
+    },
+    {
+      "line": 18,
+      "issue": "ZeroDivisionError occurs if 'processed' list is empty (no pending orders).",
+      "fix": "Check if processed is empty before division: if processed: avg = total / len(processed) else: avg = 0."
+    },
+    {
+      "line": 23,
+      "issue": "Returns len(orders) instead of len(processed) for 'count', inconsistent with 'orders' list.",
+      "fix": "Change to 'count': len(processed) to match the returned processed orders."
+    }
+  ],
+  "count": 5
+}

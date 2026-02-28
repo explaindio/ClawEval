@@ -1,0 +1,82 @@
+{
+  "components": [
+    {
+      "name": "Client SDK",
+      "technology": "React Native / Flutter / Web (WebSocket)",
+      "purpose": "Handles UI, local caching, and client-side E2EE encryption/decryption",
+      "scaling_strategy": "Stateless client logic, relies on server scaling"
+    },
+    {
+      "name": "API Gateway",
+      "technology": "Kong / AWS API Gateway",
+      "purpose": "Request routing, rate limiting, SSL termination, and authentication validation",
+      "scaling_strategy": "Auto-scaling group behind global load balancer"
+    },
+    {
+      "name": "Auth Service",
+      "technology": "Go / OAuth2 / JWT",
+      "purpose": "User registration, login, token issuance, and session management",
+      "scaling_strategy": "Stateless microservice, horizontally scaled"
+    },
+    {
+      "name": "WebSocket Gateway",
+      "technology": "Go (Gorilla WebSocket) / Node.js",
+      "purpose": "Manages persistent connections, message routing, and presence updates",
+      "scaling_strategy": "Sharded by user ID, auto-scaled based on connection count"
+    },
+    {
+      "name": "Message Broker",
+      "technology": "Apache Kafka",
+      "purpose": "Decouples ingestion from processing, ensures message ordering and durability",
+      "scaling_strategy": "Partitioned topics, increased broker nodes"
+    },
+    {
+      "name": "Message Store",
+      "technology": "ScyllaDB / Cassandra",
+      "purpose": "High-throughput write storage for chat history (encrypted blobs)",
+      "scaling_strategy": "Sharding by conversation ID, multi-region replication"
+    },
+    {
+      "name": "Metadata Store",
+      "technology": "PostgreSQL (Aurora)",
+      "purpose": "Stores user profiles, group memberships, and read receipt metadata",
+      "scaling_strategy": "Read replicas, sharding by tenant/region"
+    },
+    {
+      "name": "File Storage",
+      "technology": "AWS S3 + CloudFront",
+      "purpose": "Stores encrypted file attachments and serves via CDN",
+      "scaling_strategy": "Object storage scales infinitely, CDN caches globally"
+    },
+    {
+      "name": "Presence Service",
+      "technology": "Redis Cluster",
+      "purpose": "Tracks online/offline status and last seen timestamps",
+      "scaling_strategy": "Sharded keyspace, active-active replication"
+    },
+    {
+      "name": "Search Service",
+      "technology": "Elasticsearch",
+      "purpose": "Indexes metadata for user/group search (not message content due to E2EE)",
+      "scaling_strategy": "Cluster scaling, index sharding"
+    }
+  ],
+  "data_flow": "Client establishes WebSocket connection to nearest Gateway -> Auth Service validates JWT -> Gateway subscribes user to Kafka topic -> Incoming messages encrypted client-side -> Sent to Gateway -> Pushed to Kafka -> Consumer writes to Message Store -> Presence updated in Redis -> Read receipts tracked in Metadata Store -> Files uploaded directly to S3 via pre-signed URLs",
+  "infrastructure": {
+    "cloud": "AWS",
+    "regions": 3
+  },
+  "estimated_monthly_cost": "$125,000 - $150,000",
+  "bottlenecks": [
+    "Database write IOPS during peak message bursts",
+    "WebSocket connection limits per server instance",
+    "Network egress costs for file transfers",
+    "Cross-region latency for global users"
+  ],
+  "tradeoffs": [
+    "E2EE prevents server-side message search and moderation",
+    "Multi-region active-active setup increases cost and complexity",
+    "Eventual consistency chosen over strong consistency for global availability",
+    "High availability (99.99%) requires redundant infrastructure increasing cost"
+  ]
+}

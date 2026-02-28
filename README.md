@@ -42,77 +42,77 @@ Don't have a GPU? We also test open-source models hosted on cloud providers so y
 
 All scores out of 10.
 
-| # | Agent Role | Qwen3.5-122B-A10B | Qwen3.5-35B-A3B | Qwen3.5-35B-A3B | Qwen3.5-27B |
-|---|---|---|---|---|---|
-| | | NVFP4 · KV: TBD | Q4_K_M · KV: q8_0 | Q4_K_M · KV: q8_0 | Q4_K_M · KV: q8_0 |
-| | | Think 16K · SGLang | Think ∞ · llama.cpp | NoThink · llama.cpp | NoThink · llama.cpp |
-| | | 🔵 96GB · RTX PRO 6000 | 🟢 24GB · RTX 3090 | 🟢 24GB · RTX 3090 | 🟢 24GB · RTX 3090 |
-| | **Tier 1 — Utility** | | | | |
-| 1 | Router / Triage | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 9 |
-| 2 | Input Validator | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 |
-| 3 | Health Monitor | 🔴 3 | ⬛ 0 | 🔴 3 | 🔴 3 |
-| 4 | Notification | 🟢 8 | 🟢 8 | 🟢 8 | 🟢 8 |
-| 5 | Sentiment | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 |
-| 6 | FAQ Generation | 🟡 5 | 🟡 6 | 🟡 6 | 🟡 6 |
-| 7 | Translation | 🟢 10 | 🟢 9 | 🟢 9 | 🟢 10 |
-| 8 | Calendar | 🔴 0 | 🔴 0 | 🔴 0 | 🔴 0 |
-| | **Tier 2 — Moderate** | | | | |
-| 9 | Research Agent | 🟢 10 | ⬛ 0 | 🟢 10 | 🟢 10 |
-| 10 | Content Writer | 📝 5 | 📝 5 | 📝 5 | 📝 5 |
-| 11 | Editor | 🟡 7 | 🟢 9 | 🟢 10 | 🟢 10 |
-| 12 | Content Planner | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 |
-| 13 | Email Drafting | 🟢 8 | ⬛ 0 | 🟢 10 | 🟢 10 |
-| 14 | Doc Summary | 🟢 8 | 🟢 8 | 🟢 10 | 🟢 10 |
-| 15 | Meeting Notes | 🟢 9 | 🟢 9 | 🟢 9 | 🟢 9 |
-| 16 | Social Scouting | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 |
-| 17 | Social Content | 📝 5 | 📝 5 | 📝 5 | 📝 5 |
-| 18 | News Aggregation | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 |
-| 19 | Shopping | 🟢 10 | 🟢 10 | 🔴 4 | 🔴 4 |
-| 20 | Memory Mgmt | 🟢 9 | 🟢 9 | 🟢 9 | 🟢 9 |
-| 21 | RAG / Retrieval | 🟡 6 | 🟡 6 | 🔴 4 | 🟡 6 |
-| 22 | Data Analysis | 🔴 2 | ⬛ 0 | 🔴 3 | 🔴 3 |
-| 23 | Web Scraping | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 |
-| 24 | Image Description | 📝 5 | 📝 5 | 📝 5 | 📝 5 |
-| 25 | Customer Support | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 9 |
-| 26 | Lead Scoring | 🟢 8 | 🟢 8 | 🟢 8 | 🟢 10 |
-| 27 | Sprint Summary | 🟢 10 | ⬛ 0 | 🟡 5 | 🟡 7 |
-| 28 | Transaction | 🟢 10 | ⬛ 0 | 🟢 9 | 🟢 8 |
-| 29 | Home Automation | 🟢 10 | 🟢 10 | 🟢 9 | 🟢 9 |
-| 30 | Fitness Tracking | 🟢 9 | 🟢 9 | 🟡 7 | 🟢 9 |
-| 31 | Recipe / Cooking | 🔴 2 | ⬛ 0 | 🟢 9 | 🔴 2 |
-| 32 | Personal Finance | 🟡 7 | ⬛ 0 | 🔴 4 | 🔴 4 |
-| 33 | SEO Optimization | 🟢 9 | 🟢 9 | 🟢 9 | 🟢 9 |
-| 34 | Landing Page | 📝 5 | 📝 5 | 📝 5 | 📝 5 |
-| 35 | Travel Planning | 🟢 8 | 🔴 0 | 🟡 7 | 🟡 7 |
-| | **Tier 3 — Advanced** | | | | |
-| 36 | Code Generation | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 |
-| 37 | Code Review | 🟢 10 | 🟢 8 | 🟢 10 | 🟢 8 |
-| 38 | QA / Test Writing | 🟢 8 | 🟢 8 | 🟢 10 | 🟢 8 |
-| 39 | Task Planning | 🟢 9 | 🟢 9 | 🟢 10 | 🟢 9 |
-| 40 | Fact-Checking | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 |
-| 41 | Critic / Review | 📝 5 | 📝 5 | 📝 5 | 📝 5 |
-| 42 | Market Research | 🔴 0 | ⬛ 0 | 🟡 7 | 🟢 8 |
-| 43 | Synthesizer | 🟡 7 | 🟢 9 | 🟢 9 | 🟡 7 |
-| 44 | Curriculum Design | 🟡 6 | 🟡 6 | 🟡 6 | 🟡 5 |
-| 45 | Prototype Gen | 🟡 6 | 🟡 6 | 🟡 6 | 🟡 6 |
-| 46 | DevOps | 🟡 7 | 🟢 10 | 🟢 9 | 🟢 10 |
-| | **Tier 4 — Expert** | | | | |
-| 47 | Math / Logic | 🟡 6 | 🟡 6 | 🔴 4 | 🔴 4 |
-| 48 | STEM Analysis | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 |
-| 49 | Algorithm | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 |
-| | **Tier 5 — Senior** | | | | |
-| 50 | Orchestrator | 🟢 8 | 🟢 8 | 🟢 8 | 🟢 8 |
-| 51 | Architect | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 |
-| 52 | Debugger | 🟢 10 | 🟢 8 | 🟢 10 | 🟢 8 |
-| 53 | Legal Review | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 |
-| 54 | Medical | 🟡 7 | 🟢 10 | 🟢 10 | 🟢 10 |
-| 55 | Financial | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 |
-| 56 | Security | 🟡 6 | 🟢 10 | 🟢 10 | 🟢 10 |
-| 57 | SRE / Incident | 🟡 6 | ⬛ 0 | 🔴 3 | 🟡 6 |
-| 58 | Book Writing | 📝 5 | 📝 5 | 📝 5 | 📝 5 |
-| 59 | Compliance | 🟡 7 | 🟢 8 | 🟢 8 | 🟢 9 |
+| # | Agent Role | Qwen3.5-122B-A10B | Qwen3.5-35B-A3B | Qwen3.5-35B-A3B | Qwen3.5-27B | Qwen3.5-27B |
+|---|---|---|---|---|---|---|
+| | | NVFP4 · KV: TBD | Q4_K_M · KV: q8_0 | Q4_K_M · KV: q8_0 | Q4_K_M · KV: q8_0 | Q4_K_M · KV: q8_0 |
+| | | Think 16K · SGLang | Think ∞ · llama.cpp | NoThink · llama.cpp | Think 16K · llama.cpp | NoThink · llama.cpp |
+| | | 🔵 96GB · RTX PRO 6000 | 🟢 24GB · RTX 3090 | 🟢 24GB · RTX 3090 | 🟢 24GB · RTX 3090 | 🟢 24GB · RTX 3090 |
+| | **Tier 1 — Utility** | | | | | |
+| 1 | Router / Triage | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 9 |
+| 2 | Input Validator | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 |
+| 3 | Health Monitor | 🔴 3 | ⬛ 0 | 🔴 3 | ⬛ 0 | 🔴 3 |
+| 4 | Notification | 🟢 8 | 🟢 8 | 🟢 8 | 🟢 9 | 🟢 8 |
+| 5 | Sentiment | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 |
+| 6 | FAQ Generation | 🟡 5 | 🟡 6 | 🟡 6 | 🟢 8 | 🟡 6 |
+| 7 | Translation | 🟢 10 | 🟢 9 | 🟢 9 | 🟢 9 | 🟢 10 |
+| 8 | Calendar | 🔴 0 | 🔴 0 | 🔴 0 | ⬛ 0 | 🔴 0 |
+| | **Tier 2 — Moderate** | | | | | |
+| 9 | Research Agent | 🟢 10 | ⬛ 0 | 🟢 10 | 🟢 10 | 🟢 10 |
+| 10 | Content Writer | 📝 5 | 📝 5 | 📝 5 | 📝 5 | 📝 5 |
+| 11 | Editor | 🟡 7 | 🟢 9 | 🟢 10 | 🟢 9 | 🟢 10 |
+| 12 | Content Planner | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 |
+| 13 | Email Drafting | 🟢 8 | ⬛ 0 | 🟢 10 | 🟢 9 | 🟢 10 |
+| 14 | Doc Summary | 🟢 8 | 🟢 8 | 🟢 10 | 🟢 8 | 🟢 10 |
+| 15 | Meeting Notes | 🟢 9 | 🟢 9 | 🟢 9 | 🟢 9 | 🟢 9 |
+| 16 | Social Scouting | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 |
+| 17 | Social Content | 📝 5 | 📝 5 | 📝 5 | 📝 5 | 📝 5 |
+| 18 | News Aggregation | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 |
+| 19 | Shopping | 🟢 10 | 🟢 10 | 🔴 4 | 🟢 10 | 🔴 4 |
+| 20 | Memory Mgmt | 🟢 9 | 🟢 9 | 🟢 9 | 🟢 9 | 🟢 9 |
+| 21 | RAG / Retrieval | 🟡 6 | 🟡 6 | 🔴 4 | 🟡 6 | 🟡 6 |
+| 22 | Data Analysis | 🔴 2 | ⬛ 0 | 🔴 3 | ⬛ 0 | 🔴 3 |
+| 23 | Web Scraping | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 |
+| 24 | Image Description | 📝 5 | 📝 5 | 📝 5 | 📝 5 | 📝 5 |
+| 25 | Customer Support | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 9 |
+| 26 | Lead Scoring | 🟢 8 | 🟢 8 | 🟢 8 | 🟢 8 | 🟢 10 |
+| 27 | Sprint Summary | 🟢 10 | ⬛ 0 | 🟡 5 | ⬛ 0 | 🟡 7 |
+| 28 | Transaction | 🟢 10 | ⬛ 0 | 🟢 9 | ⬛ 0 | 🟢 8 |
+| 29 | Home Automation | 🟢 10 | 🟢 10 | 🟢 9 | 🟢 10 | 🟢 9 |
+| 30 | Fitness Tracking | 🟢 9 | 🟢 9 | 🟡 7 | 🟢 9 | 🟢 9 |
+| 31 | Recipe / Cooking | 🔴 2 | ⬛ 0 | 🟢 9 | 🔴 2 | 🔴 2 |
+| 32 | Personal Finance | 🟡 7 | ⬛ 0 | 🔴 4 | 🟡 7 | 🔴 4 |
+| 33 | SEO Optimization | 🟢 9 | 🟢 9 | 🟢 9 | 🟢 9 | 🟢 9 |
+| 34 | Landing Page | 📝 5 | 📝 5 | 📝 5 | 📝 5 | 📝 5 |
+| 35 | Travel Planning | 🟢 8 | 🔴 0 | 🟡 7 | ⬛ 0 | 🟡 7 |
+| | **Tier 3 — Advanced** | | | | | |
+| 36 | Code Generation | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 |
+| 37 | Code Review | 🟢 10 | 🟢 8 | 🟢 10 | 🟢 10 | 🟢 8 |
+| 38 | QA / Test Writing | 🟢 8 | 🟢 8 | 🟢 10 | 🟢 8 | 🟢 8 |
+| 39 | Task Planning | 🟢 9 | 🟢 9 | 🟢 10 | 🟢 9 | 🟢 9 |
+| 40 | Fact-Checking | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 |
+| 41 | Critic / Review | 📝 5 | 📝 5 | 📝 5 | 📝 5 | 📝 5 |
+| 42 | Market Research | 🔴 0 | ⬛ 0 | 🟡 7 | 🟡 6 | 🟢 8 |
+| 43 | Synthesizer | 🟡 7 | 🟢 9 | 🟢 9 | 🟢 9 | 🟡 7 |
+| 44 | Curriculum Design | 🟡 6 | 🟡 6 | 🟡 6 | 🟡 6 | 🟡 5 |
+| 45 | Prototype Gen | 🟡 6 | 🟡 6 | 🟡 6 | 🟡 5 | 🟡 6 |
+| 46 | DevOps | 🟡 7 | 🟢 10 | 🟢 9 | 🟢 9 | 🟢 10 |
+| | **Tier 4 — Expert** | | | | | |
+| 47 | Math / Logic | 🟡 6 | 🟡 6 | 🔴 4 | 🟡 6 | 🔴 4 |
+| 48 | STEM Analysis | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 |
+| 49 | Algorithm | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 |
+| | **Tier 5 — Senior** | | | | | |
+| 50 | Orchestrator | 🟢 8 | 🟢 8 | 🟢 8 | 🟢 8 | 🟢 8 |
+| 51 | Architect | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 |
+| 52 | Debugger | 🟢 10 | 🟢 8 | 🟢 10 | ⬛ 0 | 🟢 8 |
+| 53 | Legal Review | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 |
+| 54 | Medical | 🟡 7 | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 |
+| 55 | Financial | 🟢 10 | 🟢 10 | 🟢 10 | ⬛ 0 | 🟢 10 |
+| 56 | Security | 🟡 6 | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 |
+| 57 | SRE / Incident | 🟡 6 | ⬛ 0 | 🔴 3 | 🔴 3 | 🟡 6 |
+| 58 | Book Writing | 📝 5 | 📝 5 | 📝 5 | 📝 5 | 📝 5 |
+| 59 | Compliance | 🟡 7 | 🟢 8 | 🟢 8 | 🟢 8 | 🟢 9 |
 
-> ⬛ **35B-T overflow:** llama.cpp has no `thinking_budget`, so 10 tests consumed all 32K tokens on reasoning. Re-run pending on vLLM/SGLang. See [RESULTS.md](RESULTS.md) for detailed notes.
+> ⬛ **Thinking overflow:** llama.cpp has no `thinking_budget`, so thinking models can consume all tokens on reasoning before outputting an answer. 35B-Think: 10 overflows, 27B-Think: 9 overflows. Re-run pending on vLLM/SGLang. See [RESULTS.md](RESULTS.md) for details.
 
 ---
 
