@@ -1,1 +1,45 @@
-ERROR: HTTPConnectionPool(host='192.168.1.7', port=8080): Read timed out. (read timeout=120)
+**Step 1: Determine the Discounted Price Per Widget**
+*   **Base Price:** $24.99
+*   **Quantity:** 7 widgets
+*   **Discount Rule:** Buy 6+ widgets gets 25% off each widget.
+*   **Calculation:** $24.99 \times (1 - 0.25) = $24.99 \times 0.75 = $18.7425$
+*   **Rounding:** Round to 2 decimal places $\rightarrow$ **$18.74**
+
+**Step 2: Calculate Subtotal Before Coupon**
+*   **Quantity:** 7
+*   **Price Per Widget:** $18.74
+*   **Calculation:** $7 \times 18.74 = 131.18$
+*   **Subtotal Before Coupon:** **$131.18**
+
+**Step 3: Calculate Subtotal After Coupon**
+*   **Coupon:** $10 off (applied after quantity discounts, before tax).
+*   **Calculation:** $131.18 - 10.00 = 121.18$
+*   **Constraint Check:** Subtotal ($121.18) is not below $0.
+*   **Subtotal After Coupon:** **$121.18**
+
+**Step 4: Calculate Sales Tax**
+*   **Tax Rate:** 8.25%
+*   **Tax Base:** Subtotal After Coupon ($121.18)
+*   **Calculation:** $121.18 \times 0.0825 = 9.99735$
+*   **Rounding:** Round to 2 decimal places $\rightarrow$ **$10.00**
+
+**Step 5: Determine Shipping Cost**
+*   **Quantity:** 7 items
+*   **Shipping Rule:** 5-8 items costs $3.99.
+*   **Shipping:** **$3.99**
+
+**Step 6: Calculate Total**
+*   **Formula:** Subtotal After Coupon + Tax + Shipping
+*   **Calculation:** $121.18 + 10.00 + 3.99 = 135.17$
+*   **Total:** **$135.17**
+
+```json
+{
+  "price_per_widget": 18.74,
+  "subtotal_before_coupon": 131.18,
+  "subtotal_after_coupon": 121.18,
+  "tax": 10.00,
+  "shipping": 3.99,
+  "total": 135.17
+}
+```

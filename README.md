@@ -269,20 +269,20 @@ Only 1 model tested so far — more coming.
 
 All scores out of 10.
 
-| # | Test | 122B Think | 35B Think | 27B NoThink | 122B NoThink | 35B NoThink |
-|---|---|---|---|---|---|---|
-| 1 | Precise Counting | 🟢 8 | 🔴 4 | 🔴 4 | 🔴 0 | 🔴 4 |
-| 2 | Constrained JSON | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 9 | 🟢 9 |
-| 3 | Logic Grid Puzzle | 🟢 10 | 🟢 10 | 🟡 5 | 🟡 5 | 🟡 6 |
-| 4 | Multi-Step Math | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 |
-| 5 | Code Output Prediction | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 |
-| 6 | Contradiction Detection | 🟡 5 | 🟡 5 | 🟡 5 | 🟡 5 | 🟡 5 |
-| 7 | Complex Multi-Key Sort | 🟢 8 | 🟢 8 | 🟢 8 | 🟢 8 | 🔴 3 |
-| 8 | Regex Construction | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 | 🟡 7 |
-| 9 | Data Transformation | 🟢 10 | 🟢 10 | 🔴 0 | 🔴 2 | 🔴 2 |
-| 10 | Instruction Following | 🟢 10 | 🟢 8 | 🔴 4 | 🔴 2 | 🔴 4 |
-| 11 | Multi-Turn Refinement | 🟡 7 | 🟢 8 | 🟢 10 | 🟢 8 | 🟢 9 |
-| 12 | Multi-Turn State Track | 🟢 10 | 🟢 9 | 🟡 7 | 🟢 10 | 🟡 7 |
+| # | Test | 122B Think | 35B Think | 27B Think | 27B NoThink | 122B NoThink | 35B NoThink |
+|---|---|---|---|---|---|---|---|
+| 1 | Precise Counting | 🟢 8 | 🔴 4 | 🟡 6 | 🔴 4 | 🔴 0 | 🔴 4 |
+| 2 | Constrained JSON | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 9 | 🟢 9 |
+| 3 | Logic Grid Puzzle | 🟢 10 | 🟢 10 | 🟢 10 | 🟡 5 | 🟡 5 | 🟡 6 |
+| 4 | Multi-Step Math | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 |
+| 5 | Code Output Prediction | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 |
+| 6 | Contradiction Detection | 🟡 5 | 🟡 5 | 🟡 5 | 🟡 5 | 🟡 5 | 🟡 5 |
+| 7 | Complex Multi-Key Sort | 🟢 8 | 🟢 8 | 🟢 8 | 🟢 8 | 🟢 8 | 🔴 3 |
+| 8 | Regex Construction | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 | 🟡 7 |
+| 9 | Data Transformation | 🟢 10 | 🟢 10 | 🟢 10 | 🔴 0 | 🔴 2 | 🔴 2 |
+| 10 | Instruction Following | 🟢 10 | 🟢 8 | 🟢 10 | 🔴 4 | 🔴 2 | 🔴 4 |
+| 11 | Multi-Turn Refinement | 🟡 7 | 🟢 8 | 🟢 10 | 🟢 10 | 🟢 8 | 🟢 9 |
+| 12 | Multi-Turn State Track | 🟢 10 | 🟢 9 | 🟢 10 | 🟡 7 | 🟢 10 | 🟡 7 |
 
 ---
 

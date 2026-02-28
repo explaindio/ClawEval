@@ -1,1 +1,20 @@
-ERROR: HTTPConnectionPool(host='192.168.1.7', port=8080): Read timed out. (read timeout=120)
+[
+  {
+    "contradiction": "Employee Count Discrepancy",
+    "fact_1": "The engineering department has 110 employees and the sales team has 120.",
+    "fact_2": "Together, these two departments represent 195 of our total 280 employees.",
+    "explanation": "The sum of the engineering (110) and sales (120) employees is 230, which contradicts the stated combined total of 195."
+  },
+  {
+    "contradiction": "Customer Churn Rate Inconsistency",
+    "fact_1": "Customer churn decreased to 3.2% in Q3.",
+    "fact_2": "We retained 1,850 of our 1,900 customers.",
+    "explanation": "Losing 50 customers out of 1,900 results in a churn rate of approximately 2.6%, not the stated 3.2%."
+  },
+  {
+    "contradiction": "R&D Spending Percentage Error",
+    "fact_1": "R&D spending was $8.2 million and Revenue was $42.3 million.",
+    "fact_2": "R&D spending represents 22.1% of revenue.",
+    "explanation": "$8.2 million is approximately 19.4% of $42.3 million, not 22.1%."
+  }
+]

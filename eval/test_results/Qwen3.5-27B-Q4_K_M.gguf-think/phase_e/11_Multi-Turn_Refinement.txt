@@ -1,0 +1,51 @@
+=== TURN 1 ===
+
+
+=== TURN 2 ===
+```python
+def parse_duration(duration_str):
+    if not duration_str:
+        return -1
+    
+    total_seconds = 0
+    seen_units = set()
+    current_num = ""
+    
+    for char in duration_str:
+        if char.isdigit():
+            current_num += char
+        elif char in 'hms':
+            if not current_num:
+                return -1
+            num = int(current_num)
+            if char in seen_units:
+                return -1
+            seen_units.add(char)
+            
+            if char == 'h':
+                total_seconds += num * 3600
+            elif char == 'm':
+                total_seconds += num * 60
+            elif char == 's':
+                total_seconds += num
+            
+            current_num = ""
+        else:
+            return -1
+    
+    if current_num or not seen_units:
+        return -1
+        
+    return total_seconds
+```
+
+=== TURN 3 ===
+```python
+assert parse_duration("30s") == 30
+assert parse_duration("1h30m") == 5400
+assert parse_duration("1h1h") == -1
+assert parse_duration("") == -1
+assert parse_duration("1h30x") == -1
+assert parse_duration("0s") == 0
+```
+
