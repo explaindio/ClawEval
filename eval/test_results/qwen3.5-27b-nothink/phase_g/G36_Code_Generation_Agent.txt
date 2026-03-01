@@ -1,0 +1,113 @@
+```python
+import time
+import threading
+from collections import defaultdict
+
+class RateLimiter:
+    def __init__(self, max_requests: int, window_seconds: float, burst: int = 0):
+        self.max_requests = max_requests
+        self.window_seconds = window_seconds
+        self.burst = burst
+        self._lock = threading.Lock()
+        self._buckets = defaultdict(lambda: {
+            "tokens": max_requests + burst,
+            "last_refill": time.time(),
+            "burst_tokens": burst,
+            "last_burst_refill": time.time()
+        })
+
+    def _get_key(self, user_id: str, endpoint: str) -> str:
+        return f"{user_id}:{endpoint}"
+
+    def _refill(self, key: str, now: float):
+        bucket = self._buckets[key]
+        elapsed = now - bucket["last_refill"]
+        refill_rate = self.max_requests / self.window_seconds
+        tokens_to_add = int(elapsed * refill_rate)
+        if tokens_to_add > 0:
+            bucket["tokens"] = min(self.max_requests + self.burst, bucket["tokens"] + tokens_to_add)
+            bucket["last_refill"] = now
+
+        # Burst refill (slower: 2x window)
+        burst_elapsed = now - bucket["last_burst_refill"]
+        burst_refill_rate = self.burst / (2 * self.window_seconds)
+        burst_to_add = int(burst_elapsed * burst_refill_rate)
+        if burst_to_add > 0:
+            bucket["burst_tokens"] = min(self.burst, bucket["burst_tokens"] + burst_to_add)
+            bucket["last_burst_refill"] = now
+
+    def allow(self, user_id: str, endpoint: str = "default") -> dict:
+        key = self._get_key(user_id, endpoint)
+        now = time.time()
+        with self._lock:
+            self._refill(key, now)
+            bucket = self._buckets[key]
+            if bucket["tokens"] > 0:
+                bucket["tokens"] -= 1
+                remaining = bucket["tokens"]
+                return {"allowed": True, "remaining": remaining, "retry_after": None}
+            else:
+                retry_after = (self.window_seconds / self.max_requests)
+                return {"allowed": False, "remaining": 0, "retry_after": retry_after}
+
+    def allow_priority(self, user_id: str, endpoint: str = "default") -> dict:
+        key = self._get_key(user_id, endpoint)
+        now = time.time()
+        with self._lock:
+            self._refill(key, now)
+            bucket = self._buckets[key]
+            remaining = bucket["tokens"]
+            return {"allowed": True, "remaining": remaining, "retry_after": None}
+
+    def cleanup(self, max_age_seconds: float = None) -> int:
+        if max_age_seconds is None:
+            max_age_seconds = 2 * self.window_seconds
+        now = time.time()
+        with self._lock:
+            keys_to_remove = []
+            for key, bucket in self._buckets.items():
+                if now - bucket["last_refill"] > max_age_seconds:
+                    keys_to_remove.append(key)
+            for key in keys_to_remove:
+                del self._buckets[key]
+            return len(keys_to_remove)
+
+    def get_usage(self, user_id: str, endpoint: str = "default") -> dict:
+        key = self._get_key(user_id, endpoint)
+        now = time.time()
+        with self._lock:
+            self._refill(key, now)
+            bucket = self._buckets[key]
+            used = (self.max_requests + self.burst) - bucket["tokens"]
+            return {
+                "used": used,
+                "limit": self.max_requests,
+                "window_seconds": self.window_seconds,
+                "burst_remaining": bucket["burst_tokens"]
+            }
+
+    def to_dict(self) -> dict:
+        with self._lock:
+            return {
+                "max_requests": self.max_requests,
+                "window_seconds": self.window_seconds,
+                "burst": self.burst,
+                "buckets": dict(self._buckets)
+            }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> "RateLimiter":
+        limiter = cls(
+            max_requests=data["max_requests"],
+            window_seconds=data["window_seconds"],
+            burst=data.get("burst", 0)
+        )
+        limiter._buckets = defaultdict(lambda: {
+            "tokens": limiter.max_requests + limiter.burst,
+            "last_refill": time.time(),
+            "burst_tokens": limiter.burst,
+            "last_burst_refill": time.time()
+        })
+        limiter._buckets.update(data.get("buckets", {}))
+        return limiter
+```

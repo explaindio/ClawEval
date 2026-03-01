@@ -1,0 +1,73 @@
+```json
+{
+  "architecture": {
+    "components": [
+      "API Gateway (Kong/AWS ALB)",
+      "Load Balancer",
+      "Stateless Application Servers (Go/Node.js)",
+      "Redis Cluster (Primary Cache)",
+      "PostgreSQL Cluster (Primary DB)",
+      "DynamoDB (Analytics/Logs)",
+      "CDN (CloudFront/Akamai)",
+      "Message Queue (Kafka/RabbitMQ)",
+      "Object Storage (S3 for metadata backups)"
+    ],
+    "database": {
+      "primary": "PostgreSQL with Read Replicas",
+      "justification": "ACID compliance for custom aliases and expiration logic; read replicas handle 100:1 read ratio efficiently."
+    },
+    "cache": {
+      "type": "Redis Cluster with Sharding",
+      "strategy": "Cache-Aside with TTL-based expiration",
+      "invalidation": "Write-through invalidation + TTL (30 days default)"
+    },
+    "hash_strategy": {
+      "algorithm": "Base62 encoding of Snowflake ID",
+      "length": 7,
+      "collision_handling": "Retry with incremented ID; fallback to UUID if collision persists"
+    }
+  },
+  "scaling": {
+    "read_write_ratio": "100:1",
+    "read_optimization": "CDN caching for static redirects; Redis for hot keys; DB read replicas for cold reads",
+    "write_path": "Async writes via Kafka to decouple URL creation from analytics; DB writes batched for efficiency",
+    "horizontal_scaling": "Auto-scaling groups for app servers; Redis sharding; DB read replicas scaled independently"
+  },
+  "reliability": {
+    "uptime_strategy": "Multi-AZ deployment; active-active regions for critical components",
+    "failover": "Automatic DNS failover; Redis Sentinel for master-slave failover; DB read replica promotion",
+    "data_replication": "Synchronous replication for primary DB; asynchronous for analytics; cross-region backups"
+  },
+  "compliance": {
+    "gdpr_deletion": "Soft-delete flag + background job to purge data from DB/cache/storage within 24h",
+    "data_retention": "30-day default; configurable per user; analytics data anonymized after 90 days",
+    "analytics_separation": "Analytics stored in DynamoDB (separate from core DB); PII stripped at ingestion"
+  },
+  "cost_estimate": {
+    "monthly_total": 4850,
+    "breakdown": {
+      "compute": 1200,
+      "database": 1500,
+      "cache": 800,
+      "cdn": 1000,
+      "other": 350
+    },
+    "fits_budget": true
+  },
+  "rate_limiting": {
+    "strategy": "Token bucket algorithm at API Gateway + Redis-based distributed rate limiting",
+    "limits": "1000 req/sec per IP; 100 req/sec per user for writes; 10000 req/sec for reads"
+  },
+  "monitoring": {
+    "metrics": [
+      "p99 latency",
+      "error rate",
+      "cache hit ratio",
+      "DB connection pool usage",
+      "active connections",
+      "queue depth"
+    ],
+    "alerting": "PagerDuty integration for p99 > 50ms, error rate > 0.1%, or cache hit ratio < 95%"
+  }
+}
+```

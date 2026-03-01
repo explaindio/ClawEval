@@ -1,0 +1,87 @@
+```json
+{
+  "phases": [
+    {
+      "phase": 1,
+      "name": "Initial Diagnostics & Alerting",
+      "agents": [
+        {"agent": "log_analyzer", "input": "production_logs_last_15m", "timeout_seconds": 60},
+        {"agent": "metric_checker", "input": "error_rate, latency_p99, cpu_usage", "timeout_seconds": 45},
+        {"agent": "db_checker", "input": "connection_pool, active_locks, replication_lag", "timeout_seconds": 45},
+        {"agent": "config_auditor", "input": "recent_changes_last_1h", "timeout_seconds": 30},
+        {"agent": "notification_agent", "input": "severity:critical, channel:slack,pagerduty", "timeout_seconds": 15}
+      ],
+      "parallel": true,
+      "gate": "At least 3 diagnostic agents must return valid data without timeout"
+    },
+    {
+      "phase": 2,
+      "name": "Root Cause Analysis & Dependency Mapping",
+      "agents": [
+        {"agent": "dependency_mapper", "input": "affected_service_id", "timeout_seconds": 60},
+        {"agent": "capacity_planner", "input": "resource_utilization_last_30m", "timeout_seconds": 45},
+        {"agent": "incident_reporter", "input": "initial_findings, severity:critical", "timeout_seconds": 30}
+      ],
+      "parallel": true,
+      "gate": "Root cause hypothesis must be identified with >70% confidence"
+    },
+    {
+      "phase": 3,
+      "name": "Customer Communication & Impact Assessment",
+      "agents": [
+        {"agent": "customer_communicator", "input": "status:investigating, affected_regions", "timeout_seconds": 30},
+        {"agent": "incident_reporter", "input": "update_impact_assessment", "timeout_seconds": 30}
+      ],
+      "parallel": false,
+      "gate": "Customer notification must be successfully sent"
+    },
+    {
+      "phase": 4,
+      "name": "Remediation Execution",
+      "agents": [
+        {"agent": "rollback_agent", "input": "target_version:previous_stable, service_id", "timeout_seconds": 120}
+      ],
+      "parallel": false,
+      "gate": "Rollback must complete without errors"
+    },
+    {
+      "phase": 5,
+      "name": "Verification & Closure",
+      "agents": [
+        {"agent": "metric_checker", "input": "error_rate, latency_p99, availability", "timeout_seconds": 60},
+        {"agent": "log_analyzer", "input": "post_rollback_logs", "timeout_seconds": 45},
+        {"agent": "incident_reporter", "input": "status:resolved, root_cause_summary", "timeout_seconds": 30},
+        {"agent": "customer_communicator", "input": "status:resolved, resolution_summary", "timeout_seconds": 30}
+      ],
+      "parallel": true,
+      "gate": "All metrics must return to baseline thresholds for 5 consecutive minutes"
+    }
+  ],
+  "decision_points": [
+    {
+      "after_phase": 2,
+      "condition": "root_cause_confidence > 0.7 AND recent_config_change_detected == true",
+      "if_true": "go to phase 4",
+      "if_false": "go to phase 3"
+    },
+    {
+      "after_phase": 4,
+      "condition": "rollback_success == true AND error_rate < 0.01",
+      "if_true": "go to phase 5",
+      "if_false": "go to phase 2"
+    }
+  ],
+  "escalation": {
+    "trigger": "total_elapsed_time > 20 minutes OR consecutive_failed_remediation_attempts > 2",
+    "action": "notify_on_call_manager_via_sms_and_phone"
+  },
+  "total_phases": 5,
+  "max_time_minutes": 25,
+  "rollback_conditions": [
+    "error_rate exceeds 5% for more than 2 minutes",
+    "latency_p99 exceeds 2x baseline for more than 3 minutes",
+    "database connection pool exhaustion detected",
+    "critical security vulnerability identified in current deployment"
+  ]
+}
+```
