@@ -150,7 +150,7 @@ All scores out of 10. Sorted by best overall model.
 - 🔄 **Think vs NoThink tradeoffs per role:** Thinking helps on Shopping (10 vs 4), Math/Logic (6 vs 4), and RAG (6 vs 4). NoThink avoids overthinking on Recipe (9 vs 0), Market Research (7 vs 0), and Travel (7 vs 0)
 - **27B dense vs 35B MoE (both nothink):** Very close overall (77.5% vs 80%). 27B beats 35B on RAG (6 vs 4), Lead Scoring (10 vs 8), SRE (6 vs 3), Market Research (8 vs 7). 35B wins on Recipe (9 vs 2), Code Review (10 vs 8), QA (10 vs 8)
 - **GPT-OSS-120B (Medium reasoning):** Highest Phase F score at 484/590 (82.0%). Excels on Health Monitor (8 vs 3), Sprint Summary (9 vs 0), Transaction (10 vs 0), Recipe (9 vs 2), Math/Logic (8 vs 6). Low/High reasoning gave ~79% — medium is the sweet spot
-- **GPT-OSS-120B tool calling:** 10% in Phase 0-4 because vLLM server was not configured with `--enable-auto-tool-choice` — model can likely do tool calling with proper server config
+- **GPT-OSS-120B tool calling:** ⚠️ N/A — vLLM v0.16.1 has `is_tool_call = False # TODO` in `harmony_utils.py`. The model correctly reasons about which tools to call with what parameters (Harmony format), but vLLM doesn't parse Harmony tool calls back into the OpenAI `tool_calls` response field yet. This is a vLLM parsing limitation, NOT a model capability issue. Re-test when vLLM ships the fix
 
 
 
