@@ -48,8 +48,25 @@ def call_llm(messages, base_url, model, max_tokens=4000, timeout=300, extra_body
     choice = data["choices"][0]
 
     content = choice["message"].get("content", "")
-    # Strip <think> tags if present
+
+    # Strip thinking content — multiple formats:
+    # 1. <think>...</think> tags (llama.cpp / vLLM)
     content = re.sub(r"<think>.*?</think>", "", content, flags=re.DOTALL).strip()
+    # 2. SGLang "Thinking Process:" block — strip everything before the actual answer
+    #    The answer typically starts with JSON ({), code (```), or a clear section break
+    if content.startswith("Thinking Process"):
+        # Find the first JSON object, code fence, or final answer
+        json_match = re.search(r'(?:^|\n)(\{[\s\S]*)', content)
+        code_match = re.search(r'(?:^|\n)(```[\s\S]*)', content)
+        # Use whichever comes first
+        positions = []
+        if json_match:
+            positions.append((json_match.start(1), json_match.group(1)))
+        if code_match:
+            positions.append((code_match.start(1), code_match.group(1)))
+        if positions:
+            positions.sort(key=lambda x: x[0])
+            content = positions[0][1].strip()
 
     tokens = data.get("usage", {}).get("completion_tokens", 0)
     tps = round(tokens / elapsed, 1) if elapsed > 0 else 0

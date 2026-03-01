@@ -1,0 +1,133 @@
+{
+  "phases": [
+    {
+      "phase": 1,
+      "name": "Initial Triage & Alerting",
+      "agents": [
+        {
+          "agent": "metric_checker",
+          "input": "service_id: prod-api, time_window: 15m",
+          "timeout_seconds": 30
+        },
+        {
+          "agent": "log_analyzer",
+          "input": "service_id: prod-api, error_level: ERROR",
+          "timeout_seconds": 30
+        },
+        {
+          "agent": "db_checker",
+          "input": "db_cluster: primary, check_type: connections",
+          "timeout_seconds": 30
+        },
+        {
+          "agent": "config_auditor",
+          "input": "service_id: prod-api, lookback: 1h",
+          "timeout_seconds": 30
+        },
+        {
+          "agent": "notification_agent",
+          "input": "channel: slack-ops, severity: P1",
+          "timeout_seconds": 10
+        },
+        {
+          "agent": "incident_reporter",
+          "input": "title: Production Outage, severity: P1",
+          "timeout_seconds": 10
+        }
+      ],
+      "parallel": true,
+      "gate": "All agents returned status 'success' or 'partial_success'"
+    },
+    {
+      "phase": 2,
+      "name": "Impact & Dependency Analysis",
+      "agents": [
+        {
+          "agent": "dependency_mapper",
+          "input": "service_id: prod-api, depth: 2",
+          "timeout_seconds": 20
+        },
+        {
+          "agent": "capacity_planner",
+          "input": "service_id: prod-api, metric: cpu_usage",
+          "timeout_seconds": 20
+        }
+      ],
+      "parallel": false,
+      "gate": "Dependency map and capacity report generated"
+    },
+    {
+      "phase": 3,
+      "name": "Stakeholder Communication",
+      "agents": [
+        {
+          "agent": "customer_communicator",
+          "input": "status: investigating, affected_users: estimated_10k",
+          "timeout_seconds": 60
+        }
+      ],
+      "parallel": false,
+      "gate": "Customer notification sent successfully"
+    },
+    {
+      "phase": 4,
+      "name": "Remediation Execution",
+      "agents": [
+        {
+          "agent": "rollback_agent",
+          "input": "target_version: previous_stable, service: prod-api",
+          "timeout_seconds": 120
+        }
+      ],
+      "parallel": false,
+      "gate": "Rollback completed or skipped based on decision"
+    },
+    {
+      "phase": 5,
+      "name": "Verification & Closure",
+      "agents": [
+        {
+          "agent": "metric_checker",
+          "input": "service_id: prod-api, time_window: 5m",
+          "timeout_seconds": 30
+        },
+        {
+          "agent": "log_analyzer",
+          "input": "service_id: prod-api, error_level: ERROR",
+          "timeout_seconds": 30
+        },
+        {
+          "agent": "incident_reporter",
+          "input": "action: update_status, status: resolved",
+          "timeout_seconds": 10
+        }
+      ],
+      "parallel": false,
+      "gate": "Metrics stable and incident ticket updated"
+    }
+  ],
+  "decision_points": [
+    {
+      "after_phase": 1,
+      "condition": "diagnostic_confidence > 0.8",
+      "if_true": "go to phase 2",
+      "if_false": "go to phase 5"
+    },
+    {
+      "after_phase": 3,
+      "condition": "rollback_safe == true",
+      "if_true": "go to phase 4",
+      "if_false": "go to phase 5"
+    }
+  ],
+  "escalation": {
+    "trigger": "total_elapsed_time > 10 minutes AND phase < 4",
+    "action": "notification_agent (Page On-Call Lead)"
+  },
+  "total_phases": 5,
+  "max_time_minutes": 20,
+  "rollback_conditions": [
+    "config_auditor.recent_change_detected == true",
+    "metric_checker.error_rate > 5%"
+  ]
+}

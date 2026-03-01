@@ -1,0 +1,66 @@
+{
+  "architecture": {
+    "components": [
+      "Edge CDN with Workers",
+      "API Gateway",
+      "Write Service",
+      "NoSQL Database",
+      "Distributed Cache",
+      "Analytics Pipeline"
+    ],
+    "database": {
+      "primary": "DynamoDB",
+      "justification": "High write throughput for 10M daily URLs, low latency reads, and seamless horizontal scaling without sharding management."
+    },
+    "cache": {
+      "type": "Redis Cluster + Edge Cache",
+      "strategy": "Cache-aside with TTL based on link expiration",
+      "invalidation": "TTL expiration + Manual purge API for GDPR/Deletion"
+    },
+    "hash_strategy": {
+      "algorithm": "Base62 encoding of random 64-bit integer",
+      "length": 7,
+      "collision_handling": "Retry with new random ID if collision detected in DB"
+    }
+  },
+  "scaling": {
+    "read_write_ratio": "100:1",
+    "read_optimization": "99% traffic served via Edge CDN cache; origin only on cache miss",
+    "write_path": "Async queue for analytics, sync for URL creation to ensure consistency",
+    "horizontal_scaling": "Stateless microservices with auto-scaling groups based on CPU and Request Count"
+  },
+  "reliability": {
+    "uptime_strategy": "Multi-region active-active deployment with global load balancing",
+    "failover": "Automated DNS failover to secondary region if primary health check fails",
+    "data_replication": "Synchronous replication within region, asynchronous cross-region for disaster recovery"
+  },
+  "compliance": {
+    "gdpr_deletion": "Soft delete flag set immediately, hard delete job runs after retention period",
+    "data_retention": "Configurable TTL per link, default 1 year for analytics data",
+    "analytics_separation": "PII stripped before ingestion into analytics warehouse"
+  },
+  "cost_estimate": {
+    "monthly_total": 5000,
+    "breakdown": {
+      "compute": 500,
+      "database": 1000,
+      "cache": 500,
+      "cdn": 2500,
+      "other": 500
+    },
+    "fits_budget": true
+  },
+  "rate_limiting": {
+    "strategy": "Token bucket algorithm at Edge and API Gateway",
+    "limits": "100 requests/second per IP for writes, 10000/second for reads"
+  },
+  "monitoring": {
+    "metrics": [
+      "p99 Latency",
+      "Error Rate (5xx)",
+      "Cache Hit Ratio",
+      "Request Volume"
+    ],
+    "alerting": "PagerDuty integration for latency >50ms or error rate >0.1%"
+  }
+}
