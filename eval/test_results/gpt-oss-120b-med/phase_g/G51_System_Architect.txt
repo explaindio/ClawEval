@@ -1,0 +1,71 @@
+{
+  "architecture": {
+    "components": [
+      "API Gateway (NGINX)",
+      "Stateless URL Service (Go/Node.js)",
+      "Redis Cache (cluster mode)",
+      "PostgreSQL Primary + Read Replica (partitioned by date)",
+      "CDN Edge (Cloudflare Free)",
+      "Background Workers (link expiration, analytics, GDPR deletion)",
+      "Monitoring & Alerting (Prometheus + Alertmanager)",
+      "Rate‑Limiter (Token Bucket middleware)"
+    ],
+    "database": {
+      "primary": "PostgreSQL (single‑node primary with one read replica)",
+      "justification": "Strong consistency for writes, rich indexing for custom aliases and expiration, low licence cost, easy partitioning by creation date to handle 10 M daily inserts."
+    },
+    "cache": {
+      "type": "Redis (cluster, 3‑node master‑replica)",
+      "strategy": "Read‑through + write‑through; hot short‑codes cached for 24 h with LRU eviction.",
+      "invalidation": "On write (new alias) and on delete/expiration events; TTL set to match link expiration."
+    },
+    "hash_strategy": {
+      "algorithm": "Base62 encoding of a 48‑bit random number + optional custom alias check",
+      "length": 7,
+      "collision_handling": "Check existence in DB; on collision generate a new random number (max 3 retries) or fall back to sequential counter for custom alias conflicts."
+    }
+  },
+  "scaling": {
+    "read_write_ratio": "100:1",
+    "read_optimization": "Edge CDN caches 100 % of redirect responses, Redis serves hot lookups, DB read‑replica handles overflow analytics queries.",
+    "write_path": "API → validation (rate‑limit, custom alias uniqueness) → hash generation → write‑through to PostgreSQL primary → async publish to Redis cache and background workers.",
+    "horizontal_scaling": "Stateless API containers behind load balancer can be scaled out; Redis cluster adds shards; PostgreSQL can be sharded by month if needed."
+  },
+  "reliability": {
+    "uptime_strategy": "Multi‑AZ deployment with health‑checks, automatic container restarts, rolling updates, and CDN fallback for redirects.",
+    "failover": "PostgreSQL replica promoted automatically on primary failure; Redis Sentinel promotes a replica; API instances restarted by orchestrator (Docker‑Swarm/K8s).",
+    "data_replication": "Synchronous streaming replication between primary and replica within the same region; async replication to a cold‑standby replica for disaster recovery."
+  },
+  "compliance": {
+    "gdpr_deletion": "Dedicated DELETE endpoint; background job removes rows, purges related keys from Redis, and scrubs analytics logs. All deletions are logged for audit.",
+    "data_retention": "Links store an optional expiration timestamp; nightly job deletes expired rows and clears cache entries.",
+    "analytics_separation": "Click‑stream stored in a separate PostgreSQL schema without PII; can be truncated or anonymized on request."
+  },
+  "cost_estimate": {
+    "monthly_total": 1800,
+    "breakdown": {
+      "compute": 1200,
+      "database": 300,
+      "cache": 200,
+      "cdn": 0,
+      "other": 100
+    },
+    "fits_budget": true
+  },
+  "rate_limiting": {
+    "strategy": "Token Bucket per IP + API key; enforced at API gateway.",
+    "limits": "Create URL: 100 requests/minute per IP; Redirect: 1000 requests/minute per IP; burst capacity 5x."
+  },
+  "monitoring": {
+    "metrics": [
+      "request_rate_total",
+      "redirect_latency_p99_ms",
+      "error_rate_5xx",
+      "redis_hit_ratio",
+      "cpu_utilization_percent",
+      "db_connection_pool_usage",
+      "replication_lag_seconds"
+    ],
+    "alerting": "Prometheus alerts → Slack & email when latency_p99 > 50 ms, error_rate_5xx > 0.5 %, redis_hit_ratio < 80 %, cpu_utilization > 80 % or replication_lag > 5 s."
+  }
+}

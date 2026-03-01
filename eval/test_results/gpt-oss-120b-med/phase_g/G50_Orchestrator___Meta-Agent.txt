@@ -1,0 +1,100 @@
+```json
+{
+  "phases": [
+    {
+      "phase": 1,
+      "name": "Initial Diagnostics",
+      "agents": [
+        { "agent": "log_analyzer", "input": "log_path:/var/log/app.log", "timeout_seconds": 60 },
+        { "agent": "metric_checker", "input": "query:up{job=\"app\"}", "timeout_seconds": 45 },
+        { "agent": "dependency_mapper", "input": "service:frontend", "timeout_seconds": 30 },
+        { "agent": "db_checker", "input": "db:customers", "timeout_seconds": 45 },
+        { "agent": "config_auditor", "input": "since:24h", "timeout_seconds": 30 },
+        { "agent": "capacity_planner", "input": "resource:cpu,memory", "timeout_seconds": 30 }
+      ],
+      "parallel": true,
+      "gate": "All diagnostic agents must finish and return their findings"
+    },
+    {
+      "phase": 2,
+      "name": "Stakeholder Notification",
+      "agents": [
+        { "agent": "notification_agent", "input": "channel:slack,pagerduty;summary:Diagnostics completed", "timeout_seconds": 20 }
+      ],
+      "parallel": false,
+      "gate": "Notification sent and acknowledged"
+    },
+    {
+      "phase": 3,
+      "name": "Incident Ticket Creation",
+      "agents": [
+        { "agent": "incident_reporter", "input": "title:Production outage;details:Diagnostics output", "timeout_seconds": 30 }
+      ],
+      "parallel": false,
+      "gate": "Ticket created with initial diagnostics attached"
+    },
+    {
+      "phase": 4,
+      "name": "Customer Communication (Pre‑Remediation)",
+      "agents": [
+        { "agent": "customer_communicator", "input": "status:outage detected;estimated_time:15m", "timeout_seconds": 20 }
+      ],
+      "parallel": false,
+      "gate": "Customers informed of outage and next steps"
+    },
+    {
+      "phase": 5,
+      "name": "Remediation Execution",
+      "agents": [
+        { "agent": "rollback_agent", "input": "target:previous_release;service:frontend", "timeout_seconds": 120 }
+      ],
+      "parallel": false,
+      "gate": "Rollback completed (if applicable) or alternative fix applied"
+    },
+    {
+      "phase": 6,
+      "name": "Post‑Remediation Verification",
+      "agents": [
+        { "agent": "metric_checker", "input": "query:up{job=\"app\"}", "timeout_seconds": 45 },
+        { "agent": "log_analyzer", "input": "log_path:/var/log/app.log", "timeout_seconds": 60 }
+      ],
+      "parallel": true,
+      "gate": "Metrics back to normal range and no error patterns in logs"
+    },
+    {
+      "phase": 7,
+      "name": "Incident Closure & Final Notification",
+      "agents": [
+        { "agent": "incident_reporter", "input": "status:resolved;resolution:rollback applied", "timeout_seconds": 30 },
+        { "agent": "notification_agent", "input": "channel:slack,pagerduty;summary:Outage resolved", "timeout_seconds": 20 }
+      ],
+      "parallel": false,
+      "gate": "Ticket closed and final notification sent"
+    }
+  ],
+  "decision_points": [
+    {
+      "after_phase": 1,
+      "condition": "diagnostics.root_cause == 'recent_deployment' OR diagnostics.metric_degradation > 20%",
+      "if_true": "go to phase 4",
+      "if_false": "go to phase 3"
+    },
+    {
+      "after_phase": 5,
+      "condition": "verification.metrics_normal == true AND verification.logs_clean == true",
+      "if_true": "go to phase 6",
+      "if_false": "go to escalation"
+    }
+  ],
+  "escalation": {
+    "trigger": "elapsed_time > 15 minutes OR verification.failed == true",
+    "action": "notification_agent -> channel:pagerduty;message:Escalate outage to SRE lead; incident_reporter -> update status:escalated"
+  },
+  "total_phases": 7,
+  "max_time_minutes": 25,
+  "rollback_conditions": [
+    "Deployment regression detected (error pattern matches previous release) AND metric degradation > 20% for > 2 minutes",
+    "Config audit shows recent change that introduced failure AND rollback to prior config restores normal metrics"
+  ]
+}
+```
