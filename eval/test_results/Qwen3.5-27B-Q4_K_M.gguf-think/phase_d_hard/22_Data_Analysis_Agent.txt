@@ -1,0 +1,63 @@
+# Phase D Hard Test — #22 Data Analysis Agent
+# Tier: 2 | Score: 10/10 | 1/1 constraints met
+# Tokens: 1665 | Speed: 30.6 t/s | Time: 54.4s
+
+## PROMPT:
+Analyze this clinical trial data. WARNING: The obvious conclusion from the aggregate data is WRONG. You must analyze the subgroups to find the truth. This is a real statistical phenomenon.
+
+Overall Results:
+- Treatment A: 100 patients, 40 recovered (40%)
+- Treatment B: 100 patients, 50 recovered (50%)
+
+Subgroup breakdown:
+- Mild cases with Treatment A: 10 patients, 8 recovered (80%)
+- Mild cases with Treatment B: 60 patients, 45 recovered (75%)
+- Severe cases with Treatment A: 90 patients, 32 recovered (35.6%)
+- Severe cases with Treatment B: 40 patients, 5 recovered (12.5%)
+
+Questions:
+1. Based on aggregate data alone, which treatment appears better?
+2. When you look at subgroups, which treatment is actually better for mild cases?
+3. Which treatment is actually better for severe cases?
+4. Explain the paradox — why does the aggregate data mislead?
+5. What is the name of this statistical phenomenon?
+6. What is your final recommendation and why?
+
+## RESPONSE:
+Here is the analysis of the clinical trial data based on your requirements.
+
+### 1. Based on aggregate data alone, which treatment appears better?
+Based on the aggregate data, **Treatment B** appears better.
+*   Treatment A Recovery Rate: 40%
+*   Treatment B Recovery Rate: 50%
+*   **Conclusion:** Treatment B shows a 10 percentage point advantage in the overall summary.
+
+### 2. When you look at subgroups, which treatment is actually better for mild cases?
+**Treatment A** is better for mild cases.
+*   Treatment A (Mild): 80% recovery rate.
+*   Treatment B (Mild): 75% recovery rate.
+*   **Conclusion:** Treatment A outperforms Treatment B by 5 percentage points in mild cases.
+
+### 3. Which treatment is actually better for severe cases?
+**Treatment A** is better for severe cases.
+*   Treatment A (Severe): 35.6% recovery rate.
+*   Treatment B (Severe): 12.5% recovery rate.
+*   **Conclusion:** Treatment A outperforms Treatment B by 23.1 percentage points in severe cases.
+
+### 4. Explain the paradox — why does the aggregate data mislead?
+The aggregate data is misleading due to a **confounding variable**: the severity of the illness.
+
+*   **Treatment B** was administered primarily to patients with **mild cases** (60 out of 100 patients). Because mild cases have a naturally higher recovery rate regardless of treatment, Treatment B's overall success rate was artificially inflated.
+*   **Treatment A** was administered primarily to patients with **severe cases** (90 out of 100 patients). Because severe cases are much harder to treat and have a naturally lower recovery rate, Treatment A's overall success rate was artificially suppressed.
+
+Even though Treatment A is more effective in *both* categories, it was tested on a much sicker population, dragging down its aggregate average.
+
+### 5. What is the name of this statistical phenomenon?
+This is known as **Simpson's Paradox**.
+It occurs when a trend appears in different groups of data but disappears or reverses when these groups are combined.
+
+### 6. What is your final recommendation and why?
+**Recommendation:** **Treatment A** should be the standard of care.
+
+**Reasoning:**
+When controlling for the severity of the illness, Treatment A demonstrates superior efficacy in **both** mild and severe patient populations. Relying on the aggregate data would lead to the selection of an inferior treatment (Treatment B) simply because it was tested on a healthier cohort. To ensure the best outcomes for patients regardless of their condition severity, Treatment A is the statistically superior choice.

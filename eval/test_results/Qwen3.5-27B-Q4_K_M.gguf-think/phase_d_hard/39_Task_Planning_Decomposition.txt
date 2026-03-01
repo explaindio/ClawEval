@@ -1,0 +1,133 @@
+# Phase D Hard Test — #39 Task Planning / Decomposition
+# Tier: 3 | Score: 10/10 | 1/1 constraints met
+# Tokens: 3744 | Speed: 29.9 t/s | Time: 125.2s
+
+## PROMPT:
+Decompose this project into tasks with dependencies. WARNING: The requirements as stated contain a CIRCULAR DEPENDENCY. You must detect it and propose a resolution.
+
+Project: Build a real-time dashboard
+- Task A (Auth system): "Requires the notification service (Task C) to send verification emails"
+- Task B (Data pipeline): "Requires the auth system (Task A) to validate data sources"
+- Task C (Notification service): "Requires the data pipeline (Task B) to know what events to notify about"
+- Task D (Dashboard UI): "Requires A, B, and C to be complete"
+- Task E (Testing): "Requires D to be complete, plus access to A, B, C independently"
+- Task F (Deployment): "Requires E to pass, but also needs to deploy A, B, C as separate services"
+
+Team: 2 backend devs, 1 frontend dev, 1 QA. Timeline: 8 weeks.
+
+1. Draw the dependency graph (text format)
+2. Identify the circular dependency
+3. Propose how to break the cycle (e.g., mock service, interface-first approach)
+4. Create a realistic 8-week schedule with parallel work
+
+## RESPONSE:
+### 1. Dependency Graph (Text Format)
+
+Based strictly on the initial requirements provided:
+
+```text
+      +-------+
+      |   A   | (Auth System)
+      +---+---+
+          |
+          | (Requires C)
+          v
+      +-------+
+      |   C   | (Notification Service)
+      +---+---+
+          |
+          | (Requires B)
+          v
+      +-------+
+      |   B   | (Data Pipeline)
+      +---+---+
+          |
+          | (Requires A)
+          +-------------------+
+                              |
+                              v
+      +-------+       +-------+
+      |   D   |       |   E   | (Testing)
+      | (UI)  |       +---+---+
+      +---+---+           |
+          |               | (Requires D + A,B,C)
+          +---------------+
+                          |
+                          v
+                      +-------+
+                      |   F   | (Deployment)
+                      +-------+
+```
+
+**Legend:**
+*   `A -> C`: A depends on C.
+*   `C -> B`: C depends on B.
+*   `B -> A`: B depends on A.
+*   `D -> A,B,C`: UI depends on all backend services.
+*   `E -> D`: Testing depends on UI completion.
+*   `F -> E`: Deployment depends on Testing.
+
+---
+
+### 2. Identify the Circular Dependency
+
+**The Cycle:** **A → C → B → A**
+
+*   **Task A (Auth)** cannot start without **Task C (Notification)** to send emails.
+*   **Task C (Notification)** cannot start without **Task B (Data Pipeline)** to define events.
+*   **Task B (Data Pipeline)** cannot start without **Task A (Auth)** to validate sources.
+
+**Impact:** This is a "Deadlock." No backend task can begin development because each waits for the other to exist. This will stall the project for the first 2 weeks minimum, risking the 8-week timeline.
+
+---
+
+### 3. Proposed Resolution: Contract-First & Mocking
+
+To break the cycle without changing the functional requirements, we must decouple **Implementation** from **Integration**.
+
+**Strategy:**
+1.  **Define Interfaces First:** Create OpenAPI/Swagger specs for A, B, and C before writing code.
+2.  **Mock Dependencies:**
+    *   **Task A (Auth):** Implement a "Console Logger" email service initially. It does not call Task C; it logs the email to the console. Task C is integrated later.
+    *   **Task B (Data):** Implement a "Mock Token" validator. It accepts any valid-looking JWT initially. Task A is integrated later.
+    *   **Task C (Notification):** Implement a "Local Event Listener." It listens to a local queue or file, not the live Data Pipeline. Task B is integrated later.
+3.  **Event-Driven Architecture:** Move from synchronous calls to asynchronous events (e.g., RabbitMQ/Kafka). This allows services to be deployed independently and decouples the strict "Requires" relationship into "Subscribes to."
+
+**Revised Dependencies:**
+*   **A** depends on **Mock C** (Dev Phase) → **Real C** (Integration Phase).
+*   **B** depends on **Mock A** (Dev Phase) → **Real A** (Integration Phase).
+*   **C** depends on **Mock B** (Dev Phase) → **Real B** (Integration Phase).
+
+---
+
+### 4. Realistic 8-Week Schedule
+
+**Team Allocation:**
+*   **BE1:** Auth (A) & Notification (C)
+*   **BE2:** Data Pipeline (B)
+*   **FE:** Dashboard UI (D)
+*   **QA:** Testing (E) & Deployment Support (F)
+
+**Schedule:**
+
+| Week | Phase | BE1 (Auth/Notif) | BE2 (Data Pipeline) | FE (UI) | QA (Testing) |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **1** | **Design & Contracts** | Define Auth API & Email Contract | Define Data Schema & Event Contract | Design UI Mockups | Review Requirements |
+| **2** | **Core Dev (Mocked)** | Build Auth (A) with **Mock Email** | Build Data (B) with **Mock Auth** | Setup Project & Components | Setup Test Env |
+| **3** | **Core Dev (Mocked)** | Build Notif (C) with **Mock Events** | Build Data Validation Logic | Build Dashboard Layout | Write Unit Tests (A/B) |
+| **4** | **Core Dev (Mocked)** | Refine Auth/Notif Logic | Refine Data Pipeline | Build Real-time Charts | Write API Tests (A/B) |
+| **5** | **Integration** | **Wire Real C into A** (Email) | **Wire Real A into B** (Auth) | Connect UI to Mock APIs | Integration Testing (A/B/C) |
+| **6** | **Integration** | Fix Integration Bugs | Fix Integration Bugs | Connect UI to Real APIs | End-to-End Testing (D) |
+| **7** | **QA & Polish** | Performance Tuning | Performance Tuning | UI Polish & Accessibility | Regression Testing |
+| **8** | **Deploy** | **Deploy Service A** | **Deploy Service B** | Deploy UI (D) | **Deploy & Verify (F)** |
+
+**Critical Path Notes:**
+*   **Weeks 1-2:** The "Contract" phase is vital. If the API specs aren't agreed upon, the cycle cannot be broken.
+*   **Week 5:** This is the "Integration Spike." All three backend services are wired together. This is the highest risk period.
+*   **QA Shift-Left:** QA starts writing tests in Week 2/3 against the Mock APIs. They do not wait for Week 6 (Task E requirement) to start *all* testing, only the *End-to-End* testing.
+*   **Deployment:** Task F requires A, B, C to be separate. CI/CD pipelines must be set up in Week 4 to ensure Week 8 deployment is smooth.
+
+**Risk Mitigation:**
+*   If **Task A** (Auth) is delayed, **Task B** (Data) can continue using Mock Tokens.
+*   If **Task C** (Notif) is delayed, **Task A** (Auth) can continue using Console Logging.
+*   This ensures the timeline remains on track even if one service faces blockers.

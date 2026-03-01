@@ -824,12 +824,12 @@ def run_phase4(client, model):
 # ============================================================
 # MAIN
 # ============================================================
-def run_all(base_url=DEFAULT_BASE_URL, phases=None, nothink=False, max_tokens=0):
+def run_all(base_url=DEFAULT_BASE_URL, phases=None, nothink=False, max_tokens=0, model_override=None):
     global NOTHINK, MAX_TOKENS_OVERRIDE
     NOTHINK = nothink
     MAX_TOKENS_OVERRIDE = max_tokens
     client = get_client(base_url)
-    model = get_model_name(client)
+    model = model_override if model_override else get_model_name(client)
     
     # Sanitize model name for directory
     model_id = model.replace("/", "_").replace("\\", "_").replace(" ", "_")
@@ -896,9 +896,10 @@ def run_all(base_url=DEFAULT_BASE_URL, phases=None, nothink=False, max_tokens=0)
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="OpenClaw Model Evaluation")
     parser.add_argument("--url", default=DEFAULT_BASE_URL, help="API base URL")
+    parser.add_argument("--model", help="Override model name for directory output")
     parser.add_argument("--phases", nargs="+", type=int, help="Specific phases to run (0-4)")
     parser.add_argument("--nothink", action="store_true", help="Disable thinking with /nothink system message")
     parser.add_argument("--max-tokens", type=int, default=0, help="Override min max_tokens for all phases (e.g. 16000 for thinking models)")
     args = parser.parse_args()
     
-    run_all(base_url=args.url, phases=args.phases, nothink=args.nothink, max_tokens=args.max_tokens)
+    run_all(base_url=args.url, phases=args.phases, nothink=args.nothink, max_tokens=args.max_tokens, model_override=args.model)

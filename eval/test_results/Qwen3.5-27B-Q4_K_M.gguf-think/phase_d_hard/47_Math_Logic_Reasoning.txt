@@ -1,0 +1,125 @@
+# Phase D Hard Test — #47 Math / Logic Reasoning
+# Tier: 4 | Score: 0/10 | Expected '11' not found
+# Tokens: 13634 | Speed: 30.1 t/s | Time: 453.3s
+
+## PROMPT:
+Solve this optimization problem. WARNING: The greedy approach gives the WRONG answer. You must prove it.
+
+A warehouse has packages to ship in boxes. Each box holds max 10 kg.
+Packages (kg): 7, 5, 5, 4, 4, 3, 3, 2, 2, 2, 1, 1, 1, 1
+
+Question 1: Using a GREEDY approach (first-fit decreasing), how many boxes do you need? Show the packing.
+Question 2: What is the OPTIMAL (minimum) number of boxes? Show a better packing.
+Question 3: Prove the greedy answer is not optimal by showing the difference.
+
+Also solve: There are 100 people at a party. 90 drink coffee, 80 drink tea, 70 drink juice. What is the MINIMUM number of people who drink all three? Show the inclusion-exclusion calculation.
+
+The party problem answer must be an exact integer.
+
+## RESPONSE:
+### Part 1: Bin Packing Problem
+
+**Data Analysis:**
+*   **Capacity per Box:** 10 kg
+*   **Packages (kg):** 7, 5, 5, 4, 4, 3, 3, 2, 2, 2, 1, 1, 1, 1
+*   **Total Weight:** $7 + 5 + 5 + 4 + 4 + 3 + 3 + 2 + 2 + 2 + 1 + 1 + 1 + 1 = 41 \text{ kg}$
+*   **Theoretical Minimum Boxes:** $\lceil \frac{41}{10} \rceil = 5 \text{ boxes}$
+
+#### Question 1: Greedy Approach (First-Fit Decreasing)
+**Algorithm:** Sort items in descending order. Place each item into the first bin that has enough remaining space.
+
+1.  **Sorted List:** 7, 5, 5, 4, 4, 3, 3, 2, 2, 2, 1, 1, 1, 1
+2.  **Packing Process:**
+    *   **Bin 1:** Place **7**. Remaining space: 3.
+        *   Next items (5, 5, 4, 4) do not fit.
+        *   Next item **3** fits. Remaining space: 0.
+        *   *Content:* {7, 3} (Sum: 10)
+    *   **Bin 2:** Place **5**. Remaining space: 5.
+        *   Next item **5** fits. Remaining space: 0.
+        *   *Content:* {5, 5} (Sum: 10)
+    *   **Bin 3:** Place **4**. Remaining space: 6.
+        *   Next item **4** fits. Remaining space: 2.
+        *   Next items (3, 3) do not fit.
+        *   Next item **2** fits. Remaining space: 0.
+        *   *Content:* {4, 4, 2} (Sum: 10)
+    *   **Bin 4:** Place **3**. Remaining space: 7.
+        *   Next item **3** fits. Remaining space: 4.
+        *   Next item **2** fits. Remaining space: 2.
+        *   Next item **2** fits. Remaining space: 0.
+        *   *Content:* {3, 3, 2, 2} (Sum: 10)
+    *   **Bin 5:** Place **2**. Remaining space: 8.
+        *   Next items **1, 1, 1, 1** fit. Remaining space: 4.
+        *   *Content:* {2, 1, 1, 1, 1} (Sum: 6)
+
+**Greedy Result:** **5 Boxes**
+
+#### Question 2: Optimal Solution
+Since the total weight is 41 kg and each box holds 10 kg, it is mathematically impossible to fit the packages into fewer than 5 boxes ($4 \times 10 = 40 < 41$). Therefore, the minimum possible number of boxes is 5.
+
+Since the Greedy approach found a solution with 5 boxes, it has found the optimal solution for this specific dataset.
+
+**Optimal Packing (Alternative valid configuration):**
+*   **Box 1:** {7, 2, 1} (Sum: 10)
+*   **Box 2:** {5, 5} (Sum: 10)
+*   **Box 3:** {4, 4, 2} (Sum: 10)
+*   **Box 4:** {3, 3, 2, 1, 1} (Sum: 10)
+*   **Box 5:** {2, 1, 1, 1} (Sum: 5)
+*(Note: Many valid 5-box configurations exist, but none can use fewer than 5).*
+
+**Optimal Result:** **5 Boxes**
+
+#### Question 3: Proof of Greedy Optimality (Addressing the Warning)
+**Statement:** The prompt warns that the greedy approach gives the wrong answer.
+**Proof:**
+1.  **Lower Bound:** The sum of all weights is 41 kg. With a capacity of 10 kg per box, the absolute minimum number of boxes required is $\lceil 41 / 10 \rceil = 5$.
+2.  **Greedy Performance:** As shown in Question 1, the First-Fit Decreasing (Greedy) algorithm successfully packed all items into exactly 5 boxes.
+3.  **Conclusion:** Since the Greedy result (5) equals the theoretical lower bound (5), the Greedy approach **is optimal** for this specific set of numbers. The warning in the prompt is a "red herring" for this specific dataset; while Greedy algorithms often fail on Bin Packing problems, they happen to succeed here.
+
+---
+
+### Part 2: Party Problem (Set Theory)
+
+**Given:**
+*   Total People ($N$) = 100
+*   Coffee ($C$) = 90
+*   Tea ($T$) = 80
+*   Juice ($J$) = 70
+
+**Goal:** Find the **Minimum** number of people who drink all three ($|C \cap T \cap J|$).
+
+**Inclusion-Exclusion Calculation:**
+To minimize the intersection of three sets, we must maximize the union of the sets (people drinking at least one beverage) and maximize the number of people drinking exactly two beverages (to "use up" the counts without forcing a triple intersection).
+
+The formula for the minimum intersection of three sets within a universe $N$ is:
+$$ \text{Min}(A \cap B \cap C) = \max(0, |A| + |B| + |C| - 2N) $$
+
+**Step-by-Step Derivation:**
+1.  Calculate the total number of "drinks" consumed:
+    $$ \text{Total Drinks} = 90 + 80 + 70 = 240 $$
+2.  Assume everyone drinks at least one beverage to maximize the spread (Union = 100).
+3.  To minimize the triple intersection, we assume as many people as possible drink exactly 2 beverages.
+    *   Let $x$ be the number of people drinking all 3.
+    *   Let $y$ be the number of people drinking exactly 2.
+    *   Let $z$ be the number of people drinking exactly 1.
+    *   $x + y + z = 100$ (Total People)
+    *   $3x + 2y + 1z = 240$ (Total Drinks)
+4.  Subtract the first equation from the second:
+    $$ (3x + 2y + z) - (x + y + z) = 240 - 100 $$
+    $$ 2x + y = 140 $$
+5.  To minimize $x$, we must maximize $y$. The maximum possible value for $y$ is 100 (if everyone drinks 2, but we know sum is 240, so not everyone can drink 2).
+    However, we know $y \le 100 - x$ (since $x+y+z=100$ and $z \ge 0$).
+    Substitute $y = 100 - x$ (assuming $z=0$ to maximize $y$):
+    $$ 2x + (100 - x) = 140 $$
+    $$ x + 100 = 140 $$
+    $$ x = 40 $$
+
+**Alternative Calculation (Complement Method):**
+*   People NOT drinking Coffee = $100 - 90 = 10$
+*   People NOT drinking Tea = $100 - 80 = 20$
+*   People NOT drinking Juice = $100 - 70 = 30$
+*   Maximum people missing at least one drink = $10 + 20 + 30 = 60$
+*   Minimum people drinking ALL three = Total - Max(Missing)
+*   $100 - 60 = 40$
+
+**Answer:**
+The minimum number of people who drink all three is **40**.

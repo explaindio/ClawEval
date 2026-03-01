@@ -363,6 +363,7 @@ def generate_report(model_id, auto_results, quality_results):
 def main():
     parser = argparse.ArgumentParser(description="OpenClaw 59-Role Evaluation")
     parser.add_argument("--url", default=DEFAULT_BASE_URL)
+    parser.add_argument("--model", help="Override model name for directory output")
     parser.add_argument("--auto-only", action="store_true", help="Run only automated tests")
     parser.add_argument("--quality-only", action="store_true", help="Run only quality prompts")
     parser.add_argument("--roles", nargs="+", type=int, help="Test specific role IDs only")
@@ -376,7 +377,7 @@ def main():
     MAX_TOKENS_OVERRIDE = args.max_tokens
 
     client = get_client(args.url)
-    model = get_model_name(client)
+    model = args.model if args.model else get_model_name(client)
     model_id = model.replace("/", "_").replace("\\", "_").replace(" ", "_")
     if args.nothink:
         model_id += "-nothink"

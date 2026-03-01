@@ -1,0 +1,112 @@
+# Phase D Hard Test — #44 Curriculum / Course Designer
+# Tier: 3 | Score: 10/10 | 1/1 constraints met
+# Tokens: 3267 | Speed: 31.2 t/s | Time: 104.8s
+
+## PROMPT:
+Design Week 1 of a web development bootcamp. TRAP: The requested schedule is physically impossible — you must identify why and propose a fix.
+
+Requested schedule:
+- Day 1 (Mon): HTML basics (9am-12pm), CSS fundamentals (1pm-5pm), Assessment on HTML+CSS (5pm-6pm)
+- Day 2 (Tue): JavaScript basics (9am-12pm), Build a responsive landing page using HTML+CSS+JS (1pm-5pm)
+- Day 3 (Wed): React fundamentals (9am-12pm), Build a React app with state management (1pm-5pm)
+- Day 4 (Thu): Node.js + Express backend (9am-12pm), Build full-stack app connecting React frontend to Node backend (1pm-5pm)
+- Day 5 (Fri): Deploy to AWS (9am-12pm), Portfolio presentation of all projects (1pm-5pm)
+
+Requirements:
+1. Identify which days have unrealistic expectations (Bloom's taxonomy violations)
+2. Note prerequisite gaps (can't do X before Y is mastered)
+3. Propose a realistic revised schedule maintaining the same 5-day format
+4. Include formative assessment points (not just Day 1)
+5. Ensure learning objectives follow Bloom's hierarchy (remember → understand → apply → analyze)
+
+## RESPONSE:
+# Week 1 Bootcamp Design: Critical Analysis & Revision
+
+## Part 1: The Trap Analysis (Why the Original Schedule is Impossible)
+
+The requested schedule violates fundamental principles of **Cognitive Load Theory** and **Bloom's Taxonomy**. It attempts to compress 12–16 weeks of curriculum into 5 days. Below is the breakdown of the violations.
+
+### 1. Bloom's Taxonomy Violations (Unrealistic Expectations)
+*   **Day 3 (React):** The schedule asks students to move from *Remembering* (JS Basics on Day 2) to *Creating* (State Management Apps) in 24 hours. React requires a deep understanding of ES6+ syntax (arrow functions, destructuring, modules), which is not covered in "JS Basics."
+*   **Day 4 (Full-Stack):** This requires *Evaluating* and *Creating* complex systems (APIs, HTTP requests, CORS, Async/Await) before students have mastered the *Application* of basic JavaScript logic.
+*   **Day 5 (AWS):** Deployment is a *DevOps* skill requiring knowledge of CI/CD pipelines, IAM roles, and environment variables. It cannot be taught in 3 hours immediately after building a full-stack app.
+
+### 2. Prerequisite Gaps
+*   **JS → React Gap:** You cannot teach React (Day 3) without first mastering modern JavaScript (ES6+), which takes at least 3–4 days of dedicated study.
+*   **Frontend → Backend Gap:** Building a full-stack app (Day 4) requires understanding how the browser talks to a server (HTTP/JSON). This is usually taught *after* frontend mastery.
+*   **Code → Cloud Gap:** Deployment (Day 5) requires a finished, bug-free codebase. A 5-day beginner cannot produce production-ready code in time for deployment.
+
+---
+
+## Part 2: Revised Week 1 Schedule (Frontend Foundations)
+
+**Goal:** To establish a solid foundation in the "Holy Trinity" of the web (HTML, CSS, JS) before introducing frameworks or backend logic.
+**Format:** 5 Days (9am - 5pm)
+**Focus:** Frontend Development (No React, No Node, No AWS in Week 1).
+
+### Day 1: Structure & Semantics (HTML)
+*   **Bloom's Level:** Remember & Understand
+*   **9:00 – 10:30:** Web Architecture (How the internet works, Client/Server model).
+*   **10:30 – 12:00:** HTML5 Semantic Tags (`<header>`, `<main>`, `<article>`).
+*   **13:00 – 15:00:** Forms, Inputs, and Accessibility (ARIA basics).
+*   **15:00 – 17:00:** **Lab:** Build a semantic resume page.
+*   **Formative Assessment:** *Code Review Checkpoint.* Instructor validates semantic structure and accessibility compliance.
+
+### Day 2: Styling & Layout (CSS)
+*   **Bloom's Level:** Understand & Apply
+*   **9:00 – 10:30:** CSS Selectors, Box Model, and Colors.
+*   **10:30 – 12:00:** Flexbox Fundamentals (1D Layout).
+*   **13:00 – 15:00:** CSS Grid Fundamentals (2D Layout).
+*   **15:00 – 17:00:** **Lab:** Style the Day 1 Resume using Flexbox/Grid.
+*   **Formative Assessment:** *Layout Challenge.* Students must fix a broken layout provided by the instructor using only CSS.
+
+### Day 3: Logic & Variables (JavaScript Basics)
+*   **Bloom's Level:** Apply
+*   **9:00 – 10:30:** Variables, Data Types, and Operators.
+*   **10:30 – 12:00:** Control Flow (If/Else, Switch, Loops).
+*   **13:00 – 15:00:** Functions and Scope.
+*   **15:00 – 17:00:** **Lab:** Build a CLI (Command Line Interface) calculator or text-based game.
+*   **Formative Assessment:** *Debugging Quiz.* Students identify logical errors in provided code snippets.
+
+### Day 4: The DOM (Connecting JS to HTML)
+*   **Bloom's Level:** Analyze
+*   **9:00 – 10:30:** DOM Selectors (`querySelector`, `getElementById`).
+*   **10:30 – 12:00:** Event Listeners (`click`, `submit`, `input`).
+*   **13:00 – 15:00:** Manipulating Content (Text, Classes, Styles).
+*   **15:00 – 17:00:** **Lab:** Add interactivity to Day 1/2 Resume (e.g., Dark Mode toggle, Form validation).
+*   **Formative Assessment:** *Peer Code Walkthrough.* Students explain their event listener logic to a partner.
+
+### Day 5: Capstone Project (Integration)
+*   **Bloom's Level:** Create
+*   **9:00 – 10:00:** Project Briefing & Planning (Wireframing).
+*   **10:00 – 12:00:** Sprint 1 (HTML Structure & CSS Layout).
+*   **13:00 – 15:00:** Sprint 2 (JavaScript Logic & DOM Manipulation).
+*   **15:00 – 17:00:** **Portfolio Presentation:** Demo of a functional static site with JS interactivity.
+*   **Formative Assessment:** *Final Demo.* Instructor checks for semantic HTML, responsive CSS, and functional JS.
+
+---
+
+## Part 3: Instructional Design Rationale
+
+### 1. Bloom's Hierarchy Alignment
+The revised schedule follows a linear progression of cognitive complexity:
+1.  **Day 1 (Remember/Understand):** Memorizing tags and understanding structure.
+2.  **Day 2 (Apply):** Applying rules to style elements.
+3.  **Day 3 (Apply):** Applying logic to solve problems.
+4.  **Day 4 (Analyze):** Analyzing how code interacts with the browser environment.
+5.  **Day 5 (Create):** Synthesizing all skills to build a new artifact.
+
+### 2. Prerequisite Management
+*   **React/Node/AWS Deferred:** These are moved to Weeks 2–4. React requires JS mastery (Week 1). Node requires understanding HTTP (Week 2). AWS requires a finished app (Week 3/4).
+*   **Scaffolded Learning:** Day 5 builds directly on the code written in Days 1–4, ensuring continuity and reducing context switching.
+
+### 3. Formative Assessment Strategy
+Instead of a single high-stakes assessment on Day 1, assessments are distributed:
+*   **Daily Checkpoints:** Ensure no student falls behind before moving to the next topic.
+*   **Low-Stakes:** Quizzes and debugging exercises reduce anxiety and provide immediate feedback.
+*   **Summative:** The Day 5 Capstone is the only graded project, ensuring the focus remains on learning rather than testing.
+
+### 4. Cognitive Load Management
+*   **Chunking:** Concepts are broken into 90-minute blocks with breaks.
+*   **Scaffolding:** Students reuse code from previous days (e.g., styling the Day 1 HTML on Day 2) rather than starting from scratch every day.
+*   **No Multitasking:** Students focus on one technology stack per day (HTML → CSS → JS) to prevent interference effects.

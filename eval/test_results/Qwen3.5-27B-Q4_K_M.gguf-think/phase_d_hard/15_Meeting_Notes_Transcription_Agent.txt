@@ -1,0 +1,50 @@
+# Phase D Hard Test — #15 Meeting Notes / Transcription Agent
+# Tier: 2 | Score: 7/10 | 2/3 constraints met | Missing: headcount (Sarah says 3, later says 2)
+# Tokens: 4972 | Speed: 27.7 t/s | Time: 179.5s
+
+## PROMPT:
+Process this meeting transcript into structured notes. WARNING: The transcript contains 3 contradictory statements made by different participants. You MUST identify all 3 contradictions.
+
+Transcript:
+Sarah (PM): "OK let's kick off. Budget for Project Atlas is $50K as approved by the board."
+Mike (Eng): "Actually I spoke with finance yesterday and they confirmed $75K for Atlas."
+Sarah: "We'll need to clarify that. Moving on — Lisa, timeline update?"
+Lisa (Design): "Designs will be finalized by end of March. That gives engineering 6 weeks."
+James (QA): "Wait, in last week's email you said designs would be done in April. We planned QA around that."
+Lisa: "That was before we got the additional designer. March is firm now."
+Sarah: "OK, so we need 3 new hires for this: 2 backend, 1 frontend."
+Mike: "Agreed on the technical side."
+Sarah: "Actually, thinking about it, we only need 2 new hires — we can reassign Jordan."
+James: "QA will need 2 weeks after engineering freeze. Factor that into the timeline."
+
+Extract: decisions, action items, and CONTRADICTIONS (with who said what).
+
+## RESPONSE:
+# Meeting Notes: Project Atlas
+
+## Decisions
+*   **Budget:** Pending clarification (Discrepancy between $50K and $75K).
+*   **Design Timeline:** Finalized by end of March (Lisa).
+*   **Hiring:** 2 new hires required (Sarah's final statement), with Jordan reassigned.
+*   **QA Schedule:** 2 weeks required after engineering freeze (James).
+
+## Action Items
+*   **Sarah & Mike:** Resolve budget discrepancy ($50K vs $75K) with Finance/Board.
+*   **Lisa:** Ensure designs are finalized by end of March.
+*   **Sarah:** Clarify specific roles for the 2 new hires (previously stated as 2 backend/1 frontend).
+*   **James:** Factor 2-week QA buffer into the project timeline.
+
+## Contradictions Identified
+*The following three contradictions involve conflicting statements made by different participants:*
+
+1.  **Budget Amount**
+    *   **Sarah (PM):** Stated the budget is **$50K** as approved by the board.
+    *   **Mike (Eng):** Stated Finance confirmed **$75K** for Atlas.
+
+2.  **Design Completion Date**
+    *   **Lisa (Design):** Stated designs will be finalized by **end of March**.
+    *   **James (QA):** Stated Lisa previously said designs would be done in **April** (based on last week's email).
+
+3.  **Hiring Count**
+    *   **Mike (Eng):** Agreed to the initial plan of **3 new hires** (2 backend, 1 frontend).
+    *   **Sarah (PM):** Revised the plan to **2 new hires** (reassigning Jordan).

@@ -1,0 +1,97 @@
+# Phase D Hard Test — #29 Home Automation Agent
+# Tier: 2 | Score: 10/10 | 4/4 constraints met
+# Tokens: 10836 | Speed: 31.3 t/s | Time: 346.3s
+
+## PROMPT:
+Create an automation routine from this description. WARNING: There are 3 logical conflicts in the requirements that you must identify and resolve.
+
+"When we say 'movie night': dim all lights to 5%, close all blinds, set thermostat to 72°F, turn on the sound system, start the projector, lock all doors, activate security cameras, and set the house to 'do not disturb' mode.
+
+Also when we say 'movie night': open the living room windows for fresh air, leave the dog door unlocked so Max can go out, and keep the hallway lights at full brightness so the kids can see.
+
+Additional rules: 
+- If CO2 sensor reads above 1000ppm, force-open windows regardless of other settings
+- If smoke detector triggers, all automations must stop and all lights go to 100%
+- If nobody has moved in 2 hours, assume everyone fell asleep and turn everything off
+
+Identify the conflicts, explain how you'd resolve each, and provide the final automation logic.
+
+## RESPONSE:
+### Identified Logical Conflicts
+
+There are three distinct logical conflicts within the requirements that prevent a direct implementation:
+
+1.  **Lighting Scope Conflict:**
+    *   **Conflict:** The first command states to "dim **all** lights to 5%," while the second command states to "keep the **hallway** lights at full brightness."
+    *   **Issue:** "All" is a universal quantifier that includes the hallway, creating a direct contradiction (5% vs. 100%).
+    *   **Resolution:** Define "All lights" as "All lights **except** hallway lights." The specific instruction (hallway) overrides the general instruction (all).
+
+2.  **Door Locking Scope Conflict:**
+    *   **Conflict:** The first command states to "lock **all** doors," while the second command states to "leave the **dog door** unlocked."
+    *   **Issue:** A dog door is technically a door. Locking "all" doors would include the dog door, contradicting the requirement for Max to go out.
+    *   **Resolution:** Define "All doors" as "All **human entry** doors." Explicitly exclude pet doors from the locking command.
+
+3.  **Security Posture vs. Ventilation Conflict:**
+    *   **Conflict:** The first command sets a "Secure" state ("Lock all doors," "Activate security cameras," "Do Not Disturb"), while the second command creates a "Perimeter Breach" ("Open living room windows").
+    *   **Issue:** Opening windows while the house is in a locked-down security mode compromises the security posture (potential entry point) and contradicts the "Do Not Disturb" isolation intent.
+    *   **Resolution:** Prioritize **Ventilation for Comfort** during the movie but maintain **Security for Perimeter**. The logic will open windows only if the security risk is deemed low (e.g., upper floor) or acknowledge that "Security Mode" is suspended for ventilation purposes. For this routine, we will prioritize the explicit "Open Windows" command but ensure the "Lock Doors" command remains active for human entry points.
+
+---
+
+### Final Automation Logic
+
+**Trigger:** Voice Command "Movie Night"
+
+#### 1. Priority & Safety Overrides (Highest Priority)
+*   **Smoke Detector Trigger:**
+    *   **Action:** Immediately stop all other automations.
+    *   **Action:** Set **ALL** lights to 100% brightness.
+    *   **Action:** Unlock all doors (including dog door) for emergency exit.
+    *   **Action:** Send emergency notification to homeowners.
+    *   **Note:** This overrides the "Turn Everything Off" and "Movie Night" routines.
+*   **CO2 Sensor Trigger (>1000ppm):**
+    *   **Action:** Force-open living room windows.
+    *   **Action:** Maintain this state until CO2 drops below 1000ppm.
+    *   **Note:** This overrides the "Close Blinds" or "Close Windows" settings if they were to conflict.
+
+#### 2. "Movie Night" Routine Execution
+*   **Lighting:**
+    *   Set **Living Room, Kitchen, Bedroom, and Bathroom** lights to **5%**.
+    *   Set **Hallway** lights to **100%** (Exception to "All lights").
+*   **Climate & Air:**
+    *   Set Thermostat to **72°F**.
+    *   **Blinds:** Close **all** blinds (for movie darkness).
+    *   **Windows:** Open **Living Room** windows (for ventilation).
+        *   *Conflict Resolution:* This is allowed despite "Security Mode" as ventilation is prioritized for comfort, provided human entry doors remain locked.
+*   **Security & Access:**
+    *   **Lock:** All **Human Entry** doors (Front, Back, Garage).
+    *   **Unlock:** **Dog Door** (Exception to "Lock all doors").
+    *   **Cameras:** Activate **Exterior** Security Cameras.
+        *   *Conflict Resolution:* "Do Not Disturb" mode is set, but Security Camera alerts are **whitelisted** to ensure safety notifications are not silenced.
+*   **Entertainment:**
+    *   Turn on Sound System.
+    *   Start Projector.
+*   **Notifications:**
+    *   Set House to "Do Not Disturb" mode (Silence calls/texts, **except** Security Alerts).
+
+#### 3. Inactivity / Sleep Routine (Lowest Priority)
+*   **Trigger:** No motion detected for **2 hours**.
+*   **Condition:** Smoke Detector must be **OFF** (No fire).
+*   **Action:**
+    *   Turn off Projector and Sound System.
+    *   Turn off Living Room, Kitchen, Bedroom, and Bathroom lights.
+    *   **Keep Hallway lights at 5%** (Safety path to exit).
+    *   **Keep Dog Door Unlocked** (Max may need to go out).
+    *   **Keep Smoke Detector and Security Cameras Active** (Safety systems cannot be turned off).
+    *   **Keep Thermostat at 72°F** (or switch to Eco mode).
+    *   **Close Windows** (Energy efficiency/Security).
+    *   **Lock Dog Door** (Security).
+    *   **Lock Human Doors** (Already locked).
+    *   **End "Do Not Disturb" mode** (Allow morning alarms).
+
+#### 4. Logic Flow Summary
+1.  **Check Safety:** Is Smoke Detector active? -> **YES:** Emergency Mode. -> **NO:** Proceed.
+2.  **Check Air:** Is CO2 > 1000ppm? -> **YES:** Open Windows. -> **NO:** Proceed.
+3.  **Execute Movie Night:** Apply resolved conflicts (Lights, Doors, Security vs. Windows).
+4.  **Monitor Inactivity:** Wait 2 hours.
+5.  **Execute Sleep Mode:** Power down entertainment/lights, **EXCEPT** Safety Systems (Smoke, Cameras, Hallway Path Light).

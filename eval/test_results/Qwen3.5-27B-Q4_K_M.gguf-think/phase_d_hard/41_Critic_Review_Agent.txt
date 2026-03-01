@@ -1,0 +1,66 @@
+# Phase D Hard Test — #41 Critic / Review Agent
+# Tier: 3 | Score: 10/10 | 1/1 constraints met
+# Tokens: 3955 | Speed: 32.1 t/s | Time: 123.2s
+
+## PROMPT:
+Critique this business case study. It contains at least 4 logical fallacies and 2 types of bias. Identify each.
+
+"SuccessApp: How We 10x'd Revenue in 12 Months
+
+We studied 5 successful startups that used our framework and all of them grew revenue 10x within a year. This proves our framework works.
+
+Key factors we identified:
+1. All 5 founders worked 80+ hour weeks (proving hard work = success)
+2. All 5 pivoted at least once (proving pivoting is essential)
+3. All 5 used React for their frontend (proving React is the best framework)
+4. None of them used formal market research (proving market research is a waste of time)
+
+We also noted that our framework users have a 95% satisfaction rate based on a survey of our most active users.
+
+Based on this data, we guarantee that any startup following our framework will achieve similar results. We've trained 10,000 founders and many of them rave about the experience."
+
+Identify: survivorship bias, correlation/causation confusion, cherry-picked data, selection bias in surveys, anecdotal evidence, and any other logical flaws.
+
+## RESPONSE:
+Here is a critique of the "SuccessApp" business case study, identifying the specific logical fallacies and cognitive biases present in the text.
+
+### Part 1: Logical Fallacies (4 Identified)
+
+**1. Hasty Generalization**
+*   **Where it appears:** "We studied 5 successful startups... This proves our framework works." and "we guarantee that any startup following our framework will achieve similar results."
+*   **The Flaw:** The argument draws a universal conclusion (a guarantee for *any* startup) based on an insufficient sample size (only 5 startups). Five data points are statistically insignificant for making a guarantee about the entire population of startups.
+
+**2. Correlation/Causation Confusion (False Cause)**
+*   **Where it appears:** Points 1, 2, and 3 in the "Key factors" list (e.g., "All 5 used React... proving React is the best framework").
+*   **The Flaw:** The text assumes that because two things happened together, one caused the other. Just because successful startups used React or worked 80-hour weeks does not mean those specific factors *caused* the success. It is equally likely that successful startups had other advantages (funding, timing, market fit) and simply happened to use React.
+
+**3. Anecdotal Evidence (Appeal to Anecdote)**
+*   **Where it appears:** "We've trained 10,000 founders and many of them rave about the experience."
+*   **The Flaw:** The text relies on vague testimonials ("many of them rave") rather than hard data to support the claim of effectiveness. "Raving" is subjective and does not equate to the objective metric of "10x revenue growth."
+
+**4. Cherry-Picked Data (Suppressed Evidence)**
+*   **Where it appears:** "We studied 5 successful startups that used our framework..."
+*   **The Flaw:** The authors selected only the data points that supported their conclusion while ignoring data that contradicted it. By explicitly stating they studied "successful" startups, they admit to filtering out the failures. If they had studied 100 startups and only 5 succeeded, the framework would look ineffective, but that data is suppressed.
+
+### Part 2: Cognitive Biases (2 Identified)
+
+**1. Survivorship Bias**
+*   **Where it appears:** "We studied 5 successful startups that used our framework..."
+*   **The Bias:** The analysis focuses exclusively on the "survivors" (the 5 companies that grew 10x) while ignoring the "non-survivors" (the startups that used the framework and failed or stagnated). This creates a distorted view of reality where the framework appears 100% effective, when in reality, it may have a high failure rate that is invisible in this study.
+
+**2. Selection Bias (in Surveys)**
+*   **Where it appears:** "...95% satisfaction rate based on a survey of our most active users."
+*   **The Bias:** The survey sample was not representative of the entire user base. By surveying only "most active users," the study excludes passive users, churned users, or those who found the product useless. Active users are statistically more likely to be satisfied, artificially inflating the satisfaction rate.
+
+### Part 3: Additional Logical Flaws
+
+**Non Sequitur (Does Not Follow)**
+*   **Where it appears:** "None of them used formal market research (proving market research is a waste of time)."
+*   **The Flaw:** The conclusion does not logically follow from the premise. The fact that 5 specific startups succeeded without market research does not prove that market research is useless for *everyone*. It is possible those 5 founders had prior industry knowledge that substituted for formal research, or they got lucky.
+
+**False Guarantee**
+*   **Where it appears:** "Based on this data, we guarantee that any startup following our framework will achieve similar results."
+*   **The Flaw:** Business outcomes are probabilistic, not deterministic. No amount of data can logically support a 100% guarantee of financial performance, making this claim logically unsound and potentially misleading.
+
+### Summary
+The "SuccessApp" case study is a classic example of **marketing pseudoscience**. It relies on **Survivorship Bias** to hide failure rates and uses **Correlation/Causation Confusion** to attribute success to superficial traits (like coding languages or work hours) rather than fundamental business drivers. The argument is structurally unsound due to **Hasty Generalization** and **Cherry-Picked Data**, rendering the "guarantee" of success logically invalid.

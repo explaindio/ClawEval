@@ -1,0 +1,80 @@
+# Phase D Hard Test — #42 Market Research Agent
+# Tier: 3 | Score: 10/10 | 1/1 constraints met
+# Tokens: 8024 | Speed: 31.7 t/s | Time: 253.0s
+
+## PROMPT:
+Evaluate this market analysis. The founder's TAM/SAM/SOM calculations contain a COMMON MISTAKE. Identify it.
+
+Founder's pitch:
+"Our AI writing tool targets the global content marketing market.
+- TAM: $400B (global advertising market)
+- SAM: $50B (digital content marketing)  
+- SOM: $5B (10% of SAM in year 1)
+
+We're pricing at $99/month per user. There are 50 million content marketers worldwide. If we capture just 1% of them, that's 500,000 users × $99 × 12 = $594M ARR.
+
+Our competitor Jasper reached $80M ARR in 2 years, proving the market moves fast. We have a better AI model, so we should grow even faster."
+
+Questions:
+1. What's wrong with the TAM calculation?
+2. Is the SAM→SOM jump realistic?
+3. What's wrong with the "just 1%" argument?
+4. Is the competitor comparison valid?
+5. Provide a more realistic market sizing
+6. Include a bear case scenario
+
+## RESPONSE:
+### The Common Mistake: The "Total Market Spend" Fallacy
+
+The founder is committing the classic **"Top-Down Industry Spend" error**. They are using the **Total Industry Spend** ($400B Global Advertising) as their TAM, rather than the **Total Addressable Revenue for their specific product**.
+
+An AI writing tool does not capture the *ad spend* (the money paid to Facebook/Google to show an ad); it captures a fraction of the *production cost* (the money paid to write the ad). By using the $400B ad market as TAM, they are inflating their potential market by orders of magnitude. A SaaS tool's TAM should be the global spend on *content creation software* or *copywriting services*, not the media buying budget.
+
+***
+
+### 1. What's wrong with the TAM calculation?
+The TAM ($400B Global Advertising Market) is **conceptually incorrect**.
+*   **The Error:** The founder is measuring the *outcome* market (advertising spend) rather than the *input* market (tools to create ads).
+*   **The Reality:** If a company spends $1M on ads, they might spend $10k on tools to write the copy. The tool captures the $10k, not the $1M.
+*   **Correction:** The TAM should be the global market for **Content Creation Software** or **Copywriting Services**, which is likely in the $10B–$20B range, not $400B.
+
+### 2. Is the SAM→SOM jump realistic?
+**No, it is impossible.**
+*   **The Claim:** SOM is $5B (10% of SAM) in Year 1.
+*   **The Reality:** Capturing 10% of a $50B market in Year 1 implies reaching $5B in ARR immediately. For context, **Stripe** took 10+ years to reach $1B ARR. **Zoom** took 10+ years to reach $1B ARR.
+*   **The Red Flag:** A $5B ARR Year 1 projection is a "Unicorn" exit in the first 12 months. This signals the founder does not understand the friction of sales cycles, customer acquisition costs (CAC), and market adoption rates.
+
+### 3. What's wrong with the "just 1%" argument?
+This is the **"Small Percentage Fallacy."**
+*   **The Logic:** "1% sounds small, so it's achievable."
+*   **The Reality:** 1% of 50 million users is **500,000 paying customers**.
+*   **The Friction:** Acquiring 500,000 users in Year 1 requires massive distribution, significant capital, and a viral loop. For a B2B SaaS tool at $99/mo, this is not a "small" target; it is a massive operational challenge.
+*   **The Math:** To get 500k users, you likely need to spend millions on CAC. If CAC is $500, you need $250M in marketing spend in Year 1. The founder has not addressed this capital requirement.
+
+### 4. Is the competitor comparison valid?
+**No, it suffers from Survivorship Bias and ignores Moats.**
+*   **Survivorship Bias:** Jasper is a rare success story. For every Jasper, there are hundreds of AI writing tools that failed.
+*   **Timing:** Jasper launched when the AI writing market was nascent. The market is now saturated with free/cheap alternatives (e.g., ChatGPT, Claude, built-in LLMs in CMS).
+*   **Moat:** The founder claims "Better AI Model" is the advantage. In the current LLM landscape, **distribution is the moat, not the model.** A slightly better model does not guarantee growth if the competitor has better brand recognition and integrations.
+
+### 5. Provide a more realistic market sizing
+Use a **Bottom-Up** approach based on the Ideal Customer Profile (ICP).
+
+*   **ICP:** Mid-market B2B SaaS companies (100–500 employees) with dedicated content teams.
+*   **Target Market:** North America & Europe.
+*   **Number of Companies:** ~200,000 companies fit this profile.
+*   **Penetration:** 5% of these companies use a dedicated AI writing tool.
+*   **Addressable Users:** 10,000 companies × 10 seats/company = 100,000 users.
+*   **Price:** $99/month.
+*   **Realistic TAM (Bottom-Up):** 100,000 users × $99 × 12 = **$118.8M ARR**.
+*   **Realistic Year 1 Goal (SOM):** 1% of this realistic TAM = **$1.2M ARR**.
+
+### 6. Include a bear case scenario
+**Scenario: The "Commoditization Trap"**
+*   **Threat:** Major platforms (HubSpot, Salesforce, WordPress) integrate AI writing directly into their ecosystems for free or at a low marginal cost.
+*   **Impact:** Standalone tools lose their value proposition. Why pay $99/mo for a separate tool when your CRM does it?
+*   **Financials:**
+    *   **Churn:** Spikes to 15% monthly as users migrate to free alternatives.
+    *   **Pricing:** Forced to drop price to $29/mo to compete.
+    *   **CAC:** Increases as users become harder to convince to pay for a "me-too" feature.
+    *   **Result:** ARR stagnates at $500k, burn rate exceeds $100k/mo, company runs out of cash in 18 months.

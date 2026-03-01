@@ -1,0 +1,62 @@
+# Phase D Hard Test — #43 Synthesizer / Aggregator
+# Tier: 3 | Score: 10/10 | 1/1 constraints met
+# Tokens: 2804 | Speed: 31.2 t/s | Time: 90.0s
+
+## PROMPT:
+Three agents analyzed whether to open a second office location. Their analyses CONTRADICT each other on key points. You must synthesize — not just summarize — and make a recommendation.
+
+Agent A (Financial): "Opening in Austin will cost $2M upfront. Break-even in 18 months. ROI of 35% by year 3. However, our cash reserves are only $3M and we need $1M buffer. Recommendation: GO."
+
+Agent B (HR/Talent): "Austin has a strong tech talent pool but salaries are 20% higher than expected. Retention at remote offices historically 30% lower in first 2 years. We'd need 15 people, not the 10 originally planned, due to the retention gap. Recommendation: DELAY 6 months."
+
+Agent C (Strategy): "3 competitors opened Austin offices last year. Market is becoming saturated. However, NOT having a presence could mean losing 2 key enterprise clients who prefer local teams. Those clients represent 25% of revenue. Recommendation: GO but with a smaller team."
+
+Note: Agent A's financial model assumes 10 people (not 15), Agent B's retention data contradicts Agent A's break-even timeline, and Agent C's competitor info wasn't available to Agent A.
+
+Synthesize into ONE recommendation. Show how you resolved the contradictions.
+
+## RESPONSE:
+### Executive Recommendation: **CONDITIONAL GO (Phased Lean Launch)**
+
+**Decision:** Proceed with opening the Austin office immediately to secure the enterprise clients, but **do not** follow Agent A's financial model or Agent B's headcount projection. Instead, execute a **Phased Lean Launch** with a revised budget of **$2.4M** (absorbing the salary increase) and a hybrid staffing model of **12 FTEs + 3 Contractors**.
+
+---
+
+### Synthesis of Contradictions
+
+To reach this decision, the following conflicts were resolved by prioritizing strategic revenue protection over operational perfection:
+
+**1. Resolving the Financial vs. Talent Contradiction (A vs. B)**
+*   **The Conflict:** Agent A’s $2M budget and 18-month break-even are based on 10 employees. Agent B states salaries are 20% higher and 15 employees are needed to account for turnover. If we follow B, A’s model collapses (cash buffer breached). If we follow A, B’s retention risk materializes.
+*   **The Resolution:** We cannot afford 15 full-time employees (FTEs) given the $1M cash buffer constraint. However, we cannot risk the 30% retention gap with only 10 FTEs.
+*   **The Fix:** Adopt a **Hybrid Staffing Model**. Hire **12 core FTEs** (covering the critical 10 roles + 2 management buffer) and utilize **3 contractors** for the remaining workload. Contractors mitigate the retention risk (easier to replace than FTEs) and reduce long-term fixed costs, keeping the burn rate closer to Agent A’s model while acknowledging Agent B’s reality.
+
+**2. Resolving the Timing Contradiction (B vs. C)**
+*   **The Conflict:** Agent B recommends a 6-month delay to fix talent issues. Agent C warns that delaying risks losing 25% of total revenue due to client requirements.
+*   **The Resolution:** The cost of delay (25% revenue loss) outweighs the cost of imperfect execution (retention risk).
+*   **The Fix:** **Do not delay.** The strategic imperative to secure the enterprise clients (Agent C) is existential. The talent risks identified by Agent B will be managed through the hybrid staffing model and a "soft launch" of the office, rather than a delay.
+
+**3. Resolving the Market vs. Cost Contradiction (A vs. C)**
+*   **The Conflict:** Agent A assumes a standard expansion. Agent C notes market saturation (3 competitors) and suggests a smaller team. Agent A did not factor in the saturation cost.
+*   **The Resolution:** In a saturated market, we cannot compete on volume. We must compete on specific value.
+*   **The Fix:** **Scope Restriction.** The office will not be a general expansion. It will be a **Client-Focused Hub** dedicated primarily to servicing the two at-risk enterprise clients. This validates Agent C’s "smaller team" logic while justifying the cost to Agent A by tying spend directly to the 25% revenue protection.
+
+---
+
+### Revised Operational Model
+
+| Metric | Agent A (Original) | Agent B (Risk) | Agent C (Strategy) | **Synthesized Plan** |
+| :--- | :--- | :--- | :--- | :--- |
+| **Decision** | GO | DELAY | GO (Small) | **GO (Phased)** |
+| **Headcount** | 10 FTE | 15 FTE | "Smaller Team" | **12 FTE + 3 Contractors** |
+| **Budget** | $2.0M | N/A | N/A | **$2.4M** (Adjusted for 20% salary hike) |
+| **Cash Buffer** | $1.0M | At Risk | N/A | **$0.6M** (Buffer reduced, but protected by phased hiring) |
+| **Primary Goal** | ROI (35%) | Retention | Client Retention | **Client Retention + Break-even in 24mo** |
+
+### Risk Mitigation Plan
+1.  **Budget Adjustment:** The $2M budget is insufficient given the 20% salary hike. We must allocate an additional $400k from the $3M reserves. This leaves a $0.6M buffer (below the ideal $1M), but this is acceptable given the 25% revenue risk of inaction.
+2.  **Phased Hiring:** Do not hire the full 12 FTEs immediately. Hire 8 core staff for the launch. Bring in the remaining 4 FTEs and 3 contractors only after the first enterprise client is onboarded (Month 3). This protects cash flow.
+3.  **Retention Incentives:** To counter Agent B’s retention data, implement a "Austin Relocation Bonus" and remote-work flexibility for the core team to offset the 20% salary premium.
+
+### Conclusion
+Agent A is wrong about the cost, Agent B is wrong about the timing, and Agent C is right about the urgency but vague on execution. By launching immediately with a lean, hybrid team focused solely on the at-risk revenue, we secure the 25% revenue stake without bankrupting the company. **Proceed with the Conditional Go.**

@@ -1,0 +1,83 @@
+# Phase D Hard Test — #23 Website Scraping / Understanding
+# Tier: 2 | Score: 5/10 | No automated constraints to check
+# Tokens: 2446 | Speed: 30.7 t/s | Time: 79.7s
+
+## PROMPT:
+Extract job information from this HTML AND identify ALL red flags. There are at least 6 problematic elements, some subtle.
+
+<div class='job-listing'>
+<h2>Full-Stack Ninja Rockstar Developer</h2>
+<p class='company'>Stealth Startup (unnamed)</p>
+<p class='location'>Remote* (*must be available 6am-midnight PT for "flexibility")</p>
+<p class='salary'>Competitive salary (equity-heavy compensation)</p>
+<p class='experience'>Entry level (5+ years experience required)</p>
+<p class='requirements'>Must know: React, Vue, Angular, Svelte, Python, Go, Rust, Java, C++, Kubernetes, Terraform, AWS, GCP, Azure, PostgreSQL, MongoDB, Redis, Elasticsearch, GraphQL, REST, gRPC, Docker, CircleCI, Jenkins</p>
+<p class='perks'>Unlimited PTO (average team usage: 5 days/year). Fast-paced environment (mandatory 60hr weeks during "crunch" — approximately 48 weeks/year). We're like a family!</p>
+<p class='equity'>0.001% equity vesting over 6 years with 2-year cliff</p>
+<p class='application'>Apply with cover letter, 3 references, coding challenge (estimated 40 hours), and personality assessment</p>
+</div>
+
+Extract structured data AND write a detailed red flag analysis. Flag every manipulative or unreasonable element.
+
+## RESPONSE:
+### 1. Structured Job Data Extraction
+
+| Field | Extracted Value |
+| :--- | :--- |
+| **Job Title** | Full-Stack Ninja Rockstar Developer |
+| **Company** | Stealth Startup (unnamed) |
+| **Location** | Remote* (*must be available 6am-midnight PT for "flexibility") |
+| **Salary** | Competitive salary (equity-heavy compensation) |
+| **Experience Level** | Entry level (5+ years experience required) |
+| **Tech Stack** | React, Vue, Angular, Svelte, Python, Go, Rust, Java, C++, Kubernetes, Terraform, AWS, GCP, Azure, PostgreSQL, MongoDB, Redis, Elasticsearch, GraphQL, REST, gRPC, Docker, CircleCI, Jenkins |
+| **Perks** | Unlimited PTO (average team usage: 5 days/year), Fast-paced environment |
+| **Work Hours** | Mandatory 60hr weeks during "crunch" (approx. 48 weeks/year) |
+| **Equity** | 0.001% vesting over 6 years with 2-year cliff |
+| **Application** | Cover letter, 3 references, 40-hour coding challenge, personality assessment |
+
+---
+
+### 2. Red Flag Analysis
+
+There are **11 distinct red flags** in this listing. Below is a detailed breakdown of the manipulative, unreasonable, or unethical elements.
+
+#### **A. Compensation & Financial Risks**
+1.  **"Competitive Salary" + "Equity-Heavy":**
+    *   **The Flag:** Vague salary language combined with a push for equity.
+    *   **The Reality:** This is code for "below-market cash pay." They are asking you to take financial risk (equity) in exchange for a salary that likely won't cover living costs.
+2.  **0.001% Equity with 2-Year Cliff:**
+    *   **The Flag:** Extremely low percentage with a long vesting schedule and a cliff.
+    *   **The Reality:** This is mathematically worthless. A 2-year cliff means you get *nothing* if you leave before 24 months. 0.001% of a pre-IPO startup is likely pennies unless the company becomes a unicorn, which is statistically improbable.
+3.  **40-Hour Unpaid Coding Challenge:**
+    *   **The Flag:** Requiring a 40-hour work week's worth of labor just to apply.
+    *   **The Reality:** This is **unpaid labor theft**. A legitimate screening process takes 1-2 hours. Asking for 40 hours is a scam to get free development work without hiring anyone.
+
+#### **B. Work Culture & Hours**
+4.  **"Remote" with 6am-Midnight Availability:**
+    *   **The Flag:** Claiming "Remote" while demanding 18-hour daily availability.
+    *   **The Reality:** This is not remote work; it is **on-call abuse**. You are expected to be tethered to your computer for 18 hours a day, effectively eliminating personal life and sleep hygiene.
+5.  **Mandatory 60-Hour Weeks (48 Weeks/Year):**
+    *   **The Flag:** Explicitly stating mandatory overtime for nearly the entire year.
+    *   **The Reality:** This is a **burnout factory**. Working 60 hours a week for 48 weeks is unsustainable and likely violates labor laws in many jurisdictions regarding overtime pay and rest periods.
+6.  **"Unlimited PTO" (5 Days Avg Usage):**
+    *   **The Flag:** Advertising "Unlimited" while admitting the average usage is 5 days.
+    *   **The Reality:** This is a **trap**. "Unlimited" PTO often means "No PTO." By explicitly stating the average is 5 days, they are signaling that taking more than 5 days will make you a target for termination or negative performance reviews.
+7.  **"We're Like a Family!":**
+    *   **The Flag:** Using familial language to describe the workplace.
+    *   **The Reality:** This is a **toxic culture code**. It implies that boundaries are not respected, you are expected to work for free (like family), and you cannot quit without being "disloyal."
+
+#### **C. Role & Requirements**
+8.  **"Entry Level" vs. "5+ Years Experience":**
+    *   **The Flag:** Contradictory experience requirements.
+    *   **The Reality:** They want **senior talent for junior pay**. They are looking for someone who can hit the ground running immediately but are unwilling to pay senior rates.
+9.  **The "Unicorn" Tech Stack:**
+    *   **The Flag:** Requiring mastery of conflicting frameworks (React, Vue, Angular, Svelte) and languages (Python, Go, Rust, Java, C++).
+    *   **The Reality:** This is **impossible**. No single human can be an expert in all these simultaneously. This suggests they have no idea what they need, or they expect one person to do the work of an entire engineering department.
+10. **"Ninja Rockstar" Title:**
+    *   **The Flag:** Using outdated, unprofessional buzzwords.
+    *   **The Reality:** This indicates a **lack of professional maturity**. Companies that use these terms often prioritize hype over engineering best practices and stability.
+
+#### **D. Transparency & Security**
+11. **"Stealth Startup (Unnamed)":**
+    *   **The Flag:** Refusing to disclose the company name.
+    *   **The Reality:** This prevents you from **due diligence**. You cannot check their reputation, funding status, or legal standing. It is a common tactic used by scams or companies with a history of firing employees without cause.

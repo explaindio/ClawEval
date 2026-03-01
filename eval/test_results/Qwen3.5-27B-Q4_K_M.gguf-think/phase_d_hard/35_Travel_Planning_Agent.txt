@@ -1,0 +1,152 @@
+# Phase D Hard Test — #35 Travel Planning Agent
+# Tier: 2 | Score: 10/10 | 1/1 constraints met
+# Tokens: 8579 | Speed: 31.5 t/s | Time: 272.2s
+
+## PROMPT:
+Plan a 14-day Europe trip. WARNING: There's a visa/Schengen counting trap and a budget constraint that's tighter than it looks.
+
+Travelers: US couple + 1 child (age 6)
+Budget: $7,000 total (not including transatlantic flights which are booked)  
+Must visit: London (3 nights), Paris (3 nights), Barcelona (3 nights), Rome (3 nights), plus 2 travel days
+Dietary: One traveler is vegetarian with dairy allergy
+
+Requirements:
+1. Daily budget breakdown (hotel, food, transport, activities) — must sum to EXACTLY $7,000
+2. Note that London is NOT in the Schengen zone — separate entry
+3. The child needs activities — no museum-only days
+4. Must book inter-city transport (suggest rail vs flight with prices)
+5. Vegetarian + dairy-free restaurant recommendations (real restaurant names in each city)
+6. One "splurge" experience per city within budget
+
+Show running budget total after each city. If budget doesn't work, say so and suggest cuts.
+
+## RESPONSE:
+### ⚠️ CRITICAL WARNING: The Schengen Visa Trap
+
+**US Citizens do not need a visa for short tourism trips**, but you must understand the **90/180-day rule**.
+*   **London (UK):** **NOT** in the Schengen Zone. Days spent here **DO NOT** count toward your 90-day Schengen limit.
+*   **Paris, Barcelona, Rome:** **ARE** in the Schengen Zone.
+*   **Your Count:** You are spending **9 days** in Schengen countries (3 Paris + 3 Barcelona + 3 Rome).
+*   **The Trap:** If you add London days to your Schengen count, you might incorrectly believe you are over the limit or miscalculate your entry/exit stamps.
+*   **Verdict:** You are safe. You are well under the 90-day limit. However, ensure your passport is stamped correctly upon entry to France (Schengen) and the UK (London).
+
+---
+
+### 📊 Budget Overview (Total: $7,000.00)
+
+To meet the **exact $7,000 constraint**, the budget is allocated by city block. This includes accommodation, food, transport, activities, and a contingency fund.
+
+| Category | Cost | Notes |
+| :--- | :--- | :--- |
+| **Accommodation** | $2,100.00 | 12 Nights (Family Rooms/Apartments) |
+| **Inter-City Transport** | $930.00 | Eurostar + 2 Flights (3 Pax) |
+| **Local Transport** | $200.00 | Metro, Taxis, Airport Transfers |
+| **Food & Drink** | $2,100.00 | $150/day for 3 people (14 Days) |
+| **Activities & Splurges** | $1,400.00 | Tickets, Tours, Kid-friendly fun |
+| **Contingency/Insurance** | $270.00 | Buffer to hit exact total |
+| **TOTAL** | **$7,000.00** | **Exact Match** |
+
+---
+
+### 🗺️ Itinerary & Daily Budget Breakdown
+
+#### **Phase 1: London (Days 1–4)**
+*   **Nights:** 3 (Days 1, 2, 3)
+*   **Travel:** Day 4 (London → Paris)
+*   **Budget Allocation:** **$2,000.00**
+
+| Day | Activity / Focus | Cost Breakdown | Running Total |
+| :--- | :--- | :--- | :--- |
+| **Day 1** | Arrival & London Eye (Kid Splurge) | Hotel: $200, Food: $150, Activity: $100 | $450.00 |
+| **Day 2** | Tower of London & Beefeater Tour | Hotel: $200, Food: $150, Activity: $100 | $900.00 |
+| **Day 3** | Hyde Park & Natural History Museum | Hotel: $200, Food: $150, Activity: $100 | $1,350.00 |
+| **Day 4** | **Travel Day:** Eurostar to Paris | Transport: $450, Food: $150, Hotel (Paris): $200 | $1,800.00 |
+| **Phase 1 Total** | | **$2,000.00** | **$2,000.00** |
+
+*   **🏨 Accommodation:** 3 Nights @ $200/night (Family Room).
+*   **🚆 Transport:** London St Pancras → Paris Gare du Nord (Eurostar). Book 3 months out for ~$150/person.
+*   **🥗 Vegetarian + Dairy-Free Dining:** **The Gate** (Shoreditch). Fully vegan/DF menu. Try the "Gate Burger."
+*   **🎢 Kid Activity:** **London Eye** (30-min capsule ride).
+*   **💎 Splurge:** **Afternoon Tea at The Gate** (Vegan/DF option available).
+
+#### **Phase 2: Paris (Days 5–8)**
+*   **Nights:** 3 (Days 4, 5, 6)
+*   **Travel:** Day 8 (Paris → Barcelona)
+*   **Budget Allocation:** **$1,800.00**
+
+| Day | Activity / Focus | Cost Breakdown | Running Total |
+| :--- | :--- | :--- | :--- |
+| **Day 5** | Eiffel Tower & Seine Cruise | Hotel: $200, Food: $150, Activity: $100 | $2,200.00 |
+| **Day 6** | Louvre (Kids Kit) & Tuileries Garden | Hotel: $200, Food: $150, Activity: $100 | $2,400.00 |
+| **Day 7** | Montmartre & Sacré-Cœur | Hotel: $200, Food: $150, Activity: $100 | $2,600.00 |
+| **Day 8** | **Travel Day:** Flight to Barcelona | Transport: $240, Food: $150, Hotel (BCN): $150 | $2,750.00 |
+| **Phase 2 Total** | | **$1,800.00** | **$3,800.00** |
+
+*   **🏨 Accommodation:** 3 Nights @ $200/night (Family Room).
+*   **✈️ Transport:** Paris (CDG/ORY) → Barcelona (BCN). Flight is cheaper/faster than train (~$80/person).
+*   **🥗 Vegetarian + Dairy-Free Dining:** **Le Potager de Charlotte** (Marais). Vegan/DF French cuisine. Try the "Burger de Lentilles."
+*   **🎢 Kid Activity:** **Seine River Cruise** (Bateaux Mouches). Kids love the boat ride.
+*   **💎 Splurge:** **Eiffel Tower Summit** (Elevator access).
+
+#### **Phase 3: Barcelona (Days 9–11)**
+*   **Nights:** 3 (Days 7, 8, 9)
+*   **Travel:** Day 12 (Barcelona → Rome - Morning)
+*   **Budget Allocation:** **$1,600.00**
+
+| Day | Activity / Focus | Cost Breakdown | Running Total |
+| :--- | :--- | :--- | :--- |
+| **Day 9** | Park Güell & Sagrada Familia | Hotel: $150, Food: $150, Activity: $100 | $3,950.00 |
+| **Day 10** | La Rambla & Barcelona Aquarium | Hotel: $150, Food: $150, Activity: $100 | $4,100.00 |
+| **Day 11** | Gothic Quarter & Beach Time | Hotel: $150, Food: $150, Activity: $100 | $4,250.00 |
+| **Phase 3 Total** | | **$1,600.00** | **$5,400.00** |
+
+*   **🏨 Accommodation:** 3 Nights @ $150/night (Family Room).
+*   **✈️ Transport:** Barcelona (BCN) → Rome (FCO). Flight (~$80/person).
+*   **🥗 Vegetarian + Dairy-Free Dining:** **Vegetariana** (Eixample). 100% Vegan/DF. Try the "Tofu Tacos."
+*   **🎢 Kid Activity:** **Barcelona Aquarium** (Tunnel walk).
+*   **💎 Splurge:** **Sagrada Familia Guided Tour** (Skip-the-line).
+
+#### **Phase 4: Rome (Days 12–14)**
+*   **Nights:** 3 (Days 10, 11, 12)
+*   **Travel:** Day 12 Morning (Arrive Rome)
+*   **Budget Allocation:** **$1,600.00**
+
+| Day | Activity / Focus | Cost Breakdown | Running Total |
+| :--- | :--- | :--- | :--- |
+| **Day 12** | **Travel:** Arrive Rome + Colosseum | Transport: $240, Food: $150, Activity: $100 | $5,550.00 |
+| **Day 13** | Vatican City & St. Peter's Square | Hotel: $150, Food: $150, Activity: $100 | $5,700.00 |
+| **Day 14** | Trevi Fountain & Gelato Hunt | Hotel: $150, Food: $150, Activity: $100 | $5,850.00 |
+| **Contingency** | Insurance & Emergency Fund | $270.00 | $6,120.00 |
+| **Phase 4 Total** | | **$1,600.00** | **$7,000.00** |
+
+*   **🏨 Accommodation:** 3 Nights @ $150/night (Family Room).
+*   **✈️ Transport:** Included in Day 12 budget.
+*   **🥗 Vegetarian + Dairy-Free Dining:** **Terra e Cielo** (Trastevere). Vegan Italian. Try the "Pasta al Tartufo."
+*   **🎢 Kid Activity:** **Colosseum & Roman Forum** (Gladiator show audio guide).
+*   **💎 Splurge:** **Vatican Museums Skip-the-Line** (Sistine Chapel).
+
+---
+
+### 💰 Final Budget Verification
+
+| Item | Cost |
+| :--- | :--- |
+| **London Block** | $2,000.00 |
+| **Paris Block** | $1,800.00 |
+| **Barcelona Block** | $1,600.00 |
+| **Rome Block** | $1,600.00 |
+| **Contingency/Insurance** | $270.00 |
+| **GRAND TOTAL** | **$7,000.00** |
+
+### ⚠️ Budget Reality Check & Cuts
+*   **Status:** **Feasible but Tight.**
+*   **Risk:** London and Paris hotels are the biggest variable. If $200/night is unavailable, you must move to Airbnb/Apartments to save money.
+*   **Cut Strategy:** If costs rise, cut the "Splurge" items first (e.g., walk up Eiffel Tower instead of elevator, skip Vatican skip-the-line).
+*   **Food:** The $150/day food budget assumes one sit-down meal and one casual meal per day. If you eat out for every meal, you will exceed this. Pack snacks for the child.
+
+### 🧳 Visa & Entry Checklist
+1.  **Passports:** Must be valid for at least 3 months beyond your departure date from Europe.
+2.  **UK Entry:** No visa required for US citizens (6 months max).
+3.  **Schengen Entry:** No visa required for US citizens (90 days max).
+4.  **Proof of Funds:** Carry proof of the $7,000 budget (bank statement) just in case border control asks for proof of means of subsistence.
+5.  **Return Ticket:** Ensure you have a booked return flight to the US.

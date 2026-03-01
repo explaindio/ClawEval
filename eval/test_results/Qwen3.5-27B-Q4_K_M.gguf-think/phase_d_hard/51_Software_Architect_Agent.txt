@@ -1,0 +1,163 @@
+# Phase D Hard Test — #51 Software Architect Agent
+# Tier: 5 | Score: 10/10 | 4/4 constraints met
+# Tokens: 5616 | Speed: 28.7 t/s | Time: 195.4s
+
+## PROMPT:
+Design a system architecture. WARNING: The requirements contain 3 CONTRADICTORY pairs. You must identify them and propose tradeoffs instead of pretending all requirements can be met simultaneously.
+
+Requirements:
+1. Process 50,000 events per second in real-time (< 100ms latency)
+2. Also support batch processing of historical data (millions of records)
+3. Zero downtime during deployments AND database schema migrations
+4. Store data in a strongly consistent SQL database with ACID transactions
+5. Horizontally scale to handle 10x traffic spikes within 30 seconds
+6. Multi-region deployment with data residency compliance (EU data stays in EU)
+7. Total infrastructure cost under $5,000/month at current scale
+8. 99.999% availability (five nines = ~5 minutes downtime/year)
+
+For each contradictory pair:
+1. Explain WHY they conflict
+2. Propose a compromise or phased approach
+3. What would you prioritize and why?
+
+Then provide the architecture diagram (text format) with the tradeoffs built in.
+
+## RESPONSE:
+# System Architecture Design with Contradiction Analysis
+
+## 1. Identification of Contradictory Pairs
+
+The requirements provided contain inherent conflicts between performance, cost, consistency, and availability. Below are the three critical contradictory pairs identified, along with the proposed tradeoffs.
+
+### Pair 1: Cost ($5k/mo) vs. Multi-Region + 99.999% Availability
+*   **Requirements:** #7 (Cost < $5k), #6 (Multi-region), #8 (5 Nines Availability).
+*   **Why they conflict:**
+    *   **5 Nines (99.999%)** requires active-active redundancy across multiple Availability Zones (AZs) and ideally multiple Regions to survive a complete region failure. This effectively doubles or triples infrastructure costs.
+    *   **Multi-region** deployment with data residency (EU) implies running infrastructure in at least two EU regions (e.g., Frankfurt + Paris) to ensure failover without violating residency.
+    *   **$5,000/month** is insufficient for active-active multi-region SQL clusters capable of handling 50k events/sec. A single high-performance managed SQL instance (e.g., AWS Aurora) capable of this throughput often costs $1,500–$3,000/month alone.
+*   **Tradeoff:** **Prioritize Cost and Data Residency.**
+    *   **Compromise:** Deploy in a **Single Region (EU)** with Multi-AZ High Availability (Active-Passive).
+    *   **Availability Target:** Reduce from 99.999% (5 mins/year) to **99.9% (43 mins/year)**. This allows for Multi-AZ failover within the region without the cost of cross-region active-active replication.
+    *   **Justification:** Compliance (EU data) is non-negotiable. Cost is a hard cap. 99.9% is acceptable for most enterprise applications, whereas 5 nines is typically reserved for financial trading or life-critical systems.
+
+### Pair 2: Strongly Consistent SQL vs. 10x Scaling in 30 Seconds
+*   **Requirements:** #4 (Strongly Consistent SQL), #5 (10x Scale in 30s).
+*   **Why they conflict:**
+    *   **SQL Databases are Stateful:** Scaling a relational database horizontally (sharding) or vertically (upgrading instance size) involves data replication, locking, and provisioning time. It cannot happen in 30 seconds.
+    *   **ACID Overhead:** Strong consistency requires locking mechanisms that limit throughput. To handle a 10x spike, you need 10x the IOPS and CPU, which cannot be provisioned instantly for a stateful store.
+*   **Tradeoff:** **Prioritize Consistency and Application Elasticity.**
+    *   **Compromise:** Decouple the **Ingestion Layer** from the **Storage Layer**.
+    *   **Implementation:** Use a Message Queue (Kafka/SQS) as a buffer. The API/Workers scale instantly (stateless). The Database scales via Read Replicas (for reads) and auto-scaling compute (for writes), but we accept that the *Database* itself may throttle slightly during the 30-second ramp-up.
+    *   **Justification:** Business logic requires ACID guarantees (Req 4). We cannot sacrifice data integrity for speed. The queue absorbs the spike, allowing the DB to process at its maximum sustainable rate without crashing, even if latency spikes temporarily.
+
+### Pair 3: Zero Downtime Migrations vs. Strongly Consistent SQL
+*   **Requirements:** #3 (Zero Downtime Migrations), #4 (Strongly Consistent SQL).
+*   **Why they conflict:**
+    *   **DDL Locking:** In many SQL engines, schema changes (DDL) like `ALTER TABLE` acquire metadata locks that can block reads/writes, causing downtime.
+    *   **Consistency:** Ensuring zero downtime while changing schema requires complex patterns (e.g., dual-writing, backfilling) which introduce temporary data inconsistency windows or require significant compute resources.
+*   **Tradeoff:** **Prioritize Zero Downtime.**
+    *   **Compromise:** Adopt the **Expand/Contract Pattern** with Online DDL tools.
+    *   **Implementation:**
+        1.  Add new column (non-blocking).
+        2.  Update application to write to both old and new columns (Dual Write).
+        3.  Backfill data asynchronously.
+        4.  Switch application to read new column.
+        5.  Drop old column.
+    *   **Justification:** Downtime is more visible to users than a brief period of dual-writes. This pattern ensures the system remains available while maintaining eventual consistency during the migration window.
+
+---
+
+## 2. Prioritization Strategy
+
+To resolve these conflicts, the following hierarchy of priorities is established:
+
+1.  **Compliance & Cost (Hard Constraints):** Data must stay in EU; Budget cannot exceed $5k.
+2.  **Data Integrity (ACID):** Data must be consistent. We cannot move to NoSQL.
+3.  **Availability (99.9%):** We accept 43 mins downtime/year rather than 5 mins.
+4.  **Performance (50k/s):** We use buffering to smooth spikes rather than instant DB scaling.
+5.  **Operational Excellence:** Zero downtime migrations via Expand/Contract.
+
+---
+
+## 3. System Architecture Diagram
+
+This architecture implements the tradeoffs above. It uses a **Single EU Region** to save costs, a **Message Queue** to buffer spikes, and a **CQRS-lite** pattern to separate read/write loads.
+
+```text
+[ CLIENTS (EU) ]
+      |
+      v
++-------------------------------------------------------+
+|  EU REGION (e.g., AWS eu-central-1)                   |
+|                                                       |
+|  +----------------+      +---------------------------+
+|  |   API Gateway  |----->|   Auto-Scaling Group      |
+|  |   (EU Only)    |      |   (Stateless Workers)     |
+|  +----------------+      |   - Scale: 10x in 30s     |
+|          |               |   - Cost: Spot Instances  |
+|          |               +-------------+-------------+
+|          |                           |
+|          v                           v
+|  +----------------+      +---------------------------+
+|  |   Message Queue|      |   Caching Layer           |
+|  |   (Kafka/SQS)  |      |   (Redis/ElastiCache)     |
+|  |   - Buffer     |      |   - Read Through          |
+|  |   - Spike Abs  |      |   - <10ms Latency         |
+|  +-------+--------+      +-------------+-------------+
+|          |                           ^
+|          | (Batched Writes)          |
+|          v                           |
+|  +----------------+      +---------------------------+
+|  |   SQL Database |<-----|   Read Replicas           |
+|  |   (Aurora PG)  |      |   (Multi-AZ)              |
+|  |   - ACID       |      |   - Handles 10x Read Load |
+|  |   - EU Residency|     |   - Failover < 60s        |
+|  +-------+--------+      +---------------------------+
+|          |
+|          v
+|  +----------------+
+|  |   Batch Worker |
+|  |   (Historical) |
+|  +----------------+
+|                                                       |
++-------------------------------------------------------+
+      ^
+      |
+      +-- Monitoring & Alerting (CloudWatch)
+          - Cost Alerts ($5k Cap)
+          - Latency Alerts (>100ms)
+```
+
+### Architecture Details & Tradeoff Implementation
+
+1.  **Ingestion & Scaling (Addressing Req 1, 5, 7):**
+    *   **Stateless Workers:** The compute layer uses containerized workers (e.g., ECS Fargate or Kubernetes) behind a Load Balancer. These can scale from 1 to 100 instances in 30 seconds to handle traffic spikes.
+    *   **Message Queue:** The 50k events/sec are pushed to Kafka/SQS first. This decouples the API from the Database. If the DB slows down, the queue buffers the load, preventing crashes.
+    *   **Cost Control:** Workers use Spot Instances (cheaper) to stay under budget.
+
+2.  **Database & Consistency (Addressing Req 2, 4, 6):**
+    *   **Managed SQL:** Uses Amazon Aurora PostgreSQL (or equivalent). It provides ACID compliance and is optimized for high IOPS.
+    *   **Single Region:** To meet the $5k budget, we deploy only in `eu-central-1` (Frankfurt). This satisfies Data Residency (Req 6) but sacrifices Multi-Region redundancy (Tradeoff Pair 1).
+    *   **Read Replicas:** To handle read-heavy traffic without overloading the primary, we use Read Replicas. This helps with scaling but does not allow instant 10x write scaling.
+
+3.  **Latency & Caching (Addressing Req 1):**
+    *   **Redis Cache:** High-frequency reads are served from Redis. This ensures the <100ms latency requirement is met even if the SQL DB is under load.
+    *   **Write Path:** Writes go to SQL. To maintain <100ms end-to-end, we batch writes from the queue to the DB (e.g., every 50ms or 1000 events) to reduce connection overhead.
+
+4.  **Migrations (Addressing Req 3):**
+    *   **Migration Tool:** Use a tool like `Flyway` or `Liquibase` configured for Online DDL.
+    *   **Process:** Schema changes follow the Expand/Contract pattern. No `ALTER TABLE` that locks the table is allowed during production hours.
+
+5.  **Batch Processing (Addressing Req 2):**
+    *   **Separate Worker:** A dedicated batch worker consumes from the same queue (or a separate topic) to process historical data. This prevents batch jobs from starving the real-time ingestion workers.
+
+### Cost Estimation (Approximate)
+*   **Aurora DB (Multi-AZ):** ~$2,000/mo (Provisioned IOPS for 50k/s).
+*   **Compute (Spot/Reserved):** ~$1,500/mo.
+*   **Queue & Cache:** ~$800/mo.
+*   **Data Transfer/Storage:** ~$500/mo.
+*   **Total:** ~$4,800/mo. (Fits within $5k, but leaves no room for Multi-Region).
+
+### Availability Note
+*   **Target:** 99.9% (Single Region, Multi-AZ).
+*   **Risk:** If the entire EU Region goes down, the system is unavailable. This is the accepted risk to meet the Cost and Residency requirements.

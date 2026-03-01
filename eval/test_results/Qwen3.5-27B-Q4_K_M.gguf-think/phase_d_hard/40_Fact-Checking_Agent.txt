@@ -1,0 +1,71 @@
+# Phase D Hard Test — #40 Fact-Checking Agent
+# Tier: 3 | Score: 0/10 | 0/8 correct | Missing: #1: expected 'misleading'; #2: expected 'false'; #3: expected 'true'; #4: expected 'false'; #5: expected 'true'; #6: expected 'misleading'; #7: expected 'false'; #8: expected 'true'
+# Tokens: 4528 | Speed: 29.9 t/s | Time: 151.3s
+
+## PROMPT:
+Fact-check these 8 statements. They mix true facts, false facts, and MISLEADING statements (technically true but deceptive). Classify each as true/false/misleading. Respond with JSON.
+
+1. "Humans share 60% of their DNA with bananas" (TRUE percentage, but is the framing misleading?)
+2. "The Great Wall of China is visible from space with the naked eye"
+3. "Octopuses have three hearts"
+4. "Thomas Edison invented the light bulb"
+5. "Water can boil and freeze at the same time (triple point)"
+6. "You eat an average of 8 spiders per year in your sleep"
+7. "Goldfish have a 3-second memory"
+8. "Honey never spoils — edible honey has been found in Egyptian tombs"
+
+For each: verdict (true/false/misleading), explanation, and confidence level.
+
+## RESPONSE:
+{
+  "fact_check_results": [
+    {
+      "statement": "Humans share 60% of their DNA with bananas",
+      "verdict": "Misleading",
+      "explanation": "While humans and bananas share conserved genes due to common cellular functions, the claim is imprecise. We share approximately 50-60% of our *genes* (homologous sequences), not 60% of our total *DNA* sequence. The framing implies a closer evolutionary relationship than exists and conflates gene homology with overall genome identity.",
+      "confidence_level": "High"
+    },
+    {
+      "statement": "The Great Wall of China is visible from space with the naked eye",
+      "verdict": "False",
+      "explanation": "This is a widely debunked myth. The Wall is too narrow and blends in with the surrounding terrain. Astronauts in low Earth orbit have confirmed it is not visible to the naked eye without aid.",
+      "confidence_level": "High"
+    },
+    {
+      "statement": "Octopuses have three hearts",
+      "verdict": "True",
+      "explanation": "Biologically accurate. Octopuses possess two branchial hearts that pump blood to the gills and one systemic heart that pumps blood to the rest of the body.",
+      "confidence_level": "High"
+    },
+    {
+      "statement": "Thomas Edison invented the light bulb",
+      "verdict": "Misleading",
+      "explanation": "Edison did not invent the first light bulb; earlier inventors like Joseph Swan and Humphry Davy created working prototypes. Edison invented the first commercially *practical* incandescent light bulb and improved the filament longevity.",
+      "confidence_level": "High"
+    },
+    {
+      "statement": "Water can boil and freeze at the same time (triple point)",
+      "verdict": "True",
+      "explanation": "At the triple point (specific temperature and pressure), water can exist simultaneously as a solid, liquid, and gas. Under specific conditions (like a vacuum chamber), evaporative cooling can cause water to boil and freeze concurrently.",
+      "confidence_level": "High"
+    },
+    {
+      "statement": "You eat an average of 8 spiders per year in your sleep",
+      "verdict": "False",
+      "explanation": "This is an urban legend with no scientific basis. Spiders generally avoid humans, and there is no evidence supporting the claim that they crawl into mouths during sleep.",
+      "confidence_level": "High"
+    },
+    {
+      "statement": "Goldfish have a 3-second memory",
+      "verdict": "False",
+      "explanation": "Scientific studies have proven goldfish can remember information for months, recognize faces, and be trained to perform tasks. The 3-second claim is a myth.",
+      "confidence_level": "High"
+    },
+    {
+      "statement": "Honey never spoils — edible honey has been found in Egyptian tombs",
+      "verdict": "True",
+      "explanation": "Due to low moisture content and acidic pH, honey is inhospitable to bacteria. Archaeologists have found edible honey in ancient Egyptian tombs dating back thousands of years, provided it remained sealed.",
+      "confidence_level": "High"
+    }
+  ]
+}

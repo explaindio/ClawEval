@@ -1,0 +1,46 @@
+# Phase D Hard Test — #20 Memory / Knowledge Management
+# Tier: 2 | Score: 5/10 | No automated constraints to check
+# Tokens: 3561 | Speed: 30.9 t/s | Time: 115.2s
+
+## PROMPT:
+Extract and merge knowledge from these 5 conversation snippets. There are 3 contradictions — resolve each by using the MOST RECENT information and flag what changed.
+
+Jan 2: "I'm a senior developer at Acme Corp working on their Python backend."
+Jan 15: "We decided to migrate from PostgreSQL to MongoDB for the user service."
+Feb 1: "Got promoted to Tech Lead! Managing a team of 4 developers now."
+Feb 20: "After benchmarking, we're actually sticking with PostgreSQL — MongoDB wasn't right for our consistency requirements. Also, we hired 2 more people, team is now 6."
+Mar 5: "Acme Corp got acquired by MegaTech. I'm now technically a MegaTech employee but same role. Oh, and 1 person left, so team is 5. We're also evaluating MySQL as finance wants to standardize."
+
+Produce a final knowledge profile, clearly marking:
+1. What the CURRENT truth is for each fact
+2. What changed and when (changelog)
+3. What is UNCERTAIN (e.g., MySQL evaluation — in progress, not decided)
+
+## RESPONSE:
+### 1. Current Knowledge Profile (Truth)
+
+*   **Role:** Tech Lead
+*   **Employer:** MegaTech (Acme Corp acquired)
+*   **Team Size:** 5 Developers
+*   **Backend Language:** Python
+*   **Primary Database:** PostgreSQL (User Service)
+*   **Pending Tech Evaluation:** MySQL (requested by Finance)
+
+---
+
+### 2. Changelog & Contradiction Resolution
+
+The following 3 contradictions were identified and resolved using the **most recent information** (Mar 5):
+
+| Contradiction | Initial Claim | Revised Claim | Resolution Date | Final Truth |
+| :--- | :--- | :--- | :--- | :--- |
+| **1. Database Choice** | **Jan 15:** Migrating to **MongoDB**.<br>*(Contradicted by Feb 20)* | **Feb 20:** Sticking with **PostgreSQL**.<br>*(Confirmed by Mar 5)* | **Feb 20** | **PostgreSQL** is the active database. |
+| **2. Team Headcount** | **Feb 1:** Team of **4**.<br>**Feb 20:** Team of **6**.<br>*(Contradicted by Mar 5)* | **Mar 5:** Team of **5** (1 person left). | **Mar 5** | **5 Developers** is the current headcount. |
+| **3. Employer Identity** | **Jan 2 – Feb 20:** **Acme Corp**.<br>*(Contradicted by Mar 5)* | **Mar 5:** **MegaTech** (Acme acquired). | **Mar 5** | **MegaTech** is the current employer. |
+
+---
+
+### 3. Uncertain / In-Progress Information
+
+*   **MySQL Adoption:** As of Mar 5, the team is **evaluating MySQL** due to Finance wanting to standardize. This is **not yet decided**; the current production database remains PostgreSQL.
+*   **Acme Corp Status:** While the user is now a MegaTech employee, the legacy "Acme Corp" identity exists only as the acquired entity; the operational brand is MegaTech.

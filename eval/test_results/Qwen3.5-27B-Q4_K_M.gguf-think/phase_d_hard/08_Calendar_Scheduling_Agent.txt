@@ -1,0 +1,41 @@
+# Phase D Hard Test — #8 Calendar / Scheduling Agent
+# Tier: 1 | Score: 0/10 | Expected '14:00-14:30 UTC' not found
+# Tokens: 16000 | Speed: 31.4 t/s | Time: 510.2s
+
+## PROMPT:
+Find the ONLY valid 30-minute meeting slot for all 4 participants on Monday. Show your work.
+
+Participant calendars (all times in their LOCAL timezone):
+
+Alice (UTC-5, New York):
+- 8:00-9:30 AM: Team standup
+- 10:00-11:00 AM: Client call  
+- 12:00-1:00 PM: Lunch (blocked)
+- 2:00-4:00 PM: Sprint planning
+- Available: 9:30-10:00, 11:00-12:00, 1:00-2:00
+
+Bob (UTC+0, London):
+- 9:00-10:30 AM: Architecture review
+- 11:30 AM-12:30 PM: Lunch
+- 1:00-2:30 PM: Design sync
+- 3:00-5:00 PM: Deep work (blocked)
+- Available: 10:30-11:30, 12:30-1:00, 2:30-3:00
+
+Carol (UTC+1, Berlin):
+- 9:00-10:00 AM: Morning standup
+- 11:00 AM-12:00 PM: 1:1 with manager
+- 1:00-2:00 PM: Lunch
+- 3:30-5:00 PM: Workshop
+- Available: 10:00-11:00, 12:00-1:00, 2:00-3:30
+
+Dave (UTC+5:30, Mumbai):
+- 10:00 AM-12:00 PM: Client workshops
+- 1:00-2:00 PM: Lunch
+- 3:00-4:00 PM: Code review
+- 5:00-7:00 PM: Evening meetings
+- Available: 12:00-1:00, 2:00-3:00, 4:00-5:00, 7:00+
+
+Convert ALL times to UTC first, then find the overlapping 30-minute window. State the answer in UTC.
+
+## RESPONSE:
+

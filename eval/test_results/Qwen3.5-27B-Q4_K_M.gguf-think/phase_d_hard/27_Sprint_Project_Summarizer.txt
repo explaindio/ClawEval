@@ -1,0 +1,127 @@
+# Phase D Hard Test — #27 Sprint / Project Summarizer
+# Tier: 2 | Score: 5/10 | No automated constraints to check
+# Tokens: 5367 | Speed: 32.5 t/s | Time: 165.2s
+
+## PROMPT:
+Analyze these 3 sprints and identify the trends that nobody is talking about. Calculate exact velocity and predict sprint 4 outcomes.
+
+Sprint 1 (2 weeks): 8 stories planned (34 pts), 7 completed (30 pts), 1 carried over. 0 stories added mid-sprint.
+Sprint 2 (2 weeks): 10 stories planned (40 pts), 7 completed (32 pts), 3 carried over. 3 stories added mid-sprint by product.
+Sprint 3 (2 weeks): 12 stories planned (48 pts), 6 completed (28 pts), 6 carried over. 5 stories added mid-sprint by product.
+
+The team has committed to delivering 15 stories (60 pts) in Sprint 4 because "the deadline is non-negotiable."
+
+Questions:
+1. Calculate the velocity trend across 3 sprints (exact numbers)
+2. What is the realistic capacity for Sprint 4?
+3. What percentage of scope creep has occurred each sprint?
+4. Is the Sprint 4 commitment achievable? Show math.
+5. What should you recommend to the product owner?
+
+## RESPONSE:
+Here is the analysis of the three sprints, focusing on the hidden trends, exact calculations, and the reality of the Sprint 4 commitment.
+
+### **The "Silent" Trends Nobody is Talking About**
+Before answering the specific questions, three critical trends are being masked by the surface-level velocity numbers:
+
+1.  **Efficiency Collapse:** While velocity looks stable (30–32 pts), the **Completion Rate** is plummeting.
+    *   Sprint 1: 88% of planned points completed.
+    *   Sprint 2: 80% of planned points completed.
+    *   Sprint 3: **58%** of planned points completed.
+    *   *Insight:* The team is not slowing down; they are becoming significantly less efficient at finishing what they start.
+2.  **The "Carryover Tax":** The team is accumulating technical debt in the form of unfinished stories.
+    *   Sprint 1: 1 story carried over (4 pts).
+    *   Sprint 2: 3 stories carried over (8 pts).
+    *   Sprint 3: 6 stories carried over (20 pts).
+    *   *Insight:* The backlog of unfinished work has **quintupled** in points (4pts → 20pts) over 3 sprints. Sprint 4 will start with a 20-point penalty before a single new story begins.
+3.  **Scope Creep Acceleration:** The Product Owner is adding work *because* the team isn't finishing, creating a vicious cycle.
+    *   Sprint 1: 0% creep.
+    *   Sprint 2: 30% creep (3 added stories).
+    *   Sprint 3: **42% creep** (5 added stories).
+    *   *Insight:* The team is being asked to do 42% more work than planned in Sprint 3, yet they delivered less. This indicates a breakdown in the Definition of Ready or a lack of capacity protection.
+
+---
+
+### **1. Calculate the Velocity Trend (Exact Numbers)**
+
+Velocity is defined by **Completed Points**, not Planned Points.
+
+*   **Sprint 1 Velocity:** 30 pts
+*   **Sprint 2 Velocity:** 32 pts
+*   **Sprint 3 Velocity:** 28 pts
+*   **3-Sprint Average Velocity:** **30 pts**
+*   **Last Sprint Velocity:** **28 pts**
+
+**Trend Analysis:** While the average is 30, the most recent data point (28) indicates a downward trajectory. Relying on the average (30) is optimistic; relying on the trend (28) is safer.
+
+### **2. What is the Realistic Capacity for Sprint 4?**
+
+Capacity is determined by the team's recent ability to complete work, not their desire to meet a deadline.
+
+*   **Conservative Capacity:** 28 pts (Based on Sprint 3 performance).
+*   **Optimistic Capacity:** 30 pts (Based on 3-sprint average).
+*   **Realistic Capacity:** **28–30 pts.**
+
+*Note:* This capacity must account for the **20 points of carryover** from Sprint 3. If the team does not clear the 20 points of debt first, their capacity for *new* work is effectively **8–10 pts**.
+
+### **3. What Percentage of Scope Creep Has Occurred Each Sprint?**
+
+Scope Creep is calculated as `(Added Stories / Planned Stories) * 100`.
+
+*   **Sprint 1:** 0 added / 8 planned = **0%**
+*   **Sprint 2:** 3 added / 10 planned = **30%**
+*   **Sprint 3:** 5 added / 12 planned = **41.7%**
+
+**Trend:** Scope creep is accelerating. The Product Owner is increasingly unable to trust the initial plan, adding work mid-sprint at a rate that is outpacing the team's ability to absorb it.
+
+### **4. Is the Sprint 4 Commitment Achievable? Show Math.**
+
+**Target:** 15 stories (60 pts).
+**Reality:** The team has a backlog of unfinished work from Sprint 3.
+
+**The Math:**
+1.  **Total Workload:**
+    *   New Sprint 4 Commitment: 60 pts
+    *   Sprint 3 Carryover (Debt): 20 pts
+    *   **Total Required:** 80 pts
+2.  **Team Capacity:**
+    *   Average Velocity: 30 pts
+    *   Recent Velocity: 28 pts
+3.  **The Gap:**
+    *   80 pts (Required) - 30 pts (Capacity) = **50 pts Deficit**
+    *   80 pts (Required) - 28 pts (Capacity) = **52 pts Deficit**
+
+**Prediction:**
+If the team commits to 60 pts of *new* work while carrying over 20 pts of *old* work:
+*   They will complete **~30 pts** total.
+*   They will likely prioritize the 20 pts of carryover to clear the debt.
+*   **New Work Completed:** 10 pts (approx. 2 stories).
+*   **New Work Failed:** 50 pts (approx. 13 stories).
+*   **Carryover to Sprint 5:** 50 pts.
+
+**Verdict:** **No.** The commitment is **100% over capacity**. It is mathematically impossible to deliver 60 points of new work when the team averages 30 points and has 20 points of existing debt.
+
+### **5. What Should You Recommend to the Product Owner?**
+
+You must present this data as a risk management issue, not a performance issue.
+
+**Recommendation 1: Reject the 60-Point Commitment**
+State clearly: *"Based on 3 sprints of data, our capacity is 30 points. Committing to 60 points guarantees a 50-point failure rate, which will delay the deadline further due to the accumulation of technical debt."*
+
+**Recommendation 2: Clear the Carryover First**
+Sprint 4 must be a "Cleanup Sprint."
+*   **Action:** Commit only to the 20 points of carryover from Sprint 3 + 10 points of new work.
+*   **Total:** 30 points.
+*   **Goal:** Stabilize the team and stop the bleeding of unfinished work.
+
+**Recommendation 3: Enforce a "No Mid-Sprint Additions" Rule**
+Scope creep increased from 0% to 42%.
+*   **Action:** Any new requirements found mid-sprint must go into the backlog for Sprint 5.
+*   **Reasoning:** The team cannot finish the current plan; adding more work is causing the velocity drop.
+
+**Recommendation 4: Re-negotiate the "Non-Negotiable" Deadline**
+*   **Action:** Show the math. To deliver 60 points at a velocity of 30, it requires **2 Sprints**, not 1.
+*   **Proposal:** Split the 60 points into two sprints (Sprint 4 & 5) or cut the scope in half for Sprint 4 (30 points) to meet the deadline with the MVP features only.
+
+**Summary Statement for PO:**
+*"We cannot deliver 60 points in Sprint 4. Our data shows a 58% completion rate in the last sprint and a 20-point debt pile. If we commit to 60 points, we will deliver 30 points and push the deadline back by another 2 weeks. To meet the deadline, we must cut the Sprint 4 scope to 30 points."*

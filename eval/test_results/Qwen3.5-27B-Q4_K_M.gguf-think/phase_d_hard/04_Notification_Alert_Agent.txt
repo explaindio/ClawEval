@@ -1,0 +1,78 @@
+# Phase D Hard Test — #4 Notification / Alert Agent
+# Tier: 1 | Score: 10/10 | 2/2 constraints met
+# Tokens: 12147 | Speed: 30.6 t/s | Time: 397.5s
+
+## PROMPT:
+Process these 7 events into alerts. WATCH OUT: 2 events are duplicates (merge them), 1 is a false positive that should NOT generate an alert. Assign correct priorities.
+
+Events (timestamps in UTC):
+1. 14:00 — "Disk /data at 94% capacity" (source: monitoring)
+2. 14:01 — "SSL certificate for api.example.com expired 2 hours ago" (source: cert-manager)
+3. 14:02 — "CPU spike to 98% on worker-3" (source: monitoring)
+4. 14:02 — "CPU on worker-3 returned to 12% after scheduled batch job completed" (source: monitoring)
+5. 14:03 — "SSL certificate for api.example.com expires in -2 hours" (source: different cert checker)
+6. 14:05 — "New deployment v2.4.1 rolled out successfully" (source: CI/CD)
+7. 14:06 — "Disk /data at 94% — approaching critical threshold" (source: secondary monitoring)
+
+For each alert: priority (P1/P2/P3), channel, message, and reasoning. Explain which events you merged and which you filtered as false positives.
+
+## RESPONSE:
+### Alert Processing Summary
+
+**Merged Events:** Event 2 & Event 5 (SSL Certificate Expiry).
+**Filtered Event:** Event 3 (CPU Spike - False Positive).
+**Ignored Event:** Event 4 (Resolution of False Positive).
+
+---
+
+### Generated Alerts
+
+#### Alert 1: Disk Capacity Warning
+*   **Priority:** P2 (High)
+*   **Channel:** Ops Slack Channel / Email
+*   **Message:** `[WARNING] Disk /data at 94% capacity (Source: monitoring)`
+*   **Timestamp:** 14:00 UTC
+*   **Reasoning:** Initial threshold breach detected. Requires investigation to prevent hitting critical limits.
+
+#### Alert 2: Disk Capacity Escalation
+*   **Priority:** P2 (High)
+*   **Channel:** Ops Slack Channel / Email
+*   **Message:** `[WARNING] Disk /data at 94% — approaching critical threshold (Source: secondary monitoring)`
+*   **Timestamp:** 14:06 UTC
+*   **Reasoning:** Secondary monitoring triggered an escalation message ("approaching critical") 6 minutes after the initial alert. Treated as a distinct escalation event rather than a duplicate to ensure visibility of the worsening trend.
+
+#### Alert 3: SSL Certificate Expired
+*   **Priority:** P1 (Critical)
+*   **Channel:** PagerDuty / SMS / Email
+*   **Message:** `[CRITICAL] SSL certificate for api.example.com expired 2 hours ago (Source: cert-manager & cert checker)`
+*   **Timestamp:** 14:01 UTC
+*   **Reasoning:** **Merged Events 2 & 5.** Both events report the exact same state ("expired 2 hours ago" vs "expires in -2 hours"). Merging prevents duplicate P1 paging for the same incident. Immediate action required to restore service trust.
+
+#### Alert 4: Deployment Success Notification
+*   **Priority:** P3 (Info)
+*   **Channel:** DevOps Slack Channel
+*   **Message:** `[INFO] New deployment v2.4.1 rolled out successfully (Source: CI/CD)`
+*   **Timestamp:** 14:05 UTC
+*   **Reasoning:** Successful deployment notification. Included as a low-priority alert for audit and awareness purposes.
+
+---
+
+### Processing Logic Explanation
+
+1.  **Duplicates Merged (Events 2 & 5):**
+    *   **Event 2:** "SSL certificate... expired 2 hours ago"
+    *   **Event 5:** "SSL certificate... expires in -2 hours"
+    *   **Logic:** These events convey identical factual information (the certificate is already expired). Event 5 is simply a different phrasing of Event 2 from a different tool. Merging them prevents alert fatigue and ensures a single P1 incident is tracked for the SSL expiry.
+
+2.  **False Positive Filtered (Event 3):**
+    *   **Event 3:** "CPU spike to 98% on worker-3"
+    *   **Logic:** This event was filtered as a **False Positive**. Event 4 (14:02) immediately confirms the spike was caused by a "scheduled batch job" and the CPU returned to normal (12%). Since the spike was expected behavior and resolved instantly, generating an alert would create unnecessary noise.
+
+3.  **Distinct Events (Events 1 & 7):**
+    *   **Event 1:** "Disk /data at 94%"
+    *   **Event 7:** "Disk /data at 94% — approaching critical threshold"
+    *   **Logic:** While these refer to the same metric, Event 7 includes an escalation indicator ("approaching critical threshold"). In alerting workflows, this often represents a change in severity or a secondary system confirming the risk. Therefore, they were treated as distinct alerts (Initial Warning vs. Escalation) rather than duplicates, unlike the SSL events which were semantically identical.
+
+4.  **Ignored Event (Event 4):**
+    *   **Event 4:** "CPU on worker-3 returned to 12%..."
+    *   **Logic:** This is a resolution status update for the filtered Event 3. Since Event 3 did not generate an alert, Event 4 does not require a corresponding alert or notification.

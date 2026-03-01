@@ -1,0 +1,134 @@
+# Phase D Hard Test — #45 Prototype Generator
+# Tier: 3 | Score: 5/10 | No test code provided
+# Tokens: 2312 | Speed: 31.2 t/s | Time: 74.2s
+
+## PROMPT:
+Write a COMPLETE, RUNNABLE Streamlit prototype that actually works when executed. I will run it with `streamlit run app.py`.
+
+Requirements:
+1. A form to input expense data (date, category dropdown, amount, description)
+2. Store entries in session state (persist within session)
+3. A pie chart showing spending by category (use st.pyplot or plotly)
+4. A date range filter that updates the chart
+5. Display total spending prominently
+6. An "Export CSV" button that generates and downloads data
+
+The code must be a SINGLE FILE with ALL imports. It must run without errors on a fresh Python environment with only streamlit, pandas, and matplotlib/plotly installed. No placeholder — working code only.
+
+## RESPONSE:
+Here is the complete, runnable code. Save this as `app.py` and run it with `streamlit run app.py`.
+
+```python
+import streamlit as st
+import pandas as pd
+import plotly.express as px
+import io
+from datetime import datetime
+
+# --- Page Configuration ---
+st.set_page_config(page_title="Expense Tracker", layout="wide")
+
+# --- Session State Initialization ---
+if 'expenses' not in st.session_state:
+    st.session_state.expenses = []
+
+# --- Sidebar: Input Form ---
+st.sidebar.header("Add New Expense")
+
+with st.sidebar.form("expense_form", clear_on_submit=True):
+    date_input = st.date_input("Date", value=datetime.today())
+    category_input = st.selectbox("Category", ["Food", "Transport", "Utilities", "Entertainment", "Shopping", "Other"])
+    amount_input = st.number_input("Amount ($)", min_value=0.0, format="%.2f")
+    description_input = st.text_input("Description")
+    
+    submitted = st.form_submit_button("Add Entry")
+
+    if submitted:
+        if amount_input > 0:
+            new_entry = {
+                "Date": date_input,
+                "Category": category_input,
+                "Amount": amount_input,
+                "Description": description_input
+            }
+            st.session_state.expenses.append(new_entry)
+            st.success(f"Added ${amount_input:.2f} for {category_input}")
+        else:
+            st.error("Amount must be greater than 0.")
+
+# --- Main Content ---
+st.title("💰 Personal Expense Tracker")
+
+# Convert session state list to DataFrame
+df = pd.DataFrame(st.session_state.expenses)
+
+if not df.empty:
+    # Ensure Date column is datetime type for filtering
+    df['Date'] = pd.to_datetime(df['Date'])
+    
+    # --- Date Range Filter ---
+    st.subheader("Filter Data")
+    min_date = df['Date'].min()
+    max_date = df['Date'].max()
+    
+    # Default filter range is the full range of data available
+    date_range = st.date_input(
+        "Select Date Range",
+        value=[min_date.date(), max_date.date()],
+        min_value=min_date.date(),
+        max_value=max_date.date()
+    )
+    
+    # Apply Filter
+    if len(date_range) == 2:
+        start, end = date_range
+        # Add end of day to include the last selected day
+        end = end + pd.Timedelta(days=1)
+        filtered_df = df[(df['Date'] >= start) & (df['Date'] < end)]
+    else:
+        filtered_df = df
+
+    # --- Metrics ---
+    total_spending = filtered_df['Amount'].sum()
+    st.metric(label="Total Spending (Filtered)", value=f"${total_spending:,.2f}")
+
+    # --- Charts ---
+    st.subheader("Spending by Category")
+    
+    # Group by category and sum amounts
+    category_totals = filtered_df.groupby('Category')['Amount'].sum().reset_index()
+    
+    if not category_totals.empty:
+        fig = px.pie(
+            category_totals, 
+            values='Amount', 
+            names='Category', 
+            title='Distribution of Expenses',
+            hole=0.4
+        )
+        st.plotly_chart(fig, use_container_width=True)
+    else:
+        st.info("No data available for the selected date range.")
+
+    # --- Data Table ---
+    st.subheader("Transaction Details")
+    # Format the dataframe for display (hide index, format currency)
+    st.dataframe(filtered_df.style.format({"Amount": "${:.2f}"}), use_container_width=True)
+
+    # --- Export CSV ---
+    st.subheader("Export Data")
+    
+    # Create CSV buffer
+    csv = filtered_df.to_csv(index=False)
+    b64 = csv.encode('utf-8')
+    
+    st.download_button(
+        label="📥 Download Filtered Data as CSV",
+        data=b64,
+        file_name='expenses_export.csv',
+        mime='text/csv',
+    )
+
+else:
+    st.info("👈 Please add expenses using the form in the sidebar to see the dashboard.")
+```

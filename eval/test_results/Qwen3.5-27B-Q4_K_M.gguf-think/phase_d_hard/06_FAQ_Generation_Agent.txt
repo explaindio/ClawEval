@@ -1,0 +1,40 @@
+# Phase D Hard Test — #6 FAQ Generation Agent
+# Tier: 1 | Score: 10/10 | 3/3 constraints met
+# Tokens: 2853 | Speed: 29.8 t/s | Time: 95.6s
+
+## PROMPT:
+Generate FAQs from this product description. WARNING: The text contains 2 deliberate contradictions. You MUST identify and flag them rather than silently picking one version.
+
+Product Description:
+"CloudStore offers unlimited storage starting at $9.99/month. All plans include a 14-day free trial. Enterprise customers get dedicated support with 4-hour response SLA. Files are encrypted with AES-256 at rest and in transit. Our 30-day free trial lets you explore all features. Refunds are available within 60 days of purchase, no questions asked. Maximum file size is 10GB. We guarantee 99.9% uptime. Note: due to our no-refund policy, please use the free trial to evaluate before purchasing. Supports Windows, Mac, Linux, iOS, and Android."
+
+Generate 6 FAQs AND explicitly call out the contradictions you found in the source text.
+
+## RESPONSE:
+### ⚠️ Source Text Contradictions Identified
+Before generating the FAQs, please note that the provided product description contains **two deliberate contradictions** that cannot be resolved without external clarification. These have been flagged below and reflected in the FAQ answers:
+
+1.  **Free Trial Duration:** The text states "All plans include a **14-day** free trial" but later claims "Our **30-day** free trial lets you explore all features."
+2.  **Refund Policy:** The text states "Refunds are available within **60 days**... no questions asked" but later warns "due to our **no-refund policy**."
+
+***
+
+### CloudStore Frequently Asked Questions
+
+**1. How much does CloudStore cost and how much storage do I get?**
+CloudStore pricing starts at $9.99/month. At this price point, the plan offers unlimited storage capacity.
+
+**2. How long is the free trial period?**
+**[CONTRADICTION FLAGGED]** The product description contains conflicting information regarding the trial length. One section states that all plans include a **14-day** free trial, while another section mentions a **30-day** free trial. Please contact support to confirm which duration applies to your specific region or account type.
+
+**3. What is the refund policy if I am not satisfied?**
+**[CONTRADICTION FLAGGED]** There is a direct conflict in the text regarding refunds. One sentence promises refunds within **60 days** of purchase with no questions asked, while a later note explicitly states there is a **no-refund policy**. We recommend using the free trial to evaluate the service before purchasing to avoid this ambiguity.
+
+**4. Is there a limit on the size of individual files I can upload?**
+Yes, while total storage is unlimited, there is a maximum file size limit of 10GB per individual file.
+
+**5. How is my data secured on CloudStore?**
+All files are encrypted using AES-256 encryption both at rest and in transit to ensure your data remains secure.
+
+**6. Which operating systems and devices does CloudStore support?**
+CloudStore is compatible with a wide range of platforms, including Windows, Mac, Linux, iOS, and Android.

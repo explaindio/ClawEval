@@ -1,0 +1,40 @@
+# Phase D Hard Test — #11 Editor Agent
+# Tier: 2 | Score: 5/10 | No automated constraints to check
+# Tokens: 12240 | Speed: 28.7 t/s | Time: 426.5s
+
+## PROMPT:
+This 200-word text contains EXACTLY 15 errors across 4 categories: grammar (5), factual (3), logical (3), and style (4). Find ALL 15.
+
+"The Eiffel Tower, located in Berlin, Germany, was completed in 1889 for the World's Fair. Standing at 1,063 feet tall, their the tallest structure in Europe. The tower was designed by Alexander Eiffel, who also helped designed the Statue of Liberty's internal framework.
+
+Every year, approximately 7 million visitors visits the tower making it the most visited paid monument in the world. The tower has three levels, with restaurants on the first and second levels. Visitors can chose to take the stairs (a total of 1,665 steps to the top) or use the elevators.
+
+Interestingly, the tower was originally intended to be temporary and was suppose to be dismantled after 20 years. However, it was saved because it proved valuable for radio transmissions. If the tower was built today, it would cost approximately $40 million — quite affordable for a city like Berlin.
+
+The tower shrinks by 6 inches in winter due to thermal contraction — despite the fact that metal expands in cold temperatures. It is painted every 7 years using 60 tons of paint, and have been 18 different colors throughout its history."
+
+List each error with: category, location, what's wrong, and the correction.
+
+## RESPONSE:
+**Factual Errors (3)**
+1.  **Category:** Factual | **Location:** Sentence 1 ("located in Berlin, Germany") | **What's Wrong:** The Eiffel Tower is not in Berlin. | **Correction:** located in Paris, France
+2.  **Category:** Factual | **Location:** Sentence 3 ("designed by Alexander Eiffel") | **What's Wrong:** The designer's first name was Gustave, not Alexander. | **Correction:** designed by Gustave Eiffel
+3.  **Category:** Factual | **Location:** Sentence 11 ("18 different colors") | **What's Wrong:** The tower has only been painted in 3 main colors (Red, Brown, Yellow), not 18 different ones. | **Correction:** 3 different colors
+
+**Logical Errors (3)**
+4.  **Category:** Logical | **Location:** Sentence 2 ("their the tallest structure in Europe") | **What's Wrong:** The claim is logically inconsistent with current reality; the Ostankino Tower and others are taller. | **Correction:** it's one of the tallest structures in Europe
+5.  **Category:** Logical | **Location:** Sentence 9 ("affordable for a city like Berlin") | **What's Wrong:** The comparison is a non-sequitur since the tower is not in Berlin. | **Correction:** affordable for a city like Paris
+6.  **Category:** Logical | **Location:** Sentence 10 ("shrinks... despite the fact that metal expands in cold temperatures") | **What's Wrong:** The sentence creates a contradiction; metal contracts in cold, so "despite" is illogical here. | **Correction:** ...because metal contracts in cold temperatures
+
+**Grammar Errors (5)**
+7.  **Category:** Grammar | **Location:** Sentence 2 ("their the tallest") | **What's Wrong:** Incorrect pronoun/verb contraction; "their" is possessive. | **Correction:** it's the tallest
+8.  **Category:** Grammar | **Location:** Sentence 3 ("helped designed") | **What's Wrong:** Incorrect verb form after "helped"; requires base form. | **Correction:** helped design
+9.  **Category:** Grammar | **Location:** Sentence 4 ("visitors visits") | **What's Wrong:** Subject-verb agreement error; plural subject requires plural verb. | **Correction:** visitors visit
+10. **Category:** Grammar | **Location:** Sentence 6 ("can chose") | **What's Wrong:** Incorrect verb form after modal "can"; requires base form. | **Correction:** can choose
+11. **Category:** Grammar | **Location:** Sentence 7 ("was suppose") | **What's Wrong:** Incorrect verb form; passive voice requires past participle. | **Correction:** was supposed
+
+**Style Errors (4)**
+12. **Category:** Style | **Location:** Sentence 2 ("1,063 feet tall") | **What's Wrong:** Redundant adjective; "feet" implies height. | **Correction:** 1,063 feet
+13. **Category:** Style | **Location:** Sentence 10 ("despite the fact that") | **What's Wrong:** Wordy phrase; can be simplified. | **Correction:** although
+14. **Category:** Style | **Location:** Sentence 6 ("a total of 1,665 steps") | **What's Wrong:** Wordy phrase; "total of" is unnecessary. | **Correction:** 1,665 steps
+15. **Category:** Style | **Location:** Sentence 4 ("approximately 7 million") | **What's Wrong:** Vague quantifier with a round number; "approximately" is redundant with "7 million". | **Correction:** 7 million

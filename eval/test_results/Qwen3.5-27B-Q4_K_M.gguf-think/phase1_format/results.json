@@ -1,0 +1,91 @@
+{
+  "phase": "phase1_format_compliance",
+  "model": "Qwen3.5-27B-Q4_K_M.gguf-think",
+  "timestamp": "2026-02-28T17:08:42.107398",
+  "tests": [
+    {
+      "name": "json_simple",
+      "passed": true,
+      "reason": "Valid JSON",
+      "response": "[\n  {\n    \"language\": \"Python\",\n    \"year\": 1991\n  },\n  {\n    \"language\": \"Java\",\n    \"year\": 1995\n  },\n  {\n    \"language\": \"C\",\n    \"year\": 1972\n  }\n]",
+      "elapsed": 20.35,
+      "tps": 23.7
+    },
+    {
+      "name": "json_nested",
+      "passed": true,
+      "reason": "Valid JSON",
+      "response": "{\n  \"name\": \"Jane Smith\",\n  \"age\": 28,\n  \"skills\": [\"React\", \"Node.js\", \"SQL\"],\n  \"address\": {\n    \"city\": \"London\",\n    \"country\": \"UK\"\n  }\n}",
+      "elapsed": 41.57,
+      "tps": 24.0
+    },
+    {
+      "name": "json_from_text",
+      "passed": true,
+      "reason": "Valid JSON",
+      "response": "{\n  \"name\": \"John Smith\",\n  \"age\": 34,\n  \"company\": \"Google\",\n  \"title\": \"Senior Engineer\",\n  \"location\": \"Mountain View, CA\",\n  \"email\": \"john@google.com\"\n}",
+      "elapsed": 128.81,
+      "tps": 15.1
+    },
+    {
+      "name": "json_strict_schema",
+      "passed": true,
+      "reason": "Valid JSON",
+      "response": "{\"action\": \"schedule_meeting\", \"target\": \"Bob\", \"confidence\": 0.95}",
+      "elapsed": 121.42,
+      "tps": 22.6
+    },
+    {
+      "name": "json_array_complex",
+      "passed": true,
+      "reason": "Valid JSON",
+      "response": "[\n  {\n    \"id\": 1,\n    \"task\": \"Finalize code freeze\",\n    \"priority\": \"high\",\n    \"done\": false\n  },\n  {\n    \"id\": 2,\n    \"task\": \"Run automated test suite\",\n    \"priority\": \"high\",\n    \"done\": false\n  },\n  {\n    \"id\": 3,\n    \"task\": \"Update release documentation\",\n    \"priority\": \"medium\",\n    \"done\": false\n  },\n  {\n    \"id\": 4,\n    \"task\": \"Deploy to staging environment\",\n    \"priority\": \"high\",\n    \"done\": false\n  },\n  {\n    \"id\": 5,\n    \"task\": \"Notify stakeholders of release\",\n    \"priority\": \"low\",\n    \"done\": false\n  }\n]",
+      "elapsed": 137.5,
+      "tps": 14.6
+    },
+    {
+      "name": "system_prompt_adherence",
+      "passed": true,
+      "reason": "Contains: arr, aye, ye, seas, ahoy",
+      "response": "Ahoy there, ye landlubber! Ye be seekin' knowledge of the lands beyond the seven seas? Aye, the capital of France be Paris, savvy! It be a fine city, though I prefer the open ocean and the smell of salt in the air! Now, keep yer powder dry and yer eyes on the horizon! Arrr!",
+      "elapsed": 59.24,
+      "tps": 23.9
+    },
+    {
+      "name": "one_word_constraint",
+      "passed": true,
+      "reason": "Word count: 1 (expected ~1)",
+      "response": "blue",
+      "elapsed": 8.64,
+      "tps": 23.0
+    },
+    {
+      "name": "numbered_list",
+      "passed": true,
+      "reason": "Pattern matches: 8 (min 3)",
+      "response": "1. Gather two slices of bread and a jar of peanut butter.\n2. Place the bread slices on a clean plate or cutting board.\n3. Open the jar of peanut butter.\n4. Use a butter knife to scoop out a generous amount of peanut butter.\n5. Spread the peanut butter evenly across one side of each bread slice.\n6. Press the two slices together with the peanut butter sides facing inward.\n7. Cut the sandwich diagonally or in half if desired.\n8. Serve immediately and enjoy.",
+      "elapsed": 55.69,
+      "tps": 15.0
+    },
+    {
+      "name": "markdown_table",
+      "passed": true,
+      "reason": "Contains all expected elements",
+      "response": "| Planet | Distance from Sun (AU) | Number of Moons |\n| :--- | :--- | :--- |\n| Mercury | 0.39 | 0 |\n| Earth | 1.00 | 1 |\n| Jupiter | 5.20 | 95 |\n| Saturn | 9.58 | 146 |",
+      "elapsed": 62.62,
+      "tps": 16.9
+    },
+    {
+      "name": "refuse_and_redirect",
+      "passed": true,
+      "reason": "Contains: cooking, can only help",
+      "response": "I can only help with cooking-related questions.",
+      "elapsed": 14.42,
+      "tps": 14.7
+    }
+  ],
+  "passed": 10,
+  "failed": 0,
+  "total": 10,
+  "score_pct": 100.0
+}

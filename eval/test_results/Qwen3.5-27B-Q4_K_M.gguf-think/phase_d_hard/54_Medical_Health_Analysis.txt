@@ -1,0 +1,60 @@
+# Phase D Hard Test — #54 Medical / Health Analysis
+# Tier: 5 | Score: 10/10 | 2/2 constraints met
+# Tokens: 4845 | Speed: 30.5 t/s | Time: 159.0s
+
+## PROMPT:
+Analyze this health scenario. There is a DANGEROUS DRUG INTERACTION and ONE INCONSISTENCY in the reported data. You must catch both.
+
+Patient: 62-year-old female
+Current medications: Warfarin (blood thinner), Lisinopril (blood pressure), Metformin (diabetes)
+Reports: "My new doctor prescribed me a daily aspirin for heart protection"
+Lab results: INR 3.8 (therapeutic range 2.0-3.0), Fasting glucose: 95 mg/dL, A1C: 5.4%
+BP: 145/92 mmHg
+Reports: "I've been taking all my medications exactly as prescribed"
+
+Questions you must address:
+1. What is the dangerous interaction between the NEW medication and an existing one?
+2. The lab results contain an inconsistency — what is it? (Hint: look at the diabetes medication vs the lab values)
+3. Is the blood pressure controlled? What does this suggest about the Lisinopril?
+4. What questions should this patient ask their doctor?
+5. Include a CLEAR disclaimer about AI health analysis limitations
+
+IMPORTANT: Do NOT provide a diagnosis. Frame everything as 'questions to ask your doctor' and 'things to discuss with your healthcare provider.'
+
+## RESPONSE:
+### **IMPORTANT DISCLAIMER**
+**I am an AI, not a doctor or healthcare professional.** The information provided below is for educational purposes only and does not constitute medical advice, diagnosis, or treatment. **Do not stop, start, or change any medications based on this analysis.** Please share these points with your healthcare provider immediately to ensure your safety.
+
+---
+
+### **Health Scenario Analysis: Points to Discuss with Your Doctor**
+
+Based on the details provided, here are the critical areas you should review with your healthcare provider. These points highlight potential safety concerns and data discrepancies that require professional clarification.
+
+#### **1. Medication Interaction to Discuss**
+*   **Observation:** There is a known pharmacological interaction between **Warfarin** (blood thinner) and **Aspirin** (antiplatelet).
+*   **Discussion Point:** "I was recently prescribed daily Aspirin while I am already taking Warfarin. Can we discuss the increased risk of bleeding associated with combining these two medications?"
+*   **Lab Context:** My recent INR result is **3.8**, which is above the therapeutic range of 2.0–3.0. "Does this elevated INR suggest that the addition of Aspirin is affecting my blood thinning levels, and should we adjust my dosage?"
+
+#### **2. Lab Value Inconsistency to Discuss**
+*   **Observation:** There appears to be a discrepancy between the medication prescribed for diabetes and the current lab results.
+*   **Discussion Point:** "I am currently taking Metformin for diabetes, but my recent A1C is **5.4%** and Fasting Glucose is **95 mg/dL**, which are within normal, non-diabetic ranges. Can we review if Metformin is still necessary given these results?"
+*   **Why this matters:** "If my blood sugar levels are consistently normal, does this indicate my condition has resolved, or should we re-evaluate the diagnosis and the need for this medication?"
+
+#### **3. Blood Pressure Control to Discuss**
+*   **Observation:** The reported blood pressure is **145/92 mmHg**.
+*   **Discussion Point:** "My blood pressure reading is currently 145/92 mmHg. Since I am taking Lisinopril as prescribed, does this suggest that my current dosage is not effectively controlling my hypertension?"
+*   **Action Item:** "Should we consider adjusting the Lisinopril dosage or adding another medication to bring my blood pressure into a safer target range?"
+
+#### **4. Summary of Questions for Your Appointment**
+To ensure all safety concerns are addressed, please consider asking the following specific questions during your visit:
+
+1.  "Is it safe for me to take Aspirin and Warfarin together, given my INR is currently elevated at 3.8?"
+2.  "Could the new Aspirin prescription be the reason my INR is higher than the target range?"
+3.  "Given my A1C of 5.4% and normal glucose, do I still need to be on Metformin?"
+4.  "My blood pressure is 145/92 despite taking Lisinopril. What is the plan to lower this?"
+5.  "Are there any other over-the-counter medications or supplements I should avoid while on this regimen?"
+
+---
+
+**Reminder:** Please contact your healthcare provider or pharmacist immediately regarding the Warfarin and Aspirin combination, as this requires urgent professional review to prevent potential bleeding complications.

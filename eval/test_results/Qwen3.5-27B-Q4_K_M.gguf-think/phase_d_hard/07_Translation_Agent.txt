@@ -1,0 +1,55 @@
+# Phase D Hard Test — #7 Translation Agent
+# Tier: 1 | Score: 5/10 | No automated constraints to check
+# Tokens: 5885 | Speed: 29.9 t/s | Time: 196.7s
+
+## PROMPT:
+Translate this marketing copy to Spanish AND Japanese. This text contains: 1 pun, 1 culture-specific reference, and 1 idiom. You MUST add translator notes explaining how you handled each.
+
+"Our new Cloud9 hosting puts your website on cloud nine! Like a good neighbor, ServerFarm is there. Don't put all your eggs in one basket — our multi-region failover means your data is always safe. With speeds that would make Usain Bolt jealous, your pages load before you can say 'supercalifragilisticexpialidocious.'"
+
+Requirements:
+- Translate the full text to both languages
+- Add [TRANSLATOR NOTE] for EACH culturally-specific element explaining your adaptation
+- The pun "Cloud9/cloud nine" must be addressed — explain if you preserved it or adapted it
+- The "good neighbor" is a State Farm insurance slogan reference — explain how you handled it
+
+## RESPONSE:
+### Spanish Translation
+
+"Nuestro nuevo hosting Cloud9 pone tu sitio web ¡en la nube nueve! Como un buen vecino, ServerFarm está ahí. No pongas todos los huevos en la misma cesta: nuestro failover multi-región significa que tus datos siempre están seguros. Con velocidades que harían envidiar a Usain Bolt, tus páginas cargan antes de que puedas decir 'supercalifragilisticexpialidocious'."
+
+[TRANSLATOR NOTE: PUN - "Cloud9/cloud nine"]
+**Adaptation:** Preserved. In Spanish, the idiom "on cloud nine" translates directly to "en la nube nueve". By keeping the brand name "Cloud9" and using the literal translation of the idiom, the wordplay remains intact for Spanish speakers familiar with the English phrase or the concept of "nube nueve".
+
+[TRANSLATOR NOTE: CULTURE-SPECIFIC REFERENCE - "Like a good neighbor"]
+**Adaptation:** Translated literally ("Como un buen vecino"). This is a direct parody of the State Farm insurance slogan ("Like a good neighbor, State Farm is there"). While the slogan is iconic in the US, it is not widely recognized in Spanish-speaking markets. I chose to keep the literal translation to maintain the structure of the parody, even though the specific cultural recognition may be lost on the target audience.
+
+[TRANSLATOR NOTE: IDIOM - "Eggs in one basket"]
+**Adaptation:** Preserved. The Spanish equivalent "No pongas todos los huevos en la misma cesta" is a direct cognate of the English idiom and conveys the exact same meaning regarding risk diversification.
+
+[TRANSLATOR NOTE: CULTURE-SPECIFIC REFERENCE - Usain Bolt]
+**Adaptation:** Preserved. Usain Bolt is a globally recognized figure for speed. No translation or localization was needed as his name is understood internationally.
+
+[TRANSLATOR NOTE: CULTURE-SPECIFIC REFERENCE - "supercalifragilisticexpialidocious"]
+**Adaptation:** Preserved. This word from *Mary Poppins* is well-known in Spanish-speaking cultures due to the film's popularity. Keeping the original English word maintains the joke about the length of the word versus the speed of the loading time.
+
+***
+
+### Japanese Translation
+
+「新しい Cloud9 ホスティングは、あなたのサイトを『雲の上』に浮かべます！良い隣人のように、ServerFarm はいつもそばにいます。卵を一つのカゴに盛るな——マルチリージョンフェイルオーバーにより、データは常に安全です。Usain Bolt さんですら嫉妬するスピードで、ページは『supercalifragilisticexpialidocious』と言える前に読み込まれます。」
+
+[TRANSLATOR NOTE: PUN - "Cloud9/cloud nine"]
+**Adaptation:** Adapted. The Japanese idiom for extreme happiness is "雲の上" (kumo no ue - on the clouds) or "天国" (tenkoku - heaven), but it does not include the number "nine". To maintain the brand name "Cloud9" (クラウド9), I translated the idiom to "雲の上" to keep the "cloud" imagery, though the specific numerical pun is lost. This prioritizes brand recognition over the wordplay.
+
+[TRANSLATOR NOTE: CULTURE-SPECIFIC REFERENCE - "Like a good neighbor"]
+**Adaptation:** Translated literally ("良い隣人のように"). This references the State Farm slogan. Since State Farm is not a major brand in Japan, the cultural reference will likely be missed. I kept the literal translation to preserve the tone of reliability and neighborliness, acknowledging that the specific brand parody is US-centric.
+
+[TRANSLATOR NOTE: IDIOM - "Eggs in one basket"]
+**Adaptation:** Adapted. The standard Japanese equivalent is "卵を一つのカゴに盛るな" (Tamago o hitotsu no kago ni moruna). This is a direct translation of the English idiom and is widely understood in Japanese business contexts to mean avoiding concentrated risk.
+
+[TRANSLATOR NOTE: CULTURE-SPECIFIC REFERENCE - Usain Bolt]
+**Adaptation:** Preserved. Usain Bolt is well-known in Japan as the world's fastest sprinter. His name is kept in Katakana (Usain Bolt) to ensure immediate recognition of the speed reference.
+
+[TRANSLATOR NOTE: CULTURE-SPECIFIC REFERENCE - "supercalifragilisticexpialidocious"]
+**Adaptation:** Preserved. While the Japanese dub of *Mary Poppins* uses a translated version of the song, the original English word is iconic enough among pop-culture enthusiasts to convey the "long word" joke. Keeping the English word emphasizes the difficulty of saying it quickly, reinforcing the speed claim.

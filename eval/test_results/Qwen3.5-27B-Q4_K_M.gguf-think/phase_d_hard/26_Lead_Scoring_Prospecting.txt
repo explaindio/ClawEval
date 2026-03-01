@@ -1,0 +1,73 @@
+# Phase D Hard Test — #26 Lead Scoring / Prospecting
+# Tier: 2 | Score: 10/10 | 1/1 constraints met
+# Tokens: 3058 | Speed: 32.7 t/s | Time: 93.6s
+
+## PROMPT:
+Score these 5 leads. WARNING: The lead with the MOST engagement is actually a tire-kicker, not your best prospect. Identify them.
+
+Lead 1: "CTO at a 50-person startup. Downloaded every whitepaper (12 total), attended 3 webinars, watches all YouTube content. Has been doing this for 18 months. No demo request. When sales reached out, said 'just researching, no timeline.'"
+
+Lead 2: "VP Engineering at 200-person company. Visited pricing page once 3 months ago. No other activity."
+
+Lead 3: "Developer at enterprise company (5000 employees). Created free account, built a POC over 2 weeks, invited 3 teammates. Just asked about SSO integration."
+
+Lead 4: "Procurement manager at 300-person company. First visit to site yesterday, immediately went to pricing, downloaded security whitepaper, submitted a form asking about SOC 2 compliance and volume discounts. Mentioned Q2 budget allocation."
+
+Lead 5: "Founder of 10-person agency. Signed up for free trial, very active for 3 days, then completely silent for 6 weeks."
+
+Score each 1-100, identify the tire-kicker, rank them, and explain your reasoning.
+
+## RESPONSE:
+### The Tire-Kicker Identification
+**Lead 1 is the Tire-Kicker.**
+
+Despite having the highest volume of content consumption (12 whitepapers, 3 webinars, all YouTube videos), this lead exhibits classic "information hoarder" behavior. They have been active for 18 months with zero conversion, explicitly stated "no timeline," and have not requested a demo. This is high *marketing* engagement masking zero *sales* intent.
+
+***
+
+### Lead Ranking & Scoring
+
+| Rank | Lead | Score | Status |
+| :--- | :--- | :--- | :--- |
+| **1** | **Lead 4** | **95** | **Hot Prospect** |
+| **2** | **Lead 3** | **85** | **High Potential** |
+| **3** | **Lead 1** | **35** | **Tire-Kicker** |
+| **4** | **Lead 5** | **20** | **Churned** |
+| **5** | **Lead 2** | **10** | **Cold/Stale** |
+
+***
+
+### Detailed Reasoning
+
+#### 1. Lead 4 (Score: 95) - The Buyer
+*   **Why #1:** This lead checks every box of the BANT framework (Budget, Authority, Need, Timeline).
+*   **Signals:** They are asking about **SOC 2 compliance** (security readiness) and **volume discounts** (intent to scale). Crucially, they mentioned **Q2 budget allocation**.
+*   **Urgency:** The activity is fresh (yesterday), and the questions are transactional, not educational. They are ready to move to procurement.
+*   **Risk:** Procurement managers can be gatekeepers, but when they ask about volume discounts and compliance, they are usually the ones facilitating the final signature.
+
+#### 2. Lead 3 (Score: 85) - The Champion
+*   **Why #2:** This is the strongest *product* fit.
+*   **Signals:** Building a **POC (Proof of Concept)** is the strongest indicator of intent after a demo. Inviting **3 teammates** signals potential adoption and internal advocacy. Asking about **SSO** means they are planning for enterprise integration.
+*   **Risk:** They are a Developer, not necessarily the budget holder. They need to convince the decision-makers (like Lead 4). However, the deal is already in motion.
+
+#### 3. Lead 1 (Score: 35) - The Tire-Kicker (The Trap)
+*   **Why #3:** This lead is the specific warning in your prompt.
+*   **Signals:** **18 months** of activity without a demo is a massive red flag. In SaaS, 18 months is an eternity; the market moves too fast.
+*   **The Trap:** They are consuming content to feel productive without committing. They explicitly told sales "no timeline."
+*   **Strategy:** Do not waste sales resources here. Move them to a nurture stream. They are likely researching for a future project or gathering data for a competitor analysis.
+
+#### 4. Lead 5 (Score: 20) - The Ghost
+*   **Why #4:** They showed initial interest but lost momentum.
+*   **Signals:** 3 days of activity followed by **6 weeks of silence** indicates they either found a solution elsewhere, got distracted, or realized the product wasn't a fit.
+*   **Strategy:** A re-engagement email is worth one attempt, but they are likely lost.
+
+#### 5. Lead 2 (Score: 10) - The Stale Lead
+*   **Why #5:** This lead is effectively dead.
+*   **Signals:** Visited pricing **3 months ago** with no follow-up.
+*   **Strategy:** Do not contact. This data is too old to be actionable.
+
+### Summary of Strategy
+*   **Prioritize Lead 4 immediately.** They have the budget and the timeline.
+*   **Support Lead 3.** Help them build their case so they can sell internally to the budget holder.
+*   **Ignore Lead 1.** Do not let their high content consumption fool you; they are not buying.
+*   **Archive Leads 2 & 5.** They are not currently viable opportunities.

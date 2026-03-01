@@ -1,0 +1,131 @@
+# Phase D Hard Test — #31 Recipe / Cooking Agent
+# Tier: 2 | Score: 10/10 | 1/1 constraints met
+# Tokens: 7905 | Speed: 30.3 t/s | Time: 260.6s
+
+## PROMPT:
+Create a 3-course dinner for 4 guests with these dietary restrictions. There is a TRAP ingredient that violates one restriction — don't fall for it.
+
+Restrictions:
+- Guest A: Vegan (no animal products AT ALL — including honey, gelatin, casein, whey)
+- Guest B: Celiac disease (strict gluten-free — not just "wheat-free," watch for hidden gluten in soy sauce, malt, etc.)
+- Guest C: Severe tree nut allergy (almonds, cashews, walnuts, pecans, pistachios — but peanuts are OK, they're legumes)
+- Guest D: Low-sodium diet (under 500mg sodium per serving)
+
+Create a 3-course menu. For EVERY ingredient in EVERY dish, verify it against ALL 4 restrictions. If an ingredient could cause confusion (e.g., "natural flavors" which might contain gluten), flag it. Show the verification matrix.
+
+## RESPONSE:
+# 3-Course Dinner Menu: "The Safe Harvest"
+
+**Guest Count:** 4
+**Dietary Profile:** Vegan, Celiac (Strict GF), Severe Tree Nut Allergy, Low-Sodium (<500mg/serving).
+
+### ⚠️ THE TRAP ALERT
+**The Trap Ingredient:** **Regular Soy Sauce**
+**Why it's a trap:** It is a staple in plant-based cooking for umami flavor and appears vegan-friendly. However, traditional soy sauce is brewed with **wheat** (violating Guest B's Celiac restriction) and is extremely **high in sodium** (violating Guest D's restriction).
+**The Solution:** I have excluded soy sauce entirely. Flavor is derived from fresh herbs, citrus, and low-sodium vegetable broth to ensure safety for all guests.
+
+---
+
+### Course 1: Creamy Roasted Red Pepper & Carrot Soup
+*A velvety, dairy-free soup thickened with silken tofu instead of cashews.*
+
+**Ingredients:**
+*   Red Bell Peppers (2 large, roasted)
+*   Carrots (2 medium, chopped)
+*   Yellow Onion (1/2, diced)
+*   Garlic (2 cloves, minced)
+*   **Silken Tofu** (1/2 cup, firm) – *Thickening agent*
+*   **Vegetable Broth** (2 cups, Certified Low-Sodium & Gluten-Free)
+*   Lemon Juice (1 tbsp, fresh)
+*   Fresh Basil (1 tbsp, chopped)
+*   Black Pepper (1/4 tsp, freshly ground)
+*   *Water (as needed for consistency)*
+
+### Course 2: Quinoa & Black Bean Stuffed Peppers
+*A hearty main course using legumes and gluten-free grains.*
+
+**Ingredients:**
+*   Bell Peppers (4 large, halved and seeded)
+*   **Quinoa** (1 cup dry, Certified Gluten-Free)
+*   **Black Beans** (1 can, 15oz, Low-Sodium, Rinsed Thoroughly)
+*   **Crushed Tomatoes** (1 can, 14oz, No Salt Added)
+*   Corn (1/2 cup, fresh or frozen, thawed)
+*   Zucchini (1/2 cup, diced)
+*   Cumin (1 tsp, pure spice)
+*   Chili Powder (1 tsp, pure spice)
+*   **Avocado** (1 ripe, sliced for garnish)
+*   Lime Juice (1 tbsp, fresh)
+*   Fresh Cilantro (1 tbsp, chopped)
+
+### Course 3: Mango & Lime Sorbet
+*A refreshing, fruit-based dessert without dairy or honey.*
+
+**Ingredients:**
+*   Mango (2 cups, frozen chunks)
+*   Lime Juice (2 tbsp, fresh)
+*   Water (1/4 cup)
+*   **Maple Syrup** (1 tbsp, 100% Pure) – *Sweetener*
+*   Pinch of Sea Salt (Optional, <1mg sodium) – *Omitted for safety*
+
+---
+
+### Ingredient Verification Matrix
+
+| Ingredient | Guest A (Vegan) | Guest B (Celiac/GF) | Guest C (Tree Nut) | Guest D (Low Sodium) | Notes / Flags |
+| :--- | :---: | :---: | :---: | :---: | :--- |
+| **Red Bell Peppers** | ✅ | ✅ | ✅ | ✅ | Natural whole food. |
+| **Carrots** | ✅ | ✅ | ✅ | ✅ | Natural whole food. |
+| **Yellow Onion** | ✅ | ✅ | ✅ | ✅ | Natural whole food. |
+| **Garlic** | ✅ | ✅ | ✅ | ✅ | Natural whole food. |
+| **Silken Tofu** | ✅ | ✅ | ✅ | ✅ | **Flag:** Ensure processed in nut-free facility. Soy is a legume, safe for Guest C. |
+| **Vegetable Broth** | ✅ | ⚠️ | ✅ | ⚠️ | **Flag:** Must be Certified GF (no barley/malt) and Low-Sodium (<140mg/cup). Avoid "Natural Flavors." |
+| **Lemon Juice** | ✅ | ✅ | ✅ | ✅ | Natural whole food. |
+| **Fresh Basil** | ✅ | ✅ | ✅ | ✅ | Natural whole food. |
+| **Black Pepper** | ✅ | ✅ | ✅ | ✅ | Natural whole food. |
+| **Quinoa** | ✅ | ⚠️ | ✅ | ✅ | **Flag:** Must be Certified GF (often cross-contaminated with wheat). |
+| **Black Beans** | ✅ | ✅ | ✅ | ⚠️ | **Flag:** Must be Low-Sodium and rinsed to remove brine. |
+| **Crushed Tomatoes** | ✅ | ✅ | ✅ | ⚠️ | **Flag:** Must be "No Salt Added." Check for "Natural Flavors." |
+| **Corn** | ✅ | ✅ | ✅ | ✅ | Natural whole food. |
+| **Zucchini** | ✅ | ✅ | ✅ | ✅ | Natural whole food. |
+| **Cumin** | ✅ | ✅ | ✅ | ✅ | **Flag:** Ensure pure spice, no anti-caking agents with gluten. |
+| **Chili Powder** | ✅ | ✅ | ✅ | ✅ | **Flag:** Ensure pure spice, no wheat fillers. |
+| **Avocado** | ✅ | ✅ | ✅ | ✅ | Natural whole food. |
+| **Lime Juice** | ✅ | ✅ | ✅ | ✅ | Natural whole food. |
+| **Fresh Cilantro** | ✅ | ✅ | ✅ | ✅ | Natural whole food. |
+| **Mango** | ✅ | ✅ | ✅ | ✅ | Natural whole food. |
+| **Maple Syrup** | ✅ | ✅ | ✅ | ✅ | **Flag:** Must be 100% pure. **Avoid Honey** (Vegan Trap). |
+| **Water** | ✅ | ✅ | ✅ | ✅ | Natural whole food. |
+
+---
+
+### Sodium Calculation (Per Serving)
+*Target: <500mg per serving*
+
+**Course 1 (Soup):**
+*   Vegetable Broth (1/2 cup used per serving): ~70mg
+*   Silken Tofu (1/8 cup per serving): ~5mg
+*   Veggies (Peppers, Carrots, Onion, Garlic): ~10mg
+*   **Course 1 Total:** **~85mg**
+
+**Course 2 (Main):**
+*   Black Beans (1/4 cup rinsed per serving): ~50mg
+*   Quinoa (1/4 cup cooked per serving): ~5mg
+*   Crushed Tomatoes (1/4 cup per serving): ~5mg
+*   Veggies (Peppers, Corn, Zucchini): ~10mg
+*   **Course 2 Total:** **~70mg**
+
+**Course 3 (Dessert):**
+*   Mango, Lime, Water, Maple Syrup: ~5mg
+*   **Course 3 Total:** **~5mg**
+
+**Grand Total Per Serving:** **~160mg**
+*Status:* **SAFE** (Well under the 500mg limit).
+
+---
+
+### Final Safety Checks & Flags
+1.  **Broth:** Do not use bouillon cubes. They often contain high sodium and hidden gluten. Use a carton labeled "Certified Gluten-Free" and "Low Sodium."
+2.  **Spices:** Do not use pre-mixed spice blends (e.g., "Taco Seasoning"). These often contain wheat flour or high sodium. Use single-ingredient spices.
+3.  **Maple Syrup:** Do not use "Honey" or "Agave Blend" (some agave blends have additives). Use 100% Pure Maple Syrup.
+4.  **Tofu:** While soy is a legume (safe for Guest C), ensure the brand does not process tree nuts in the same facility to prevent cross-contamination.
+5.  **Quinoa:** Ensure the bag states "Certified Gluten-Free." Standard quinoa is often processed in facilities with wheat.

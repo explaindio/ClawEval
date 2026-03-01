@@ -1,0 +1,87 @@
+# Phase D Hard Test — #32 Personal Finance Tracking
+# Tier: 2 | Score: 10/10 | 3/3 constraints met
+# Tokens: 2869 | Speed: 30.0 t/s | Time: 95.7s
+
+## PROMPT:
+Analyze 3 months of transactions. WARNING: There are 2 potentially fraudulent transactions hidden in the data. Find them.
+
+January:
+- Salary: +$5,000 (Jan 1). Rent: -$1,800 (Jan 1). Grocery Store: -$312 (Jan 5). Electric: -$95 (Jan 10). Netflix: -$15 (Jan 15). Gas: -$45 (Jan 18). Restaurant: -$85 (Jan 22). Gym: -$50 (Jan 28).
+
+February:
+- Salary: +$5,000 (Feb 1). Rent: -$1,800 (Feb 1). Grocery Store: -$287 (Feb 4). Electric: -$102 (Feb 10). Netflix: -$15 (Feb 15). Netflix: -$15 (Feb 15). Gas: -$52 (Feb 19). Restaurant: -$120 (Feb 23). Coffee: -$45 (Feb 25).
+
+March:
+- Salary: +$5,000 (Mar 1). Rent: -$1,800 (Mar 1). Grocery Store: -$345 (Mar 6). ATM Withdrawal Miami: -$400 (Mar 8). Local Gas Station: -$48 (Mar 8). Electric: -$98 (Mar 12). Netflix: -$15 (Mar 15). Restaurant: -$95 (Mar 20). Shopping: -$250 (Mar 25).
+
+Calculate exact monthly totals, savings rate, category trends, AND identify the suspicious transactions with explanation.
+
+## RESPONSE:
+Here is the comprehensive financial analysis of the 3-month transaction period.
+
+### 1. Monthly Financial Breakdown
+
+| Month | Income | Expenses | Net Cash Flow |
+| :--- | :--- | :--- | :--- |
+| **January** | $5,000 | $2,402 | **+$2,598** |
+| **February** | $5,000 | $2,436 | **+$2,564** |
+| **March** | $5,000 | $3,051 | **+$1,949** |
+| **TOTAL** | **$15,000** | **$7,889** | **+$7,111** |
+
+**Expense Calculation Details:**
+*   **January:** $1,800 (Rent) + $312 (Grocery) + $95 (Electric) + $15 (Netflix) + $45 (Gas) + $85 (Restaurant) + $50 (Gym) = **$2,402**
+*   **February:** $1,800 (Rent) + $287 (Grocery) + $102 (Electric) + $30 (Netflix x2) + $52 (Gas) + $120 (Restaurant) + $45 (Coffee) = **$2,436**
+*   **March:** $1,800 (Rent) + $345 (Grocery) + $400 (ATM) + $48 (Gas) + $98 (Electric) + $15 (Netflix) + $95 (Restaurant) + $250 (Shopping) = **$3,051**
+
+---
+
+### 2. Savings Analysis
+
+*   **Total Income:** $15,000
+*   **Total Expenses:** $7,889
+*   **Total Savings:** $7,111
+*   **Savings Rate:** **47.4%**
+    *   *(Calculation: $7,111 / $15,000)*
+
+**Insight:** You are saving nearly half of your income, which is an excellent savings rate. However, expenses increased significantly in March, reducing your net cash flow by approximately $600 compared to previous months.
+
+---
+
+### 3. Category Trends
+
+*   **Housing (Rent):** Stable at $1,800/month.
+*   **Utilities (Electric):** Minor fluctuation ($95 → $102 → $98). Average is $98.33.
+*   **Food (Groceries):** Variable. Lowest in Feb ($287), highest in Mar ($345).
+*   **Dining Out:** Spiked in February ($120) compared to Jan ($85) and Mar ($95).
+*   **Transportation (Gas):** Consistent usage ($45–$52 range).
+*   **Subscriptions:** Netflix is generally $15, but February shows an anomaly (see Fraud Section).
+*   **Variable Spending:**
+    *   **Gym:** Only charged in January.
+    *   **Coffee:** Only charged in February.
+    *   **Shopping:** Only charged in March ($250).
+
+---
+
+### 4. ⚠️ FRAUD ALERT: Suspicious Transactions
+
+Based on the data provided, there are **2 potentially fraudulent transactions** that require immediate attention.
+
+#### **Suspicious Transaction #1: Duplicate Subscription Charge**
+*   **Transaction:** `Netflix: -$15 (Feb 15)`
+*   **Context:** There are **two** entries for Netflix on the exact same date in February.
+*   **Why it is suspicious:** Subscription services typically bill once per billing cycle. A duplicate charge on the same day indicates either a processing error by the merchant or unauthorized double-billing.
+*   **Action Required:** Contact Netflix support immediately to dispute the second charge.
+
+#### **Suspicious Transaction #2: Unfamiliar Location ATM Withdrawal**
+*   **Transaction:** `ATM Withdrawal Miami: -$400 (Mar 8)`
+*   **Context:** All other transactions (Rent, Gas, Grocery, Electric) suggest a local lifestyle. There is no travel history in January or February to justify a trip to Miami.
+*   **Why it is suspicious:**
+    1.  **Geographic Anomaly:** A cash withdrawal in a different city without prior travel context is a primary indicator of card theft.
+    2.  **Cash Withdrawal:** Fraudsters prefer cash withdrawals because they are harder to trace and refund than digital purchases.
+    3.  **Amount:** $400 is a significant amount for a single ATM withdrawal compared to the user's typical spending habits.
+*   **Action Required:** Contact your bank immediately to freeze the card and report the transaction as fraudulent.
+
+### Summary of Recommendations
+1.  **Dispute the Feb 15th duplicate Netflix charge.**
+2.  **Report the Mar 8th Miami ATM withdrawal to your bank.**
+3.  **Monitor March expenses:** The $250 Shopping charge is high but not necessarily fraudulent; however, combined with the Miami withdrawal, it suggests your card details may have been compromised. Consider requesting a new card number.

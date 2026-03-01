@@ -1,0 +1,65 @@
+# Phase D Hard Test — #2 Input Validator / Sanitizer
+# Tier: 1 | Score: 10/10 | 8/8 constraints met
+# Tokens: 5172 | Speed: 31.8 t/s | Time: 162.8s
+
+## PROMPT:
+Validate this API request body. Find ALL issues (there are at least 10). For each issue, specify: field, severity (critical/error/warning), and explanation. Cross-field validations are required.
+
+```json
+{
+  "order": {
+    "customer": {
+      "name": "<img src=x onerror=alert(1)>John",
+      "email": "john@",
+      "phone": "555-CALL-ME",
+      "zip": "1234"
+    },
+    "items": [
+      {"sku": "ABC-123", "quantity": -3, "unit_price": 29.99},
+      {"sku": "", "quantity": 0, "unit_price": 0.001},
+      {"sku": "DEF-456", "quantity": 2, "unit_price": 15.00}
+    ],
+    "discount_percent": 150,
+    "start_date": "2025-03-15",
+    "end_date": "2025-03-10",
+    "notes": "Regular order'; DROP TABLE orders;--",
+    "shipping": {"method": "TELEPORT", "address": ""}
+  }
+}
+```
+
+List every single issue. Do NOT miss cross-field validations (e.g., date relationships).
+
+## RESPONSE:
+Here is the validation report for the provided API request body. There are **14 distinct issues** identified, including security vulnerabilities, data format errors, and logical inconsistencies.
+
+### **Critical Severity (Security Vulnerabilities)**
+
+| # | Field | Severity | Explanation |
+| :--- | :--- | :--- | :--- |
+| 1 | `order.customer.name` | **Critical** | **XSS Injection:** The value contains HTML/JavaScript tags (`<img src=x onerror=alert(1)>`). This allows Cross-Site Scripting attacks if the name is rendered unsanitized in a UI. |
+| 2 | `order.notes` | **Critical** | **SQL Injection:** The value contains SQL syntax (`'; DROP TABLE orders;--`). This indicates an attempt to manipulate the database backend directly. |
+
+### **Error Severity (Validation & Logic Failures)**
+
+| # | Field | Severity | Explanation |
+| :--- | :--- | :--- | :--- |
+| 3 | `order.customer.email` | **Error** | **Invalid Format:** The email string `"john@"` is missing a domain and TLD (e.g., `.com`). It does not match standard email regex patterns. |
+| 4 | `order.customer.phone` | **Error** | **Invalid Format:** The phone number `"555-CALL-ME"` contains alphabetic characters. APIs typically expect numeric formats (E.164 or standard digits). |
+| 5 | `order.customer.zip` | **Error** | **Invalid Length:** The ZIP code `"1234"` is 4 digits. Standard US ZIP codes require 5 digits (or 9 for ZIP+4). |
+| 6 | `order.items[0].quantity` | **Error** | **Negative Value:** Quantity is `-3`. Physical items cannot have a negative quantity in an order context. |
+| 7 | `order.items[1].sku` | **Error** | **Missing Required Value:** The SKU is an empty string `""`. Every line item must have a valid Stock Keeping Unit identifier. |
+| 8 | `order.items[1].quantity` | **Error** | **Zero Quantity:** Quantity is `0`. An item with zero quantity should not exist in the order list; it adds no value and wastes resources. |
+| 9 | `order.items[1].unit_price` | **Error** | **Invalid Currency Precision:** The price `0.001` implies 3 decimal places. Standard currency validation (USD/EUR) requires exactly 2 decimal places (min `0.01`). |
+| 10 | `order.discount_percent` | **Error** | **Invalid Range:** The discount is `150%`. Discounts cannot exceed `100%` (which would result in a negative total). |
+| 11 | `order.shipping.method` | **Error** | **Invalid Enum:** The method `"TELEPORT"` is not a recognized shipping carrier or method (e.g., Standard, Express, Overnight). |
+| 12 | `order.shipping.address` | **Error** | **Missing Required Value:** The shipping address is an empty string `""`. A valid address is mandatory when a shipping method is selected. |
+| 13 | `order.start_date` / `order.end_date` | **Error** | **Invalid Date Range (Cross-Field):** `end_date` (`2025-03-10`) is earlier than `start_date` (`2025-03-15`). The end date must be greater than or equal to the start date. |
+| 14 | `order.items[0]` (Line Total) | **Error** | **Negative Line Total (Cross-Field):** Calculating `quantity` (-3) × `unit_price` (29.99) results in a negative line total (`-89.97`). This creates financial logic errors and potential negative inventory. |
+
+### **Summary of Validation Rules Violated**
+1.  **Security:** Input sanitization failed for HTML/JS and SQL syntax.
+2.  **Format:** Email, Phone, and ZIP codes do not match expected regex patterns.
+3.  **Constraints:** Quantities must be > 0; Discounts must be 0-100; Prices must be 2 decimal places.
+4.  **Logic:** Dates must be chronological; Line totals must be positive.
+5.  **Required Fields:** SKU and Shipping Address cannot be empty.
