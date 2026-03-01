@@ -18,11 +18,11 @@ Most benchmarks tell you a model is "smart." ClawEval tells you if it can **do t
 
 We test quantized open-source models that fit on hardware you already own. Find out which model is best for each agent role **before you commit your VRAM.** We're also testing smaller models for max context and usability — even a 16GB GPU can run capable sub-agents.
 
-| 🟡 16GB VRAM | 🟢 24GB VRAM | 🔵 96GB VRAM |
+| 🟡 16GB VRAM | 🟢 24GB VRAM | 🔵 64–96GB VRAM |
 |---|---|---|
 | Qwen3-8B, Phi-4 14B | Qwen3.5-35B-A3B Q4_K_M | Qwen3.5-122B-A10B NVFP4 |
-| Mistral Small 24B, GPT-OSS-20B | Qwen3.5-27B Q4_K_M | More models coming |
-| Coming soon | llama.cpp · SGLang · vLLM | SGLang · vLLM |
+| Mistral Small 24B, GPT-OSS-20B | Qwen3.5-27B Q4_K_M | GPT-OSS-120B GGUF (llama.cpp) |
+| Coming soon | llama.cpp · SGLang · vLLM | SGLang · vLLM · llama.cpp |
 
 > 📖 **VRAM Guides:** [16GB](docs/OpenClaw%2016GB%20VRAM%20Local%20LLM%20Subagents.md) · [24GB](docs/The%2024GB%20VRAM%20Tier_%20Where%20Local%20AI%20Agents%20Get%20Serious.md) · [32GB](docs/openclaw-model-selection-32gb-tier.md) · [48GB](docs/openclaw-48gb-tier.md) · [64GB](docs/openclaw-64gb-tier.md) · [96GB](docs/openclaw-96gb-tier.md) — Which models fit, context limits, speed estimates
 
@@ -43,74 +43,74 @@ Best config per model. All scores out of 10. For think/nothink comparisons, see 
 
 > 📊 **[Full detailed results with all configs →](RESULTS.md)**
 
-| # | Agent Role | 122B (96GB) | 35B MoE (24GB) | 27B Dense (24GB) |
-|---|---|---|---|---|
-| | | Qwen3.5-122B-A10B | Qwen3.5-35B-A3B | Qwen3.5-27B |
-| | | NVFP4 · Think 16K · SGLang | Q4_K_M · NoThink · llama.cpp | Q4_K_M · NoThink · llama.cpp |
-| | **Tier 1 — Utility** | | | |
-| 1 | Router / Triage | 🟢 10 | 🟢 10 | 🟢 9 |
-| 2 | Input Validator | 🟢 10 | 🟢 10 | 🟢 10 |
-| 3 | Health Monitor | 🔴 3 | 🔴 3 | 🔴 3 |
-| 4 | Notification | 🟢 8 | 🟢 8 | 🟢 8 |
-| 5 | Sentiment | 🟢 10 | 🟢 10 | 🟢 10 |
-| 6 | FAQ Generation | 🟡 5 | 🟡 6 | 🟡 6 |
-| 7 | Translation | 🟢 10 | 🟢 9 | 🟢 10 |
-| 8 | Calendar | 🔴 0 | 🔴 0 | 🔴 0 |
-| | **Tier 2 — Moderate** | | | |
-| 9 | Research Agent | 🟢 10 | 🟢 10 | 🟢 10 |
-| 10 | Content Writer | 📝 5 | 📝 5 | 📝 5 |
-| 11 | Editor | 🟡 7 | 🟢 10 | 🟢 10 |
-| 12 | Content Planner | 🟢 10 | 🟢 10 | 🟢 10 |
-| 13 | Email Drafting | 🟢 8 | 🟢 10 | 🟢 10 |
-| 14 | Doc Summary | 🟢 8 | 🟢 10 | 🟢 10 |
-| 15 | Meeting Notes | 🟢 9 | 🟢 9 | 🟢 9 |
-| 16 | Social Scouting | 🟢 10 | 🟢 10 | 🟢 10 |
-| 17 | Social Content | 📝 5 | 📝 5 | 📝 5 |
-| 18 | News Aggregation | 🟢 10 | 🟢 10 | 🟢 10 |
-| 19 | Shopping | 🟢 10 | 🔴 4 | 🔴 4 |
-| 20 | Memory Mgmt | 🟢 9 | 🟢 9 | 🟢 9 |
-| 21 | RAG / Retrieval | 🟡 6 | 🔴 4 | 🟡 6 |
-| 22 | Data Analysis | 🔴 2 | 🔴 3 | 🔴 3 |
-| 23 | Web Scraping | 🟢 10 | 🟢 10 | 🟢 10 |
-| 24 | Image Description | 📝 5 | 📝 5 | 📝 5 |
-| 25 | Customer Support | 🟢 10 | 🟢 10 | 🟢 9 |
-| 26 | Lead Scoring | 🟢 8 | 🟢 8 | 🟢 10 |
-| 27 | Sprint Summary | 🟢 10 | 🟡 5 | 🟡 7 |
-| 28 | Transaction | 🟢 10 | 🟢 9 | 🟢 8 |
-| 29 | Home Automation | 🟢 10 | 🟢 9 | 🟢 9 |
-| 30 | Fitness Tracking | 🟢 9 | 🟡 7 | 🟢 9 |
-| 31 | Recipe / Cooking | 🔴 2 | 🟢 9 | 🔴 2 |
-| 32 | Personal Finance | 🟡 7 | 🔴 4 | 🔴 4 |
-| 33 | SEO Optimization | 🟢 9 | 🟢 9 | 🟢 9 |
-| 34 | Landing Page | 📝 5 | 📝 5 | 📝 5 |
-| 35 | Travel Planning | 🟢 8 | 🟡 7 | 🟡 7 |
-| | **Tier 3 — Advanced** | | | |
-| 36 | Code Generation | 🟢 10 | 🟢 10 | 🟢 10 |
-| 37 | Code Review | 🟢 10 | 🟢 10 | 🟢 8 |
-| 38 | QA / Test Writing | 🟢 8 | 🟢 10 | 🟢 8 |
-| 39 | Task Planning | 🟢 9 | 🟢 10 | 🟢 9 |
-| 40 | Fact-Checking | 🟢 10 | 🟢 10 | 🟢 10 |
-| 41 | Critic / Review | 📝 5 | 📝 5 | 📝 5 |
-| 42 | Market Research | 🔴 0 | 🟡 7 | 🟢 8 |
-| 43 | Synthesizer | 🟡 7 | 🟢 9 | 🟡 7 |
-| 44 | Curriculum Design | 🟡 6 | 🟡 6 | 🟡 5 |
-| 45 | Prototype Gen | 🟡 6 | 🟡 6 | 🟡 6 |
-| 46 | DevOps | 🟡 7 | 🟢 9 | 🟢 10 |
-| | **Tier 4 — Expert** | | | |
-| 47 | Math / Logic | 🟡 6 | 🔴 4 | 🔴 4 |
-| 48 | STEM Analysis | 🟢 10 | 🟢 10 | 🟢 10 |
-| 49 | Algorithm | 🟢 10 | 🟢 10 | 🟢 10 |
-| | **Tier 5 — Senior** | | | |
-| 50 | Orchestrator | 🟢 8 | 🟢 8 | 🟢 8 |
-| 51 | Architect | 🟢 10 | 🟢 10 | 🟢 10 |
-| 52 | Debugger | 🟢 10 | 🟢 10 | 🟢 8 |
-| 53 | Legal Review | 🟢 10 | 🟢 10 | 🟢 10 |
-| 54 | Medical | 🟡 7 | 🟢 10 | 🟢 10 |
-| 55 | Financial | 🟢 10 | 🟢 10 | 🟢 10 |
-| 56 | Security | 🟡 6 | 🟢 10 | 🟢 10 |
-| 57 | SRE / Incident | 🟡 6 | 🔴 3 | 🟡 6 |
-| 58 | Book Writing | 📝 5 | 📝 5 | 📝 5 |
-| 59 | Compliance | 🟡 7 | 🟢 8 | 🟢 9 |
+| # | Agent Role | GPT-OSS-120B (64GB) | 122B (96GB) | 35B MoE (24GB) | 27B Dense (24GB) |
+|---|---|---|---|---|---|
+| | | GPT-OSS-120B | Qwen3.5-122B-A10B | Qwen3.5-35B-A3B | Qwen3.5-27B |
+| | | GGUF · Med Reasoning · llama.cpp | NVFP4 · Think 16K · SGLang | Q4_K_M · NoThink · llama.cpp | Q4_K_M · NoThink · llama.cpp |
+| | **Tier 1 — Utility** | | | | |
+| 1 | Router / Triage | 🟢 9 | 🟢 10 | 🟢 10 | 🟢 9 |
+| 2 | Input Validator | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 |
+| 3 | Health Monitor | 🟢 8 | 🔴 3 | 🔴 3 | 🔴 3 |
+| 4 | Notification | 🟢 9 | 🟢 8 | 🟢 8 | 🟢 8 |
+| 5 | Sentiment | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 |
+| 6 | FAQ Generation | 🟡 5 | 🟡 5 | 🟡 6 | 🟡 6 |
+| 7 | Translation | 🟢 9 | 🟢 10 | 🟢 9 | 🟢 10 |
+| 8 | Calendar | 🔴 0 | 🔴 0 | 🔴 0 | 🔴 0 |
+| | **Tier 2 — Moderate** | | | | |
+| 9 | Research Agent | 🟢 9 | 🟢 10 | 🟢 10 | 🟢 10 |
+| 10 | Content Writer | 📝 5 | 📝 5 | 📝 5 | 📝 5 |
+| 11 | Editor | 🟢 9 | 🟡 7 | 🟢 10 | 🟢 10 |
+| 12 | Content Planner | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 |
+| 13 | Email Drafting | 🟢 9 | 🟢 8 | 🟢 10 | 🟢 10 |
+| 14 | Doc Summary | 🟢 10 | 🟢 8 | 🟢 10 | 🟢 10 |
+| 15 | Meeting Notes | 🟢 8 | 🟢 9 | 🟢 9 | 🟢 9 |
+| 16 | Social Scouting | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 |
+| 17 | Social Content | 📝 5 | 📝 5 | 📝 5 | 📝 5 |
+| 18 | News Aggregation | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 |
+| 19 | Shopping | 🟢 8 | 🟢 10 | 🔴 4 | 🔴 4 |
+| 20 | Memory Mgmt | 🟢 9 | 🟢 9 | 🟢 9 | 🟢 9 |
+| 21 | RAG / Retrieval | 🟡 6 | 🟡 6 | 🔴 4 | 🟡 6 |
+| 22 | Data Analysis | 🔴 2 | 🔴 2 | 🔴 3 | 🔴 3 |
+| 23 | Web Scraping | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 |
+| 24 | Image Description | 📝 5 | 📝 5 | 📝 5 | 📝 5 |
+| 25 | Customer Support | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 9 |
+| 26 | Lead Scoring | 🟢 8 | 🟢 8 | 🟢 8 | 🟢 10 |
+| 27 | Sprint Summary | 🟢 9 | 🟢 10 | 🟡 5 | 🟡 7 |
+| 28 | Transaction | 🟢 10 | 🟢 10 | 🟢 9 | 🟢 8 |
+| 29 | Home Automation | 🟢 9 | 🟢 10 | 🟢 9 | 🟢 9 |
+| 30 | Fitness Tracking | 🟢 9 | 🟢 9 | 🟡 7 | 🟢 9 |
+| 31 | Recipe / Cooking | 🟢 9 | 🔴 2 | 🟢 9 | 🔴 2 |
+| 32 | Personal Finance | 🟡 5 | 🟡 7 | 🔴 4 | 🔴 4 |
+| 33 | SEO Optimization | 🟢 9 | 🟢 9 | 🟢 9 | 🟢 9 |
+| 34 | Landing Page | 📝 5 | 📝 5 | 📝 5 | 📝 5 |
+| 35 | Travel Planning | 🟡 7 | 🟢 8 | 🟡 7 | 🟡 7 |
+| | **Tier 3 — Advanced** | | | | |
+| 36 | Code Generation | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 |
+| 37 | Code Review | 🟢 8 | 🟢 10 | 🟢 10 | 🟢 8 |
+| 38 | QA / Test Writing | 🟢 8 | 🟢 8 | 🟢 10 | 🟢 8 |
+| 39 | Task Planning | 🟢 9 | 🟢 9 | 🟢 10 | 🟢 9 |
+| 40 | Fact-Checking | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 |
+| 41 | Critic / Review | 📝 5 | 📝 5 | 📝 5 | 📝 5 |
+| 42 | Market Research | 🔴 4 | 🔴 0 | 🟡 7 | 🟢 8 |
+| 43 | Synthesizer | 🟢 10 | 🟡 7 | 🟢 9 | 🟡 7 |
+| 44 | Curriculum Design | 🟡 7 | 🟡 6 | 🟡 6 | 🟡 5 |
+| 45 | Prototype Gen | 🟡 5 | 🟡 6 | 🟡 6 | 🟡 6 |
+| 46 | DevOps | 🟢 10 | 🟡 7 | 🟢 9 | 🟢 10 |
+| | **Tier 4 — Expert** | | | | |
+| 47 | Math / Logic | 🟢 8 | 🟡 6 | 🔴 4 | 🔴 4 |
+| 48 | STEM Analysis | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 |
+| 49 | Algorithm | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 |
+| | **Tier 5 — Senior** | | | | |
+| 50 | Orchestrator | 🟢 8 | 🟢 8 | 🟢 8 | 🟢 8 |
+| 51 | Architect | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 |
+| 52 | Debugger | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 8 |
+| 53 | Legal Review | 🟢 9 | 🟢 10 | 🟢 10 | 🟢 10 |
+| 54 | Medical | 🟢 9 | 🟡 7 | 🟢 10 | 🟢 10 |
+| 55 | Financial | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 |
+| 56 | Security | 🟢 10 | 🟡 6 | 🟢 10 | 🟢 10 |
+| 57 | SRE / Incident | 🟡 6 | 🟡 6 | 🔴 3 | 🟡 6 |
+| 58 | Book Writing | 📝 5 | 📝 5 | 📝 5 | 📝 5 |
+| 59 | Compliance | 🟢 8 | 🟡 7 | 🟢 8 | 🟢 9 |
 
 ---
 
@@ -269,20 +269,20 @@ Only 1 model tested so far — more coming.
 
 All scores out of 10.
 
-| # | Test | 122B Think | 35B Think | 27B Think | 27B NoThink | 122B NoThink | 35B NoThink |
-|---|---|---|---|---|---|---|---|
-| 1 | Precise Counting | 🟢 8 | 🔴 4 | 🟡 6 | 🔴 4 | 🔴 0 | 🔴 4 |
-| 2 | Constrained JSON | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 9 | 🟢 9 |
-| 3 | Logic Grid Puzzle | 🟢 10 | 🟢 10 | 🟢 10 | 🟡 5 | 🟡 5 | 🟡 6 |
-| 4 | Multi-Step Math | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 |
-| 5 | Code Output Prediction | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 |
-| 6 | Contradiction Detection | 🟡 5 | 🟡 5 | 🟡 5 | 🟡 5 | 🟡 5 | 🟡 5 |
-| 7 | Complex Multi-Key Sort | 🟢 8 | 🟢 8 | 🟢 8 | 🟢 8 | 🟢 8 | 🔴 3 |
-| 8 | Regex Construction | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 | 🟡 7 |
-| 9 | Data Transformation | 🟢 10 | 🟢 10 | 🟢 10 | 🔴 0 | 🔴 2 | 🔴 2 |
-| 10 | Instruction Following | 🟢 10 | 🟢 8 | 🟢 10 | 🔴 4 | 🔴 2 | 🔴 4 |
-| 11 | Multi-Turn Refinement | 🟡 7 | 🟢 8 | 🟢 10 | 🟢 10 | 🟢 8 | 🟢 9 |
-| 12 | Multi-Turn State Track | 🟢 10 | 🟢 9 | 🟢 10 | 🟡 7 | 🟢 10 | 🟡 7 |
+| # | Test | GPT-OSS Low | GPT-OSS Med | GPT-OSS High | 122B Think | 35B Think | 27B Think | 27B NoThink | 122B NoThink | 35B NoThink |
+|---|---|---|---|---|---|---|---|---|---|---|
+| 1 | Precise Counting | 🟡 6 | 🟡 6 | 🟡 6 | 🟢 8 | 🔴 4 | 🟡 6 | 🔴 4 | 🔴 0 | 🔴 4 |
+| 2 | Constrained JSON | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 9 | 🟢 9 |
+| 3 | Logic Grid Puzzle | 🟢 10 | 🟢 10 | 🟡 6 | 🟢 10 | 🟢 10 | 🟢 10 | 🟡 5 | 🟡 5 | 🟡 6 |
+| 4 | Multi-Step Math | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 |
+| 5 | Code Output Prediction | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 |
+| 6 | Contradiction Detection | 🟡 5 | 🟡 5 | 🟡 5 | 🟡 5 | 🟡 5 | 🟡 5 | 🟡 5 | 🟡 5 | 🟡 5 |
+| 7 | Complex Multi-Key Sort | 🟢 8 | 🟢 8 | 🟢 8 | 🟢 8 | 🟢 8 | 🟢 8 | 🟢 8 | 🟢 8 | 🔴 3 |
+| 8 | Regex Construction | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 | 🟡 7 |
+| 9 | Data Transformation | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 | 🔴 0 | 🔴 2 | 🔴 2 |
+| 10 | Instruction Following | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 8 | 🟢 10 | 🔴 4 | 🔴 2 | 🔴 4 |
+| 11 | Multi-Turn Refinement | 🟢 10 | 🟢 10 | 🟢 10 | 🟡 7 | 🟢 8 | 🟢 10 | 🟢 10 | 🟢 8 | 🟢 9 |
+| 12 | Multi-Turn State Track | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 10 | 🟢 9 | 🟢 10 | 🟡 7 | 🟢 10 | 🟡 7 |
 
 ---
 
@@ -404,8 +404,9 @@ This is a living benchmark. We're continuously adding new models as they release
 - Gemma 3 27B QAT
 - More MoE models as they release
 
-**96GB VRAM tier**
+**64–96GB VRAM tier**
 - ✅ Qwen3.5-122B-A10B NVFP4 (tested)
+- ✅ GPT-OSS-120B GGUF · llama.cpp (tested — 3 reasoning levels)
 - More large models coming
 
 **Cloud (open-source via API)**
