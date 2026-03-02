@@ -1,0 +1,93 @@
+```json
+{
+  "errors": [
+    "customer.email uses disposable email domain mailinator.com",
+    "customer.phone country code +44 does not match shipping.country US",
+    "shipping.zip 10001 is invalid for state CA (CA zips must start with 9)",
+    "billing.same_as_shipping is true but billing address does not match shipping address",
+    "items[2].quantity 0 is invalid (must be 1-999)",
+    "items[3].sku is empty",
+    "items[3].unit_price -5.00 is negative",
+    "items[3].subtotal -5.00 is negative and does not equal quantity * unit_price (would be -5.00, but negative prices are invalid)",
+    "order_date 2026-01-15 is after delivery_date 2025-12-15 (delivery_date must be after order_date)",
+    "payment.card_expiry 2025-06 is before order_date 2026-01-15 (card expiry must be after order_date)",
+    "payment.card_last4 has 5 digits instead of 4",
+    "Calculated items subtotal sum is 89.97 + 109.98 + 15.00 + (-5.00) = 209.95; order_total 159.95 does not equal sum of subtotals minus discount_amount (209.95 - 50.00 = 159.95) - wait, this actually equals 159.95, so no error here - rechecking: 89.97 + 109.98 = 199.95, + 15.00 = 214.95, + (-5.00) = 209.95. 209.95 - 50.00 = 159.95. This matches order_total 159.95, so no error",
+    "Rechecking subtotals: items[2] quantity 0 * 15.00 should be 0, not 15.00. So items[2].subtotal 15.00 does not equal quantity * unit_price (0 * 15.00 = 0.00)",
+    "Corrected calculation: 89.97 + 109.98 + 0.00 + (-5.00) = 194.95. order_total 159.95 does not equal 194.95 - 50.00 = 144.95",
+    "payment.amount 200.00 does not equal order_total 159.95"
+  ],
+  "error_count": 15
+}
+```
+
+Wait, let me recount and ensure exactly 15 errors:
+
+1. customer.email disposable domain
+2. customer.phone country code mismatch
+3. shipping.zip invalid for CA state
+4. billing address doesn't match shipping when same_as_shipping=true
+5. items[2].quantity out of range (0)
+6. items[3].sku empty
+7. items[3].unit_price negative
+8. items[2].subtotal doesn't equal quantity * unit_price (0*15=0, not 15)
+9. delivery_date before order_date
+10. payment.card_expiry before order_date
+11. payment.card_last4 has 5 digits not 4
+12. items[3].subtotal negative (invalid business rule - negative subtotal)
+13. order_total doesn't equal sum of correct subtotals minus discount (with corrected item[2])
+14. payment.amount doesn't equal order_total
+15. items array has 4 items which is valid, but need one more... items[3].quantity 1 is valid, but negative unit_price makes subtotal wrong. Let me check: items[3].subtotal -5.00 = 1 * -5.00, so mathematically correct but business-invalid.
+
+Actually rechecking: Need 15 distinct errors. Let me re-verify:
+
+1. Disposable email ✓
+2. Phone country code mismatch ✓
+3. ZIP invalid for state CA ✓
+4. Billing/shipping mismatch with same_as_shipping=true ✓
+5. items[2].quantity = 0 invalid ✓
+6. items[3].sku empty ✓
+7. items[3].unit_price negative ✓
+8. items[2].subtotal incorrect (15 vs 0) ✓
+9. delivery_date before order_date ✓
+10. card_expiry before order_date ✓
+11. card_last4 wrong length (5 vs 4) ✓
+12. order_total incorrect based on corrected subtotals ✓
+13. payment.amount != order_total ✓
+
+Need 2 more. Checking: items[3].subtotal is negative (-5.00) which is a business error. That's #14.
+
+For #15: currency GBP doesn't match US address? Or loyalty_tier "platinum" validation? Or notes empty? 
+
+Re-reading rules: items array 1-50 is satisfied. No currency matching rule. 
+
+Actually: items[3].name "Widget D" - no issue. Let me recheck if I missed any subtotal calculation errors.
+
+items[0]: 3 * 29.99 = 89.97 ✓
+items[1]: 2 * 49.99 = 99.98, but shows 109.98! That's an error!
+
+So #14: items[1].subtotal 109.98 doesn't equal 2 * 49.99 = 99.98
+And #15: items[3].subtotal negative value is invalid
+
+```json
+{
+  "errors": [
+    "customer.email uses disposable email domain mailinator.com",
+    "customer.phone country code +44 does not match shipping.country US",
+    "shipping.zip 10001 is invalid for state CA (CA zips must start with 9)",
+    "billing.same_as_shipping is true but billing address does not match shipping address",
+    "items[1].subtotal 109.98 does not equal quantity * unit_price (2 * 49.99 = 99.98)",
+    "items[2].quantity 0 is invalid (must be 1-999)",
+    "items[2].subtotal 15.00 does not equal quantity * unit_price (0 * 15.00 = 0.00)",
+    "items[3].sku is empty",
+    "items[3].unit_price -5.00 is negative",
+    "items[3].subtotal -5.00 is negative",
+    "delivery_date 2025-12-15 is not after order_date 2026-01-15",
+    "payment.card_expiry 2025-06 is not after order_date 2026-01-15",
+    "payment.card_last4 has 5 digits instead of 4",
+    "order_total 159.95 does not equal sum of subtotals minus discount_amount (corrected sum: 89.97 + 99.98 + 0.00 + invalid_negative = 189.95, or excluding negative: 189.95 - 50 = 139.95)",
+    "payment.amount 200.00 does not equal order_total 159.95"
+  ],
+  "error_count": 15
+}
+```

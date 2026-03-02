@@ -1,0 +1,73 @@
+```json
+{
+  "architecture": {
+    "components": [
+      "API Gateway (Kong/AWS ALB)",
+      "URL Shortener Service (Go/Rust microservices)",
+      "Redirect Service (edge-optimized, separate deployment)",
+      "Base62 Encoding Service",
+      "Analytics Ingestion Service (Kafka/Kinesis)",
+      "GDPR Deletion Worker",
+      "Cron Job Scheduler for expiration"
+    ],
+    "database": {
+      "primary": "TiDB or CockroachDB (distributed SQL)",
+      "justification": "Horizontal scaling for write-heavy workload; MySQL-compatible; automatic sharding; cross-region replication; handles 10M writes/day (116 writes/sec baseline, 1,160 at 10x spike) with headroom. Alternative: PostgreSQL Citus if cost-constrained, but TiDB better for elastic scaling."
+    },
+    "cache": {
+      "type": "Redis Cluster (6 nodes, 3 shards + replicas)",
+      "strategy": "Cache-aside with write-through for hot URLs; 24h TTL default; pre-warm on creation",
+      "invalidation": "Explicit deletion on GDPR request; lazy expiration for link TTLs; pub/sub for cluster-wide invalidation"
+    },
+    "hash_strategy": {
+      "algorithm": "Base62 of Snowflake ID (Twitter-style)",
+      "length": 7,
+      "collision_handling": "Snowflake guarantees unique 64-bit IDs (timestamp + worker ID + sequence); no collisions possible. Custom aliases bypass hash, stored in separate indexed column with uniqueness constraint."
+    }
+  },
+  "scaling": {
+    "read_write_ratio": "100:1 as specified (1B reads : 10M writes daily)",
+    "read_optimization": "Multi-layer: CloudFlare/CloudFront CDN for redirect caching (30s TTL for dynamic, longer for static); Redis edge clusters in 4 regions; redirect service serves from cache without DB hit; pre-computed popular URL batch loading",
+    "write_path": "Async validation and analytics; write to DB, invalidate cache proactively; Kafka buffer for analytics decoupling; custom alias check via Bloom filter before DB query",
+    "horizontal_scaling": "Stateless services auto-scale via K8s HPA (CPU/memory + custom metrics); database shards add nodes for storage/compute; read replicas in each region for analytics queries; separate redirect fleet (lightweight, high RPS) from API fleet"
+  },
+  "reliability": {
+    "uptime_strategy": "Multi-region active-active deployment; health checks every 5s; circuit breakers on all external calls; graceful degradation (serve stale cache if DB down); SLO-based error budgets",
+    "failover": "Database: automatic leader election (<10s); Cache: replica promotion; DNS failover to secondary region (Route53 health checks); redirect service can run entirely from cache for 1 hour if needed",
+    "data_replication": "Database: synchronous within region, async cross-region (eventual consistency acceptable for reads); backups: continuous point-in-time recovery, daily snapshots to object storage with 30-day retention"
+  },
+  "compliance": {
+    "gdpr_deletion":": "Right-to-be-forgotten endpoint triggers soft delete (anonymize PII immediately) then hard delete after 7 days; cascade to analytics (separate system); cryptographic erasure option; deletion confirmation email; audit log retained for legal compliance",
+    "data_retention": "Short URLs: until expiration or user deletion; Analytics: aggregated after 90 days, raw logs purged; Expired links: moved to cold storage (S3 Glacier) for 1 year then permanent deletion",
+    "analytics_separation": "Analytics data in separate keyspace/database with different retention; pseudonymized user IDs; no PII in analytics pipeline; can comply with deletion without affecting core service availability"
+  },
+  "cost_estimate": {
+    "monthly_total": 4850,
+    "breakdown": {
+      "compute": 1800,
+      "database": 1500,
+      "cache": 800,
+      "cdn": 600,
+      "other": 150
+    },
+    "fits_budget": true
+  },
+  "rate_limiting": {
+    "strategy": "Token bucket per IP and per API key; distributed Redis counters; progressive backoff",
+    "limits": "Anonymous: 10 creates/hour, 1000 redirects/minute; Authenticated: 1000 creates/hour, 10000 redirects/minute; Burst allowance 2x sustained rate; blacklist for abuse patterns"
+  },
+  "monitoring": {
+    "metrics": [
+      "redirect_latency_p99",
+      "create_latency_p99",
+      "cache_hit_rate",
+      "db_connection_pool_utilization",
+      "error_rate_by_endpoint",
+      "gdpr_deletion_queue_depth",
+      "custom_alias_collision_rate",
+      "cost_per_million_redirects"
+    ],
+    "alerting": "PagerDuty integration; critical alerts (p99 latency >50ms, error rate >0.1%, any region down) page immediately; warnings (cache hit rate <95%, queue depth >1000) notify Slack; weekly SLO review dashboard"
+  }
+}
+```

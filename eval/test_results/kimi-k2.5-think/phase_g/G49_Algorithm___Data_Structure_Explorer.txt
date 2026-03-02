@@ -1,0 +1,114 @@
+```python
+import time
+from collections import OrderedDict
+
+
+class LRUCache:
+    def __init__(self, capacity: int):
+        self.capacity = capacity
+        self.cache = OrderedDict()
+        self.stats = {"hits": 0, "misses": 0, "evictions": 0, "expirations": 0}
+    
+    def _is_expired(self, key):
+        if key not in self.cache:
+            return True
+        entry = self.cache[key]
+        if entry["ttl"] is None:
+            return False
+        if time.time() > entry["expires_at"]:
+            return True
+        return False
+    
+    def _remove_expired(self, key):
+        if self._is_expired(key):
+            del self.cache[key]
+            self.stats["expirations"] += 1
+            return True
+        return False
+    
+    def get(self, key: str):
+        if key not in self.cache:
+            self.stats["misses"] += 1
+            return None
+        
+        if self._remove_expired(key):
+            self.stats["misses"] += 1
+            return None
+        
+        self.stats["hits"] += 1
+        self.cache.move_to_end(key)
+        return self.cache[key]["value"]
+    
+    def put(self, key: str, value: any, ttl: float = None):
+        now = time.time()
+        
+        if key in self.cache:
+            if self._remove_expired(key):
+                pass
+            else:
+                self.cache.move_to_end(key)
+                self.cache[key] = {
+                    "value": value,
+                    "ttl": ttl,
+                    "expires_at": now + ttl if ttl is not None else None
+                }
+                return
+        
+        while len(self.cache) >= self.capacity and self.capacity > 0:
+            oldest_key = next(iter(self.cache))
+            del self.cache[oldest_key]
+            self.stats["evictions"] += 1
+        
+        self.cache[key] = {
+            "value": value,
+            "ttl": ttl,
+            "expires_at": now + ttl if ttl is not None else None
+        }
+    
+    def delete(self, key: str) -> bool:
+        if key in self.cache:
+            expired = self._is_expired(key)
+            del self.cache[key]
+            if expired:
+                self.stats["expirations"] += 1
+            return True
+        return False
+    
+    def size(self) -> int:
+        count = 0
+        keys_to_remove = []
+        for key in self.cache:
+            if self._is_expired(key):
+                keys_to_remove.append(key)
+            else:
+                count += 1
+        
+        for key in keys_to_remove:
+            del self.cache[key]
+            self.stats["expirations"] += 1
+        
+        return count
+    
+    def get_stats(self) -> dict:
+        return self.stats.copy()
+    
+    def keys(self) -> list:
+        result = []
+        keys_to_remove = []
+        
+        for key in self.cache:
+            if self._is_expired(key):
+                keys_to_remove.append(key)
+            else:
+                result.append(key)
+        
+        for key in keys_to_remove:
+            del self.cache[key]
+            self.stats["expirations"] += 1
+        
+        return result
+    
+    def clear(self) -> None:
+        self.cache.clear()
+        self.stats = {"hits": 0, "misses": 0, "evictions": 0, "expirations": 0}
+```

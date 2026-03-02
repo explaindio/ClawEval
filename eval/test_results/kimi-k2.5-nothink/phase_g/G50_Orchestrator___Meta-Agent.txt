@@ -1,0 +1,89 @@
+```json
+{
+  "phases": [
+    {
+      "phase": 1,
+      "name": "Initial Detection and Alerting",
+      "agents": [
+        {"agent": "notification_agent", "input": "production outage detected - initiating automated response workflow", "timeout_seconds": 30},
+        {"agent": "log_analyzer", "input": "last 15 minutes of application logs, error severity CRITICAL and above", "timeout_seconds": 60},
+        {"agent": "metric_checker", "input": "error rate, latency p99, availability percentage for affected service", "timeout_seconds": 45},
+        {"agent": "dependency_mapper", "input": "service topology for impacted production service", "timeout_seconds": 40}
+      ],
+      "parallel": true,
+      "gate": "At least 3 of 4 agents complete successfully; notification_agent must succeed"
+    },
+    {
+      "phase": 2,
+      "name": "Deep System Diagnostics",
+      "agents": [
+        {"agent": "db_checker", "input": "connection pool status, active locks, slow query log, replication lag", "timeout_seconds": 50},
+        {"agent": "config_auditor", "input": "configuration changes in last 4 hours across all services", "timeout_seconds": 35},
+        {"agent": "capacity_planner", "input": "CPU, memory, disk I/O, network saturation for affected nodes", "timeout_seconds": 40},
+        {"agent": "incident_reporter", "input": "create SEV-1 incident ticket with initial diagnostic summary from phase 1", "timeout_seconds": 30}
+      ],
+      "parallel": true,
+      "gate": "incident_reporter succeeds; at least 2 diagnostic agents identify root cause category"
+    },
+    {
+      "phase": 3,
+      "name": "Customer Communication and Remediation Decision",
+      "agents": [
+        {"agent": "customer_communicator", "input": "acknowledge outage, provide estimated restoration window, share incident tracking link", "timeout_seconds": 45}
+      ],
+      "parallel": false,
+      "gate": "customer communication confirmed sent before any remediation action"
+    },
+    {
+      "phase": 4,
+      "name": "Remediation Execution",
+      "agents": [
+        {"agent": "rollback_agent", "input": "rollback to last known good deployment (N-1), preserve current state for forensics", "timeout_seconds": 180}
+      ],
+      "parallel": false,
+      "gate": "rollback completes with health checks passing OR rollback fails and requires escalation"
+    },
+    {
+      "phase": 5,
+      "name": "Post-Remediation Verification",
+      "agents": [
+        {"agent": "metric_checker", "input": "verify error rate < 0.1%, latency p99 < SLA threshold, availability > 99.9%", "timeout_seconds": 60},
+        {"agent": "log_analyzer", "input": "confirm absence of CRITICAL errors in 5-minute window post-remediation", "timeout_seconds": 45},
+        {"agent": "db_checker", "input": "validate connection pools healthy, no residual lock contention", "timeout_seconds": 40},
+        {"agent": "customer_communicator", "input": "service restoration confirmation with resolution summary", "timeout_seconds": 30},
+        {"agent": "incident_reporter", "input": "update incident ticket with resolution details and verification results", "timeout_seconds": 25}
+      ],
+      "parallel": true,
+      "gate": "All health checks pass; customer notified of restoration; incident ticket updated"
+    }
+  ],
+  "decision_points": [
+    {
+      "after_phase": 2,
+      "condition": "config_auditor identifies recent config change AND metric_checker shows correlated degradation timestamp within 10 minutes of change",
+      "if_true": "go to phase 3 (proceed to customer communication then rollback)",
+      "if_false": "go to phase 3 (proceed to customer communication then evaluate alternative remediation - skip rollback, escalate to human)"
+    },
+    {
+      "after_phase": 4,
+      "condition": "rollback_agent reports success AND metric_checker shows recovery trend within 3 minutes",
+      "if_true": "go to phase 5 (verification)",
+      "if_false": "trigger escalation immediately, halt automated workflow"
+    }
+  ],
+  "escalation": {
+    "trigger": "Any phase exceeds timeout by 50% OR total elapsed time exceeds 18 minutes OR rollback fails OR verification in phase 5 fails after 2 retry attempts",
+    "action": "Page on-call engineering manager via PagerDuty high urgency, attach complete diagnostic bundle, transition to manual incident command"
+  },
+  "total_phases": 5,
+  "max_time_minutes": 20,
+  "rollback_conditions": [
+    "config_auditor confirms deployment occurred within 30 minutes of outage onset",
+    "metric_checker shows error rate increase correlates with deployment timestamp ±5 minutes",
+    "log_analyzer identifies new exception type not present in previous 24-hour baseline",
+    "dependency_mapper confirms no upstream dependency failures that would explain symptoms",
+    "db_checker rules out database as primary cause (replication lag < 5s, no blocking locks)",
+    "customer_communicator has successfully notified affected customers of pending remediation"
+  ]
+}
+```

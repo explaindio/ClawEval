@@ -1,0 +1,193 @@
+```python
+import time
+import threading
+from collections import defaultdict
+
+
+class RateLimiter:
+    def __init__(self, max_requests: int, window_seconds: float, burst: int = 0):
+        self.max_requests = max_requests
+        self.window_seconds = window_seconds
+        self.burst = burst
+        self._lock = threading.Lock()
+        # Structure: {(user_id, endpoint): {"requests": [(timestamp, count), ...], "burst_used": int, "last_burst_refill": float}}
+        self._data = {}
+    
+    def _get_key(self, user_id: str, endpoint: str) -> tuple:
+        return (user_id, endpoint)
+    
+    def _init_entry(self, key: tuple) -> dict:
+        if key not in self._data:
+            self._data[key] = {
+                "requests": [],
+                "burst_used": 0,
+                "last_burst_refill": time.time()
+            }
+        return self._data[key]
+    
+    def _clean_old_requests(self, entry: dict, now: float) -> None:
+        cutoff = now - self.window_seconds
+        entry["requests"] = [r for r in entry["requests"] if r[0] > cutoff]
+    
+    def _get_window_count(self, entry: dict) -> int:
+        return sum(count for _, count in entry["requests"])
+    
+    def _refill_burst(self, entry: dict, now: float) -> None:
+        if self.burst <= 0:
+            return
+        elapsed = now - entry["last_burst_refill"]
+        # Burst regenerates at half rate (2x window to fully regenerate)
+        refill_rate = self.burst / (2 * self.window_seconds)
+        refill_amount = int(elapsed * refill_rate)
+        if refill_amount > 0:
+            entry["burst_used"] = max(0, entry["burst_used"] - refill_amount)
+            entry["last_burst_refill"] = now
+    
+    def allow(self, user_id: str, endpoint: str = "default") -> dict:
+        key = self._get_key(user_id, endpoint)
+        now = time.time()
+        
+        with self._lock:
+            entry = self._init_entry(key)
+            self._clean_old_requests(entry, now)
+            self._refill_burst(entry, now)
+            
+            window_count = self._get_window_count(entry)
+            total_limit = self.max_requests + self.burst
+            
+            if window_count < self.max_requests:
+                # Within normal limit
+                entry["requests"].append((now, 1))
+                remaining = self.max_requests - window_count - 1
+                burst_remaining = self.burst - entry["burst_used"]
+                return {
+                    "allowed": True,
+                    "remaining": remaining,
+                    "retry_after": None
+                }
+            elif entry["burst_used"] < self.burst:
+                # Use burst token
+                entry["burst_used"] += 1
+                entry["requests"].append((now, 1))
+                burst_remaining = self.burst - entry["burst_used"]
+                return {
+                    "allowed": True,
+                    "remaining": burst_remaining,
+                    "retry_after": None
+                }
+            else:
+                # Rate limited
+                if entry["requests"]:
+                    oldest = min(t for t, _ in entry["requests"])
+                    retry_after = (oldest + self.window_seconds) - now
+                else:
+                    retry_after = self.window_seconds
+                
+                burst_remaining = self.burst - entry["burst_used"]
+                return {
+                    "allowed": False,
+                    "remaining": 0,
+                    "retry_after": max(0.0, retry_after)
+                }
+    
+    def allow_priority(self, user_id: str, endpoint: str = "default") -> dict:
+        key = self._get_key(user_id, endpoint)
+        
+        with self._lock:
+            entry = self._init_entry(key)
+            now = time.time()
+            self._clean_old_requests(entry, now)
+            self._refill_burst(entry, now)
+            
+            window_count = self._get_window_count(entry)
+            burst_remaining = self.burst - entry["burst_used"]
+            remaining = max(0, self.max_requests - window_count)
+            
+            return {
+                "allowed": True,
+                "remaining": remaining,
+                "retry_after": None
+            }
+    
+    def cleanup(self, max_age_seconds: float = None) -> int:
+        if max_age_seconds is None:
+            max_age_seconds = 2 * self.window_seconds
+        
+        now = time.time()
+        cutoff = now - max_age_seconds
+        
+        with self._lock:
+            to_remove = []
+            for key, entry in self._data.items():
+                # Check if all requests are old and no recent burst activity
+                newest_request = max((t for t, _ in entry["requests"]), default=0)
+                newest_activity = max(newest_request, entry["last_burst_refill"])
+                if newest_activity < cutoff:
+                    to_remove.append(key)
+            
+            for key in to_remove:
+                del self._data[key]
+            
+            return len(to_remove)
+    
+    def get_usage(self, user_id: str, endpoint: str = "default") -> dict:
+        key = self._get_key(user_id, endpoint)
+        now = time.time()
+        
+        with self._lock:
+            if key not in self._data:
+                return {
+                    "used": 0,
+                    "limit": self.max_requests,
+                    "window_seconds": self.window_seconds,
+                    "burst_remaining": self.burst
+                }
+            
+            entry = self._data[key]
+            self._clean_old_requests(entry, now)
+            self._refill_burst(entry, now)
+            
+            window_count = self._get_window_count(entry)
+            burst_remaining = self.burst - entry["burst_used"]
+            
+            return {
+                "used": window_count,
+                "limit": self.max_requests,
+                "window_seconds": self.window_seconds,
+                "burst_remaining": burst_remaining
+            }
+    
+    def to_dict(self) -> dict:
+        with self._lock:
+            data_copy = {}
+            for key, entry in self._data.items():
+                data_copy[key] = {
+                    "requests": entry["requests"][:],
+                    "burst_used": entry["burst_used"],
+                    "last_burst_refill": entry["last_burst_refill"]
+                }
+            
+            return {
+                "max_requests": self.max_requests,
+                "window_seconds": self.window_seconds,
+                "burst": self.burst,
+                "data": data_copy
+            }
+    
+    @classmethod
+    def from_dict(cls, data: dict) -> "RateLimiter":
+        instance = cls(
+            max_requests=data["max_requests"],
+            window_seconds=data["window_seconds"],
+            burst=data.get("burst", 0)
+        )
+        
+        for key, entry_data in data.get("data", {}).items():
+            instance._data[key] = {
+                "requests": entry_data["requests"][:],
+                "burst_used": entry_data["burst_used"],
+                "last_burst_refill": entry_data["last_burst_refill"]
+            }
+        
+        return instance
+```

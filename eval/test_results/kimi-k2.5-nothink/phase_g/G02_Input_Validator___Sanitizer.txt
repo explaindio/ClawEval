@@ -1,0 +1,22 @@
+```json
+{
+  "errors": [
+    "customer.email uses disposable email domain mailinator.com",
+    "customer.phone country code +44 does not match shipping.country US",
+    "shipping.zip 10001 is invalid for state CA (CA zips must start with 9)",
+    "billing.same_as_shipping is true but billing address does not match shipping address",
+    "items[2].quantity 0 is invalid (must be 1-999)",
+    "items[3].sku is empty",
+    "items[3].unit_price -5.00 is negative",
+    "items[3].subtotal -5.00 is negative and does not equal quantity * unit_price (1 * -5.00 = -5.00, which is mathematically correct but negative prices are invalid)",
+    "order_date 2026-01-15 is after delivery_date 2025-12-15 (delivery_date must be after order_date)",
+    "payment.card_expiry 2025-06 is before order_date 2026-01-15 (card expiry must be after order_date)",
+    "payment.card_last4 has 5 digits instead of 4",
+    "payment.amount 200.00 does not equal order_total 159.95",
+    "calculated order total incorrect: items subtotals sum to 89.97 + 109.98 + 15.00 + (-5.00) = 209.95, minus discount_amount 50.00 = 159.95, but items[2] and items[3] have validation errors affecting this",
+    "items[2].subtotal 15.00 does not equal quantity * unit_price (0 * 15.00 = 0.00)",
+    "items array contains invalid entries that affect order_total calculation validity"
+  ],
+  "error_count": 15
+}
+```

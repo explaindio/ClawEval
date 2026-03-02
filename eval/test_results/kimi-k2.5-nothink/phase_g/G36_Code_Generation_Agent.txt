@@ -1,0 +1,186 @@
+```python
+import time
+import threading
+from collections import defaultdict
+
+
+class RateLimiter:
+    def __init__(self, max_requests: int, window_seconds: float, burst: int = 0):
+        self.max_requests = max_requests
+        self.window_seconds = window_seconds
+        self.burst = burst
+        self._lock = threading.Lock()
+        # Structure: {(user_id, endpoint): {"requests": [(timestamp, count), ...], "burst_tokens": float, "last_burst_update": float}}
+        self._state = {}
+    
+    def _get_key(self, user_id: str, endpoint: str) -> tuple:
+        return (user_id, endpoint)
+    
+    def _init_entry(self, key: tuple, now: float) -> dict:
+        if key not in self._state:
+            self._state[key] = {
+                "requests": [],
+                "burst_tokens": float(self.burst),
+                "last_burst_update": now
+            }
+        return self._state[key]
+    
+    def _update_burst_tokens(self, entry: dict, now: float) -> None:
+        if self.burst > 0:
+            elapsed = now - entry["last_burst_update"]
+            # Burst regenerates at rate of (burst / (2 * window)) per second
+            regen_rate = self.burst / (2 * self.window_seconds) if self.window_seconds > 0 else 0
+            entry["burst_tokens"] = min(self.burst, entry["burst_tokens"] + elapsed * regen_rate)
+            entry["last_burst_update"] = now
+    
+    def _count_window_requests(self, entry: dict, now: float) -> int:
+        cutoff = now - self.window_seconds
+        # Remove old requests
+        entry["requests"] = [r for r in entry["requests"] if r[0] > cutoff]
+        return sum(r[1] for r in entry["requests"])
+    
+    def allow(self, user_id: str, endpoint: str = "default") -> dict:
+        with self._lock:
+            now = time.time()
+            key = self._get_key(user_id, endpoint)
+            entry = self._init_entry(key, now)
+            
+            self._update_burst_tokens(entry, now)
+            window_used = self._count_window_requests(entry, now)
+            
+            total_limit = self.max_requests + self.burst
+            total_used = window_used + (self.burst - entry["burst_tokens"])
+            
+            remaining_in_window = self.max_requests - window_used
+            
+            if window_used < self.max_requests:
+                # Within normal limit
+                entry["requests"].append((now, 1))
+                actual_remaining = min(remaining_in_window - 1, self.max_requests - window_used - 1)
+                if self.burst > 0:
+                    actual_remaining = max(actual_remaining, int(entry["burst_tokens"]))
+                return {
+                    "allowed": True,
+                    "remaining": max(0, actual_remaining),
+                    "retry_after": None
+                }
+            elif entry["burst_tokens"] >= 1:
+                # Use burst token
+                entry["burst_tokens"] -= 1
+                entry["requests"].append((now, 1))
+                return {
+                    "allowed": True,
+                    "remaining": 0,
+                    "retry_after": None
+                }
+            else:
+                # Denied
+                retry_after = self.window_seconds - (now - entry["requests"][0][0]) if entry["requests"] else self.window_seconds
+                return {
+                    "allowed": False,
+                    "remaining": 0,
+                    "retry_after": max(0.0, retry_after)
+                }
+    
+    def allow_priority(self, user_id: str, endpoint: str = "default") -> dict:
+        with self._lock:
+            now = time.time()
+            key = self._get_key(user_id, endpoint)
+            entry = self._init_entry(key, now)
+            
+            self._update_burst_tokens(entry, now)
+            window_used = self._count_window_requests(entry, now)
+            
+            # Still track the request but always allow
+            entry["requests"].append((now, 1))
+            
+            remaining_in_window = self.max_requests - window_used - 1
+            
+            return {
+                "allowed": True,
+                "remaining": max(0, remaining_in_window),
+                "retry_after": None
+            }
+    
+    def cleanup(self, max_age_seconds: float = None) -> int:
+        if max_age_seconds is None:
+            max_age_seconds = 2 * self.window_seconds
+        
+        with self._lock:
+            now = time.time()
+            cutoff = now - max_age_seconds
+            to_remove = []
+            
+            for key, entry in self._state.items():
+                # Check if all requests are old and no recent burst activity
+                newest_request = max((r[0] for r in entry["requests"]), default=0)
+                last_activity = max(newest_request, entry["last_burst_update"])
+                
+                if last_activity < cutoff:
+                    to_remove.append(key)
+            
+            for key in to_remove:
+                del self._state[key]
+            
+            return len(to_remove)
+    
+    def get_usage(self, user_id: str, endpoint: str = "default") -> dict:
+        with self._lock:
+            now = time.time()
+            key = self._get_key(user_id, endpoint)
+            
+            if key not in self._state:
+                return {
+                    "used": 0,
+                    "limit": self.max_requests,
+                    "window_seconds": self.window_seconds,
+                    "burst_remaining": self.burst
+                }
+            
+            entry = self._state[key]
+            self._update_burst_tokens(entry, now)
+            window_used = self._count_window_requests(entry, now)
+            
+            return {
+                "used": window_used,
+                "limit": self.max_requests,
+                "window_seconds": self.window_seconds,
+                "burst_remaining": int(entry["burst_tokens"])
+            }
+    
+    def to_dict(self) -> dict:
+        with self._lock:
+            return {
+                "max_requests": self.max_requests,
+                "window_seconds": self.window_seconds,
+                "burst": self.burst,
+                "state": {
+                    f"{k[0]}|{k[1]}": {
+                        "requests": v["requests"],
+                        "burst_tokens": v["burst_tokens"],
+                        "last_burst_update": v["last_burst_update"]
+                    }
+                    for k, v in self._state.items()
+                }
+            }
+    
+    @classmethod
+    def from_dict(cls, data: dict) -> "RateLimiter":
+        instance = cls(
+            max_requests=data["max_requests"],
+            window_seconds=data["window_seconds"],
+            burst=data.get("burst", 0)
+        )
+        
+        for key_str, value in data.get("state", {}).items():
+            parts = key_str.split("|")
+            user_id = parts[0]
+            endpoint = "|".join(parts[1:]) if len(parts) > 1 else "default"
+            instance._state[(user_id, endpoint)] = {
+                "requests": [(ts, cnt) for ts, cnt in value["requests"]],
+                "burst_tokens": value["burst_tokens"],
+                "last_burst_update": value["last_burst_update"]
+            }
+        
+        return instance
+```

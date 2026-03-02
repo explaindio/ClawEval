@@ -1,0 +1,120 @@
+{
+  "model": "kimi-k2.5-think",
+  "phase": "G",
+  "timestamp": "2026-03-01T21:39:52.194967",
+  "total_score": 96,
+  "total_max": 110,
+  "percentage": 87.3,
+  "results": [
+    {
+      "id": 36,
+      "role": "Code Generation Agent",
+      "tier": 3,
+      "scoring_type": "code",
+      "score": 10,
+      "max": 10,
+      "detail": "10/10 tests passed",
+      "tokens": 1484
+    },
+    {
+      "id": 2,
+      "role": "Input Validator / Sanitizer",
+      "tier": 1,
+      "scoring_type": "exact",
+      "score": 10,
+      "max": 10,
+      "detail": "Found 15/15 errors",
+      "tokens": 1513
+    },
+    {
+      "id": 5,
+      "role": "Sentiment Analysis Agent",
+      "tier": 1,
+      "scoring_type": "exact",
+      "score": 8,
+      "max": 10,
+      "detail": "16/20 correct | 1: expected 'negative', got 'mixed'; 3: expected 'negative', got 'mixed'; 7: expected 'mixed', got 'positive'; 13: expected 'negative', got 'mixed'",
+      "tokens": 147
+    },
+    {
+      "id": 40,
+      "role": "Fact-Checking Agent",
+      "tier": 3,
+      "scoring_type": "exact",
+      "score": 10,
+      "max": 10,
+      "detail": "19/20 correct | 12: expected 'TRUE', got 'FALSE'",
+      "tokens": 147
+    },
+    {
+      "id": 49,
+      "role": "Algorithm / Data Structure Explorer",
+      "tier": 4,
+      "scoring_type": "code",
+      "score": 9,
+      "max": 10,
+      "detail": "14/15 tests passed | keys_order: ",
+      "tokens": 726
+    },
+    {
+      "id": 51,
+      "role": "System Architect",
+      "tier": 5,
+      "scoring_type": "constraint",
+      "score": 9,
+      "max": 10,
+      "detail": "14/15 constraints met | Missing: handles_traffic_spikes",
+      "tokens": 1094
+    },
+    {
+      "id": 48,
+      "role": "STEM Research Analyst",
+      "tier": 4,
+      "scoring_type": "exact",
+      "score": 8,
+      "max": 10,
+      "detail": "6/8 correct | q1: expected 252000\u00b110000, got 470400.0; q8: expected 1440\u00b150, got 1008.0",
+      "tokens": 88
+    },
+    {
+      "id": 9,
+      "role": "Research Agent",
+      "tier": 2,
+      "scoring_type": "exact",
+      "score": 8,
+      "max": 10,
+      "detail": "8/10 correct | q6: expected '0.25', got '1/4'; q8_contains: expected contains 'yes', got 'No - Source A states infrastructure costs are 3.2x higher (operational cost), while Source E shows total cost of ownership can be lower for large teams when accounting for all factors including productivity gains.'",
+      "tokens": 135
+    },
+    {
+      "id": 12,
+      "role": "Content Planner / Strategist",
+      "tier": 2,
+      "scoring_type": "exact",
+      "score": 7,
+      "max": 10,
+      "detail": "11/15 constraints met | Missing: week1_starts_blog; week4_ends_social; empty_violations",
+      "tokens": 1680
+    },
+    {
+      "id": 50,
+      "role": "Orchestrator / Meta-Agent",
+      "tier": 5,
+      "scoring_type": "exact",
+      "score": 7,
+      "max": 10,
+      "detail": "10/15 constraints met | Missing: phase1_parallel_diagnostics; early_notification; all_agents_have_timeouts",
+      "tokens": 1268
+    },
+    {
+      "id": 23,
+      "role": "Web Scraping / Data Extraction",
+      "tier": 2,
+      "scoring_type": "exact",
+      "score": 10,
+      "max": 10,
+      "detail": "5/5 correct",
+      "tokens": 515
+    }
+  ]
+}

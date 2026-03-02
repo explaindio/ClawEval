@@ -1,0 +1,98 @@
+```json
+{
+  "phases": [
+    {
+      "phase": 1,
+      "name": "Initial Detection and Alerting",
+      "agents": [
+        {"agent": "notification_agent", "input": "production outage detected - initiating automated response workflow", "timeout_seconds": 30},
+        {"agent": "incident_reporter", "input": "create SEV-1 incident ticket for production outage with auto-populated timestamp and affected systems unknown", "timeout_seconds": 45}
+      ],
+      "parallel": true,
+      "gate": "incident ticket created and on-call engineer notified via PagerDuty"
+    },
+    {
+      "phase": 2,
+      "name": "Parallel Diagnostic Assessment",
+      "agents": [
+        {"agent": "log_analyzer", "input": "last 15 minutes of application logs, error rate >5% threshold, stack traces and exception patterns", "timeout_seconds": 60},
+        {"agent": "metric_checker", "input": "error rate, latency p99, throughput, CPU/memory/disk for all services in last 15 minutes", "timeout_seconds": 60},
+        {"agent": "dependency_mapper", "input": "current service topology and health status of all upstream/downstream dependencies", "timeout_seconds": 45},
+        {"agent": "db_checker", "input": "connection pool saturation, active locks, slow queries, replication lag in last 10 minutes", "timeout_seconds": 60},
+        {"agent": "config_auditor", "input": "configuration changes deployed in last 4 hours across all environments", "timeout_seconds": 45}
+      ],
+      "parallel": true,
+      "gate": "at least 3 diagnostic agents return results with actionable data"
+    },
+    {
+      "phase": 3,
+      "name": "Root Cause Classification",
+      "agents": [
+        {"agent": "capacity_planner", "input": "resource utilization trends from diagnostic data to determine if capacity-related", "timeout_seconds": 45},
+        {"agent": "incident_reporter", "input": "update incident ticket with aggregated diagnostic findings and preliminary root cause category", "timeout_seconds": 30}
+      ],
+      "parallel": false,
+      "gate": "root cause classified as: deployment-related, infrastructure/capacity, database, dependency failure, or unknown"
+    },
+    {
+      "phase": 4,
+      "name": "Customer Communication and Remediation Prep",
+      "agents": [
+        {"agent": "customer_communicator", "input": "send proactive status page update: 'We are investigating reports of degraded performance' with incident link", "timeout_seconds": 30},
+        {"agent": "notification_agent", "input": "Slack update to #incidents channel with diagnostic summary and planned remediation path", "timeout_seconds": 20}
+      ],
+      "parallel": true,
+      "gate": "customer communication confirmed sent and internal team notified of remediation plan"
+    },
+    {
+      "phase": 5,
+      "name": "Remediation Execution",
+      "agents": [
+        {"agent": "rollback_agent", "input": "rollback to previous stable deployment (n-1) with automatic traffic drain and verification", "timeout_seconds": 180}
+      ],
+      "parallel": false,
+      "gate": "rollback completed successfully or skipped per decision point branch"
+    },
+    {
+      "phase": 6,
+      "name": "Post-Remediation Verification",
+      "agents": [
+        {"agent": "metric_checker", "input": "verify error rate <0.1%, p99 latency <500ms, all health checks passing for 2 consecutive minutes", "timeout_seconds": 120},
+        {"agent": "log_analyzer", "input": "confirm absence of critical errors in logs post-remediation", "timeout_seconds": 60},
+        {"agent": "customer_communicator", "input": "send resolution update: 'Service has been restored, monitoring for stability'", "timeout_seconds": 30},
+        {"agent": "incident_reporter", "input": "update incident status to 'monitoring' with remediation actions logged", "timeout_seconds": 30}
+      ],
+      "parallel": true,
+      "gate": "all health metrics pass for 2 minutes and customer communication confirmed"
+    }
+  ],
+  "decision_points": [
+    {
+      "after_phase": 3,
+      "condition": "root_cause == 'deployment-related' AND config_auditor.confirmed_recent_deployment == true AND rollback_agent.pre_check_passed == true",
+      "if_true": "go to phase 4 (proceed to customer communication then rollback)",
+      "if_false": "go to phase 4_alt: skip rollback, escalate to human engineer with full diagnostic package"
+    },
+    {
+      "after_phase": 5,
+      "condition": "rollback_agent.status == 'success' AND metric_checker.error_rate_post_rollback < baseline_threshold",
+      "if_true": "go to phase 6 (verification)",
+      "if_false": "trigger escalation: rollback failed or did not resolve issue, immediate human intervention required"
+    }
+  ],
+  "escalation": {
+    "trigger": "total_elapsed_time > 12 minutes OR any phase gate fails after 2 retry attempts OR rollback_agent.failure == true OR root_cause == 'unknown' after phase 3",
+    "action": "page senior on-call engineer, create bridge call, transfer incident ownership to human with full context snapshot"
+  },
+  "total_phases": 6,
+  "max_time_minutes": 15,
+  "rollback_conditions": [
+    "config_auditor identifies configuration change within 4 hours preceding first error spike",
+    "log_analyzer shows new exception type introduced in current deployment version",
+    "dependency_mapper confirms all dependencies healthy (eliminating external cause)",
+    "db_checker rules out database as primary cause",
+    "metric_checker shows error rate increase correlates with deployment timestamp",
+    "rollback_agent pre-check confirms n-1 deployment was stable for >24 hours prior"
+  ]
+}
+```

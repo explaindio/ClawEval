@@ -28,7 +28,7 @@ from phase_g import PHASE_G_TESTS
 # LLM CALL (same as Phase F)
 # ============================================================
 
-def call_llm(messages, base_url, model, max_tokens=4000, timeout=300, extra_body=None):
+def call_llm(messages, base_url, model, max_tokens=4000, timeout=300, extra_body=None, api_key=None):
     """Send messages and return response content."""
     url = f"{base_url}/chat/completions"
     payload = {
@@ -40,8 +40,12 @@ def call_llm(messages, base_url, model, max_tokens=4000, timeout=300, extra_body
     if extra_body:
         payload.update(extra_body)
 
+    headers = {"Content-Type": "application/json"}
+    if api_key:
+        headers["Authorization"] = f"Bearer {api_key}"
+
     t0 = time.time()
-    resp = requests.post(url, json=payload, timeout=timeout)
+    resp = requests.post(url, json=payload, headers=headers, timeout=timeout)
     elapsed = round(time.time() - t0, 1)
     resp.raise_for_status()
     data = resp.json()
@@ -339,13 +343,13 @@ SCORERS = {
 # TEST RUNNER
 # ============================================================
 
-def run_test(test, base_url, model, max_tokens, timeout, extra_body=None, reasoning_prefix=None):
+def run_test(test, base_url, model, max_tokens, timeout, extra_body=None, reasoning_prefix=None, api_key=None):
     """Run a single test and score it."""
     messages = []
     if reasoning_prefix:
         messages.append({"role": "system", "content": reasoning_prefix})
     messages.append({"role": "user", "content": test["prompt"]})
-    content, tokens, tps, elapsed = call_llm(messages, base_url, model, max_tokens, timeout=timeout, extra_body=extra_body)
+    content, tokens, tps, elapsed = call_llm(messages, base_url, model, max_tokens, timeout=timeout, extra_body=extra_body, api_key=api_key)
 
     scoring = test["scoring"]
     stype = scoring["type"]
@@ -375,10 +379,12 @@ def main():
     parser.add_argument("--base-url", required=True, help="LLM server base URL")
     parser.add_argument("--model", required=True, help="Model name for output directory")
     parser.add_argument("--api-model", help="Model name to send in API requests (defaults to --model)")
-    parser.add_argument("--max-tokens", type=int, default=8000, help="Max tokens per response (default: 8000 — Phase G needs more)")
+    parser.add_argument("--api-key", help="API key for cloud endpoints (sent as Bearer token)")
+    parser.add_argument("--max-tokens", type=int, default=8000, help="Max tokens per response (default: 8000)")
     parser.add_argument("--timeout", type=int, default=600, help="Request timeout in seconds (default: 600)")
+    parser.add_argument("--delay", type=int, default=0, help="Delay in seconds between tests (for rate-limited APIs)")
     parser.add_argument("--thinking-budget", type=int, help="SGLang thinking token budget")
-    parser.add_argument("--nothink", action="store_true", help="SGLang: disable thinking")
+    parser.add_argument("--nothink", action="store_true", help="Disable thinking (Qwen/Kimi: thinking=False)")
     parser.add_argument("--reasoning", choices=["low", "medium", "high"], help="Reasoning level (GPT-OSS-120B)")
     parser.add_argument("--test-ids", type=int, nargs="*", help="Run only these test IDs")
     args = parser.parse_args()
@@ -387,7 +393,7 @@ def main():
     reasoning_prefix = f"Reasoning: {args.reasoning}" if args.reasoning else None
     extra_body = None
     if args.nothink:
-        extra_body = {"chat_template_kwargs": {"enable_thinking": False}}
+        extra_body = {"chat_template_kwargs": {"thinking": False}}
     elif args.thinking_budget:
         extra_body = {"chat_template_kwargs": {"enable_thinking": True, "thinking_budget": args.thinking_budget}}
 
@@ -404,6 +410,10 @@ def main():
     print(f"Base URL: {args.base_url}")
     print(f"Max Tokens: {args.max_tokens}")
     print(f"Timeout: {args.timeout}s")
+    if args.api_key:
+        print(f"API Key: ...{args.api_key[-6:]}")
+    if args.delay:
+        print(f"Delay: {args.delay}s between tests")
     if reasoning_prefix:
         print(f"Reasoning: {args.reasoning}")
     print(f"Tests: {len(tests)}")
@@ -417,10 +427,18 @@ def main():
         tid = test["id"]
         role = test["role"]
 
+        # Delay between tests (for rate-limited cloud APIs)
+        if i > 0 and args.delay:
+            import random
+            jitter = random.randint(0, max(5, args.delay // 3))
+            wait = args.delay + jitter
+            print(f"  ⏳ Waiting {wait}s before next test...", flush=True)
+            time.sleep(wait)
+
         print(f"[{i+1}/{len(tests)}] G-{tid}: {role}")
 
         result = run_test(test, args.base_url, api_model, args.max_tokens, args.timeout,
-                         extra_body=extra_body, reasoning_prefix=reasoning_prefix)
+                         extra_body=extra_body, reasoning_prefix=reasoning_prefix, api_key=args.api_key)
 
         score = result["score"]
         max_score = result["max_score"]

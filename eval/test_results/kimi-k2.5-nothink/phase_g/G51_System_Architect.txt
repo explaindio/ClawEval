@@ -1,0 +1,72 @@
+```json
+{
+  "architecture": {
+    "components": [
+      "API Gateway (Kong/AWS ALB)",
+      "URL Shortener Service (Go/Rust microservices, auto-scaling)",
+      "Redirect Service (edge-optimized, separate from write path)",
+      "Metadata Service (custom aliases, expiration management)",
+      "Kafka/Kinesis (async analytics, decoupled from critical path)",
+      "S3/GCS (backup, cold storage for expired links)"
+    ],
+    "database": {
+      "primary": "ScyllaDB (Cassandra-compatible) or CockroachDB",
+      "justification": "ScyllaDB provides sub-millisecond reads at scale with automatic sharding, tunable consistency, and excellent write throughput for time-series style data. Alternative: CockroachDB for SQL compatibility with horizontal scaling. Avoids single-point-of-failure of Redis primary for persistence."
+    },
+    "cache": {
+      "type": "Redis Cluster (7.x+) with Redis Sentinel",
+      "strategy": "Cache-aside with predictive pre-warming for popular URLs; hot keys replicated across shards using hashtags",
+      "invalidation": "TTL-based for expiring links + explicit deletion on GDPR request; write-through invalidation broadcast via Redis pub/sub"
+    },
+    "hash_strategy": {
+      "algorithm": "Base62 encoding of Snowflake ID (distributed unique ID generator)",
+      "length": 8,
+      "collision_handling": "Snowflake guarantees uniqueness via timestamp+workerID+sequence; no collisions possible. Custom aliases bypass hash generation, checked via unique constraint in DB."
+    }
+  },
+  "scaling": {
+    "read_write_ratio": "100:1 as specified; architecturally separated to optimize each path independently",
+    "read_optimization": "Multi-layer: Cloudflare/CloudFront edge caching (30s TTL for popular URLs) → Redis cluster (hot data) → ScyllaDB. Predictive cache warming from Kafka stream of trending URLs.",
+    "write_path": "Async processing where possible; Snowflake ID generation at edge nodes eliminates coordination; batch writes to DB every 10ms; custom alias validation via bloom filter before DB check",
+    "horizontal_scaling": "Stateless services behind K8s HPA (target 70% CPU); database auto-sharding by hash prefix; Redis Cluster scales by adding nodes; read replicas in 5 geographic regions"
+  },
+  "reliability": {
+    "uptime_strategy": "Multi-region active-active deployment with anycast DNS; critical path has no single point of failure; circuit breakers on all external calls; graceful degradation serves stale cache on DB failure",
+    "failover": "Automated failover: Redis Sentinel promotes replica in <10s; ScyllaDB handles node failures transparently; API Gateway health checks route traffic away from failed regions within 5s",
+    "data_replication": "ScyllaDB: RF=3 local, async cross-region replication to 2 additional regions; Redis: AOF persistence + RDB snapshots every 6 hours; backups to S3 with 30-day retention"
+  },
+  "compliance": {
+    "gdpr_deletion": "Right-to-be-forgotten implemented as soft delete (tombstone) immediate + hard delete async within 24h; cascade deletes to analytics (separate system); cryptographic erasure option for encrypted fields",
+    "data_retention": "Active links: indefinite until expiration or deletion. Expired links: metadata purged after 90 days, URL mapping retained as hash-only for 1 year to prevent reuse collisions. Analytics: aggregated after 90 days, raw logs deleted.",
+    "analytics_separation": "Click analytics written to Kafka then processed by separate Spark/Flink cluster; never blocks redirect path; PII hashed with rotating salt; EU data stays in EU region"
+  },
+  "cost_estimate": {
+    "monthly_total": 4850,
+    "breakdown": {
+      "compute": 1800,
+      "database": 1200,
+      "cache": 800,
+      "cdn": 800,
+      "other": 250
+    },
+    "fits_budget": true
+  },
+  "rate_limiting": {
+    "strategy": "Token bucket per IP and per API key; distributed rate limiting via Redis Cell module or Lua scripts",
+    "limits": "Anonymous: 10 creates/minute, 1000 redirects/minute. Authenticated: 1000 creates/minute, 10000 redirects/minute. Burst allowance 2x sustained rate."
+  },
+  "monitoring": {
+    "metrics": [
+      "redirect_latency_p99",
+      "create_url_latency_p99",
+      "cache_hit_rate_by_tier",
+      "db_query_latency",
+      "error_rate_by_endpoint",
+      "active_connections_per_node",
+      "queue_depth_kafka",
+      "gdpr_deletion_queue_age"
+    ],
+    "alerting": "PagerDuty integration with severity tiers: P1 (p99 latency >50ms for 2min, error rate >0.1%), P2 (node failure, replication lag >5s), P3 (cost anomaly detection). Runbooks automated for common failures."
+  }
+}
+```
