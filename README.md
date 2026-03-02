@@ -34,7 +34,7 @@ Don't have a GPU? We also test open-source models hosted on cloud providers so y
 |---|---|---|
 | Alibaba Coding Plan | **Kimi K2.5** — 473/590 (80%) Phase F, 96/110 (87%) Phase G | ✅ Tested |
 | Alibaba Coding Plan | **GLM-5** — 465/590 (79%) Phase F | ✅ Tested |
-| OpenRouter, Chutes, and other affordable providers | Open-source models via API | 🔜 Coming soon |
+| OpenRouter, Alibaba, and other affordable providers | Open-source models via API | 🔜 Coming soon |
 
 
 ## 🏆 Best Model Per Role — Which One Should You Run?
@@ -52,7 +52,7 @@ Don't have a GPU? We also test open-source models hosted on cloud providers so y
 | 3 | Health Monitor | 27B / 35B NoThink | 🔴 3 | GPT-OSS-120B | 🟢 8 |
 | 4 | Notification | 27B Think | 🟢 9 | GPT-OSS-120B | 🟢 9 |
 | 5 | Sentiment | 27B / 35B NoThink | 🟢 8† | 122B NoThink | 🟢 8† |
-| 6 | FAQ Generation | 27B Think | 🟢 8 | Both | 🟡 5 |
+| 6 | FAQ Generation | 27B Think | 🟢 8 | 122B / GPT-OSS | 🟡 5 |
 | 7 | Translation | 27B NoThink | 🟢 10 | 122B Think | 🟢 10 |
 | 8 | Calendar | — | 🔴 0 | — | 🔴 0 |
 | | **Tier 2 — Moderate** | | | | |
@@ -68,12 +68,12 @@ Don't have a GPU? We also test open-source models hosted on cloud providers so y
 | 18 | News Aggregation | 27B / 35B NoThink | 🟢 10 | 122B NoThink | 🟢 10 |
 | 19 | Shopping | 27B / 35B Think | 🟢 10 | 122B Think | 🟢 10 |
 | 20 | Memory Mgmt | 27B / 35B NoThink | 🟢 9 | 122B NoThink | 🟢 9 |
-| 21 | RAG / Retrieval | 27B NoThink | 🟡 6 | Both | 🟡 6 |
-| 22 | Data Analysis | 27B / 35B NoThink | 🔴 3 | Both | 🔴 2 |
+| 21 | RAG / Retrieval | 27B NoThink | 🟡 6 | 122B / GPT-OSS | 🟡 6 |
+| 22 | Data Analysis | 27B / 35B NoThink | 🔴 3 | 122B / GPT-OSS | 🔴 2 |
 | 23 | Web Scraping | 35B NoThink | 🟢 10 | 122B NoThink / GPT-OSS | 🟢 10 |
 | 24 | Image Description | 📝 Manual | 📝 5 | 📝 Manual | 📝 5 |
 | 25 | Customer Support | 27B / 35B Think | 🟢 10 | 122B NoThink / GPT-OSS | 🟢 10 |
-| 26 | Lead Scoring | 27B NoThink | 🟢 10 | Both | 🟢 8 |
+| 26 | Lead Scoring | 27B NoThink | 🟢 10 | 122B / GPT-OSS | 🟢 8 |
 | 27 | Sprint Summary | 27B NoThink | 🟡 7 | 122B Think | 🟢 10 |
 | 28 | Transaction | 35B NoThink | 🟢 9 | 122B NoThink / GPT-OSS | 🟢 10 |
 | 29 | Home Automation | 27B / 35B Think | 🟢 10 | 122B Think | 🟢 10 |
@@ -86,8 +86,8 @@ Don't have a GPU? We also test open-source models hosted on cloud providers so y
 | | **Tier 3 — Advanced** | | | | |
 | 36 | Code Generation | 27B NoThink | 🟢 10† | 122B NoThink | 🟢 8† |
 | 37 | Code Review | 35B NoThink / 27B Think | 🟢 10 | 122B Think | 🟢 10 |
-| 38 | QA / Test Writing | 35B NoThink | 🟢 10 | Both | 🟢 8 |
-| 39 | Task Planning | 35B NoThink | 🟢 10 | Both | 🟢 9 |
+| 38 | QA / Test Writing | 35B NoThink | 🟢 10 | 122B / GPT-OSS | 🟢 8 |
+| 39 | Task Planning | 35B NoThink | 🟢 10 | 122B / GPT-OSS | 🟢 9 |
 | 40 | Fact-Checking | 27B NoThink | 🟢 10† | 122B NoThink | 🟢 10† |
 | 41 | Critic / Review | 📝 Manual | 📝 5 | 📝 Manual | 📝 5 |
 | 42 | Market Research | 27B NoThink | 🟢 8 | GPT-OSS-120B | 🔴 4 |
@@ -107,7 +107,7 @@ Don't have a GPU? We also test open-source models hosted on cloud providers so y
 | 54 | Medical | 27B / 35B NoThink | 🟢 10 | GPT-OSS-120B | 🟢 9 |
 | 55 | Financial | 27B / 35B NoThink | 🟢 10 | 122B NoThink | 🟢 10 |
 | 56 | Security | 27B / 35B NoThink | 🟢 10 | GPT-OSS-120B | 🟢 10 |
-| 57 | SRE / Incident | 27B NoThink | 🟡 6 | Both | 🟡 6 |
+| 57 | SRE / Incident | 27B NoThink | 🟡 6 | 122B / GPT-OSS | 🟡 6 |
 | 58 | Book Writing | 📝 Manual | 📝 5 | 📝 Manual | 📝 5 |
 | 59 | Compliance | 27B NoThink | 🟢 9 | GPT-OSS-120B | 🟢 8 |
 
@@ -125,72 +125,72 @@ Don't have a GPU? We also test open-source models hosted on cloud providers so y
 
 🟢 = 8-10 &nbsp; 🟡 = 5-7 &nbsp; 🔴 = 0-4 &nbsp; 📝 = Manual review (5)
 
-> 🔜 **More cloud models coming soon.** Currently tested: Kimi K2.5, GLM-5. Next up: additional models via OpenRouter, Chutes, and other providers.
+> 🔜 **More cloud models coming soon.** Currently tested: Kimi K2.5, GLM-5. Next up: additional models via OpenRouter, Alibaba, and other providers.
 
 | # | Agent Role | ☁️ Best Cloud | |
 |---|---|---|---|
 | | | **Model** | **Score** |
 | | **Tier 1 — Utility** | | |
-| 1 | Router / Triage | Both | 🟢 9 |
-| 2 | Input Validator | Both | 🟢 10† |
-| 3 | Health Monitor | Both | 🟡 5 |
+| 1 | Router / Triage | K2.5 / GLM-5 | 🟢 9 |
+| 2 | Input Validator | K2.5 / GLM-5 | 🟢 10† |
+| 3 | Health Monitor | K2.5 / GLM-5 | 🟡 5 |
 | 4 | Notification | Kimi K2.5 | 🟢 9 |
-| 5 | Sentiment | Both | 🟢 10† |
-| 6 | FAQ Generation | Both | 🟡 7 |
-| 7 | Translation | Both | 🟢 9 |
+| 5 | Sentiment | K2.5 / GLM-5 | 🟢 10† |
+| 6 | FAQ Generation | K2.5 / GLM-5 | 🟡 7 |
+| 7 | Translation | K2.5 / GLM-5 | 🟢 9 |
 | 8 | Calendar | — | 🔴 0 |
 | | **Tier 2 — Moderate** | | |
-| 9 | Research Agent | Both | 🟢 10† |
+| 9 | Research Agent | K2.5 / GLM-5 | 🟢 10† |
 | 10 | Content Writer | 📝 Manual | 📝 5 |
 | 11 | Editor | Kimi K2.5 | 🟢 10 |
-| 12 | Content Planner | Both | 🟢 10† |
+| 12 | Content Planner | K2.5 / GLM-5 | 🟢 10† |
 | 13 | Email Drafting | Kimi K2.5 | 🟢 10 |
-| 14 | Doc Summary | Both | 🟢 8 |
+| 14 | Doc Summary | K2.5 / GLM-5 | 🟢 8 |
 | 15 | Meeting Notes | Kimi K2.5 | 🟢 10 |
-| 16 | Social Scouting | Both | 🟢 10 |
+| 16 | Social Scouting | K2.5 / GLM-5 | 🟢 10 |
 | 17 | Social Content | 📝 Manual | 📝 5 |
-| 18 | News Aggregation | Both | 🟢 10 |
-| 19 | Shopping | Both | 🟢 10 |
-| 20 | Memory Mgmt | Both | 🟢 9 |
-| 21 | RAG / Retrieval | Both | 🟡 6 |
-| 22 | Data Analysis | Both | 🔴 2 |
-| 23 | Web Scraping | Both | 🟢 10† |
+| 18 | News Aggregation | K2.5 / GLM-5 | 🟢 10 |
+| 19 | Shopping | K2.5 / GLM-5 | 🟢 10 |
+| 20 | Memory Mgmt | K2.5 / GLM-5 | 🟢 9 |
+| 21 | RAG / Retrieval | K2.5 / GLM-5 | 🟡 6 |
+| 22 | Data Analysis | K2.5 / GLM-5 | 🔴 2 |
+| 23 | Web Scraping | K2.5 / GLM-5 | 🟢 10† |
 | 24 | Image Description | 📝 Manual | 📝 5 |
-| 25 | Customer Support | Both | 🟢 10 |
-| 26 | Lead Scoring | Both | 🟢 8 |
+| 25 | Customer Support | K2.5 / GLM-5 | 🟢 10 |
+| 26 | Lead Scoring | K2.5 / GLM-5 | 🟢 8 |
 | 27 | Sprint Summary | GLM-5 | 🟢 9 |
 | 28 | Transaction | GLM-5 | 🟢 10 |
-| 29 | Home Automation | Both | 🟢 10 |
+| 29 | Home Automation | K2.5 / GLM-5 | 🟢 10 |
 | 30 | Fitness Tracking | GLM-5 | 🟢 9 |
 | 31 | Recipe / Cooking | GLM-5 | 🔴 2 |
 | 32 | Personal Finance | GLM-5 | 🟡 7 |
-| 33 | SEO Optimization | Both | 🟢 9 |
+| 33 | SEO Optimization | K2.5 / GLM-5 | 🟢 9 |
 | 34 | Landing Page | 📝 Manual | 📝 5 |
 | 35 | Travel Planning | Kimi K2.5 | 🟢 10 |
 | | **Tier 3 — Advanced** | | |
-| 36 | Code Generation | Both | 🟢 10† |
-| 37 | Code Review | Both | 🟢 10 |
-| 38 | QA / Test Writing | Both | 🟢 8 |
+| 36 | Code Generation | K2.5 / GLM-5 | 🟢 10† |
+| 37 | Code Review | K2.5 / GLM-5 | 🟢 10 |
+| 38 | QA / Test Writing | K2.5 / GLM-5 | 🟢 8 |
 | 39 | Task Planning | Kimi K2.5 | 🟢 10 |
-| 40 | Fact-Checking | Both | 🟢 10† |
+| 40 | Fact-Checking | K2.5 / GLM-5 | 🟢 10† |
 | 41 | Critic / Review | 📝 Manual | 📝 5 |
-| 42 | Market Research | Both | 🟢 8 |
+| 42 | Market Research | K2.5 / GLM-5 | 🟢 8 |
 | 43 | Synthesizer | Kimi K2.5 | 🟢 10 |
 | 44 | Curriculum Design | Kimi K2.5 | 🟡 7 |
-| 45 | Prototype Gen | Both | 🟡 5 |
+| 45 | Prototype Gen | K2.5 / GLM-5 | 🟡 5 |
 | 46 | DevOps | Kimi K2.5 | 🟢 10 |
 | | **Tier 4 — Expert** | | |
 | 47 | Math / Logic | Kimi K2.5 | 🟢 8 |
-| 48 | STEM Analysis | Both | 🟢 10† |
-| 49 | Algorithm | Both | 🟢 10† |
+| 48 | STEM Analysis | K2.5 / GLM-5 | 🟢 10† |
+| 49 | Algorithm | K2.5 / GLM-5 | 🟢 10† |
 | | **Tier 5 — Senior** | | |
-| 50 | Orchestrator | Both | 🟢 8† |
-| 51 | Architect | Both | 🟢 10† |
+| 50 | Orchestrator | K2.5 / GLM-5 | 🟢 8† |
+| 51 | Architect | K2.5 / GLM-5 | 🟢 10† |
 | 52 | Debugger | Kimi K2.5 | 🟢 10 |
-| 53 | Legal Review | Both | 🟢 10 |
+| 53 | Legal Review | K2.5 / GLM-5 | 🟢 10 |
 | 54 | Medical | GLM-5 | 🟢 10 |
 | 55 | Financial | Kimi K2.5 | 🟢 10 |
-| 56 | Security | Both | 🟢 10 |
+| 56 | Security | K2.5 / GLM-5 | 🟢 10 |
 | 57 | SRE / Incident | GLM-5 | 🔴 4 |
 | 58 | Book Writing | 📝 Manual | 📝 5 |
 | 59 | Compliance | Kimi K2.5 | 🟢 9 |
@@ -324,7 +324,7 @@ This is a living benchmark. We're continuously adding new models as they release
 - More large models coming
 
 **Cloud (open-source via API)**
-- Open-source models via OpenRouter, Chutes, and other affordable providers
+- Open-source models via OpenRouter, Alibaba, and other affordable providers
 
 > 💬 **Want us to test a specific model?** [Open an issue](https://github.com/explaindio/ClawEval/issues) or drop a comment — we prioritize community requests. New models are added as they release.
 
