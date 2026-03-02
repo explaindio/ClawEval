@@ -33,7 +33,7 @@ Don't have a GPU? We also test open-source models hosted on cloud providers so y
 | Provider | Models | Status |
 |---|---|---|
 | Alibaba Coding Plan | **Kimi K2.5** — 473/590 (80%) Phase F, 96/110 (87%) Phase G | ✅ Tested |
-| Alibaba Coding Plan | **GLM-5** — 465/590 (79%) Phase F | ✅ Tested |
+| Alibaba Coding Plan | **GLM-5** — 465/590 (79%) Phase F, 80/110 (73%) Phase G | ✅ Tested |
 | OpenRouter, Alibaba, and other affordable providers | Open-source models via API | 🔜 Coming soon |
 
 
@@ -182,9 +182,9 @@ Don't have a GPU? We also test open-source models hosted on cloud providers so y
 | | **Tier 4 — Expert** | | |
 | 47 | Math / Logic | Kimi K2.5 | 🟢 8 |
 | 48 | STEM Analysis | K2.5 / GLM-5 | 🟢 10† |
-| 49 | Algorithm | K2.5 / GLM-5 | 🟢 10† |
+| 49 | Algorithm | GLM-5 Think | 🟢 10† |
 | | **Tier 5 — Senior** | | |
-| 50 | Orchestrator | K2.5 / GLM-5 | 🟢 8† |
+| 50 | Orchestrator | GLM-5 Think | 🟢 8† |
 | 51 | Architect | K2.5 / GLM-5 | 🟢 10† |
 | 52 | Debugger | Kimi K2.5 | 🟢 10 |
 | 53 | Legal Review | K2.5 / GLM-5 | 🟢 10 |

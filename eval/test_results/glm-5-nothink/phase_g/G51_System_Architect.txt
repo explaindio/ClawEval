@@ -1,0 +1,70 @@
+```json
+{
+  "architecture": {
+    "components": [
+      "DNS (Route53/Cloudflare)",
+      "Load Balancer (Nginx/ALB)",
+      "API Service (Stateless Go/Rust)",
+      "Metadata Database (PostgreSQL)",
+      "Active-Active Key-Value Store (Redis/Dragonfly)",
+      "Async Analytics Queue (Kafka)",
+      "Analytics Store (ClickHouse)"
+    ],
+    "database": {
+      "primary": "PostgreSQL (Citus distributed)",
+      "justification": "Selected over NoSQL to enforce uniqueness constraints on custom aliases and ensure ACID compliance for writes. Citus extension allows horizontal scaling via sharding (e.g., by URL ID or first character hash) to meet write volume requirements while staying within budget."
+    },
+    "cache": {
+      "type": "Redis Cluster (or DragonflyDB for single-node efficiency)",
+      "strategy": "Cache-aside for redirects. The database is only hit on a cache miss. Given the 100:1 ratio, the cache absorb strategy keeps the database load minimal (< 1,200 writes/sec).",
+      "invalidation": "TTL-based eviction matching the URL expiration time. Proactive deletion on explicit user modification via API."
+    },
+    "hash_strategy": {
+      "algorithm": "Base62 Encoding of distributed unique ID (Snowflake ID or DB Sequence)",
+      "length": 7,
+      "collision_handling": "Encoding a unique 64-bit integer guarantees zero collisions mathematically. Snowflake IDs provide k-ordered uniqueness without distributed locking."
+    }
+  },
+  "scaling": {
+    "read_write_ratio": "100:1",
+    "read_optimization": "Aggressive in-memory caching. 1B reads/day averages ~11,500 QPS, peaking to ~115k QPS during spikes. A 16GB-32GB Redis instance can hold the working set of 'hot' URLs entirely in memory, serving from RAM with <1ms latency.",
+    "write_path": "10M writes/day is only ~115 writes/sec (peak ~1,150/sec). Standard PostgreSQL can handle this easily. Write-through cache strategy ensures new links are immediately readable.",
+    "horizontal_scaling": "Stateless API services behind a load balancer allow instant scaling. Database is sharded using Citus or application-level hashing if single-node limits are reached (unlikely at this write volume)."
+  },
+  "reliability": {
+    "uptime_strategy": "Multi-AZ deployment for all stateless components and Database. Redis Sentinel or Cluster for cache HA.",
+    "failover": "Automatic failover configured for Database (Primary-Replica) and Cache. API services are stateless and self-healing via Kubernetes/ECS health checks.",
+    "data_replication": "PostgreSQL Synchronous Replication within a region to prevent data loss. Asynchronous replication for backups/analytics."
+  },
+  "compliance": {
+    "gdpr_deletion": "Soft delete in PostgreSQL (setting 'deleted_at' timestamp) to prevent future access. PII (creator IP/email) stored in separate table with CASCADE DELETE. Hard delete scheduled for offline execution while preserving anonymized click counts for aggregate analytics.",
+    "data_retention": "URLs respect 'expires_at' field. TTL indexes in DB and Cache auto-purge expired records. Logs retained for 90 days (compliance minimum), analytics aggregated and anonymized for long-term storage.",
+    "analytics_separation": "Click events are pushed to a Kafka queue and written to ClickHouse (OLAP). This separates heavy write loads of analytics from the hot path, ensuring the 50ms latency target is met regardless of analytics volume."
+  },
+  "cost_estimate": {
+    "monthly_total": 4250,
+    "breakdown": {
+      "compute": 1200,
+      "database": 1500,
+      "cache": 800,
+      "cdn": 500,
+      "other": 250
+    },
+    "fits_budget": true
+  },
+  "rate_limiting": {
+    "strategy": "Token Bucket (Redis-backed)",
+    "limits": "User-specific: 100 creates/minute (soft limit). IP-specific: 30 creates/minute (hard limit). Redirects: No limit on GET, but crawler protection enabled."
+  },
+  "monitoring": {
+    "metrics": [
+      "p99/p95 Redirect Latency",
+      "Cache Hit Ratio (Target >99%)",
+      "Database Replication Lag",
+      "5xx Error Rate",
+      "Active Short URLs Count"
+    ],
+    "alerting": "PagerDuty integration for p99 Latency > 40ms (approaching SLA limit) or 5xx Rate > 0.1%."
+  }
+}
+```

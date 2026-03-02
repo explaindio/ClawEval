@@ -1,0 +1,183 @@
+```python
+import time
+import threading
+from collections import defaultdict
+
+class RateLimiter:
+    def __init__(self, max_requests: int, window_seconds: float, burst: int = 0):
+        self.max_requests = max_requests
+        self.window_seconds = window_seconds
+        self.burst = burst
+        self._lock = threading.RLock()
+        self._request_history = defaultdict(list)
+        self._burst_bucket = defaultdict(float)
+
+    def allow(self, user_id: str, endpoint: str = "default") -> dict:
+        with self._lock:
+            return self._process_request(user_id, endpoint, is_priority=False)
+
+    def allow_priority(self, user_id: str, endpoint: str = "default") -> dict:
+        with self._lock:
+            return self._process_request(user_id, endpoint, is_priority=True)
+
+    def _process_request(self, user_id: str, endpoint: str, is_priority: bool) -> dict:
+        key = (user_id, endpoint)
+        current_time = time.time()
+        window = self.window_seconds
+        
+        # Clean old requests from history
+        if self._request_history[key]:
+            cutoff = current_time - window
+            self._request_history[key] = [
+                t for t in self._request_history[key] if t > cutoff
+            ]
+
+        used = len(self._request_history[key])
+        limit = self.max_requests
+        burst_remaining = 0
+        retry_after = None
+        allowed = False
+
+        # Calculate burst availability
+        if self.burst > 0:
+            burst_regen_window = 2 * window
+            last_burst_hit = self._burst_bucket.get(key, 0)
+            time_since_burst = current_time - last_burst_hit
+            
+            if time_since_burst >= burst_regen_window:
+                burst_remaining = self.burst
+            else:
+                burst_remaining = 0
+        
+        if is_priority:
+            allowed = True
+            # We do not count priority requests towards standard usage
+        else:
+            if used < self.max_requests:
+                allowed = True
+                self._request_history[key].append(current_time)
+                used += 1
+            elif self.burst > 0 and burst_remaining > 0:
+                allowed = True
+                self._burst_bucket[key] = current_time
+                # Burst requests do not add to standard history
+                burst_remaining = 0
+            else:
+                # Calculate retry_after
+                if self._request_history[key]:
+                    oldest_in_window = min(self._request_history[key])
+                    retry_after = max(0.0, oldest_in_window + window - current_time)
+                else:
+                    retry_after = 0.0
+
+        remaining_calc = limit - used
+        if allowed and not is_priority:
+             remaining_calc = max(0, remaining_calc)
+        elif not allowed:
+             remaining_calc = 0
+
+        return {
+            "allowed": allowed,
+            "remaining": remaining_calc,
+            "retry_after": retry_after
+        }
+
+    def cleanup(self, max_age_seconds: float = None) -> int:
+        with self._lock:
+            if max_age_seconds is None:
+                max_age_seconds = 2 * self.window_seconds
+            
+            cutoff = time.time() - max_age_seconds
+            count = 0
+            
+            keys_to_delete = []
+            for key, history in self._request_history.items():
+                valid_history = [t for t in history if t > cutoff]
+                if valid_history:
+                    self._request_history[key] = valid_history
+                else:
+                    keys_to_delete.append(key)
+            
+            for k in keys_to_delete:
+                del self._request_history[k]
+                count += 1
+            
+            burst_keys_to_delete = [
+                k for k, t in self._burst_bucket.items() if t <= cutoff
+            ]
+            for k in burst_keys_to_delete:
+                del self._burst_bucket[k]
+                
+            return count
+
+    def get_usage(self, user_id: str, endpoint: str = "default") -> dict:
+        with self._lock:
+            key = (user_id, endpoint)
+            current_time = time.time()
+            cutoff = current_time - self.window_seconds
+            
+            valid_history = [
+                t for t in self._request_history[key] if t > cutoff
+            ]
+            used = len(valid_history)
+            
+            burst_remaining = 0
+            if self.burst > 0:
+                burst_regen_window = 2 * self.window_seconds
+                last_burst_hit = self._burst_bucket.get(key, 0)
+                if current_time - last_burst_hit >= burst_regen_window:
+                    burst_remaining = self.burst
+            
+            return {
+                "used": used,
+                "limit": self.max_requests,
+                "window_seconds": self.window_seconds,
+                "burst_remaining": burst_remaining
+            }
+
+    def to_dict(self) -> dict:
+        with self._lock:
+            # Convert tuple keys to strings for JSON compatibility
+            history_serializable = {
+                f"{k[0]}::{k[1]}": v 
+                for k, v in self._request_history.items()
+            }
+            burst_serializable = {
+                f"{k[0]}::{k[1]}": v 
+                for k, v in self._burst_bucket.items()
+            }
+            return {
+                "config": {
+                    "max_requests": self.max_requests,
+                    "window_seconds": self.window_seconds,
+                    "burst": self.burst
+                },
+                "history": history_serializable,
+                "burst_bucket": burst_serializable
+            }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> 'RateLimiter':
+        config = data["config"]
+        limiter = cls(
+            max_requests=config["max_requests"],
+            window_seconds=config["window_seconds"],
+            burst=config["burst"]
+        )
+        
+        history_data = data.get("history", {})
+        for key_str, value in history_data.items():
+            parts = key_str.split("::", 1)
+            if len(parts) == 2:
+                key = (parts[0], parts[1])
+                limiter._request_history[key] = value
+                
+        burst_data = data.get("burst_bucket", {})
+        for key_str, value in burst_data.items():
+            parts = key_str.split("::", 1)
+            if len(parts) == 2:
+                key = (parts[0], parts[1])
+                limiter._burst_bucket[key] = value
+                
+        return limiter
+```

@@ -55,24 +55,24 @@ Phase F tests showed identical scores (10/10) across all models for ~15 roles, m
 
 ## ☁️ Cloud Models
 
-| # | Test | Kimi K2.5 Think | Kimi K2.5 NoThink |
-|---|------|:---------------:|:-----------------:|
-| | | moonshotai/Kimi-K2.5 | moonshotai/Kimi-K2.5 |
-| | | Alibaba Coding Plan | `thinking: False` |
-| 36 | Code Gen (RateLimiter) | 🟢 **10** | 🟢 **10** |
-| 2 | Input Validator (nested) | 🟢 **10** | 🟢 **10** |
-| 5 | Sentiment (hard, 20 items) | 🟢 **8** | 🟢 **8** |
-| 40 | Fact-Checking (plausible) | 🟢 10 (19/20) | 🟢 **10** (20/20) |
-| 49 | Algorithm (LRU Cache + TTL) | 🟢 **9** | 🟢 **9** |
-| 51 | Architect (trade-offs) | 🟢 9 | 🟢 **10** |
-| 48 | STEM (multi-step calc) | 🟢 **8** | 🟢 **8** |
-| 9 | Research (contradictions) | 🟢 **8** | 🟢 **8** |
-| 12 | Content Planner (15 constraints) | 🟡 **7** | 🔴 1 |
-| 50 | Orchestrator (multi-agent) | 🟡 **7** | 🟡 **7** |
-| 23 | Web Scraping (messy HTML) | 🟢 **10** | 🟢 **10** |
-| | **TOTAL** | **96/110 (87%)** | **91/110 (83%)** |
+| # | Test | K2.5 Think | K2.5 NoThink | GLM-5 Think | GLM-5 NoThink |
+|---|------|:---:|:---:|:---:|:---:|
+| | | Kimi-K2.5 | Kimi-K2.5 | GLM-5 | GLM-5 |
+| | | Alibaba | `thinking: False` | Alibaba | `enable_thinking: false` |
+| 36 | Code Gen (RateLimiter) | 🟢 **10** | 🟢 **10** | 🟢 **10** | 🟢 9 |
+| 2 | Input Validator (nested) | 🟢 **10** | 🟢 **10** | 🔴 0 ⏱️ | 🟢 **10** |
+| 5 | Sentiment (hard, 20 items) | 🟢 **8** | 🟢 **8** | 🟢 **8** | 🟢 **8** |
+| 40 | Fact-Checking (plausible) | 🟢 10 | 🟢 **10** | 🟢 9 | 🟢 **10** |
+| 49 | Algorithm (LRU Cache + TTL) | 🟢 **9** | 🟢 **9** | 🟢 **10** | 🟢 9 |
+| 51 | Architect (trade-offs) | 🟢 9 | 🟢 **10** | 🟢 **9** | 🟢 **9** |
+| 48 | STEM (multi-step calc) | 🟢 **8** | 🟢 **8** | 🟡 6 | 🔴 4 |
+| 9 | Research (contradictions) | 🟢 **8** | 🟢 **8** | 🟡 5 | 🔴 3 |
+| 12 | Content Planner (15 constraints) | 🟡 **7** | 🔴 1 | 🔴 1 | 🔴 1 |
+| 50 | Orchestrator (multi-agent) | 🟡 **7** | 🟡 **7** | 🟢 8 | 🟡 7 |
+| 23 | Web Scraping (messy HTML) | 🟢 **10** | 🟢 **10** | 🟢 **10** | 🟢 **10** |
+| | **TOTAL** | **96/110 (87%)** | **91/110 (83%)** | **76/110 (69%)** | **80/110 (73%)** |
 
-> **Parsing verified:** Kimi K2.5 API properly separates `reasoning_content` from `content` — no thinking content leaks into scored responses. Score differences between Think/NoThink are genuine model behavior, not parsing artifacts.
+> **GLM-5 Think timeout:** Input Validator scored 0/10 due to 300s timeout — heavy reasoning exceeded API time limit. NoThink completed it perfectly (10/10).
 
 ---
 
@@ -82,23 +82,26 @@ Phase F tests showed identical scores (10/10) across all models for ~15 roles, m
 
 | Rank | Model | Score | Notes |
 |------|-------|-------|-------|
-| 🥇 | **Kimi K2.5 Think** | 96/110 (87%) | Cloud · New champion · No test below 7 |
+| 🥇 | **Kimi K2.5 Think** | 96/110 (87%) | Cloud · Champion · No test below 7 |
 | 🥈 | **Kimi K2.5 NoThink** | 91/110 (83%) | Cloud · Faster · No thinking overhead |
 | 🥉 | **122B NoThink** | 87/110 (79%) | Local 64-96GB · Best local model |
 | 4 | **27B NoThink** | 83/110 (75%) | Local 24GB · Best budget model |
 | 5 | **GPT-OSS-120B** | 82/110 (75%) | Local 64-96GB · Good all-rounder |
-| 6 | **35B NoThink** | 77/110 (70%) | Local 24GB |
-| 7 | **35B Think** | 51/60 (85%)* | Local · 5/11 tests overflow |
+| 6 | **GLM-5 NoThink** | 80/110 (73%) | Cloud · Better than Think mode |
+| 7 | **35B NoThink** | 77/110 (70%) | Local 24GB |
+| 8 | **GLM-5 Think** | 76/110 (69%) | Cloud · Timeout hurt score |
+| 9 | **35B Think** | 51/60 (85%)* | Local · 5/11 tests overflow |
 
 \* Only 6/11 tests completed due to SGLang thinking budget bug
 
 ### Key Observations
 
-1. **Kimi K2.5 is the new champion** (96/110 Think, 91/110 NoThink) — first model to score 10/10 on Code Gen
-2. **Thinking helps most on Content Planner** — Think 7/10 vs NoThink 1/10 across multiple models
-3. **Thinking can sometimes hurt** — Kimi NoThink scored higher on Architect (10 vs 9) and Fact-Checking (20/20 vs 19/20)
-4. **STEM is the great differentiator** — Kimi 8/10 vs local models 2-5/10
-5. **27B NoThink is remarkable value** — 83/110 on 24GB hardware vs 96/110 cloud
+1. **Kimi K2.5 is the clear champion** (96/110 Think, 91/110 NoThink) — first model to score 10/10 on Code Gen
+2. **GLM-5 underperforms on Phase G** despite competitive Phase F scores (79%) — harder tests expose reasoning gaps
+3. **Thinking helps most on Content Planner** — K2.5 Think 7/10 vs NoThink 1/10 across multiple models
+4. **GLM-5 Think can timeout** — heavy reasoning on Alibaba API caused Input Validator 0/10
+5. **STEM is the great differentiator** — K2.5 8/10 vs GLM-5 4-6/10 vs local 2-5/10
+6. **27B NoThink is remarkable value** — 83/110 on 24GB hardware vs 96/110 cloud
 
 ## ⚠️ SGLang Thinking Budget Bug
 

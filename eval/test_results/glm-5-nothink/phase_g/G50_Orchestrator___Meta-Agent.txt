@@ -1,0 +1,141 @@
+```json
+{
+  "phases": [
+    {
+      "phase": 1,
+      "name": "Initial Triage & Alerting",
+      "agents": [
+        {
+          "agent": "notification_agent",
+          "input": "Alert on-call engineering team: Production outage reported.",
+          "timeout_seconds": 30
+        },
+        {
+          "agent": "incident_reporter",
+          "input": "Create SEV-1 incident ticket with timestamp and initial report details.",
+          "timeout_seconds": 45
+        },
+        {
+          "agent": "log_analyzer",
+          "input": "Analyze application logs for errors in last 15 minutes.",
+          "timeout_seconds": 60
+        },
+        {
+          "agent": "metric_checker",
+          "input": "Query Prometheus for latency, error rate, and traffic spikes.",
+          "timeout_seconds": 60
+        },
+        {
+          "agent": "config_auditor",
+          "input": "Check for configuration changes or deployments in last 1 hour.",
+          "timeout_seconds": 30
+        }
+      ],
+      "parallel": true,
+      "gate": "All diagnostic queries complete; Incident ticket ID generated."
+    },
+    {
+      "phase": 2,
+      "name": "Deep Dive Analysis",
+      "agents": [
+        {
+          "agent": "dependency_mapper",
+          "input": "Map service dependencies to identify blast radius.",
+          "timeout_seconds": 45
+        },
+        {
+          "agent": "db_checker",
+          "input": "Check database health, connection pool saturation, and lock status.",
+          "timeout_seconds": 60
+        },
+        {
+          "agent": "capacity_planner",
+          "input": "Analyze current resource utilization (CPU/Memory) against limits.",
+          "timeout_seconds": 30
+        }
+      ],
+      "parallel": true,
+      "gate": "Root cause hypothesis formulated (Infrastructure vs Code vs Capacity)."
+    },
+    {
+      "phase": 3,
+      "name": "Customer Communication & Remediation Prep",
+      "agents": [
+        {
+          "agent": "customer_communicator",
+          "input": "Send initial status update: 'We are investigating reports of service interruptions'.",
+          "timeout_seconds": 60
+        }
+      ],
+      "parallel": false,
+      "gate": "Customer notification sent successfully."
+    },
+    {
+      "phase": 4,
+      "name": "Automated Remediation",
+      "agents": [
+        {
+          "agent": "rollback_agent",
+          "input": "Execute rollback to previous stable deployment version [VERSION_ID].",
+          "timeout_seconds": 180
+        }
+      ],
+      "parallel": false,
+      "gate": "Rollback command executed successfully."
+    },
+    {
+      "phase": 5,
+      "name": "Verification & Resolution",
+      "agents": [
+        {
+          "agent": "metric_checker",
+          "input": "Verify error rates have dropped below 1% and latency is nominal.",
+          "timeout_seconds": 60
+        },
+        {
+          "agent": "log_analyzer",
+          "input": "Confirm cessation of critical error patterns in logs.",
+          "timeout_seconds": 60
+        },
+        {
+          "agent": "incident_reporter",
+          "input": "Update incident ticket with resolution details and timeline.",
+          "timeout_seconds": 45
+        },
+        {
+          "agent": "customer_communicator",
+          "input": "Send resolution update: 'Service has been restored'.",
+          "timeout_seconds": 60
+        }
+      ],
+      "parallel": true,
+      "gate": "System stability confirmed for 5 minutes."
+    }
+  ],
+  "decision_points": [
+    {
+      "after_phase": 1,
+      "condition": "config_auditor reports a deployment or config change in the last 30 minutes AND metric_checker shows increased error rates correlating with change timestamp.",
+      "if_true": "skip to phase 3 (Prep for Rollback)",
+      "if_false": "continue to phase 2 (Deep Dive Analysis)"
+    },
+    {
+      "after_phase": 4,
+      "condition": "metric_checker reports error rate remains above 5% or health check fails after rollback.",
+      "if_true": "trigger manual escalation (Rollback failed)",
+      "if_false": "continue to phase 5 (Verification)"
+    }
+  ],
+  "escalation": {
+    "trigger": "Total workflow execution time exceeds 15 minutes OR Phase 4 rollback fails",
+    "action": "Page Incident Commander via notification_agent; Halt automated workflow; Hand off to human SRE team."
+  },
+  "total_phases": 5,
+  "max_time_minutes": 20,
+  "rollback_conditions": [
+    "Recent deployment detected within the last 30 minutes by config_auditor.",
+    "Log analysis indicates 'DeploymentFailed' or 'IncompatibleConfig' errors.",
+    "Error rate spike correlates exactly with the timestamp of the last deployment."
+  ]
+}
+```

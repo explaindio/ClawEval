@@ -1,0 +1,71 @@
+```json
+{
+  "architecture": {
+    "components": [
+      "DNS (Route53/Cloudflare)",
+      "CDN/Edge Cache (Cloudflare)",
+      "API Gateway / Load Balancer",
+      "URL Shortener API Service (Stateless)",
+      "Key Generation Service (KGS)",
+      "Metadata Database (PostgreSQL)",
+      "Cache Layer (Redis)",
+      "Analytics Queue (Kafka/Kinesis)"
+    ],
+    "database": {
+      "primary": "PostgreSQL (Amazon RDS or CockroachDB)",
+      "justification": "Chosen for ACID compliance to guarantee unique short codes and strong relational integrity for user data. The write volume (115 writes/sec) is easily handled by a single primary instance, while read replicas serve the higher read traffic."
+    },
+    "cache": {
+      "type": "Redis Cluster",
+      "strategy": "Look-aside (Lazy Loading)",
+      "invalidation": "Write-through on creation; TTL-based expiration aligned with link expiration date; LRU eviction for least accessed links."
+    },
+    "hash_strategy": {
+      "algorithm": "Base62 Encoding of a Unique Int64 ID",
+      "length": 7,
+      "collision_handling": "Pre-generated Unique IDs (Key Generation Service). A dedicated service pre-generates random unique IDs, stores them in a pool, and assigns them upon request. This guarantees 0 collisions and removes the need to check for existence before writing."
+    }
+  },
+  "scaling": {
+    "read_write_ratio": "100:1",
+    "read_optimization": "Aggressive Edge Caching. Redirect requests are cached at the CDN level (Cloudflare) for 1-24 hours depending on link volatility. This absorbs >95% of read traffic before it hits our infrastructure.",
+    "write_path": "Stateless API instances writing to a single DB primary with a Key Generation Service buffer to handle ID assignment without DB locks.",
+    "horizontal_scaling": "Stateless API services behind an Auto Scaling Group. Database vertically scaled for writes (current volume allows this) and read traffic distributed to multiple Read Replicas."
+  },
+  "reliability": {
+    "uptime_strategy": "Multi-AZ deployment for all stateful components (DB, Cache). Stateless services distributed across 3 availability zones. Health checks and automatic instance replacement.",
+    "failover": "RDS Multi-AZ Automatic Failover. Redis Cluster with replicas. API services are disposable; traffic drains from unhealthy instances automatically via Load Balancer.",
+    "data_replication": "Synchronous replication for Database Primary-to-Replica (within region) to ensure data durability. Asynchronous replication for Analytics pipeline."
+  },
+  "compliance": {
+    "gdpr_deletion": "Implement 'Soft Delete' by anonymizing user PII in the database record while keeping the short URL mapping active (if non-sensitive) or hard deleting and adding the key to a blocklist if required by specific policy.",
+    "data_retention": "Active links retained indefinitely or until expiration. Expired links archived to cold storage (S3 Glacier) after 1 year to reduce DB storage costs.",
+    "analytics_separation": "Click events are pushed to a Kafka/Firehose queue and stored in a separate Data Lake (S3/ClickHouse). This isolates analytical load from the transactional redirect path."
+  },
+  "cost_estimate": {
+    "monthly_total": 3150,
+    "breakdown": {
+      "compute": 800,
+      "database": 1200,
+      "cache": 450,
+      "cdn": 500,
+      "other": 200
+    },
+    "fits_budget": true
+  },
+  "rate_limiting": {
+    "strategy": "Token Bucket via API Gateway / Redis",
+    "limits": "Create URL: 100 req/day per IP/User. Redirect: 500 req/min per IP to prevent scraping/abuse while maintaining user access."
+  },
+  "monitoring": {
+    "metrics": [
+      "p99 Redirect Latency",
+      "Cache Hit Ratio",
+      "Database Connection Count",
+      "5xx Error Rate",
+      "Key Pool Size (KGS)"
+    ],
+    "alerting": "PagerDuty integration. Alerts triggered if p99 latency > 40ms (warning threshold before SLO breach), Cache Hit Ratio < 90%, or Key Pool Size < 1000 IDs."
+  }
+}
+```

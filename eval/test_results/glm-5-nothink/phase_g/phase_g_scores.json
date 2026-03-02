@@ -1,0 +1,117 @@
+{
+  "model": "glm-5-nothink",
+  "total_score": 80,
+  "total_max": 110,
+  "results": [
+    {
+      "id": 36,
+      "role": "Code Generation Agent",
+      "tier": 3,
+      "scoring_type": "code_exec",
+      "score": 9,
+      "max": 10,
+      "detail": "9/10 tests passed | burst: ",
+      "tokens": 1348
+    },
+    {
+      "id": 2,
+      "role": "Input Validator / Sanitizer",
+      "tier": 1,
+      "scoring_type": "error_count_graduated",
+      "score": 10,
+      "max": 10,
+      "detail": "Found 15/15 errors",
+      "tokens": 365
+    },
+    {
+      "id": 5,
+      "role": "Sentiment Analysis Agent",
+      "tier": 1,
+      "scoring_type": "json_values",
+      "score": 8,
+      "max": 10,
+      "detail": "16/20 correct | 5: expected 'mixed', got 'negative'; 7: expected 'mixed', got 'negative'; 13: expected 'negative', got 'mixed'; 18: expected 'mixed', got 'negative'",
+      "tokens": 126
+    },
+    {
+      "id": 40,
+      "role": "Fact-Checking Agent",
+      "tier": 3,
+      "scoring_type": "json_values",
+      "score": 10,
+      "max": 10,
+      "detail": "19/20 correct | 16: expected 'FALSE', got 'TRUE'",
+      "tokens": 146
+    },
+    {
+      "id": 49,
+      "role": "Algorithm / Data Structure Explorer",
+      "tier": 4,
+      "scoring_type": "code_exec",
+      "score": 9,
+      "max": 10,
+      "detail": "14/15 tests passed | keys_order: ",
+      "tokens": 558
+    },
+    {
+      "id": 51,
+      "role": "System Architect",
+      "tier": 5,
+      "scoring_type": "architecture_deep",
+      "score": 9,
+      "max": 10,
+      "detail": "14/15 constraints met | Missing: handles_traffic_spikes",
+      "tokens": 997
+    },
+    {
+      "id": 48,
+      "role": "STEM Research Analyst",
+      "tier": 4,
+      "scoring_type": "json_numeric",
+      "score": 4,
+      "max": 10,
+      "detail": "3/8 correct | q1: expected 252000\u00b110000, got 201600.0; q5: expected 4.17\u00b10.5, got 42.67; q6: expected 5000000\u00b1500000, got 5050000000.0; q7: expected 2.44\u00b10.5, got 0.26; q8: expected 1440\u00b150, got 1008.0",
+      "tokens": 89
+    },
+    {
+      "id": 9,
+      "role": "Research Agent",
+      "tier": 2,
+      "scoring_type": "json_values_mixed",
+      "score": 3,
+      "max": 10,
+      "detail": "3/10 correct | q1: expected '200', got '>200'; q3: expected '67', got '67%'; q6: expected '0.25', got '25%'; q7: expected '3.2', got '3.2x'; q8_contains: expected contains 'yes', got 'no, Source A compares current infrastructure costs while Source E analyzes Total Cost of Ownership (TCO) over 3 years which includes efficiency savings for larger teams.'",
+      "tokens": 123
+    },
+    {
+      "id": 12,
+      "role": "Content Planner / Strategist",
+      "tier": 2,
+      "scoring_type": "content_calendar",
+      "score": 1,
+      "max": 10,
+      "detail": "2/15 constraints met | Missing: has_20_pieces; 5_per_week; no_consecutive_same_type",
+      "tokens": 280
+    },
+    {
+      "id": 50,
+      "role": "Orchestrator / Meta-Agent",
+      "tier": 5,
+      "scoring_type": "orchestration_constraints",
+      "score": 7,
+      "max": 10,
+      "detail": "11/15 constraints met | Missing: phase1_parallel_diagnostics; early_notification; branching_logic_valid",
+      "tokens": 1054
+    },
+    {
+      "id": 23,
+      "role": "Web Scraping / Data Extraction",
+      "tier": 2,
+      "scoring_type": "json_numeric",
+      "score": 10,
+      "max": 10,
+      "detail": "5/5 correct",
+      "tokens": 512
+    }
+  ]
+}

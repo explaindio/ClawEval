@@ -122,7 +122,9 @@ See [Phase G Results](results-phase-g.md#%EF%B8%8F-cloud-models) for the 11 hard
 - Think: 96/110 (87%) — No test below 7/10
 - NoThink: 91/110 (83%)
 
-**GLM-5:** Phase G pending
+**GLM-5:**
+- Think: 76/110 (69%) — Input Validator timed out (0/10)
+- NoThink: 80/110 (73%) — Better than Think due to no timeout issues
 
 ---
 

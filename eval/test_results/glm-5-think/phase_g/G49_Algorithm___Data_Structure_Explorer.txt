@@ -1,0 +1,95 @@
+```python
+import time
+from collections import OrderedDict
+
+class LRUCache:
+    def __init__(self, capacity: int):
+        self.capacity = capacity
+        self.cache = OrderedDict()
+        self.hits = 0
+        self.misses = 0
+        self.evictions = 0
+        self.expirations = 0
+
+    def get(self, key: str):
+        if key not in self.cache:
+            self.misses += 1
+            return None
+        
+        item = self.cache[key]
+        now = time.time()
+        
+        if item['expires_at'] is not None and now > item['expires_at']:
+            self.cache.pop(key)
+            self.expirations += 1
+            self.misses += 1
+            return None
+        
+        self.cache.move_to_end(key)
+        self.hits += 1
+        return item['value']
+
+    def put(self, key: str, value, ttl: float = None):
+        expires_at = time.time() + ttl if ttl is not None else None
+        
+        if key in self.cache:
+            self.cache.move_to_end(key)
+            self.cache[key] = {'value': value, 'expires_at': expires_at}
+            return
+
+        if len(self.cache) >= self.capacity:
+            self.cache.popitem(last=False)
+            self.evictions += 1
+            
+        self.cache[key] = {'value': value, 'expires_at': expires_at}
+
+    def delete(self, key: str) -> bool:
+        if key in self.cache:
+            del self.cache[key]
+            return True
+        return False
+
+    def size(self) -> int:
+        now = time.time()
+        expired_keys = [
+            k for k, v in self.cache.items() 
+            if v['expires_at'] is not None and now > v['expires_at']
+        ]
+        for k in expired_keys:
+            self.cache.pop(k)
+            self.expirations += 1
+        return len(self.cache)
+
+    def get_stats(self) -> dict:
+        return {
+            "hits": self.hits,
+            "misses": self.misses,
+            "evictions": self.evictions,
+            "expirations": self.expirations
+        }
+
+    def keys(self) -> list:
+        now = time.time()
+        valid_keys = []
+        expired_keys = []
+        
+        for k in reversed(self.cache):
+            v = self.cache[k]
+            if v['expires_at'] is not None and now > v['expires_at']:
+                expired_keys.append(k)
+                self.expirations += 1
+            else:
+                valid_keys.append(k)
+                
+        for k in expired_keys:
+            self.cache.pop(k)
+            
+        return valid_keys
+
+    def clear(self) -> None:
+        self.cache.clear()
+        self.hits = 0
+        self.misses = 0
+        self.evictions = 0
+        self.expirations = 0
+```

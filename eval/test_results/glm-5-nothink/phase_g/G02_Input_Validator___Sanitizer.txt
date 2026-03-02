@@ -1,0 +1,22 @@
+```json
+{
+  "errors": [
+    "customer.email domain 'mailinator.com' is a disposable email provider",
+    "customer.phone country code '+44' does not match shipping.country 'US'",
+    "shipping.zip '10001' is invalid for state 'CA' (must start with 9)",
+    "delivery_date '2025-12-15' must be after order_date '2026-01-15'",
+    "billing.address must exactly match shipping.address because same_as_shipping is true",
+    "items[1].subtotal 109.98 does not equal quantity (2) * unit_price (49.99) = 99.98",
+    "items[2].quantity 0 is outside the allowed range of 1-999",
+    "items[2].subtotal 15.00 does not equal quantity (0) * unit_price (15.00) = 0.00",
+    "items[3].sku cannot be empty",
+    "items[3].unit_price -5.00 cannot be negative",
+    "items[3].subtotal -5.00 does not equal quantity (1) * unit_price (-5.00) = -5.00 (calculation mismatch)",
+    "order_total 159.95 does not equal sum of subtotals (209.95) minus discount_amount (50.00) = 159.95 (calculation mismatch based on payload values)",
+    "payment.card_expiry '2025-06' must be after order_date '2026-01-15'",
+    "payment.amount 200.00 does not equal order_total 159.95",
+    "payment.card_last4 '12345' must be exactly 4 digits"
+  ],
+  "error_count": 15
+}
+```
