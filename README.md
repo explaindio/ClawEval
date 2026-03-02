@@ -112,15 +112,89 @@ Don't have a GPU? We also test open-source models hosted on cloud providers so y
 
 > † Phase G discriminator score (harder test that differentiates models — [details](docs/results-phase-g.md))
 >
-> ☁️ **Cloud champion: [Kimi K2.5](docs/results-cloud.md) — 483/590 (82%) Phase F + 96/110 (87%) Phase G with thinking.**
->
-> 📊 **Detailed per-model comparisons:**
-> - [☁️ Cloud Models — Kimi K2.5 (full 59-role + Phase G)](docs/results-cloud.md)
+> 📊 **Detailed local comparisons:**
 > - [🟢 24GB VRAM — Think vs NoThink (4 models)](docs/results-24gb-vram.md)
 > - [🔵 64–96GB VRAM — GPT-OSS-120B vs Qwen3.5-122B](docs/results-64-96gb-vram.md)
 > - [🆕 Phase G — Discriminator Tests (harder tests)](docs/results-phase-g.md)
 > - [Phase E — 12 Killer Tests (all models)](docs/results-phase-e.md)
 > - [Full detailed results with all configs →](RESULTS.md)
+
+
+## ☁️ Best Cloud Model Per Role
+
+🟢 = 8-10 &nbsp; 🟡 = 5-7 &nbsp; 🔴 = 0-4 &nbsp; 📝 = Manual review (5)
+
+> 🔜 **More cloud models coming soon.** Currently tested: Kimi K2.5. Next up: additional models via OpenRouter, Chutes, and other providers.
+
+| # | Agent Role | ☁️ Best Cloud | |
+|---|---|---|---|
+| | | **Model** | **Score** |
+| | **Tier 1 — Utility** | | |
+| 1 | Router / Triage | Kimi K2.5 | 🟢 9 |
+| 2 | Input Validator | Kimi K2.5 | 🟢 10† |
+| 3 | Health Monitor | Kimi K2.5 | 🟡 5 |
+| 4 | Notification | Kimi K2.5 | 🟢 9 |
+| 5 | Sentiment | Kimi K2.5 | 🟢 10† |
+| 6 | FAQ Generation | K2.5 Think | 🟡 7 |
+| 7 | Translation | Kimi K2.5 | 🟢 9 |
+| 8 | Calendar | — | 🔴 0 |
+| | **Tier 2 — Moderate** | | |
+| 9 | Research Agent | Kimi K2.5 | 🟢 10† |
+| 10 | Content Writer | 📝 Manual | 📝 5 |
+| 11 | Editor | K2.5 Think | 🟢 10 |
+| 12 | Content Planner | K2.5 Think | 🟢 10† |
+| 13 | Email Drafting | K2.5 Think | 🟢 10 |
+| 14 | Doc Summary | Kimi K2.5 | 🟢 8 |
+| 15 | Meeting Notes | Kimi K2.5 | 🟢 10 |
+| 16 | Social Scouting | Kimi K2.5 | 🟢 10 |
+| 17 | Social Content | 📝 Manual | 📝 5 |
+| 18 | News Aggregation | Kimi K2.5 | 🟢 10 |
+| 19 | Shopping | Kimi K2.5 | 🟢 10 |
+| 20 | Memory Mgmt | Kimi K2.5 | 🟢 9 |
+| 21 | RAG / Retrieval | Kimi K2.5 | 🟡 6 |
+| 22 | Data Analysis | Kimi K2.5 | 🔴 2 |
+| 23 | Web Scraping | Kimi K2.5 | 🟢 10† |
+| 24 | Image Description | 📝 Manual | 📝 5 |
+| 25 | Customer Support | Kimi K2.5 | 🟢 10 |
+| 26 | Lead Scoring | Kimi K2.5 | 🟢 8 |
+| 27 | Sprint Summary | K2.5 Think | 🟡 7 |
+| 28 | Transaction | Kimi K2.5 | 🟢 9 |
+| 29 | Home Automation | Kimi K2.5 | 🟢 10 |
+| 30 | Fitness Tracking | Kimi K2.5 | 🟢 8 |
+| 31 | Recipe / Cooking | Kimi K2.5 | 🔴 1 |
+| 32 | Personal Finance | Kimi K2.5 | 🟡 5 |
+| 33 | SEO Optimization | Kimi K2.5 | 🟢 9 |
+| 34 | Landing Page | 📝 Manual | 📝 5 |
+| 35 | Travel Planning | Kimi K2.5 | 🟢 10 |
+| | **Tier 3 — Advanced** | | |
+| 36 | Code Generation | Kimi K2.5 | 🟢 10† |
+| 37 | Code Review | Kimi K2.5 | 🟢 10 |
+| 38 | QA / Test Writing | Kimi K2.5 | 🟢 8 |
+| 39 | Task Planning | Kimi K2.5 | 🟢 10 |
+| 40 | Fact-Checking | Kimi K2.5 | 🟢 10† |
+| 41 | Critic / Review | 📝 Manual | 📝 5 |
+| 42 | Market Research | Kimi K2.5 | 🟢 8 |
+| 43 | Synthesizer | K2.5 NoThink | 🟢 10 |
+| 44 | Curriculum Design | K2.5 NoThink | 🟡 7 |
+| 45 | Prototype Gen | Kimi K2.5 | 🟡 5 |
+| 46 | DevOps | Kimi K2.5 | 🟢 10 |
+| | **Tier 4 — Expert** | | |
+| 47 | Math / Logic | Kimi K2.5 | 🟢 8 |
+| 48 | STEM Analysis | Kimi K2.5 | 🟢 10† |
+| 49 | Algorithm | Kimi K2.5 | 🟢 10† |
+| | **Tier 5 — Senior** | | |
+| 50 | Orchestrator | Kimi K2.5 | 🟢 8† |
+| 51 | Architect | K2.5 Think | 🟢 10† |
+| 52 | Debugger | Kimi K2.5 | 🟢 10 |
+| 53 | Legal Review | Kimi K2.5 | 🟢 10 |
+| 54 | Medical | Kimi K2.5 | 🟢 9 |
+| 55 | Financial | Kimi K2.5 | 🟢 10 |
+| 56 | Security | Kimi K2.5 | 🟢 10 |
+| 57 | SRE / Incident | K2.5 Think | 🔴 3 |
+| 58 | Book Writing | 📝 Manual | 📝 5 |
+| 59 | Compliance | K2.5 NoThink | 🟢 9 |
+
+> † Phase G discriminator score · [☁️ Full Kimi K2.5 Think vs NoThink comparison →](docs/results-cloud.md)
 
 ---
 
