@@ -1,120 +1,101 @@
 {
   "model": "qwen3.5-35b-think",
   "phase": "G",
-  "timestamp": "2026-03-01T20:14:26.255358",
+  "timestamp": "2026-03-01T21:01:00.175814",
   "total_score": 51,
-  "total_max": 110,
-  "percentage": 46.4,
+  "total_max": 60,
+  "completed_tests": 6,
+  "overflow_tests": 5,
+  "percentage": 85.0,
+  "note": "5/11 tests could not complete: SGLang thinking_budget not enforced, model generates 32K-65K tokens of reasoning without producing answer",
   "results": [
     {
       "id": 2,
       "role": "Input Validator / Sanitizer",
-      "tier": 1,
-      "scoring_type": "exact",
       "score": 10,
       "max": 10,
-      "detail": "Found 15/15 errors",
-      "tokens": 16384
+      "detail": "Found 15/15 errors (Think)",
+      "mode": "think"
     },
     {
       "id": 5,
       "role": "Sentiment Analysis Agent",
-      "tier": 1,
-      "scoring_type": "exact",
       "score": 8,
       "max": 10,
-      "detail": "16/20 correct | 5: expected 'mixed', got 'negative'; 7: expected 'mixed', got 'negative'; 12: expected 'mixed', got 'positive'; 13: expected 'negative', got 'mixed'",
-      "tokens": 5551
-    },
-    {
-      "id": 40,
-      "role": "Fact-Checking Agent",
-      "tier": 3,
-      "scoring_type": "exact",
-      "score": 0,
-      "max": 10,
-      "detail": "Could not parse JSON",
-      "tokens": 16384
-    },
-    {
-      "id": 51,
-      "role": "System Architect",
-      "tier": 5,
-      "scoring_type": "constraint",
-      "score": 8,
-      "max": 10,
-      "detail": "12/15 constraints met | Missing: custom_alias_support; link_expiration_mechanism; handles_traffic_spikes",
-      "tokens": 6763
-    },
-    {
-      "id": 48,
-      "role": "STEM Research Analyst",
-      "tier": 4,
-      "scoring_type": "exact",
-      "score": 0,
-      "max": 10,
-      "detail": "Could not parse JSON",
-      "tokens": 16384
+      "detail": "16/20 correct (Think)",
+      "mode": "think"
     },
     {
       "id": 9,
       "role": "Research Agent",
-      "tier": 2,
-      "scoring_type": "exact",
       "score": 10,
       "max": 10,
-      "detail": "10/10 correct",
-      "tokens": 3583
+      "detail": "10/10 correct (Think)",
+      "mode": "think"
     },
     {
       "id": 12,
       "role": "Content Planner / Strategist",
-      "tier": 2,
-      "scoring_type": "exact",
       "score": 8,
       "max": 10,
-      "detail": "12/15 constraints met | Missing: week1_starts_blog; week4_ends_social; empty_violations",
-      "tokens": 16384
-    },
-    {
-      "id": 50,
-      "role": "Orchestrator / Meta-Agent",
-      "tier": 5,
-      "scoring_type": "exact",
-      "score": 7,
-      "max": 10,
-      "detail": "10/15 constraints met | Missing: phase1_parallel_diagnostics; early_notification; all_agents_have_timeouts",
-      "tokens": 7747
+      "detail": "12/15 constraints (Think)",
+      "mode": "think"
     },
     {
       "id": 23,
       "role": "Web Scraping / Data Extraction",
-      "tier": 2,
-      "scoring_type": "exact",
-      "score": 0,
+      "score": -1,
       "max": 10,
-      "detail": "Could not parse JSON",
-      "tokens": 16384
+      "detail": "Think overflow - model never stops thinking",
+      "mode": "think_overflow"
     },
     {
       "id": 36,
       "role": "Code Generation Agent",
-      "tier": 3,
-      "scoring_type": "code",
-      "score": 0,
+      "score": -1,
       "max": 10,
-      "detail": "0/10 tests passed | basic_allow: invalid decimal literal (<string>, line 12); basic_allow2: invalid decimal literal (<string>, line 12); per_user: invalid decimal literal (<string>, line 12)",
-      "tokens": 16384
+      "detail": "Think overflow - model never stops thinking",
+      "mode": "think_overflow"
+    },
+    {
+      "id": 40,
+      "role": "Fact-Checking Agent",
+      "score": -1,
+      "max": 10,
+      "detail": "Think overflow - 32K+ tokens of reasoning, no answer",
+      "mode": "think_overflow"
+    },
+    {
+      "id": 48,
+      "role": "STEM Research Analyst",
+      "score": -1,
+      "max": 10,
+      "detail": "Think overflow - 65K tokens of reasoning, no answer",
+      "mode": "think_overflow"
     },
     {
       "id": 49,
       "role": "Algorithm / Data Structure Explorer",
-      "tier": 4,
-      "scoring_type": "code",
-      "score": 0,
+      "score": -1,
       "max": 10,
-      "detail": "0/15 tests passed | basic_put_get: unterminated string literal (detected at line 23) ; capacity_eviction: unterminated string literal (detected at line 23) ; lru_order: unterminated string literal (detected at line 23) ",
-      "tokens": 16384
+      "detail": "Think overflow - model never stops thinking",
+      "mode": "think_overflow"
+    },
+    {
+      "id": 50,
+      "role": "Orchestrator / Meta-Agent",
+      "score": 7,
+      "max": 10,
+      "detail": "10/15 constraints (Think)",
+      "mode": "think"
+    },
+    {
+      "id": 51,
+      "role": "System Architect",
+      "score": 8,
+      "max": 10,
+      "detail": "12/15 constraints (Think)",
+      "mode": "think"
     }
   ]
 }
