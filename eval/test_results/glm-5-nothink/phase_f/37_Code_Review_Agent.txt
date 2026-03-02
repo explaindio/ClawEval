@@ -1,0 +1,32 @@
+```json
+{
+  "bugs": [
+    {
+      "line": 18,
+      "issue": "ZeroDivisionError if 'processed' list is empty (no pending orders found).",
+      "fix": "Check if processed is empty before dividing: avg = total / len(processed) if processed else 0"
+    },
+    {
+      "line": 23,
+      "issue": "Returns the total count of input orders instead of the count of actually processed orders.",
+      "fix": "Change 'count': len(orders) to 'count': len(processed)"
+    },
+    {
+      "line": 8,
+      "issue": "No validation on 'discount'. If discount > 100, price becomes negative. The check on line 10 resets it to 0, resulting in a free order instead of rejecting invalid data.",
+      "fix": "Add validation: if discount > 100: raise ValueError('Discount cannot exceed 100')"
+    },
+    {
+      "line": 6,
+      "issue": "Modifies the input dictionary objects in-place (side effect), changing 'status' and adding 'final_price' to the original data.",
+      "fix": "Create a copy of the order before modifying: order = order.copy()"
+    },
+    {
+      "line": 7,
+      "issue": "No type checking or validation for 'price' and 'quantity'. If these keys are missing or set to None, the code crashes with a TypeError.",
+      "fix": "Validate existence and type: if not all(k in order for k in ['price', 'quantity']): continue"
+    }
+  ],
+  "count": 5
+}
+```

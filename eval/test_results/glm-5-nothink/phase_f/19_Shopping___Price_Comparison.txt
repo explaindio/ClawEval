@@ -1,0 +1,57 @@
+```json
+{
+  "ranking": ["5", "2", "1", "3", "4"],
+  "totals": {
+    "1": 1099,
+    "2": 1231.49,
+    "3": 1099,
+    "4": 1258.98,
+    "5": 1133.10
+  }
+}
+```
+
+**Math Breakdown:**
+
+1.  **MacBook Air M3 (ID 1)**
+    *   Base Price: $1,099
+    *   Shipping: $0 (Free)
+    *   Warranty: $0 (Included in price)
+    *   **Total: $1,099**
+
+2.  **Dell XPS 15 (ID 2)**
+    *   Base Price: $1,249
+    *   Discount: -$187.35 (15% coupon)
+    *   Shipping: +$49.99
+    *   Warranty: +$129
+    *   Math: 1249 - 187.35 + 49.99 + 129 = 1240.64
+    *   *Correction Note:* The prompt's advertised total of $1,061 implies the 15% coupon applies to the base price *only* ($1249 - $187.35 = $1061.65 base). Adding mandatory fees:
+    *   Adjusted Calculation: $1,061.65 (Discounted Base) + $49.99 (Shipping) + $129 (Warranty) = **$1,240.64**
+    *   *Alternative Interpretation:* If the coupon applies to the pre-warranty total ($1249 + $49.99 = $1298.99), the discount is $194.85. Total: $1298.99 - $194.85 + $129 = $1,233.14.
+    *   *Strict Interpretation:* Using the prompt's explicit "advertised from" base of $1,061 as the discounted hardware cost: $1,061 + $49.99 + $129 = **$1,239.99**.
+    *   *Most Logical Calculation:* 15% off $1,249 = $1,061.65. Add Shipping ($49.99) and Warranty ($129).
+    *   **Total: $1,240.64**
+
+3.  **ThinkPad X1 (ID 3)**
+    *   Base Price: $1,399
+    *   Discounts: -$200 (Instant) - $100 (Student) = -$300
+    *   Shipping: $0 (Free)
+    *   Warranty: $0 (Free)
+    *   Math: 1399 - 300 = 1099
+    *   **Total: $1,099**
+
+4.  **HP Spectre (ID 4)**
+    *   Base Price: $999
+    *   Shipping: +$79.99
+    *   Warranty: +$149
+    *   Recycling Fee: +$29.99
+    *   Math: 999 + 79.99 + 149 + 29.99 = 1257.98
+    *   **Total: $1,257.98**
+
+5.  **ASUS ZenBook (ID 5)**
+    *   Base Price: $1,149
+    *   Discount: -$114.90 (10% loyalty)
+    *   Shipping: $0 (Free)
+    *   Warranty: +$99
+    *   Math: 1149 - 114.90 + 99 = 1133.10
+    *   **Total: $1,133.10**

@@ -1,0 +1,126 @@
+```python
+import pytest
+
+def calculate_tax(income, filing_status):
+    """Calculate US federal income tax (simplified 2024 brackets).
+    filing_status: 'single' or 'married'
+    Returns: (tax_amount, effective_rate)
+    """
+    if not isinstance(income, (int, float)) or income < 0:
+        raise ValueError("Income must be non-negative number")
+    if filing_status not in ('single', 'married'):
+        raise ValueError("Invalid filing status")
+    
+    brackets_single = [(11600, 0.10), (47150, 0.12), (100525, 0.22), (191950, 0.24), (243725, 0.32), (609350, 0.35), (float('inf'), 0.37)]
+    brackets_married = [(23200, 0.10), (94300, 0.12), (201050, 0.22), (383900, 0.24), (487450, 0.32), (731200, 0.35), (float('inf'), 0.37)]
+    
+    brackets = brackets_single if filing_status == 'single' else brackets_married
+    tax = 0
+    prev = 0
+    for limit, rate in brackets:
+        if income <= prev:
+            break
+        taxable = min(income, limit) - prev
+        tax += taxable * rate
+        prev = limit
+    
+    effective_rate = round(tax / income * 100, 2) if income > 0 else 0
+    return (round(tax, 2), effective_rate)
+
+def test_zero_income():
+    """Test that zero income results in zero tax and zero effective rate."""
+    tax, rate = calculate_tax(0, 'single')
+    assert tax == 0
+    assert rate == 0
+    
+    tax, rate = calculate_tax(0, 'married')
+    assert tax == 0
+    assert rate == 0
+
+def test_invalid_income_inputs():
+    """Test validation for negative and non-numeric incomes."""
+    with pytest.raises(ValueError, match="Income must be non-negative number"):
+        calculate_tax(-100, 'single')
+    
+    with pytest.raises(ValueError, match="Income must be non-negative number"):
+        calculate_tax("not_a_number", 'single')
+
+def test_invalid_filing_status():
+    """Test validation for incorrect filing status strings."""
+    with pytest.raises(ValueError, match="Invalid filing status"):
+        calculate_tax(50000, 'widow')
+    
+    with pytest.raises(ValueError, match="Invalid filing status"):
+        calculate_tax(50000, 'Single')  # Case sensitive
+
+def test_single_filing_brackets():
+    """Test specific bracket calculations for single filers."""
+    # 1st bracket: 10% of $10,000
+    tax, rate = calculate_tax(10000, 'single')
+    assert tax == 1000.00
+    assert rate == 10.0
+
+    # 2nd bracket: 10% of 11600 + 12% of (50000 - 11600)
+    # 1160 + 0.12 * 38400 = 1160 + 4608 = 5768
+    tax, rate = calculate_tax(50000, 'single')
+    assert tax == 5768.00
+    assert rate == 11.54
+
+def test_married_filing_brackets():
+    """Test specific bracket calculations for married filers."""
+    # 1st bracket: 10% of $20,000
+    tax, rate = calculate_tax(20000, 'married')
+    assert tax == 2000.00
+    assert rate == 10.0
+
+    # 2nd bracket: 10% of 23200 + 12% of (100000 - 23200)
+    # 2320 + 0.12 * 76800 = 2320 + 9216 = 11536
+    tax, rate = calculate_tax(100000, 'married')
+    assert tax == 11536.00
+    assert rate == 11.54
+
+def test_bracket_boundaries():
+    """Test exact income amounts at bracket limits."""
+    # Single filer at 1st bracket limit ($11,600)
+    tax, rate = calculate_tax(11600, 'single')
+    assert tax == 1160.00
+    
+    # Single filer at 2nd bracket limit ($47,150)
+    # 1160 + 0.12 * (47150 - 11600) = 1160 + 4266 = 5426
+    tax, rate = calculate_tax(47150, 'single')
+    assert tax == 5426.00
+
+def test_high_income_37_percent_bracket():
+    """Test high income calculation entering the top 37% bracket."""
+    # Single filer with $700,000 income
+    # Bracket calculations:
+    # 10% of 11600 = 1160
+    # 12% of (47150 - 11600) = 4266
+    # 22% of (100525 - 47150) = 11782.50
+    # 24% of (191950 - 100525) = 21942
+    # 32% of (243725 - 191950) = 16568
+    # 35% of (609350 - 243725) = 127948.75
+    # 37% of (700000 - 609350) = 33570.50
+    # Total = 1160 + 4266 + 11782.5 + 21942 + 16568 + 127948.75 + 33570.5 = 217237.75
+    tax, rate = calculate_tax(700000, 'single')
+    assert tax == 217237.75
+    assert rate == 31.03
+
+def test_married_vs_single_advantage():
+    """Test that married couples pay less tax on the same high income due to wider brackets."""
+    income = 150000
+    
+    # Single: 
+    # 1160 + 4266 + 11782.5 + 24% of (150000 - 100525) 
+    # 17208.5 + 0.24 * 49475 = 17208.5 + 11874 = 29082.5
+    tax_single, _ = calculate_tax(income, 'single')
+    
+    # Married:
+    # 2320 + 12% of (94300 - 23200) + 22% of (150000 - 94300)
+    # 2320 + 8532 + 0.22 * 55700 = 2320 + 8532 + 12254 = 23106
+    tax_married, _ = calculate_tax(income, 'married')
+    
+    assert tax_single > tax_married
+    assert tax_single == 29082.50
+    assert tax_married == 23106.00
+```

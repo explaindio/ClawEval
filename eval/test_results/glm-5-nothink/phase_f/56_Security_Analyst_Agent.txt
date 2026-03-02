@@ -1,0 +1,77 @@
+```json
+{
+  "vulnerabilities": [
+    {
+      "id": 1,
+      "type": "Hardcoded Secret",
+      "severity": "high",
+      "location": "Line 8: app.secret_key = \"password123\"",
+      "fix": "Load the secret key from a secure environment variable or a secrets manager (e.g., app.secret_key = os.environ.get('SECRET_KEY'))."
+    },
+    {
+      "id": 2,
+      "type": "Server-Side Template Injection (SSTI)",
+      "severity": "critical",
+      "location": "Line 13: render_template_string(f\"Results for: {q}\")",
+      "fix": "Sanitize user input or use proper template rendering with context (e.g., render_template('search.html', q=q)). Never inject raw user input directly into template strings."
+    },
+    {
+      "id": 3,
+      "type": "SQL Injection",
+      "severity": "critical",
+      "location": "Line 19: db.execute(f\"SELECT * FROM users WHERE id = {id}\")",
+      "fix": "Use parameterized queries to separate data from code (e.g., db.execute(\"SELECT * FROM users WHERE id = ?\", (id,)))."
+    },
+    {
+      "id": 4,
+      "type": "Insecure Deserialization",
+      "severity": "critical",
+      "location": "Line 26: obj = pickle.loads(data)",
+      "fix": "Avoid using 'pickle' with untrusted data. Use a safe serialization format like JSON (json.loads())."
+    },
+    {
+      "id": 5,
+      "type": "Operating System Command Injection",
+      "severity": "critical",
+      "location": "Line 32: subprocess.check_output(cmd, shell=True)",
+      "fix": "Do not pass user input directly to shell commands. If necessary, use subprocess without shell=True and pass arguments as a list, validating inputs against a strict allowlist."
+    },
+    {
+      "id": 6,
+      "type": "Path Traversal",
+      "severity": "critical",
+      "location": "Line 38: open(path).read()",
+      "fix": "Sanitize the path input and use os.path.realpath to ensure the resolved path is within an allowed directory, preventing access to sensitive files like /etc/passwd."
+    },
+    {
+      "id": 7,
+      "type": "Weak Authentication Logic",
+      "severity": "high",
+      "location": "Line 44: if pw == os.environ.get(\"ADMIN_PW\", \"admin\")",
+      "fix": "Remove the hardcoded default fallback password 'admin'. Ensure the application fails securely if the environment variable is not set, and implement constant-time comparison for secrets."
+    },
+    {
+      "id": 8,
+      "type": "Sensitive Information Disclosure",
+      "severity": "high",
+      "location": "Line 49: return str(os.environ)",
+      "fix": "Remove this debug endpoint entirely before production deployment to prevent leaking environment variables (which often contain secrets, API keys, and DB credentials)."
+    },
+    {
+      "id": 9,
+      "type": "Missing Transport Layer Protection",
+      "severity": "high",
+      "location": "Global Configuration",
+      "fix": "Enforce HTTPS by configuring the web server (Nginx/Apache) to redirect HTTP to HTTPS, or use a library like 'flask-talisman' to force HTTPS connections."
+    },
+    {
+      "id": 10,
+      "type": "Missing Rate Limiting",
+      "severity": "medium",
+      "location": "Global Configuration",
+      "fix": "Implement rate limiting using a library like 'flask-limiter' to prevent brute-force attacks on the login endpoint and denial-of-service attacks."
+    }
+  ],
+  "count": 10
+}
+```

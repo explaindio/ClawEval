@@ -1,0 +1,345 @@
+```json
+[
+  {
+    "id": "morning_routine",
+    "name": "Morning Routine Lights",
+    "trigger": {
+      "type": "time",
+      "at": "06:30"
+    },
+    "conditions": [
+      {
+        "type": "day_type",
+        "value": "weekday"
+      }
+    ],
+    "actions": [
+      {
+        "device": "bedroom_lights",
+        "command": "turn_on_gradual",
+        "duration_minutes": 15
+      }
+    ]
+  },
+  {
+    "id": "morning_routine_weekend",
+    "name": "Morning Routine Lights (Weekend)",
+    "trigger": {
+      "type": "time",
+      "at": "08:00"
+    },
+    "conditions": [
+      {
+        "type": "day_type",
+        "value": "weekend"
+      }
+    ],
+    "actions": [
+      {
+        "device": "bedroom_lights",
+        "command": "turn_on_gradual",
+        "duration_minutes": 15
+      }
+    ]
+  },
+  {
+    "id": "thermostat_home",
+    "name": "Thmostat Home Mode",
+    "trigger": {
+      "type": "state_change",
+      "entity": "group.occupants",
+      "from": "away",
+      "to": "home"
+    },
+    "conditions": [
+      {
+        "type": "time_range",
+        "after": "06:00",
+        "before": "23:00"
+      }
+    ],
+    "actions": [
+      {
+        "device": "thermostat",
+        "command": "set_temperature",
+        "value": 72,
+        "unit": "F"
+      }
+    ]
+  },
+  {
+    "id": "thermostat_away",
+    "name": "Thermostat Away Mode",
+    "trigger": {
+      "type": "state_change",
+      "entity": "group.occupants",
+      "to": "away"
+    },
+    "conditions": [],
+    "actions": [
+      {
+        "device": "thermostat",
+        "command": "set_temperature",
+        "value": 65,
+        "unit": "F"
+      }
+    ]
+  },
+  {
+    "id": "thermostat_sleep",
+    "name": "Thermostat Sleep Mode",
+    "trigger": {
+      "type": "time",
+      "at": "23:00"
+    },
+    "conditions": [
+      {
+        "type": "state",
+        "entity": "group.occupants",
+        "value": "home"
+      }
+    ],
+    "actions": [
+      {
+        "device": "thermostat",
+        "command": "set_temperature",
+        "value": 68,
+        "unit": "F"
+      }
+    ]
+  },
+  {
+    "id": "security_arm",
+    "name": "Security System Arm",
+    "trigger": {
+      "type": "state_change",
+      "entity": "group.occupants",
+      "to": "away"
+    },
+    "conditions": [],
+    "actions": [
+      {
+        "device": "security_system",
+        "command": "arm_away"
+      }
+    ]
+  },
+  {
+    "id": "security_disarm",
+    "name": "Security System Disarm",
+    "trigger": {
+      "type": "state_change",
+      "entity": "group.occupants",
+      "from": "away",
+      "to": "home"
+    },
+    "conditions": [],
+    "actions": [
+      {
+        "device": "security_system",
+        "command": "disarm"
+      }
+    ]
+  },
+  {
+    "id": "pet_feeder_morning",
+    "name": "Pet Feeder Morning",
+    "trigger": {
+      "type": "time",
+      "at": "07:00"
+    },
+    "conditions": [],
+    "actions": [
+      {
+        "device": "pet_feeder",
+        "command": "dispense_food"
+      }
+    ]
+  },
+  {
+    "id": "pet_feeder_evening",
+    "name": "Pet Feeder Evening",
+    "trigger": {
+      "type": "time",
+      "at": "18:00"
+    },
+    "conditions": [],
+    "actions": [
+      {
+        "device": "pet_feeder",
+        "command": "dispense_food"
+      }
+    ]
+  },
+  {
+    "id": "pet_camera",
+    "name": "Pet Camera Activation",
+    "trigger": {
+      "type": "state_change",
+      "entity": "group.occupants",
+      "to": "away"
+    },
+    "conditions": [],
+    "actions": [
+      {
+        "device": "cat_camera",
+        "command": "enable_streaming"
+      }
+    ]
+  },
+  {
+    "id": "energy_solar_priority",
+    "name": "Solar Panel Priority",
+    "trigger": {
+      "type": "time",
+      "at": "14:00"
+    },
+    "conditions": [],
+    "actions": [
+      {
+        "device": "solar_inverter",
+        "command": "set_mode",
+        "value": "priority_export"
+      },
+      {
+        "device": "home_battery",
+        "command": "set_mode",
+        "value": "charge_from_solar"
+      }
+    ]
+  },
+  {
+    "id": "energy_battery_evening",
+    "name": "Battery Backup Evening",
+    "trigger": {
+      "type": "time",
+      "at": "19:00"
+    },
+    "conditions": [],
+    "actions": [
+      {
+        "device": "home_battery",
+        "command": "set_mode",
+        "value": "discharge_to_home"
+      }
+    ]
+  },
+  {
+    "id": "hallway_motion_night",
+    "name": "Hallway Motion Lighting",
+    "trigger": {
+      "type": "state_change",
+      "entity": "hallway_motion_sensor",
+      "to": "active"
+    },
+    "conditions": [
+      {
+        "type": "time_range",
+        "after": "22:00",
+        "before": "06:00"
+      }
+    ],
+    "actions": [
+      {
+        "device": "hallway_lights",
+        "command": "turn_on",
+        "brightness": 20,
+        "unit": "percent"
+      },
+      {
+        "device": "hallway_lights",
+        "command": "turn_off",
+        "delay_minutes": 5
+      }
+    ]
+  },
+  {
+    "id": "bob_office_setup",
+    "name": "Bob's Office Activation",
+    "trigger": {
+      "type": "state_change",
+      "entity": "bob_computer",
+      "to": "on"
+    },
+    "conditions": [],
+    "actions": [
+      {
+        "device": "bob_desk_lamp",
+        "command": "turn_on"
+      },
+      {
+        "device": "bob_office_ac",
+        "command": "set_temperature",
+        "value": 70,
+        "unit": "F"
+      }
+    ]
+  },
+  {
+    "id": "laundry_notification",
+    "name": "Laundry Cycle Complete",
+    "trigger": {
+      "type": "state_change",
+      "entity": ["washer", "dryer"],
+      "from": "running",
+      "to": "finished"
+    },
+    "conditions": [],
+    "actions": [
+      {
+        "device": "notification_service",
+        "command": "send_alert",
+        "target": ["alice_phone", "bob_phone"],
+        "message": "Laundry cycle complete."
+      }
+    ]
+  },
+  {
+    "id": "water_leak_emergency",
+    "name": "Water Leak Emergency Shutdown",
+    "trigger": {
+      "type": "state_change",
+      "entity": "water_leak_sensor",
+      "to": "wet"
+    },
+    "conditions": [],
+    "actions": [
+      {
+        "device": "main_water_valve",
+        "command": "close"
+      },
+      {
+        "device": "notification_service",
+        "command": "send_critical_alert",
+        "target": ["alice_phone", "bob_phone"],
+        "message": "Water leak detected! Main water valve shut off."
+      }
+    ]
+  },
+  {
+    "id": "guest_mode_activation",
+    "name": "Guest Mode Activation",
+    "trigger": {
+      "type": "manual",
+      "source": "dashboard_or_voice"
+    },
+    "conditions": [],
+    "actions": [
+      {
+        "device": "smart_lock",
+        "command": "create_temp_code"
+      },
+      {
+        "device": "thermostat",
+        "command": "set_temperature",
+        "value": 72,
+        "unit": "F"
+      },
+      {
+        "device": "wifi_router",
+        "command": "enable_guest_network"
+      }
+    ]
+  }
+]
+```

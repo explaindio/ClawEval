@@ -1,0 +1,76 @@
+```json
+{
+  "components": [
+    {
+      "name": "Load Balancer",
+      "technology": "AWS ALB / Cloudflare",
+      "purpose": "SSL Termination, DDoS protection, routing WebSocket connections to stateless gateways.",
+      "scaling_strategy": "Auto-scaling based on incoming connection count and bandwidth; geographically distributed."
+    },
+    {
+      "name": "Connection Gateway",
+      "technology": "Go (Gorilla WebSocket) / Erlang",
+      "purpose": "Maintains persistent WebSocket connections for 1M users; handles presence heartbeat and message delivery.",
+      "scaling_strategy": "Stateless containerized pods; Kubernetes HPA based on CPU/Memory; sticky sessions not required if using Redis Pub/Sub."
+    },
+    {
+      "name": "Authentication Service",
+      "technology": "Node.js / Keycloak",
+      "purpose": "JWT validation, user authentication, and GDPR consent management.",
+      "scaling_strategy": "Stateless auto-scaling; high caching of validation keys."
+    },
+    {
+      "name": "Message Broker",
+      "technology": "Apache Kafka",
+      "purpose": "Decouples ingestion from processing; guarantees message ordering per chat; acts as a durable buffer for the 1M user load.",
+      "scaling_strategy": "Partitioning by ChatID to ensure ordering; horizontal broker addition."
+    },
+    {
+      "name": "Chat Logic Service",
+      "technology": "Go / Java Spring Boot",
+      "purpose": "Business logic: group permissions, read receipt processing, fan-out logic for group chats.",
+      "scaling_strategy": "Consumer groups in Kafka; auto-scaling based on lag."
+    },
+    {
+      "name": "Presence Store",
+      "technology": "Redis Cluster",
+      "purpose": "Stores online/offline status and user socket metadata (which gateway holds the connection).",
+      "scaling_strategy": "Sharding by UserID; high availability mode with replicas."
+    },
+    {
+      "name": "Message Database",
+      "technology": "ScyllaDB / Apache Cassandra",
+      "purpose": "Persistent storage for chat history; optimized for high write throughput and time-series queries.",
+      "scaling_strategy": "Keyspace partitioning by ChatID; multi-region replication."
+    },
+    {
+      "name": "Object Storage",
+      "technology": "AWS S3",
+      "purpose": "Stores encrypted file attachments (up to 50MB) and media.",
+      "scaling_strategy": "Infinite storage scaling; lifecycle policies to move old data to Glacier."
+    },
+    {
+      "name": "Encryption Service",
+      "technology": "Rust / Go (Enclave)",
+      "purpose": "Manages E2EE key distribution (Signal Protocol); does NOT decrypt message content (client-side encryption).",
+      "scaling_strategy": "Stateless scaling; high availability."
+    }
+  ],
+  "data_flow": "1. Client establishes WSS connection via Load Balancer to Connection Gateway. 2. Client sends message; Gateway publishes to Kafka. 3. Chat Logic Service consumes message, writes metadata to ScyllaDB, and pushes the encrypted payload to S3 (if attachment). 4. Chat Logic queries Redis for recipient presence. 5. If online, Logic pushes message to the specific Gateway instance via Redis Pub/Sub. 6. Gateway pushes message to client. 7. Client sends read receipt; Gateway updates ScyllaDB status.",
+  "infrastructure": {
+    "cloud": "AWS (Primary) with GCP (Failover)",
+    "regions": 3
+  },
+  "estimated_monthly_cost": "$85,000 - $120,000 (Compute: 40%, Database/Storage: 35%, Network/Data Transfer: 25%)",
+  "bottlenecks": [
+    "Database Write Contention: High write volume on popular group chats requires careful partition key design in ScyllaDB.",
+    "Fan-out Latency: Group chats with 500 members require 500 distinct push operations; Redis Pub/Sub throughput is critical.",
+    "Websocket Memory: Maintaining 1M open sockets requires significant RAM overhead per gateway node."
+  ],
+  "tradeoffs": [
+    "Consistency vs Latency: Opted for Eventual Consistency for read receipts to ensure <100ms message delivery latency.",
+    "E2EE vs Search: End-to-end encryption prevents server-side full-text search; search must be client-side or rely on a separate, secure index.",
+    "Cost vs Availability: Multi-region active-active setup doubles infrastructure cost but is required for 99.99% SLA."
+  ]
+}
+```

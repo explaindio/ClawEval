@@ -1,0 +1,308 @@
+Here's the complete semantic HTML structure for the TaskFlow landing page:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="TaskFlow — AI-Powered Project Management. Streamline your workflow with intelligent task automation.">
+    <title>TaskFlow — AI-Powered Project Management</title>
+</head>
+<body>
+    <!-- Navigation -->
+    <header>
+        <nav aria-label="Main navigation">
+            <a href="#" aria-label="TaskFlow Home">
+                <img src="logo.svg" alt="TaskFlow Logo" width="150" height="40">
+            </a>
+            <ul>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#pricing">Pricing</a></li>
+                <li><a href="#testimonials">Testimonials</a></li>
+                <li><a href="#faq">FAQ</a></li>
+            </ul>
+            <a href="#signup" role="button">Start Free Trial</a>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section aria-labelledby="hero-heading">
+            <h1 id="hero-heading">Manage Projects Smarter with AI</h1>
+            <p>TaskFlow uses artificial intelligence to automate task prioritization, predict bottlenecks, and keep your team aligned. Work faster, deliver sooner.</p>
+            <div>
+                <a href="#signup" role="button">Get Started Free</a>
+                <a href="#demo" role="button">Watch Demo</a>
+            </div>
+            <aside aria-label="Trusted by companies">
+                <p>Trusted by 10,000+ teams worldwide</p>
+                <ul aria-label="Company logos">
+                    <li><img src="company1.svg" alt="Acme Corp logo" width="100" height="30"></li>
+                    <li><img src="company2.svg" alt="Globex logo" width="100" height="30"></li>
+                    <li><img src="company3.svg" alt="Initech logo" width="100" height="30"></li>
+                    <li><img src="company4.svg" alt="Umbrella Corp logo" width="100" height="30"></li>
+                </ul>
+            </aside>
+        </section>
+
+        <!-- Features Section -->
+        <section id="features" aria-labelledby="features-heading">
+            <h2 id="features-heading">Why Teams Choose TaskFlow</h2>
+            <div>
+                <article>
+                    <header>
+                        <span aria-hidden="true">⚡</span>
+                        <h3>AI Task Prioritization</h3>
+                    </header>
+                    <p>Our AI analyzes deadlines, dependencies, and team capacity to automatically prioritize your tasks. Focus on what matters most without the manual sorting.</p>
+                </article>
+                <article>
+                    <header>
+                        <span aria-hidden="true">📊</span>
+                        <h3>Smart Analytics</h3>
+                    </header>
+                    <p>Get real-time insights on team velocity, project health, and potential risks. Predict delays before they happen with predictive analytics.</p>
+                </article>
+                <article>
+                    <header>
+                        <span aria-hidden="true">🔗</span>
+                        <h3>Seamless Integrations</h3>
+                    </header>
+                    <p>Connect with 100+ tools your team already uses. Slack, GitHub, Jira, Google Workspace, and more. One-click setup, no code required.</p>
+                </article>
+            </div>
+        </section>
+
+        <!-- Pricing Section -->
+        <section id="pricing" aria-labelledby="pricing-heading">
+            <h2 id="pricing-heading">Simple, Transparent Pricing</h2>
+            <p>Start free, scale as you grow. No hidden fees.</p>
+            <div>
+                <!-- Free Tier -->
+                <article aria-labelledby="tier-free">
+                    <header>
+                        <h3 id="tier-free">Free</h3>
+                        <p><span>$0</span><span>/month</span></p>
+                    </header>
+                    <p>Perfect for individuals and small teams getting started.</p>
+                    <ul>
+                        <li>Up to 5 team members</li>
+                        <li>10 active projects</li>
+                        <li>Basic AI suggestions</li>
+                        <li>1GB storage</li>
+                        <li>Email support</li>
+                    </ul>
+                    <a href="#signup" role="button">Get Started</a>
+                </article>
+
+                <!-- Pro Tier -->
+                <article aria-labelledby="tier-pro">
+                    <header>
+                        <h3 id="tier-pro">Pro</h3>
+                        <p><span>$12</span><span>/user/month</span></p>
+                    </header>
+                    <p>For growing teams that need more power and flexibility.</p>
+                    <ul>
+                        <li>Unlimited team members</li>
+                        <li>Unlimited projects</li>
+                        <li>Advanced AI prioritization</li>
+                        <li>100GB storage</li>
+                        <li>Priority support</li>
+                        <li>Custom workflows</li>
+                        <li>API access</li>
+                    </ul>
+                    <a href="#signup" role="button">Start Free Trial</a>
+                </article>
+
+                <!-- Enterprise Tier -->
+                <article aria-labelledby="tier-enterprise">
+                    <header>
+                        <h3 id="tier-enterprise">Enterprise</h3>
+                        <p><span>Custom</span></p>
+                    </header>
+                    <p>For large organizations with advanced security needs.</p>
+                    <ul>
+                        <li>Everything in Pro</li>
+                        <li>SSO & SAML authentication</li>
+                        <li>Unlimited storage</li>
+                        <li>Dedicated account manager</li>
+                        <li>Custom AI training</li>
+                        <li>On-premise deployment option</li>
+                        <li>SLA guarantee</li>
+                        <li>Audit logs & compliance</li>
+                    </ul>
+                    <a href="#contact" role="button">Contact Sales</a>
+                </article>
+            </div>
+        </section>
+
+        <!-- Testimonials Section -->
+        <section id="testimonials" aria-labelledby="testimonials-heading">
+            <h2 id="testimonials-heading">Loved by Teams Everywhere</h2>
+            <div>
+                <blockquote>
+                    <p>"TaskFlow cut our project delivery time by 40%. The AI prioritization is a game-changer — we stopped wasting hours in planning meetings."</p>
+                    <footer>
+                        <img src="avatar1.jpg" alt="" width="48" height="48">
+                        <div>
+                            <cite>Sarah Chen</cite>
+                            <span>VP of Engineering, TechStart</span>
+                        </div>
+                    </footer>
+                </blockquote>
+
+                <blockquote>
+                    <p>"Finally, a project management tool that actually helps instead of creating more work. The predictive analytics caught three potential delays last quarter."</p>
+                    <footer>
+                        <img src="avatar2.jpg" alt="" width="48" height="48">
+                        <div>
+                            <cite>Marcus Johnson</cite>
+                            <span>Product Lead, Innovate Labs</span>
+                        </div>
+                    </footer>
+                </blockquote>
+
+                <blockquote>
+                    <p>"We migrated from three different tools to TaskFlow. Everything in one place, and the AI learns how our team works. It gets smarter every week."</p>
+                    <footer>
+                        <img src="avatar3.jpg" alt="" width="48" height="48">
+                        <div>
+                            <cite>Elena Rodriguez</cite>
+                            <span>Operations Director, ScaleUp Co</span>
+                        </div>
+                    </footer>
+                </blockquote>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section id="faq" aria-labelledby="faq-heading">
+            <h2 id="faq-heading">Frequently Asked Questions</h2>
+            <div>
+                <details>
+                    <summary>How does the AI task prioritization work?</summary>
+                    <p>TaskFlow's AI analyzes multiple factors including deadlines, task dependencies, team member workload, historical completion patterns, and project urgency. It then automatically suggests optimal task ordering and can auto-adjust priorities when circumstances change. You maintain full control and can override suggestions at any time.</p>
+                </details>
+
+                <details>
+                    <summary>Can I import data from my current project management tool?</summary>
+                    <p>Yes! TaskFlow supports one-click imports from all major project management tools including Asana, Trello, Monday, Jira, and Basecamp. Your tasks, projects, and even historical data can be migrated seamlessly. Our support team can assist with complex migrations for Enterprise customers.</p>
+                </details>
+
+                <details>
+                    <summary>Is there a free trial for paid plans?</summary>
+                    <p>Absolutely. All paid plans come with a 14-day free trial with no credit card required. You'll have full access to all features during the trial period. At the end, you can choose to subscribe or continue with our free tier.</p>
+                </details>
+
+                <details>
+                    <summary>How secure is my data?</summary>
+                    <p>Security is our top priority. All data is encrypted at rest and in transit using AES-256 encryption. We're SOC 2 Type II certified and GDPR compliant. Enterprise customers can opt for on-premise deployment and additional security features like custom data retention policies.</p>
+                </details>
+
+                <details>
+                    <summary>Can I cancel my subscription anytime?</summary>
+                    <p>Yes, you can cancel your subscription at any time with no penalties or hidden fees. Your data remains accessible for 30 days after cancellation, and you can export everything before your account is deactivated. We also offer prorated refunds for annual plans.</p>
+                </details>
+            </div>
+        </section>
+
+        <!-- Final CTA Section -->
+        <section id="signup" aria-labelledby="cta-heading">
+            <h2 id="cta-heading">Ready to Transform Your Workflow?</h2>
+            <p>Join 10,000+ teams already using TaskFlow to ship faster and stress less. Start your free trial today.</p>
+            <form action="#" method="post">
+                <label for="email">Email address</label>
+                <input type="email" id="email" name="email" placeholder="you@company.com" required>
+                <button type="submit">Start Free Trial</button>
+            </form>
+            <p><small>No credit card required. 14-day free trial.</small></p>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div>
+            <section aria-label="Company info">
+                <a href="#" aria-label="TaskFlow Home">
+                    <img src="logo.svg" alt="TaskFlow Logo" width="150" height="40">
+                </a>
+                <p>AI-powered project management for modern teams. Work smarter, deliver faster.</p>
+                <ul aria-label="Social media links">
+                    <li><a href="#" aria-label="Twitter"><span aria-hidden="true">𝕏</span></a></li>
+                    <li><a href="#" aria-label="LinkedIn"><span aria-hidden="true">in</span></a></li>
+                    <li><a href="#" aria-label="GitHub"><span aria-hidden="true">⌘</span></a></li>
+                </ul>
+            </section>
+
+            <nav aria-label="Product links">
+                <h3>Product</h3>
+                <ul>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#pricing">Pricing</a></li>
+                    <li><a href="#">Integrations</a></li>
+                    <li><a href="#">Changelog</a></li>
+                    <li><a href="#">Roadmap</a></li>
+                </ul>
+            </nav>
+
+            <nav aria-label="Company links">
+                <h3>Company</h3>
+                <ul>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">Press Kit</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </nav>
+
+            <nav aria-label="Resources links">
+                <h3>Resources</h3>
+                <ul>
+                    <li><a href="#">Documentation</a></li>
+                    <li><a href="#">API Reference</a></li>
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">Community</a></li>
+                    <li><a href="#">Templates</a></li>
+                </ul>
+            </nav>
+
+            <nav aria-label="Legal links">
+                <h3>Legal</h3>
+                <ul>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#">Cookie Policy</a></li>
+                    <li><a href="#">Security</a></li>
+                    <li><a href="#">GDPR</a></li>
+                </ul>
+            </nav>
+        </div>
+
+        <div>
+            <p><small>&copy; 2024 TaskFlow, Inc. All rights reserved.</small></p>
+        </div>
+    </footer>
+</body>
+</html>
+```
+
+---
+
+## Key Semantic Choices Explained
+
+| Element | Rationale |
+|---------|-----------|
+| `<header>` + `<nav>` | Primary navigation landmark with proper labeling |
+| `<main>` | Contains all primary content, one per page |
+| `<section>` with `aria-labelledby` | Each section has a heading ID reference for screen readers |
+| `<article>` | Used for self-contained feature cards and pricing tiers |
+| `<blockquote>` + `<cite>` | Proper semantic markup for testimonials |
+| `<details>` + `<summary>` | Native HTML accordion without needing JavaScript |
+| `<aside>` | Trust badges are tangentially related to main hero content |
+| `<footer>` within `<blockquote>` | Correct citation structure for testimonials |
+| `role="button"` | Links styled as buttons are semantically announced correctly |
+| `aria-label` | Provides context for icon-only links and navigation regions |
+
+This structure is fully accessible, SEO-friendly, and ready for CSS styling and JavaScript enhancement.

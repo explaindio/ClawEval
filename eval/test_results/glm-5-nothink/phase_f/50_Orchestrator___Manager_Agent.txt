@@ -1,0 +1,71 @@
+```json
+{
+  "tasks": [
+    {
+      "id": "T1",
+      "agent": "data_analyst",
+      "action": "Analyze Q3 earnings data to extract key financial highlights and insights",
+      "depends_on": [],
+      "input_from": []
+    },
+    {
+      "id": "T2",
+      "agent": "writer",
+      "action": "Draft the Q3 earnings blog post using the analyzed data",
+      "depends_on": ["T1"],
+      "input_from": ["T1"]
+    },
+    {
+      "id": "T3",
+      "agent": "editor",
+      "action": "Review, edit, and finalize the blog post content for clarity and accuracy",
+      "depends_on": ["T2"],
+      "input_from": ["T2"]
+    },
+    {
+      "id": "T4",
+      "agent": "seo",
+      "action": "Optimize the finalized content for search engines and define metadata",
+      "depends_on": ["T3"],
+      "input_from": ["T3"]
+    },
+    {
+      "id": "T5",
+      "agent": "web_publisher",
+      "action": "Publish the optimized blog post to the company website",
+      "depends_on": ["T4"],
+      "input_from": ["T4"]
+    },
+    {
+      "id": "T6",
+      "agent": "designer",
+      "action": "Create graphics for social media and email based on the finalized content",
+      "depends_on": ["T3"],
+      "input_from": ["T3"]
+    },
+    {
+      "id": "T7",
+      "agent": "social_media",
+      "action": "Compose and share post about the earnings report on social media platforms",
+      "depends_on": ["T5", "T6"],
+      "input_from": ["T5", "T6"]
+    },
+    {
+      "id": "T8",
+      "agent": "email_marketing",
+      "action": "Draft and send email newsletter with earnings summary to subscribers",
+      "depends_on": ["T5", "T6"],
+      "input_from": ["T5", "T6"]
+    }
+  ],
+  "execution_order": ["T1", "T2", "T3", "T4", "T5", "T6", "T7", "T8"],
+  "parallel_groups": [
+    ["T1"],
+    ["T2"],
+    ["T3"],
+    ["T4"],
+    ["T5", "T6"],
+    ["T7", "T8"]
+  ]
+}
+```

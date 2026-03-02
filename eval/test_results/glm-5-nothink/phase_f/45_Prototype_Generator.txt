@@ -1,0 +1,133 @@
+```python
+from flask import Flask, request, jsonify
+from dataclasses import dataclass, asdict
+from typing import List
+
+app = Flask(__name__)
+
+# In-memory database
+books_db: List['Book'] = []
+next_id = 1
+
+@dataclass
+class Book:
+    id: int
+    title: str
+    author: str
+    isbn: str
+    price: float
+
+@app.route('/books', methods=['GET'])
+def get_books():
+    global books_db
+    
+    # Pagination parameters
+    try:
+        page = int(request.args.get('page', 1))
+        per_page = int(request.args.get('per_page', 10))
+    except ValueError:
+        return jsonify({"error": "Invalid pagination parameters. 'page' and 'per_page' must be integers."}), 400
+
+    if page < 1 or per_page < 1:
+        return jsonify({"error": "Pagination parameters must be positive integers."}), 400
+
+    start = (page - 1) * per_page
+    end = start + per_page
+    
+    paginated_books = books_db[start:end]
+    
+    return jsonify([asdict(book) for book in paginated_books]), 200
+
+@app.route('/books/<int:id>', methods=['GET'])
+def get_book(id):
+    global books_db
+    book = next((b for b in books_db if b.id == id), None)
+    
+    if not book:
+        return jsonify({"error": "Book not found"}), 404
+        
+    return jsonify(asdict(book)), 200
+
+@app.route('/books', methods=['POST'])
+def create_book():
+    global books_db, next_id
+    data = request.get_json()
+
+    if not data:
+        return jsonify({"error": "Request body must be JSON"}), 400
+
+    required_fields = ['title', 'author', 'isbn', 'price']
+    missing_fields = [field for field in required_fields if field not in data]
+    
+    if missing_fields:
+        return jsonify({"error": f"Missing required fields: {', '.join(missing_fields)}"}), 422
+
+    # Type validation
+    try:
+        title = str(data['title'])
+        author = str(data['author'])
+        isbn = str(data['isbn'])
+        price = float(data['price'])
+    except (ValueError, TypeError):
+        return jsonify({"error": "Invalid data types. 'price' must be a number."}), 422
+
+    if price < 0:
+         return jsonify({"error": "Price cannot be negative."}), 422
+
+    new_book = Book(
+        id=next_id,
+        title=title,
+        author=author,
+        isbn=isbn,
+        price=price
+    )
+    
+    books_db.append(new_book)
+    next_id += 1
+    
+    return jsonify(asdict(new_book)), 201
+
+@app.route('/books/<int:id>', methods=['PUT'])
+def update_book(id):
+    global books_db
+    book = next((b for b in books_db if b.id == id), None)
+    
+    if not book:
+        return jsonify({"error": "Book not found"}), 404
+
+    data = request.get_json()
+    if not data:
+        return jsonify({"error": "Request body must be JSON"}), 400
+
+    # Input validation for update
+    try:
+        if 'title' in data:
+            book.title = str(data['title'])
+        if 'author' in data:
+            book.author = str(data['author'])
+        if 'isbn' in data:
+            book.isbn = str(data['isbn'])
+        if 'price' in data:
+            price = float(data['price'])
+            if price < 0:
+                raise ValueError("Price cannot be negative")
+            book.price = price
+    except (ValueError, TypeError):
+        return jsonify({"error": "Invalid data types. 'price' must be a non-negative number."}), 422
+
+    return jsonify(asdict(book)), 200
+
+@app.route('/books/<int:id>', methods=['DELETE'])
+def delete_book(id):
+    global books_db
+    book = next((b for b in books_db if b.id == id), None)
+    
+    if not book:
+        return jsonify({"error": "Book not found"}), 404
+
+    books_db.remove(book)
+    return '', 204
+
+if __name__ == '__main__':
+    app.run(debug=True)
+```

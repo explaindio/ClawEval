@@ -131,7 +131,7 @@ Don't have a GPU? We also test open-source models hosted on cloud providers so y
 |---|---|---|---|
 | | | **Model** | **Score** |
 | | **Tier 1 — Utility** | | |
-| 1 | Router / Triage | K2.5 / GLM-5 | 🟢 9 |
+| 1 | Router / Triage | GLM-5 NoThink | 🟢 10 |
 | 2 | Input Validator | K2.5 / GLM-5 | 🟢 10† |
 | 3 | Health Monitor | K2.5 / GLM-5 | 🟡 5 |
 | 4 | Notification | Kimi K2.5 | 🟢 9 |
@@ -153,11 +153,11 @@ Don't have a GPU? We also test open-source models hosted on cloud providers so y
 | 19 | Shopping | K2.5 / GLM-5 | 🟢 10 |
 | 20 | Memory Mgmt | K2.5 / GLM-5 | 🟢 9 |
 | 21 | RAG / Retrieval | K2.5 / GLM-5 | 🟡 6 |
-| 22 | Data Analysis | K2.5 / GLM-5 | 🔴 2 |
+| 22 | Data Analysis | GLM-5 NoThink | 🔴 3 |
 | 23 | Web Scraping | K2.5 / GLM-5 | 🟢 10† |
 | 24 | Image Description | 📝 Manual | 📝 5 |
 | 25 | Customer Support | K2.5 / GLM-5 | 🟢 10 |
-| 26 | Lead Scoring | K2.5 / GLM-5 | 🟢 8 |
+| 26 | Lead Scoring | GLM-5 NoThink | 🟢 10 |
 | 27 | Sprint Summary | GLM-5 | 🟢 9 |
 | 28 | Transaction | GLM-5 | 🟢 10 |
 | 29 | Home Automation | K2.5 / GLM-5 | 🟢 10 |
@@ -177,7 +177,7 @@ Don't have a GPU? We also test open-source models hosted on cloud providers so y
 | 42 | Market Research | K2.5 / GLM-5 | 🟢 8 |
 | 43 | Synthesizer | Kimi K2.5 | 🟢 10 |
 | 44 | Curriculum Design | Kimi K2.5 | 🟡 7 |
-| 45 | Prototype Gen | K2.5 / GLM-5 | 🟡 5 |
+| 45 | Prototype Gen | GLM-5 NoThink | 🟡 7 |
 | 46 | DevOps | Kimi K2.5 | 🟢 10 |
 | | **Tier 4 — Expert** | | |
 | 47 | Math / Logic | Kimi K2.5 | 🟢 8 |
@@ -191,11 +191,11 @@ Don't have a GPU? We also test open-source models hosted on cloud providers so y
 | 54 | Medical | GLM-5 | 🟢 10 |
 | 55 | Financial | Kimi K2.5 | 🟢 10 |
 | 56 | Security | K2.5 / GLM-5 | 🟢 10 |
-| 57 | SRE / Incident | GLM-5 | 🔴 4 |
+| 57 | SRE / Incident | GLM-5 NoThink | 🟡 6 |
 | 58 | Book Writing | 📝 Manual | 📝 5 |
 | 59 | Compliance | Kimi K2.5 | 🟢 9 |
 
-> † Phase G discriminator score · [☁️ Full cloud model comparison →](docs/results-cloud.md)
+> † Phase G discriminator score · [☁️ Full cloud model comparison + speed data →](docs/results-cloud.md)
 
 ---
 

@@ -541,7 +541,8 @@ def main():
     parser.add_argument("--timeout", type=int, default=300, help="Request timeout in seconds")
     parser.add_argument("--delay", type=int, default=0, help="Delay in seconds between tests (for rate-limited APIs)")
     parser.add_argument("--thinking-budget", type=int, help="SGLang thinking token budget")
-    parser.add_argument("--nothink", action="store_true", help="Disable thinking (Qwen/Kimi: thinking=False)")
+    parser.add_argument("--nothink", action="store_true", help="Disable thinking (Kimi: chat_template_kwargs.thinking=False)")
+    parser.add_argument("--nothink-root", action="store_true", help="Disable thinking (GLM-5: enable_thinking=false at root level)")
     parser.add_argument("--reasoning", choices=["low", "medium", "high"], help="Reasoning level for system message (GPT-OSS-120B)")
     parser.add_argument("--test-ids", type=int, nargs="*", help="Run only these test IDs")
     parser.add_argument("--tier", type=int, help="Run only this tier")
@@ -552,6 +553,8 @@ def main():
     extra_body = None
     if args.nothink:
         extra_body = {"chat_template_kwargs": {"thinking": False}}
+    elif args.nothink_root:
+        extra_body = {"enable_thinking": False}
     elif args.thinking_budget:
         extra_body = {"chat_template_kwargs": {"enable_thinking": True, "thinking_budget": args.thinking_budget}}
 
