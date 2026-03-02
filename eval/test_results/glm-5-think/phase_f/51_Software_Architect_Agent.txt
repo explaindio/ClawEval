@@ -1,0 +1,91 @@
+```json
+{
+  "components": [
+    {
+      "name": "Load Balancer & CDN",
+      "technology": "AWS ALB + CloudFront",
+      "purpose": "SSL termination, DDoS protection, static asset delivery, and traffic distribution.",
+      "scaling_strategy": "Auto-scaling via AWS managed services; CloudFront edge locations for global low-latency asset access."
+    },
+    {
+      "name": "Stateless API Gateway",
+      "technology": "Go (Gin/Echo) on Kubernetes",
+      "purpose": "Handles RESTful requests (auth, history fetch, file uploads) and acts as the entry point for WebSocket upgrades.",
+      "scaling_strategy": "Horizontal Pod Autoscaling (HPA) based on CPU/Memory usage; stateless design allows linear scaling."
+    },
+    {
+      "name": "Real-Time Connection Manager",
+      "technology": "Erlang/OTP or Go (Gorilla WebSockets) on Kubernetes",
+      "purpose": "Maintains persistent WebSocket connections for 1M concurrent users; handles message routing and presence heartbeats.",
+      "scaling_strategy": "StatefulSets with sticky sessions or consistent hashing; designed to handle 100k connections per node."
+    },
+    {
+      "name": "Service Discovery & Mesh",
+      "technology": "Istio or Consul",
+      "purpose": "Enables connection nodes to locate each other for inter-node messaging (User A connected to Node 1, User B to Node 2).",
+      "scaling_strategy": "Distributed sidecar proxies that scale with application pods."
+    },
+    {
+      "name": "Message Broker",
+      "technology": "Apache Kafka",
+      "purpose": "Ingests massive message throughput; decouples connection managers from persistence; ensures message ordering per chat.",
+      "scaling_strategy": "Partitioning by ChatID to ensure ordering; horizontal addition of brokers to increase throughput."
+    },
+    {
+      "name": "Presence & Session Store",
+      "technology": "Redis Cluster",
+      "purpose": "Stores online/offline status, user socket mapping (which node holds which user), and temporary state.",
+      "scaling_strategy": "Cluster mode with sharding; read replicas to handle high-frequency status checks."
+    },
+    {
+      "name": "Message Persistence Layer",
+      "technology": "ScyllaDB (Cassandra compatible)",
+      "purpose": "High-write throughput storage for message history; optimized for time-series data retrieval.",
+      "scaling_strategy": "Keyspace partitioning by ChatID; multi-datacenter replication for HA."
+    },
+    {
+      "name": "Metadata & User DB",
+      "technology": "PostgreSQL (Citus extension)",
+      "purpose": "Stores user profiles, group memberships, and encryption key references; handles ACID transactions for group logic.",
+      "scaling_strategy": "Sharding via Citus; Read replicas for user profile lookups."
+    },
+    {
+      "name": "Object Storage",
+      "technology": "AWS S3",
+      "purpose": "Stores encrypted file attachments (up to 50MB) and media.",
+      "scaling_strategy": "Infinite scalability managed by AWS; lifecycle policies to move old data to Glacier."
+    },
+    {
+      "name": "Encryption Service",
+      "technology": "Rust or Go microservice",
+      "purpose": "Manages Signal Protocol key exchange; facilitates E2EE setup. Does not hold decryption keys.",
+      "scaling_strategy": "Stateless service scaled behind a Kubernetes Service."
+    }
+  ],
+  "data_flow": "1. Client establishes WebSocket via Load Balancer to Connection Manager. 2. Sender transmits E2E encrypted payload. 3. Connection Manager publishes to Kafka. 4. Stream Consumer writes to ScyllaDB for persistence. 5. Stream Consumer looks up recipient Node ID in Redis. 6. Message pushed to recipient's specific Connection Manager node via Service Mesh. 7. Recipient receives message. 8. Read receipts follow reverse path as control signals.",
+  "infrastructure": {
+    "cloud": "AWS (Primary) with GCP (DR/Backup)",
+    "regions": 3
+  },
+  "estimated_monthly_cost": "$85,000 - $120,000 (Compute: 40%, Database/Storage: 35%, Network/Traffic: 25%)",
+  "bottlenecks": [
+    "Group Chat Fan-out: A message to a 500-member group requires 500 distinct delivery operations; solved via asynchronous fan-out from Kafka consumers.",
+    "Database Write IOPS: 1M users generating high message volume requires ScyllaDB's LSM-tree architecture to prevent write stalls.",
+    "WebSocket Memory: Maintaining 1M open sockets requires significant RAM headroom per node; requires optimized binary protocols."
+  ],
+  "tradeoffs": [
+    {
+      "decision": "Eventual Consistency for Read Receipts",
+      "rationale": "Strict consistency on read receipts would increase database lock contention. We accept slight delays in 'Read' status updates for higher system throughput."
+    },
+    {
+      "decision": "ScyllaDB vs PostgreSQL for Messages",
+      "rationale " : "Chose ScyllaDB for message history to handle massive write throughput, sacrificing complex SQL query capabilities (like complex joins) which are not needed for chat logs."
+    },
+    {
+      "decision": "E2E Encryption Implementation",
+      "rationale": "Server cannot inspect message content for features like spam filtering or server-side search. Search functionality must rely on client-side indexing or encrypted search techniques."
+    }
+  ]
+}
+```

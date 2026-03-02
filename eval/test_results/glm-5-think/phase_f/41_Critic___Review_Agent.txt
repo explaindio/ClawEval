@@ -1,0 +1,84 @@
+This proposal outlines a "LAMP-style" architecture reminiscent of the early 2000s. While it offers simplicity in terms of initial setup, it represents a significant technical debt liability and operational risk for a commercial e-commerce platform.
+
+Here is a critical review of the architecture based on the specified criteria.
+
+### Executive Summary
+**Verdict:** **Unfit for purpose.**
+This architecture is brittle, insecure, and unscalable. While it minimizes initial infrastructure complexity, it maximizes the risk of data loss, security breaches, and downtime. For an e-commerce platform where uptime equals revenue and trust is paramount, this proposal fails to meet minimum industry standards.
+
+---
+
+### Detailed Evaluation
+
+#### 1. Scalability: **Critical Failure**
+*   **Vertical Scaling Only:** By relying on a single server and a single MySQL instance, the system can only scale vertically (adding more CPU/RAM). It cannot scale horizontally.
+*   **Session Storage Bottleneck:** Storing sessions in local memory prevents the addition of a second web server. If you add a second server to handle load, a user logged in on Server A will be logged out if their next request hits Server B.
+*   **Static Files:** Serving static files from the application server consumes valuable application worker processes, drastically reducing the number of concurrent users the server can handle.
+
+#### 2. Reliability: **Critical Failure**
+*   **Single Points of Failure (SPOF):** Every component is a SPOF. If the single MySQL instance crashes, the site goes down. If the single server’s disk fills up, the site goes down.
+*   **Session Volatility:** Storing sessions in local memory means a server crash or restart logs out every active user instantly. This destroys user trust and abandons active shopping carts.
+*   **Synchronous Payments:** Processing payments in the main request thread is dangerous. If the payment gateway API is slow or times out, the user sees an error, but the payment might have succeeded. This leads to "phantom orders" (paid orders not recorded in the database) and terrible customer support experiences.
+
+#### 3. Security: **High Risk**
+*   **Deployment via FTP:** FTP transmits credentials and code in plain text. This is a major vulnerability allowing for Man-in-the-Middle (MitM) attacks.
+*   **No Staging Environment:** Deploying directly to production means untested code goes live immediately. A syntax error or migration failure takes the store offline instantly.
+*   **Local Logs:** Storing logs locally makes them susceptible to tampering if the server is compromised and makes it difficult to audit security incidents post-mortem.
+
+#### 4. Maintainability: **Poor**
+*   **Cron Scripts:** Using standard cron for background jobs lacks retry logic, error handling, and monitoring. If a cron job fails silently, critical tasks (like sending order confirmations) may stop without warning.
+*   **No Staging:** Developers cannot safely test database migrations or integration issues before they affect live customers.
+
+#### 5. Performance: **Poor**
+*   **No Caching:** Without a caching layer (like Redis or Memcached), every request hits the database. This creates high read latency and puts unnecessary load on MySQL.
+*   **Static File Serving:** The application server (likely Gunicorn or uWSGI) is optimized for dynamic content, not file transfer. Serving static assets this way is significantly slower than using a web server (Nginx) or CDN.
+
+#### 6. Deployment Practices: **Critical Failure**
+*   **FTP Deployment:** This is an anti-pattern. It does not support atomic rollbacks. If a deployment fails halfway through, the site is left in a broken state. It lacks version control integration and audit trails.
+*   **No CI/CD:** The lack of automation introduces human error.
+
+#### 7. Data Management: **High Risk**
+*   **Single MySQL Instance:** There is no mention of replication or backups. If the database is corrupted or deleted, the business ceases to exist.
+*   **Local Logs:** Log rotation and management must be handled manually on the server, consuming disk space. If the disk fills up, the database will crash.
+
+#### 8. Monitoring: **Non-Existent**
+*   **Local Logs:** Without a centralized logging solution (like ELK Stack or Datadog), identifying trends (e.g., a specific payment error affecting 5% of users) is impossible without manually SSH-ing into the server.
+*   **No APM:** There is no Application Performance Monitoring to identify slow database queries or bottlenecks.
+
+#### 9. Cost Efficiency: **False Economy**
+*   **Short-term:** Yes, one server is cheap.
+*   **Long-term:** The cost of downtime, lost sales due to session drops, engineering time spent manually fixing broken deployments, and potential data loss will vastly outweigh the cost of proper infrastructure.
+
+---
+
+### Strengths (Playing Devil's Advocate)
+1.  **Simplicity:** The architecture is easy to diagram and understand. There are no moving parts (microservices, queues) to orchestrate.
+2.  **Low Barrier to Entry:** Junior developers can set this up quickly without needing knowledge of Docker, Kubernetes, or Redis.
+3.  **Low Initial Cost:** Infrastructure bills are minimal at the start.
+
+---
+
+### Recommended Improvements
+
+To bring this architecture to industry standards without over-engineering it into a distributed system, the following changes are mandatory:
+
+#### 1. Infrastructure & Reliability
+*   **Managed Database:** Move MySQL to a managed service (AWS RDS, Google Cloud SQL). This handles automated backups, patching, and high availability.
+*   **Session Storage:** Move sessions out of local memory into Redis or the database. This decouples the user state from the specific server.
+
+#### 2. Deployment & Operations
+*   **CI/CD Pipeline:** Replace FTP with a Git-based workflow. Use GitHub Actions or GitLab CI to run tests and deploy code automatically.
+*   **Staging Environment:** Mandate a staging environment that mirrors production for testing.
+*   **Containerization:** Use Docker to ensure consistency between local development, staging, and production.
+
+#### 3. Performance & Architecture
+*   **Externalize Static Files:** Serve static files via a CDN (Cloudflare/AWS S3) or at minimum, a dedicated Nginx worker on the server, not the Django app.
+*   **Background Workers:** Implement Celery with Redis as a broker. Move payment processing and email sending to background tasks. This ensures the web server isn't blocked and allows for automatic retries on failure.
+*   **Caching Layer:** Implement Redis for database query caching and page caching.
+
+#### 4. Monitoring
+*   **Centralized Logging:** Ship logs to a service like Sentry (for errors) or Papertrail (for access logs).
+*   **Uptime Monitoring:** Use an external service (Pingdom/UptimeRobot) to alert the team if the server goes down.
+
+### Conclusion
+This proposal is a "resume-driven development" disaster waiting to happen. It ignores 15 years of web infrastructure evolution. While a monolithic Django application is a valid choice, the surrounding infrastructure (FTP, local sessions, synchronous payments, single server) renders this proposal unsuitable for a modern e-commerce business.

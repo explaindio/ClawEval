@@ -1,0 +1,116 @@
+```python
+import pytest
+
+def calculate_tax(income, filing_status):
+    """Calculate US federal income tax (simplified 2024 brackets).
+    filing_status: 'single' or 'married'
+    Returns: (tax_amount, effective_rate)
+    """
+    if not isinstance(income, (int, float)) or income < 0:
+        raise ValueError("Income must be non-negative number")
+    if filing_status not in ('single', 'married'):
+        raise ValueError("Invalid filing status")
+    
+    brackets_single = [(11600, 0.10), (47150, 0.12), (100525, 0.22), (191950, 0.24), (243725, 0.32), (609350, 0.35), (float('inf'), 0.37)]
+    brackets_married = [(23200, 0.10), (94300, 0.12), (201050, 0.22), (383900, 0.24), (487450, 0.32), (731200, 0.35), (float('inf'), 0.37)]
+    
+    brackets = brackets_single if filing_status == 'single' else brackets_married
+    tax = 0
+    prev = 0
+    for limit, rate in brackets:
+        if income <= prev:
+            break
+        taxable = min(income, limit) - prev
+        tax += taxable * rate
+        prev = limit
+    
+    effective_rate = round(tax / income * 100, 2) if income > 0 else 0
+    return (round(tax, 2), effective_rate)
+
+# Test 1: Zero Income
+def test_zero_income():
+    tax, rate = calculate_tax(0, 'single')
+    assert tax == 0.0
+    assert rate == 0.0
+
+# Test 2: Invalid Income Inputs
+@pytest.mark.parametrize("income", [-1, -100.50, "10000", None])
+def test_invalid_income(income):
+    with pytest.raises(ValueError, match="Income must be non-negative number"):
+        calculate_tax(income, 'single')
+
+# Test 3: Invalid Filing Status
+def test_invalid_filing_status():
+    with pytest.raises(ValueError, match="Invalid filing status"):
+        calculate_tax(50000, 'head_of_household')
+
+# Test 4: Single Filer - Bracket Boundaries
+def test_single_bracket_boundaries():
+    # End of 10% bracket
+    tax, rate = calculate_tax(11600, 'single')
+    assert tax == 1160.00
+    assert rate == 10.0
+
+    # End of 12% bracket
+    # 11600 @ 10% = 1160
+    # (47150 - 11600) @ 12% = 35550 * 0.12 = 4266
+    # Total = 5426
+    tax, rate = calculate_tax(47150, 'single')
+    assert tax == 5426.00
+    assert rate == round(5426 / 47150 * 100, 2)
+
+# Test 5: Married Filer - Bracket Boundaries
+def test_married_bracket_boundaries():
+    # End of 10% bracket (double single)
+    tax, rate = calculate_tax(23200, 'married')
+    assert tax == 2320.00
+    assert rate == 10.0
+
+    # End of 12% bracket
+    # 23200 @ 10% = 2320
+    # (94300 - 23200) @ 12% = 71100 * 0.12 = 8532
+    # Total = 10852
+    tax, rate = calculate_tax(94300, 'married')
+    assert tax == 10852.00
+
+# Test 6: Typical Income (Mid-bracket)
+def test_typical_income_single():
+    # Income 50000 Single
+    # 11600 @ 10% = 1160
+    # (47150 - 11600) @ 12% = 4266
+    # (50000 - 47150) @ 22% = 2850 * 0.22 = 627
+    # Total = 1160 + 4266 + 627 = 6053
+    tax, rate = calculate_tax(50000, 'single')
+    assert tax == 6053.00
+    assert rate == 12.11
+
+# Test 7: High Income (Top Bracket)
+def test_high_income_top_bracket():
+    # Income 1,000,000 Single
+    # Brackets accumulation:
+    # 10%: 1160
+    # 12%: 4266
+    # 22%: 11742.5  (100525-47150)*0.22
+    # 24%: 21942.0  (191950-100525)*0.24
+    # 32%: 16568.0  (243725-191950)*0.32
+    # 35%: 127968.75 (609350-243725)*0.35
+    # 37%: 144540.5  (1000000-609350)*0.37
+    # Total = 328187.75
+    tax, rate = calculate_tax(1000000, 'single')
+    assert tax == 328187.75
+    assert rate == 32.82
+
+# Test 8: Marriage Bonus/Comparison
+def test_married_vs_single():
+    # Same income, different status
+    income = 100000
+    tax_single, _ = calculate_tax(income, 'single')
+    tax_married, _ = calculate_tax(income, 'married')
+    
+    # For 100k, single filer hits 22% bracket hard, married stays in 12%
+    # Single: 1160 + 4266 + (100000-47150)*0.22 = 17159
+    # Married: 2320 + 8532 + (100000-94300)*0.22 = 11098
+    assert tax_single == 17159.00
+    assert tax_married == 11098.00
+    assert tax_married < tax_single
+```

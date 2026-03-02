@@ -1,0 +1,79 @@
+```json
+{
+  "tasks": [
+    {
+      "id": "T1",
+      "name": "Database Schema Design & PostgreSQL Setup",
+      "depends_on": [],
+      "estimated_hours": 4,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T2",
+      "name": "User Authentication (Registration/Login/JWT)",
+      "depends_on": ["T1"],
+      "estimated_hours": 6,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T3",
+      "name": "Todo CRUD API Endpoints",
+      "depends_on": ["T2"],
+      "estimated_hours": 8,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T4",
+      "name": "Todo Categories/Tags Implementation",
+      "depends_on": ["T3"],
+      "estimated_hours": 4,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T5",
+      "name": "Due Date Reminders Logic",
+      "depends_on": ["T3"],
+      "estimated_hours": 4,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T6",
+      "name": "Rate Limiting Middleware",
+      "depends_on": ["T3"],
+      "estimated_hours": 2,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T7",
+      "name": "Unit Tests (80% Coverage)",
+      "depends_on": ["T4", "T5", "T6"],
+      "estimated_hours": 10,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T8",
+      "name": "API Documentation (OpenAPI)",
+      "depends_on": ["T4", "T5", "T6"],
+      "estimated_hours": 4,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T9",
+      "name": "Docker Configuration",
+      "depends_on": ["T4", "T5", "T6"],
+      "estimated_hours": 3,
+      "assignable_to": "devops"
+    },
+    {
+      "id": "T10",
+      "name": "CI/CD Pipeline Setup",
+      "depends_on": ["T7", "T9"],
+      "estimated_hours": 4,
+      "assignable_to": "devops"
+    }
+  ],
+  "critical_path": ["T1", "T2", "T3", "T4", "T7", "T10"],
+  "total_hours": 49,
+  "parallel_tracks": 3
+}
+```

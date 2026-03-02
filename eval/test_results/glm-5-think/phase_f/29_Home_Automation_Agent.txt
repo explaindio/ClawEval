@@ -1,0 +1,389 @@
+```json
+[
+  {
+    "id": "rule_1a_morning_weekday",
+    "name": "Morning Routine - Weekday",
+    "description": "Gradually turn on lights at 6:30 AM on weekdays for Alice and Bob.",
+    "trigger": {
+      "type": "time",
+      "at": "06:30:00"
+    },
+    "conditions": [
+      {
+        "type": "day_of_week",
+        "days": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
+      }
+    ],
+    "actions": [
+      {
+        "device": "all_lights",
+        "command": "turn_on",
+        "parameters": {
+          "brightness": 100,
+          "transition_seconds": 1800,
+          "color_temp": "warm_to_cool"
+        }
+      }
+    ]
+  },
+  {
+    "id": "rule_1b_morning_weekend",
+    "name": "Morning Routine - Weekend",
+    "description": "Gradually turn on lights at 8:00 AM on weekends.",
+    "trigger": {
+      "type": "time",
+      "at": "08:00:00"
+    },
+    "conditions": [
+      {
+        "type": "day_of_week",
+        "days": ["Saturday", "Sunday"]
+      }
+    ],
+    "actions": [
+      {
+        "device": "all_lights",
+        "command": "turn_on",
+        "parameters": {
+          "brightness": 100,
+          "transition_seconds": 1800
+        }
+      }
+    ]
+  },
+  {
+    "id": "rule_2a_thermostat_sleep",
+    "name": "Thermostat Sleep Mode",
+    "description": "Set temperature to 68°F during sleeping hours (11PM-6AM).",
+    "trigger": {
+      "type": "time",
+      "at": "23:00:00"
+    },
+    "conditions": [],
+    "actions": [
+      {
+        "device": "thermostat",
+        "command": "set_temperature",
+        "parameters": {
+          "target": 68,
+          "mode": "cool_heat_auto"
+        }
+      }
+    ]
+  },
+  {
+    "id": "rule_2b_thermostat_wake",
+    "name": "Thermostat Wake Mode",
+    "description": "Set temperature to 72°F at 6AM if occupants are home.",
+    "trigger": {
+      "type": "time",
+      "at": "06:00:00"
+    },
+    "conditions": [
+      {
+        "type": "occupancy",
+        "entity": "home_status",
+        "state": "occupied"
+      }
+    ],
+    "actions": [
+      {
+        "device": "thermostat",
+        "command": "set_temperature",
+        "parameters": {
+          "target": 72
+        }
+      }
+    ]
+  },
+  {
+    "id": "rule_2c_thermostat_away",
+    "name": "Thermostat Away Mode",
+    "description": "Set temperature to 65°F when house is empty.",
+    "trigger": {
+      "type": "state_change",
+      "entity": "home_status",
+      "to": "unoccupied"
+    },
+    "conditions": [],
+    "actions": [
+      {
+        "device": "thermostat",
+        "command": "set_temperature",
+        "parameters": {
+          "target": 65
+        }
+      }
+    ]
+  },
+  {
+    "id": "rule_3a_security_arm",
+    "name": "Security Arm - Away",
+    "description": "Arm security system when both Alice and Bob are away.",
+    "trigger": {
+      "type": "geofence",
+      "entity": ["alice_phone", "bob_phone"],
+      "condition": "all_left_zone",
+      "zone": "home"
+    },
+    "conditions": [],
+    "actions": [
+      {
+        "device": "security_system",
+        "command": "arm_away"
+      },
+      {
+        "device": "notifications",
+        "command": "send_alert",
+        "parameters": {
+          "message": "Security System Armed: All occupants have left.",
+          "recipients": ["alice", "bob"]
+        }
+      }
+    ]
+  },
+  {
+    "id": "rule_3b_security_disarm",
+    "name": "Security Disarm - Return",
+    "description": "Disarm security system when either Alice or Bob returns.",
+    "trigger": {
+      "type": "geofence",
+      "entity": ["alice_phone", "bob_phone"],
+      "condition": "any_entered_zone",
+      "zone": "home"
+    },
+    "conditions": [
+      {
+        "type": "state_check",
+        "entity": "security_system",
+        "state": "armed_away"
+      }
+    ],
+    "actions": [
+      {
+        "device": "security_system",
+        "command": "disarm"
+      }
+    ]
+  },
+  {
+    "id": "rule_4a_pet_feeder",
+    "name": "Pet Care - Feeding Schedule",
+    "description": "Dispense cat food at 7AM and 6PM.",
+    "trigger": {
+      "type": "time",
+      "at": ["07:00:00", "18:00:00"]
+    },
+    "conditions": [],
+    "actions": [
+      {
+        "device": "pet_feeder",
+        "command": "dispense",
+        "parameters": {
+          "portion_size": "standard"
+        }
+      }
+    ]
+  },
+  {
+    "id": "rule_4b_pet_camera",
+    "name": "Pet Care - Camera Activation",
+    "description": "Turn on cat camera when both occupants are away.",
+    "trigger": {
+      "type": "geofence",
+      "entity": ["alice_phone", "bob_phone"],
+      "condition": "all_left_zone",
+      "zone": "home"
+    },
+    "conditions": [],
+    "actions": [
+      {
+        "device": "cat_camera",
+        "command": "turn_on"
+      },
+      {
+        "device": "cat_camera",
+        "command": "start_stream"
+      }
+    ]
+  },
+  {
+    "id": "rule_5a_energy_solar",
+    "name": "Energy Management - Solar Priority",
+    "description": "Maximize solar panel usage during peak hours (2PM-7PM).",
+    "trigger": {
+      "type": "time",
+      "at": "14:00:00"
+    },
+    "conditions": [],
+    "actions": [
+      {
+        "device": "solar_inverter",
+        "command": "set_mode",
+        "parameters": {
+          "mode": "solar_priority",
+          "grid_export": "enabled"
+        }
+      }
+    ]
+  },
+  {
+    "id": "rule_5b_energy_battery",
+    "name": "Energy Management - Battery Backup",
+    "description": "Switch to battery backup for evening usage.",
+    "trigger": {
+      "type": "time",
+      "at": "19:00:00"
+    },
+    "conditions": [],
+    "actions": [
+      {
+        "device": "battery_system",
+        "command": "set_mode",
+        "parameters": {
+          "mode": "discharge_priority",
+          "min_reserve_percent": 20
+        }
+      }
+    ]
+  },
+  {
+    "id": "rule_6_night_lighting",
+    "name": "Lighting - Nighttime Motion",
+    "description": "Dim hallway lights on motion between 10PM and 6AM, turn off after 5 min.",
+    "trigger": {
+      "type": "motion",
+      "entity": "hallway_motion_sensor",
+      "state": "active"
+    },
+    "conditions": [
+      {
+        "type": "time_window",
+        "start": "22:00:00",
+        "end": "06:00:00"
+      }
+    ],
+    "actions": [
+      {
+        "device": "hallway_lights",
+        "command": "turn_on",
+        "parameters": {
+          "brightness": 20
+        }
+      },
+      {
+        "device": "hallway_lights",
+        "command": "turn_off",
+        "delay_seconds": 300
+      }
+    ]
+  },
+  {
+    "id": "rule_7_office_automation",
+    "name": "Bob's Office Setup",
+    "description": "Turn on desk lamp and set A/C when Bob's computer turns on.",
+    "trigger": {
+      "type": "power_state",
+      "entity": "bob_computer_plug",
+      "threshold_watts": 50,
+      "state": "on"
+    },
+    "conditions": [],
+    "actions": [
+      {
+        "device": "bob_desk_lamp",
+        "command": "turn_on"
+      },
+      {
+        "device": "office_ac",
+        "command": "set_temperature",
+        "parameters": {
+          "target": 70,
+          "mode": "cool"
+        }
+      }
+    ]
+  },
+  {
+    "id": "rule_8_laundry_alert",
+    "name": "Laundry Notification",
+    "description": "Notify when washer or dryer cycle is complete.",
+    "trigger": {
+      "type": "power_state",
+      "entity": ["washer_plug", "dryer_plug"],
+      "transition": "active_to_idle"
+    },
+    "conditions": [],
+    "actions": [
+      {
+        "device": "notifications",
+        "command": "send_alert",
+        "parameters": {
+          "message": "Laundry cycle complete.",
+          "recipients": ["alice", "bob"]
+        }
+      }
+    ]
+  },
+  {
+    "id": "rule_9_leak_detection",
+    "name": "Water Leak Emergency",
+    "description": "Shut off water and alert immediately upon leak detection.",
+    "trigger": {
+      "type": "state_change",
+      "entity": "water_leak_sensor",
+      "to": "wet"
+    },
+    "conditions": [],
+    "actions": [
+      {
+        "device": "main_water_valve",
+        "command": "close"
+      },
+      {
+        "device": "notifications",
+        "command": "send_critical_alert",
+        "parameters": {
+          "message": "ALERT: Water leak detected! Main water valve shut off.",
+          "recipients": ["alice", "bob"]
+        }
+      }
+    ]
+  },
+  {
+    "id": "rule_10_guest_mode",
+    "name": "Guest Mode Activation",
+    "description": "Enable temporary door code, set thermostat, and enable guest WiFi.",
+    "trigger": {
+      "type": "manual",
+      "entity": "guest_mode_switch",
+      "state": "on"
+    },
+    "conditions": [],
+    "actions": [
+      {
+        "device": "smart_lock",
+        "command": "create_temp_code",
+        "parameters": {
+          "code_name": "Guest_Code",
+          "validity": "24_hours"
+        }
+      },
+      {
+        "device": "thermostat",
+        "command": "set_temperature",
+        "parameters": {
+          "target": 72
+        }
+      },
+      {
+        "device": "wifi_router",
+        "command": "enable_network",
+        "parameters": {
+          "ssid": "Guest_WiFi"
+        }
+      }
+    ]
+  }
+]
+```

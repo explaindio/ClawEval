@@ -1,0 +1,32 @@
+```json
+{
+  "bugs": [
+    {
+      "line": 19,
+      "issue": "ZeroDivisionError occurs if 'processed' list is empty (e.g., input is empty or no orders are 'pending').",
+      "fix": "Check if processed list is not empty before dividing: avg = total / len(processed) if processed else 0"
+    },
+    {
+      "line": 25,
+      "issue": "Returns the count of input orders (len(orders)) instead of the count of actually processed orders.",
+      "fix": "Change len(orders) to len(processed) to accurately report the number of processed items."
+    },
+    {
+      "line": 14,
+      "issue": "Mutates the input 'order' dictionary by setting 'final_price' and 'status', causing side effects for the caller.",
+      "fix": "Create a copy of the order dictionary before modifying it (e.g., order = order.copy())."
+    },
+    {
+      "line": 8,
+      "issue": "Accesses 'price' and 'quantity' keys directly without validation; will raise KeyError or TypeError if missing or None.",
+      "fix": "Use .get() with default values or validate that keys exist and values are numeric before calculation."
+    },
+    {
+      "line": 9,
+      "issue": "Discount is not validated; a discount > 100 results in a negative price (logic error), and non-integer discounts may cause issues.",
+      "fix": "Validate that discount is between 0 and 100 before applying."
+    }
+  ],
+  "count": 5
+}
+```
