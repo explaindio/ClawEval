@@ -1,0 +1,86 @@
+{
+  "phases": [
+    {
+      "phase": 1,
+      "name": "Rapid Triage & Parallel Diagnostics",
+      "agents": [
+        {"agent": "log_analyzer", "input": "Scan last 15 minutes of error logs for critical exceptions", "timeout_seconds": 45},
+        {"agent": "metric_checker", "input": "Query CPU, Memory, Latency, and Error Rate metrics", "timeout_seconds": 30},
+        {"agent": "db_checker", "input": "Check connection pool saturation and active locks", "timeout_seconds": 40},
+        {"agent": "config_auditor", "input": "Identify configuration changes in the last 2 hours", "timeout_seconds": 30},
+        {"agent": "notification_agent", "input": "Send P1 alert to On-Call Slack channel and PagerDuty", "timeout_seconds": 15}
+      ],
+      "parallel": true,
+      "gate": "At least 3 diagnostic agents must return valid data; Notification agent must confirm delivery."
+    },
+    {
+      "phase": 2,
+      "name": "Root Cause Correlation & Stakeholder Comms",
+      "agents": [
+        {"agent": "dependency_mapper", "input": "Map failing services to upstream/downstream dependencies based on Phase 1 errors", "timeout_seconds": 60},
+        {"agent": "incident_reporter", "input": "Create incident ticket with Phase 1 summary and assign severity", "timeout_seconds": 30},
+        {"agent": "customer_communicator", "input": "Send initial 'Investigating' status update to affected customer list", "timeout_seconds": 45}
+      ],
+      "parallel": false,
+      "gate": "Incident ticket created successfully; Customer communication sent; Root cause hypothesis generated."
+    },
+    {
+      "phase": 3,
+      "name": "Remediation Execution (Conditional)",
+      "agents": [
+        {"agent": "capacity_planner", "input": "Verify if scaling resources can resolve identified bottleneck", "timeout_seconds": 45},
+        {"agent": "rollback_agent", "input": "Execute rollback to last known good deployment version", "timeout_seconds": 120}
+      ],
+      "parallel": false,
+      "gate": "Remediation action completed without new critical errors."
+    },
+    {
+      "phase": 4,
+      "name": "Service Verification & Stability Check",
+      "agents": [
+        {"agent": "metric_checker", "input": "Confirm error rates dropped below 0.1% and latency normalized", "timeout_seconds": 60},
+        {"agent": "db_checker", "input": "Verify database connections are stable and no deadlocks exist", "timeout_seconds": 45},
+        {"agent": "log_analyzer", "input": "Scan for recurrence of previous error patterns", "timeout_seconds": 45}
+      ],
+      "parallel": true,
+      "gate": "All health metrics remain green for 2 consecutive minutes."
+    },
+    {
+      "phase": 5,
+      "name": "Resolution Communication & Closure",
+      "agents": [
+        {"agent": "customer_communicator", "input": "Send 'Resolved' notification with brief post-mortem summary to customers", "timeout_seconds": 45},
+        {"agent": "incident_reporter", "input": "Update ticket status to Resolved and link to logs/metrics", "timeout_seconds": 30},
+        {"agent": "notification_agent", "input": "Send All-Clear notification to internal engineering channels", "timeout_seconds": 15}
+      ],
+      "parallel": true,
+      "gate": "All stakeholders notified; Ticket state updated."
+    }
+  ],
+  "decision_points": [
+    {
+      "after_phase": 2,
+      "condition": "Config auditor detects a recent change OR dependency mapper identifies a broken downstream service",
+      "if_true": "go to phase 3 (trigger rollback_agent)",
+      "if_false": "go to phase 3 (trigger capacity_planner for scaling or skip to phase 4 if no action needed)"
+    },
+    {
+      "after_phase": 4,
+      "condition": "Verification agents report sustained stability (error rate < 0.1%)",
+      "if_true": "go to phase 5",
+      "if_false": "go to phase 3 (re-attempt remediation or escalate)"
+    }
+  ],
+  "escalation": {
+    "trigger": "Total workflow time exceeds 15 minutes OR Phase 4 verification fails twice consecutively",
+    "action": "Page Secondary On-Call Engineer and Engineering Manager via PagerDuty; Attach full diagnostic dump to incident ticket."
+  },
+  "total_phases": 5,
+  "max_time_minutes": 20,
+  "rollback_conditions": [
+    "Error rate exceeds 5% for more than 3 minutes immediately following a deployment",
+    "Database deadlock count increases by >200% within 10 minutes of config change",
+    "Latency p99 exceeds SLA threshold by 3x for 5 consecutive minutes",
+    "Config auditor confirms a change was made less than 30 minutes prior to outage start"
+  ]
+}

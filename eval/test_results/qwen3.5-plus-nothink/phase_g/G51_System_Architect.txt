@@ -1,0 +1,68 @@
+{
+  "architecture": {
+    "components": [
+      "Global Load Balancer (Cloudflare/AWS Global Accelerator)",
+      "Stateless API Gateway & Redirect Service (Go/Rust)",
+      "Async Worker Queue (Kafka/SQS) for analytics & expiration",
+      "Primary Key-Value Store",
+      "Distributed Cache Cluster",
+      "Cold Storage for Analytics"
+    ],
+    "database": {
+      "primary": "Amazon DynamoDB (On-Demand Mode) or ScyllaDB",
+      "justification": "Provides single-digit millisecond latency at any scale, automatic partitioning for 10M+ daily writes, and native TTL support for link expiration without operational overhead."
+    },
+    "cache": {
+      "type": "Redis Cluster (ElastiCache/MemoryDB)",
+      "strategy": "Cache-Aside with warm-up on write; 99% of redirect traffic served from cache to meet <50ms p99.",
+      "invalidation": "TTL-based expiration matching DB TTL; explicit invalidation on custom alias update or GDPR deletion."
+    },
+    "hash_strategy": {
+      "algorithm": "Base62 encoding of distributed unique ID (Snowflake/KSUID)",
+      "length": 7,
+      "collision_handling": "Pre-check existence in cache/DB before commit; regenerate ID if collision detected (extremely rare with 62^7 space)."
+    }
+  },
+  "scaling": {
+    "read_write_ratio": "100:1",
+    "read_optimization": "Redirects bypass application logic where possible via Edge Computing (Cloudflare Workers) looking up Redis/DynamoDB directly; heavy read caching.",
+    "write_path": "Asynchronous processing for non-critical data (analytics); synchronous only for ID generation and DB persistence.",
+    "horizontal_scaling": "Auto-scaling groups for API service based on CPU/Request count; Database scales automatically via managed service partitions."
+  },
+  "reliability": {
+    "uptime_strategy": "Multi-AZ deployment for all critical components; Active-Active region setup for disaster recovery.",
+    "failover": "Automated DNS failover using Route53 Health Checks; Database global tables for cross-region redundancy.",
+    "data_replication": "Synchronous within AZ, Asynchronous cross-region for DR; Cache replication factor of 3."
+  },
+  "compliance": {
+    "gdpr_deletion": "Soft-delete flag in DB immediately upon request; background job scrubs PII from analytics stores; Cache invalidation triggered instantly.",
+    "data_retention": "Configurable TTL per URL; Analytics aggregated and anonymized after 30 days; raw logs purged after 90 days.",
+    "analytics_separation": "Analytics written to a separate stream/table to decouple user identity from click events, facilitating easier anonymization."
+  },
+  "cost_estimate": {
+    "monthly_total": 4850,
+    "breakdown": {
+      "compute": 1200,
+      "database": 1800,
+      "cache": 600,
+      "cdn": 800,
+      "other": 450
+    },
+    "fits_budget": true
+  },
+  "rate_limiting": {
+    "strategy": "Token Bucket algorithm implemented at Edge/Load Balancer level keyed by IP and API Key.",
+    "limits": "100 requests/second per IP for redirects; 10 requests/second for URL creation; dynamic throttling during 10x spikes."
+  },
+  "monitoring": {
+    "metrics": [
+      "p99 Redirect Latency",
+      "Error Rate (4xx/5xx)",
+      "Cache Hit Ratio",
+      "Throttled Requests",
+      "DB Write Latency",
+      "GDPR Deletion Lag"
+    ],
+    "alerting": "PagerDuty integration for p99 latency >50ms, Error Rate >0.1%, or Budget burn rate anomalies."
+  }
+}

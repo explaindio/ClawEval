@@ -49,30 +49,31 @@ Phase F tests showed identical scores (10/10) across all models for ~15 roles, m
 | 12 | Content Planner (15 constraints) | 🔴 1 | 🔴 1 |
 | 50 | Orchestrator (multi-agent) | 🟡 **7** | 🟡 **7** |
 | 23 | Web Scraping (messy HTML) | 🟢 **10** | 🟢 **10** |
-| | **TOTAL** | **87/110 (79%)** | **82/110 (75%)** |
+| | **TOTAL** | **87 (79%)** | **82 (75%)** |
 
 ---
 
 ## ☁️ Cloud Models
 
-| # | Test | K2.5 T | K2.5 NT | GLM T | GLM NT | M2.5 T | Q3.5+ T |
-|---|------|:---:|:---:|:---:|:---:|:---:|:---:|
-| | | Kimi-K2.5 | Kimi-K2.5 | GLM-5 | GLM-5 | MiniMax-M2.5 | Qwen3.5+ |
-| | | Alibaba | `no think` | Alibaba | `no think` | Alibaba | Alibaba |
-| 36 | Code Gen (RateLimiter) | 🟢 **10** | 🟢 **10** | 🟢 **10** | 🟢 9 | 🟢 8 | 🟢 **10** |
-| 2 | Input Validator (nested) | 🟢 **10** | 🟢 **10** | 🔴 0 ⏱️ | 🟢 **10** | 🟢 **10** | 🟢 **10** |
-| 5 | Sentiment (hard, 20 items) | 🟢 **8** | 🟢 **8** | 🟢 **8** | 🟢 **8** | 🟢 **8** | 🟢 **8** |
-| 40 | Fact-Checking (plausible) | 🟢 10 | 🟢 **10** | 🟢 9 | 🟢 **10** | 🟢 9 | 🟢 **10** |
-| 49 | Algorithm (LRU Cache + TTL) | 🟢 9 | 🟢 9 | 🟢 **10** | 🟢 9 | 🟢 9 | 🟢 **10** |
-| 51 | Architect (trade-offs) | 🟢 9 | 🟢 **10** | 🟢 9 | 🟢 9 | 🟢 **10** | 🟢 8 |
-| 48 | STEM (multi-step calc) | 🟢 **8** | 🟢 **8** | 🟡 6 | 🔴 4 | 🟡 5 | 🟡 6 |
-| 9 | Research (contradictions) | 🟢 **8** | 🟢 **8** | 🟡 5 | 🔴 3 | 🟡 6 | 🟡 6 |
-| 12 | Content Planner (15 constraints) | 🟡 **7** | 🔴 1 | 🔴 1 | 🔴 1 | 🔴 0 ⏱️ | 🔴 1 |
-| 50 | Orchestrator (multi-agent) | 🟡 **7** | 🟡 **7** | 🟢 **8** | 🟡 7 | 🔴 3 | 🟡 7 |
-| 23 | Web Scraping (messy HTML) | 🟢 **10** | 🟢 **10** | 🟢 **10** | 🟢 **10** | 🟢 **10** | 🟢 **10** |
-| | **TOTAL** | **96/110 (87%)** | **91/110 (83%)** | **76/110 (69%)** | **80/110 (73%)** | **78/110 (71%)** | **86/110 (78%)** |
+| # | Test | K2.5 T | K2.5 NT | GLM T | GLM NT | M2.5 T | Q3.5+ T | Q3.5+ NT |
+|---|------|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| | | Kimi-K2.5 | Kimi-K2.5 | GLM-5 | GLM-5 | MiniMax-M2.5 | Qwen3.5+ | Qwen3.5+ |
+| | | Alibaba | `no think` | Alibaba | `no think` | Alibaba | Alibaba | `no think` |
+| 36 | Code Gen (RateLimiter) | 🟢 **10** | 🟢 **10** | 🟢 **10** | 🟢 9 | 🟢 8 | 🟢 **10** | 🟢 **10** |
+| 2 | Input Validator (nested) | 🟢 **10** | 🟢 **10** | 🔴 0 ⏱️ | 🟢 **10** | 🟢 **10** | 🟢 **10** | 🟢 **10** |
+| 5 | Sentiment (hard, 20 items) | 🟢 8 | 🟢 8 | 🟢 8 | 🟢 8 | 🟢 8 | 🟢 8 | 🟢 **10** |
+| 40 | Fact-Checking (plausible) | 🟢 10 | 🟢 **10** | 🟢 9 | 🟢 **10** | 🟢 9 | 🟢 **10** | 🟢 **10** |
+| 49 | Algorithm (LRU Cache + TTL) | 🟢 9 | 🟢 9 | 🟢 **10** | 🟢 9 | 🟢 9 | 🟢 **10** | 🟢 9 |
+| 51 | Architect (trade-offs) | 🟢 9 | 🟢 **10** | 🟢 9 | 🟢 9 | 🟢 **10** | 🟢 8 | 🟢 **10** |
+| 48 | STEM (multi-step calc) | 🟢 **8** | 🟢 **8** | 🟡 6 | 🔴 4 | 🟡 5 | 🟡 6 | 🔴 4 |
+| 9 | Research (contradictions) | 🟢 **8** | 🟢 **8** | 🟡 5 | 🔴 3 | 🟡 6 | 🟡 6 | 🟡 5 |
+| 12 | Content Planner (15 constraints) | 🟡 **7** | 🔴 1 | 🔴 1 | 🔴 1 | 🔴 0 ⏱️ | 🔴 1 | 🔴 1 |
+| 50 | Orchestrator (multi-agent) | 🟡 **7** | 🟡 **7** | 🟢 **8** | 🟡 7 | 🔴 3 | 🟡 7 | 🟡 7 |
+| 23 | Web Scraping (messy HTML) | 🟢 **10** | 🟢 **10** | 🟢 **10** | 🟢 **10** | 🟢 **10** | 🟢 **10** | 🟢 **10** |
+| | **TOTAL** | **96 (87%)** | **91 (83%)** | **76 (69%)** | **80 (73%)** | **78 (71%)** | **86 (78%)** | **86 (78%)** |
 
 > **Timeouts:** GLM-5 Think Input Validator 0/10 (300s), MiniMax-M2.5 Content Planner 0/10 (504 Gateway Timeout).
+> **Qwen3.5+ NoThink Sentiment 10/10** (19/20) — best NoThink sentiment score of any cloud model.
 
 ---
 

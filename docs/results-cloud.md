@@ -130,7 +130,9 @@ See [Phase G Results](results-phase-g.md#%EF%B8%8F-cloud-models) for the 11 hard
 **MiniMax-M2.5:**
 - Think: 78/110 (71%) — Content Planner timed out (0/10), NoThink not supported
 
-**Qwen3.5-Plus:** Phase G pending
+**Qwen3.5-Plus:**
+- Think: 86/110 (78%) — Fact-Check 10/10 (20/20), Algorithm 10/10
+- NoThink: 86/110 (78%) — Sentiment 10/10 (19/20), Architect 10/10
 
 ---
 
