@@ -1,0 +1,170 @@
+```python
+import time
+import threading
+
+class RateLimiter:
+    def __init__(self, max_requests: int, window_seconds: float, burst: int = 0):
+        self.max_requests = max_requests
+        self.window_seconds = window_seconds
+        self.burst = burst
+        self._lock = threading.Lock()
+        self._state = {}
+
+    def _get_key(self, user_id: str, endpoint: str) -> tuple:
+        return (user_id, endpoint)
+
+    def _init_state(self, key: tuple, now: float):
+        if key not in self._state:
+            self._state[key] = {
+                "timestamps": [],
+                "burst_tokens": float(self.burst),
+                "last_update": now
+            }
+
+    def _clean_timestamps(self, state: dict, now: float):
+        cutoff = now - self.window_seconds
+        state["timestamps"] = [t for t in state["timestamps"] if t > cutoff]
+
+    def _refill_burst(self, state: dict, now: float):
+        if self.burst > 0:
+            elapsed = now - state["last_update"]
+            if elapsed > 0:
+                rate = self.burst / (2 * self.window_seconds)
+                state["burst_tokens"] = min(float(self.burst), state["burst_tokens"] + elapsed * rate)
+        state["last_update"] = now
+
+    def allow(self, user_id: str, endpoint: str = "default") -> dict:
+        with self._lock:
+            now = time.time()
+            key = self._get_key(user_id, endpoint)
+            self._init_state(key, now)
+            state = self._state[key]
+
+            self._clean_timestamps(state, now)
+            self._refill_burst(state, now)
+
+            used = len(state["timestamps"])
+            allowed = False
+            remaining = 0
+            retry_after = None
+
+            if used < self.max_requests:
+                allowed = True
+                state["timestamps"].append(now)
+                remaining = self.max_requests - used - 1
+            elif state["burst_tokens"] >= 1.0:
+                allowed = True
+                state["burst_tokens"] -= 1.0
+                state["timestamps"].append(now)
+                remaining = 0
+            else:
+                allowed = False
+                remaining = 0
+                candidates = []
+                if state["timestamps"]:
+                    candidates.append(state["timestamps"][0] + self.window_seconds - now)
+                if self.burst > 0:
+                    rate = self.burst / (2 * self.window_seconds)
+                    if rate > 0:
+                        needed = 1.0 - state["burst_tokens"]
+                        if needed > 0:
+                            candidates.append(needed / rate)
+                
+                if candidates:
+                    retry_after = max(0.0, min(candidates))
+                else:
+                    retry_after = 0.0
+
+            return {
+                "allowed": allowed,
+                "remaining": int(remaining),
+                "retry_after": retry_after
+            }
+
+    def allow_priority(self, user_id: str, endpoint: str = "default") -> dict:
+        return {
+            "allowed": True,
+            "remaining": self.max_requests + self.burst,
+            "retry_after": None
+        }
+
+    def cleanup(self, max_age_seconds: float = None) -> int:
+        if max_age_seconds is None:
+            max_age_seconds = 2 * self.window_seconds
+        
+        with self._lock:
+            now = time.time()
+            cutoff = now - max_age_seconds
+            to_remove = []
+            for key, state in self._state.items():
+                if state["last_update"] < cutoff:
+                    to_remove.append(key)
+            
+            for key in to_remove:
+                del self._state[key]
+            
+            return len(to_remove)
+
+    def get_usage(self, user_id: str, endpoint: str = "default") -> dict:
+        with self._lock:
+            now = time.time()
+            key = self._get_key(user_id, endpoint)
+            self._init_state(key, now)
+            state = self._state[key]
+
+            self._clean_timestamps(state, now)
+            self._refill_burst(state, now)
+
+            used = len(state["timestamps"])
+            burst_remaining = int(state["burst_tokens"])
+
+            return {
+                "used": used,
+                "limit": self.max_requests,
+                "window_seconds": self.window_seconds,
+                "burst_remaining": burst_remaining
+            }
+
+    def to_dict(self) -> dict:
+        with self._lock:
+            state_serial = {}
+            for (uid, ep), data in self._state.items():
+                k_str = f"{uid}|{ep}"
+                state_serial[k_str] = {
+                    "timestamps": data["timestamps"],
+                    "burst_tokens": data["burst_tokens"],
+                    "last_update": data["last_update"]
+                }
+            
+            return {
+                "config": {
+                    "max_requests": self.max_requests,
+                    "window_seconds": self.window_seconds,
+                    "burst": self.burst
+                },
+                "state": state_serial
+            }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> 'RateLimiter':
+        config = data["config"]
+        limiter = cls(
+            max_requests=config["max_requests"],
+            window_seconds=config["window_seconds"],
+            burst=config["burst"]
+        )
+        
+        state_serial = data.get("state", {})
+        limiter._state = {}
+        for k_str, v in state_serial.items():
+            parts = k_str.split("|", 1)
+            if len(parts) == 2:
+                uid, ep = parts
+                limiter._state[(uid, ep)] = {
+                    "timestamps": v["timestamps"],
+                    "burst_tokens": v["burst_tokens"],
+                    "last_update": v["last_update"]
+                }
+        
+        return limiter
+```

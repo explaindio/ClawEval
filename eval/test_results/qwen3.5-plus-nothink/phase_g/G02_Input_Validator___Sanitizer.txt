@@ -1,0 +1,20 @@
+{
+  "errors": [
+    "customer.email domain 'mailinator.com' is a disposable email provider",
+    "customer.phone country code '+44' does not match shipping.country 'US'",
+    "shipping.zip '10001' is invalid for state 'CA' (CA zips must start with 9)",
+    "billing.address does not match shipping.address while same_as_shipping is true",
+    "billing.address.zip '90210' is invalid for state 'NY' (NY zips must start with 1)",
+    "items[2].quantity is 0, must be between 1 and 999",
+    "items[2].subtotal calculation error: expected 0.00 (0 * 15.00), got 15.00",
+    "items[3].sku is empty",
+    "items[3].unit_price is negative (-5.00)",
+    "items[3].subtotal calculation error: expected -5.00 (1 * -5.00), but negative prices are invalid",
+    "order_total calculation error: expected 149.95 (89.97 + 109.98 + 0 + -5.00 - 50.00), got 159.95",
+    "payment.amount (200.00) does not equal order_total (159.95)",
+    "payment.card_expiry (2025-06) is before order_date (2026-01-15)",
+    "delivery_date (2025-12-15) is before order_date (2026-01-15)",
+    "payment.card_last4 '12345' contains 5 digits, expected 4"
+  ],
+  "error_count": 15
+}

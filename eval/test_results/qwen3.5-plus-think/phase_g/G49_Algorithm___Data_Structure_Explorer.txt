@@ -1,0 +1,83 @@
+import time
+from collections import OrderedDict
+from typing import Any, Dict, List
+
+class LRUCache:
+    def __init__(self, capacity: int):
+        self.capacity = capacity
+        self.cache = OrderedDict()
+        self.stats = {
+            "hits": 0,
+            "misses": 0,
+            "evictions": 0,
+            "expirations": 0
+        }
+
+    def get(self, key: str) -> Any:
+        if key not in self.cache:
+            self.stats["misses"] += 1
+            return None
+
+        value, exp_time = self.cache[key]
+
+        if exp_time is not None and time.time() > exp_time:
+            del self.cache[key]
+            self.stats["expirations"] += 1
+            self.stats["misses"] += 1
+            return None
+
+        self.cache.move_to_end(key)
+        self.stats["hits"] += 1
+        return value
+
+    def put(self, key: str, value: Any, ttl: float = None) -> None:
+        if self.capacity <= 0:
+            return
+
+        exp_time = None
+        if ttl is not None:
+            exp_time = time.time() + ttl
+
+        if key in self.cache:
+            self.cache[key] = (value, exp_time)
+            self.cache.move_to_end(key)
+        else:
+            if len(self.cache) >= self.capacity:
+                self.cache.popitem(last=False)
+                self.stats["evictions"] += 1
+            self.cache[key] = (value, exp_time)
+
+    def delete(self, key: str) -> bool:
+        if key in self.cache:
+            del self.cache[key]
+            return True
+        return False
+
+    def size(self) -> int:
+        count = 0
+        now = time.time()
+        for val, exp in self.cache.values():
+            if exp is None or now <= exp:
+                count += 1
+        return count
+
+    def get_stats(self) -> Dict[str, int]:
+        return self.stats.copy()
+
+    def keys(self) -> List[str]:
+        result = []
+        now = time.time()
+        for key in reversed(self.cache):
+            val, exp = self.cache[key]
+            if exp is None or now <= exp:
+                result.append(key)
+        return result
+
+    def clear(self) -> None:
+        self.cache.clear()
+        self.stats = {
+            "hits": 0,
+            "misses": 0,
+            "evictions": 0,
+            "expirations": 0
+        }

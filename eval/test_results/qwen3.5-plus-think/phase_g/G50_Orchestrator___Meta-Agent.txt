@@ -1,0 +1,135 @@
+{
+  "phases": [
+    {
+      "phase": 1,
+      "name": "Initial Triage & Internal Alerting",
+      "agents": [
+        {
+          "agent": "metric_checker",
+          "input": "query=error_rate_5m&threshold=5%",
+          "timeout_seconds": 60
+        },
+        {
+          "agent": "log_analyzer",
+          "input": "pattern=Exception|Timeout&window=5m",
+          "timeout_seconds": 90
+        },
+        {
+          "agent": "db_checker",
+          "input": "check=connections|locks|latency",
+          "timeout_seconds": 60
+        },
+        {
+          "agent": "notification_agent",
+          "input": "channel=pagerduty&severity=critical",
+          "timeout_seconds": 30
+        }
+      ],
+      "parallel": true,
+      "gate": "All diagnostic agents complete or timeout; Internal team paged"
+    },
+    {
+      "phase": 2,
+      "name": "Incident Logging & Customer Notification",
+      "agents": [
+        {
+          "agent": "incident_reporter",
+          "input": "action=create&priority=P1",
+          "timeout_seconds": 45
+        },
+        {
+          "agent": "customer_communicator",
+          "input": "status=investigating&channel=status_page",
+          "timeout_seconds": 60
+        }
+      ],
+      "parallel": true,
+      "gate": "Incident ticket ID generated; Customers notified of investigation"
+    },
+    {
+      "phase": 3,
+      "name": "Deep Root Cause Analysis",
+      "agents": [
+        {
+          "agent": "config_auditor",
+          "input": "scope=last_1_hour&services=affected",
+          "timeout_seconds": 120
+        },
+        {
+          "agent": "dependency_mapper",
+          "input": "service=primary&depth=2",
+          "timeout_seconds": 90
+        },
+        {
+          "agent": "capacity_planner",
+          "input": "metrics=cpu|memory|network&window=10m",
+          "timeout_seconds": 90
+        }
+      ],
+      "parallel": true,
+      "gate": "Root cause hypothesis generated with confidence score"
+    },
+    {
+      "phase": 4,
+      "name": "Automated Remediation",
+      "agents": [
+        {
+          "agent": "rollback_agent",
+          "input": "target=previous_stable&service=primary",
+          "timeout_seconds": 300
+        }
+      ],
+      "parallel": false,
+      "gate": "Rollback command executed; Deployment status confirmed"
+    },
+    {
+      "phase": 5,
+      "name": "Service Verification & Closure",
+      "agents": [
+        {
+          "agent": "metric_checker",
+          "input": "query=error_rate_5m&threshold=1%",
+          "timeout_seconds": 60
+        },
+        {
+          "agent": "log_analyzer",
+          "input": "pattern=Exception&window=5m",
+          "timeout_seconds": 60
+        },
+        {
+          "agent": "incident_reporter",
+          "input": "action=update&status=resolved|monitoring",
+          "timeout_seconds": 45
+        }
+      ],
+      "parallel": true,
+      "gate": "Service health confirmed; Incident ticket updated"
+    }
+  ],
+  "decision_points": [
+    {
+      "after_phase": 3,
+      "condition": "config_auditor finds recent change OR metric_checker shows spike post-deploy",
+      "if_true": "go to phase 4",
+      "if_false": "go to phase 5"
+    },
+    {
+      "after_phase": 4,
+      "condition": "metric_checker shows error_rate < 1% immediately post-rollback",
+      "if_true": "go to phase 5",
+      "if_false": "go to phase 5"
+    }
+  ],
+  "escalation": {
+    "trigger": "workflow_elapsed_time > 15 minutes OR phase_4_remediation_status == failed",
+    "action": "Page Engineering Lead & Initiate War Room"
+  },
+  "total_phases": 5,
+  "max_time_minutes": 20,
+  "rollback_conditions": [
+    "error_rate > 50% for continuous 5 minutes",
+    "http_5xx_spike > 1000 requests per minute",
+    "recent_deployment_detected == true within last 30 minutes",
+    "latency_p99 > 5000ms across all availability zones"
+  ]
+}

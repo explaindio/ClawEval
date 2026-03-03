@@ -1,0 +1,202 @@
+```python
+import time
+import threading
+from collections import defaultdict
+
+class RateLimiter:
+    def __init__(self, max_requests: int, window_seconds: float, burst: int = 0):
+        self.max_requests = max_requests
+        self.window_seconds = window_seconds
+        self.burst = burst
+        self._lock = threading.Lock()
+        # Structure: {(user_id, endpoint): {"timestamps": [float], "burst_timestamps": [float]}}
+        self._data = defaultdict(lambda: {"timestamps": [], "burst_timestamps": []})
+
+    def _clean_window(self, key: tuple, current_time: float):
+        """Remove timestamps outside the sliding window for normal and burst tokens."""
+        entry = self._data[key]
+        cutoff_normal = current_time - self.window_seconds
+        cutoff_burst = current_time - (self.window_seconds * 2)  # Burst regenerates slower (2x window)
+
+        entry["timestamps"] = [t for t in entry["timestamps"] if t > cutoff_normal]
+        entry["burst_timestamps"] = [t for t in entry["burst_timestamps"] if t > cutoff_burst]
+
+    def allow(self, user_id: str, endpoint: str = "default") -> dict:
+        key = (user_id, endpoint)
+        with self._lock:
+            current_time = time.time()
+            self._clean_window(key, current_time)
+            
+            entry = self._data[key]
+            normal_count = len(entry["timestamps"])
+            burst_count = len(entry["burst_timestamps"])
+            
+            total_used = normal_count + burst_count
+            limit = self.max_requests
+            total_capacity = limit + self.burst
+            
+            if total_used < total_capacity:
+                # Determine if we use a normal token or a burst token
+                if normal_count < limit:
+                    entry["timestamps"].append(current_time)
+                    remaining = total_capacity - (total_used + 1)
+                else:
+                    # Use burst token
+                    entry["burst_timestamps"].append(current_time)
+                    remaining = total_capacity - (total_used + 1)
+                
+                return {
+                    "allowed": True,
+                    "remaining": max(0, remaining),
+                    "retry_after": None
+                }
+            else:
+                # Calculate retry_after based on the oldest timestamp blocking a new request
+                all_ts = entry["timestamps"] + entry["burst_timestamps"]
+                if not all_ts:
+                    retry_after = 0.0
+                else:
+                    oldest = min(all_ts)
+                    # If it's a burst token, it needs 2x window to clear, otherwise 1x
+                    # However, to be safe and simple: we need the slot to free up.
+                    # The limiting factor is the oldest timestamp. 
+                    # If oldest is in burst list, it clears at oldest + 2*window.
+                    # If oldest is in normal list, it clears at oldest + window.
+                    
+                    # Re-evaluate specifically which list the oldest belongs to determine expiry
+                    if oldest in entry["burst_timestamps"]:
+                        expire_time = oldest + (self.window_seconds * 2)
+                    else:
+                        expire_time = oldest + self.window_seconds
+                    
+                    retry_after = max(0.0, expire_time - current_time)
+
+                return {
+                    "allowed": False,
+                    "remaining": 0,
+                    "retry_after": retry_after
+                }
+
+    def allow_priority(self, user_id: str, endpoint: str = "default") -> dict:
+        # Priority users always allowed, but we still track usage for get_usage consistency if needed?
+        # Requirement says "Always returns {"allowed": True, ...}"
+        # We do not consume tokens for priority users to avoid penalizing them, 
+        # but we return current state stats.
+        key = (user_id, endpoint)
+        with self._lock:
+            current_time = time.time()
+            self._clean_window(key, current_time)
+            entry = self._data[key]
+            used = len(entry["timestamps"]) + len(entry["burst_timestamps"])
+            remaining = max(0, (self.max_requests + self.burst) - used)
+            
+            return {
+                "allowed": True,
+                "remaining": remaining,
+                "retry_after": None
+            }
+
+    def cleanup(self, max_age_seconds: float = None) -> int:
+        if max_age_seconds is None:
+            max_age_seconds = 2 * self.window_seconds
+        
+        cutoff = time.time() - max_age_seconds
+        removed_count = 0
+        keys_to_delete = []
+
+        with self._lock:
+            for key, entry in list(self._data.items()):
+                # Check if ALL timestamps are older than cutoff? 
+                # Or if the entry itself hasn't been touched? 
+                # Usually cleanup removes entries where the latest activity is old.
+                all_ts = entry["timestamps"] + entry["burst_timestamps"]
+                
+                if not all_ts:
+                    # Empty entry (shouldn't happen often due to defaultdict logic but safe to clean)
+                    keys_to_delete.append(key)
+                    continue
+                
+                latest_activity = max(all_ts)
+                if latest_activity < cutoff:
+                    keys_to_delete.append(key)
+
+            for key in keys_to_delete:
+                del self._data[key]
+                removed_count += 1
+                
+        return removed_count
+
+    def get_usage(self, user_id: str, endpoint: str = "default") -> dict:
+        key = (user_id, endpoint)
+        with self._lock:
+            current_time = time.time()
+            self._clean_window(key, current_time)
+            entry = self._data[key]
+            
+            used = len(entry["timestamps"])
+            burst_used = len(entry["burst_timestamps"])
+            total_used = used + burst_used
+            
+            # Burst remaining calculation:
+            # Total capacity = max + burst
+            # Used = total_used
+            # But strictly speaking, burst_remaining is how many burst tokens are left.
+            # Burst tokens are only used after normal tokens are exhausted.
+            # So if used < max, burst_remaining = burst.
+            # If used >= max, burst_remaining = burst - (used - max).
+            
+            if used >= self.max_requests:
+                burst_remaining = max(0, self.burst - (used - self.max_requests))
+            else:
+                burst_remaining = self.burst
+            
+            # However, the internal state tracks specific burst timestamps. 
+            # The logical "burst_remaining" based on current window state:
+            actual_burst_remaining = max(0, self.burst - burst_used)
+
+            return {
+                "used": total_used,
+                "limit": self.max_requests,
+                "window_seconds": self.window_seconds,
+                "burst_remaining": actual_burst_remaining
+            }
+
+    def to_dict(self) -> dict:
+        with self._lock:
+            # Convert defaultdict to regular dict and ensure keys are serializable
+            data_export = {}
+            for (uid, ep), entry in self._data.items():
+                data_export[f"{uid}|||{ep}"] = {
+                    "timestamps": entry["timestamps"],
+                    "burst_timestamps": entry["burst_timestamps"]
+                }
+            
+            return {
+                "config": {
+                    "max_requests": self.max_requests,
+                    "window_seconds": self.window_seconds,
+                    "burst": self.burst
+                },
+                "state": data_export
+            }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> 'RateLimiter':
+        config = data["config"]
+        limiter = cls(
+            max_requests=config["max_requests"],
+            window_seconds=config["window_seconds"],
+            burst=config["burst"]
+        )
+        
+        state = data.get("state", {})
+        with limiter._lock:
+            for key_str, entry in state.items():
+                uid, ep = key_str.split("|||", 1)
+                # Accessing via defaultdict creates the entry if missing, then we overwrite lists
+                target = limiter._data[(uid, ep)]
+                target["timestamps"] = entry["timestamps"]
+                target["burst_timestamps"] = entry["burst_timestamps"]
+                
+        return limiter
+```

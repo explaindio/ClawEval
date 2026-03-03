@@ -1,0 +1,66 @@
+{
+  "architecture": {
+    "components": [
+      "CDN Edge Network",
+      "Serverless Edge Workers",
+      "Distributed Key-Value Store",
+      "Async Analytics Pipeline",
+      "API Gateway"
+    ],
+    "database": {
+      "primary": "Edge KV (NoSQL)",
+      "justification": "Low latency global access, high write throughput for 10M daily URLs, cost-effective at scale"
+    },
+    "cache": {
+      "type": "CDN Edge Cache",
+      "strategy": "Cache-aside with aggressive TTL for 301 responses",
+      "invalidation": "TTL-based + Purge API for GDPR/Expiration"
+    },
+    "hash_strategy": {
+      "algorithm": "Base62",
+      "length": 7,
+      "collision_handling": "Random salt retry with exponential backoff"
+    }
+  },
+  "scaling": {
+    "read_write_ratio": "100:1",
+    "read_optimization": "90% traffic served via CDN cache bypassing compute",
+    "write_path": "Async queue for analytics, synchronous KV write for URL mapping",
+    "horizontal_scaling": "Serverless auto-scaling at edge locations globally"
+  },
+  "reliability": {
+    "uptime_strategy": "Multi-region edge deployment with health checks",
+    "failover": "DNS failover to backup region if edge cluster unhealthy",
+    "data_replication": "Strong consistency within region, eventual consistency cross-region"
+  },
+  "compliance": {
+    "gdpr_deletion": "Soft delete flag in KV + Edge Worker purge trigger",
+    "data_retention": "Configurable TTL per link stored in metadata",
+    "analytics_separation": "PII stripped before async logging to separate data lake"
+  },
+  "cost_estimate": {
+    "monthly_total": 4800,
+    "breakdown": {
+      "compute": 500,
+      "database": 300,
+      "cache": 200,
+      "cdn": 3500,
+      "other": 300
+    },
+    "fits_budget": true
+  },
+  "rate_limiting": {
+    "strategy": "Token bucket at Edge Worker level per IP/API Key",
+    "limits": "1000 requests/minute per IP, 100 writes/minute per user"
+  },
+  "monitoring": {
+    "metrics": [
+      "p99 Latency",
+      "Cache Hit Ratio",
+      "Error Rate 5xx",
+      "Cost per Request",
+      "Write Throughput"
+    ],
+    "alerting": "PagerDuty integration on latency > 50ms or error rate > 0.1%"
+  }
+}

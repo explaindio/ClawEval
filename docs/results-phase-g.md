@@ -55,22 +55,22 @@ Phase F tests showed identical scores (10/10) across all models for ~15 roles, m
 
 ## ☁️ Cloud Models
 
-| # | Test | K2.5 Think | K2.5 NT | GLM-5 Think | GLM-5 NT | M2.5 Think |
-|---|------|:---:|:---:|:---:|:---:|:---:|
-| | | Kimi-K2.5 | Kimi-K2.5 | GLM-5 | GLM-5 | MiniMax-M2.5 |
-| | | Alibaba | `no think` | Alibaba | `no think` | Alibaba |
-| 36 | Code Gen (RateLimiter) | 🟢 **10** | 🟢 **10** | 🟢 **10** | 🟢 9 | 🟢 8 |
-| 2 | Input Validator (nested) | 🟢 **10** | 🟢 **10** | 🔴 0 ⏱️ | 🟢 **10** | 🟢 **10** |
-| 5 | Sentiment (hard, 20 items) | 🟢 **8** | 🟢 **8** | 🟢 **8** | 🟢 **8** | 🟢 **8** |
-| 40 | Fact-Checking (plausible) | 🟢 10 | 🟢 **10** | 🟢 9 | 🟢 **10** | 🟢 9 |
-| 49 | Algorithm (LRU Cache + TTL) | 🟢 9 | 🟢 9 | 🟢 **10** | 🟢 9 | 🟢 9 |
-| 51 | Architect (trade-offs) | 🟢 9 | 🟢 **10** | 🟢 9 | 🟢 9 | 🟢 **10** |
-| 48 | STEM (multi-step calc) | 🟢 **8** | 🟢 **8** | 🟡 6 | 🔴 4 | 🟡 5 |
-| 9 | Research (contradictions) | 🟢 **8** | 🟢 **8** | 🟡 5 | 🔴 3 | 🟡 6 |
-| 12 | Content Planner (15 constraints) | 🟡 **7** | 🔴 1 | 🔴 1 | 🔴 1 | 🔴 0 ⏱️ |
-| 50 | Orchestrator (multi-agent) | 🟡 **7** | 🟡 **7** | 🟢 **8** | 🟡 7 | 🔴 3 |
-| 23 | Web Scraping (messy HTML) | 🟢 **10** | 🟢 **10** | 🟢 **10** | 🟢 **10** | 🟢 **10** |
-| | **TOTAL** | **96/110 (87%)** | **91/110 (83%)** | **76/110 (69%)** | **80/110 (73%)** | **78/110 (71%)** |
+| # | Test | K2.5 T | K2.5 NT | GLM T | GLM NT | M2.5 T | Q3.5+ T |
+|---|------|:---:|:---:|:---:|:---:|:---:|:---:|
+| | | Kimi-K2.5 | Kimi-K2.5 | GLM-5 | GLM-5 | MiniMax-M2.5 | Qwen3.5+ |
+| | | Alibaba | `no think` | Alibaba | `no think` | Alibaba | Alibaba |
+| 36 | Code Gen (RateLimiter) | 🟢 **10** | 🟢 **10** | 🟢 **10** | 🟢 9 | 🟢 8 | 🟢 **10** |
+| 2 | Input Validator (nested) | 🟢 **10** | 🟢 **10** | 🔴 0 ⏱️ | 🟢 **10** | 🟢 **10** | 🟢 **10** |
+| 5 | Sentiment (hard, 20 items) | 🟢 **8** | 🟢 **8** | 🟢 **8** | 🟢 **8** | 🟢 **8** | 🟢 **8** |
+| 40 | Fact-Checking (plausible) | 🟢 10 | 🟢 **10** | 🟢 9 | 🟢 **10** | 🟢 9 | 🟢 **10** |
+| 49 | Algorithm (LRU Cache + TTL) | 🟢 9 | 🟢 9 | 🟢 **10** | 🟢 9 | 🟢 9 | 🟢 **10** |
+| 51 | Architect (trade-offs) | 🟢 9 | 🟢 **10** | 🟢 9 | 🟢 9 | 🟢 **10** | 🟢 8 |
+| 48 | STEM (multi-step calc) | 🟢 **8** | 🟢 **8** | 🟡 6 | 🔴 4 | 🟡 5 | 🟡 6 |
+| 9 | Research (contradictions) | 🟢 **8** | 🟢 **8** | 🟡 5 | 🔴 3 | 🟡 6 | 🟡 6 |
+| 12 | Content Planner (15 constraints) | 🟡 **7** | 🔴 1 | 🔴 1 | 🔴 1 | 🔴 0 ⏱️ | 🔴 1 |
+| 50 | Orchestrator (multi-agent) | 🟡 **7** | 🟡 **7** | 🟢 **8** | 🟡 7 | 🔴 3 | 🟡 7 |
+| 23 | Web Scraping (messy HTML) | 🟢 **10** | 🟢 **10** | 🟢 **10** | 🟢 **10** | 🟢 **10** | 🟢 **10** |
+| | **TOTAL** | **96/110 (87%)** | **91/110 (83%)** | **76/110 (69%)** | **80/110 (73%)** | **78/110 (71%)** | **86/110 (78%)** |
 
 > **Timeouts:** GLM-5 Think Input Validator 0/10 (300s), MiniMax-M2.5 Content Planner 0/10 (504 Gateway Timeout).
 
@@ -85,23 +85,24 @@ Phase F tests showed identical scores (10/10) across all models for ~15 roles, m
 | 🥇 | **Kimi K2.5 Think** | 96/110 (87%) | Cloud · Champion · No test below 7 |
 | 🥈 | **Kimi K2.5 NoThink** | 91/110 (83%) | Cloud · Faster · No thinking overhead |
 | 🥉 | **122B NoThink** | 87/110 (79%) | Local 64-96GB · Best local model |
-| 4 | **27B NoThink** | 83/110 (75%) | Local 24GB · Best budget model |
-| 5 | **GPT-OSS-120B** | 82/110 (75%) | Local 64-96GB · Good all-rounder |
-| 6 | **GLM-5 NoThink** | 80/110 (73%) | Cloud · Better than Think mode |
-| 7 | **MiniMax-M2.5** | 78/110 (71%) | Cloud · Fastest (~85 t/s) · Think only |
-| 8 | **35B NoThink** | 77/110 (70%) | Local 24GB |
-| 9 | **GLM-5 Think** | 76/110 (69%) | Cloud · Timeout hurt score |
-| 10 | **35B Think** | 51/60 (85%)* | Local · 5/11 tests overflow |
+| 4 | **Qwen3.5-Plus Think** | 86/110 (78%) | Cloud · Fact-Check 10/10, Algorithm 10/10 |
+| 5 | **27B NoThink** | 83/110 (75%) | Local 24GB · Best budget model |
+| 6 | **GPT-OSS-120B** | 82/110 (75%) | Local 64-96GB · Good all-rounder |
+| 7 | **GLM-5 NoThink** | 80/110 (73%) | Cloud · Better than Think mode |
+| 8 | **MiniMax-M2.5** | 78/110 (71%) | Cloud · Fastest (~85 t/s) · Think only |
+| 9 | **35B NoThink** | 77/110 (70%) | Local 24GB |
+| 10 | **GLM-5 Think** | 76/110 (69%) | Cloud · Timeout hurt score |
+| 11 | **35B Think** | 51/60 (85%)* | Local · 5/11 tests overflow |
 
 \* Only 6/11 tests completed due to SGLang thinking budget bug
 
 ### Key Observations
 
-1. **Kimi K2.5 is the clear champion** (96/110 Think, 91/110 NoThink) — first model to score 10/10 on Code Gen
-2. **MiniMax-M2.5 Architect 10/10** — only model to get perfect score alongside K2.5 NoThink
+1. **Kimi K2.5 is the clear Phase G champion** (96/110 Think, 91/110 NoThink) — no test below 7
+2. **Qwen3.5-Plus Think at #4** (86/110) — perfect on Fact-Check (20/20) and Algorithm (15/15)
 3. **Thinking helps most on Content Planner** — K2.5 Think 7/10 vs all others 0-1/10
 4. **GLM-5 and M2.5 can timeout** — heavy reasoning on Alibaba API caused 0/10 on some tests
-5. **STEM is the great differentiator** — K2.5 8/10 vs M2.5 5/10 vs GLM-5 4-6/10 vs local 2-5/10
+5. **STEM is the great differentiator** — K2.5 8/10 vs Q3.5+ 6/10 vs GLM-5 4-6/10
 6. **27B NoThink is remarkable value** — 83/110 on 24GB hardware vs 96/110 cloud
 
 ## ⚠️ SGLang Thinking Budget Bug
