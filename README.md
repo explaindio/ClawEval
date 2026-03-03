@@ -35,7 +35,7 @@ Don't have a GPU? We also test open-source models hosted on cloud providers so y
 | Alibaba Coding Plan | **Qwen3.5-Plus** — 🥇 482/590 (82%) Phase F, 86/110 (78%) Phase G | ✅ Tested |
 | Alibaba Coding Plan | **Kimi K2.5** — 473/590 (80%) Phase F, 96/110 (87%) Phase G | ✅ Tested |
 | Alibaba Coding Plan | **GLM-5** — 465/590 (79%) Phase F, 80/110 (73%) Phase G | ✅ Tested |
-| Alibaba Coding Plan | **MiniMax-M2.5** — 465/590 (79%) Phase F, 78/110 (71%) Phase G, ~85 t/s | ✅ Tested |
+| Alibaba Coding Plan | **MiniMax-M2.5** — 465/590 (79%) Phase F, 78/110 (71%) Phase G | ✅ Tested |
 | OpenRouter, Alibaba, and other affordable providers | Open-source models via API | 🔜 Coming soon |
 
 
@@ -274,7 +274,7 @@ Don't have a GPU? We also test open-source models hosted on cloud providers so y
 | 58 | Book Writing | 📝 Manual | 📝 5 |
 | 59 | Compliance | Kimi K2.5 | 🟢 9 |
 
-> † Phase G discriminator score · [☁️ Full cloud model comparison + speed data →](docs/results-cloud.md)
+> † Phase G discriminator score · [☁️ Full cloud model comparison →](docs/results-cloud.md)
 
 ---
 
