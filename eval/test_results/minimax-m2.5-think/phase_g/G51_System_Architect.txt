@@ -1,0 +1,75 @@
+```json
+{
+  "architecture": {
+    "components": [
+      "Cloudflare Load Balancer / CDN",
+      "API Gateway (Cloudflare Workers or AWS API Gateway)",
+      "Application Servers (auto-scaling container fleet)",
+      "Primary Database (PostgreSQL with read replicas)",
+      "Redis Cluster for caching",
+      "Message Queue (for async analytics/logging)",
+      "Background workers (link expiration, GDPR deletion)"
+    ],
+    "database": {
+      "primary": "PostgreSQL 15 with pgvector (Aurora Serverless or self-hosted on RDS)",
+      "justification": "PostgreSQL handles high write throughput with B-tree indexes, supports custom aliases via unique constraints, provides ACID compliance for transactions, and offers efficient range queries for expiration checking. At 116 writes/sec and 11,574 reads/sec, PostgreSQL with proper indexing achieves <5ms p99. Supports GDPR DELETE cascades and row-level security."
+    },
+    "cache": {
+      "type": "Redis Cluster (ElastiCache or self-hosted)",
+      "strategy": "Write-through caching with LRU eviction. Cache short_code -> long_url mappings with TTL matching link expiration. Pre-warm cache with popular URLs during low-traffic periods. Use Redis hashes for efficient storage of URL metadata.",
+      "invalidation": "Write-through on URL creation; TTL-based expiration matching link TTL; explicit invalidation on URL deletion/GDPR request; cache-aside pattern for reads with lazy loading fallback"
+    },
+    "hash_strategy": {
+      "algorithm": " cryptographically secure random (CSPRNG) + base62 encoding",
+      "length": 7,
+      "collision_handling": "Check uniqueness in DB; if collision, regenerate (exponential backoff up to 3 retries). For custom aliases, use INSERT ... ON CONFLICT DO NOTHING with uniqueness constraint. 7 chars base62 = 62^7 = 3.5 trillion combinations, collision probability negligible at 10M/day."
+    }
+  },
+  "scaling": {
+    "read_write_ratio": "100:1 (1B reads/day : 10M writes/day)",
+    "read_optimization": "Route all redirect traffic through CDN edge (Cloudflare); cache hit target 95%+; database read replicas (3+) with connection pooling (PgBouncer); read-after-write consistency not required for redirects, eventual consistency acceptable",
+    "write_path": "Client -> Cloudflare Edge -> API Server -> Validate/Generate Short Code -> Redis (check cache) -> PostgreSQL (unique check + INSERT) -> Invalidate Redis (if custom alias) -> Return 201 Created",
+    "horizontal_scaling": "Stateless API servers behind auto-scaling group (min 3, max 20 based on CPU/custom metrics); read replicas can be added vertically; Redis Cluster shards by key hash; database read replicas scale horizontally; CDN handles 10x spike at edge"
+  },
+  "reliability": {
+    "uptime_strategy": "Multi-region active-active deployment; health checks every 10s; circuit breakers; rate limiting at edge; database connection pooling with retry logic; dead letter queues for failed operations; infrastructure as code (Terraform) for reproducibility",
+    "failover": "Automatic DNS failover (Cloudflare); database auto-failover (RDS Multi-AZ); Redis sentinel/cluster for cache HA; load balancer health-based removal; retry with exponential backoff (max 3 attempts); idempotent write operations",
+    "data_replication": "PostgreSQL: synchronous streaming replication to 1 standby + async to 1 read replica in secondary AZ; cross-region async replication for disaster recovery (RPO < 1 hour); Redis: replication with automatic failover"
+  },
+  "compliance": {
+    "gdpr_deletion": "User submits deletion request via API; request queued in message queue; background worker performs hard DELETE (not soft delete) with CASCADE to related tables (analytics, clicks); logs deletion in audit table; returns confirmation within 30 days (typically immediate for URL data)",
+    "data_retention": "Click analytics retained for 90 days (configurable); raw logs retained 30 days then aggregated; URL metadata retained until expiration or user deletion; no personally identifiable information stored in URL records",
+    "analytics_separation": "Separate analytics database/tables from core URL data; analytics uses anonymized/pseudonymized data (no PII); separate access controls; GDPR deletion only affects core URL tables, aggregated analytics retained as anonymous"
+  },
+  "cost_estimate": {
+    "monthly_total": 4850,
+    "breakdown": {
+      "compute": 1200,
+      "database": 1800,
+      "cache": 800,
+      "cdn": 600,
+      "other": 450
+    },
+    "fits_budget": true
+  },
+  "rate_limiting": {
+    "strategy": "Token bucket at Cloudflare edge (100 req/min per IP for write endpoints); per-user rate limits using API keys (1000 creates/day for free tier, unlimited for paid); per-custom-alias limits (10 custom aliases per account free); spike protection with burst allowance",
+    "limits": "Write: 100 requests/minute per IP (anonymous), 1000/day per authenticated user; Read/Redirect: 1000/minute per IP; Custom alias creation: 10/day (free tier), unlimited (paid)"
+  },
+  "monitoring": {
+    "metrics": [
+      "p50/p95/p99 redirect latency (target <20ms p99 at edge)",
+      "cache hit ratio (target >95%)",
+      "database query latency (target <5ms p99)",
+      "error rate by type (4xx, 5xx)",
+      "requests per second (total and per endpoint)",
+      "active URLs count",
+      "unique visitors",
+      "infrastructure CPU/memory/disk utilization",
+      "CDN edge cache hit ratio",
+      "rate limit rejections"
+    ],
+    "alerting": "PagerDuty integration; alert on p99 latency >50ms, error rate >1%, cache hit ratio <80%, database connections >80% capacity, disk usage >70%, any 5xx errors; on-call rotation with escalation after 15 minutes; automated remediation for common issues"
+  }
+}
+```

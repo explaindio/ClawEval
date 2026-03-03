@@ -1,0 +1,241 @@
+```json
+{
+  "workflow_name": "production_incident_response",
+  "version": "1.0",
+  "description": "Automated incident detection, triage, and remediation workflow for production outages",
+  "phases": [
+    {
+      "phase": 1,
+      "name": "incident_detection",
+      "description": "Detect and validate production incident",
+      "actions": [
+        {
+          "agent": "monitoring",
+          "action": "check_alerts",
+          "inputs": {
+            "alert_sources": ["pagerduty", "datadog", "cloudwatch"],
+            "severity_threshold": "critical"
+          },
+          "timeout_seconds": 30
+        },
+        {
+          "agent": "monitoring",
+          "action": "verify_incident",
+          "inputs": {
+            "check_dependencies": true,
+            "check_endpoints": true
+          },
+          "timeout_seconds": 60
+        }
+      ],
+      "parallel_execution": true,
+      "on_completion": "validate_incident"
+    },
+    {
+      "phase": 2,
+      "name": "incident_validation",
+      "description": "Confirm incident scope and severity",
+      "actions": [
+        {
+          "agent": " triage",
+          "action": "determine_impact",
+          "inputs": {
+            "check_metrics": true,
+            "check_user_impact": true,
+            "check_revenue_impact": true
+          },
+          "timeout_seconds": 45
+        },
+        {
+          "agent": "triage",
+          "action": "classify_incident",
+          "inputs": {
+            "severity_levels": ["sev1", "sev2", "sev3"],
+            "incident_type": "auto_detect"
+          },
+          "timeout_seconds": 20
+        }
+      ],
+      "parallel_execution": true,
+      "on_completion": "create_incident_record"
+    },
+    {
+      "phase": 3,
+      "name": "incident_notification",
+      "description": "Alert on-call team and stakeholders",
+      "actions": [
+        {
+          "agent": "notification",
+          "action": "page_oncall",
+          "inputs": {
+            "escalation_policy": "standard",
+            "notification_channels": ["pagerduty", "slack", "sms"],
+            "acknowledge_timeout_seconds": 300
+          },
+          "timeout_seconds": 30
+        },
+        {
+          "agent": "notification",
+          "action": "notify_stakeholders",
+          "inputs": {
+            "channels": ["slack_incident_channel", "email"],
+            "message_template": "incident_notification"
+          },
+          "timeout_seconds": 20
+        }
+      ],
+      "parallel_execution": true,
+      "on_completion": "wait_for_acknowledgment"
+    },
+    {
+      "phase": 4,
+      "name": "diagnosis",
+      "description": "Root cause analysis and diagnostics",
+      "actions": [
+        {
+          "agent": "investigation",
+          "action": "collect_logs",
+          "inputs": {
+            "log_sources": ["application", "database", "infrastructure"],
+            "time_range": "incident_start_minus_30m",
+            "max_results": 1000
+          },
+          "timeout_seconds": 60
+        },
+        {
+          "agent": "investigation",
+          "action": "analyze_metrics",
+          "inputs": {
+            "metrics": ["cpu", "memory", "latency", "error_rate"],
+            "comparison_window": "last_24h_vs_last_7d"
+          },
+          "timeout_seconds": 45
+        },
+        {
+          "agent": "investigation",
+          "action": "check_dependencies",
+          "inputs": {
+            "service_map": true,
+            "upstream_downstream": true
+          },
+          "timeout_seconds": 30
+        }
+      ],
+      "parallel_execution": true,
+      "on_completion": "identify_root_cause"
+    },
+    {
+      "phase": 5,
+      "name": "remediation",
+      "description": "Execute fix or mitigation",
+      "actions": [
+        {
+          "agent": "remediation",
+          "action": "determine_fix",
+          "inputs": {
+            "fix_strategies": ["rollback", "scale", "patch", "restart", "failover"]
+          },
+          "timeout_seconds": 30
+        },
+        {
+          "agent": "remediation",
+          "action": "execute_fix",
+          "inputs": {
+            "requires_approval": true,
+            "approval_channels": ["slack", "pagerduty"],
+            "auto_approve_sev1": true
+          },
+          "timeout_seconds": 300,
+          "retry_on_failure": true,
+          "max_retries": 2
+        }
+      ],
+      "parallel_execution": false,
+      "on_completion": "verify_fix"
+    },
+    {
+      "phase": 6,
+      "name": "verification",
+      "description": "Validate remediation success",
+      "actions": [
+        {
+          "agent": "verification",
+          "action": "check_system_health",
+          "inputs": {
+            "health_checks": ["endpoint", "database", "cache", "queue"],
+            "success_threshold": 95
+          },
+          "timeout_seconds": 60
+        },
+        {
+          "agent": "verification",
+          "action": "confirm_incident_resolved",
+          "inputs": {
+            "resolution_criteria": "all_systems_operational",
+            "confirmation_required": true
+          },
+          "timeout_seconds": 30
+        }
+      ],
+      "parallel_execution": true,
+      "on_completion": "close_incident"
+    },
+    {
+      "phase": 7,
+      "name": "post_incident",
+      "description": "Post-incident activities",
+      "actions": [
+        {
+          "agent": "documentation",
+          "action": "generate_incident_report",
+          "inputs": {
+            "sections": ["timeline", "root_cause", "impact", "remediation", "lessons_learned"]
+          },
+          "timeout_seconds": 60
+        },
+        {
+          "agent": "documentation",
+          "action": "create_action_items",
+          "inputs": {
+            "auto_create_jira": true,
+            "prioritize_prevention": true
+          },
+          "timeout_seconds": 30
+        },
+        {
+          "agent": "notification",
+          "action": "send_resolution_summary",
+          "inputs": {
+            "channels": ["slack", "email"],
+            "stakeholders": "all_affected"
+          },
+          "timeout_seconds": 20
+        }
+      ],
+      "parallel_execution": true,
+      "on_completion": "complete"
+    }
+  ],
+  "escalation_rules": {
+    "phase_1_timeout_escalate_to": "phase_3",
+    "phase_3_no_ack_after": 300,
+    "phase_5_retry_exhausted": "manual_intervention",
+    "sev1_auto_escalate": true
+  },
+  "integration_points": {
+    "pagerduty": {
+      "incident_creation": true,
+      "escalation": true,
+      "resolution": true
+    },
+    "slack": {
+      "incident_channel": "auto_create",
+      "status_updates": true
+    },
+    "jira": {
+      "action_items": true,
+      "post_mortem": true
+    }
+  }
+}
+```

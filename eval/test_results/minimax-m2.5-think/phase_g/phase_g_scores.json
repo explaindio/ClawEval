@@ -1,0 +1,117 @@
+{
+  "model": "minimax-m2.5-think",
+  "total_score": 78,
+  "total_max": 110,
+  "results": [
+    {
+      "id": 36,
+      "role": "Code Generation Agent",
+      "tier": 3,
+      "scoring_type": "code_exec",
+      "score": 8,
+      "max": 10,
+      "detail": "8/10 tests passed | get_usage: ; serialize: ",
+      "tokens": 15811
+    },
+    {
+      "id": 2,
+      "role": "Input Validator / Sanitizer",
+      "tier": 1,
+      "scoring_type": "error_count_graduated",
+      "score": 10,
+      "max": 10,
+      "detail": "Found 15/15 errors",
+      "tokens": 1221
+    },
+    {
+      "id": 5,
+      "role": "Sentiment Analysis Agent",
+      "tier": 1,
+      "scoring_type": "json_values",
+      "score": 8,
+      "max": 10,
+      "detail": "17/20 correct | 5: expected 'mixed', got 'negative'; 17: expected 'mixed', got 'negative'; 18: expected 'mixed', got 'negative'",
+      "tokens": 1040
+    },
+    {
+      "id": 40,
+      "role": "Fact-Checking Agent",
+      "tier": 3,
+      "scoring_type": "json_values",
+      "score": 9,
+      "max": 10,
+      "detail": "18/20 correct | 4: expected 'FALSE', got 'TRUE'; 16: expected 'FALSE', got 'TRUE'",
+      "tokens": 5796
+    },
+    {
+      "id": 49,
+      "role": "Algorithm / Data Structure Explorer",
+      "tier": 4,
+      "scoring_type": "code_exec",
+      "score": 9,
+      "max": 10,
+      "detail": "14/15 tests passed | keys_order: ",
+      "tokens": 5318
+    },
+    {
+      "id": 51,
+      "role": "System Architect",
+      "tier": 5,
+      "scoring_type": "architecture_deep",
+      "score": 10,
+      "max": 10,
+      "detail": "15/15 constraints met",
+      "tokens": 1908
+    },
+    {
+      "id": 48,
+      "role": "STEM Research Analyst",
+      "tier": 4,
+      "scoring_type": "json_numeric",
+      "score": 5,
+      "max": 10,
+      "detail": "4/8 correct | q1: expected 252000\u00b110000, got 201600.0; q6: expected 5000000\u00b1500000, got 5059000000.0; q7: expected 2.44\u00b10.5, got 0.26; q8: expected 1440\u00b150, got 1008.0",
+      "tokens": 14102
+    },
+    {
+      "id": 9,
+      "role": "Research Agent",
+      "tier": 2,
+      "scoring_type": "json_values_mixed",
+      "score": 6,
+      "max": 10,
+      "detail": "6/10 correct | q3: expected '67', got '67%'; q6: expected '0.25', got '25%'; q9: expected '15', got '15%'; q10: expected '40', got '40%'",
+      "tokens": 2167
+    },
+    {
+      "id": 12,
+      "role": "Content Planner / Strategist",
+      "tier": 2,
+      "scoring_type": "content_calendar",
+      "score": 0,
+      "max": 10,
+      "detail": "ERROR: 504 Server Error: Gateway Timeout for url: https://coding-intl.dashscope.aliyuncs.com/v1/chat/completions",
+      "tokens": 0
+    },
+    {
+      "id": 50,
+      "role": "Orchestrator / Meta-Agent",
+      "tier": 5,
+      "scoring_type": "orchestration_constraints",
+      "score": 3,
+      "max": 10,
+      "detail": "5/15 constraints met | Missing: has_2_decision_points; early_notification; customer_before_rollback",
+      "tokens": 1601
+    },
+    {
+      "id": 23,
+      "role": "Web Scraping / Data Extraction",
+      "tier": 2,
+      "scoring_type": "json_numeric",
+      "score": 10,
+      "max": 10,
+      "detail": "5/5 correct",
+      "tokens": 1367
+    }
+  ]
+}

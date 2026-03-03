@@ -34,7 +34,7 @@ Don't have a GPU? We also test open-source models hosted on cloud providers so y
 |---|---|---|
 | Alibaba Coding Plan | **Kimi K2.5** — 473/590 (80%) Phase F, 96/110 (87%) Phase G | ✅ Tested |
 | Alibaba Coding Plan | **GLM-5** — 465/590 (79%) Phase F, 80/110 (73%) Phase G | ✅ Tested |
-| Alibaba Coding Plan | **MiniMax-M2.5** — 465/590 (79%) Phase F, ~85 t/s fastest | ✅ Tested |
+| Alibaba Coding Plan | **MiniMax-M2.5** — 465/590 (79%) Phase F, 78/110 (71%) Phase G, ~85 t/s | ✅ Tested |
 | OpenRouter, Alibaba, and other affordable providers | Open-source models via API | 🔜 Coming soon |
 
 

@@ -126,7 +126,8 @@ See [Phase G Results](results-phase-g.md#%EF%B8%8F-cloud-models) for the 11 hard
 - Think: 76/110 (69%) — Input Validator timed out (0/10)
 - NoThink: 80/110 (73%) — Better than Think due to no timeout issues
 
-**MiniMax-M2.5:** Phase G pending
+**MiniMax-M2.5:**
+- Think: 78/110 (71%) — Content Planner timed out (0/10), Architect 10/10, NoThink not supported
 
 ---
 

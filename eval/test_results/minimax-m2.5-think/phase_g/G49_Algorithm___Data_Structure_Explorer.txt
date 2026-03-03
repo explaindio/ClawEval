@@ -1,0 +1,98 @@
+```python
+import time
+from collections import OrderedDict
+
+
+class LRUCache:
+    def __init__(self, capacity: int):
+        self.capacity = capacity
+        self.cache = {}               # key -> (value, expiry_time)
+        self.order = OrderedDict()    # key ordering (most recent at end)
+        self.stats = {
+            "hits": 0,
+            "misses": 0,
+            "evictions": 0,
+            "expirations": 0
+        }
+
+    def get(self, key: str):
+        if key not in self.cache:
+            self.stats["misses"] += 1
+            return None
+
+        value, expiry = self.cache[key]
+        if expiry is not None and time.time() > expiry:
+            # Lazy removal of expired entry
+            self.cache.pop(key)
+            self.order.pop(key)
+            self.stats["expirations"] += 1
+            self.stats["misses"] += 1
+            return None
+
+        # Move to most‑recent position
+        self.order.move_to_end(key)
+        self.stats["hits"] += 1
+        return value
+
+    def put(self, key: str, value: any, ttl: float = None):
+        # Compute expiration time
+        expiry = None if ttl is None else time.time() + ttl
+
+        # If key already exists, update value and move to end
+        if key in self.cache:
+            self.cache[key] = (value, expiry)
+            self.order.move_to_end(key)
+            return
+
+        # Nothing can be stored if capacity is non‑positive
+        if self.capacity <= 0:
+            return
+
+        # Evict entries until we have room
+        while len(self.cache) >= self.capacity:
+            lru_key, _ = self.order.popitem(last=False)  # oldest key
+            v, exp = self.cache.pop(lru_key)
+            if exp is not None and time.time() > exp:
+                self.stats["expirations"] += 1
+            else:
+                self.stats["evictions"] += 1
+                break  # we evicted a non‑expired item, space is now available
+
+        # Insert new entry
+        self.cache[key] = (value, expiry)
+        self.order[key] = None  # value is irrelevant; OrderedDict tracks key order
+
+    def delete(self, key: str) -> bool:
+        if key in self.cache:
+            self.cache.pop(key)
+            self.order.pop(key)
+            return True
+        return False
+
+    def _remove_expired(self):
+        """Remove all expired entries, updating expiration stats."""
+        expired_keys = [
+            k for k in self.order
+            if self.cache[k][1] is not None and time.time() > self.cache[k][1]
+        ]
+        for k in expired_keys:
+            self.cache.pop(k)
+            self.order.pop(k)
+            self.stats["expirations"] += 1
+
+    def size(self) -> int:
+        self._remove_expired()
+        return len(self.cache)
+
+    def keys(self) -> list:
+        self._remove_expired()
+        return list(self.order.keys())
+
+    def get_stats(self) -> dict:
+        return dict(self.stats)
+
+    def clear(self) -> None:
+        self.cache.clear()
+        self.order.clear()
+        self.stats = {"hits": 0, "misses": 0, "evictions": 0, "expirations": 0}
+```
