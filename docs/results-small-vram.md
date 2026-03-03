@@ -134,7 +134,7 @@ Context is capped at native max. If native max fits at a lower VRAM tier, higher
 |-------|----------|-----------|------|-------|-------|-------|
 | Qwen3.5-0.8B | 0.5 GB | 1,343 MiB | **262,144** ⭐ | ✅ | ✅ | ✅ |
 | Qwen3.5-2B | 1.3 GB | 2,061 MiB | **262,144** ⭐ | ✅ | ✅ | ✅ |
-| Qwen3.5-4B | 2.7 GB | 3,501 MiB | **262,144** ⭐ | ✅ | ✅ | ✅ |
+| Qwen3.5-4B | 2.7 GB | 3,501 MiB | 250,000 | **262,144** ⭐ | ✅ | ✅ |
 | Qwen3.5-9B | 5.7 GB | 5,765 MiB | 145,000 | **262,144** ⭐ | ✅ | ✅ |
 
 ⭐ = native max (262K) reached &nbsp; ✅ = same (fits at lower tier)
@@ -170,8 +170,8 @@ Context is capped at native max. If native max fits at a lower VRAM tier, higher
 
 | VRAM Budget | f16 KV | q8_0 KV |
 |------------|--------|--------|
-| 8GB | 150,000 | 262,144 ⭐ |
-| 12GB | 262,144 ⭐ | ✅ |
+| 8GB | 150,000 | 250,000 |
+| 12GB | 262,144 ⭐ | **262,144** ⭐ |
 | 16GB | ✅ | ✅ |
 | 24GB | ✅ | ✅ |
 

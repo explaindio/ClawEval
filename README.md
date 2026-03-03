@@ -20,9 +20,10 @@ We test quantized open-source models that fit on hardware you already own. Find 
 
 | 🔴 8GB VRAM | 🟠 12GB VRAM | 🟡 16GB VRAM | 🟢 24GB VRAM | 🔵 64–96GB VRAM |
 |---|---|---|---|---|
-| Qwen3.5-0.8B Q4_K_M | Qwen3.5-2B Q4_K_M | Qwen3.5-9B Q4_K_M | Qwen3.5-35B-A3B Q4_K_M | Qwen3.5-122B-A10B NVFP4 |
-| ✅ Tested | Qwen3.5-4B Q4_K_M | ✅ Testing | Qwen3.5-27B Q4_K_M | GPT-OSS-120B GGUF |
-| llama.cpp | ✅ Testing | llama.cpp | llama.cpp · SGLang · vLLM | SGLang · vLLM · llama.cpp |
+| Qwen3.5-0.8B Q4_K_M | — | Qwen3.5-9B Q4_K_M | Qwen3.5-35B-A3B Q4_K_M | Qwen3.5-122B-A10B NVFP4 |
+| Qwen3.5-2B Q4_K_M | | ✅ Testing | Qwen3.5-27B Q4_K_M | GPT-OSS-120B GGUF |
+| Qwen3.5-4B Q4_K_M (250K ctx) | | llama.cpp | llama.cpp · SGLang · vLLM | SGLang · vLLM · llama.cpp |
+| ✅ Testing | | | | |
 
 > 📖 **VRAM Guides:** [8–16GB Small Models](docs/results-small-vram.md) · [16GB](docs/OpenClaw%2016GB%20VRAM%20Local%20LLM%20Subagents.md) · [24GB](docs/The%2024GB%20VRAM%20Tier_%20Where%20Local%20AI%20Agents%20Get%20Serious.md) · [32GB](docs/openclaw-model-selection-32gb-tier.md) · [48GB](docs/openclaw-48gb-tier.md) · [64GB](docs/openclaw-64gb-tier.md) · [96GB](docs/openclaw-96gb-tier.md) — Which models fit, context limits, speed estimates
 
