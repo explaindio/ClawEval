@@ -79,7 +79,8 @@ All tested with Q4_K_M quantization, KV cache q8_0, on llama.cpp (local server).
 
 - Social Scouting (#16) scored 16/10 due to scoring bug — capped to 10 in totals above
 - STEM (#48) scored 0/5 (not 0/10) — model generated degenerate repetitive output filling the token limit
-- Think and NoThink perform nearly identically for 0.8B and 2B — the models don't produce meaningful chain-of-thought at this size
+- Algorithm (#49): 9B scored 0/10 because it named the class `LRUCache` (PascalCase) instead of the prompt's `lru_cache`. The code is functionally correct — Phase G confirms 9/10 on the harder version of this test
+- Think and NoThink perform nearly identically for all small models — they don't produce meaningful chain-of-thought at this size
 
 ---
 
