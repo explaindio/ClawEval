@@ -133,69 +133,69 @@ Don't have a GPU? We also test open-source models hosted on cloud providers so y
 |---|---|---|---|---|---|---|---|
 | | | **Model** | **Score** | **Model** | **Score** | **Model** | **Score** |
 | | **Tier 1 — Utility** | | | | | | |
-| 1 | Router / Triage | 0.8B | 🟡 7 | 2B | 🟢 9 | — | — |
-| 2 | Input Validator | 0.8B | 🟢 10 | 2B | 🟢 10 | — | — |
-| 3 | Health Monitor | 0.8B NT | 🔴 3 | 2B | 🔴 3 | — | — |
-| 4 | Notification | 0.8B | 🟡 6 | 2B | 🟢 9 | — | — |
-| 5 | Sentiment | 0.8B Think | 🟡 6 | 2B | 🟢 8 | — | — |
-| 6 | FAQ Generation | 0.8B NT | 🔴 3 | 2B | 🟡 5 | — | — |
-| 7 | Translation | 0.8B NT | 🟢 9 | 2B | 🟡 7 | — | — |
+| 1 | Router / Triage | Qwen3.5-0.8B | 🟡 7 | Qwen3.5-2B | 🟢 9 | — | — |
+| 2 | Input Validator | Qwen3.5-0.8B | 🟢 10 | Qwen3.5-2B | 🟢 10 | — | — |
+| 3 | Health Monitor | Qwen3.5-0.8B NT | 🔴 3 | Qwen3.5-2B | 🔴 3 | — | — |
+| 4 | Notification | Qwen3.5-0.8B | 🟡 6 | Qwen3.5-2B | 🟢 9 | — | — |
+| 5 | Sentiment | Qwen3.5-0.8B Think | 🟡 6 | Qwen3.5-2B | 🟢 8 | — | — |
+| 6 | FAQ Generation | Qwen3.5-0.8B NT | 🔴 3 | Qwen3.5-2B | 🟡 5 | — | — |
+| 7 | Translation | Qwen3.5-0.8B NT | 🟢 9 | Qwen3.5-2B | 🟡 7 | — | — |
 | 8 | Calendar | — | 🔴 0 | — | 🔴 0 | — | — |
 | | **Tier 2 — Moderate** | | | | | | |
-| 9 | Research Agent | 0.8B | 🟡 6 | 2B Think | 🟢 9 | — | — |
+| 9 | Research Agent | Qwen3.5-0.8B | 🟡 6 | Qwen3.5-2B Think | 🟢 9 | — | — |
 | 10 | Content Writer | 📝 Manual | 📝 5 | 📝 Manual | 📝 5 | — | — |
-| 11 | Editor | 0.8B | 🟡 7 | 2B | 🟡 7 | — | — |
-| 12 | Content Planner | 0.8B | 🟢 10 | 2B | 🟢 10 | — | — |
-| 13 | Email Drafting | 0.8B Think | 🟡 6 | 2B | 🟢 8 | — | — |
-| 14 | Doc Summary | 0.8B NT | 🟢 8 | 2B Think | 🟢 9 | — | — |
-| 15 | Meeting Notes | 0.8B | 🟢 9 | 2B | 🟢 9 | — | — |
-| 16 | Social Scouting | 0.8B | 🟢 10 | 2B | 🟢 10 | — | — |
+| 11 | Editor | Qwen3.5-0.8B | 🟡 7 | Qwen3.5-2B | 🟡 7 | — | — |
+| 12 | Content Planner | Qwen3.5-0.8B | 🟢 10 | Qwen3.5-2B | 🟢 10 | — | — |
+| 13 | Email Drafting | Qwen3.5-0.8B Think | 🟡 6 | Qwen3.5-2B | 🟢 8 | — | — |
+| 14 | Doc Summary | Qwen3.5-0.8B NT | 🟢 8 | Qwen3.5-2B Think | 🟢 9 | — | — |
+| 15 | Meeting Notes | Qwen3.5-0.8B | 🟢 9 | Qwen3.5-2B | 🟢 9 | — | — |
+| 16 | Social Scouting | Qwen3.5-0.8B | 🟢 10 | Qwen3.5-2B | 🟢 10 | — | — |
 | 17 | Social Content | 📝 Manual | 📝 5 | 📝 Manual | 📝 5 | — | — |
-| 18 | News Aggregation | 0.8B | 🟢 10 | 2B | 🟢 10 | — | — |
-| 19 | Shopping | 0.8B Think | 🔴 4 | 2B NT | 🔴 2 | — | — |
-| 20 | Memory Mgmt | 0.8B | 🟢 9 | 2B | 🟢 9 | — | — |
+| 18 | News Aggregation | Qwen3.5-0.8B | 🟢 10 | Qwen3.5-2B | 🟢 10 | — | — |
+| 19 | Shopping | Qwen3.5-0.8B Think | 🔴 4 | Qwen3.5-2B NT | 🔴 2 | — | — |
+| 20 | Memory Mgmt | Qwen3.5-0.8B | 🟢 9 | Qwen3.5-2B | 🟢 9 | — | — |
 | 21 | RAG / Retrieval | — | 🔴 0 | — | 🔴 0 | — | — |
-| 22 | Data Analysis | 0.8B Think | 🔴 1 | 2B Think | 🔴 3 | — | — |
-| 23 | Web Scraping | 0.8B | 🟢 10 | 2B | 🟢 9 | — | — |
+| 22 | Data Analysis | Qwen3.5-0.8B Think | 🔴 1 | Qwen3.5-2B Think | 🔴 3 | — | — |
+| 23 | Web Scraping | Qwen3.5-0.8B | 🟢 10 | Qwen3.5-2B | 🟢 9 | — | — |
 | 24 | Image Description | 📝 Manual | 📝 5 | 📝 Manual | 📝 5 | — | — |
-| 25 | Customer Support | 0.8B | 🟡 6 | 2B | 🟡 7 | — | — |
-| 26 | Lead Scoring | 0.8B | 🔴 2 | 2B | 🔴 4 | — | — |
-| 27 | Sprint Summary | 0.8B | 🔴 2 | 2B | 🔴 4 | — | — |
-| 28 | Transaction | 0.8B | 🔴 1 | 2B | 🟢 9 | — | — |
-| 29 | Home Automation | 0.8B NT | 🟢 10 | 2B NT | 🟢 9 | — | — |
-| 30 | Fitness Tracking | 0.8B | 🔴 3 | 2B Think | 🔴 4 | — | — |
+| 25 | Customer Support | Qwen3.5-0.8B | 🟡 6 | Qwen3.5-2B | 🟡 7 | — | — |
+| 26 | Lead Scoring | Qwen3.5-0.8B | 🔴 2 | Qwen3.5-2B | 🔴 4 | — | — |
+| 27 | Sprint Summary | Qwen3.5-0.8B | 🔴 2 | Qwen3.5-2B | 🔴 4 | — | — |
+| 28 | Transaction | Qwen3.5-0.8B | 🔴 1 | Qwen3.5-2B | 🟢 9 | — | — |
+| 29 | Home Automation | Qwen3.5-0.8B NT | 🟢 10 | Qwen3.5-2B NT | 🟢 9 | — | — |
+| 30 | Fitness Tracking | Qwen3.5-0.8B | 🔴 3 | Qwen3.5-2B Think | 🔴 4 | — | — |
 | 31 | Recipe / Cooking | — | 🔴 0 | — | 🔴 0 | — | — |
-| 32 | Personal Finance | 0.8B | 🔴 3 | 2B | 🔴 4 | — | — |
-| 33 | SEO Optimization | 0.8B | 🟢 9 | 2B | 🟢 9 | — | — |
+| 32 | Personal Finance | Qwen3.5-0.8B | 🔴 3 | Qwen3.5-2B | 🔴 4 | — | — |
+| 33 | SEO Optimization | Qwen3.5-0.8B | 🟢 9 | Qwen3.5-2B | 🟢 9 | — | — |
 | 34 | Landing Page | 📝 Manual | 📝 5 | 📝 Manual | 📝 5 | — | — |
-| 35 | Travel Planning | 0.8B | 🔴 4 | 2B | 🟡 6 | — | — |
+| 35 | Travel Planning | Qwen3.5-0.8B | 🔴 4 | Qwen3.5-2B | 🟡 6 | — | — |
 | | **Tier 3 — Advanced** | | | | | | |
-| 36 | Code Generation | 0.8B | 🟢 8 | 2B | 🟢 10 | — | — |
-| 37 | Code Review | 0.8B NT | 🟢 10 | 2B | 🟢 10 | — | — |
-| 38 | QA / Test Writing | 0.8B | 🟢 8 | 2B | 🟢 8 | — | — |
-| 39 | Task Planning | 0.8B Think | 🟢 9 | 2B Think | 🟢 10 | — | — |
-| 40 | Fact-Checking | 0.8B Think | 🟡 5 | 2B | 🟡 6 | — | — |
+| 36 | Code Generation | Qwen3.5-0.8B | 🟢 8 | Qwen3.5-2B | 🟢 10 | — | — |
+| 37 | Code Review | Qwen3.5-0.8B NT | 🟢 10 | Qwen3.5-2B | 🟢 10 | — | — |
+| 38 | QA / Test Writing | Qwen3.5-0.8B | 🟢 8 | Qwen3.5-2B | 🟢 8 | — | — |
+| 39 | Task Planning | Qwen3.5-0.8B Think | 🟢 9 | Qwen3.5-2B Think | 🟢 10 | — | — |
+| 40 | Fact-Checking | Qwen3.5-0.8B Think | 🟡 5 | Qwen3.5-2B | 🟡 6 | — | — |
 | 41 | Critic / Review | 📝 Manual | 📝 5 | 📝 Manual | 📝 5 | — | — |
-| 42 | Market Research | 0.8B | 🔴 4 | 2B | 🔴 3 | — | — |
-| 43 | Synthesizer | 0.8B | 🟢 9 | 2B NT | 🟢 9 | — | — |
-| 44 | Curriculum Design | 0.8B | 🔴 4 | 2B | 🟡 7 | — | — |
-| 45 | Prototype Gen | 0.8B Think | 🟡 7 | 2B NT | 🟡 7 | — | — |
-| 46 | DevOps | 0.8B Think | 🟢 10 | 2B | 🟢 9 | — | — |
+| 42 | Market Research | Qwen3.5-0.8B | 🔴 4 | Qwen3.5-2B | 🔴 3 | — | — |
+| 43 | Synthesizer | Qwen3.5-0.8B | 🟢 9 | Qwen3.5-2B NT | 🟢 9 | — | — |
+| 44 | Curriculum Design | Qwen3.5-0.8B | 🔴 4 | Qwen3.5-2B | 🟡 7 | — | — |
+| 45 | Prototype Gen | Qwen3.5-0.8B Think | 🟡 7 | Qwen3.5-2B NT | 🟡 7 | — | — |
+| 46 | DevOps | Qwen3.5-0.8B Think | 🟢 10 | Qwen3.5-2B | 🟢 9 | — | — |
 | | **Tier 4 — Expert** | | | | | | |
-| 47 | Math / Logic | 0.8B | 🔴 2 | 2B | 🔴 4 | — | — |
-| 48 | STEM Analysis | — | 🔴 0 | 2B | 🔴 2 | — | — |
-| 49 | Algorithm | 0.8B Think | 🟡 5 | — | 🔴 0 | — | — |
+| 47 | Math / Logic | Qwen3.5-0.8B | 🔴 2 | Qwen3.5-2B | 🔴 4 | — | — |
+| 48 | STEM Analysis | — | 🔴 0 | Qwen3.5-2B | 🔴 2 | — | — |
+| 49 | Algorithm | Qwen3.5-0.8B Think | 🟡 5 | — | 🔴 0 | — | — |
 | | **Tier 5 — Senior** | | | | | | |
-| 50 | Orchestrator | 0.8B | 🟢 8 | 2B | 🟢 8 | — | — |
-| 51 | Architect | 0.8B NT | 🟢 9 | 2B | 🟢 10 | — | — |
-| 52 | Debugger | 0.8B NT | 🟢 10 | 2B | 🟢 8 | — | — |
-| 53 | Legal Review | 0.8B | 🟢 10 | 2B | 🟢 10 | — | — |
-| 54 | Medical | 0.8B | 🟢 10 | 2B NT | 🟢 10 | — | — |
-| 55 | Financial | 0.8B Think | 🔴 2 | 2B | 🟢 8 | — | — |
-| 56 | Security | 0.8B Think | 🟡 6 | 2B Think | 🟢 10 | — | — |
-| 57 | SRE / Incident | 0.8B | 🔴 2 | 2B Think | 🔴 3 | — | — |
+| 50 | Orchestrator | Qwen3.5-0.8B | 🟢 8 | Qwen3.5-2B | 🟢 8 | — | — |
+| 51 | Architect | Qwen3.5-0.8B NT | 🟢 9 | Qwen3.5-2B | 🟢 10 | — | — |
+| 52 | Debugger | Qwen3.5-0.8B NT | 🟢 10 | Qwen3.5-2B | 🟢 8 | — | — |
+| 53 | Legal Review | Qwen3.5-0.8B | 🟢 10 | Qwen3.5-2B | 🟢 10 | — | — |
+| 54 | Medical | Qwen3.5-0.8B | 🟢 10 | Qwen3.5-2B NT | 🟢 10 | — | — |
+| 55 | Financial | Qwen3.5-0.8B Think | 🔴 2 | Qwen3.5-2B | 🟢 8 | — | — |
+| 56 | Security | Qwen3.5-0.8B Think | 🟡 6 | Qwen3.5-2B Think | 🟢 10 | — | — |
+| 57 | SRE / Incident | Qwen3.5-0.8B | 🔴 2 | Qwen3.5-2B Think | 🔴 3 | — | — |
 | 58 | Book Writing | 📝 Manual | 📝 5 | 📝 Manual | 📝 5 | — | — |
-| 59 | Compliance | 0.8B | 🟢 8 | 2B | 🟢 8 | — | — |
+| 59 | Compliance | Qwen3.5-0.8B | 🟢 8 | Qwen3.5-2B | 🟢 8 | — | — |
 
 > 📊 **[Full small model Think/NoThink comparison →](docs/results-small-vram.md)** · Phase F: 392/590 (66%) · Phase G: 52/110 (47%)
 
