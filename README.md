@@ -49,69 +49,69 @@ Don't have a GPU? We also test open-source models hosted on cloud providers so y
 |---|---|---|---|---|---|
 | | | **Model** | **Score** | **Model** | **Score** |
 | | **Tier 1 — Utility** | | | | |
-| 1 | Router / Triage | 27B / 35B NoThink | 🟢 10 | 122B Think | 🟢 10 |
-| 2 | Input Validator | 27B NoThink | 🟢 10 | 122B NoThink | 🟢 10 |
-| 3 | Health Monitor | 27B / 35B NoThink | 🔴 3 | GPT-OSS-120B | 🟢 8 |
-| 4 | Notification | 27B Think | 🟢 9 | GPT-OSS-120B | 🟢 9 |
-| 5 | Sentiment | 27B / 35B NoThink | 🟢 8† | 122B NoThink | 🟢 8† |
-| 6 | FAQ Generation | 27B Think | 🟢 8 | 122B / GPT-OSS | 🟡 5 |
-| 7 | Translation | 27B NoThink | 🟢 10 | 122B Think | 🟢 10 |
+| 1 | Router / Triage | Qwen3.5-27B NT / 35B-A3B NT | 🟢 10 | Qwen3.5-122B-A10B Think | 🟢 10 |
+| 2 | Input Validator | Qwen3.5-27B NT | 🟢 10 | Qwen3.5-122B-A10B NT | 🟢 10 |
+| 3 | Health Monitor | Qwen3.5-27B NT / 35B-A3B NT | 🔴 3 | GPT-OSS-120B | 🟢 8 |
+| 4 | Notification | Qwen3.5-27B Think | 🟢 9 | GPT-OSS-120B | 🟢 9 |
+| 5 | Sentiment | Qwen3.5-27B NT / 35B-A3B NT | 🟢 8† | Qwen3.5-122B-A10B NT | 🟢 8† |
+| 6 | FAQ Generation | Qwen3.5-27B Think | 🟢 8 | Qwen3.5-122B-A10B / GPT-OSS | 🟡 5 |
+| 7 | Translation | Qwen3.5-27B NT | 🟢 10 | Qwen3.5-122B-A10B Think | 🟢 10 |
 | 8 | Calendar | — | 🔴 0 | — | 🔴 0 |
 | | **Tier 2 — Moderate** | | | | |
-| 9 | Research Agent | 27B / 35B NoThink | 🟢 10 | GPT-OSS-120B / 122B NT | 🟢 9† |
+| 9 | Research Agent | Qwen3.5-27B NT / 35B-A3B NT | 🟢 10 | GPT-OSS-120B / 122B-A10B NT | 🟢 9† |
 | 10 | Content Writer | 📝 Manual | 📝 5 | 📝 Manual | 📝 5 |
-| 11 | Editor | 27B / 35B NoThink | 🟢 10 | GPT-OSS-120B | 🟢 9 |
-| 12 | Content Planner | 27B / 35B NoThink | 🟢 10 | 122B NoThink | 🟢 10 |
-| 13 | Email Drafting | 27B / 35B NoThink | 🟢 10 | GPT-OSS-120B | 🟢 9 |
-| 14 | Doc Summary | 27B / 35B NoThink | 🟢 10 | GPT-OSS-120B | 🟢 10 |
-| 15 | Meeting Notes | 27B / 35B NoThink | 🟢 9 | 122B Think | 🟢 9 |
-| 16 | Social Scouting | 27B / 35B NoThink | 🟢 10 | 122B NoThink | 🟢 10 |
+| 11 | Editor | Qwen3.5-27B NT / 35B-A3B NT | 🟢 10 | GPT-OSS-120B | 🟢 9 |
+| 12 | Content Planner | Qwen3.5-27B NT / 35B-A3B NT | 🟢 10 | Qwen3.5-122B-A10B NT | 🟢 10 |
+| 13 | Email Drafting | Qwen3.5-27B NT / 35B-A3B NT | 🟢 10 | GPT-OSS-120B | 🟢 9 |
+| 14 | Doc Summary | Qwen3.5-27B NT / 35B-A3B NT | 🟢 10 | GPT-OSS-120B | 🟢 10 |
+| 15 | Meeting Notes | Qwen3.5-27B NT / 35B-A3B NT | 🟢 9 | Qwen3.5-122B-A10B Think | 🟢 9 |
+| 16 | Social Scouting | Qwen3.5-27B NT / 35B-A3B NT | 🟢 10 | Qwen3.5-122B-A10B NT | 🟢 10 |
 | 17 | Social Content | 📝 Manual | 📝 5 | 📝 Manual | 📝 5 |
-| 18 | News Aggregation | 27B / 35B NoThink | 🟢 10 | 122B NoThink | 🟢 10 |
-| 19 | Shopping | 27B / 35B Think | 🟢 10 | 122B Think | 🟢 10 |
-| 20 | Memory Mgmt | 27B / 35B NoThink | 🟢 9 | 122B NoThink | 🟢 9 |
-| 21 | RAG / Retrieval | 27B NoThink | 🟡 6 | 122B / GPT-OSS | 🟡 6 |
-| 22 | Data Analysis | 27B / 35B NoThink | 🔴 3 | 122B / GPT-OSS | 🔴 2 |
-| 23 | Web Scraping | 35B NoThink | 🟢 10 | 122B NoThink / GPT-OSS | 🟢 10 |
+| 18 | News Aggregation | Qwen3.5-27B NT / 35B-A3B NT | 🟢 10 | Qwen3.5-122B-A10B NT | 🟢 10 |
+| 19 | Shopping | Qwen3.5-27B Think / 35B-A3B Think | 🟢 10 | Qwen3.5-122B-A10B Think | 🟢 10 |
+| 20 | Memory Mgmt | Qwen3.5-27B NT / 35B-A3B NT | 🟢 9 | Qwen3.5-122B-A10B NT | 🟢 9 |
+| 21 | RAG / Retrieval | Qwen3.5-27B NT | 🟡 6 | Qwen3.5-122B-A10B / GPT-OSS | 🟡 6 |
+| 22 | Data Analysis | Qwen3.5-27B NT / 35B-A3B NT | 🔴 3 | Qwen3.5-122B-A10B / GPT-OSS | 🔴 2 |
+| 23 | Web Scraping | Qwen3.5-35B-A3B NT | 🟢 10 | Qwen3.5-122B-A10B NT / GPT-OSS | 🟢 10 |
 | 24 | Image Description | 📝 Manual | 📝 5 | 📝 Manual | 📝 5 |
-| 25 | Customer Support | 27B / 35B Think | 🟢 10 | 122B NoThink / GPT-OSS | 🟢 10 |
-| 26 | Lead Scoring | 27B NoThink | 🟢 10 | 122B / GPT-OSS | 🟢 8 |
-| 27 | Sprint Summary | 27B NoThink | 🟡 7 | 122B Think | 🟢 10 |
-| 28 | Transaction | 35B NoThink | 🟢 9 | 122B NoThink / GPT-OSS | 🟢 10 |
-| 29 | Home Automation | 27B / 35B Think | 🟢 10 | 122B Think | 🟢 10 |
-| 30 | Fitness Tracking | 27B NoThink / Think | 🟢 9 | 122B NoThink / GPT-OSS | 🟢 9 |
-| 31 | Recipe / Cooking | 35B NoThink | 🟢 9 | GPT-OSS-120B | 🟢 9 |
-| 32 | Personal Finance | 27B Think | 🟡 7 | 122B Think | 🟡 7 |
-| 33 | SEO Optimization | 27B / 35B NoThink | 🟢 9 | 122B NoThink | 🟢 9 |
+| 25 | Customer Support | Qwen3.5-27B Think / 35B-A3B Think | 🟢 10 | Qwen3.5-122B-A10B NT / GPT-OSS | 🟢 10 |
+| 26 | Lead Scoring | Qwen3.5-27B NT | 🟢 10 | Qwen3.5-122B-A10B / GPT-OSS | 🟢 8 |
+| 27 | Sprint Summary | Qwen3.5-27B NT | 🟡 7 | Qwen3.5-122B-A10B Think | 🟢 10 |
+| 28 | Transaction | Qwen3.5-35B-A3B NT | 🟢 9 | Qwen3.5-122B-A10B NT / GPT-OSS | 🟢 10 |
+| 29 | Home Automation | Qwen3.5-27B Think / 35B-A3B Think | 🟢 10 | Qwen3.5-122B-A10B Think | 🟢 10 |
+| 30 | Fitness Tracking | Qwen3.5-27B NT / Think | 🟢 9 | Qwen3.5-122B-A10B NT / GPT-OSS | 🟢 9 |
+| 31 | Recipe / Cooking | Qwen3.5-35B-A3B NT | 🟢 9 | GPT-OSS-120B | 🟢 9 |
+| 32 | Personal Finance | Qwen3.5-27B Think | 🟡 7 | Qwen3.5-122B-A10B Think | 🟡 7 |
+| 33 | SEO Optimization | Qwen3.5-27B NT / 35B-A3B NT | 🟢 9 | Qwen3.5-122B-A10B NT | 🟢 9 |
 | 34 | Landing Page | 📝 Manual | 📝 5 | 📝 Manual | 📝 5 |
-| 35 | Travel Planning | 27B / 35B NoThink | 🟡 7 | 122B Think | 🟢 8 |
+| 35 | Travel Planning | Qwen3.5-27B NT / 35B-A3B NT | 🟡 7 | Qwen3.5-122B-A10B Think | 🟢 8 |
 | | **Tier 3 — Advanced** | | | | |
-| 36 | Code Generation | 27B NoThink | 🟢 10† | 122B NoThink | 🟢 8† |
-| 37 | Code Review | 35B NoThink / 27B Think | 🟢 10 | 122B Think | 🟢 10 |
-| 38 | QA / Test Writing | 35B NoThink | 🟢 10 | 122B / GPT-OSS | 🟢 8 |
-| 39 | Task Planning | 35B NoThink | 🟢 10 | 122B / GPT-OSS | 🟢 9 |
-| 40 | Fact-Checking | 27B NoThink | 🟢 10† | 122B NoThink | 🟢 10† |
+| 36 | Code Generation | Qwen3.5-27B NT | 🟢 10† | Qwen3.5-122B-A10B NT | 🟢 8† |
+| 37 | Code Review | Qwen3.5-35B-A3B NT / 27B Think | 🟢 10 | Qwen3.5-122B-A10B Think | 🟢 10 |
+| 38 | QA / Test Writing | Qwen3.5-35B-A3B NT | 🟢 10 | Qwen3.5-122B-A10B / GPT-OSS | 🟢 8 |
+| 39 | Task Planning | Qwen3.5-35B-A3B NT | 🟢 10 | Qwen3.5-122B-A10B / GPT-OSS | 🟢 9 |
+| 40 | Fact-Checking | Qwen3.5-27B NT | 🟢 10† | Qwen3.5-122B-A10B NT | 🟢 10† |
 | 41 | Critic / Review | 📝 Manual | 📝 5 | 📝 Manual | 📝 5 |
-| 42 | Market Research | 27B NoThink | 🟢 8 | GPT-OSS-120B | 🔴 4 |
-| 43 | Synthesizer | 27B / 35B Think | 🟢 9 | GPT-OSS-120B | 🟢 10 |
-| 44 | Curriculum Design | 27B / 35B NoThink | 🟡 6 | GPT-OSS-120B | 🟡 7 |
-| 45 | Prototype Gen | 27B / 35B Think/NoThink | 🟡 6 | 122B Think | 🟡 6 |
-| 46 | DevOps | 27B NoThink / 35B Think | 🟢 10 | GPT-OSS-120B | 🟢 10 |
+| 42 | Market Research | Qwen3.5-27B NT | 🟢 8 | GPT-OSS-120B | 🔴 4 |
+| 43 | Synthesizer | Qwen3.5-27B Think / 35B-A3B Think | 🟢 9 | GPT-OSS-120B | 🟢 10 |
+| 44 | Curriculum Design | Qwen3.5-27B NT / 35B-A3B NT | 🟡 6 | GPT-OSS-120B | 🟡 7 |
+| 45 | Prototype Gen | Qwen3.5-27B / 35B-A3B | 🟡 6 | Qwen3.5-122B-A10B Think | 🟡 6 |
+| 46 | DevOps | Qwen3.5-27B NT / 35B-A3B Think | 🟢 10 | GPT-OSS-120B | 🟢 10 |
 | | **Tier 4 — Expert** | | | | |
-| 47 | Math / Logic | 27B / 35B Think | 🟡 6 | GPT-OSS-120B | 🟢 8 |
-| 48 | STEM Analysis | 27B NoThink | 🔴 2† | 122B NoThink / GPT-OSS | 🟡 5† |
-| 49 | Algorithm | 27B NoThink | 🟢 9† | 122B NoThink / GPT-OSS | 🟢 10† |
+| 47 | Math / Logic | Qwen3.5-27B Think / 35B-A3B Think | 🟡 6 | GPT-OSS-120B | 🟢 8 |
+| 48 | STEM Analysis | Qwen3.5-27B NT | 🔴 2† | Qwen3.5-122B-A10B NT / GPT-OSS | 🟡 5† |
+| 49 | Algorithm | Qwen3.5-27B NT | 🟢 9† | Qwen3.5-122B-A10B NT / GPT-OSS | 🟢 10† |
 | | **Tier 5 — Senior** | | | | |
-| 50 | Orchestrator | 27B / 35B NoThink | 🟡 7† | 122B NoThink / GPT-OSS | 🟡 7† |
-| 51 | Architect | 27B / 35B NoThink | 🟢 9† | 122B NoThink | 🟢 10† |
-| 52 | Debugger | 35B NoThink | 🟢 10 | 122B NoThink / GPT-OSS | 🟢 10 |
-| 53 | Legal Review | 27B / 35B NoThink | 🟢 10 | 122B Think | 🟢 10 |
-| 54 | Medical | 27B / 35B NoThink | 🟢 10 | GPT-OSS-120B | 🟢 9 |
-| 55 | Financial | 27B / 35B NoThink | 🟢 10 | 122B NoThink | 🟢 10 |
-| 56 | Security | 27B / 35B NoThink | 🟢 10 | GPT-OSS-120B | 🟢 10 |
-| 57 | SRE / Incident | 27B NoThink | 🟡 6 | 122B / GPT-OSS | 🟡 6 |
+| 50 | Orchestrator | Qwen3.5-27B NT / 35B-A3B NT | 🟡 7† | Qwen3.5-122B-A10B NT / GPT-OSS | 🟡 7† |
+| 51 | Architect | Qwen3.5-27B NT / 35B-A3B NT | 🟢 9† | Qwen3.5-122B-A10B NT | 🟢 10† |
+| 52 | Debugger | Qwen3.5-35B-A3B NT | 🟢 10 | Qwen3.5-122B-A10B NT / GPT-OSS | 🟢 10 |
+| 53 | Legal Review | Qwen3.5-27B NT / 35B-A3B NT | 🟢 10 | Qwen3.5-122B-A10B Think | 🟢 10 |
+| 54 | Medical | Qwen3.5-27B NT / 35B-A3B NT | 🟢 10 | GPT-OSS-120B | 🟢 9 |
+| 55 | Financial | Qwen3.5-27B NT / 35B-A3B NT | 🟢 10 | Qwen3.5-122B-A10B NT | 🟢 10 |
+| 56 | Security | Qwen3.5-27B NT / 35B-A3B NT | 🟢 10 | GPT-OSS-120B | 🟢 10 |
+| 57 | SRE / Incident | Qwen3.5-27B NT | 🟡 6 | Qwen3.5-122B-A10B / GPT-OSS | 🟡 6 |
 | 58 | Book Writing | 📝 Manual | 📝 5 | 📝 Manual | 📝 5 |
-| 59 | Compliance | 27B NoThink | 🟢 9 | GPT-OSS-120B | 🟢 8 |
+| 59 | Compliance | Qwen3.5-27B NT | 🟢 9 | GPT-OSS-120B | 🟢 8 |
 
 > † Phase G discriminator score (harder test that differentiates models — [details](docs/results-phase-g.md))
 >
