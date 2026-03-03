@@ -1,0 +1,84 @@
+{
+  "tasks": [
+    {
+      "id": "T1",
+      "name": "Initialize PostgreSQL Database Schema",
+      "depends_on": [],
+      "estimated_hours": 4,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T2",
+      "name": "Implement User Registration and Login (JWT)",
+      "depends_on": ["T1"],
+      "estimated_hours": 8,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T3",
+      "name": "Implement Todo CRUD Operations",
+      "depends_on": ["T1", "T2"],
+      "estimated_hours": 10,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T4",
+      "name": "Implement Todo Categories/Tags",
+      "depends_on": ["T1", "T2"],
+      "estimated_hours": 6,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T5",
+      "name": "Implement Due Date Reminders",
+      "depends_on": ["T1", "T2", "T3"],
+      "estimated_hours": 8,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T6",
+      "name": "Implement Rate Limiting Middleware",
+      "depends_on": ["T1", "T2"],
+      "estimated_hours": 4,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T7",
+      "name": "Write Unit Tests for Core Features",
+      "depends_on": ["T3", "T4", "T5", "T6"],
+      "estimated_hours": 12,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T8",
+      "name": "Write Unit Tests for Auth",
+      "depends_on": ["T2", "T6"],
+      "estimated_hours": 6,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T9",
+      "name": "Create Dockerfile and docker-compose.yml",
+      "depends_on": ["T7", "T8"],
+      "estimated_hours": 6,
+      "assignable_to": "devops"
+    },
+    {
+      "id": "T10",
+      "name": "Generate OpenAPI Documentation",
+      "depends_on": ["T7", "T8"],
+      "estimated_hours": 4,
+      "assignable_to": "fullstack"
+    },
+    {
+      "id": "T11",
+      "name": "Setup CI/CD Pipeline",
+      "depends_on": ["T9", "T10"],
+      "estimated_hours": 6,
+      "assignable_to": "devops"
+    }
+  ],
+  "critical_path": ["T1", "T2", "T3", "T5", "T7", "T9", "T11"],
+  "total_hours": 78,
+  "parallel_tracks": 3
+}

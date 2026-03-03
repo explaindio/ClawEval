@@ -1,0 +1,120 @@
+{
+  "model": "qwen3.5-9b-nothink",
+  "phase": "G",
+  "timestamp": "2026-03-03T12:02:55.914424",
+  "total_score": 81,
+  "total_max": 110,
+  "percentage": 73.6,
+  "results": [
+    {
+      "id": 36,
+      "role": "Code Generation Agent",
+      "tier": 3,
+      "scoring_type": "code",
+      "score": 10,
+      "max": 10,
+      "detail": "10/10 tests passed",
+      "tokens": 1657
+    },
+    {
+      "id": 2,
+      "role": "Input Validator / Sanitizer",
+      "tier": 1,
+      "scoring_type": "exact",
+      "score": 10,
+      "max": 10,
+      "detail": "Found 15/15 errors",
+      "tokens": 348
+    },
+    {
+      "id": 5,
+      "role": "Sentiment Analysis Agent",
+      "tier": 1,
+      "scoring_type": "exact",
+      "score": 7,
+      "max": 10,
+      "detail": "14/20 correct | 5: expected 'mixed', got 'negative'; 7: expected 'mixed', got 'negative'; 12: expected 'mixed', got 'positive'; 13: expected 'negative', got 'mixed'; 14: expected 'positive', got 'negative'",
+      "tokens": 132
+    },
+    {
+      "id": 40,
+      "role": "Fact-Checking Agent",
+      "tier": 3,
+      "scoring_type": "exact",
+      "score": 8,
+      "max": 10,
+      "detail": "16/20 correct | 2: expected 'FALSE', got 'TRUE'; 11: expected 'TRUE', got 'FALSE'; 13: expected 'TRUE', got 'FALSE'; 18: expected 'FALSE', got 'TRUE'",
+      "tokens": 175
+    },
+    {
+      "id": 49,
+      "role": "Algorithm / Data Structure Explorer",
+      "tier": 4,
+      "scoring_type": "code",
+      "score": 9,
+      "max": 10,
+      "detail": "13/15 tests passed | keys_order: ; stats_expirations: ",
+      "tokens": 610
+    },
+    {
+      "id": 51,
+      "role": "System Architect",
+      "tier": 5,
+      "scoring_type": "constraint",
+      "score": 10,
+      "max": 10,
+      "detail": "15/15 constraints met",
+      "tokens": 857
+    },
+    {
+      "id": 48,
+      "role": "STEM Research Analyst",
+      "tier": 4,
+      "scoring_type": "exact",
+      "score": 1,
+      "max": 10,
+      "detail": "1/8 correct | q1: expected 252000\u00b110000, got 100800.0; q2: expected 2.28\u00b10.5, got 0.0228; q4: expected 2\u00b10, got 35.0; q5: expected 4.17\u00b10.5, got 38.4; q6: expected 5000000\u00b1500000, got 77000.0",
+      "tokens": 106
+    },
+    {
+      "id": 9,
+      "role": "Research Agent",
+      "tier": 2,
+      "scoring_type": "exact",
+      "score": 10,
+      "max": 10,
+      "detail": "10/10 correct",
+      "tokens": 160
+    },
+    {
+      "id": 12,
+      "role": "Content Planner / Strategist",
+      "tier": 2,
+      "scoring_type": "exact",
+      "score": 1,
+      "max": 10,
+      "detail": "2/15 constraints met | Missing: has_20_pieces; 5_per_week; no_consecutive_same_type",
+      "tokens": 327
+    },
+    {
+      "id": 50,
+      "role": "Orchestrator / Meta-Agent",
+      "tier": 5,
+      "scoring_type": "exact",
+      "score": 7,
+      "max": 10,
+      "detail": "10/15 constraints met | Missing: phase1_parallel_diagnostics; early_notification; all_agents_have_timeouts",
+      "tokens": 1105
+    },
+    {
+      "id": 23,
+      "role": "Web Scraping / Data Extraction",
+      "tier": 2,
+      "scoring_type": "exact",
+      "score": 8,
+      "max": 10,
+      "detail": "4/5 correct | average_employee_count: expected 938\u00b15.0, got 1116.0",
+      "tokens": 612
+    }
+  ]
+}

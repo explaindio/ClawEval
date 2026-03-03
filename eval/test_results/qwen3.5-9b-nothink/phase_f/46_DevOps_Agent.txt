@@ -1,0 +1,55 @@
+{
+  "issues": [
+    {
+      "line": 1,
+      "problem": "version '2' is outdated; use '3.8' or higher for modern features and security.",
+      "fix": "Change 'version: 2' to 'version: 3.8'."
+    },
+    {
+      "line": 5,
+      "problem": "Image tag 'latest' is non-deterministic and can change unexpectedly.",
+      "fix": "Pin to a specific version tag, e.g., 'node:18-alpine'."
+    },
+    {
+      "line": 8,
+      "problem": "Database password 'supersecret123' is exposed in plaintext within the compose file.",
+      "fix": "Use Docker secrets or an external secrets manager instead of hardcoding credentials."
+    },
+    {
+      "line": 9,
+      "problem": "NODE_ENV is set to 'development', which may enable unsafe configurations.",
+      "fix": "Set NODE_ENV to 'production' for secure runtime behavior."
+    },
+    {
+      "line": 13,
+      "problem": "Volume mount '.:/app' exposes the host filesystem, risking data leakage or container escape.",
+      "fix": "Remove the volume mount in production or restrict it to specific read-only directories."
+    },
+    {
+      "line": 16,
+      "problem": "restart policy 'no' prevents the container from restarting after a crash.",
+      "fix": "Change to 'unless-stopped' or 'always' to ensure high availability."
+    },
+    {
+      "line": 20,
+      "problem": "MySQL image version 5.6 is End-of-Life (EOL) and lacks security patches.",
+      "fix": "Upgrade to a supported version, e.g., 'mysql:8.0'."
+    },
+    {
+      "line": 24,
+      "problem": "MySQL port 3306 is exposed publicly, increasing attack surface.",
+      "fix": "Remove the port mapping or restrict access via firewall/network driver."
+    },
+    {
+      "line": 29,
+      "problem": "Data stored in '/tmp/mysql-data' is ephemeral and will be lost on container restart.",
+      "fix": "Use a named volume (e.g., 'mysql_data') for persistent storage."
+    },
+    {
+      "line": 33,
+      "problem": "Redis port 6379 is exposed publicly without authentication, allowing unauthorized access.",
+      "fix": "Remove the port mapping or enable Redis AUTH with a strong password."
+    }
+  ],
+  "count": 10
+}

@@ -1,0 +1,75 @@
+{
+  "vulnerabilities": [
+    {
+      "id": 1,
+      "type": "Hardcoded Secret",
+      "severity": "critical",
+      "location": "app.secret_key = \"password123\"",
+      "fix": "Generate a strong, random secret key using os.urandom() or a secrets module and store it securely in environment variables."
+    },
+    {
+      "id": 2,
+      "type": "Server-Side Template Injection (SSTI)",
+      "severity": "critical",
+      "location": "render_template_string(f\"Results for: {q}\")",
+      "fix": "Use render_template() with a safe template file instead of render_template_string(), and sanitize user input before rendering."
+    },
+    {
+      "id": 3,
+      "type": "SQL Injection",
+      "severity": "critical",
+      "location": "db.execute(f\"SELECT * FROM users WHERE id = {id}\")",
+      "fix": "Use parameterized queries (e.g., db.execute(\"SELECT * FROM users WHERE id = ?\", (id,))) to prevent SQL injection."
+    },
+    {
+      "id": 4,
+      "type": "Arbitrary Code Execution via Pickle",
+      "severity": "critical",
+      "location": "obj = pickle.loads(data)",
+      "fix": "Avoid unpickling untrusted data. Use JSON for data interchange or validate the pickle data strictly against a known schema before loading."
+    },
+    {
+      "id": 5,
+      "type": "Command Injection",
+      "severity": "critical",
+      "location": "subprocess.check_output(cmd, shell=True)",
+      "fix": "Pass command and arguments as a list to subprocess.check_output() without using shell=True, and validate/sanitize the input."
+    },
+    {
+      "id": 6,
+      "type": "Path Traversal",
+      "severity": "high",
+      "location": "return open(path).read()",
+      "fix": "Validate the file path against an allowlist of permitted directories and use os.path.realpath() to resolve symlinks before opening."
+    },
+    {
+      "id": 7,
+      "type": "Weak Authentication / Hardcoded Credentials",
+      "severity": "high",
+      "location": "if pw == os.environ.get(\"ADMIN_PW\", \"admin\")",
+      "fix": "Implement proper password hashing (e.g., bcrypt, argon2) and store hashes in the database. Never use hardcoded defaults for admin passwords."
+    },
+    {
+      "id": 8,
+      "type": "Information Disclosure",
+      "severity": "medium",
+      "location": "return str(os.environ)",
+      "fix": "Remove the debug route entirely in production or ensure it is only accessible behind strict authentication and logging mechanisms."
+    },
+    {
+      "id": 9,
+      "type": "Missing HTTPS Enforcement",
+      "severity": "medium",
+      "location": "Global configuration / Missing redirect logic",
+      "fix": "Configure the application to redirect all HTTP traffic to HTTPS using a reverse proxy (e.g., Nginx) or Flask's force_https configuration."
+    },
+    {
+      "id": 10,
+      "type": "Missing Rate Limiting",
+      "severity": "medium",
+      "location": "Global configuration / Missing decorator",
+      "fix": "Implement rate limiting using Flask-Limiter or similar extensions to prevent brute-force attacks and DoS on endpoints like /login and /run."
+    }
+  ],
+  "count": 10
+}

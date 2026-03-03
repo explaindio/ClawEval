@@ -1,0 +1,82 @@
+{
+  "components": [
+    {
+      "name": "Global Load Balancer",
+      "technology": "AWS Global Accelerator / CloudFront",
+      "purpose": "Distribute traffic across regions and optimize latency for global users",
+      "scaling_strategy": "Auto-scaling based on global traffic patterns and health checks"
+    },
+    {
+      "name": "API Gateway",
+      "technology": "AWS API Gateway / Kong",
+      "purpose": "Route HTTP requests, handle authentication, rate limiting, and request validation",
+      "scaling_strategy": "Horizontal scaling of gateway instances; request throttling per user/IP"
+    },
+    {
+      "name": "WebSocket Server Cluster",
+      "technology": "AWS App Mesh with Envoy / NGINX Plus",
+      "purpose": "Manage persistent real-time connections for <100ms latency messaging",
+      "scaling_strategy": "Cluster autoscaling based on active connection count and CPU/memory usage"
+    },
+    {
+      "name": "Message Broker",
+      "technology": "Apache Kafka / Amazon MSK",
+      "purpose": "Decouple messaging logic, ensure message ordering, and buffer high-throughput events",
+      "scaling_strategy": "Partition-based horizontal scaling; increase replicas and brokers as needed"
+    },
+    {
+      "name": "Real-time Database",
+      "technology": "Amazon DynamoDB / Redis Cluster",
+      "purpose": "Store user sessions, online/offline status, read receipts, and ephemeral chat state",
+      "scaling_strategy": "Auto-scaling provisioned capacity; sharding by user ID or group ID"
+    },
+    {
+      "name": "Message History Store",
+      "technology": "Amazon Aurora (MySQL/PostgreSQL) / Cassandra",
+      "purpose": "Persist full message history with support for pagination and archival",
+      "scaling_strategy": "Read replicas for query distribution; partitioning by timestamp and conversation ID"
+    },
+    {
+      "name": "Object Storage",
+      "technology": "Amazon S3 / MinIO",
+      "purpose": "Store encrypted file attachments (up to 50MB) with versioning and lifecycle policies",
+      "scaling_strategy": "Serverless storage; automatic tiering to Glacier for cold data"
+    },
+    {
+      "name": "Encryption Service",
+      "technology": "AWS KMS / Custom Go Library (Signal Protocol)",
+      "purpose": "Manage keys for end-to-end encryption (E2EE) and secure key exchange",
+      "scaling_strategy": "Managed service with automatic key rotation; no horizontal scaling needed"
+    },
+    {
+      "name": "Notification Service",
+      "technology": "AWS SNS / Firebase Cloud Messaging",
+      "purpose": "Push notifications for offline users and read receipts",
+      "scaling_strategy": "Managed service with auto-scaling based on message volume"
+    },
+    {
+      "name": "Analytics & Monitoring",
+      "technology": "Datadog / Prometheus + Grafana",
+      "purpose": "Monitor system health, latency, and compliance metrics",
+      "scaling_strategy": "Serverless ingestion; dashboards auto-refresh based on data volume"
+    }
+  ],
+  "data_flow": "User connects via WebSocket -> Load Balancer routes to nearest region -> API Gateway authenticates -> WebSocket Server establishes session -> Messages flow through Kafka for buffering -> Real-time DB updates status/read receipts -> Message Broker fans out to Message History Store for persistence -> File attachments uploaded to S3 with E2EE encryption applied client-side -> Notifications sent via SNS for offline users",
+  "infrastructure": {
+    "cloud": "AWS Multi-Region Active-Active",
+    "regions": 3
+  },
+  "estimated_monthly_cost": "$125,000 - $180,000",
+  "bottlenecks": [
+    "WebSocket connection limits per instance (requires aggressive horizontal scaling)",
+    "Database write throughput during peak messaging bursts",
+    "File upload bandwidth saturation in single regions",
+    "E2EE key management overhead during user churn"
+  ],
+  "tradeoffs": [
+    "Using managed services (e.g., DynamoDB, Aurora) increases cost but reduces operational complexity and improves uptime",
+    "Client-side E2EE encryption adds latency (~10-20ms) but ensures maximum privacy compliance",
+    "Multi-region active-active setup doubles infrastructure cost but meets 99.99% SLA and GDPR data residency requirements",
+    "Kafka introduces additional latency compared to direct DB writes but provides necessary buffering for 1M concurrent users"
+  ]
+}

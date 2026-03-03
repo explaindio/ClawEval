@@ -1,0 +1,88 @@
+{
+  "components": [
+    {
+      "name": "Global Load Balancer",
+      "technology": "AWS Global Accelerator / CloudFront",
+      "purpose": "Distribute traffic across regions and hide backend topology",
+      "scaling_strategy": "Auto-scaling based on global latency and request volume"
+    },
+    {
+      "name": "API Gateway",
+      "technology": "AWS API Gateway / Kong",
+      "purpose": "Route HTTP requests, handle auth, rate limiting, and request validation",
+      "scaling_strategy": "Horizontal scaling of gateway instances; rate limiting per user/IP"
+    },
+    {
+      "name": "WebSocket Gateway",
+      "technology": "AWS App Mesh / NGINX Plus",
+      "purpose": "Manage persistent WebSocket connections for real-time messaging",
+      "scaling_strategy": "Horizontal pod autoscaling based on active connection count"
+    },
+    {
+      "name": "Message Broker",
+      "technology": "Apache Kafka / AWS MSK",
+      "purpose": "Decouple message ingestion from processing; ensure exactly-once delivery",
+      "scaling_strategy": "Partition-based horizontal scaling; increase replicas per topic"
+    },
+    {
+      "name": "Real-Time Engine",
+      "technology": "Go (Goroutines) / Rust",
+      "purpose": "Handle high-concurrency WebSocket connections and message routing",
+      "scaling_strategy": "Clustered stateless services with shared Redis state"
+    },
+    {
+      "name": "State Store",
+      "technology": "Redis Cluster (with Redis Modules)",
+      "purpose": "Store online/offline status, read receipts, and ephemeral session data",
+      "scaling_strategy": "Sharding by user ID; automatic failover with Sentinel"
+    },
+    {
+      "name": "Message Database",
+      "technology": "Cassandra / ScyllaDB",
+      "purpose": "Store message history with high write throughput and time-to-live support",
+      "scaling_strategy": "Token-based partitioning; dynamic node addition"
+    },
+    {
+      "name": "Media Storage",
+      "technology": "AWS S3 + CloudFront",
+      "purpose": "Store encrypted file attachments (up to 50MB) and serve via CDN",
+      "scaling_strategy": "S3 is inherently scalable; CloudFront auto-scales edge nodes"
+    },
+    {
+      "name": "Encryption Service",
+      "technology": "Custom Go/Rust Library + AWS KMS",
+      "purpose": "Implement End-to-End Encryption (E2EE) using Double Ratchet Algorithm",
+      "scaling_strategy": "Stateless service; keys managed via KMS, no scaling needed for crypto ops"
+    },
+    {
+      "name": "Notification Service",
+      "technology": "Firebase Cloud Messaging / AWS SNS",
+      "purpose": "Push notifications for offline users and read receipts",
+      "scaling_strategy": "Managed service with auto-scaling"
+    },
+    {
+      "name": "Analytics & Monitoring",
+      "technology": "Prometheus + Grafana + ELK Stack",
+      "purpose": "Monitor latency, throughput, errors, and compliance logs",
+      "scaling_strategy": "Time-series data retention policies; log aggregation sharding"
+    }
+  ],
+  "data_flow": "User -> LB -> API Gateway (Auth) -> WebSocket Gateway -> Real-Time Engine (E2EE Encrypt/Decrypt) -> State Store (Status) + Message Broker (Queue) -> Real-Time Engine (Route) -> Message DB (History) + Media Storage (Files). Offline users receive push notifications via Notification Service.",
+  "infrastructure": {
+    "cloud": "Multi-cloud (AWS + GCP) for disaster recovery",
+    "regions": 4
+  },
+  "estimated_monthly_cost": "$125,000 - $250,000 (depending on data transfer and storage volume)",
+  "bottlenecks": [
+    "WebSocket connection limits per server instance",
+    "Database write throughput during peak message bursts",
+    "CDN cache invalidation for large file updates",
+    "Key management overhead for E2EE key rotation"
+  ],
+  "tradeoffs": [
+    "E2EE prevents server-side message search/analytics (GDPR compliant but limits admin visibility)",
+    "Cassandra offers horizontal scaling but complicates complex queries",
+    "Multi-region setup increases latency slightly but ensures 99.99% uptime",
+    "Redis for state adds single point of failure risk (mitigated by Sentinel/Cluster)"
+  ]
+}

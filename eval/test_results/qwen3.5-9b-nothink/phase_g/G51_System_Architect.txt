@@ -1,0 +1,70 @@
+{
+  "architecture": {
+    "components": [
+      "API Gateway (Kong/Traefik)",
+      "Load Balancers (AWS ALB)",
+      "Application Servers (Node.js/Go on Kubernetes)",
+      "Redis Cluster (for caching)",
+      "PostgreSQL (for metadata)",
+      "DynamoDB (for high-speed redirects)",
+      "CloudFront CDN",
+      "S3 (for logs and backups)"
+    ],
+    "database": {
+      "primary": "DynamoDB + PostgreSQL",
+      "justification": "DynamoDB handles the massive read throughput (1B reqs) with single-digit millisecond latency, while PostgreSQL manages complex queries for custom aliases, expiration logic, and GDPR deletion requests."
+    },
+    "cache": {
+      "type": "Redis Cluster",
+      "strategy": "TTL-based caching with 10-60s duration for active links",
+      "invalidation": "Passive TTL expiration; active invalidation via Redis Pub/Sub for link updates"
+    },
+    "hash_strategy": {
+      "algorithm": "Base62 (0-9, a-z, A-Z)",
+      "length": 7,
+      "collision_handling": "Sequential counter with retry logic; probability of collision is negligible at 10^12 capacity"
+    }
+  },
+  "scaling": {
+    "read_write_ratio": "100:1",
+    "read_optimization": "Serve 99% of traffic via CloudFront CDN and Redis cache; direct DB access only for cache misses",
+    "write_path": "API -> App Server -> DynamoDB (Write) + PostgreSQL (Metadata) -> Async Job Queue for analytics",
+    "horizontal_scaling": "Auto-scaling Kubernetes pods based on CPU/Memory and custom 'queue_depth' metric"
+  },
+  "reliability": {
+    "uptime_strategy": "Multi-AZ deployment with health checks and automatic instance replacement",
+    "failover": "DNS-based failover to secondary region; local failover within AZ using RDS/DynamoDB multi-AZ",
+    "data_replication": "DynamoDB Global Tables for DR; PostgreSQL streaming replication to standby"
+  },
+  "compliance": {
+    "gdpr_deletion": "Soft delete flag in DB + physical deletion of logs/analytics after 30-day grace period via Lambda",
+    "data_retention": "Raw click logs retained for 90 days, then aggregated/anonymized; PII removed immediately upon creation",
+    "analytics_separation": "Analytics data stored in separate S3 bucket and BigQuery dataset, logically isolated from user PII"
+  },
+  "cost_estimate": {
+    "monthly_total": 4850,
+    "breakdown": {
+      "compute": 1200,
+      "database": 1500,
+      "cache": 600,
+      "cdn": 1000,
+      "other": 550
+    },
+    "fits_budget": true
+  },
+  "rate_limiting": {
+    "strategy": "Token Bucket Algorithm at Edge (CloudFront) and Application Layer",
+    "limits": "1000 req/min per IP for reads; 10 req/min per IP for writes; burst allowance of 2x"
+  },
+  "monitoring": {
+    "metrics": [
+      "P99 Latency",
+      "Error Rate (5xx)",
+      "Cache Hit Ratio",
+      "Throughput (RPS)",
+      "Custom Alias Creation Rate",
+      "GDPR Deletion Queue Depth"
+    ],
+    "alerting": "PagerDuty integration for P99 > 100ms, Error Rate > 0.1%, and Cache Hit Ratio < 80%"
+  }
+}

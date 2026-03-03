@@ -1,0 +1,225 @@
+```json
+[
+  {
+    "id": 1,
+    "name": "Morning Routine",
+    "trigger": "Time",
+    "conditions": [
+      "Day of week is Monday, Tuesday, Wednesday, Thursday, or Friday",
+      "Current time is 6:30 AM"
+    ],
+    "actions": [
+      "Turn on all living room lights to 50% brightness",
+      "Turn on all bedroom lights to 50% brightness",
+      "Wait 30 seconds",
+      "Turn on all lights to 100% brightness"
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Morning Routine (Weekends)",
+    "trigger": "Time",
+    "conditions": [
+      "Day of week is Saturday or Sunday",
+      "Current time is 8:00 AM"
+    ],
+    "actions": [
+      "Turn on all living room lights to 50% brightness",
+      "Turn on all bedroom lights to 50% brightness",
+      "Wait 30 seconds",
+      "Turn on all lights to 100% brightness"
+    ]
+  },
+  {
+    "id": 3,
+    "name": "Thermostat Occupied",
+    "trigger": "Presence Detected",
+    "conditions": [
+      "Occupants detected: Alice OR Bob",
+      "Time is between 6:00 AM and 11:00 PM"
+    ],
+    "actions": [
+      "Set thermostat to 72°F"
+    ]
+  },
+  {
+    "id": 4,
+    "name": "Thermostat Empty",
+    "trigger": "Presence Lost",
+    "conditions": [
+      "Occupants detected: None",
+      "Time is between 6:00 AM and 11:00 PM"
+    ],
+    "actions": [
+      "Set thermostat to 65°F"
+    ]
+  },
+  {
+    "id": 5,
+    "name": "Thermostat Sleeping",
+    "trigger": "Time",
+    "conditions": [
+      "Current time is between 11:00 PM and 6:00 AM"
+    ],
+    "actions": [
+      "Set thermostat to 68°F"
+    ]
+  },
+  {
+    "id": 6,
+    "name": "Security Arm Both Away",
+    "trigger": "Geofence Exit",
+    "conditions": [
+      "Alice location: Outside home geofence",
+      "Bob location: Outside home geofence"
+    ],
+    "actions": [
+      "Arm security system to 'Away' mode",
+      "Lock all doors and windows"
+    ]
+  },
+  {
+    "id": 7,
+    "name": "Security Disarm Return",
+    "trigger": "Geofence Entry",
+    "conditions": [
+      "Alice location: Inside home geofence OR Bob location: Inside home geofence",
+      "Security system status: Armed"
+    ],
+    "actions": [
+      "Disarm security system",
+      "Unlock front door"
+    ]
+  },
+  {
+    "id": 8,
+    "name": "Pet Care Feeder",
+    "trigger": "Time",
+    "conditions": [
+      "Current time is 7:00 AM"
+    ],
+    "actions": [
+      "Activate auto-feeder for 15 minutes"
+    ]
+  },
+  {
+    "id": 9,
+    "name": "Pet Care Feeder (Evening)",
+    "trigger": "Time",
+    "conditions": [
+      "Current time is 6:00 PM"
+    ],
+    "actions": [
+      "Activate auto-feeder for 15 minutes"
+    ]
+  },
+  {
+    "id": 10,
+    "name": "Pet Care Camera",
+    "trigger": "Geofence Exit",
+    "conditions": [
+      "Alice location: Outside home geofence",
+      "Bob location: Outside home geofence"
+    ],
+    "actions": [
+      "Turn on cat camera to 'Live View' mode",
+      "Send notification to Alice and Bob: 'Cat camera active'"
+    ]
+  },
+  {
+    "id": 11,
+    "name": "Energy Solar Priority",
+    "trigger": "Time",
+    "conditions": [
+      "Current time is between 2:00 PM and 7:00 PM",
+      "Solar panel generation status: Active"
+    ],
+    "actions": [
+      "Set energy system to 'Solar Priority' mode",
+      "Disable battery charging if solar output exceeds 80% capacity"
+    ]
+  },
+  {
+    "id": 12,
+    "name": "Energy Battery Backup",
+    "trigger": "Time",
+    "conditions": [
+      "Current time is between 7:00 PM and 11:00 PM",
+      "Solar panel generation status: Inactive"
+    ],
+    "actions": [
+      "Set energy system to 'Battery Backup' mode",
+      "Ensure critical loads are powered by battery"
+    ]
+  },
+  {
+    "id": 13,
+    "name": "Hallway Night Lights",
+    "trigger": "Motion Detected",
+    "conditions": [
+      "Location: Hallway",
+      "Current time is between 10:00 PM and 6:00 AM"
+    ],
+    "actions": [
+      "Turn on hallway lights to 20% brightness",
+      "Set timer for 5 minutes",
+      "Turn off hallway lights after timer expires"
+    ]
+  },
+  {
+    "id": 14,
+    "name": "Bob Office Setup",
+    "trigger": "Device State Change",
+    "conditions": [
+      "Device: Bob's Computer",
+      "State: Powered On"
+    ],
+    "actions": [
+      "Turn on desk lamp",
+      "Set thermostat to 70°F",
+      "Send notification to Bob: 'Office environment ready'"
+    ]
+  },
+  {
+    "id": 15,
+    "name": "Laundry Notification",
+    "trigger": "Device State Change",
+    "conditions": [
+      "Device: Washer OR Dryer",
+      "State: Cycle Complete"
+    ],
+    "actions": [
+      "Send push notification to Alice and Bob: 'Laundry cycle complete'"
+    ]
+  },
+  {
+    "id": 16,
+    "name": "Water Leak Emergency",
+    "trigger": "Sensor Alert",
+    "conditions": [
+      "Device: Water Leak Detector",
+      "State: Leak Detected"
+    ],
+    "actions": [
+      "Shut off main water valve",
+      "Send emergency alert to Alice and Bob phones",
+      "Turn on all lights to 100% brightness",
+      "Record video from security cameras"
+    ]
+  },
+  {
+    "id": 17,
+    "name": "Guest Mode Activation",
+    "trigger": "Manual Command",
+    "conditions": [
+      "Command: 'Enable Guest Mode'"
+    ],
+    "actions": [
+      "Generate temporary door code valid for 24 hours",
+      "Set thermostat to 72°F",
+      "Enable Guest WiFi network",
+      "Send temporary code and WiFi details to guest email"
+    ]
+  }
+]
+```

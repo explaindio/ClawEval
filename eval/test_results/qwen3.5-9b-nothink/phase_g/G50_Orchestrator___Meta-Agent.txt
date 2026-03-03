@@ -1,0 +1,128 @@
+{
+  "phases": [
+    {
+      "phase": 1,
+      "name": "Initial Triage & Alerting",
+      "agents": [
+        {
+          "agent": "log_analyzer",
+          "input": "Current error logs from last 5 minutes",
+          "timeout_seconds": 30
+        },
+        {
+          "agent": "metric_checker",
+          "input": "CPU, Memory, and Latency metrics for last 5 minutes",
+          "timeout_seconds": 30
+        },
+        {
+          "agent": "db_checker",
+          "input": "Active connections, lock status, and replication lag",
+          "timeout_seconds": 30
+        },
+        {
+          "agent": "config_auditor",
+          "input": "Deployment logs and config changes in last 1 hour",
+          "timeout_seconds": 30
+        },
+        {
+          "agent": "notification_agent",
+          "input": "Generate initial 'Incident Opened' alert with preliminary findings",
+          "timeout_seconds": 15
+        }
+      ],
+      "parallel": true,
+      "gate": "All diagnostic agents must return results within timeout; notification must be sent."
+    },
+    {
+      "phase": 2,
+      "name": "Root Cause Analysis & Impact Assessment",
+      "agents": [
+        {
+          "agent": "dependency_mapper",
+          "input": "Identify downstream services affected by the error pattern",
+          "timeout_seconds": 45
+        },
+        {
+          "agent": "capacity_planner",
+          "input": "Current resource utilization vs. baseline thresholds",
+          "timeout_seconds": 45
+        }
+      ],
+      "parallel": true,
+      "gate": "Dependency map and capacity report must be generated."
+    },
+    {
+      "phase": 3,
+      "name": "Customer Communication & Stakeholder Update",
+      "agents": [
+        {
+          "agent": "customer_communicator",
+          "input": "Draft status update: 'Investigating outage, ETA for update 15 mins'",
+          "timeout_seconds": 20
+        },
+        {
+          "agent": "incident_reporter",
+          "input": "Update ticket with Phase 1 & 2 findings and assigned owner",
+          "timeout_seconds": 20
+        }
+      ],
+      "parallel": true,
+      "gate": "Customer notification sent and incident ticket updated."
+    },
+    {
+      "phase": 4,
+      "name": "Remediation Execution",
+      "agents": [
+        {
+          "agent": "rollback_agent",
+          "input": "Rollback to last known good deployment if config change or recent deploy is root cause",
+          "timeout_seconds": 120
+        }
+      ],
+      "parallel": false,
+      "gate": "Remediation action completed."
+    },
+    {
+      "phase": 5,
+      "name": "Verification & Closure",
+      "agents": [
+        {
+          "agent": "metric_checker",
+          "input": "Verify metrics return to normal baseline for 5 minutes",
+          "timeout_seconds": 60
+        },
+        {
+          "agent": "log_analyzer",
+          "input": "Confirm no new error patterns in last 5 minutes",
+          "timeout_seconds": 60
+        }
+      ],
+      "parallel": true,
+      "gate": "Both verification checks must pass."
+    }
+  ],
+  "decision_points": [
+    {
+      "after_phase": 1,
+      "condition": "Root cause identified as Database Lock or Connection Exhaustion",
+      "if_true": "go to phase 4 (Execute DB-specific remediation plan)",
+      "if_false": "go to phase 2 (Proceed to dependency/capacity analysis)"
+    },
+    {
+      "after_phase": 4,
+      "condition": "Verification phase (Phase 5) fails after 2 retry attempts",
+      "if_true": "go to phase 6 (Escalation/Manual Intervention)",
+      "if_false": "go to phase 5 (Close incident)"
+    }
+  ],
+  "escalation": {
+    "trigger": "Time elapsed > 15 minutes without resolution OR Verification phase fails twice",
+    "action": "Alert Senior On-Call Engineer and VP of Engineering; switch to manual troubleshooting mode."
+  },
+  "total_phases": 5,
+  "max_time_minutes": 25,
+  "rollback_conditions": [
+      "Root cause confirmed as a recent deployment (within last 2 hours) AND metrics show immediate improvement upon rollback",
+      "Root cause confirmed as a configuration change (within last 1 hour) AND the change is reversible via config_auditor recommendations"
+  ]
+}

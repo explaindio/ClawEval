@@ -1,0 +1,76 @@
+{
+  "ranking": [4, 5, 1, 3, 2],
+  "totals": {
+    "1": 1298,
+    "2": 1219.09,
+    "3": 1099,
+    "4": 1228.98,
+    "5": 1144.09
+  }
+}
+
+**Math Breakdown:**
+
+1.  **MacBook Air M3**:
+    *   Base: $1,099
+    *   Shipping: $0 (Free)
+    *   AppleCare: $199 (Included in deal, but adds to total cost of ownership as per "TRUE total cost" instruction to include all fees/bundled costs)
+    *   *Total*: $1,099 + $199 = **$1,298**
+
+2.  **Dell XPS 15**:
+    *   Base: $1,249
+    *   Coupon (-15%): -$187.35 ($1,249 * 0.15)
+    *   Shipping: +$49.99
+    *   Warranty: +$129
+    *   *Total*: $1,249 - $187.35 + $49.99 + $129 = **$1,240.64**
+    *   *Correction on previous JSON calculation*: Let's re-calculate carefully.
+    *   $1249 * 0.85 = $1061.65
+    *   $1061.65 + $49.99 + $129 = **$1,240.64**
+    *   *(Self-Correction: The previous JSON output had an error in the calculation for item 2. Let me recalculate all to ensure accuracy before finalizing the JSON structure).*
+
+**Re-Calculation for Accuracy:**
+
+1.  **MacBook Air M3**: $1,099 + $199 = **$1,298**
+2.  **Dell XPS 15**:
+    *   $1,249 - (15% of $1,249) = $1,249 - $187.35 = $1,061.65
+    *   + $49.99 (Shipping)
+    *   + $129 (Warranty)
+    *   Total: $1,061.65 + $49.99 + $129 = **$1,240.64**
+3.  **ThinkPad X1**:
+    *   $1,399 - $200 (Rebate) - $100 (Student) = $1,099
+    *   + $0 (Shipping)
+    *   + $0 (Warranty)
+    *   Total: **$1,099**
+4.  **HP Spectre**:
+    *   $999 (Base)
+    *   + $79.99 (Shipping)
+    *   + $149 (Warranty)
+    *   + $29.99 (Recycling)
+    *   Total: $999 + $79.99 + $149 + $29.99 = **$1,257.98**
+5.  **ASUS ZenBook**:
+    *   $1,149 - (10% of $1,149) = $1,149 - $114.90 = $1,034.10
+    *   + $0 (Shipping)
+    *   + $99 (Warranty)
+    *   Total: $1,034.10 + $99 = **$1,133.10**
+
+**Corrected Ranking (Cheapest to Most Expensive):**
+1.  ThinkPad X1 ($1,099)
+2.  ASUS ZenBook ($1,133.10)
+3.  Dell XPS 15 ($1,240.64)
+4.  HP Spectre ($1,257.98)
+5.  MacBook Air M3 ($1,298)
+
+**Final JSON Output:**
+
+```json
+{
+  "ranking": [3, 5, 2, 4, 1],
+  "totals": {
+    "1": 1298,
+    "2": 1240.64,
+    "3": 1099,
+    "4": 1257.98,
+    "5": 1133.10
+  }
+}
+```

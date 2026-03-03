@@ -1,0 +1,259 @@
+Here is the complete semantic HTML structure for the **TaskFlow** landing page.
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskFlow — AI-Powered Project Management</title>
+</head>
+<body>
+
+    <!-- 1. Navigation -->
+    <header class="site-header">
+        <nav class="container nav-container">
+            <a href="#" class="logo">TaskFlow</a>
+            
+            <ul class="nav-links">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#pricing">Pricing</a></li>
+                <li><a href="#testimonials">Testimonials</a></li>
+                <li><a href="#faq">FAQ</a></li>
+            </ul>
+
+            <div class="nav-actions">
+                <a href="#" class="btn btn-secondary">Log In</a>
+                <a href="#" class="btn btn-primary">Get Started</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- 2. Hero Section -->
+    <section class="hero-section">
+        <div class="container hero-content">
+            <h1>Manage Projects with <br><span class="highlight">Intelligent AI</span></h1>
+            <p class="subheadline">Stop drowning in spreadsheets. TaskFlow uses predictive AI to automate workflows, prioritize tasks, and deliver projects on time.</p>
+            
+            <div class="hero-cta">
+                <a href="#" class="btn btn-primary btn-lg">Start Free Trial</a>
+                <a href="#" class="btn btn-outline btn-lg">Watch Demo</a>
+            </div>
+
+            <div class="trust-badges">
+                <p>Trusted by teams at</p>
+                <div class="badge-grid">
+                    <span class="badge">Acme Corp</span>
+                    <span class="badge">GlobalTech</span>
+                    <span class="badge">Nebula</span>
+                    <span class="badge">FoxRun</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. Features Section -->
+    <section id="features" class="features-section">
+        <div class="container">
+            <h2 class="section-title">Everything you need to ship faster</h2>
+            
+            <div class="features-grid">
+                <!-- Feature 1 -->
+                <article class="feature-card">
+                    <h3>AI Task Prioritization</h3>
+                    <p>Our algorithm analyzes deadlines, dependencies, and team capacity to automatically reorder your backlog.</p>
+                </article>
+
+                <!-- Feature 2 -->
+                <article class="feature-card">
+                    <h3>Smart Resource Allocation</h3>
+                    <p>Visualize team workloads and let AI suggest optimal assignments to prevent burnout and bottlenecks.</p>
+                </article>
+
+                <!-- Feature 3 -->
+                <article class="feature-card">
+                    <h3>Predictive Risk Analysis</h3>
+                    <p>Get notified before a project slips. Our engine predicts potential delays based on historical data.</p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. Pricing Table -->
+    <section id="pricing" class="pricing-section">
+        <div class="container">
+            <h2 class="section-title">Simple, transparent pricing</h2>
+            
+            <div class="pricing-grid">
+                <!-- Free Tier -->
+                <div class="pricing-card">
+                    <h3>Free</h3>
+                    <div class="price">$0<span>/mo</span></div>
+                    <p>For individuals and hobbyists.</p>
+                    <ul class="pricing-features">
+                        <li>Up to 3 Projects</li>
+                        <li>Basic AI Insights</li>
+                        <li>1GB Storage</li>
+                    </ul>
+                    <a href="#" class="btn btn-outline btn-block">Get Started</a>
+                </div>
+
+                <!-- Pro Tier -->
+                <div class="pricing-card featured">
+                    <div class="badge">Most Popular</div>
+                    <h3>Pro</h3>
+                    <div class="price">$29<span>/mo</span></div>
+                    <p>For growing teams.</p>
+                    <ul class="pricing-features">
+                        <li>Unlimited Projects</li>
+                        <li>Advanced AI Automation</li>
+                        <li>Unlimited Storage</li>
+                        <li>Priority Support</li>
+                    </ul>
+                    <a href="#" class="btn btn-primary btn-block">Start Free Trial</a>
+                </div>
+
+                <!-- Enterprise Tier -->
+                <div class="pricing-card">
+                    <h3>Enterprise</h3>
+                    <div class="price">Custom</div>
+                    <p>For large organizations.</p>
+                    <ul class="pricing-features">
+                        <li>SSO & Advanced Security</li>
+                        <li>Dedicated Success Manager</li>
+                        <li>Custom AI Models</li>
+                        <li>SLA Guarantee</li>
+                    </ul>
+                    <a href="#" class="btn btn-outline btn-block">Contact Sales</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. Testimonials Section -->
+    <section id="testimonials" class="testimonials-section">
+        <div class="container">
+            <h2 class="section-title">Loved by 10,000+ teams</h2>
+            
+            <div class="testimonials-grid">
+                <blockquote class="testimonial-card">
+                    <p>"TaskFlow's AI actually understands our workflow. It cut our planning time by 40% in the first week."</p>
+                    <footer>
+                        <cite>Sarah Jenkins</cite>
+                        <span>Product Manager, TechFlow</span>
+                    </footer>
+                </blockquote>
+
+                <blockquote class="testimonial-card">
+                    <p>"Finally, a project tool that feels like magic. The predictive features saved us from a major deadline miss."</p>
+                    <footer>
+                        <cite>David Chen</cite>
+                        <span>CTO, StartUp Inc.</span>
+                    </footer>
+                </blockquote>
+
+                <blockquote class="testimonial-card">
+                    <p>"The interface is clean, and the automation handles the boring stuff so we can focus on building."</p>
+                    <footer>
+                        <cite>Elena Rodriguez</cite>
+                        <span>Lead Designer, CreativeBox</span>
+                    </footer>
+                </blockquote>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. FAQ Accordion -->
+    <section id="faq" class="faq-section">
+        <div class="container">
+            <h2 class="section-title">Frequently Asked Questions</h2>
+            
+            <div class="faq-list">
+                <details class="faq-item">
+                    <summary class="faq-question">Does TaskFlow integrate with Slack and Jira?</summary>
+                    <div class="faq-answer">Yes, we offer native integrations with Slack, Jira, GitHub, and over 50 other tools.</div>
+                </details>
+
+                <details class="faq-item">
+                    <summary class="faq-question">How does the AI learn my team's habits?</summary>
+                    <div class="faq-answer">The AI analyzes your task completion rates and historical data over the first 30 days to build a personalized prediction model.</div>
+                </details>
+
+                <details class="faq-item">
+                    <summary class="faq-question">Can I cancel my subscription anytime?</summary>
+                    <div class="faq-answer">Absolutely. There are no long-term contracts. You can cancel directly from your dashboard.</div>
+                </details>
+
+                <details class="faq-item">
+                    <summary class="faq-question">Is my data secure?</summary>
+                    <div class="faq-answer">We use bank-grade encryption (AES-256) and are SOC2 Type II compliant. Your data belongs to you.</div>
+                </details>
+
+                <details class="faq-item">
+                    <summary class="faq-question">Do you offer a free trial?</summary>
+                    <div class="faq-answer">Yes, the Pro plan includes a 14-day free trial with full access to all features.</div>
+                </details>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. Final CTA Section -->
+    <section class="cta-section">
+        <div class="container cta-content">
+            <h2>Ready to transform your workflow?</h2>
+            <p>Join thousands of teams using AI to ship faster.</p>
+            <a href="#" class="btn btn-primary btn-lg">Get Started for Free</a>
+            <p class="small-text">No credit card required.</p>
+        </div>
+    </section>
+
+    <!-- 8. Footer -->
+    <footer class="site-footer">
+        <div class="container footer-grid">
+            <div class="footer-brand">
+                <a href="#" class="logo">TaskFlow</a>
+                <p>AI-Powered Project Management for the modern team.</p>
+                <div class="social-links">
+                    <a href="#" aria-label="Twitter">Twitter</a>
+                    <a href="#" aria-label="LinkedIn">LinkedIn</a>
+                    <a href="#" aria-label="GitHub">GitHub</a>
+                </div>
+            </div>
+
+            <div class="footer-links">
+                <h4>Product</h4>
+                <ul>
+                    <li><a href="#">Features</a></li>
+                    <li><a href="#">Integrations</a></li>
+                    <li><a href="#">Pricing</a></li>
+                    <li><a href="#">Changelog</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-links">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-links">
+                <h4>Legal</h4>
+                <ul>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#">Cookie Policy</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="container copyright">
+            <p>&copy; 2023 TaskFlow Inc. All rights reserved.</p>
+        </div>
+    </footer>
+
+</body>
+</html>
+```

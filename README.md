@@ -20,10 +20,10 @@ We test quantized open-source models that fit on hardware you already own. Find 
 
 | 🔴 8GB VRAM | 🟠 12GB VRAM | 🟡 16GB VRAM | 🟢 24GB VRAM | 🔵 64–96GB VRAM |
 |---|---|---|---|---|
-| Qwen3.5-0.8B Q4_K_M | — | Qwen3.5-9B Q4_K_M | Qwen3.5-35B-A3B Q4_K_M | Qwen3.5-122B-A10B NVFP4 |
-| Qwen3.5-2B Q4_K_M | | ✅ Testing | Qwen3.5-27B Q4_K_M | GPT-OSS-120B GGUF |
+| Qwen3.5-0.8B Q4_K_M | Qwen3.5-9B Q4_K_M | Qwen3.5-9B Q4_K_M | Qwen3.5-35B-A3B Q4_K_M | Qwen3.5-122B-A10B NVFP4 |
+| Qwen3.5-2B Q4_K_M | | | Qwen3.5-27B Q4_K_M | GPT-OSS-120B GGUF |
 | Qwen3.5-4B Q4_K_M (250K ctx) | | llama.cpp | llama.cpp · SGLang · vLLM | SGLang · vLLM · llama.cpp |
-| ✅ Testing | | | | |
+| ✅ Tested | ✅ Tested | | | |
 
 > 📖 **VRAM Guides:** [8–16GB Small Models](docs/results-small-vram.md) · [16GB](docs/OpenClaw%2016GB%20VRAM%20Local%20LLM%20Subagents.md) · [24GB](docs/The%2024GB%20VRAM%20Tier_%20Where%20Local%20AI%20Agents%20Get%20Serious.md) · [32GB](docs/openclaw-model-selection-32gb-tier.md) · [48GB](docs/openclaw-48gb-tier.md) · [64GB](docs/openclaw-64gb-tier.md) · [96GB](docs/openclaw-96gb-tier.md) — Which models fit, context limits, speed estimates
 
@@ -128,7 +128,7 @@ Don't have a GPU? We also test open-source models hosted on cloud providers so y
 
 🟢 = 8-10 &nbsp; 🟡 = 5-7 &nbsp; 🔴 = 0-4 &nbsp; 📝 = Manual review (5)
 
-> 🆕 **Testing in progress.** Qwen3.5-0.8B, 2B, and 4B complete, 9B coming soon. [Full small model results →](docs/results-small-vram.md)
+> ✅ **All small models tested.** Qwen3.5-0.8B, 2B, 4B, and 9B complete. [Full small model results →](docs/results-small-vram.md)
 
 | # | Agent Role | 🔴 Best 8GB | | 🟠 Best 12GB | | 🟡 Best 16GB | |
 |---|---|---|---|---|---|---|---|
@@ -143,7 +143,7 @@ Don't have a GPU? We also test open-source models hosted on cloud providers so y
 | 7 | Translation | Qwen3.5-4B NT | 🟢 10 | — | — | — | — |
 | 8 | Calendar | — | 🔴 0 | — | — | — | — |
 | | **Tier 2 — Moderate** | | | | | | |
-| 9 | Research Agent | Qwen3.5-2B Think | 🟢 9 | — | — | — | — |
+| 9 | Research Agent | Qwen3.5-2B Think | 🟢 9 | Qwen3.5-9B | 🟢 10 | — | — |
 | 10 | Content Writer | 📝 Manual | 📝 5 | — | — | — | — |
 | 11 | Editor | Qwen3.5-4B Think | 🟢 10 | — | — | — | — |
 | 12 | Content Planner | Qwen3.5-0.8B | 🟢 10 | — | — | — | — |
@@ -153,18 +153,18 @@ Don't have a GPU? We also test open-source models hosted on cloud providers so y
 | 16 | Social Scouting | Qwen3.5-0.8B | 🟢 10 | — | — | — | — |
 | 17 | Social Content | 📝 Manual | 📝 5 | — | — | — | — |
 | 18 | News Aggregation | Qwen3.5-0.8B | 🟢 10 | — | — | — | — |
-| 19 | Shopping | Qwen3.5-0.8B Think | 🔴 4 | — | — | — | — |
+| 19 | Shopping | Qwen3.5-0.8B Think | 🔴 4 | Qwen3.5-9B NT | 🟢 8 | — | — |
 | 20 | Memory Mgmt | Qwen3.5-0.8B | 🟢 9 | — | — | — | — |
 | 21 | RAG / Retrieval | Qwen3.5-4B | 🔴 2 | — | — | — | — |
-| 22 | Data Analysis | Qwen3.5-2B Think | 🔴 3 | — | — | — | — |
+| 22 | Data Analysis | Qwen3.5-2B Think | 🔴 3 | Qwen3.5-9B NT | 🔴 4 | — | — |
 | 23 | Web Scraping | Qwen3.5-0.8B | 🟢 10 | — | — | — | — |
 | 24 | Image Description | 📝 Manual | 📝 5 | — | — | — | — |
 | 25 | Customer Support | Qwen3.5-4B | 🟢 9 | — | — | — | — |
-| 26 | Lead Scoring | Qwen3.5-4B | 🟡 6 | — | — | — | — |
-| 27 | Sprint Summary | Qwen3.5-4B | 🟡 6 | — | — | — | — |
+| 26 | Lead Scoring | Qwen3.5-4B | 🟡 6 | Qwen3.5-9B | 🟢 8 | — | — |
+| 27 | Sprint Summary | Qwen3.5-4B | 🟡 6 | Qwen3.5-9B | 🟡 7 | — | — |
 | 28 | Transaction | Qwen3.5-2B | 🟢 9 | — | — | — | — |
 | 29 | Home Automation | Qwen3.5-0.8B NT | 🟢 10 | — | — | — | — |
-| 30 | Fitness Tracking | Qwen3.5-4B NT | 🟡 5 | — | — | — | — |
+| 30 | Fitness Tracking | Qwen3.5-4B NT | 🟡 5 | Qwen3.5-9B | 🟡 6 | — | — |
 | 31 | Recipe / Cooking | Qwen3.5-4B | 🔴 2 | — | — | — | — |
 | 32 | Personal Finance | Qwen3.5-4B NT | 🟡 5 | — | — | — | — |
 | 33 | SEO Optimization | Qwen3.5-0.8B | 🟢 9 | — | — | — | — |
@@ -198,7 +198,7 @@ Don't have a GPU? We also test open-source models hosted on cloud providers so y
 | 58 | Book Writing | 📝 Manual | 📝 5 | — | — | — | — |
 | 59 | Compliance | Qwen3.5-0.8B | 🟢 8 | — | — | — | — |
 
-> 📊 **[Full small model Think/NoThink comparison →](docs/results-small-vram.md)** · Phase F: 442/590 (75%) · Phase G: 73/110 (66%)
+> 📊 **[Full small model Think/NoThink comparison →](docs/results-small-vram.md)** · Phase F: 444/590 (75%) · Phase G: 81/110 (74%)
 
 
 ## ☁️ Best Cloud Model Per Role

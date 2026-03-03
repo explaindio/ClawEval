@@ -1,0 +1,201 @@
+```python
+import time
+import threading
+from collections import defaultdict
+from typing import Dict, Optional, Any
+
+class RateLimiter:
+    def __init__(self, max_requests: int, window_seconds: float, burst: int = 0):
+        self.max_requests = max_requests
+        self.window_seconds = window_seconds
+        self.burst = burst
+        
+        # State storage: {(user_id, endpoint): {'timestamps': [], 'burst_timestamps': []}}
+        self._state = defaultdict(lambda: {'timestamps': [], 'burst_timestamps': []})
+        self._lock = threading.Lock()
+        
+    def _get_current_time(self) -> float:
+        return time.time()
+    
+    def _cleanup_window(self, user_id: str, endpoint: str, current_time: float) -> None:
+        """Remove timestamps outside the current window."""
+        state = self._state[(user_id, endpoint)]
+        window_start = current_time - self.window_seconds
+        
+        # Clean regular timestamps
+        state['timestamps'] = [ts for ts in state['timestamps'] if ts > window_start]
+        
+        # Clean burst timestamps (window is 2x for burst regeneration logic, 
+        # but we only keep those within the standard window for counting purposes)
+        state['burst_timestamps'] = [ts for ts in state['burst_timestamps'] if ts > window_start]
+        
+    def allow(self, user_id: str, endpoint: str = "default") -> Dict[str, Any]:
+        current_time = self._get_current_time()
+        key = (user_id, endpoint)
+        state = self._state[key]
+        
+        with self._lock:
+            self._cleanup_window(user_id, endpoint, current_time)
+            
+            # Count valid requests
+            regular_count = len(state['timestamps'])
+            burst_count = len(state['burst_timestamps'])
+            
+            # Calculate available capacity
+            # Regular limit: max_requests
+            # Burst limit: max_requests + burst (but burst tokens are harder to get)
+            
+            # Check if we can use a burst token
+            can_burst = (burst_count < self.burst)
+            
+            # Determine if request is allowed
+            if regular_count < self.max_requests:
+                # Standard request allowed
+                state['timestamps'].append(current_time)
+                remaining = self.max_requests - len(state['timestamps'])
+                retry_after = None
+                allowed = True
+            elif can_burst:
+                # Use burst token
+                state['burst_timestamps'].append(current_time)
+                remaining = (self.max_requests + self.burst) - len(state['timestamps']) - len(state['burst_timestamps'])
+                retry_after = None
+                allowed = True
+            else:
+                # Rate limited
+                allowed = False
+                # Calculate retry_after based on oldest timestamp
+                if state['timestamps']:
+                    oldest = min(state['timestamps'])
+                    retry_after = oldest + self.window_seconds - current_time
+                elif state['burst_timestamps']:
+                    # If only burst tokens exist, wait for them to expire
+                    oldest = min(state['burst_timestamps'])
+                    # Burst tokens expire after 2x window for regeneration purposes
+                    retry_after = oldest + (2 * self.window_seconds) - current_time
+                else:
+                    retry_after = 0.0
+                remaining = 0
+            
+            return {
+                "allowed": allowed,
+                "remaining": remaining,
+                "retry_after": retry_after
+            }
+    
+    def allow_priority(self, user_id: str, endpoint: str = "default") -> Dict[str, Any]:
+        # Priority users skip limits entirely
+        current_time = self._get_current_time()
+        key = (user_id, endpoint)
+        
+        with self._lock:
+            self._cleanup_window(user_id, endpoint, current_time)
+            state = self._state[key]
+            
+            # Calculate usage for reporting
+            regular_count = len(state['timestamps'])
+            burst_count = len(state['burst_timestamps'])
+            total_used = regular_count + burst_count
+            
+            # Burst remaining is how many more burst tokens can be used
+            burst_remaining = max(0, self.burst - burst_count)
+            
+            return {
+                "allowed": True,
+                "remaining": float('inf'),  # Or a large number indicating no limit
+                "retry_after": None,
+                "usage": {
+                    "used": total_used,
+                    "limit": self.max_requests,
+                    "window_seconds": self.window_seconds,
+                    "burst_remaining": burst_remaining
+                }
+            }
+    
+    def cleanup(self, max_age_seconds: float = None) -> int:
+        if max_age_seconds is None:
+            max_age_seconds = 2 * self.window_seconds
+        
+        current_time = self._get_current_time()
+        cutoff_time = current_time - max_age_seconds
+        
+        removed_count = 0
+        
+        with self._lock:
+            keys_to_remove = []
+            
+            for key, state in self._state.items():
+                # Check if any timestamps are still valid
+                has_valid_regular = any(ts > cutoff_time for ts in state['timestamps'])
+                has_valid_burst = any(ts > cutoff_time for ts in state['burst_timestamps'])
+                
+                if not has_valid_regular and not has_valid_burst:
+                    keys_to_remove.append(key)
+                    removed_count += 1
+            
+            # Remove empty entries
+            for key in keys_to_remove:
+                del self._state[key]
+                
+        return removed_count
+    
+    def get_usage(self, user_id: str, endpoint: str = "default") -> Dict[str, Any]:
+        current_time = self._get_current_time()
+        key = (user_id, endpoint)
+        
+        with self._lock:
+            self._cleanup_window(user_id, endpoint, current_time)
+            state = self._state[key]
+            
+            regular_count = len(state['timestamps'])
+            burst_count = len(state['burst_timestamps'])
+            total_used = regular_count + burst_count
+            
+            # Burst remaining: how many more burst tokens can be consumed
+            burst_remaining = max(0, self.burst - burst_count)
+            
+            return {
+                "used": total_used,
+                "limit": self.max_requests,
+                "window_seconds": self.window_seconds,
+                "burst_remaining": burst_remaining
+            }
+    
+    def to_dict(self) -> Dict[str, Any]:
+        """Serialize full state."""
+        with self._lock:
+            # Create a snapshot of state
+            state_snapshot = {}
+            for key, value in self._state.items():
+                state_snapshot[key] = {
+                    'timestamps': value['timestamps'],
+                    'burst_timestamps': value['burst_timestamps']
+                }
+            
+            return {
+                'max_requests': self.max_requests,
+                'window_seconds': self.window_seconds,
+                'burst': self.burst,
+                'state': state_snapshot
+            }
+    
+    @classmethod
+    def from_dict(cls, data: Dict[str, Any]) -> 'RateLimiter':
+        """Deserialize from dictionary."""
+        limiter = cls(
+            max_requests=data['max_requests'],
+            window_seconds=data['window_seconds'],
+            burst=data['burst']
+        )
+        
+        with limiter._lock:
+            limiter._state = defaultdict(lambda: {'timestamps': [], 'burst_timestamps': []})
+            
+            for key, value in data['state'].items():
+                limiter._state[key] = {
+                    'timestamps': value['timestamps'],
+                    'burst_timestamps': value['burst_timestamps']
+                }
+        
+        return limiter
+```

@@ -1,0 +1,82 @@
+```python
+import time
+from collections import OrderedDict
+
+class LRUCache:
+    def __init__(self, capacity: int):
+        self.capacity = capacity
+        self.cache = OrderedDict()
+        self.hits = 0
+        self.misses = 0
+        self.evictions = 0
+        self.expirations = 0
+
+    def _is_expired(self, key: str) -> bool:
+        if key not in self.cache:
+            return True
+        entry = self.cache[key]
+        if entry['ttl'] is not None:
+            return time.time() > entry['ttl']
+        return False
+
+    def get(self, key: str) -> any:
+        if key not in self.cache or self._is_expired(key):
+            self.misses += 1
+            if key in self.cache:
+                del self.cache[key]
+            return None
+        
+        # Move to end (most recently used)
+        self.cache.move_to_end(key)
+        self.hits += 1
+        return self.cache[key]['value']
+
+    def put(self, key: str, value: any, ttl: float = None):
+        if key in self.cache:
+            # Update value and TTL if provided, move to end
+            self.cache[key]['value'] = value
+            if ttl is not None:
+                self.cache[key]['ttl'] = time.time() + ttl
+            self.cache.move_to_end(key)
+            return
+
+        # Evict if at capacity
+        while len(self.cache) >= self.capacity:
+            oldest_key = next(iter(self.cache))
+            if not self._is_expired(oldest_key):
+                del self.cache[oldest_key]
+                self.evictions += 1
+            else:
+                del self.cache[oldest_key]
+                self.expirations += 1
+        
+        # Add new entry
+        self.cache[key] = {'value': value, 'ttl': time.time() + ttl if ttl is not None else None}
+
+    def delete(self, key: str) -> bool:
+        if key in self.cache and not self._is_expired(key):
+            del self.cache[key]
+            return True
+        return False
+
+    def size(self) -> int:
+        return len(self.cache)
+
+    def get_stats(self) -> dict:
+        return {
+            "hits": self.hits,
+            "misses": self.misses,
+            "evictions": self.evictions,
+            "expirations": self.expirations
+        }
+
+    def keys(self) -> list:
+        return list(self.cache.keys())
+
+    def clear(self) -> None:
+        self.cache.clear()
+        self.hits = 0
+        self.misses = 0
+        self.evictions = 0
+        self.expirations = 0
+```

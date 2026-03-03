@@ -1,0 +1,12 @@
+{
+  "time_to_detect_min": 10,
+  "time_to_respond_min": 5,
+  "time_to_resolve_min": 5,
+  "total_incident_min": 20,
+  "root_cause": "New caching layer leaking 50MB/min causing OOM kills in canary pods",
+  "blast_radius_pct": 25,
+  "detection_method": "Monitoring error rate spike",
+  "correct_rollback_decision": true,
+  "canary_caught_issue": true,
+  "improvement_suggestions_count": 3
+}

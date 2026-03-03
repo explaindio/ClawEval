@@ -1,0 +1,75 @@
+{
+  "vulnerabilities": [
+    {
+      "id": 1,
+      "type": "Hardcoded Secret",
+      "severity": "critical",
+      "location": "app.secret_key = \"password123\"",
+      "fix": "Generate a strong, random secret key using os.urandom() or a secrets module and store it securely in environment variables."
+    },
+    {
+      "id": 2,
+      "type": "Server-Side Template Injection (SSTI)",
+      "severity": "critical",
+      "location": "render_template_string(f\"Results for: {q}\")",
+      "fix": "Use render_template() with a safe template file instead of render_template_string(), and sanitize or escape user input before rendering."
+    },
+    {
+      "id": 3,
+      "type": "SQL Injection",
+      "severity": "critical",
+      "location": "db.execute(f\"SELECT * FROM users WHERE id = {id}\")",
+      "fix": "Use parameterized queries (prepared statements) instead of string formatting, e.g., db.execute(\"SELECT * FROM users WHERE id = ?\", (id,))."
+    },
+    {
+      "id": 4,
+      "type": "Arbitrary Code Execution (Deserialization)",
+      "severity": "critical",
+      "location": "obj = pickle.loads(data)",
+      "fix": "Avoid unpickling untrusted data. Use JSON for data interchange or validate the pickle payload strictly against a known schema."
+    },
+    {
+      "id": 5,
+      "type": "Command Injection",
+      "severity": "critical",
+      "location": "subprocess.check_output(cmd, shell=True)",
+      "fix": "Do not use shell=True. Pass the command as a list of arguments to subprocess.check_output() and validate/sanitize the input strictly."
+    },
+    {
+      "id": 6,
+      "type": "Path Traversal",
+      "severity": "high",
+      "location": "return open(path).read()",
+      "fix": "Validate the file path against an allowlist of permitted directories and ensure it does not contain '..' sequences before opening."
+    },
+    {
+      "id": 7,
+      "type": "Weak Authentication / Hardcoded Credentials",
+      "severity": "high",
+      "location": "if pw == os.environ.get(\"ADMIN_PW\", \"admin\")",
+      "fix": "Never use hardcoded defaults for passwords. Implement proper password hashing (e.g., bcrypt) and require a secure, non-default password."
+    },
+    {
+      "id": 8,
+      "type": "Information Disclosure",
+      "severity": "medium",
+      "location": "return str(os.environ)",
+      "fix": "Remove the debug route entirely in production. If debugging is needed, use Flask's built-in debug mode only in development environments."
+    },
+    {
+      "id": 9,
+      "type": "Missing HTTPS Enforcement",
+      "severity": "medium",
+      "location": "Global Configuration",
+      "fix": "Enforce HTTPS by setting app.config['SESSION_COOKIE_SECURE'] = True and using a reverse proxy (like Nginx) to redirect all HTTP traffic to HTTPS."
+    },
+    {
+      "id": 10,
+      "type": "Missing Rate Limiting",
+      "severity": "medium",
+      "location": "Global Configuration",
+      "fix": "Implement rate limiting using Flask-Limiter or similar extensions to prevent brute-force attacks and DoS on endpoints like /login and /run."
+    }
+  ],
+  "count": 10
+}
