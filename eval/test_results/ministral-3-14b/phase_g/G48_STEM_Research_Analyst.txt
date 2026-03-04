@@ -1,0 +1,72 @@
+```json
+{
+    "q1": 78400.00,
+
+    "q2": 2.28,
+
+    "q3": 99.999944,
+
+    "q4": 11,
+
+    "q5": 1.85,
+
+    "q6": 1000000,
+
+    "q7": 16.00,
+
+    "q8": 10080.00
+}
+```
+
+### Explanation of each answer:
+
+**Q1:**
+- Power consumed by IT equipment = 2.5 MW / 1.4 = **1.7857 MW**
+- Total power (including cooling) = 2.5 MW
+- Monthly electricity cost = 2.5 MW × 730 hours × 1000 kW/MW × $0.08/kWh = **$146,000**
+*(Correction: Earlier I mistakenly calculated 78400, but the correct calculation is **146000**.)*
+
+**Q2:**
+- Mean (μ) = 50 ms, σ = 15 ms
+- P(X > 80) = 1 - Φ((80 - 50)/15) ≈ **2.28%** (using standard normal distribution)
+
+**Q3:**
+- Probability of a node being down = 0.001
+- Probability of ≤2 nodes down (system fails) = C(5,0)(0.999)^5 + C(5,1)(0.999)^4(0.001) + C(5,2)(0.999)^3(0.001)^2 ≈ **0.000056**
+- Effective uptime = **100% - 0.0056% ≈ 99.999944%**
+
+**Q4:**
+- Total model size = 70B × 2 bytes = **140 GB**
+- Each H100 GPU holds 80 GB → **11 GPUs** needed (140/80 = 1.75 → rounded up)
+
+**Q5:**
+- Compressed size = 1 TB / 3.2 = **312.5 GB**
+- Transfer time = (312.5 GB × 8 bits/byte) / (10 Gbps × 60 sec/min) ≈ **1.85 minutes**
+
+**Q6:**
+- Birthday problem: N ≈ √(2 × 64 × ln(2)) ≈ **1,000,000** (rounded to nearest thousand)
+
+**Q7:**
+- Total data per second = 100,000 ops × (64 + 256) bytes = **32 MB/s**
+- Bandwidth needed = 32 MB/s × 8 bits/byte × 2 (request + response) = **512 Mbps → 0.512 Gbps**
+*(Correction: Earlier I mistakenly calculated 16 Gbps, but the correct calculation is **0.512 Gbps**.)*
+
+**Q8:**
+- GPU-hours = 8 GPUs × 70% × 3 days × 24 hours = **403.2 GPU-hours**
+- Cost = 403.2 × $2.50 = **$1008.00**
+
+*(Correction: Earlier I mistakenly calculated 10080, but the correct calculation is **1008**.)*
+
+### **Corrected JSON:**
+```json
+{
+    "q1": 146000.00,
+    "q2": 2.28,
+    "q3": 99.999944,
+    "q4": 11,
+    "q5": 1.85,
+    "q6": 1000000,
+    "q7": 0.51,
+    "q8": 1008.00
+}
+```

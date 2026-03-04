@@ -1,0 +1,164 @@
+```python
+import time
+import threading
+from collections import defaultdict
+
+class RateLimiter:
+    def __init__(self, max_requests: int, window_seconds: float, burst: int = 0):
+        self.max_requests = max_requests
+        self.window_seconds = window_seconds
+        self.burst = burst
+        self.lock = threading.Lock()
+        self.state = defaultdict(dict)
+
+    def _get_key(self, user_id: str, endpoint: str) -> str:
+        return f"{user_id}:{endpoint}"
+
+    def _cleanup_old(self, entries: dict, now: float, max_age: float) -> int:
+        removed = 0
+        to_remove = []
+        for key, data in entries.items():
+            if now - data['first_request'] > max_age:
+                to_remove.append(key)
+        for key in to_remove:
+            del entries[key]
+            removed += 1
+        return removed
+
+    def allow(self, user_id: str, endpoint: str = "default") -> dict:
+        now = time.time()
+        key = self._get_key(user_id, endpoint)
+        with self.lock:
+            entry = self.state[key]
+            if 'first_request' not in entry:
+                entry['first_request'] = now
+                entry['requests'] = 0
+                entry['burst_used'] = 0
+                entry['last_request'] = now
+
+            window_age = now - entry['first_request']
+            if window_age > self.window_seconds:
+                entry['first_request'] = now - (window_age % self.window_seconds)
+                entry['requests'] = 0
+                entry['burst_used'] = 0
+
+            max_allowed = self.max_requests + self.burst
+            if entry['requests'] < self.max_requests:
+                entry['requests'] += 1
+                entry['last_request'] = now
+                return {
+                    "allowed": True,
+                    "remaining": self.max_requests - entry['requests'],
+                    "retry_after": None
+                }
+            elif self.burst > 0 and entry['burst_used'] < self.burst:
+                entry['burst_used'] += 1
+                entry['last_request'] = now
+                return {
+                    "allowed": True,
+                    "remaining": self.burst - entry['burst_used'],
+                    "retry_after": None
+                }
+            else:
+                window_remaining = self.window_seconds - window_age
+                if window_remaining <= 0:
+                    return {
+                        "allowed": False,
+                        "remaining": 0,
+                        "retry_after": None
+                    }
+                else:
+                    return {
+                        "allowed": False,
+                        "remaining": 0,
+                        "retry_after": window_remaining
+                    }
+
+    def allow_priority(self, user_id: str, endpoint: str = "default") -> dict:
+        now = time.time()
+        key = self._get_key(user_id, endpoint)
+        with self.lock:
+            entry = self.state[key]
+            if 'first_request' not in entry:
+                entry['first_request'] = now
+                entry['requests'] = 0
+                entry['burst_used'] = 0
+                entry['last_request'] = now
+            entry['last_request'] = now
+            return {
+                "allowed": True,
+                "remaining": self.max_requests + self.burst,
+                "retry_after": None
+            }
+
+    def cleanup(self, max_age_seconds: float = None) -> int:
+        now = time.time()
+        max_age = max_age_seconds if max_age_seconds is not None else 2 * self.window_seconds
+        with self.lock:
+            removed = 0
+            for key in list(self.state.keys()):
+                entry = self.state[key]
+                if now - entry['first_request'] > max_age:
+                    del self.state[key]
+                    removed += 1
+            return removed
+
+    def get_usage(self, user_id: str, endpoint: str = "default") -> dict:
+        now = time.time()
+        key = self._get_key(user_id, endpoint)
+        with self.lock:
+            entry = self.state[key]
+            if 'first_request' not in entry:
+                return {
+                    "used": 0,
+                    "limit": self.max_requests,
+                    "window_seconds": self.window_seconds,
+                    "burst_remaining": self.burst
+                }
+
+            window_age = now - entry['first_request']
+            if window_age > self.window_seconds:
+                return {
+                    "used": 0,
+                    "limit": self.max_requests,
+                    "window_seconds": self.window_seconds,
+                    "burst_remaining": self.burst
+                }
+
+            return {
+                "used": entry['requests'] + entry['burst_used'],
+                "limit": self.max_requests + self.burst,
+                "window_seconds": self.window_seconds,
+                "burst_remaining": self.burst - entry['burst_used']
+            }
+
+    def to_dict(self) -> dict:
+        with self.lock:
+            return {
+                "max_requests": self.max_requests,
+                "window_seconds": self.window_seconds,
+                "burst": self.burst,
+                "state": {
+                    key: {
+                        "first_request": entry['first_request'],
+                        "requests": entry['requests'],
+                        "burst_used": entry['burst_used'],
+                        "last_request": entry['last_request']
+                    }
+                    for key, entry in self.state.items()
+                }
+            }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> 'RateLimiter':
+        limiter = cls(data['max_requests'], data['window_seconds'], data.get('burst', 0))
+        limiter.state = defaultdict(dict)
+        for key, entry in data['state'].items():
+            limiter.state[key] = {
+                'first_request': entry['first_request'],
+                'requests': entry['requests'],
+                'burst_used': entry['burst_used'],
+                'last_request': entry['last_request']
+            }
+        return limiter
+```

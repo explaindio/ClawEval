@@ -128,7 +128,7 @@ Don't have a GPU? We also test open-source models hosted on cloud providers so y
 
 🟢 = 8-10 &nbsp; 🟡 = 5-7 &nbsp; 🔴 = 0-4 &nbsp; 📝 = Manual review (5)
 
-> ✅ **All small models tested.** Qwen3.5 (0.8B, 2B, 4B, 9B) + Ministral-3 (3B, 8B) complete. [Full small model results →](docs/results-small-vram.md)
+> ✅ **All small models tested.** Qwen3.5 (0.8B, 2B, 4B, 9B) + Ministral-3 (3B, 8B, 14B) complete. [Full small model results →](docs/results-small-vram.md)
 
 | # | Agent Role | 🔴 Best 8GB | | 🟠 Best 12GB | | 🟡 Best 16GB | |
 |---|---|---|---|---|---|---|---|
@@ -162,14 +162,14 @@ Don't have a GPU? We also test open-source models hosted on cloud providers so y
 | 25 | Customer Support | Qwen3.5-4B | 🟢 9 | — | — | Mini3-8B | 🟢 10 |
 | 26 | Lead Scoring | Qwen3.5-4B | 🟡 6 | Qwen3.5-9B | 🟢 8 | — | — |
 | 27 | Sprint Summary | Qwen3.5-4B | 🟡 6 | Qwen3.5-9B | 🟡 7 | — | — |
-| 28 | Transaction | Qwen3.5-2B | 🟢 9 | — | — | — | — |
+| 28 | Transaction | Qwen3.5-2B | 🟢 9 | — | — | Mini3-14B | 🟢 10† |
 | 29 | Home Automation | Qwen3.5-0.8B NT | 🟢 10 | — | — | — | — |
 | 30 | Fitness Tracking | Qwen3.5-4B NT | 🟡 5 | Qwen3.5-9B | 🟡 6 | — | — |
 | 31 | Recipe / Cooking | Qwen3.5-4B | 🔴 2 | — | — | Mini3-8B | 🔴 3 |
 | 32 | Personal Finance | Qwen3.5-4B NT | 🟡 5 | — | — | — | — |
 | 33 | SEO Optimization | Qwen3.5-0.8B | 🟢 9 | — | — | — | — |
 | 34 | Landing Page | 📝 Manual | 📝 5 | — | — | — | — |
-| 35 | Travel Planning | Mini3-3B | 🟢 10 | — | — | — | — |
+| 35 | Travel Planning | Mini3-3B | 🟢 10 | — | — | Mini3-14B | 🟢 10 |
 | | **Tier 3 — Advanced** | | | | | | |
 | 36 | Code Generation | Qwen3.5-2B | 🟢 10 | — | — | — | — |
 | 37 | Code Review | Qwen3.5-0.8B NT | 🟢 10 | — | — | — | — |
@@ -179,7 +179,7 @@ Don't have a GPU? We also test open-source models hosted on cloud providers so y
 | 41 | Critic / Review | 📝 Manual | 📝 5 | — | — | — | — |
 | 42 | Market Research | Qwen3.5-4B | 🟡 6 | — | — | — | — |
 | 43 | Synthesizer | Qwen3.5-4B | 🟢 10 | — | — | — | — |
-| 44 | Curriculum Design | Qwen3.5-2B | 🟡 7 | — | — | Mini3-8B | 🟢 8 |
+| 44 | Curriculum Design | Qwen3.5-2B | 🟡 7 | — | — | Mini3-14B | 🟢 9 |
 | 45 | Prototype Gen | Qwen3.5-0.8B Think | 🟡 7 | — | — | — | — |
 | 46 | DevOps | Qwen3.5-0.8B Think | 🟢 10 | — | — | — | — |
 | | **Tier 4 — Expert** | | | | | | |
@@ -192,11 +192,11 @@ Don't have a GPU? We also test open-source models hosted on cloud providers so y
 | 52 | Debugger | Qwen3.5-0.8B NT | 🟢 10 | — | — | — | — |
 | 53 | Legal Review | Qwen3.5-0.8B | 🟢 10 | — | — | — | — |
 | 54 | Medical | Qwen3.5-0.8B | 🟢 10 | — | — | — | — |
-| 55 | Financial | Qwen3.5-4B | 🟢 9 | — | — | — | — |
+| 55 | Financial | Qwen3.5-4B | 🟢 9 | — | — | Mini3-14B | 🟢 10 |
 | 56 | Security | Qwen3.5-2B Think | 🟢 10 | — | — | — | — |
 | 57 | SRE / Incident | Qwen3.5-4B | 🔴 4 | — | — | — | — |
 | 58 | Book Writing | 📝 Manual | 📝 5 | — | — | — | — |
-| 59 | Compliance | Mini3-3B | 🟢 9 | — | — | — | — |
+| 59 | Compliance | Mini3-3B | 🟢 9 | — | — | Mini3-14B | 🟢 10† |
 
 > 📊 **[Full small model Think/NoThink comparison →](docs/results-small-vram.md)** · Phase F: 444/590 (75%) · Phase G: 81/110 (74%)
 

@@ -1,0 +1,62 @@
+Here’s the calculated market metrics in JSON format based on the provided data:
+
+```json
+{
+  "total_revenue": 2626,
+  "total_revenue_currency": "M",
+  "avg_growth": 28.2,
+  "avg_growth_unit": "%",
+  "market_leader_by_revenue": "Smartsheet",
+  "fastest_growing": "ClickUp",
+  "highest_revenue_per_employee": {
+    "company": "Smartsheet",
+    "value": 259.375,
+    "value_currency": "K"
+  },
+  "combined_market_share": 17.5,
+  "combined_market_share_unit": "%",
+  "avg_revenue_per_customer": {
+    "value": 3.95,
+    "value_currency": "K",
+    "note": "Excludes Notion's free-tier customers (30M). Adjusted average: $11.33 per paying customer (if assuming 3M paid users)."
+  },
+  "largest_customer_base": {
+    "company": "Notion",
+    "value": 30000000,
+    "note": "Includes free-tier users. Paid users likely much lower."
+  },
+  "smallest_company": {
+    "company": "Notion",
+    "metric": "Employees",
+    "value": 500
+  },
+  "revenue_range": {
+    "min": 180,
+    "max": 830,
+    "currency": "M"
+  },
+  "additional_metrics": {
+    "total_customers": 548500,
+    "total_employees": 8900,
+    "notion_adjusted_customers": {
+      "note": "If Notion's 30M includes 90% free users (~27M free), paid users ≈ 3M → avg_revenue_per_customer ≈ $113.33"
+    }
+  }
+}
+```
+
+### Key Notes:
+1. **Market Share Calculation**:
+   Combined revenue ($2.626B) / TAM ($15B) = **17.5%**.
+   *Excludes potential competitors outside the listed companies.*
+
+2. **Revenue per Employee**:
+   Smartsheet leads at **$259.375K/employee** (highest efficiency).
+   ClickUp is the most growth-driven but least efficient ($180M/1K employees).
+
+3. **Customer Base Clarification**:
+   Notion’s 30M includes free users. If assuming **10% paid** (~3M), its revenue per customer jumps to **$113.33** (vs. $3.95 if including free users).
+   *Excluded from `avg_revenue_per_customer` due to ambiguity.*
+
+4. **Growth Averages**:
+   Weighted average growth: `(547*18 + 729*24 + 180*45 + 340*35 + 830*15) / 2626 ≈ 28.2%`.

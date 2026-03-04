@@ -1,0 +1,80 @@
+```json
+{
+  "findings": [
+    "Acute **ST-elevation myocardial infarction (STEMI)** (inferior wall, based on ST elevation in leads II, III, aVF and elevated troponin I at 0.8 ng/mL)",
+    "Hypertension (BP 165/95 mmHg)",
+    "Tachycardia (HR 110 bpm)",
+    "Tachypnea (RR 22 breaths/min)",
+    "Mild hypoxia (SpO₂ 94% on room air)",
+    "Elevated **B-type natriuretic peptide (BNP 450 pg/mL)** (suggestive of heart failure or volume overload)",
+    "Hyperglycemia (glucose 280 mg/dL) in the context of **stress hyperglycemia** (common in acute MI)",
+    "Chronic kidney disease (CKD) with **elevated creatinine (1.8 mg/dL)**",
+    "Dyslipidemia (LDL 185 mg/dL) with **no statin therapy** (high cardiovascular risk)",
+    "Active smoking (30 pack-years) with **family history of premature MI** (father at age 52)"
+  ],
+  "red_flags": [
+    "Acute STEMI with **high-risk features** (inferior MI, tachycardia, hypertension, hyperglycemia, CKD, and no prior secondary prevention meds like aspirin/statin)",
+    "Possible **right ventricular involvement** (inferior MI + tachycardia + hypoxia may suggest RV strain)",
+    "Risk of **heart failure decompensation** (elevated BNP + CKD + acute MI)",
+    "Potential **complications of MI** (arrhythmias, cardiogenic shock, mechanical complications like papillary muscle rupture)",
+    "Undertreated **atherosclerotic risk factors** (no aspirin, no statin, active smoking, poor glucose control)",
+    "Possible **silent ischemia or multi-vessel disease** (given severe dyslipidemia and family history)"
+  ],
+  "suggested_tests": [
+    {
+      "test": "Emergent **12-lead ECG** (already done; confirm findings and rule out STEMI evolution)",
+      "priority": "immediate"
+    },
+    {
+      "test": "**Echocardiogram** (assess LV/RV function, wall motion abnormalities, valvular dysfunction, pericardial effusion)",
+      "priority": "urgent"
+    },
+    {
+      "test": "**Serial troponin I** (to confirm MI diagnosis and assess peak levels)",
+      "priority": "urgent"
+    },
+    {
+      "test": "**Coronary angiography** (for revascularization strategy: PCI vs. CABG)",
+      "priority": "urgent (within hours if STEMI confirmed)"
+    },
+    {
+      "test": "**CBC, electrolytes, coagulation profile** (baseline for PCI, assess for anemia/thrombocytopenia)",
+      "priority": "urgent"
+    },
+    {
+      "test": "**BMP/CMP** (further renal/hepatic function assessment)",
+      "priority": "urgent"
+    },
+    {
+      "test": "**Hemoglobin A1c** (long-term glucose control assessment)",
+      "priority": "short-term"
+    },
+    {
+      "test": "**Lipid panel (full)** (including HDL, triglycerides, non-HDL cholesterol)",
+      "priority": "short-term"
+    },
+    {
+      "test": "**Brain natriuretic peptide (BNP) trend** (if heart failure suspected)",
+      "priority": "short-term"
+    },
+    {
+      "test": "**Cardiac MRI (if stable)** (late for acute phase but useful for infarct size, viability, and complications)",
+      "priority": "subacute (if clinically indicated)"
+    },
+    {
+      "test": "**Stress test (e.g., nuclear or stress echo)** (post-acute phase to assess residual ischemia)",
+      "priority": "subacute"
+    }
+  ],
+  "immediate_management_suggestions": [
+    "Activate **STEMI protocol** (goal: PCI within 90 mins or fibrinolysis if PCI unavailable)",
+    "Administer **aspirin 324 mg chewable** (load) + **P2Y12 inhibitor (e.g., clopidogrel, ticagrelor)**",
+    "Start **statins (high-intensity, e.g., atorvastatin 80 mg)** and **ACEi/ARB** (if no contraindications)",
+    "Initiate **insulin/glucose control** (IV insulin drip if severe hyperglycemia)",
+    "Consider **beta-blocker (e.g., metoprolol)** if no contraindications (e.g., heart failure, hypotension)",
+    "Oxygen if **SpO₂ <94% or signs of heart failure**",
+    "IV **nitroglycerin** (if BP allows) for ischemia relief",
+    "Monitor for **complications** (arrhythmias, heart failure, mechanical complications)"
+  ]
+}
+```

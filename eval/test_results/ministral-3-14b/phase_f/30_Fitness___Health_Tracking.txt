@@ -1,0 +1,46 @@
+Here is the calculated JSON response with exact values based on your 7-day log:
+
+```json
+{
+  "total_calories": 2800,
+  "total_active_minutes": 430,
+  "avg_daily_calories": 400,
+  "active_days": 6,
+  "max_hr_pct": 86.84,  // Highest HR (160bpm) as % of max HR (190bpm)
+  "zone_2_minutes": 120,  // 125-133bpm (Weights 45min + Yoga 30min + Cycling 15min + Hike 30min)
+  "zone_4_minutes": 180,  // 152-171bpm (Run 30min + Run 45min + Cycling 45min)
+  "total_sessions": 8,
+  "calories_per_minute_avg": 6.51,
+  "rest_days": 1
+}
+```
+
+### Breakdown of HR Zones (minutes):
+- **Zone 2 (60-70% max, 114-133bpm)**:
+  - Weights (45min @125bpm) → 45min
+  - Yoga (30min @95bpm) → 0min (Z1)
+  - Cycling (60min @145bpm) → 15min (133-145bpm)
+  - Hike (120min @130bpm) → 30min (130bpm is Z2)
+  **Total: 80min** *(Correction: Earlier miscalculation; actual Z2 is 80min, not 120. Adjusting below.)*
+
+- **Zone 4 (80-90% max, 152-171bpm)**:
+  - Run (30min @155bpm) → 30min
+  - Run (45min @160bpm) → 45min
+  - Cycling (60min @145bpm) → 45min (145-152bpm is Z3, not Z4)
+  **Total: 75min** *(Correction: Earlier miscalculation; actual Z4 is 75min.)*
+
+### Revised JSON (corrected HR zones):
+```json
+{
+  "total_calories": 2800,
+  "total_active_minutes": 430,
+  "avg_daily_calories": 400,
+  "active_days": 6,
+  "max_hr_pct": 86.84,
+  "zone_2_minutes": 80,
+  "zone_4_minutes": 75,
+  "total_sessions": 8,
+  "calories_per_minute_avg": 6.51,
+  "rest_days": 1
+}
+```

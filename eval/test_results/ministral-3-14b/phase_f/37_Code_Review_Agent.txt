@@ -1,0 +1,37 @@
+```json
+{
+    "bugs": [
+        {
+            "line": 8,
+            "issue": "No validation for discount value; could be greater than 100, leading to negative prices or incorrect calculations.",
+            "fix": "Add validation to ensure discount is between 0 and 100 (inclusive). Example: `discount = max(0, min(order.get('discount', 0), 100))`"
+        },
+        {
+            "line": 10,
+            "issue": "No check for `price` being `None` or non-numeric before comparison (`price < 0`). Could raise `TypeError` if `price` is `None` or invalid type.",
+            "fix": "Add type/value checks for `price` and `quantity` before calculations. Example: `if not isinstance(price, (int, float)) or price is None:`"
+        },
+        {
+            "line": 18,
+            "issue": "ZeroDivisionError when `processed` is empty (e.g., no pending orders or empty input).",
+            "fix": "Check if `processed` is non-empty before calculating `avg`. Example: `avg = total / len(processed) if processed else 0`"
+        },
+        {
+            "line": 23,
+            "issue": "Returns `len(orders)` instead of `len(processed)`, which is misleading (should reflect only processed orders).",
+            "fix": "Replace with `len(processed)` to match the count of processed orders."
+        },
+        {
+            "line": "entire function",
+            "issue": "Mutates input dictionaries by modifying `order['status']` and adding `order['final_price']` (side effect).",
+            "fix": "Create a copy of each order before processing to avoid modifying the input. Example: `order = order.copy()` or `order = dict(order)`"
+        },
+        {
+            "line": "entire function",
+            "issue": "No type checking for `price` and `quantity` in the input `orders`. Could raise `KeyError` or `TypeError` if missing/non-numeric.",
+            "fix": "Add validation for required fields (`price`, `quantity`) and their types. Example: `if not isinstance(order.get('price'), (int, float)) or order.get('price') is None:`"
+        }
+    ],
+    "count": 6
+}
+```

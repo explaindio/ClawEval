@@ -1,0 +1,26 @@
+Here is the calculated sprint metrics in JSON format with exact values:
+
+```json
+{
+  "velocity": 29,
+  "commitment_pts": 45,
+  "completed_pts": 29,
+  "completion_rate": 0.6444,
+  "carryover_pts": 13,
+  "scope_change_pts": 3,
+  "pts_per_dev": 5.8,
+  "bug_ratio": 0.2414,
+  "stories_completed": 12,
+  "stories_total": 15
+}
+```
+
+### Breakdown:
+- **Velocity**: Sum of completed story points (5+3+8+3+5+2+1+2+2+1 = **29**).
+- **Completion rate**: Completed points / Committed points (**29/45 ≈ 0.6444**).
+- **Carryover**: Sum of incomplete story points (**5+8 = 13**).
+- **Scope change**: Sum of added mid-sprint points (**2+1 = 3**).
+- **Points per dev**: Velocity / Team size (**29/5 = 5.8**).
+- **Bug ratio**: Bugs found / Completed story points (**7/29 ≈ 0.2414**).
+- **Stories completed**: Count of finished stories (**12**).
+- **Stories total**: Count of all stories (committed + carried over + added mid-sprint = **15**).

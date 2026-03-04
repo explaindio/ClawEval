@@ -1,0 +1,44 @@
+```python
+import pytest
+from your_module import calculate_tax  # Replace 'your_module' with the actual module name
+
+def test_zero_income():
+    assert calculate_tax(0, 'single') == (0, 0)
+    assert calculate_tax(0, 'married') == (0, 0)
+
+def test_typical_single_income():
+    assert calculate_tax(50000, 'single') == (4715.0, 9.43)
+    assert calculate_tax(100000, 'single') == (14715.0, 14.72)
+
+def test_typical_married_income():
+    assert calculate_tax(100000, 'married') == (7350.0, 7.35)
+    assert calculate_tax(200000, 'married') == (30105.0, 15.05)
+
+def test_high_income_single():
+    assert calculate_tax(1_000_000, 'single') == (318_535.0, 31.85)
+    assert calculate_tax(2_000_000, 'single') == (637_070.0, 31.85)
+
+def test_high_income_married():
+    assert calculate_tax(1_000_000, 'married') == (298_535.0, 29.85)
+    assert calculate_tax(2_000_000, 'married') == (617_070.0, 30.85)
+
+def test_bracket_boundaries_single():
+    assert calculate_tax(11600, 'single') == (1160.0, 10.0)
+    assert calculate_tax(47150, 'single') == (4715.0, 10.0)
+    assert calculate_tax(100525, 'single') == (14715.0, 14.65)
+
+def test_bracket_boundaries_married():
+    assert calculate_tax(23200, 'married') == (2320.0, 10.0)
+    assert calculate_tax(94300, 'married') == (9430.0, 10.0)
+    assert calculate_tax(201050, 'married') == (29430.0, 14.64)
+
+def test_invalid_inputs():
+    with pytest.raises(ValueError):
+        calculate_tax(-1000, 'single')
+    with pytest.raises(ValueError):
+        calculate_tax("50000", 'single')
+    with pytest.raises(ValueError):
+        calculate_tax(50000, 'divorced')
+    with pytest.raises(ValueError):
+        calculate_tax(50000, None)
+```

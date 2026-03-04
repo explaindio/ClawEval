@@ -1,0 +1,63 @@
+```python
+import time
+from collections import OrderedDict
+
+class LRUCache:
+    def __init__(self, capacity: int):
+        self.capacity = capacity
+        self.cache = OrderedDict()
+        self.stats = {"hits": 0, "misses": 0, "evictions": 0, "expirations": 0}
+
+    def _clean_expired(self):
+        now = time.time()
+        expired_keys = []
+        for key, (value, expiry) in self.cache.items():
+            if expiry is not None and now >= expiry:
+                expired_keys.append(key)
+        for key in expired_keys:
+            del self.cache[key]
+            self.stats["expirations"] += 1
+
+    def get(self, key: str) -> any:
+        self._clean_expired()
+        if key not in self.cache:
+            self.stats["misses"] += 1
+            return None
+        value, _ = self.cache[key]
+        self.cache.move_to_end(key)
+        self.stats["hits"] += 1
+        return value
+
+    def put(self, key: str, value: any, ttl: float = None):
+        self._clean_expired()
+        expiry = time.time() + ttl if ttl is not None else None
+        if key in self.cache:
+            self.cache.move_to_end(key)
+        else:
+            if len(self.cache) >= self.capacity:
+                self.cache.popitem(last=False)
+                self.stats["evictions"] += 1
+        self.cache[key] = (value, expiry)
+
+    def delete(self, key: str) -> bool:
+        self._clean_expired()
+        if key in self.cache:
+            del self.cache[key]
+            return True
+        return False
+
+    def size(self) -> int:
+        self._clean_expired()
+        return len(self.cache)
+
+    def get_stats(self) -> dict:
+        return self.stats.copy()
+
+    def keys(self) -> list:
+        self._clean_expired()
+        return list(self.cache.keys())
+
+    def clear(self) -> None:
+        self.cache.clear()
+        self.stats = {"hits": 0, "misses": 0, "evictions": 0, "expirations": 0}
+```

@@ -1,0 +1,103 @@
+```python
+from flask import Flask, request, jsonify
+from dataclasses import dataclass
+from typing import List, Optional
+from werkzeug.exceptions import BadRequest, NotFound
+
+app = Flask(__name__)
+
+@dataclass
+class Book:
+    id: int
+    title: str
+    author: str
+    isbn: str
+    price: float
+
+books_db: List[Book] = []
+next_id = 1
+
+def validate_book_data(data: dict) -> None:
+    if not all(key in data for key in ['title', 'author', 'isbn', 'price']):
+        raise BadRequest(description="Missing required fields")
+    if not isinstance(data['price'], (int, float)) or data['price'] <= 0:
+        raise BadRequest(description="Price must be a positive number")
+    if not isinstance(data['isbn'], str) or len(data['isbn']) < 3:
+        raise BadRequest(description="ISBN must be a string with at least 3 characters")
+
+@app.route('/books', methods=['GET'])
+def get_books():
+    page = int(request.args.get('page', 1))
+    per_page = int(request.args.get('per_page', 10))
+
+    start = (page - 1) * per_page
+    end = start + per_page
+    paginated_books = books_db[start:end]
+
+    return jsonify([book.__dict__ for book in paginated_books])
+
+@app.route('/books/<int:book_id>', methods=['GET'])
+def get_book(book_id: int):
+    book = next((book for book in books_db if book.id == book_id), None)
+    if not book:
+        raise NotFound(description="Book not found")
+    return jsonify(book.__dict__)
+
+@app.route('/books', methods=['POST'])
+def create_book():
+    global next_id
+    data = request.get_json()
+
+    try:
+        validate_book_data(data)
+    except BadRequest as e:
+        return jsonify({"error": str(e.description)}), 400
+
+    new_book = Book(
+        id=next_id,
+        title=data['title'],
+        author=data['author'],
+        isbn=data['isbn'],
+        price=data['price']
+    )
+    books_db.append(new_book)
+    next_id += 1
+    return jsonify(new_book.__dict__), 201
+
+@app.route('/books/<int:book_id>', methods=['PUT'])
+def update_book(book_id: int):
+    book = next((book for book in books_db if book.id == book_id), None)
+    if not book:
+        raise NotFound(description="Book not found")
+
+    data = request.get_json()
+    try:
+        validate_book_data(data)
+    except BadRequest as e:
+        return jsonify({"error": str(e.description)}), 400
+
+    book.title = data['title']
+    book.author = data['author']
+    book.isbn = data['isbn']
+    book.price = data['price']
+
+    return jsonify(book.__dict__), 200
+
+@app.route('/books/<int:book_id>', methods=['DELETE'])
+def delete_book(book_id: int):
+    global books_db
+    book = next((book for book in books_db if book.id == book_id), None)
+    if not book:
+        raise NotFound(description="Book not found")
+
+    books_db = [book for book in books_db if book.id != book_id]
+    return jsonify({"message": "Book deleted successfully"}), 200
+
+@app.errorhandler(BadRequest)
+@app.errorhandler(NotFound)
+def handle_error(e):
+    return jsonify({"error": str(e.description)}), (e.code if hasattr(e, 'code') else 400)
+
+if __name__ == '__main__':
+    app.run(debug=True)
+```

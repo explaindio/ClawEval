@@ -1,0 +1,230 @@
+```json
+{
+  "phases": [
+    {
+      "phase": 1,
+      "name": "Initial_Triage_and_Diagnostics",
+      "agents": [
+        {
+          "agent": "log_analyzer",
+          "input": {
+            "service": "affected_service",
+            "time_range": "last_15_minutes",
+            "severity": "ERROR,CRITICAL"
+          },
+          "timeout_seconds": 60
+        },
+        {
+          "agent": "metric_checker",
+          "input": {
+            "service": "affected_service",
+            "metrics": ["error_rate", "latency", "throughput"],
+            "time_range": "last_30_minutes"
+          },
+          "timeout_seconds": 60
+        },
+        {
+          "agent": "dependency_mapper",
+          "input": {
+            "service": "affected_service",
+            "depth": 2
+          },
+          "timeout_seconds": 90
+        },
+        {
+          "agent": "db_checker",
+          "input": {
+            "service": "affected_service",
+            "checks": ["connections", "locks", "replication_lag"]
+          },
+          "timeout_seconds": 60
+        },
+        {
+          "agent": "capacity_planner",
+          "input": {
+            "service": "affected_service",
+            "checks": ["cpu_usage", "memory_usage", "disk_io"]
+          },
+          "timeout_seconds": 60
+        },
+        {
+          "agent": "config_auditor",
+          "input": {
+            "service": "affected_service",
+            "time_range": "last_6_hours"
+          },
+          "timeout_seconds": 60
+        }
+      ],
+      "parallel": true,
+      "gate": "All agents complete successfully OR at least 2 agents fail with timeout"
+    },
+    {
+      "phase": 2,
+      "name": "Notification_and_Incident_Recording",
+      "agents": [
+        {
+          "agent": "notification_agent",
+          "input": {
+            "channel": ["Slack", "PagerDuty"],
+            "message": "Production outage detected in {affected_service}. Initial diagnostics completed.",
+            "severity": "CRITICAL"
+          },
+          "timeout_seconds": 30
+        },
+        {
+          "agent": "incident_reporter",
+          "input": {
+            "title": "Production Outage: {affected_service}",
+            "description": "Initial diagnostics completed. Root cause investigation ongoing.",
+            "status": "Investigating"
+          },
+          "timeout_seconds": 30
+        }
+      ],
+      "parallel": true,
+      "gate": "Incident ticket created AND notifications sent"
+    },
+    {
+      "phase": 3,
+      "name": "Root_Cause_Analysis",
+      "agents": [
+        {
+          "agent": "log_analyzer",
+          "input": {
+            "service": "affected_service",
+            "time_range": "last_1_hour",
+            "severity": "ERROR,CRITICAL",
+            "pattern": "recursive"
+          },
+          "timeout_seconds": 120
+        },
+        {
+          "agent": "dependency_mapper",
+          "input": {
+            "service": "affected_service",
+            "depth": 3,
+            "check_dependencies": true
+          },
+          "timeout_seconds": 120
+        }
+      ],
+      "parallel": true,
+      "gate": "Root cause identified OR max time reached"
+    },
+    {
+      "phase": 4,
+      "name": "Remediation_or_Rollback",
+      "agents": [
+        {
+          "agent": "rollback_agent",
+          "input": {
+            "service": "affected_service",
+            "deployment_id": "previous_stable_deployment"
+          },
+          "timeout_seconds": 300,
+          "condition": "config_auditor.found_recent_config_change == true AND metric_checker.error_rate > threshold"
+        },
+        {
+          "agent": "customer_communicator",
+          "input": {
+            "message": "We are investigating the outage in {affected_service}. A rollback is in progress.",
+            "status": "Investigating"
+          },
+          "timeout_seconds": 60,
+          "condition": "rollback_agent.triggered == true"
+        }
+      ],
+      "parallel": false,
+      "gate": "Rollback completed OR manual intervention required"
+    },
+    {
+      "phase": 5,
+      "name": "Verification_and_Closure",
+      "agents": [
+        {
+          "agent": "metric_checker",
+          "input": {
+            "service": "affected_service",
+            "metrics": ["error_rate", "latency", "throughput"],
+            "time_range": "last_5_minutes",
+            "threshold": "normal_operating_range"
+          },
+          "timeout_seconds": 60
+        },
+        {
+          "agent": "log_analyzer",
+          "input": {
+            "service": "affected_service",
+            "time_range": "last_5_minutes",
+            "severity": "ERROR,CRITICAL",
+            "check_for_resolution": true
+          },
+          "timeout_seconds": 60
+        },
+        {
+          "agent": "incident_reporter",
+          "input": {
+            "status": "Resolved",
+            "resolution": "Root cause: {root_cause}. Action taken: {action_taken}. Verified: {verification_status}"
+          },
+          "timeout_seconds": 30,
+          "condition": "metric_checker.within_threshold == true AND log_analyzer.no_errors == true"
+        },
+        {
+          "agent": "customer_communicator",
+          "input": {
+            "message": "The outage in {affected_service} has been resolved. Service is back to normal.",
+            "status": "Resolved"
+          },
+          "timeout_seconds": 60,
+          "condition": "incident_reporter.status == 'Resolved'"
+        }
+      ],
+      "parallel": true,
+      "gate": "Service verified OR max time reached"
+    }
+  ],
+  "decision_points": [
+    {
+      "after_phase": 1,
+      "condition": "log_analyzer.error_pattern == 'known_issue'",
+      "if_true": "go to phase 4",
+      "if_false": "go to phase 3"
+    },
+    {
+      "after_phase": 3,
+      "condition": "config_auditor.found_recent_config_change == true AND metric_checker.error_rate > threshold",
+      "if_true": "go to phase 4",
+      "if_false": "go to phase 5"
+    }
+  ],
+  "escalation": {
+    "trigger": "phase_1_timeout OR phase_3_timeout OR phase_5_timeout OR manual_escalation_requested",
+    "action": {
+      "notification": {
+        "agent": "notification_agent",
+        "input": {
+          "channel": ["Slack", "PagerDuty"],
+          "message": "ESCALATION: Production outage in {affected_service} unresolved after {current_phase} phase. Manual intervention required.",
+          "severity": "CRITICAL"
+        }
+      },
+      "incident_update": {
+        "agent": "incident_reporter",
+        "input": {
+          "status": "Escalated",
+          "notes": "Automated workflow timed out or unresolved."
+        }
+      }
+    }
+  },
+  "total_phases": 5,
+  "max_time_minutes": 20,
+  "rollback_conditions": [
+    "config_auditor.found_recent_config_change == true AND metric_checker.error_rate > 1000 AND log_analyzer.error_pattern == 'config_related'",
+    "db_checker.connections > 90% AND db_checker.locks > 0 AND dependency_mapper.dependent_services_affected > 3",
+    "capacity_planner.cpu_usage > 95% AND capacity_planner.memory_usage > 90% AND metric_checker.latency > 1000ms"
+  ]
+}
+```

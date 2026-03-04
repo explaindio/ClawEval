@@ -1,0 +1,164 @@
+```json
+{
+  "architecture": {
+    "components": [
+      "API Gateway (Edge Load Balancer)",
+      "Short URL Service (Stateless Microservice)",
+      "Custom Alias Service (Stateless Microservice)",
+      "Expiration Service (Event-Driven)",
+      "Analytics Service (Separate Tenant)",
+      "GDPR Compliance Service (Async Deletion Queue)",
+      "CDN (Edge Caching for Redirects)",
+      "Monitoring & Logging (Centralized)",
+      "Rate Limiter (Distributed)"
+    ],
+    "database": {
+      "primary": {
+        "write_store": "Apache Cassandra (Multi-Region)",
+        "read_store": "Redis Cluster (Primary Cache Layer)",
+        "metadata_store": "PostgreSQL (For Custom Aliases & Expiration Rules)"
+      },
+      "justification": "
+        - **Cassandra**: Handles 10M writes/day with tunable consistency (QUORUM for writes, LOCAL_QUORUM for reads). Multi-region for low-latency global access.
+        - **Redis**: In-memory cache for <50ms p99 latency. Acts as primary read store for hot URLs.
+        - **PostgreSQL**: ACID-compliant for custom aliases and expiration rules (smaller dataset, lower write volume).
+      "
+    },
+    "cache": {
+      "type": "Redis Cluster (Active-Active)",
+      "strategy": "
+        - **Multi-level caching**:
+          - **L1**: CDN edge cache (TTL=1h, invalidated on write).
+          - **L2**: Redis Cluster (TTL=5min, warm cache via background pre-fetch).
+          - **L3**: Cassandra (persistent storage).
+        - **Write-through**: Cache-aside pattern with write-behind for expiration events.
+      ",
+      "invalidation": "
+        - **CDN**: Invalidate paths on write via API (Cloudflare/Purge API).
+        - **Redis**: Key eviction on update + pub/sub for cross-node invalidation.
+        - **Cassandra**: TTL-based expiration (no manual invalidation needed).
+      "
+    },
+    "hash_strategy": {
+      "algorithm": "Base62 (0-9, A-Z, a-z) + MurmurHash3 (128-bit)",
+      "length": 8,
+      "collision_handling": "
+        - **Probability**: 8-char Base62 has ~1.6e12 possible URLs (collision risk < 0.0001% at 10M/day).
+        - **Fallback**: If collision detected, append 1-char suffix (e.g., `abc123X`) and retry.
+        - **Custom Aliases**: Bypass hashing; stored directly in PostgreSQL.
+      "
+    }
+  },
+  "scaling": {
+    "read_write_ratio": "100:1 (1B reads/day, 10M writes/day)",
+    "read_optimization": "
+      - **CDN**: Serve 90% of reads from edge (100ms latency).
+      - **Redis Cluster**: Sharded by URL prefix (consistent hashing) for low-latency reads.
+      - **Cassandra**: Locality-aware routing to minimize cross-region reads.
+    ",
+    "write_path": "
+      1. API Gateway → Rate Limiter → Short URL Service.
+      2. **Short URL Service**:
+         - Generate hash (or validate custom alias).
+         - Write to Cassandra (QUORUM consistency).
+         - Publish expiration event to Kafka (if applicable).
+         - Invalidate CDN path.
+      3. **Custom Alias Flow**:
+         - Check PostgreSQL for conflicts.
+         - Write to PostgreSQL + Cassandra (for redirect target).
+    ",
+    "horizontal_scaling": "
+      - **Stateless Services**: Kubernetes (HPA) auto-scales API Gateway, Short URL Service, and Custom Alias Service to 10x traffic (target: 100 pods).
+      - **Cassandra**: 3 nodes per region (5 regions total), with rack awareness.
+      - **Redis**: 6 shards per region (3 regions), client-side sharding.
+      - **CDN**: Cloudflare Enterprise (auto-scales to 10x).
+    "
+  },
+  "reliability": {
+    "uptime_strategy": "
+      - **Multi-Region Deployment**: 3 regions (US, EU, APAC) with active-active routing.
+      - **SLA**: 99.99% via:
+        - 99.95% from CDN + 99.95% from origin (N+2 redundancy).
+        - Automated failover (Kubernetes + Cassandra multi-DC).
+      ",
+    "failover": "
+      - **CDN**: Cloudflare’s global anycast (no single point of failure).
+      - **Origin**:
+        - Kubernetes: Pod disruption budgets + preemptive scaling.
+        - Cassandra: Hinted Handoff + Read Repair.
+        - PostgreSQL: Patroni + PostgreSQL streaming replication.
+    ",
+    "data_replication": "
+      - **Cassandra**: Async replication (RF=3) across regions.
+      - **Redis**: Active-Active with CRDTs for critical data (e.g., URL counts).
+      - **PostgreSQL**: Synchronous replication to 2 standby nodes.
+    "
+  },
+  "compliance": {
+    "gdpr_deletion": "
+      - **Request Flow**:
+        1. User submits deletion request → Analytics Service anonymizes data.
+        2. GDPR Service enqueues deletion in Kafka.
+        3. **Deletion Workers**:
+           - Remove from Cassandra (TTL=0 for immediate eviction).
+           - Purge Redis keys.
+           - Invalidate CDN paths.
+           - Archive metadata to cold storage (retention: 30 days for audits).
+      - **Tools**: Kafka for async processing, Cassandra TTL for immediate eviction.
+    ",
+    "data_retention": "
+      - **URL Metadata**: 30 days (after expiration or deletion).
+      - **Analytics**: 90 days (aggregated, anonymized).
+      - **Logs**: 7 days (hot), 30 days (cold).
+      - **Compliance**: Automated retention policies in S3/Cassandra.
+    ",
+    "analytics_separation": "
+      - **Separate Tenant**: Analytics Service runs in isolated VPC with:
+        - No PII storage (only IP hashes, user-agent hashes).
+        - Rate-limited access to raw data.
+        - GDPR-compliant data minimization.
+    "
+  },
+  "cost_estimate": {
+    "monthly_total": 4800,
+    "breakdown": {
+      "compute": 1200,
+      "database": 1000,
+      "cache": 800,
+      "cdn": 1200,
+      "other": 600
+    },
+    "fits_budget": true
+  },
+  "rate_limiting": {
+    "strategy": "
+      - **Token Bucket Algorithm** per:
+        - User IP (10k requests/hour).
+        - API Key (1M requests/hour for custom aliases).
+        - Global: 10M writes/day (hard limit).
+      - **Enforcement**: Redis (sorted sets) + Kubernetes HPA for rate-limiter pods.
+    ",
+    "limits": "
+      - **Writes**: 10M/day (global), 100 writes/minute/IP.
+      - **Reads**: 1B/day (global), 10k reads/hour/IP.
+      - **Custom Aliases**: 100 requests/minute/API key.
+    "
+  },
+  "monitoring": {
+    "metrics": [
+      "p99 redirect latency (CDN + origin)",
+      "cache hit ratio (CDN, Redis, Cassandra)",
+      "write throughput (ops/sec to Cassandra)",
+      "expiration event processing latency",
+      "GDPR deletion SLA (P99 < 5min)",
+      "error rates (4xx, 5xx)",
+      "traffic spikes (10x detection)"
+    ],
+    "alerting": "
+      - **Critical**: p99 latency > 100ms, error rate > 0.1%, cache hit ratio < 95%.
+      - **Warn**: Latency > 75ms, write throughput < 90% capacity.
+      - **Tools**: Prometheus + Alertmanager + PagerDuty.
+    "
+  }
+}
+```

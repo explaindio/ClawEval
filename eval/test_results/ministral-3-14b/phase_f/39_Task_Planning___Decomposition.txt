@@ -1,0 +1,177 @@
+```json
+{
+  "tasks": [
+    {
+      "id": "T0",
+      "name": "Project initialization and setup",
+      "description": "Initialize Git repo, project structure, and basic tooling (e.g., Node.js/Python, linters, formatters).",
+      "depends_on": [],
+      "estimated_hours": 2,
+      "assignable_to": "fullstack"
+    },
+    {
+      "id": "T1",
+      "name": "PostgreSQL database schema design",
+      "description": "Design database schema for users, todos, categories/tags, and reminders. Include migrations setup.",
+      "depends_on": ["T0"],
+      "estimated_hours": 8,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T2",
+      "name": "Database setup and connection",
+      "description": "Implement PostgreSQL connection, seed initial data (e.g., admin user), and test basic queries.",
+      "depends_on": ["T1"],
+      "estimated_hours": 6,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T3",
+      "name": "User authentication (JWT) - Models and validation",
+      "description": "Implement user registration/login models, validation, and JWT token generation logic.",
+      "depends_on": ["T2"],
+      "estimated_hours": 10,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T4",
+      "name": "User authentication (JWT) - API endpoints",
+      "description": "Build `/register` and `/login` endpoints with JWT handling. Protect endpoints with middleware.",
+      "depends_on": ["T3"],
+      "estimated_hours": 8,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T5",
+      "name": "Todo CRUD - Models and validation",
+      "description": "Implement todo models (with categories/tags and due dates) and validation rules.",
+      "depends_on": ["T2", "T4"],
+      "estimated_hours": 8,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T6",
+      "name": "Todo CRUD - API endpoints",
+      "description": "Build protected CRUD endpoints for todos (`/todos`, `/todos/:id`).",
+      "depends_on": ["T5", "T4"],
+      "estimated_hours": 12,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T7",
+      "name": "Due date reminders - Logic and scheduling",
+      "description": "Implement reminder logic (e.g., cron jobs or background tasks) for due dates.",
+      "depends_on": ["T2", "T6"],
+      "estimated_hours": 10,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T8",
+      "name": "Rate limiting implementation",
+      "description": "Add rate limiting middleware (e.g., for auth/login endpoints).",
+      "depends_on": ["T4"],
+      "estimated_hours": 4,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T9",
+      "name": "Unit tests - Authentication",
+      "description": "Write unit tests for JWT auth (registration, login, protected routes).",
+      "depends_on": ["T4"],
+      "estimated_hours": 6,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T10",
+      "name": "Unit tests - Todo CRUD",
+      "description": "Write unit tests for todo CRUD operations.",
+      "depends_on": ["T6"],
+      "estimated_hours": 8,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T11",
+      "name": "Unit tests - Reminders",
+      "description": "Write unit tests for reminder logic.",
+      "depends_on": ["T7"],
+      "estimated_hours": 4,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T12",
+      "name": "Docker setup",
+      "description": "Create Dockerfile, docker-compose.yml, and configure PostgreSQL in Docker.",
+      "depends_on": ["T0", "T2", "T6", "T8"],
+      "estimated_hours": 8,
+      "assignable_to": "devops"
+    },
+    {
+      "id": "T13",
+      "name": "API documentation (OpenAPI)",
+      "description": "Generate OpenAPI/Swagger docs for all endpoints.",
+      "depends_on": ["T4", "T6", "T8"],
+      "estimated_hours": 6,
+      "assignable_to": "fullstack"
+    },
+    {
+      "id": "T14",
+      "name": "CI/CD pipeline setup",
+      "description": "Set up GitHub Actions/GitLab CI for testing, linting, and Docker builds.",
+      "depends_on": ["T9", "T10", "T11", "T12"],
+      "estimated_hours": 10,
+      "assignable_to": "devops"
+    },
+    {
+      "id": "T15",
+      "name": "Integration tests",
+      "description": "Write integration tests for full API workflows (e.g., auth + todos).",
+      "depends_on": ["T10", "T12"],
+      "estimated_hours": 8,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T16",
+      "name": "Final testing and bug fixes",
+      "description": "Resolve issues, improve test coverage to >80%, and validate all features.",
+      "depends_on": ["T9", "T10", "T11", "T15"],
+      "estimated_hours": 12,
+      "assignable_to": "backend"
+    }
+  ],
+  "critical_path": [
+    "T0", "T1", "T2", "T3", "T4", "T5", "T6", "T7", "T9", "T10", "T11", "T12", "T14", "T15", "T16"
+  ],
+  "total_hours": 122,
+  "parallel_tracks": 3,
+  "notes": {
+    "parallel_tracks_details": [
+      {
+        "track": "Backend Development",
+        "tasks": ["T3", "T4", "T5", "T6", "T7", "T9", "T10", "T11", "T15", "T16"]
+      },
+      {
+        "track": "DevOps/Infrastructure",
+        "tasks": ["T1", "T2", "T12", "T14"]
+      },
+      {
+        "track": "Documentation/Testing",
+        "tasks": ["T8", "T13"]
+      }
+    ],
+    "dependencies_to_watch": [
+      {
+        "task": "T6 (Todo CRUD endpoints)",
+        "blocked_by": ["T4 (Auth endpoints)", "T5 (Todo models)"]
+      },
+      {
+        "task": "T12 (Docker)",
+        "blocked_by": ["T6 (Working API)", "T8 (Rate limiting)"]
+      },
+      {
+        "task": "T14 (CI/CD)",
+        "blocked_by": ["T12 (Docker)", "T9-T11 (Tests)"]
+      }
+    ]
+  }
+}
+```

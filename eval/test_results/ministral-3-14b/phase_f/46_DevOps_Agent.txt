@@ -1,0 +1,57 @@
+```json
+{
+  "issues": [
+    {
+      "line": "version: '2'",
+      "problem": "Docker Compose version '2' is outdated and lacks support for modern features. Version '3.x' or '3.8+' is recommended.",
+      "fix": "Update to `version: '3.8'` or higher (e.g., `version: '3.8'` or `version: '3.9'`)."
+    },
+    {
+      "line": "image: node:latest",
+      "problem": "'latest' tag is non-deterministic and can lead to unexpected behavior when the image updates.",
+      "fix": "Use a specific version (e.g., `image: node:18-alpine` or `image: node:20`)."
+    },
+    {
+      "line": "DB_PASSWORD: supersecret123",
+      "problem": "Database password is stored in plaintext in the environment, which is a security risk.",
+      "fix": "Use Docker secrets or a secrets management tool (e.g., `env_file` with encrypted variables or Kubernetes secrets)."
+    },
+    {
+      "line": "NODE_ENV: development",
+      "problem": "Setting `NODE_ENV: development` in production is unsafe and can expose sensitive debug information.",
+      "fix": "Set `NODE_ENV: production` in production environments."
+    },
+    {
+      "line": "volumes:\n      - .:/app",
+      "problem": "Mounting the current directory (`.:/app`) in production is risky (e.g., exposes local files, permissions issues).",
+      "fix": "Avoid mounting host directories in production. Use a dedicated build step or pre-populated container image."
+    },
+    {
+      "line": "restart: no",
+      "problem": "`restart: no` means the container won’t restart automatically, which is unreliable for production.",
+      "fix": "Use `restart: unless-stopped` (recommended) or `restart: always` for critical services."
+    },
+    {
+      "line": "image: mysql:5.6",
+      "problem": "MySQL 5.6 is end-of-life (EOL) and lacks security updates. It also has known vulnerabilities.",
+      "fix": "Upgrade to a supported version (e.g., `mysql:8.0` or `mysql:5.7`)."
+    },
+    {
+      "line": "ports:\n      - \"3306:3306\"",
+      "problem": "MySQL port `3306` is exposed publicly, which is a security risk (unauthenticated access).",
+      "fix": "Remove the `ports` section for `db` and use internal networking. Access MySQL only via other containers or a VPN."
+    },
+    {
+      "line": "volumes:\n      - /tmp/mysql-data:/var/lib/mysql",
+      "problem": "Using `/tmp` for persistent MySQL data is dangerous (`/tmp` is cleared on reboot and lacks durability).",
+      "fix": "Use a named volume (e.g., `volumes: - mysql_data:/var/lib/mysql`) or a dedicated host directory with proper permissions."
+    },
+    {
+      "line": "ports:\n      - \"6379:6379\"",
+      "problem": "Redis port `6379` is exposed publicly without authentication, which is a critical security risk.",
+      "fix": "Remove the `ports` section for `redis` and use internal networking. If external access is needed, enforce authentication (e.g., `requirepass` in Redis config)."
+    }
+  ],
+  "count": 9
+}
+```

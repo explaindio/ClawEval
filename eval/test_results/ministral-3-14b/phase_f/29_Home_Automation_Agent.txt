@@ -1,0 +1,329 @@
+Here’s the structured JSON array of automation rules for your smart home scenario:
+
+```json
+[
+    {
+        "rule_id": "morning_routine",
+        "name": "Morning Lighting Schedule",
+        "trigger": {
+            "type": "time",
+            "time": {
+                "weekdays": "06:30",
+                "weekends": "08:00"
+            }
+        },
+        "conditions": [],
+        "actions": [
+            {
+                "device": "all_lights",
+                "action": "gradual_on",
+                "parameters": {
+                    "duration": "15_minutes",
+                    "brightness": "50%"
+                }
+            }
+        ]
+    },
+    {
+        "rule_id": "thermostat_occupied",
+        "name": "Thermostat - Occupied Mode",
+        "trigger": {
+            "type": "presence",
+            "condition": "any_occupant_present"
+        },
+        "conditions": [
+            {
+                "time": "06:00-22:00"
+            }
+        ],
+        "actions": [
+            {
+                "device": "thermostat",
+                "action": "set_temperature",
+                "parameters": {
+                    "target": "72°F"
+                }
+            }
+        ]
+    },
+    {
+        "rule_id": "thermostat_empty",
+        "name": "Thermostat - Empty Mode",
+        "trigger": {
+            "type": "presence",
+            "condition": "no_occupants_present"
+        },
+        "conditions": [
+            {
+                "time": "06:00-22:00"
+            }
+        ],
+        "actions": [
+            {
+                "device": "thermostat",
+                "action": "set_temperature",
+                "parameters": {
+                    "target": "65°F"
+                }
+            }
+        ]
+    },
+    {
+        "rule_id": "thermostat_sleeping",
+        "name": "Thermostat - Sleeping Mode",
+        "trigger": {
+            "type": "time",
+            "time": {
+                "start": "23:00",
+                "end": "06:00"
+            }
+        },
+        "conditions": [],
+        "actions": [
+            {
+                "device": "thermostat",
+                "action": "set_temperature",
+                "parameters": {
+                    "target": "68°F"
+                }
+            }
+        ]
+    },
+    {
+        "rule_id": "security_arm",
+        "name": "Security - Arm When Away",
+        "trigger": {
+            "type": "geofencing",
+            "condition": "both_occupants_away"
+        },
+        "conditions": [],
+        "actions": [
+            {
+                "device": "security_system",
+                "action": "arm"
+            }
+        ]
+    },
+    {
+        "rule_id": "security_disarm",
+        "name": "Security - Disarm When Home",
+        "trigger": {
+            "type": "geofencing",
+            "condition": "any_occupant_home"
+        },
+        "conditions": [],
+        "actions": [
+            {
+                "device": "security_system",
+                "action": "disarm"
+            }
+        ]
+    },
+    {
+        "rule_id": "pet_feeding",
+        "name": "Pet Auto-Feeder",
+        "trigger": {
+            "type": "time",
+            "times": ["07:00", "18:00"]
+        },
+        "conditions": [],
+        "actions": [
+            {
+                "device": "pet_feeder",
+                "action": "dispense_food"
+            }
+        ]
+    },
+    {
+        "rule_id": "pet_camera",
+        "name": "Pet Camera - Activate When Away",
+        "trigger": {
+            "type": "geofencing",
+            "condition": "both_occupants_away"
+        },
+        "conditions": [],
+        "actions": [
+            {
+                "device": "cat_camera",
+                "action": "turn_on"
+            }
+        ]
+    },
+    {
+        "rule_id": "solar_priority",
+        "name": "Solar Panels - Peak Priority",
+        "trigger": {
+            "type": "time",
+            "time": {
+                "start": "14:00",
+                "end": "19:00"
+            }
+        },
+        "conditions": [
+            {
+                "solar_generation": "above_threshold"
+            }
+        ],
+        "actions": [
+            {
+                "device": "solar_inverter",
+                "action": "prioritize_grid_export"
+            }
+        ]
+    },
+    {
+        "rule_id": "battery_backup",
+        "name": "Battery Backup - Evening",
+        "trigger": {
+            "type": "time",
+            "time": {
+                "start": "19:00",
+                "end": "23:00"
+            }
+        },
+        "conditions": [
+            {
+                "grid_power": "low"
+            }
+        ],
+        "actions": [
+            {
+                "device": "battery_storage",
+                "action": "activate_backup"
+            }
+        ]
+    },
+    {
+        "rule_id": "hallway_motion",
+        "name": "Hallway Motion Lights",
+        "trigger": {
+            "type": "motion",
+            "device": "hallway_motion_sensor"
+        },
+        "conditions": [
+            {
+                "time": "22:00-06:00"
+            }
+        ],
+        "actions": [
+            {
+                "device": "hallway_lights",
+                "action": "turn_on",
+                "parameters": {
+                    "brightness": "20%"
+                }
+            }
+        ],
+        "post_actions": [
+            {
+                "type": "timeout",
+                "duration": "5_minutes",
+                "action": {
+                    "device": "hallway_lights",
+                    "action": "turn_off"
+                }
+            }
+        ]
+    },
+    {
+        "rule_id": "bobs_office",
+        "name": "Bob's Office - Computer Trigger",
+        "trigger": {
+            "type": "device",
+            "device": "bobs_computer",
+            "event": "turned_on"
+        },
+        "conditions": [],
+        "actions": [
+            {
+                "device": "desk_lamp",
+                "action": "turn_on"
+            },
+            {
+                "device": "office_thermostat",
+                "action": "set_temperature",
+                "parameters": {
+                    "target": "70°F"
+                }
+            }
+        ]
+    },
+    {
+        "rule_id": "laundry_notification",
+        "name": "Laundry Cycle Complete",
+        "trigger": {
+            "type": "device",
+            "device": ["washer", "dryer"],
+            "event": "cycle_complete"
+        },
+        "conditions": [],
+        "actions": [
+            {
+                "device": "notification_system",
+                "action": "send_alert",
+                "parameters": {
+                    "message": "Laundry cycle complete",
+                    "recipients": ["alice_phone", "bob_phone"]
+                }
+            }
+        ]
+    },
+    {
+        "rule_id": "water_leak_detector",
+        "name": "Water Leak Emergency",
+        "trigger": {
+            "type": "sensor",
+            "device": "water_leak_sensor",
+            "event": "leak_detected"
+        },
+        "conditions": [],
+        "actions": [
+            {
+                "device": "main_water_valve",
+                "action": "shut_off"
+            },
+            {
+                "device": "notification_system",
+                "action": "send_alert",
+                "parameters": {
+                    "message": "Water leak detected! Main valve shut off.",
+                    "recipients": ["alice_phone", "bob_phone"],
+                    "urgency": "high"
+                }
+            }
+        ]
+    },
+    {
+        "rule_id": "guest_mode",
+        "name": "Guest Mode Activation",
+        "trigger": {
+            "type": "manual",
+            "event": "guest_mode_activated"
+        },
+        "conditions": [],
+        "actions": [
+            {
+                "device": "door_lock",
+                "action": "set_temporary_code"
+            },
+            {
+                "device": "thermostat",
+                "action": "set_temperature",
+                "parameters": {
+                    "target": "72°F"
+                }
+            },
+            {
+                "device": "wifi_router",
+                "action": "enable_guest_network"
+            }
+        ]
+    }
+]
+```
+
+### Notes:
+1. **Geofencing**: Assumes integration with Alice/Bob's phones (e.g., via Home Assistant, SmartThings, or similar).
+2. **Solar/Battery**: Requires compatible hardware (e.g., Tesla Powerwall, Enphase).
+3. **Guest Mode**: Typically triggered via a manual button or voice command (e.g., "Hey Google, enable guest mode").
+4. **Water Leak**: Critical action—ensure the valve is compatible with smart control.

@@ -1,0 +1,289 @@
+Here’s a structured **6-week Python course** in JSON format, adhering to your constraints:
+
+```json
+{
+  "weeks": [
+    {
+      "week": 1,
+      "theme": "Python Fundamentals",
+      "sessions": [
+        {
+          "day": 1,
+          "topic": "Introduction to Python & Variables",
+          "objectives": [
+            "Understand Python’s role in programming",
+            "Declare and use variables (integers, floats, strings, booleans)",
+            "Learn basic I/O operations (`print()`, `input()`)"
+          ],
+          "lecture_min": 30,
+          "handson_min": 45
+        },
+        {
+          "day": 2,
+          "topic": "Operators & Control Flow",
+          "objectives": [
+            "Use arithmetic, comparison, and logical operators",
+            "Implement `if-elif-else` and `match-case` statements",
+            "Apply loops (`for`, `while`) with examples"
+          ],
+          "lecture_min": 30,
+          "handson_min": 45
+        },
+        {
+          "day": 3,
+          "topic": "Data Structures: Lists & Dictionaries",
+          "objectives": [
+            "Create and manipulate lists (slicing, methods)",
+            "Work with dictionaries (key-value pairs, iteration)",
+            "Introduce tuples and sets"
+          ],
+          "lecture_min": 30,
+          "handson_min": 45
+        }
+      ],
+      "quiz": "Basic syntax, variables, and control flow (10 MCQs)",
+      "assignment": "Build a calculator that handles arithmetic operations and user input"
+    },
+    {
+      "week": 2,
+      "theme": "Functions & File I/O",
+      "sessions": [
+        {
+          "day": 1,
+          "topic": "Functions & Scope",
+          "objectives": [
+            "Define and call functions (parameters, return values)",
+            "Understand scope (global vs. local variables)",
+            "Use `*args` and `**kwargs`"
+          ],
+          "lecture_min": 30,
+          "handson_min": 45
+        },
+        {
+          "day": 2,
+          "topic": "File Handling",
+          "objectives": [
+            "Read/write text files (`open()`, `with` statement)",
+            "Handle CSV files with `csv` module",
+            "Introduce JSON for structured data"
+          ],
+          "lecture_min": 30,
+          "handson_min": 45
+        },
+        {
+          "day": 3,
+          "topic": "Error Handling & Modules",
+          "objectives": [
+            "Use `try-except` blocks for exceptions",
+            "Import and use external modules (`math`, `random`)",
+            "Write reusable scripts with `__name__ == '__main__'`"
+          ],
+          "lecture_min": 30,
+          "handson_min": 45
+        }
+      ],
+      "quiz": "Functions, file I/O, and error handling (10 MCQs)",
+      "assignment": "Create a log analyzer that reads a text file and counts word frequencies"
+    },
+    {
+      "week": 3,
+      "theme": "Intermediate Python",
+      "sessions": [
+        {
+          "day": 1,
+          "topic": "Advanced Data Structures",
+          "objectives": [
+            "Master list/dict comprehensions",
+            "Use `collections` module (`defaultdict`, `Counter`)",
+            "Implement stacks/queues with `deque`"
+          ],
+          "lecture_min": 30,
+          "handson_min": 45
+        },
+        {
+          "day": 2,
+          "topic": "Object-Oriented Programming (OOP) Basics",
+          "objectives": [
+            "Define classes and objects (attributes, methods)",
+            "Use `__init__`, inheritance, and `self`",
+            "Implement encapsulation (`_private` attributes)"
+          ],
+          "lecture_min": 30,
+          "handson_min": 45
+        },
+        {
+          "day": 3,
+          "topic": "APIs & HTTP Requests",
+          "objectives": [
+            "Fetch data from REST APIs (`requests` library)",
+            "Parse JSON responses",
+            "Handle API errors and rate limits"
+          ],
+          "lecture_min": 30,
+          "handson_min": 45
+        }
+      ],
+      "quiz": "Data structures, OOP, and APIs (10 MCQs)",
+      "assignment": "Build a weather app using a public API (e.g., OpenWeatherMap)"
+    },
+    {
+      "week": 4,
+      "theme": "Testing & Design Patterns",
+      "sessions": [
+        {
+          "day": 1,
+          "topic": "Unit Testing with `unittest`",
+          "objectives": [
+            "Write test cases for functions",
+            "Use assertions and mocking (`unittest.mock`)",
+            "Integrate tests into a project"
+          ],
+          "lecture_min": 30,
+          "handson_min": 45
+        },
+        {
+          "day": 2,
+          "topic": "Decorators & Generators",
+          "objectives": [
+            "Create and use decorators (`@decorator` syntax)",
+            "Implement generators (`yield`) for lazy evaluation",
+            "Compare decorators vs. generators"
+          ],
+          "lecture_min": 30,
+          "handson_min": 45
+        },
+        {
+          "day": 3,
+          "topic": "Design Patterns (Singleton, Factory)",
+          "objectives": [
+            "Apply Singleton pattern for shared resources",
+            "Use Factory pattern for object creation",
+            "Refactor code for maintainability"
+          ],
+          "lecture_min": 30,
+          "handson_min": 45
+        }
+      ],
+      "quiz": "Testing, decorators, and design patterns (10 MCQs)",
+      "assignment": "Refactor a project using decorators and write unit tests"
+    },
+    {
+      "week": 5,
+      "theme": "Advanced Python",
+      "sessions": [
+        {
+          "day": 1,
+          "topic": "Concurrency (Threading & Multiprocessing)",
+          "objectives": [
+            "Use `threading` for I/O-bound tasks",
+            "Leverage `multiprocessing` for CPU-bound tasks",
+            "Avoid race conditions with locks"
+          ],
+          "lecture_min": 30,
+          "handson_min": 45
+        },
+        {
+          "day": 2,
+          "topic": "Metaclasses & Dynamic Code",
+          "objectives": [
+            "Understand metaclasses (`type()`)",
+            "Modify classes at runtime (`setattr`, `delattr`)",
+            "Use `__getattr__` for dynamic attributes"
+          ],
+          "lecture_min": 30,
+          "handson_min": 45
+        },
+        {
+          "day": 3,
+          "topic": "Asynchronous Programming (`asyncio`)",
+          "objectives": [
+            "Write coroutines with `async/await`",
+            "Use `asyncio` for async I/O",
+            "Compare sync vs. async code"
+          ],
+          "lecture_min": 30,
+          "handson_min": 45
+        }
+      ],
+      "quiz": "Concurrency, metaclasses, and async programming (10 MCQs)",
+      "assignment": "Build an async web scraper using `aiohttp`"
+    },
+    {
+      "week": 6,
+      "theme": "Capstone & Integration",
+      "sessions": [
+        {
+          "day": 1,
+          "topic": "Project Planning & Debugging",
+          "objectives": [
+            "Break down a complex problem into modules",
+            "Use `pdb` and logging for debugging",
+            "Optimize code with `timeit` and `cProfile`"
+          ],
+          "lecture_min": 30,
+          "handson_min": 45
+        },
+        {
+          "day": 2,
+          "topic": "Final Project Work Session",
+          "objectives": [
+            "Integrate 5+ concepts (e.g., OOP, APIs, testing, concurrency)",
+            "Refactor and test code",
+            "Prepare for presentation"
+          ],
+          "lecture_min": 15,
+          "handson_min": 60
+        },
+        {
+          "day": 3,
+          "topic": "Project Presentations & Feedback",
+          "objectives": [
+            "Demonstrate the final project",
+            "Receive peer/mentor feedback",
+            "Discuss next steps (e.g., contributing to open-source)"
+          ],
+          "lecture_min": 15,
+          "handson_min": 45
+        }
+      ],
+      "quiz": "None (focus on project completion)",
+      "assignment": "Final project submission (documentation + code)"
+    }
+  ],
+  "final_project": {
+    "description": "Develop a **Task Automation Tool** that integrates:
+      - **OOP** (custom classes for tasks/users),
+      - **APIs** (fetch data from a public API, e.g., GitHub),
+      - **File I/O** (log tasks to JSON/CSV),
+      - **Concurrency** (parallel task processing),
+      - **Testing** (unit tests for core functions).
+    ",
+    "deliverables": [
+      "Working Python script (modularized)",
+      "README with setup instructions",
+      "Unit test coverage (e.g., `pytest`)",
+      "10-minute demo video"
+    ],
+    "grading_criteria": [
+      "Code organization and readability",
+      "Correctness and functionality",
+      "Use of advanced concepts",
+      "Documentation and testing"
+    ]
+  },
+  "totals": {
+    "lecture_hours": 13.5,
+    "hands_on_hours": 13.5,
+    "concepts_covered": [
+      "Variables", "Functions", "Classes", "File I/O", "APIs",
+      "Testing", "Data Structures", "Error Handling", "Decorators", "Generators"
+    ]
+  }
+}
+```
+
+### Key Features:
+1. **Monotonic Difficulty**: Starts with basics (Week 1–2), progresses to intermediate (Week 3–4), and culminates in advanced topics (Week 5–6).
+2. **Balanced Time**: Lecture ≤13.5 hours, hands-on ≥13.5 hours.
+3. **Integration**: Final project ties together **5+ concepts** (e.g., OOP + APIs + concurrency).
+4. **Assessment**: Weekly quizzes (MCQs) and assignments with increasing complexity.

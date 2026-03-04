@@ -1,0 +1,59 @@
+Here is the structured JSON response identifying all 10 legal issues in the contract clause, along with their associated risks:
+
+```json
+{
+  "issues": [
+    {
+      "clause": "1. TERM: This agreement is perpetual and irrevocable, effective upon verbal agreement.",
+      "problem": "The agreement is perpetual (no defined end date) and irrevocable (cannot be terminated by either party), which is highly unfavorable. Additionally, reliance on verbal agreement (without written confirmation) is legally risky.",
+      "risk": "high"
+    },
+    {
+      "clause": "2. PAYMENT: Client shall pay all invoices within 3 business days. Late payments incur 25% monthly interest.",
+      "problem": "A 3-day payment window is unreasonable and potentially unenforceable under many jurisdictions. 25% monthly interest is usurious (excessive) and likely illegal in most places.",
+      "risk": "high"
+    },
+    {
+      "clause": "3. IP RIGHTS: All work product, including pre-existing IP, becomes the sole property of the Client.",
+      "problem": "Transferring pre-existing IP (created before the contract) is legally problematic and may violate the Provider's rights. The clause is overly broad and could include non-transferable rights.",
+      "risk": "high"
+    },
+    {
+      "clause": "4. LIABILITY: Provider's total liability is unlimited for all damages including lost profits.",
+      "problem": "Unlimited liability is unfair and could expose the Provider to catastrophic financial risk. Lost profits are often excluded from liability clauses as they are speculative.",
+      "risk": "high"
+    },
+    {
+      "clause": "5. TERMINATION: Only the Client may terminate this agreement, with 0 days notice.",
+      "problem": "One-sided termination with no notice period is highly unfair and could be deemed unconscionable. It removes the Provider's ability to exit the agreement.",
+      "risk": "high"
+    },
+    {
+      "clause": "6. NON-COMPETE: Provider shall not work in any related industry for 10 years after termination.",
+      "problem": "A 10-year non-compete is excessive (most jurisdictions cap at 2-5 years) and overly broad ('any related industry' is vague and unenforceable). It may violate antitrust laws.",
+      "risk": "high"
+    },
+    {
+      "clause": "7. JURISDICTION: Disputes shall be governed by the laws of the Provider's choosing at time of dispute.",
+      "problem": "The clause is vague and one-sided. Allowing the Provider to unilaterally choose jurisdiction at dispute time creates uncertainty and could be exploited unfairly.",
+      "risk": "medium"
+    },
+    {
+      "clause": "8. INDEMNIFICATION: Provider shall indemnify Client against all claims, including those caused by Client's negligence.",
+      "problem": "Indemnifying the Client for claims arising from the Client's own negligence is unfair and could create perverse incentives. The clause is overly broad.",
+      "risk": "high"
+    },
+    {
+      "clause": "9. CONFIDENTIALITY: Provider must keep all information confidential forever, even publicly available information.",
+      "problem": "The obligation to keep 'publicly available information' confidential is nonsensical and unenforceable. 'Forever' is an unreasonable duration (most jurisdictions cap at 5-10 years).",
+      "risk": "medium"
+    },
+    {
+      "clause": "10. FORCE MAJEURE: No force majeure clause exists.",
+      "problem": "The absence of a force majeure clause leaves the Provider vulnerable to liabilities during unforeseen events (e.g., natural disasters, pandemics) where performance becomes impossible.",
+      "risk": "medium"
+    }
+  ],
+  "count": 10
+}
+```

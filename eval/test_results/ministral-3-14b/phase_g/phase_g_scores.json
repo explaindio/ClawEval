@@ -1,0 +1,120 @@
+{
+  "model": "ministral-3-14b",
+  "phase": "G",
+  "timestamp": "2026-03-03T21:04:10.445395",
+  "total_score": 80,
+  "total_max": 110,
+  "percentage": 72.7,
+  "results": [
+    {
+      "id": 36,
+      "role": "Code Generation Agent",
+      "tier": 3,
+      "scoring_type": "code",
+      "score": 8,
+      "max": 10,
+      "detail": "8/10 tests passed | get_usage: ; serialize: ",
+      "tokens": 1274
+    },
+    {
+      "id": 2,
+      "role": "Input Validator / Sanitizer",
+      "tier": 1,
+      "scoring_type": "exact",
+      "score": 10,
+      "max": 10,
+      "detail": "Found 15/15 errors",
+      "tokens": 419
+    },
+    {
+      "id": 5,
+      "role": "Sentiment Analysis Agent",
+      "tier": 1,
+      "scoring_type": "exact",
+      "score": 10,
+      "max": 10,
+      "detail": "19/20 correct | 7: expected 'mixed', got 'positive'",
+      "tokens": 163
+    },
+    {
+      "id": 40,
+      "role": "Fact-Checking Agent",
+      "tier": 3,
+      "scoring_type": "exact",
+      "score": 8,
+      "max": 10,
+      "detail": "15/20 correct | 1: expected 'TRUE', got 'FALSE'; 4: expected 'FALSE', got 'TRUE'; 7: expected 'TRUE', got 'FALSE'; 11: expected 'TRUE', got 'FALSE'; 14: expected 'TRUE', got 'FALSE'",
+      "tokens": 1594
+    },
+    {
+      "id": 49,
+      "role": "Algorithm / Data Structure Explorer",
+      "tier": 4,
+      "scoring_type": "code",
+      "score": 9,
+      "max": 10,
+      "detail": "14/15 tests passed | keys_order: ",
+      "tokens": 474
+    },
+    {
+      "id": 51,
+      "role": "System Architect",
+      "tier": 5,
+      "scoring_type": "constraint",
+      "score": 9,
+      "max": 10,
+      "detail": "14/15 constraints met | Missing: link_expiration_mechanism",
+      "tokens": 1857
+    },
+    {
+      "id": 48,
+      "role": "STEM Research Analyst",
+      "tier": 4,
+      "scoring_type": "exact",
+      "score": 2,
+      "max": 10,
+      "detail": "2/8 correct | q1: expected 252000\u00b110000, got 78400.0; q4: expected 2\u00b10, got 11.0; q5: expected 4.17\u00b10.5, got 1.85; q6: expected 5000000\u00b1500000, got 1000000.0; q7: expected 2.44\u00b10.5, got 16.0",
+      "tokens": 917
+    },
+    {
+      "id": 9,
+      "role": "Research Agent",
+      "tier": 2,
+      "scoring_type": "exact",
+      "score": 1,
+      "max": 10,
+      "detail": "1/10 correct | q1: expected '200', got '{'team_size': 200, 'source': 'E', 'explanation': \"Source E states microservices become cost-effective at >200 developers (20% lower TCO), while Source A implies >100 developers (but doesn't specify cost-effectiveness).\"}'; q2: expected '5-15', got '{'latency_penalty_range_ms': '5-15', 'source': 'B'}'; q3: expected '67', got '{'network_related_outages_percentage': 67, 'source': 'C'}'; q4: expected '17', got '{'mttr_difference_minutes': 17, 'source': 'C', 'calculation': '45 (microservices) - 28 (monolith) = 17'}'; q5: expected '3.0', got '{'onboarding_time_multiplier': 3.0, 'source': 'D', 'calculation': '3 weeks (microservices) / 1 week (monolith) = 3.0'}'",
+      "tokens": 629
+    },
+    {
+      "id": 12,
+      "role": "Content Planner / Strategist",
+      "tier": 2,
+      "scoring_type": "exact",
+      "score": 8,
+      "max": 10,
+      "detail": "12/15 constraints met | Missing: week4_ends_social; empty_violations; correct_json_structure",
+      "tokens": 761
+    },
+    {
+      "id": 50,
+      "role": "Orchestrator / Meta-Agent",
+      "tier": 5,
+      "scoring_type": "exact",
+      "score": 7,
+      "max": 10,
+      "detail": "11/15 constraints met | Missing: early_notification; all_agents_have_timeouts; branching_logic_valid",
+      "tokens": 1783
+    },
+    {
+      "id": 23,
+      "role": "Web Scraping / Data Extraction",
+      "tier": 2,
+      "scoring_type": "exact",
+      "score": 8,
+      "max": 10,
+      "detail": "4/5 correct | average_employee_count: expected 938\u00b15.0, got 926.0",
+      "tokens": 566
+    }
+  ]
+}

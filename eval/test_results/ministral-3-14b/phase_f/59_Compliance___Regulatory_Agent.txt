@@ -1,0 +1,83 @@
+```json
+{
+  "violations": [
+    {
+      "id": 1,
+      "article": "Article 5(1)(a) (Lawfulness, fairness and transparency), Article 6 (Lawfulness of processing), Article 7 (Conditions for consent)",
+      "practice": "User data is collected without any consent form or notice.",
+      "fix": "Implement explicit consent mechanisms (e.g., opt-in forms) and provide clear privacy notices (e.g., cookie banners, standalone privacy policy) before collecting any personal data. Ensure consent is freely given, specific, informed, and unambiguous."
+    },
+    {
+      "id": 2,
+      "article": "Article 5(1)(f) (Confidentiality), Article 32 (Security of processing)",
+      "practice": "Personal data is stored in plain text in the database.",
+      "fix": "Encrypt personal data at rest and in transit. Implement pseudonymization where possible and ensure access controls are in place to restrict data exposure."
+    },
+    {
+      "id": 3,
+      "article": "Article 17 (Right to erasure), Article 5(1)(e) (Storage limitation)",
+      "practice": "Users cannot request deletion of their data — 'we keep everything forever.'",
+      "fix": "Establish a process for users to request data deletion (e.g., via a 'Delete My Account' feature or dedicated form). Implement automated deletion policies for inactive accounts (e.g., after 24 months) unless legal retention obligations apply."
+    },
+    {
+      "id": 4,
+      "article": "Article 13 (Information to be provided when personal data are collected from the data subject), Article 28 (Controllers and processors)",
+      "practice": "Data is shared with 15 third-party vendors without user knowledge.",
+      "fix": "Disclose all third-party data transfers in the privacy policy and obtain user consent where required (e.g., for international transfers under Article 49). Sign Data Processing Agreements (DPAs) with vendors to ensure compliance with GDPR obligations (e.g., data protection clauses under Article 28)."
+    },
+    {
+      "id": 5,
+      "article": "Article 37 (Designation of the Data Protection Officer)",
+      "practice": "There is no Data Protection Officer (DPO) appointed.",
+      "fix": "Appoint a qualified DPO if the company’s core activities involve large-scale systematic monitoring or processing of sensitive data. The DPO must be independent, have expertise in data protection, and be accessible to both the company and data subjects."
+    },
+    {
+      "id": 6,
+      "article": "Article 44–49 (International transfers), Article 32 (Security of processing)",
+      "practice": "The company transfers EU user data to servers in a country without adequacy decision (e.g., US) with no safeguards.",
+      "fix": "Implement appropriate safeguards such as:
+      - Standard Contractual Clauses (SCCs) approved by the EU Commission,
+      - Binding Corporate Rules (BCRs) for internal transfers,
+      - A valid adequacy decision (if the third country is listed),
+      - Or certifications/approvals from supervisory authorities (e.g., Privacy Shield alternatives).
+      Conduct a Transfer Impact Assessment (TIA) and document compliance."
+    },
+    {
+      "id": 7,
+      "article": "Article 33 (Notification of a personal data breach to the supervisory authority), Article 34 (Communication of a personal data breach to the data subject)",
+      "practice": "Data breaches are reported to authorities 'when we get around to it, usually within 6 months.'",
+      "fix": "Establish a breach notification protocol with:
+      - **72-hour rule**: Notify the supervisory authority (e.g., CNIL, ICO) within 72 hours of becoming aware of a breach, unless the risk to rights/freedoms is low.
+      - **Individual notification**: Inform affected data subjects without undue delay (unless the company can demonstrate measures to mitigate the risk).
+      - **Documentation**: Maintain records of breaches and actions taken."
+    },
+    {
+      "id": 8,
+      "article": "Article 8 (Conditions for consent of the child), Article 6(1)(a) (Consent)",
+      "practice": "Children under 16 can sign up without parental consent.",
+      "fix": "Implement age verification mechanisms (e.g., parental consent for users under 16, or block registration entirely for under-13s unless complying with COPPA). For GDPR, parental consent is required for children under 16 (or 13 in some EU member states). Update privacy policy to reflect these requirements."
+    },
+    {
+      "id": 9,
+      "article": "Article 15 (Right of access), Article 20 (Right to data portability)",
+      "practice": "Users cannot export their data in any format.",
+      "fix": "Provide users with:
+      - **Right of access**: A way to request their data in a commonly used, machine-readable format (e.g., JSON, CSV).
+      - **Data portability**: Allow users to transmit their data to another controller (where technically feasible and applicable).
+      Implement a 'Download Your Data' feature or API endpoint for automated requests."
+    },
+    {
+      "id": 10,
+      "article": "Article 12 (Transparency), Article 13–14 (Information to be provided to data subjects)",
+      "practice": "Privacy policy was last updated in 2015 and doesn’t mention half these practices.",
+      "fix": "Overhaul the privacy policy to:
+      - Be **clear, concise, and easily accessible** (e.g., link in the footer, plain language).
+      - **Disclose all processing activities**, including third-party transfers, retention periods, and rights of data subjects.
+      - **Align with current practices** (e.g., data sharing, breach procedures, children’s data).
+      - **Update regularly** (e.g., annually or whenever significant changes occur).
+      Provide a version history and last update date."
+    }
+  ],
+  "count": 10
+}
+```

@@ -1,0 +1,44 @@
+```json
+{
+  "time_to_detect_min": 15,
+  "time_to_respond_min": 5,
+  "time_to_resolve_min": 10,
+  "total_incident_min": 35,
+  "root_cause": "New caching layer in v2.4.1 introduced a memory leak (~50MB/min), causing OOM (Out-of-Memory) kills in canary pods and elevated error rates (from 0.1% to 2.3%).",
+
+  "blast_radius_pct": 25,
+  "detection_method": "Monitoring alert (error rate threshold + PagerDuty integration) and OOM kill logs in canary pods (25% traffic).",
+
+  "correct_rollback_decision": true,
+  "canary_caught_issue": true,
+
+  "improvement_suggestions": [
+    {
+      "suggestion_id": 1,
+      "description": "Implement automated canary analysis to flag memory leaks (e.g., via Prometheus + custom alerts for OOM trends).",
+      "priority": "High"
+    },
+    {
+      "suggestion_id": 2,
+      "description": "Add pre-deployment memory profiling for new caching layers (e.g., load-test with synthetic traffic).",
+      "priority": "High"
+    },
+    {
+      "suggestion_id": 3,
+      "description": "Reduce canary ramp-up intervals (e.g., 5% → 10% → 25%) to detect issues faster.",
+      "priority": "Medium"
+    },
+    {
+      "suggestion_id": 4,
+      "description": "Integrate memory leak detection tools (e.g., HeapHero, Valgrind) into CI/CD for caching-layer changes.",
+      "priority": "Medium"
+    },
+    {
+      "suggestion_id": 5,
+      "description": "Document OOM kill patterns and caching-layer risks in runbooks for faster triage.",
+      "priority": "Low"
+    }
+  ],
+  "improvement_suggestions_count": 5
+}
+```

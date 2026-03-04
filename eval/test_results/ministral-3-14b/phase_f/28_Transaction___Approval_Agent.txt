@@ -1,0 +1,30 @@
+```json
+{
+  "1": "APPROVE",
+  "2": "REJECT",
+  "3": "APPROVE",
+  "4": "REJECT",
+  "5": "REJECT",
+  "6": "REJECT",
+  "7": "REJECT",
+  "8": "APPROVE",
+  "9": "REJECT",
+  "10": "REJECT"
+}
+```
+
+### Breakdown:
+1. **$450 at Amazon.com (domestic, 9:15 AM)** → **APPROVE** (within limits).
+2. **$2,500 at Dell.com (domestic, 10:00 AM)** → **REJECT** (>$2,000, no manager approval).
+3. **$150 at Starbucks (domestic, 10:30 AM)** → **APPROVE** (within limits).
+4. **$3,000.00 at BestBuy.com (domestic, 11:00 AM)** → **REJECT** (round-dollar >$1,000).
+5. **$800 at Amazon.com (domestic, 11:02 AM)** → **REJECT** (duplicate merchant in <1 hour).
+6. **€1,200 at Booking.com (international, 3:00 PM)** → **REJECT** (outside business hours for international).
+7. **$5,100 at Apple.com (domestic, 3:30 PM)** → **REJECT** (>$5,000 max single transaction).
+8. **$450 at Amazon.com (domestic, 3:45 PM)** → **APPROVE** (no duplicate in last hour).
+9. **$2,000.00 at NewEgg.com (domestic, 4:00 PM)** → **REJECT** (round-dollar >$1,000).
+10. **€500 at Ryanair.com (international, 9:30 PM)** → **REJECT** (outside business hours for international).
+
+### Daily Totals:
+- **Approved so far**: $450 + $150 + $450 = **$1,050** (well under $10,000 limit).
+- **Rejected reasons**: Manager approval, round-dollar, duplicates, time, or limits.

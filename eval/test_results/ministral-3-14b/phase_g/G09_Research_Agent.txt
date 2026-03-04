@@ -1,0 +1,68 @@
+```json
+{
+  "answers": {
+    "q1": {
+      "team_size": 200,
+      "source": "E",
+      "explanation": "Source E states microservices become cost-effective at >200 developers (20% lower TCO), while Source A implies >100 developers (but doesn't specify cost-effectiveness)."
+    },
+    "q2": {
+      "latency_penalty_range_ms": "5-15",
+      "source": "B"
+    },
+    "q3": {
+      "network_related_outages_percentage": 67,
+      "source": "C"
+    },
+    "q4": {
+      "mttr_difference_minutes": 17,
+      "source": "C",
+      "calculation": "45 (microservices) - 28 (monolith) = 17"
+    },
+    "q5": {
+      "onboarding_time_multiplier": 3.0,
+      "source": "D",
+      "calculation": "3 weeks (microservices) / 1 week (monolith) = 3.0"
+    },
+    "q6": {
+      "rolled_back_fraction": 0.25,
+      "source": "F"
+    },
+    "q7": {
+      "infrastructure_cost_multiplier": 3.2,
+      "source": "A"
+    },
+    "q8": {
+      "contradiction": "yes",
+      "explanation": "Source A claims *higher* infrastructure costs (3.2x) without team-size context, while Source E shows microservices are *cheaper* (>200 devs) but *more expensive* (<50 devs)."
+    },
+    "q9": {
+      "satisfaction_improvement_percentage": 15,
+      "source": "D"
+    },
+    "q10": {
+      "positive_roi_percentage": 40,
+      "source": "F"
+    }
+  },
+  "metadata": {
+    "sources_used": {
+      "A": ["q1", "q7", "q8"],
+      "B": ["q2"],
+      "C": ["q3", "q4"],
+      "D": ["q5", "q9"],
+      "E": ["q1", "q8", "q10"],
+      "F": ["q6", "q10"]
+    },
+    "conflicts_noted": {
+      "cost_effectiveness_threshold": {
+        "A": ">100 devs (adoption trend)",
+        "E": ">200 devs (TCO break-even)"
+      },
+      "migration_ROI": {
+        "F": "40% positive ROI, but 25% rolled back (implying 60% net negative or neutral)"
+      }
+    }
+  }
+}
+```
