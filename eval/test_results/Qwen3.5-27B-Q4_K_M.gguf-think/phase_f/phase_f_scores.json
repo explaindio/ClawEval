@@ -1,9 +1,9 @@
 {
   "model": "Qwen3.5-27B-Q4_K_M.gguf-think",
   "timestamp": "2026-02-27T23:59:09.379799",
-  "total_score": 428,
+  "total_score": 446,
   "total_max": 578,
-  "percentage": 74.0,
+  "percentage": 77.2,
   "manual_tests": 6,
   "results": [
     {
@@ -221,9 +221,9 @@
       "role": "Data Analysis Agent",
       "tier": 2,
       "scoring_type": "exact",
-      "score": 0,
+      "score": 2,
       "max": 10,
-      "detail": "Could not parse JSON",
+      "detail": "2/10 correct | m1: expected 28600.0, got 35000.0; m2: expected 14210.0, got 17575.0; m4: expected 14150.0, got 12750.0; m5: expected Widget-C, got Widget-A; m6: expected Widget-A, got Gadget-X",
       "tokens": 16000
     },
     {
@@ -281,9 +281,9 @@
       "role": "Transaction / Approval Agent",
       "tier": 2,
       "scoring_type": "exact",
-      "score": 0,
+      "score": 10,
       "max": 10,
-      "detail": "Could not parse JSON",
+      "detail": "10/10 correct",
       "tokens": 16000
     },
     {
@@ -551,9 +551,9 @@
       "role": "Financial Analysis / Stock Research",
       "tier": 5,
       "scoring_type": "exact",
-      "score": 0,
+      "score": 6,
       "max": 10,
-      "detail": "Could not parse JSON",
+      "detail": "6/10 correct | gross_margin: expected 40.0, got 0.4; operating_margin: expected 20.0, got 0.2; net_margin: expected 12.79, got 0.13; roe: expected 25.29, got 0.25",
       "tokens": 16000
     },
     {
