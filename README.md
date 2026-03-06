@@ -16,6 +16,8 @@ Most benchmarks tell you a model is "smart." ClawEval tells you if it can **do t
 
 ### 🖥️ LOCAL Models — Run on YOUR Hardware
 
+> 📄 **[OpenClaw Backend: Local on 3090 — The Complete Guide (PDF)](docs/OpenClaw_Backend_Local_on_3090.pdf)** — An interactive walkthrough of running the full OpenClaw backend locally on an RTX 3090. Covers setup, model selection, and performance tips with step-by-step calls to action.
+
 We test quantized open-source models that fit on hardware you already own. Find out which model is best for each agent role **before you commit your VRAM.** We're also testing smaller models for max context and usability — even a 16GB GPU can run capable sub-agents.
 
 | 🔴 8GB VRAM | 🟠 12GB VRAM | 🟡 16GB VRAM | 🟢 24GB VRAM | 🔵 64–96GB VRAM |
@@ -39,8 +41,6 @@ Don't have a GPU? We also test open-source models hosted on cloud providers so y
 | Alibaba Coding Plan | **MiniMax-M2.5** — 465/590 (79%) Phase F, 78/110 (71%) Phase G | ✅ Tested |
 | OpenRouter, Alibaba, and other affordable providers | Open-source models via API | 🔜 Coming soon |
 
-
-> 📄 **[OpenClaw Backend: Local on 3090 — The Complete Guide (PDF)](docs/OpenClaw_Backend_Local_on_3090.pdf)** — An interactive walkthrough of running the full OpenClaw backend locally on an RTX 3090. Covers setup, model selection, and performance tips with step-by-step calls to action.
 
 ## 🏆 Best Model Per Role — Which One Should You Run?
 
