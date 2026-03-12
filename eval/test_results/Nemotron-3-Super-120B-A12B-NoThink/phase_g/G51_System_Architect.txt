@@ -1,0 +1,130 @@
+We need to output JSON exactly as specified. Must fill fields with plausible design. Must ensure JSON is valid. Provide numbers for cost estimate within $5k/month. Provide components list, database primary type, justification, cache type, strategy, invalidation, hash strategy algorithm, length, collision handling. Scaling: read_write_ratio, read_optimization, write_path, horizontal_scaling. Reliability: uptime_strategy, failover, data_replication. Compliance: gdpr_deletion, data_retention, analytics_separation. Cost_estimate: monthly_total, breakdown compute, database, cache, cdn, other, fits_budget true/false. Rate_limiting: strategy, limits. Monitoring: metrics list, alerting.
+
+We need to ensure numbers fit budget. Let's propose using cheap cloud: e.g., AWS t3.medium or similar, or using managed services like DynamoDB, Redis, CloudFront. But need to stay under $5k/month. Let's approximate: compute (EC2 autoscaling group) maybe $1500, database (DynamoDB on-demand) maybe $1000, cache (ElastiCache Redis) $500, CDN (CloudFront) $500, other (load balancer, logging, monitoring) $500 => total $4000 fits.
+
+Alternatively use open-source on cheap VMs: but we need to be realistic.
+
+We'll produce JSON.
+
+Check that we follow exact structure: top-level keys: architecture, scaling, reliability, compliance, cost_estimate, rate_limiting, monitoring.
+
+Inside architecture: components (list), database (object with primary and justification), cache (type, strategy, invalidation), hash_strategy (algorithm, length, collision_handling).
+
+Scaling: read_write_ratio (string like "100:1"), read_optimization (string), write_path (string), horizontal_scaling (string).
+
+Reliability: uptime_strategy (string), failover (string), data_replication (string).
+
+Compliance: gdpr_deletion (string), data_retention (string), analytics_separation (string).
+
+Cost_estimate: monthly_total (number), breakdown (object with compute, database, cache, cdn, other numbers), fits_budget (boolean).
+
+Rate_limiting: strategy (string), limits (string).
+
+Monitoring: metrics (list of strings), alerting (string).
+
+Make sure no extra fields, no trailing commas.
+
+Let's craft.
+
+Components: ["API Gateway", "URL Service (stateless)", "Alias Service", "Expiration Service", "Analytics Service", "Load Balancer", "Primary Database", "Cache Layer", "CDN", "Monitoring & Logging", "Backup & Replication"].
+
+Database primary: maybe "Amazon DynamoDB (NoSQL)". Justification: high write throughput, low latency, managed, scales automatically.
+
+Cache: type "Redis (clustered)". Strategy "read-through caching for hot URLs, write-through for updates". Invalidation "TTL-based + explicit delete on expiration/GDPR request".
+
+Hash_strategy: algorithm "Base62 encoding of incremental ID or SHA-256 truncated". Let's choose "Base62 of auto-increment ID". length: 7 characters (allows 62^7 ~ 3.5T > needed). collision_handling: "retry with next ID or use random salt".
+
+Scaling: read_write_ratio "100:1". read_optimization "edge CDN caching + read-through Redis cache". write_path "writes go to primary DB via write API, async replication to replicas". horizontal_scaling "stateless services behind autoscaling groups; DB sharded via DynamoDB partitions; Redis cluster scales horizontally".
+
+Reliability: uptime_strategy "multi-AZ deployment with health checks and automated failover". failover "Route53 health checks + ELB automatic reroute to healthy AZ". data_replication "DynamoDB global tables for cross-region replication; Redis replication with read replicas".
+
+Compliance: gdpr_deletion "soft-delete flag + background purge job; API to erase personal data; audit logs". data_retention "URL records retained until expiration or deletion request; analytics data aggregated and purged after 30 days". analytics_separation "separate analytics store (e.g., Amazon S3 + Athena) decoupled from primary DB".
+
+Cost_estimate: monthly_total 4200. breakdown: compute 1500, database 1200, cache 500, cdn 500, other 500. fits_budget true.
+
+Rate_limiting: strategy "token bucket per API key/IP". limits "1000 req/sec per IP for create, 10000 req/sec per IP for redirect".
+
+Monitoring: metrics ["request_latency", "error_rate", "cache_hit_ratio", "db_write_throughput", "cpu_utilization", "disk_space", "gdpr_deletion_queue_length"]. alerting "PagerDuty integration via CloudWatch alarms; SNS notifications for latency >50ms p99, error rate >1%, cache miss >20%".
+
+Now produce JSON.
+
+Check for any stray commas. Ensure proper quoting.
+
+Let's write.
+
+</think>
+
+{
+  "architecture": {
+    "components": [
+      "API Gateway",
+      "URL Service (stateless)",
+      "Alias Service",
+      "Expiration Service",
+      "Analytics Service",
+      "Load Balancer",
+      "Primary Database",
+      "Cache Layer",
+      "CDN",
+      "Monitoring & Logging",
+      "Backup & Replication"
+    ],
+    "database": {
+      "primary": "Amazon DynamoDB (NoSQL)",
+      "justification": "Provides seamless horizontal scaling, low-latency single-digit millisecond reads/writes, managed backups, and automatic partitioning to handle 10M writes/day and 1B reads/day within budget."
+    },
+    "cache": {
+      "type": "Redis (clustered)",
+      "strategy": "Read-through caching for hot URLs; write-through for alias/expiration updates.",
+      "invalidation": "TTL-based expiration + explicit delete on GDPR request or URL expiry."
+    },
+    "hash_strategy": {
+      "algorithm": "Base62 encoding of an auto‑incrementing ID (with random salt on collision)",
+      "length": 7,
+      "collision_handling": "If generated hash exists, increment ID and retry; salt ensures low collision probability."
+    }
+  },
+  "scaling": {
+    "read_write_ratio": "100:1",
+    "read_optimization": "Edge CDN caching + read-through Redis cache for hot URLs.",
+    "write_path": "Writes go to primary DynamoDB via write API; async propagation to replicas.",
+    "horizontal_scaling": "Stateless services behind autoscaling groups; DynamoDB partitions scale automatically; Redis cluster adds shards as needed."
+  },
+  "reliability": {
+    "uptime_strategy": "Multi‑AZ deployment with health‑checked load balancers and automated failover.",
+    "failover": "Route 53 health checks + ELB automatically routes traffic to healthy AZ; DynamoDB global tables provide cross‑region failover.",
+    "data_replication": "DynamoDB global tables for cross‑region replication; Redis read replicas with automatic failover."
+  },
+  "compliance": {
+    "gdpr_deletion": "Soft‑delete flag + background purge job; API to erase personal data; audit logs retained for compliance.",
+    "data_retention": "URL records kept until expiration or deletion request; analytics data aggregated and purged after 30 days.",
+    "analytics_separation": "Separate analytics store (Amazon S3 + Athena) decoupled from primary DB to avoid performance impact."
+  },
+  "cost_estimate": {
+    "monthly_total": 4200,
+    "breakdown": {
+      "compute": 1500,
+      "database": 1200,
+      "cache": 500,
+      "cdn": 500,
+      "other": 500
+    },
+    "fits_budget": true
+  },
+  "rate_limiting": {
+    "strategy": "Token bucket per API key / IP address",
+    "limits": "1000 req/sec per IP for create; 10,000 req/sec per IP for redirect"
+  },
+  "monitoring": {
+    "metrics": [
+      "request_latency",
+      "error_rate",
+      "cache_hit_ratio",
+      "db_write_throughput",
+      "cpu_utilization",
+      "disk_space",
+      "gdpr_deletion_queue_length"
+    ],
+    "alerting": "PagerDuty via CloudWatch alarms; SNS notifications for latency >50ms p99, error rate >1%, cache miss >20%"
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "issues": [
+    {
+      "line": "1",
+      "problem": "version '2' is outdated",
+      "fix": "Upgrade to a recent Compose file version, e.g., version: '3.8' (or '3.9')."
+    },
+    {
+      "line": "4",
+      "problem": "Using 'latest' tag is non-deterministic",
+      "fix": "Pin to a specific Node version, e.g., image: node:18-alpine."
+    },
+    {
+      "line": "8",
+      "problem": "DB password stored in plaintext in the Compose file",
+      "fix": "Use Docker secrets or an external env file (not committed) to supply DB_PASSWORD."
+    },
+    {
+      "line": "9",
+      "problem": "NODE_ENV set to 'development' which is inappropriate for production",
+      "fix": "Set NODE_ENV: production."
+    },
+    {
+      "line": "11",
+      "problem": "Mounting host source code (.:/app) into the container in production can expose code and cause inconsistency",
+      "fix": "Remove the bind mount or replace with a named volume; copy code into the image via Dockerfile."
+    },
+    {
+      "line": "12",
+      "problem": "Restart policy set to 'no' means the container will not be automatically restarted",
+      "fix": "Set restart: unless-stopped (or always) to ensure resilience."
+    },
+    {
+      "line": "15",
+      "problem": "MySQL 5.6 is end‑of‑life and no longer receives security updates",
+      "fix": "Upgrade to a supported version, e.g., image: mysql:8.0."
+    },
+    {
+      "line": "17",
+      "problem": "Exposing MySQL port 3306 publicly allows unrestricted network access",
+      "fix": "Remove the port binding (or bind only to localhost) and let the web service connect via the internal Docker network."
+    },
+    {
+      "line": "21",
+      "problem": "Using /tmp/mysql-data for persistent storage; data will be lost on host reboot or cleanup",
+      "fix": "Use a named volume (e.g., mysql-data:/var/lib/mysql) or a dedicated directory outside /tmp."
+    },
+    {
+      "line": "26",
+      "problem": "Redis port 6379 exposed publicly without authentication",
+      "fix": "Either remove the port binding (internal only) or enable Redis AUTH (requirepass) and restrict exposure."
+    }
+  ],
+  "count": 10
+}

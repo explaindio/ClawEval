@@ -1,0 +1,93 @@
+We need to parse each source and answer each question.
+
+Given sources:
+
+Source A: 2024 survey, 500 companies: "78% of companies with >100 developers use microservices. Average deployment frequency: 12x/day. Infrastructure cost: 3.2x higher than monolith."
+
+Source B: performance study, 50 apps: "Microservices add 5-15ms latency per service hop. 90th percentile response time: 340ms vs 120ms for monolith equivalent."
+
+Source C: failure analysis, 200 incidents: "67% of microservice outages caused by network issues. MTTR: 45 min for microservices vs 28 min for monolith."
+
+Source D: developer survey, 2000 devs: "Developer satisfaction 15% higher with microservices. Onboarding time: 3 weeks vs 1 week for monolith."
+
+Source E: cost study, 100 companies: "Total cost of ownership over 3 years: microservices 40% higher for <50 devs, 20% LOWER for >200 devs."
+
+Source F: migration report, 30 companies: "Average migration time: 18 months. 40% reported net positive ROI within 2 years. 25% rolled back to monolith."
+
+Now answer each question:
+
+q1: At what team size does microservices become cost-effective? (number)
+
+From Source E: microservices 40% higher for <50 devs, 20% LOWER for >200 devs. So cost-effective (i.e., lower cost) when >200 devs. The threshold is >200 devs. The question: "At what team size does microservices become cost-effective? (number)" Likely answer: 200 (or >200). Might answer 200 as the threshold. We'll answer 200.
+
+q2: What is the latency penalty range in ms? (e.g., '5-15')
+
+From Source B: "Microservices add 5-15ms latency per service hop." So answer "5-15".
+
+q3: What percentage of microservice outages are network-related?
+
+From Source C: "67% of microservice outages caused by network issues." So answer 67.
+
+q4: MTTR difference in minutes (microservices minus monolith)?
+
+From Source C: MTTR: 45 min for microservices vs 28 min for monolith. Difference = 45 - 28 = 17 minutes. So answer 17.
+
+q5: Onboarding time multiplier for microservices vs monolith? (e.g., 3.0)
+
+From Source D: Onboarding time: 3 weeks vs 1 week for monolith. Multiplier = 3 weeks / 1 week = 3.0. So answer 3.0.
+
+q6: What fraction of companies that migrated rolled back?
+
+From Source F: "25% rolled back to monolith." Fraction = 25% = 0.25 or 1/4. The question: "What fraction of companies that migrated rolled back?" Could answer as "1/4" or "0.25". Probably fraction like 1/4. We'll answer "1/4".
+
+q7: Infrastructure cost multiplier for microservices?
+
+From Source A: "Infrastructure cost: 3.2x higher than monolith." So multiplier = 3.2.
+
+q8: Do Sources A and E contradict on cost? (yes/no and explain in 1 sentence)
+
+Source A says infrastructure cost is 3.2x higher than monolith (i.e., higher cost). Source E says total cost of ownership over 3 years: microservices 40% higher for <50 devs, 20% LOWER for >200 devs. So for small teams (<50) microservices are higher cost (consistent with A). For large teams (>200) microservices are lower cost (contradicts A's statement that infrastructure cost is higher). So they contradict regarding large teams. So answer: yes, they contradict because A claims higher infrastructure cost universally, while E shows lower total cost for large teams (>200 devs). Provide one sentence.
+
+q9: Developer satisfaction improvement percentage?
+
+From Source D: "Developer satisfaction 15% higher with microservices." So answer 15.
+
+q10: What percentage achieved positive ROI within 2 years?
+
+From Source F: "40% reported net positive ROI within 2 years." So answer 40.
+
+Now produce JSON with keys q1..q10 and values accordingly. Ensure numbers as numbers where appropriate, strings where needed.
+
+q1: number (200)
+q2: string "5-15"
+q3: number 67
+q4: number 17
+q5: number 3.0 (maybe float)
+q6: fraction maybe string "1/4" or number 0.25. The prompt: "What fraction of companies that migrated rolled back?" Could answer as "1/4". We'll output string "1/4".
+q7: number 3.2
+q8: need yes/no and explanation in 1 sentence. So value should be an object? The prompt: "Do Sources A and E contradict on cost? (yes/no and explain in 1 sentence)". So answer likely a string like "yes, because ...". We'll output a string.
+q9: number 15
+q10: number 40
+
+Make JSON.
+
+Let's craft q8: "Yes, Source A states microservices have higher infrastructure cost universally, while Source E shows they are cheaper for teams >200 developers."
+
+One sentence.
+
+Now produce JSON.
+
+</think>
+
+{
+  "q1": 200,
+  "q2": "5-15",
+  "q3": 67,
+  "q4": 17,
+  "q5": 3.0,
+  "q6": "1/4",
+  "q7": 3.2,
+  "q8": "Yes, Source A claims microservices always have higher infrastructure cost, whereas Source E shows they are cheaper for teams larger than 200 developers.",
+  "q9": 15,
+  "q10": 40
+}

@@ -1,0 +1,580 @@
+We need to produce a JSON with weeks array of 4 weeks, each schedule with mon-fri content types. Must meet constraints.
+
+Let's list constraints:
+
+- Exactly 20 pieces total, 5 per week (Mon-Fri). So each week 5.
+
+- Content types distribution: B=6, S=6, E=4, V=3, W=1.
+
+- No two consecutive days same type.
+
+- Webinar must be on a Wednesday or Thursday in week 3 or 4.
+
+- Videos cannot be on Mondays.
+
+- Emails must be on Tuesday or Thursday only.
+
+- Week 1 must start with a blog (launch announcement) => week1 Monday = B.
+
+- Last piece (week4 Friday) must be a social post => week4 Friday = S.
+
+- Each blog must have a social post within 2 days after it (promotion). Means for each blog day, there must be a social post on either same day? "within 2 days after it" means within next two days (including day+1 or day+2). Not same day? Usually after means later, so day+1 or day+2. We'll ensure.
+
+- No more than 2 content pieces of the same type per week. So per week, each type count <=2.
+
+We need to allocate 6 blogs across 4 weeks, max 2 per week => exactly 2 per week (since 4 weeks *2 =8, but we need 6, so some weeks have 2, some 1, some 0 but max 2). Similarly social 6 => max 2 per week => need distribution maybe 2,2,1,1 etc. Emails 4 => max 2 per week => need distribution maybe 2,2,0,0 etc. Videos 3 => max 2 per week => distribution maybe 2,1,0,0 etc. Webinar 1 => max 2 per week trivially.
+
+We also need to satisfy email days only Tue or Thu.
+
+Let's design week by week.
+
+Week1: Monday = B (required). Need to allocate rest.
+
+We need to ensure each blog has a social within 2 days after.
+
+Let's plan blogs on Mon, Wed maybe? Then social on Tue or Thu etc.
+
+Week1 days: Mon B, Tue ?, Wed ?, Thu ?, Fri ?.
+
+Emails only Tue or Thu.
+
+Videos cannot be Monday.
+
+No consecutive same type.
+
+Let's attempt to allocate.
+
+We need total blogs 6. Let's aim for week1: 2 blogs (Mon and Wed). Then week2: 2 blogs (Tue and Thu maybe). Week3: 1 blog (Mon?). Week4: 1 blog (Fri? but Fri must be social, so maybe Thu). We'll adjust.
+
+Social total 6. Need each blog to have a social within 2 days after. So for each blog, we need a social on day+1 or day+2.
+
+Let's design week1:
+
+Mon B
+Tue S (social after blog Mon within 1 day)
+Wed B
+Thu ? (maybe email)
+Fri ? (maybe video? but video cannot be Monday, okay Fri allowed)
+
+Check constraints: No consecutive same: Mon B, Tue S ok; Tue S, Wed B ok; Wed B, Thu ? must not be B; Thu could be E (email) ok; Thu E, Fri ? must not be E; Fri could be V (video) ok.
+
+Now week1 counts: B=2, S=1, E=1, V=1, W=0.
+
+Week2: Need to continue.
+
+We need total B=6, so remaining blogs 4. We have used 2, need 4 more.
+
+We need S total 6, used 1, need 5 more.
+
+E total 4, used 1, need 3 more.
+
+V total 3, used 1, need 2 more.
+
+W total 1, need 1.
+
+Now week2 constraints: email only Tue or Thu. No more than 2 per type per week. Also no consecutive same.
+
+Let's design week2:
+
+We could place blogs on Tue and Thu? But email only Tue or Thu, so if we put blog on Tue, email can't be there. Let's think.
+
+We need to place emails 3 total across weeks. Since email only Tue or Thu, we can allocate across weeks.
+
+Let's attempt week2: Mon ?, Tue E, Wed ?, Thu E, Fri ?. That would give 2 emails week2 (max allowed). Good.
+
+Now we need to avoid consecutive same: Mon ?, Tue E, so Mon cannot be E. Wed ?, Thu E, so Wed cannot be E. Fri ?, Thu E so Fri cannot be E.
+
+Now we need to place blogs and socials and videos.
+
+We have remaining blogs 4, socials 5, videos 2, webinar 1.
+
+Let's try to place blogs on Mon and Wed? But Wed cannot be E (already not), could be B. Mon could be B. However we must ensure no consecutive same: Mon B, Tue E ok; Tue E, Wed B ok; Wed B, Thu E ok; Thu E, Fri ? must not be E, could be S or V.
+
+Now we need socials: we need 5 total remaining. We have currently S count week1=1. Need 5 more across weeks2-4.
+
+We can place social on Fri week2 maybe, and also maybe on other days.
+
+But we also need each blog to have a social within 2 days after. Let's check blogs placed:
+
+Week1: Mon B -> social Tue (we have S Tue) good (within 1 day). Wed B -> need social within Thu or Fri. We have Thu E, Fri V currently. No social yet. So we need to adjust: maybe move social to Thu or Fri within 2 days after Wed. Since Thu is E, Fri is V, we could change one to S. But we also need email constraints.
+
+Let's adjust week1: maybe Wed B, Thu S (social), Fri V (video). But email must be Tue or Thu only; we already have email Tue? Actually we had email Tue? Wait we set week1: Mon B, Tue S, Wed B, Thu ?, Fri ?. We haven't placed email yet. Email must be Tue or Thu only. So we could put email on Tue? But Tue currently S. Could shift.
+
+Let's redesign week1 more systematically.
+
+Goal: week1 Mon B. Need email somewhere Tue or Thu. Let's decide email on Tue (E). Then we need to avoid consecutive same: Mon B, Tue E ok. Then we need to place other days.
+
+We also need each blog to have a social within 2 days after. We'll have blogs maybe Mon and Wed? Let's see.
+
+If Mon B, need social on Tue or Wed. Tue is E, so cannot. So we need social on Wed (day+2). So Wed must be S.
+
+Thus week1: Mon B, Tue E, Wed S.
+
+Now we need to avoid consecutive same: Tue E, Wed S ok.
+
+Now we need another blog maybe Thu? Let's see. If we put blog on Thu, need social within Fri or (next week) Mon? Actually within 2 days after: Fri or next week Mon? Since after Thu, days Fri (day+1) and next week Mon (day+2) because week boundary? Probably within same week? The constraint likely within 2 days after it (calendar days). Could cross week? Probably yes, but safer to keep within same week or next week Monday. We'll try to keep within same week.
+
+If we put blog Thu, need social on Fri or next week Mon. Let's aim for Fri social.
+
+Thus week1: Mon B, Tue E, Wed S, Thu B, Fri S.
+
+Check consecutive: Wed S, Thu B ok; Thu B, Fri S ok.
+
+Now week1 counts: B=2 (Mon,Thu), S=2 (Wed,Fri), E=1 (Tue), V=0, W=0.
+
+We have used 2 blogs, 2 socials, 1 email. Good.
+
+Now week2: Need to allocate remaining.
+
+We have totals needed: B remaining 4, S remaining 4 (since total 6 -2 used =4), E remaining 3 (total 4 -1 =3), V remaining 3, W remaining 1.
+
+Week2 constraints: email only Tue or Thu. No more than 2 per type per week.
+
+Let's design week2 similar pattern but maybe shift.
+
+We need to place emails 3 total across weeks. We already used 1 email week1. Need 3 more across weeks2-4.
+
+We can allocate week2: Tue E, Thu E (2 emails). Then week3 or week4 get remaining 1 email.
+
+Now week2 we need to avoid consecutive same.
+
+Let's set week2 days:
+
+Mon ?, Tue E, Wed ?, Thu E, Fri ?.
+
+We need to place blogs and socials and videos.
+
+We have remaining blogs 4, socials 4, videos 3, webinar 1.
+
+We need to ensure each blog gets a social within 2 days after.
+
+Let's try to place blogs on Mon and Wed? Then need socials on Tue/Wed? Actually blog Mon needs social on Tue or Wed. Tue is E, so cannot; thus need social on Wed (day+2). So Wed must be S.
+
+Blog Wed needs social on Thu or Fri. Thu is E, so cannot; thus need social on Fri (day+2). So Fri must be S.
+
+Thus we would have: Mon B, Tue E, Wed S, Thu E, Fri S.
+
+Check consecutive: Mon B, Tue E ok; Tue E, Wed S ok; Wed S, Thu E ok; Thu E, Fri S ok.
+
+Now week2 counts: B=2 (Mon,Wed), S=2 (Wed,Fri), E=2 (Tue,Thu), V=0, W=0.
+
+But note we double counted Wed as both B and S? Actually we assigned Wed S for blog Mon's social, but also we wanted Wed as blog. Can't be both. Conflict: we cannot have same day both B and S. So our plan fails.
+
+We need to adjust: maybe blogs on Mon and Thu? Let's try.
+
+We need to place 2 blogs in week2 (max 2). Let's try Mon B and Thu B.
+
+Check constraints:
+
+- Mon B needs social on Tue or Wed. Tue is E, so cannot; thus need social on Wed (day+2). So Wed must be S.
+
+- Thu B needs social on Fri or next week Mon. We'll aim for Fri social.
+
+Now assign:
+
+Mon B
+Tue E
+Wed S
+Thu B
+Fri S
+
+Check consecutive: Mon B, Tue E ok; Tue E, Wed S ok; Wed S, Thu B ok; Thu B, Fri S ok.
+
+Now week2 counts: B=2 (Mon,Thu), S=2 (Wed,Fri), E=2 (Tue,Thu? Wait Thu is B, not E. Actually we have E only Tue and? we need second email maybe? We have only Tue E currently. We need 2 emails week2 to reach total 3 later? Actually we planned week2 to have 2 emails (Tue and Thu). But we used Thu as B, can't. So we need to adjust: maybe email on Tue and something else (but email only Tue or Thu). So we need email on Tue and Thu. But Thu is B, conflict. So we cannot have both email and blog on Thu. So we need to shift blog to another day.
+
+Let's try blogs on Tue and Thu? But email only Tue or Thu, so can't have blog on those days if we need email there. Could have email on Tue and blog on Thu, or email on Thu and blog on Tue. Let's try.
+
+Option: Email on Tue (E), email on Thu (E). Then we cannot have blogs on Tue or Thu. So blogs must be on Mon, Wed, Fri maybe. But we max 2 blogs per week, so we can choose Mon and Wed.
+
+Let's test:
+
+Mon B
+Tue E
+Wed B
+Thu E
+Fri ?
+
+Now need socials for each blog within 2 days after.
+
+- Mon B needs social on Tue or Wed. Tue is E, so cannot; thus need social on Wed (day+2). But Wed is B, conflict. So Mon B cannot be satisfied.
+
+Thus we need to adjust: maybe Mon B needs social on Tue (but Tue is E) not possible. So Mon cannot be blog if Tue is E. So we need to avoid having email on Tue when we have blog Mon.
+
+Thus maybe we shift email to Thu only (one email week2) and have another email week3 or week4.
+
+We need total 3 emails remaining after week1. We can allocate: week2: 1 email (Tue or Thu), week3: 1 email, week4: 1 email.
+
+Let's do that.
+
+Week2: email on Tue (E). No email on Thu.
+
+Now we can place blogs on Mon and Thu maybe.
+
+Let's try:
+
+Mon B
+Tue E
+Wed ?
+Thu B
+Fri ?
+
+Now need socials:
+
+- Mon B needs social on Tue or Wed. Tue is E, so need social on Wed (day+2). So Wed must be S.
+
+- Thu B needs social on Fri or next week Mon. Aim for Fri social.
+
+Now assign:
+
+Mon B
+Tue E
+Wed S
+Thu B
+Fri S
+
+Check consecutive: Mon B, Tue E ok; Tue E, Wed S ok; Wed S, Thu B ok; Thu B, Fri S ok.
+
+Now week2 counts: B=2 (Mon,Thu), S=2 (Wed,Fri), E=1 (Tue), V=0, W=0.
+
+Good.
+
+Now week3: Need to allocate remaining.
+
+Remaining totals: B total needed 6 - used (week1 2 + week2 2) = 2 blogs left. S total needed 6 - used (week1 2 + week2 2) = 2 socials left. E total needed 4 - used (week1 1 + week2 1) = 2 emails left. V total needed 3 - used (week1 0 + week2 0) = 3 videos left. W total needed 1 - used 0 = 1 webinar left.
+
+Week3 constraints: email only Tue or Thu. No more than 2 per type per week. Webinar must be on Wednesday or Thursday in week 3 or 4. Videos cannot be on Monday.
+
+We have 2 blogs, 2 socials, 2 emails, 3 videos, 1 webinar to place across weeks 3 and 4 (each week 5 days). We need to respect max 2 per type per week.
+
+Let's allocate week3 maybe: 2 blogs, 2 emails, 1 video? But we need to place webinar somewhere week3 or 4.
+
+We also need each blog to have a social within 2 days after.
+
+Let's design week3 with webinar on Wednesday (allowed). So Wed = W.
+
+Now we need to place 2 blogs, 2 socials, 2 emails, 3 videos across weeks 3 and 4.
+
+Week3 days: Mon, Tue, Wed(W), Thu, Fri.
+
+Email only Tue or Thu.
+
+We have 2 emails to place across weeks 3 and 4. Could put both in week3 on Tue and Thu (max 2 per week okay). Then week4 would have 0 emails.
+
+Now we need to place 2 blogs and 2 socials and 3 videos across weeks 3 and 4.
+
+Week3 currently: Mon ?, Tue E, Wed W, Thu E, Fri ?.
+
+We need to avoid consecutive same.
+
+Check: Mon ?, Tue E => Mon cannot be E. Tue E, Wed W => ok (E != W). Wed W, Thu E => ok. Thu E, Fri ? => Fri cannot be E.
+
+Now we need to place blogs and socials and videos.
+
+We have 2 blogs to place. Let's consider placing blogs on Mon and Fri? But Fri cannot be E, okay.
+
+Check constraints for each blog needing social within 2 days after.
+
+If we place blog Mon, need social on Tue or Wed. Tue is E, Wed is W, neither social. So Mon cannot be blog unless we change Tue or Wed to social, but they are fixed as E and W. So Mon cannot be blog.
+
+If we place blog Tue? Tue is E, cannot.
+
+Blog Wed? Wed is W, cannot.
+
+Blog Thu? Thu is E, cannot.
+
+Blog Fri? Fri is open; need social on next week Mon or (day+2) which would be next week Mon? Actually after Fri, day+1 is next week Mon, day+2 is next week Tue. So we could have social in week4 Mon or Tue.
+
+Thus likely blogs will be placed on Fri week3 and maybe another day where we can adjust.
+
+But we have only 2 blogs left; maybe we place both in week4.
+
+Let's see week4.
+
+Week4: we need to place remaining items: after week3 we will have used some videos etc.
+
+Let's attempt to allocate week3 with 0 blogs, maybe 2 videos, 1 social, and the rest emails and webinar.
+
+But we need total blogs 2 left; we could put both in week4.
+
+Week4 must end with social on Friday (constraint). So week4 Fri = S.
+
+Now we need to place 2 blogs in week4 (Mon-Thu) and ensure each has a social within 2 days after.
+
+Also we need to place remaining videos (3) and maybe socials (we have total socials left 2; one will be Fri week4, so we need 1 more social somewhere else).
+
+Let's compute remaining after week3 plan.
+
+We need to decide week3 composition.
+
+We have to place 3 videos total. Videos cannot be on Monday. So week3 Mon cannot be video. Week4 Mon also cannot be video.
+
+We have webinar on Wed week3.
+
+Let's try week3: Mon V? cannot (video not Monday). So Mon could be social or blog? but we decided to keep blogs for week4. So Mon could be social.
+
+Tue E (email)
+Wed W (webinar)
+Thu E (email)
+Fri V? (video) allowed (not Monday). Good.
+
+Now week3 counts: V=2 (Mon? actually Mon we said social, sorry). Let's list:
+
+Mon: S (social)
+Tue: E
+Wed: W
+Thu: E
+Fri: V
+
+Check consecutive: Mon S, Tue E ok; Tue E, Wed W ok; Wed W, Thu E ok; Thu E, Fri V ok.
+
+Now week3 counts: S=1, E=2, W=1, V=1, B=0.
+
+We still need: total blogs 2, socials total 6 - used (week1 2 + week2 2 + week3 1) = 1 social left. Videos total 3 - used (week3 1) = 2 videos left. Emails total 4 - used (week1 1 + week2 1 + week3 2) = 0 emails left (good). Webinar done.
+
+Now week4: we need to place 2 blogs, 1 social (remaining), 2 videos, and ensure Fri is social (but we already have social left 1, which could be Fri). However we also need Fri to be social per constraint. So we can set Fri = S (the remaining social). Good.
+
+Now we need to place 2 blogs and 2 videos across Mon-Thu (Mon, Tue, Wed, Thu) with no consecutive same, email none, video not Monday.
+
+Also need each blog to have a social within 2 days after. Since we have only one social (Fri), we need to ensure each blog's social is within 2 days after it, possibly that social could be Fri if blog is on Wed or Thu? Let's see.
+
+If blog on Wed, then within 2 days after: Thu (day+1) or Fri (day+2). So if we place social on Fri, a blog on Wed would satisfy (day+2). If blog on Thu, then within 2 days after: Fri (day+1) or next week Sat (not relevant). So blog on Thu also satisfied by Fri social. If blog on Tue, then within 2 days after: Wed or Thu. Neither would be social (since we have no social there). So blog on Tue not okay unless we place social on Wed or Thu, but we don't have. If blog on Mon, within 2 days after: Tue or Wed. Not social.
+
+Thus we need to place blogs on Wed and Thu (or one on Wed and one on Thu) to have social Fri within 2 days.
+
+We have 2 blogs, so we can place them on Wed and Thu.
+
+Now we need to place 2 videos on Mon and Tue (or Mon and Wed? but Wed already blog). Video cannot be Monday, so Mon cannot be video. So we need to place videos on Tue and maybe Thu? but Thu is blog. So we need to place videos on Tue and maybe Fri? but Fri is social. So we need to place videos on Tue and maybe ??? Let's list days:
+
+Mon: ?
+Tue: ?
+Wed: Blog
+Thu: Blog
+Fri: Social (S)
+
+We need to place 2 videos somewhere, respecting video not Monday. So Mon cannot be video. So videos must be on Tue and maybe ??? Could be Wed? but Wed is blog. Thu blog. Fri social. So only Tue available for video, but we need 2 videos. So we need to adjust: maybe we can place one video on Mon? but constraint says videos cannot be on Mondays (production team unavailable). So Mon cannot be video. So we need to shift something: maybe we can have video on Fri and move social elsewhere? But Fri must be social (recap). So Fri cannot be video.
+
+Thus we need to have videos on Tue and maybe also on ??? Could we place video on Thu and move blog elsewhere? Let's reconsider.
+
+We need 2 videos total left. Video cannot be Monday. So possible days: Tue, Wed, Thu, Fri. But Fri is social required. So video cannot be Fri. So possible days: Tue, Wed, Thu.
+
+We have 2 blogs to place, and we need each blog to have social within 2 days after. Social we have left 1 (Fri). So we need blogs on days such that Fri is within 2 days after: that is Wed (day+2) or Thu (day+1). So we could place one blog on Wed and one blog on Thu (as earlier). That uses Wed and Thu for blogs, leaving Tue for video, and Mon for ??? we need another video but Mon cannot be video. So we need to adjust: maybe we can place one video on Tue and the other video on ??? Could we place video on Mon if we shift the "no video on Monday" constraint? It's hard constraint, cannot.
+
+Thus we need to have only 1 video left? Wait we miscalculated remaining videos.
+
+Let's recompute totals from start.
+
+Total videos needed: 3.
+
+We placed videos: week1: 0, week2:0, week3: we placed 1 video on Fri (V). So used 1 video.
+
+Remaining videos: 3-1 = 2. Correct.
+
+Now we need to place 2 videos in week4.
+
+But we have constraints: video cannot be Monday. So we need to place both videos on Tue, Wed, Thu, Fri (but Fri is social). So we have Tue, Wed, Thu available for video (3 slots). We also need to place 2 blogs and 1 social (Fri). So we have 5 days: Mon, Tue, Wed, Thu, Fri.
+
+We need to assign:
+
+- Mon: ?
+- Tue: ?
+- Wed: ?
+- Thu: ?
+- Fri: S (social)
+
+We need to place: 2 blogs, 2 videos, and we already have Fri S.
+
+Thus we have 4 slots (Mon-Thu) to place 2 blogs and 2 videos.
+
+Constraints:
+
+- Video cannot be Monday => Mon cannot be video.
+
+- No two consecutive same type.
+
+- Each blog must have a social within 2 days after it. Social is only on Fri. So for a blog, Fri must be within 2 days after => blog must be on Wed (day+2) or Thu (day+1). So blogs can only be on Wed or Thu.
+
+Thus we need to place 2 blogs on Wed and Thu (order maybe Wed blog, Thu blog). That uses Wed and Thu for blogs.
+
+Now remaining slots Mon and Tue must be videos (2 videos). But Mon cannot be video (constraint). So we need to adjust: maybe we can place one video on Mon if we relax? Can't.
+
+Thus we need to have at least one video on Mon? Not allowed. So we need to change plan: maybe we can place social not only on Fri but also another social earlier to satisfy blog condition, allowing blogs on other days, freeing up Mon/Tue for videos.
+
+We have total socials left 1 (since we used 5 socials so far? Let's verify). Actually we have total socials needed 6. Used: week1 2, week2 2, week3 1 =5. So 1 social left. That we planned to put on Fri week4. But we could instead place that social earlier in week4 (e.g., on Thu) and still have Fri be something else? But constraint says last piece (week4 Friday) must be a social post (recap). So Fri must be social. So we cannot move social away from Fri. So we have exactly 1 social left and it must be Fri. So we cannot have any other social in week4.
+
+Thus blogs must rely on that Fri social for promotion. Therefore blogs must be on Wed or Thu as earlier.
+
+Thus we need to place 2 blogs on Wed and Thu. That uses those days.
+
+Now we need to place 2 videos in Mon and Tue (since Wed/Thu are blogs, Fri social). But Mon cannot be video. So we need to adjust: maybe we can shift one video to Fri? But Fri must be social. Can't.
+
+Thus we need to adjust earlier weeks to free up a social earlier in week4 (so we have more than 1 social left) or to have another social in week4 besides Fri (but then Fri still social, we could have 2 socials in week4, but max 2 per type per week allowed). That would give us an extra social earlier in week4 to satisfy blog condition, allowing blogs on other days.
+
+We have total socials needed 6. We used 5 so far. If we allocate 2 socials in week4 (one earlier, one Fri), we would have total socials 7 >6. Not allowed.
+
+Thus we need to have only 1 social left, but we need to have an additional social earlier in week4 to help blogs, which would exceed total. So we need to adjust earlier weeks to have used fewer socials, leaving more than 1 social for week4.
+
+Let's recalc: we used week1 2 socials, week2 2 socials, week3 1 social =5. If we reduce social usage in earlier weeks, we can have more left for week4.
+
+We need total socials 6. So we need to allocate across weeks such that week4 gets maybe 2 socials (one earlier, one Fri) and total still 6.
+
+Thus we need to reduce socials in weeks1-3 from 5 to 4, leaving 2 for week4.
+
+Let's see if we can adjust.
+
+We need to meet each blog's social within 2 days after. We have blogs total 6. We already placed 4 blogs in weeks1 and 2 (2 each). Those blogs already have socials within same week (we ensured). So we don't need additional socials for those blogs.
+
+We have 2 blogs remaining (to place in week3 or 4). Those will need socials within 2 days after.
+
+Thus we need to allocate socials to support those 2 remaining blogs.
+
+We could place those 2 blogs in week3 and ensure they have socials within week3 (maybe on same week). Then week4 would only need the final social recap on Fri, and we wouldn't need extra socials in week4.
+
+Thus we can keep week4 social count =1 (Fri). Good.
+
+So we need to place the remaining 2 blogs in week3 (or week4 but with support). Let's try to place them in week3 with appropriate socials.
+
+We have week3 currently: Mon S, Tue E, Wed W, Thu E, Fri V (as earlier). We can adjust.
+
+We need to place 2 blogs in week3, each needing a social within 2 days after.
+
+We also need to place videos (3 total) and webinar (1) and emails (remaining). Let's recompute from scratch with this new plan.
+
+Let's start over with a fresh approach, aiming to satisfy all constraints.
+
+We'll design weeks 1-4.
+
+We know:
+
+- Week1 Mon = B (launch).
+- Week4 Fri = S (recap).
+
+- Email only Tue or Thu.
+
+- Video not Monday.
+
+- Webinar on Wed or Thu week3 or 4.
+
+- No more than 2 per type per week.
+
+- No consecutive same type.
+
+- Each blog must have a social within 2 days after.
+
+Let's allocate blogs and socials first to satisfy promotion.
+
+We have 6 blogs, 6 socials.
+
+Idea: Pair each blog with a social on the next day (day+1) where possible, to simplify.
+
+Thus we could have pattern: B S B S B S ... etc.
+
+But we also have other content types.
+
+We need to ensure no two consecutive same type, so B S is fine, S B also fine.
+
+We can try to create a repeating pattern of B S across days, filling other types in between.
+
+Let's attempt to assign each blog a social on the next day (day+1). That uses 6 blogs and 6 socials, each pair occupying two consecutive days.
+
+We have 20 days total. If we use 6 pairs (12 days) for B S, we have 8 days left for other types (E, V, W). Also we need to ensure no same type consecutive, but B S pairs already alternate.
+
+We need to place emails (4) only on Tue or Thu. Videos (3) not on Monday. Webinar (1) on Wed/Thu week3 or4.
+
+We also need to respect max 2 per type per week.
+
+Let's map days of weeks (Mon-Fri) across 4 weeks = 20 days labeled:
+
+Week1: Mon1, Tue1, Wed1, Thu1, Fri1
+Week2: Mon2, Tue2, Wed2, Thu2, Fri2
+Week3: Mon3, Tue3, Wed3, Thu3, Fri3
+Week4: Mon4, Tue4, Wed4, Thu4, Fri4
+
+We need to assign.
+
+Let's try to create B S pairs on certain days.
+
+We also need week1 Mon = B. So we can set week1 Mon = B, and then week1 Tue = S (pair). That satisfies blog Mon promotion (social next day). Good.
+
+Now we have used B1, S1.
+
+Now we need remaining 5 blogs and 5 socials.
+
+We can continue pairing.
+
+Next day after Tue1 is Wed1. We could set Wed1 = B, Thu1 = S (another pair). That would give blog Wed1 with social Thu1.
+
+Check consecutive: Tue1 S, Wed1 B ok; Wed1 B, Thu1 S ok.
+
+Now week1 would be: Mon B, Tue S, Wed B, Thu S, Fri ?. We have used 2 blogs, 2 socials. Fri1 left.
+
+We must avoid consecutive same: Thu1 S, Fri1 ? cannot be S. So Fri1 must be something else (E, V, W). Also email only Tue or Thu, so Fri cannot be email. So Fri1 could be V or W.
+
+But webinar must be week3 or4 Wed/Thu, so not week1. So Fri1 could be V.
+
+Let's set Fri1 = V (video). Check video not Monday (it's Fri, ok).
+
+Now week1 done: B S B S V.
+
+Counts week1: B=2, S=2, V=1, E=0, W=0.
+
+Now week2: we need to continue.
+
+We have remaining blogs: 4 (since total 6 -2 used =4). Remaining socials: 4 (6-2=4). Remaining videos: 2 (3-1=2). Remaining emails: 4. Remaining webinar:1.
+
+We also need to respect max 2 per type per week.
+
+Let's attempt to continue pattern B S B S maybe.
+
+Week2 Mon2: we could set B? But we need to check previous day Fri1 V, so Mon2 B is ok (V != B). Then we could set Tue2 = S (pair). That would give blog Mon2 with social Tue2.
+
+Now week2: Mon B, Tue S.
+
+Now we need to avoid consecutive same: Tue S, Wed2 ? cannot be S.
+
+We could set Wed2 = B (blog), Thu2 = S (pair). That would give blog Wed2 with social Thu2.
+
+Check: Tue S, Wed2 B ok; Wed2 B, Thu2 S ok.
+
+Now Thu2 S, Fri2 ? cannot be S.
+
+We have used in week2 so far: Mon B, Tue S, Wed B, Thu S = 2 blogs, 2 socials.
+
+Remaining week2 day Fri2: we need to place something else (E, V, W). Email only Tue or Thu, so Fri cannot be email. Could be video or webinar.
+
+We have remaining videos 2, webinar 1.
+
+We also need to ensure no more than 2 per type per week. Currently week2 has B=2, S=2 already at max for those types (can't add more B or S). So Fri2 must be E, V, or W but not B or S. Email not allowed Fri, so Fri2 must be V or W.
+
+We have videos left 2, webinar 1.
+
+Let's set Fri2 = V (video). Check video not Monday (Fri ok). Now week2 counts: B=2, S=2, V=1, E=0, W=0.
+
+Now week3:
+
+We have used so far: blogs 4 (2+2), socials 4, videos 2 (week1 1 + week2 1). Remaining: blogs 2, socials 2, videos 1 (3 total -2 used =1), emails 4, webinar 1.
+
+Week3 must have webinar on Wed or Thu.
+
+Also email only Tue or Thu.
+
+We need to avoid consecutive same.
+
+Let's continue pattern maybe B S? But we have only 2 blogs left and 2 socials left. We could place them as B S B S across days.
+
+But we also need to place emails (4), video (1), webinar (1). Let's see.
+
+Week3 days: Mon3, Tue3, Wed3, Thu3, Fri3.
+
+We know Fri2 was V, so Mon3 cannot be V (since consecutive same? Actually Fri2 V, Mon3 cannot be V). Also video not Monday, so Mon3 cannot be video anyway.
+
+Let's try to place blogs and socials.
+
+We have 2 blogs, 2 socials left. Could do Mon3 B, Tue3 S (pair), Wed3 B, Thu3 S (pair). That would use all blogs and socials.
+
+Check consecutive: Fri2 V, Mon3 B ok; Mon3 B, Tue3 S ok; Tue3 S, Wed3 B ok; Wed3 B, Thu3 S ok; Thu3 S, Fri3 ? cannot be S.
+
+Now we have used blogs 2, socials 2 in week3.
+
+Remaining week3 day Fri3: need to place something else (E, V, W). Email only Tue or Thu, so Fri cannot be email. Video remaining 1, webinar 1.
+
+We also need to place webinar on Wed or Thu (but those are already B and S). So we cannot place webinar there if we keep B S pattern. So we need to adjust

@@ -1,0 +1,849 @@
+We need to output JSON array of rules, each rule with trigger, conditions, actions. Must cover all 10 required automations. Provide structured JSON. Likely each rule object: {"trigger": "...", "conditions": [...], "actions": [...]}.
+
+We need to include triggers like time, geofence, device state, etc. Provide conditions where needed (e.g., weekdays vs weekends). Provide actions.
+
+We'll produce 10 rules.
+
+Make sure JSON is valid array.
+
+Let's craft each rule.
+
+Rule 1: Morning routine lights gradually on.
+
+Trigger: time schedule (6:30 AM weekdays, 8:00 AM weekends). Could use cron.
+
+Conditions: day of week (Mon-Fri for 6:30, Sat-Sun for 8:00). Could have two separate rules or one with condition.
+
+Simplify: two rules: one for weekdays, one for weekends.
+
+But we need exactly 10 rules covering all required automations; we can combine some but must cover all. Could have more than 10? The prompt says "Required automations (must cover ALL 10):" So we need at least those 10; we can have extra but better exactly 10.
+
+Thus each automation corresponds to a rule. So we need 10 rules, each covering one of the listed automations.
+
+Thus rule 1: Morning routine (lights on gradually). We'll include condition for weekdays vs weekends using time and day.
+
+We can have trigger: time-based (cron) at 6:30 and 8:00 with condition checking day type.
+
+Simplify: trigger: time at 6:30 AM; condition: isWeekday; actions: gradually turn on lights to 100% over 30 min.
+
+Second rule for weekend: trigger: time at 8:00 AM; condition: isWeekend; actions same.
+
+But that would be two rules for morning routine, exceeding 10. We need to keep exactly 10 rules, so we need to incorporate both weekdays and weekends in one rule using condition.
+
+We can have trigger: time at 6:30 AM and 8:00 AM? Many platforms allow multiple times. We'll define trigger: time schedule with array of times. Condition: if weekday then target time 6:30 else 8:00? Might be messy.
+
+Alternative: Use trigger: time at 6:30 AM; condition: isWeekday OR (isWeekend and time is 8:00?) Not possible.
+
+Better to have two separate rules but then we would have >10. Could combine other automations into fewer rules? But we must cover all 10 required automations; we can have more than 10 rules as long as we cover all. The prompt: "Required automations (must cover ALL 10):" It doesn't say exactly 10, just must cover all 10. So we can have extra rules. Safer to provide exactly 10? Not required. I'd provide exactly 10 for simplicity, but we can combine morning routine into one rule with condition checking day type and adjusting time via a variable? Might be too complex.
+
+Given typical home automation platforms (like Home Assistant), you can have a time trigger with "at sunrise" etc. But we can approximate: trigger: time at 6:30 AM; condition: isWeekday; actions: lights on gradually. Then another rule for weekend: trigger: time at 8:00 AM; condition: isWeekend; actions: lights on gradually. That's two rules.
+
+Thus we would have >10 if we keep each automation separate. Let's count: Morning routine (2), Thermostat (maybe 1), Security (1), Pet care (maybe 2), Energy (1), Lighting (1), Bob's office (1), Laundry (1), Water leak (1), Guest mode (1). That's 2+1+1+2+1+1+1+1+1+1 = 12. So we would have 12 rules.
+
+We could combine pet care into one rule with two time triggers (7AM and 6PM) and condition for feeder and camera. That's one rule.
+
+Thus we can reduce.
+
+Let's design:
+
+1. Morning routine lights (weekday) - rule 1
+2. Morning routine lights (weekend) - rule 2
+3. Thermostat control - rule 3 (covers occupied, empty, sleeping)
+4. Security arm/disarm - rule 4
+5. Pet care (feeder + camera) - rule 5
+6. Energy management (solar priority, battery) - rule 6
+7. Hallway motion-activated lights - rule 7
+8. Bob's office automation - rule 8
+9. Laundry completion notification - rule 9
+10. Water leak detector - rule 10
+11. Guest mode - rule 11
+
+That's 11 rules. Still >10.
+
+We could combine thermostat and guest mode? Guest mode raises thermostat to 72°F, enable guest WiFi, temporary door code. Thermostat rule already handles occupied/empty/sleeping; guest mode could be an override when guest mode active. Could be separate rule.
+
+We could combine energy management with thermostat? Not really.
+
+We could combine hallway lights with Bob's office? Not.
+
+We could combine laundry notification with something else? Not.
+
+We could combine water leak with something else? Not.
+
+Thus we may need >10 rules. The prompt says "Required automations (must cover ALL 10):" It doesn't forbid extra rules. So we can provide more than 10. Safer to provide exactly the needed automations, possibly each as a rule, but we can split morning routine into two rules (weekday/weekend) and pet care into one rule (feeder + camera). That yields 11 rules. Let's count again:
+
+- Morning routine weekday
+- Morning routine weekend
+- Thermostat
+- Security
+- Pet care (feeder + camera)
+- Energy
+- Hallway motion lights
+- Bob's office
+- Laundry notification
+- Water leak
+- Guest mode
+
+That's 11.
+
+We could combine thermostat and guest mode into one rule with conditions: if guest mode active then set thermostat 72, enable guest WiFi, temporary door code; else normal logic. That would reduce to 10.
+
+Let's try: Thermostat rule includes normal occupied/empty/sleeping logic, plus guest mode override.
+
+Thus we have:
+
+1. Morning routine weekday
+2. Morning routine weekend
+3. Thermostat (including guest mode)
+4. Security
+5. Pet care
+6. Energy
+7. Hallway motion lights
+8. Bob's office
+9. Laundry notification
+10. Water leak
+
+That's 10 rules. Guest mode actions are inside thermostat rule.
+
+But guest mode also includes temporary door code and enable guest WiFi. Those actions can be added to same rule when guest mode active.
+
+Thus thermostat rule will have conditions: if guest mode active then actions: set thermostat 72, enable guest WiFi, generate temporary door code; else normal thermostat logic.
+
+Ok.
+
+Now we need to define triggers, conditions, actions for each rule in JSON.
+
+We'll need to define triggers like time, state changes, geofence, device triggers.
+
+We'll need to define conditions as array of condition objects maybe with entity_id, state, etc. But we can keep generic.
+
+We'll produce JSON array where each rule has:
+
+{
+  "trigger": { ... },
+  "conditions": [ ... ],
+  "actions": [ ... ]
+}
+
+We'll define triggers in simple description.
+
+Let's craft each rule.
+
+Rule 1: Morning routine weekday lights.
+
+Trigger: time at 06:30 on weekdays (Mon-Fri). Could be "time": {"at": "06:30", "days": ["mon","tue","wed","thu","fri"]}.
+
+Conditions: maybe none (time already ensures weekday). Could add condition: isWeekday true.
+
+Actions: gradually turn on lights (living room, kitchen, bedrooms) to 100% brightness over 30 minutes.
+
+We'll define actions as array of objects: {"service": "light.turn_on", "entity_id": "group.all_lights", "data": {"brightness_pct": 100, "transition": 30}}.
+
+Rule 2: Morning routine weekend lights.
+
+Trigger: time at 08:00 on weekends (Sat, Sun). Conditions: isWeekend.
+
+Actions same.
+
+Rule 3: Thermostat control (including guest mode).
+
+Trigger: state changes of occupancy (both away vs someone home), time for sleeping (11PM-6AM), guest mode activation.
+
+Simplify: trigger: time pattern (every 10 minutes) or state change of occupancy and guest mode.
+
+We'll define trigger: state change of "binary_sensor.occupancy" (true when someone home) OR "input_boolean.guest_mode" OR time at 23:00 and 06:00 for sleeping.
+
+But we can keep generic: trigger: state change of occupancy or guest mode or time.
+
+Conditions: we need to differentiate scenarios:
+
+- If guest_mode on: set thermostat 72, enable guest WiFi, temporary door code.
+- Else if time between 23:00 and 06:00: set thermostat 68°F (sleeping).
+- Else if occupancy true: set thermostat 72°F.
+- Else occupancy false: set thermostat 65°F.
+
+Actions accordingly.
+
+We'll need to call climate.set_temperature, wifi.guest_enable, lock.set_user_code (temporary), etc.
+
+Rule 4: Security arm/disarm via geofencing.
+
+Trigger: device_tracker for Alice and Bob leaving home (both not home) -> arm; entering home (either returns) -> disarm.
+
+We can have two triggers: state change of group.all_occupants to 'not_home' (all away) and to 'home' (any home). Conditions: maybe none.
+
+Actions: alarm_control_panel.arm_away when all away; alarm_control_panel.disarm when any home.
+
+Rule 5: Pet care.
+
+Trigger: time at 07:00 and 18:00 daily.
+
+Conditions: maybe none (feeder always). For camera: turn on cat camera when both away.
+
+We can have actions: turn on feeder (switch.feeder_on) at those times; also check occupancy: if both away then turn on camera (switch.cat_camera_on). Could be separate actions with condition.
+
+We'll define conditions: occupancy false (both away) for camera action.
+
+Thus trigger: time at 07:00 and 18:00.
+
+Conditions: (none for feeder) and (occupancy == off) for camera.
+
+We'll need to split actions maybe.
+
+Simplify: actions: turn on feeder; if occupancy off then turn on camera.
+
+We'll represent as two action objects with condition inside? We'll just list both actions; the camera action will have condition.
+
+Rule 6: Energy management.
+
+Trigger: time start of peak period 14:00 and end 19:00? Actually need to prioritize solar during peak (2-7PM) and battery backup evening.
+
+We can have two triggers: at 14:00 start peak, at 19:00 end peak.
+
+Conditions: maybe solar production > consumption.
+
+Actions: at start peak: set energy.grid_import_preference = low, set battery.charge_mode = false (use battery), enable solar priority.
+
+At end peak: revert to normal.
+
+We'll keep simple.
+
+Rule 7: Hallway motion-activated lights 10PM-6AM dim 20%, off after 5 min.
+
+Trigger: state change of motion sensor in hallway to 'on'.
+
+Conditions: time between 22:00 and 06:00.
+
+Actions: turn on hallway light to brightness 20%; after 5 minutes turn off.
+
+We can use delay.
+
+Rule 8: Bob's office automation.
+
+Trigger: state change of Bob's computer power sensor to 'on' (or switch).
+
+Conditions: maybe time? Not needed.
+
+Actions: turn on desk lamp, set climate.set_temperature for office to 70°F.
+
+Rule 9: Laundry notification.
+
+Trigger: state change of washer and dryer to 'done' (or sensor.state changed from running to idle).
+
+Conditions: maybe none.
+
+Actions: send notification to Alice and Bob phones (notify.mobile_app_alice, notify.mobile_app_bob) with message.
+
+Rule 10: Water leak detector.
+
+Trigger: state change of water_leak_sensor to 'detected'.
+
+Conditions: none.
+
+Actions: shut off main valve (switch.main_valve off), send alert to both phones.
+
+Rule 11: Guest mode? Actually we incorporated into thermostat rule. So we have 10 rules.
+
+Now we need to output JSON array.
+
+We'll need to ensure proper JSON syntax.
+
+Let's craft each rule object.
+
+We'll use simplified trigger/conditions/actions description.
+
+We'll define trigger as object with platform and maybe etc.
+
+We'll keep generic.
+
+Let's produce.
+
+Note: Ensure no trailing commas.
+
+We'll produce:
+
+[
+  {
+    "trigger": { "platform": "time", "at": "06:30", "days": ["mon","tue","wed","thu","fri"] },
+    "conditions": [],
+    "actions": [
+      { "service": "light.turn_on", "entity_id": "group.all_lights", "data": { "brightness_pct": 100, "transition": 30 } }
+    ]
+  },
+  {
+    "trigger": { "platform": "time", "at": "08:00", "days": ["sat","sun"] },
+    "conditions": [],
+    "actions": [
+      { "service": "light.turn_on", "entity_id": "group.all_lights", "data": { "brightness_pct": 100, "transition": 30 } }
+    ]
+  },
+  {
+    "trigger": [
+      { "platform": "state", "entity_id": "binary_sensor.occupancy", "to": "on" },
+      { "platform": "state", "entity_id": "binary_sensor.occupancy", "to": "off" },
+      { "platform": "state", "entity_id": "input_boolean.guest_mode", "to": "on" },
+      { "platform": "state", "entity_id": "input_boolean.guest_mode", "to": "off" },
+      { "platform": "time", "at": "23:00" },
+      { "platform": "time", "at": "06:00" }
+    ],
+    "conditions": [],
+    "actions": [
+      { "service": "climate.set_temperature", "entity_id": "climate.thermostat", "data": { "temperature": 72 } },
+      { "service": "notify.mobile_app_alice", "data": { "message": "Guest mode enabled: temporary door code 1234" } },
+      { "service": "notify.mobile_app_bob", "data": { "message": "Guest mode enabled: temporary door code 1234" } },
+      { "service": "wifi.guest_enable", "data": { "ssid": "GuestWiFi", "password": "guestpass" } },
+      { "service": "lock.set_user_code", "entity_id": "lock.front_door", "data": { "user_id": "guest", "code": "1234" } }
+    ]
+  }
+]
+
+But we need to incorporate conditional logic inside actions based on conditions. Our current actions always execute all, which is wrong.
+
+We need to embed conditions inside rule: we can have multiple action blocks with conditions.
+
+Simplify: we can have separate rules for each thermostat scenario, but we wanted to combine.
+
+Alternative: we can keep thermostat rule with conditions: we can have multiple action blocks each with condition.
+
+We'll define conditions array with condition objects.
+
+E.g., condition: { "condition": "state", "entity_id": "input_boolean.guest_mode", "state": "on" }.
+
+Then actions for guest mode.
+
+Then another condition block for sleeping: condition: { "condition": "time", "after": "23:00", "before": "06:00" }.
+
+Then actions for sleeping.
+
+Then condition: { "condition": "state", "entity_id": "binary_sensor.occupancy", "state": "on" } for occupied.
+
+Then else for empty.
+
+We'll need to have separate action blocks each with its own condition.
+
+In Home Assistant automation, you can have "condition:" list that must all be true for the automation to run; you cannot have multiple action blocks with different conditions unless you use choose.
+
+But we can simplify: we can have separate rules for each scenario (occupied, empty, sleeping, guest mode). That would increase rule count.
+
+But we already have 10 rules; we could split thermostat into 4 rules (occupied, empty, sleeping, guest mode) and still stay within 10? Let's recount.
+
+If we split thermostat into 4 rules, we would have:
+
+- Morning weekday
+- Morning weekend
+- Thermostat occupied
+- Thermostat empty
+- Thermostat sleeping
+- Thermostat guest mode (includes door code, wifi)
+- Security
+- Pet care
+- Energy
+- Hallway lights
+- Bob's office
+- Laundry
+- Water leak
+
+That's 13 >10.
+
+We need to keep total <= maybe 12? The prompt didn't restrict number, just must cover all 10 required automations. So we can have more than 10. It's okay to have extra rules as long as we cover the required automations. So we can split thermostat into multiple rules; we will still cover all required automations (thermostat automation is covered, albeit split). That's acceptable.
+
+Thus we can keep simple: each automation as one rule (or split morning routine into two). That yields 11 rules (morning weekday, morning weekend, thermostat (single), security, pet care, energy, hallway lights, Bob's office, laundry, water leak, guest mode). That's 11. Still >10 but okay.
+
+But we can also split thermostat into multiple and still be >10 but that's fine.
+
+Thus we can keep 11 rules, each covering one required automation (except morning routine split into two). That's fine.
+
+We'll produce JSON array of 11 rules.
+
+Now we need to define each rule with trigger, conditions, actions.
+
+Let's define each.
+
+Rule 1: Morning routine weekday lights.
+
+Trigger: time at 06:30 on weekdays.
+
+Conditions: none.
+
+Actions: gradually turn on lights.
+
+Rule 2: Morning routine weekend lights.
+
+Trigger: time at 08:00 on weekends.
+
+Conditions: none.
+
+Actions: same.
+
+Rule 3: Thermostat control (occupied/empty/sleeping). We'll implement using time and occupancy.
+
+Simplify: we can have three separate triggers: occupancy change, time for sleep start/end.
+
+We'll have conditions to decide.
+
+We'll use "choose" maybe but we can just have three separate rules: occupied, empty, sleeping. But that would increase count.
+
+Let's keep one rule with trigger: state change of occupancy or time at 23:00 or 06:00.
+
+Conditions: we will have multiple condition blocks using "choose"? Not sure.
+
+Given the complexity, we can approximate by having three separate rules but still count as part of thermostat automation (still covering). That would increase total rules but still okay.
+
+But we need to keep JSON array of rules; we can have as many as we like.
+
+Thus we can create separate rules for each thermostat scenario: occupied, empty, sleeping, guest mode (which includes door code, wifi). That's 4 rules.
+
+Now total rules: morning weekday (1), morning weekend (2), thermostat occupied (3), thermostat empty (4), thermostat sleeping (5), thermostat guest mode (6), security (7), pet care (8), energy (9), hallway lights (10), Bob's office (11), laundry (12), water leak (13). That's 13 rules.
+
+Still okay.
+
+We'll produce 13 rules.
+
+Now we need to define each.
+
+Let's define each rule clearly.
+
+We'll use generic entity IDs.
+
+Rule 1: Morning weekday lights.
+
+Trigger: time at 06:30, days mon-fri.
+
+Actions: turn on lights gradually.
+
+Rule 2: Morning weekend lights.
+
+Trigger: time at 08:00, days sat-sun.
+
+Actions: same.
+
+Rule 3: Thermostat occupied.
+
+Trigger: state change of binary_sensor.occupancy to 'on'.
+
+Conditions: none (maybe also check not sleeping time? but we can ignore; sleeping rule will override at night). We'll add condition: time not between 23:00 and 06:00.
+
+We'll add condition: { "condition": "time", "after": "06:00", "before": "23:00" }.
+
+Actions: set climate to 72°F.
+
+Rule 4: Thermostat empty.
+
+Trigger: state change of binary_sensor.occupancy to 'off'.
+
+Conditions: time not between 23:00 and 06:00.
+
+Actions: set climate to 65°F.
+
+Rule 5: Thermostat sleeping.
+
+Trigger: time at 23:00 and 06:00 (maybe two triggers). We'll have trigger: time at 23:00 and time at 06:00.
+
+Conditions: occupancy off? Actually sleeping regardless of occupancy? The spec: 68°F sleeping (11PM-6AM). So regardless of occupancy, during those hours set to 68.
+
+Thus trigger: time at 23:00 and 06:00.
+
+Conditions: none.
+
+Actions: set climate to 68°F.
+
+Rule 6: Thermostat guest mode.
+
+Trigger: state change of input_boolean.guest_mode to 'on'.
+
+Conditions: none.
+
+Actions: set climate to 72°F, enable guest WiFi, send temporary door code to both phones.
+
+We'll also need to disable guest mode when turned off? Not required.
+
+Rule 7: Security arm/disarm.
+
+Trigger: state change of group.all_occupants to 'not_home' (all away) and to 'home' (any home). We'll have two triggers.
+
+We'll need conditions: none.
+
+Actions: if all away -> arm alarm; if any home -> disarm alarm.
+
+We can implement using choose but we can have two separate rules: one for arm, one for disarm. That would increase count but okay.
+
+Let's split: Rule 7a: Arm when all away.
+
+Trigger: state change of group.all_occupants to 'not_home'.
+
+Actions: arm alarm.
+
+Rule 7b: Disarm when any returns.
+
+Trigger: state change of group.all_occupants to 'home'.
+
+Actions: disarm alarm.
+
+Now we have increased count.
+
+Rule 8: Pet care feeder and camera.
+
+Trigger: time at 07:00 and 18:00.
+
+Actions: turn on feeder; if occupancy off then turn on camera.
+
+We'll need condition for camera action.
+
+We'll split: feeder action always; camera action with condition occupancy off.
+
+We'll have two actions: feeder (no condition), camera (condition: occupancy off).
+
+Rule 9: Energy management.
+
+Trigger: time at 14:00 (start peak) and 19:00 (end peak).
+
+Actions: at start peak: set solar priority, battery discharge; at end peak: revert.
+
+We'll need condition based on time.
+
+We'll have two triggers with conditions: if time >=14:00 and <19:00 then solar priority; else normal.
+
+Simplify: two separate rules: one for start peak, one for end peak.
+
+Rule 9a: Energy peak start.
+
+Trigger: time at 14:00.
+
+Conditions: none.
+
+Actions: set energy.grid_import_preference = low, set battery.charge_mode = false (use battery), enable solar priority.
+
+Rule 9b: Energy peak end.
+
+Trigger: time at 19:00.
+
+Actions: revert to normal (grid_import_preference high, battery charge mode enabled, solar priority off).
+
+Rule 10: Hallway motion-activated lights.
+
+Trigger: state change of motion_sensor.hallway to 'on'.
+
+Conditions: time between 22:00 and 06:00.
+
+Actions: turn on hallway light to brightness 20%; after 5 minutes turn off.
+
+We'll need delay.
+
+We'll define actions: turn on light with brightness 20%; wait 5 minutes; turn off light.
+
+Rule 11: Bob's office automation.
+
+Trigger: state change of switch.bob_computer to 'on'.
+
+Actions: turn on desk lamp, set office climate to 70°F.
+
+Rule 12: Laundry notification.
+
+Trigger: state change of sensor.washer_state to 'done' and sensor.dryer_state to 'done' (or we can have two triggers). We'll have trigger: state change of either to 'done'.
+
+Actions: send notification to both phones.
+
+Rule 13: Water leak detector.
+
+Trigger: state change of binary_sensor.water_leak to 'on'.
+
+Actions: shut off main valve, send alert to both phones.
+
+Now we have 13 rules.
+
+We need to output JSON array.
+
+We'll need to ensure each rule object has trigger (could be single or array), conditions (array), actions (array).
+
+We'll define conditions as array of condition objects.
+
+For rules with no conditions, we set empty array.
+
+Now we need to define action objects with service, entity_id, data.
+
+We'll keep it simple.
+
+Let's craft each rule.
+
+We'll use placeholder entity IDs.
+
+We'll produce JSON.
+
+Let's start.
+
+Rule 1:
+
+{
+  "trigger": { "platform": "time", "at": "06:30", "days": ["mon","tue","wed","thu","fri"] },
+  "conditions": [],
+  "actions": [
+    { "service": "light.turn_on", "entity_id": "group.all_lights", "data": { "brightness_pct": 100, "transition": 30 } }
+  ]
+}
+
+Rule 2 similar with 08:00 and days sat,sun.
+
+Rule 3: Thermostat occupied.
+
+Trigger: state change of binary_sensor.occupancy to 'on'.
+
+Conditions: time not between 23:00 and 06:00.
+
+We'll define condition: { "condition": "time", "after": "06:00", "before": "23:00" }.
+
+Actions: set climate to 72.
+
+Rule 4: Thermostat empty.
+
+Trigger: state change of binary_sensor.occupancy to 'off'.
+
+Conditions: same time condition.
+
+Actions: set climate to 65.
+
+Rule 5: Thermostat sleeping.
+
+Trigger: time at 23:00 and 06:00 (two triggers). We'll define trigger as array.
+
+Conditions: none.
+
+Actions: set climate to 68.
+
+Rule 6: Thermostat guest mode.
+
+Trigger: state change of input_boolean.guest_mode to 'on'.
+
+Conditions: none.
+
+Actions: set climate to 72, enable guest wifi, notify both phones with temporary door code, set lock user code.
+
+We'll need separate actions.
+
+Rule 7a: Security arm.
+
+Trigger: state change of group.all_occupants to 'not_home'.
+
+Actions: alarm_control_panel.arm_away.
+
+Rule 7b: Security disarm.
+
+Trigger: state change of group.all_occupants to 'home'.
+
+Actions: alarm_control_panel.disarm.
+
+Rule 8: Pet care feeder.
+
+Trigger: time at 07:00 and 18:00.
+
+Actions: turn on feeder.
+
+We'll also need camera action with condition occupancy off.
+
+We'll split into two rules: feeder rule and camera rule.
+
+But we can keep feeder rule and add camera action with condition.
+
+Let's do feeder rule: trigger time at 07:00 and 18:00; action: turn on feeder.
+
+Camera rule: trigger: state change of group.all_occupants to 'not_home' (both away) maybe? Actually camera should turn on when both away regardless of time? The spec: turn on cat camera when both away. So we can have rule: trigger: state change of group.all_occupants to 'not_home'; action: turn on camera. And when someone returns, turn off camera.
+
+We'll need two rules: camera on when away, camera off when home.
+
+But we can combine with condition.
+
+Simplify: we'll have pet care feeder rule (time triggers) and pet camera rule (occupancy change).
+
+Thus we add two rules.
+
+Now count increases.
+
+Let's list all rules we will have:
+
+1. Morning weekday lights
+2. Morning weekend lights
+3. Thermostat occupied
+4. Thermostat empty
+5. Thermostat sleeping
+6. Thermostat guest mode
+7. Security arm
+8. Security disarm
+9. Pet feeder
+10. Pet camera on (when away)
+11. Pet camera off (when home)
+12. Energy peak start
+13. Energy peak end
+14. Hallway motion lights
+15. Bob's office
+16. Laundry notification
+17. Water leak
+
+That's 17 rules. Still okay.
+
+We need to ensure JSON is valid.
+
+Now we need to define each rule's trigger, conditions, actions.
+
+Let's craft each.
+
+We'll use consistent entity IDs.
+
+We'll define:
+
+- Lights group: light.all_lights
+- Feeder switch: switch.pet_feeder
+- Camera switch: switch.pet_camera
+- Occupancy binary sensor: binary_sensor.occupancy (true when someone home)
+- Group all occupants: group.all_occupants (maybe not needed)
+- Alarm control panel: alarm_control_panel.home_alarm
+- Guest mode input boolean: input_boolean.guest_mode
+- Climate: climate.thermostat (main), climate.office (Bob's office)
+- Desk lamp: light.bob_desk_lamp
+- Bob's computer power sensor: sensor.bob_computer_power (or switch.bob_computer)
+- Washer sensor: sensor.washer_state (states: running, done)
+- Dryer sensor: sensor.dryer_state
+- Water leak sensor: binary_sensor.water_leak
+- Main valve switch: switch.main_valve
+- Hallway motion sensor: binary_sensor.hallway_motion
+- Hallway light: light.hallway
+- Solar priority: maybe switch.solar_priority
+- Battery charge mode: switch.battery_charge
+- Grid import preference: maybe input_number.grid_import_preference (but we can just call service)
+
+We'll keep simple.
+
+Now produce JSON.
+
+We'll need to escape quotes properly.
+
+Let's construct.
+
+We'll produce array of objects.
+
+I'll write each rule.
+
+Rule 1:
+
+{
+  "trigger": { "platform": "time", "at": "06:30", "days": ["mon","tue","wed","thu","fri"] },
+  "conditions": [],
+  "actions": [
+    { "service": "light.turn_on", "entity_id": "light.all_lights", "data": { "brightness_pct": 100, "transition": 30 } }
+  ]
+}
+
+Rule 2:
+
+{
+  "trigger": { "platform": "time", "at": "08:00", "days": ["sat","sun"] },
+  "conditions": [],
+  "actions": [
+    { "service": "light.turn_on", "entity_id": "light.all_lights", "data": { "brightness_pct": 100, "transition": 30 } }
+  ]
+}
+
+Rule 3 (Thermostat occupied):
+
+{
+  "trigger": { "platform": "state", "entity_id": "binary_sensor.occupancy", "to": "on" },
+  "conditions": [
+    { "condition": "time", "after": "06:00", "before": "23:00" }
+  ],
+  "actions": [
+    { "service": "climate.set_temperature", "entity_id": "climate.thermostat", "data": { "temperature": 72 } }
+  ]
+}
+
+Rule 4 (Thermostat empty):
+
+{
+  "trigger": { "platform": "state", "entity_id": "binary_sensor.occupancy", "to": "off" },
+  "conditions": [
+    { "condition": "time", "after": "06:00", "before": "23:00" }
+  ],
+  "actions": [
+    { "service": "climate.set_temperature", "entity_id": "climate.thermostat", "data": { "temperature": 65 } }
+  ]
+}
+
+Rule 5 (Thermostat sleeping):
+
+{
+  "trigger": [
+    { "platform": "time", "at": "23:00" },
+    { "platform": "time", "at": "06:00" }
+  ],
+  "conditions": [],
+  "actions": [
+    { "service": "climate.set_temperature", "entity_id": "climate.thermostat", "data": { "temperature": 68 } }
+  ]
+}
+
+Rule 6 (Thermostat guest mode):
+
+{
+  "trigger": { "platform": "state", "entity_id": "input_boolean.guest_mode", "to": "on" },
+  "conditions": [],
+  "actions": [
+    { "service": "climate.set_temperature", "entity_id": "climate.thermostat", "data": { "temperature": 72 } },
+    { "service": "wifi.guest_enable", "data": { "ssid": "GuestWiFi", "password": "guestpass" } },
+    { "service": "notify.mobile_app_alice", "data": { "message": "Guest mode enabled. Temporary door code: 1234" } },
+    { "service": "notify.mobile_app_bob", "data": { "message": "Guest mode enabled. Temporary door code: 1234" } },
+    { "service": "lock.set_user_code", "entity_id": "lock.front_door", "data": { "user_id": "guest", "code": "1234" } }
+  ]
+}
+
+Rule 7 (Security arm):
+
+{
+  "trigger": { "platform": "state", "entity_id": "group.all_occupants", "to": "not_home" },
+  "conditions": [],
+  "actions": [
+    { "service": "alarm_control_panel.arm_away", "entity_id": "alarm_control_panel.home_alarm" }
+  ]
+}
+
+Rule 8 (Security disarm):
+
+{
+  "trigger": { "platform": "state", "entity_id": "group.all_occupants", "to": "home" },
+  "conditions": [],
+  "actions": [
+    { "service": "alarm_control_panel.disarm", "entity_id": "alarm_control_panel.home_alarm" }
+  ]
+}
+
+Rule 9 (Pet feeder):
+
+{
+  "trigger": { "platform": "time", "at": "07:00", "days": ["mon","tue","wed","thu","fri","sat","sun"] },
+  "conditions": [],
+  "actions": [
+    { "service": "switch.turn_on", "entity_id": "switch.pet_feeder", "data": {} }
+  ]
+}
+
+We also need feeder at 18:00. We'll add another trigger for 18:00 or combine with multiple times.
+
+We can set trigger with multiple times: "at": ["07:00","18:00"].
+
+Let's adjust.
+
+Rule 9 (Pet feeder):
+
+{
+  "trigger": { "platform": "time", "at": ["07:00","18:00"] },
+  "conditions": [],
+  "actions": [
+    { "service": "switch.turn_on", "entity_id": "switch.pet_feeder", "data": {} }
+  ]
+}
+
+But feeder should turn on then off after dispensing? We'll just turn on; assume it auto-off.
+
+Rule 10 (Pet camera on when away):
+
+{
+  "trigger": { "platform": "state", "entity_id": "group.all_occupants", "to": "not_home" },
+  "conditions": [],
+  "actions": [
+    { "service":

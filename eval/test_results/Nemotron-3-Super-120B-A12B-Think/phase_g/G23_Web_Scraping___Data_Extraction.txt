@@ -1,0 +1,229 @@
+We need to parse the table, extract data, compute required fields.
+
+Let's list rows:
+
+1. Acme Corp
+- Q1: $125.3 -> 125.3
+- Q2: $131.7 -> 131.7
+- Q3: 142.1M -> 142.1
+- Q4: $155.0 -> 155.0
+- YoY Growth: +18% -> 18
+- Employees: 1,250 -> 1250
+- annual_revenue = sum of all four = 125.3+131.7+142.1+155.0 = 554.1? Let's compute: 125.3+131.7=257.0; +142.1=399.1; +155.0=554.1.
+
+2. Beta Inc
+- Q1: 89.5 -> 89.5
+- Q2: $92.1 -> 92.1
+- Q3: $87.3 -> 87.3
+- Q4: $95.8 -> 95.8
+- YoY Growth: -3.2% -> -3.2
+- Employees: 890 -> 890
+- annual_revenue = 89.5+92.1+87.3+95.8 = 364.7? Compute: 89.5+92.1=181.6; +87.3=268.9; +95.8=364.7.
+
+3. Gamma LLC
+- Q1: $210.0 -> 210.0
+- Q2: N/A -> null
+- Q3: $225.5 -> 225.5
+- Q4: $240.1 -> 240.1
+- YoY Growth: 14.5% -> 14.5
+- Employees: 2100 -> 2100
+- annual_revenue = sum of available quarters: 210.0 + 225.5 + 240.1 = 675.6? Compute: 210+225.5=435.5; +240.1=675.6.
+
+4. Delta &amp; Sons (HTML entity &amp; -> &)
+- Q1: $45.2 -> 45.2
+- Q2: $44.8 -> 44.8
+- Q3: $46.1 -> 46.1
+- Q4: $47.5 -> 47.5
+- YoY Growth: +5.1% -> 5.1
+- Employees: ~450 -> 450
+- annual_revenue = 45.2+44.8+46.1+47.5 = 183.6? Compute: 45.2+44.8=90.0; +46.1=136.1; +47.5=183.6.
+
+5. Epsilon (acquired)
+- Q1: $78.0 -> 78.0
+- Q2: $0 -> 0
+- Q3: — -> null
+- Q4: — -> null
+- YoY Growth: N/A -> null
+- Employees: 0 (dissolved) -> 0
+- annual_revenue = sum of available quarters: 78.0 + 0 = 78.0
+
+Now compute totals:
+
+total_q1 = sum of Q1 values (including null? Should sum only numbers; null not counted). Q1 values: Acme 125.3, Beta 89.5, Gamma 210.0, Delta 45.2, Epsilon 78.0 = sum: 125.3+89.5=214.8; +210.0=424.8; +45.2=470.0; +78.0=548.0. So total_q1 = 548.0.
+
+highest_revenue_company: need highest annual_revenue among companies. Let's list annual_revenue:
+- Acme: 554.1
+- Beta: 364.7
+- Gamma: 675.6
+- Delta: 183.6
+- Epsilon: 78.0
+
+Highest is Gamma LLC with 675.6.
+
+company_with_negative_growth: need company with negative YoY growth (value <0). Only Beta Inc has -3.2%. So answer "Beta Inc". If multiple, pick first? We'll output that.
+
+companies_with_complete_data: count of companies where all four quarters have non-null values. Let's see:
+- Acme: all four present -> yes
+- Beta: all four present -> yes
+- Gamma: Q2 null -> not complete
+- Delta: all four present -> yes
+- Epsilon: Q3/Q4 null -> not complete
+
+Thus 3 companies.
+
+average_employee_count: average of employees across all companies (including zeros?). Use employees values: Acme 1250, Beta 890, Gamma 2100, Delta 450, Epsilon 0. Sum = 1250+890=2140; +2100=4240; +450=4690; +0=4690. Divide by 5 = 938.0. So average_employee_count = 938.
+
+Now need to output JSON with exact structure:
+
+{
+  "companies": [
+    {"name": "...", "q1": N, "q2": N_or_null, "q3": N_or_null, "q4": N_or_null, "yoy_growth_pct": N_or_null, "employees": N_or_null, "annual_revenue": N_or_null, "notes": "..."}
+  ],
+  "total_q1": N,
+  "highest_revenue_company": "...",
+  "company_with_negative_growth": "...",
+  "companies_with_complete_data": N,
+  "average_employee_count": N
+}
+
+We need to include notes field. The notes should capture any special info: For Gamma LLC note about Q2 pending audit (the row with colspan). For Epsilon maybe note about acquired/dissolved? The instructions: "notes": "...". We can fill with relevant notes: For Gamma LLC: "* Gamma Q2 data pending audit". For Epsilon: "(acquired)" maybe? Or "acquired, dissolved". For others maybe empty string.
+
+We need to ensure numbers are plain numbers (no formatting). Use null for missing.
+
+Let's construct companies array in order as they appear.
+
+Acme Corp:
+name: "Acme Corp"
+q1: 125.3
+q2: 131.7
+q3: 142.1
+q4: 155.0
+yoy_growth_pct: 18
+employees: 1250
+annual_revenue: 554.1
+notes: "" (empty string)
+
+Beta Inc:
+name: "Beta Inc"
+q1: 89.5
+q2: 92.1
+q3: 87.3
+q4: 95.8
+yoy_growth_pct: -3.2
+employees: 890
+annual_revenue: 364.7
+notes: ""
+
+Gamma LLC:
+name: "Gamma LLC"
+q1: 210.0
+q2: null
+q3: 225.5
+q4: 240.1
+yoy_growth_pct: 14.5
+employees: 2100
+annual_revenue: 675.6
+notes: "* Gamma Q2 data pending audit"
+
+Delta & Sons:
+Need to decode &amp; to &. So name: "Delta & Sons"
+q1: 45.2
+q2: 44.8
+q3: 46.1
+q4: 47.5
+yoy_growth_pct: 5.1
+employees: 450
+annual_revenue: 183.6
+notes: ""
+
+Epsilon (acquired):
+name: "Epsilon (acquired)"
+q1: 78.0
+q2: 0.0
+q3: null
+q4: null
+yoy_growth_pct: null
+employees: 0
+annual_revenue: 78.0
+notes: "" (maybe could note acquired/dissolved but not required; we can leave empty)
+
+Now compute total_q1: 548.0
+
+highest_revenue_company: "Gamma LLC"
+
+company_with_negative_growth: "Beta Inc"
+
+companies_with_complete_data: 3
+
+average_employee_count: 938.0
+
+Now produce JSON. Ensure proper formatting: numbers as floats, but could be integer if appropriate. We'll keep as numbers.
+
+Let's craft final JSON.
+
+</think>
+
+{
+  "companies": [
+    {
+      "name": "Acme Corp",
+      "q1": 125.3,
+      "q2": 131.7,
+      "q3": 142.1,
+      "q4": 155.0,
+      "yoy_growth_pct": 18,
+      "employees": 1250,
+      "annual_revenue": 554.1,
+      "notes": ""
+    },
+    {
+      "name": "Beta Inc",
+      "q1": 89.5,
+      "q2": 92.1,
+      "q3": 87.3,
+      "q4": 95.8,
+      "yoy_growth_pct": -3.2,
+      "employees": 890,
+      "annual_revenue": 364.7,
+      "notes": ""
+    },
+    {
+      "name": "Gamma LLC",
+      "q1": 210.0,
+      "q2": null,
+      "q3": 225.5,
+      "q4": 240.1,
+      "yoy_growth_pct": 14.5,
+      "employees": 2100,
+      "annual_revenue": 675.6,
+      "notes": "* Gamma Q2 data pending audit"
+    },
+    {
+      "name": "Delta & Sons",
+      "q1": 45.2,
+      "q2": 44.8,
+      "q3": 46.1,
+      "q4": 47.5,
+      "yoy_growth_pct": 5.1,
+      "employees": 450,
+      "annual_revenue": 183.6,
+      "notes": ""
+    },
+    {
+      "name": "Epsilon (acquired)",
+      "q1": 78.0,
+      "q2": 0,
+      "q3": null,
+      "q4": null,
+      "yoy_growth_pct": null,
+      "employees": 0,
+      "annual_revenue": 78.0,
+      "notes": ""
+    }
+  ],
+  "total_q1": 548.0,
+  "highest_revenue_company": "Gamma LLC",
+  "company_with_negative_growth": "Beta Inc",
+  "companies_with_complete_data": 3,
+  "average_employee_count": 938.0
+}

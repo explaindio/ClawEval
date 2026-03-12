@@ -1,0 +1,76 @@
+```python
+import pytest
+from tax import calculate_tax
+
+
+def test_zero_income_single():
+    tax, rate = calculate_tax(0, "single")
+    assert tax == 0.0
+    assert rate == 0.0
+
+
+def test_zero_income_married():
+    tax, rate = calculate_tax(0, "married")
+    assert tax == 0.0
+    assert rate == 0.0
+
+
+def test_income_at_first_bracket_single():
+    tax, rate = calculate_tax(11600, "single")
+    assert tax == 1160.0
+    assert rate == 10.00
+
+
+def test_income_just_above_first_bracket_single():
+    tax, rate = calculate_tax(11601, "single")
+    assert tax == 1160.12
+    assert rate == 10.00  # 1160.12/11601*100 ≈ 10.0002 → 10.00
+
+
+def test_income_at_second_bracket_single():
+    tax, rate = calculate_tax(47150, "single")
+    assert tax == 5426.0
+    assert rate == 11.51  # 5426/47150*100 ≈ 11.508 → 11.51
+
+
+def test_income_just_above_second_bracket_single():
+    tax, rate = calculate_tax(47151, "single")
+    assert tax == 5426.22
+    assert rate == 11.51  # 5426.22/47151*100 ≈ 11.511 → 11.51
+
+
+def test_high_income_single():
+    tax, rate = calculate_tax(1_000_000, "single")
+    assert tax == 328187.75
+    assert rate == 32.82  # 328187.75/1_000_000*100 = 32.818775 → 32.82
+
+
+def test_high_income_married():
+    tax, rate = calculate_tax(1_000_000, "married")
+    # Married brackets calculation:
+    # 23200*0.10 = 2320
+    # (94300-23200)*0.12 = 8532
+    # (201050-94300)*0.22 = 23482.5
+    # (383900-201050)*0.24 = 43884
+    # (487450-383900)*0.32 = 33048
+    # (731200-487450)*0.35 = 85312.5
+    # (1_000_000-731200)*0.37 = 99456
+    expected_tax = 2320 + 8532 + 23482.5 + 43884 + 33048 + 85312.5 + 99456
+    assert tax == pytest.approx(expected_tax, 0.01)
+    assert rate == pytest.approx(expected_tax / 1_000_000 * 100, 0.01)
+
+
+def test_invalid_income_negative():
+    with pytest.raises(ValueError, match="Income must be non-negative number"):
+        calculate_tax(-10, "single")
+
+
+def test_invalid_income_type():
+    with pytest.raises(ValueError, match="Income must be non-negative number"):
+        calculate_tax("ten-thousand", "single")
+
+
+def test_invalid_filing_status():
+    with pytest.raises(ValueError, match="Invalid filing status"):
+        calculate_tax(50000, "head_of_household")
+```

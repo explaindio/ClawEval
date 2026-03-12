@@ -1,0 +1,157 @@
+We need to find a 30-minute window that works for all four people, within their reasonable hours (8:00 AM - 8:00 PM local time). They gave availability windows (some are specific). Need to convert each person's availability to UTC, then find overlapping 30-min slot.
+
+Let's parse each.
+
+Alice: UTC-5 (New York). Availability: 10:30-11:00, 12:00-1:00, 2:00-3:00 (local times). Also note she has blocked times: 9-10:30 standup, 11-12 lunch, 1-2 client call, 3-5 deep work. So availability windows as given.
+
+Convert to UTC: Add 5 hours (since UTC-5 means local = UTC -5, so UTC = local +5). So:
+
+- 10:30-11:00 local => UTC 15:30-16:00.
+- 12:00-13:00 local => UTC 17:00-18:00.
+- 14:00-15:00 local => UTC 19:00-20:00.
+
+Check reasonable hours: 8am-8pm local. All these windows are within.
+
+Bob: UTC+0 (London). Availability: 10:00-11:00, 12:30-14:00, 15:00-18:00 (local = UTC). So same.
+
+Carol: UTC+8 (Singapore). Availability: 11:00-12:00, 13:00-14:00, 16:00-19:00, 20:00+ (i.e., from 20:00 onward). Also note she has blocked: 9-11 sprint review, 12-13 lunch, 14-16 coding, 19-20 dinner. So availability windows as given.
+
+Convert to UTC: subtract 8 hours (since local = UTC +8, so UTC = local -8).
+
+- 11:00-12:00 local => UTC 03:00-04:00.
+- 13:00-14:00 local => UTC 05:00-06:00.
+- 16:00-19:00 local => UTC 08:00-11:00.
+- 20:00+ local => UTC 12:00+ (i.e., from 12:00 onward).
+
+Check reasonable hours: 8am-8pm local. All windows are within.
+
+Dave: UTC+5:30 (Mumbai). Availability: 11:00-12:00, 13:00-14:00, 16:00-20:00 (i.e., 4:00-8:00 PM). Also blocked: 9-11 client workshops, 12-13 lunch, 14-16 code review.
+
+Convert to UTC: subtract 5:30 hours (since local = UTC +5:30, so UTC = local -5:30).
+
+- 11:00-12:00 local => UTC 05:30-06:30.
+- 13:00-14:00 local => UTC 07:30-08:30.
+- 16:00-20:00 local => UTC 10:30-14:30.
+
+Check reasonable hours: 8am-8pm local. All windows within.
+
+Now we need overlapping 30-min slot across all four.
+
+Let's list each person's UTC availability intervals:
+
+Alice:
+A1: 15:30-16:00
+A2: 17:00-18:00
+A3: 19:00-20:00
+
+Bob:
+B1: 10:00-11:00
+B2: 12:30-14:00
+B3: 15:00-18:00
+
+Carol:
+C1: 03:00-04:00
+C2: 05:00-06:00
+C3: 08:00-11:00
+C4: 12:00-∞ (i.e., from 12:00 onward)
+
+Dave:
+D1: 05:30-06:30
+D2: 07:30-08:30
+D3: 10:30-14:30
+
+Now find intersection of all four sets.
+
+We can consider intervals where all have availability.
+
+Let's compute overlapping ranges stepwise.
+
+First, note Carol's availability includes early morning (03-04,05-06,08-11) and then from 12 onward.
+
+Alice only has availability in afternoon/evening: 15:30-16:00, 17:00-18:00, 19:00-20:00.
+
+Thus the overlap must be within Alice's windows, because Alice only available those times.
+
+Thus we need to see if any of Alice's windows intersect with Bob, Carol, Dave.
+
+Check each Alice window:
+
+1) Alice 15:30-16:00 (UTC). Let's see if Bob, Carol, Dave all have availability covering at least a 30-min subwindow within that.
+
+Bob's availability: B3 is 15:00-18:00, which covers 15:30-16:00 fully. So Bob ok.
+
+Carol: She has C3: 08:00-11:00 (ends at 11). C4: from 12:00 onward. So between 11 and 12 she is unavailable? Actually she has a gap 11-12 (since lunch 12-13 local? Wait Carol's lunch is 12-13 local, which is 04-05 UTC? Let's double-check: Carol's lunch 12:00-13:00 local => UTC 04:00-05:00. So she is unavailable 04-05 UTC. But after that she has coding 14-16 local => UTC 06-08? Wait coding 2:00-4:00 PM local => UTC 06:00-08:00. Then dinner 7-8 PM local => UTC 11:00-12:00. So she is unavailable 11:00-12:00 UTC (dinner). Then after 12:00 UTC she is available (8:00+ local). So Carol's availability after 12:00 UTC is continuous from 12:00 onward (C4). So at 15:30-16:00 UTC, Carol is available (since it's after 12). Good.
+
+Dave: Dave's availability D3: 10:30-14:30 UTC. That ends at 14:30. So after 14:30 he is unavailable (since his blocked after 14:30? Actually his availability after 14:30? He has blocked 2-4 PM local => UTC 08:30-10:30? Wait we need to recalc: Dave's blocked: 9-11 client workshops local => UTC 03:30-05:30? Let's verify: 9:00-11:00 local => subtract 5:30 => 03:30-05:30 UTC. Lunch 12-13 local => 06:30-07:30 UTC. Code review 2-4 PM local => 08:30-10:30 UTC. So his availability windows we computed: 11-12 local => 05:30-06:30 UTC (D1). 12-13 local => 07:30-08:30 UTC (D2). 16-20 local => 10:30-14:30 UTC (D3). So after 14:30 UTC he has no availability (since his day ends at 8pm local = 14:30 UTC? Wait 8pm local = 20:00 local => subtract 5:30 => 14:30 UTC. So after 14:30 UTC it's after 8pm local, outside reasonable hours. So Dave is unavailable after 14:30 UTC.
+
+Thus Alice window 15:30-16:00 is after Dave's availability ends, so Dave not available. So no overlap there.
+
+2) Alice 17:00-18:00 UTC.
+
+Check Bob: B3 15:00-18:00 covers 17-18 fully. Good.
+
+Carol: after 12 UTC she is available, so 17-18 is fine.
+
+Dave: Dave unavailable after 14:30 UTC, so 17-18 not available. So no.
+
+3) Alice 19:00-20:00 UTC.
+
+Bob: B3 ends at 18:00, so Bob unavailable after 18. So no.
+
+Thus no overlap with Alice's windows? Wait maybe we missed some availability for Alice? She also had 10:30-11:00 local => UTC 15:30-16:00 (we used). 12:00-13:00 local => UTC 17:00-18:00 (we used). 14:00-15:00 local => UTC 19:00-20:00 (we used). So indeed all Alice windows are after 15:30 UTC.
+
+Dave's availability ends at 14:30 UTC. So there is no overlap between Alice and Dave. Therefore there is no 30-min slot that works for all four given constraints? Let's double-check Dave's availability: He said available: 11:00-12:00, 12:00-1:00, 4:00-8:00. Wait we interpreted 4:00-8:00 as 16:00-20:00 local. That's correct. So his latest availability ends at 20:00 local = 14:30 UTC. So indeed after 14:30 UTC he's not available.
+
+Alice's earliest availability is 10:30-11:00 local = 15:30-16:00 UTC. So there is a gap: Dave's day ends at 14:30 UTC, Alice's day starts at 15:30 UTC. No overlap.
+
+Thus no possible meeting within reasonable hours for all four.
+
+But maybe we misinterpreted reasonable hours: 8:00 AM - 8:00 PM local time for everyone. That means each person must be within that window locally. We already considered that. Could we consider scheduling outside their listed availability but still within reasonable hours? The problem gave their blocked times and availability windows; presumably they are only available during those windows. So we must respect those.
+
+Thus answer: no overlapping slot. But the instruction: "Find the 30-minute meeting window that works for ALL 4 people. Respond with ONLY JSON: ..." If none exists, what to do? Possibly we should indicate null or empty? But they expect JSON with fields. Could we respond with an empty slot? Might need to indicate no possible time. However typical such puzzles have a solution. Let's double-check conversions and availability.
+
+Maybe we made mistake converting Dave's availability: He is UTC+5:30. His available windows: 11:00-12:00, 12:00-1:00, 4:00-8:00. Let's convert each to UTC correctly.
+
+- 11:00-12:00 local (Mumbai) => subtract 5:30 => 05:30-06:30 UTC. correct.
+- 12:00-13:00 local => 06:30-07:30 UTC. correct.
+- 16:00-20:00 local => subtract 5:30 => 10:30-14:30 UTC. correct.
+
+Thus Dave's latest UTC availability ends at 14:30.
+
+Alice's earliest UTC availability: She is UTC-5. Her available windows: 10:30-11:00, 12:00-1:00, 2:00-3:00 local.
+
+Convert:
+
+- 10:30-11:00 local => add 5 => 15:30-16:00 UTC.
+- 12:00-13:00 local => 17:00-18:00 UTC.
+- 14:00-15:00 local => 19:00-20:00 UTC.
+
+Thus indeed no overlap.
+
+Thus answer: no possible meeting.
+
+But maybe we could consider that the meeting could be scheduled at the boundary exactly at 14:30-15:00? Dave's availability ends at 14:30 (maybe inclusive?). If his availability is up to 14:30 inclusive, and Alice's starts at 15:30, still gap of 1 hour.
+
+Thus none.
+
+Thus we need to output JSON indicating no slot? The instruction didn't specify what to do if none. Could we output null values? Perhaps we can output an empty string? But they'd expect format.
+
+Maybe we should output something like {"utc_start": null, "utc_end": null, "local_times": {}}? But not sure.
+
+Given typical tasks, if no solution, we might output an empty JSON object? But they said Respond with ONLY JSON: {"utc_start": "HH:MM", "utc_end": "HH:MM", "local_times": {"Alice": "HH:MM TZ", ...}}.
+
+Thus we must provide times. Could we cheat and pick a slot that violates someone's availability? No.
+
+Thus maybe we misinterpreted Alice's availability: She listed "Available: 10:30-11:00, 12:00-1:00, 2:00-3:00". But maybe those are in addition to the blocked times, meaning she is available outside those blocked times, but also maybe she is available outside those windows as long as it's within reasonable hours? Actually they gave blocked times and then listed available windows. So likely those are the only available windows.
+
+Thus answer: no possible slot.
+
+We could respond with a JSON indicating no meeting: maybe set utc_start: "" and utc_end: ""? But they'd expect HH:MM.
+
+Better to state that no such window exists. But they said respond with ONLY JSON. Could we include a field like "none": true? Not per spec.
+
+Maybe we can output the earliest possible slot that satisfies all except one? No.
+
+Let's double-check if any of the persons have availability that extends beyond what we thought due to reasonable hours. For Dave, reasonable hours 8am-8pm local. His available windows: 11-12,12-1,4-8. That's within 8am-8pm. So after 8pm local (20:00) he is not allowed. So after 14:30 UTC not allowed.
+
+Alice's reasonable hours 8am-8pm local (UTC-5). That is 3:00-20:00 UTC? Let's compute: 8am local = UTC 13:00 (since UTC = local +5). 8pm local = UTC 03:00 next day? Wait 20:00 local +5 = 01:00 next day? Actually 20:00 +5 = 01:00 next day UTC. So Alice's reasonable hours in UTC are 13:00-01:00 next day (i.e., 13:00-24:00 and 00:00-01:00). So she could be available earlier than 15:30? But her blocked times occupy early morning? Let's see: She has standup 9-10:30 local => UTC 14:00-15:30. Lunch 11-12 local => UTC 16:00-17:00. Client call 1-2 local => UTC 18:00-19:00. Deep work 3-5 local => UTC 20:00-22:00. So her blocked times cover much of the day. Her available windows we used are the gaps: 10:30-11:00 local => UTC 15:30-16:00 (between standup and lunch). 12:00-1:00 local => UTC 17:00-18:00 (between lunch and client call). 2:00-3:00

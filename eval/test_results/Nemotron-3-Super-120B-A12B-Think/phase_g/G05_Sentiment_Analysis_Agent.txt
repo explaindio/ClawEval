@@ -1,0 +1,101 @@
+We need to output JSON mapping 1-20 to sentiment: positive, negative, neutral, mixed.
+
+We must consider nuance: nested sarcasm, domain-specific context, cultural references, understatement, misdirection.
+
+Let's analyze each.
+
+1. "The model achieved 0.3% improvement on the benchmark, which the authors describe as 'groundbreaking'." The improvement is tiny (0.3%) but authors call it groundbreaking, likely sarcastic. So sentiment: negative? The statement is mocking the claim. The sentiment of the statement overall is negative (criticism). Could be mixed? It's sarcastic praising but actually negative. I'd label negative.
+
+2. "I've seen better error messages from a 404 page, but at least it didn't crash this time." This is backhanded: error messages are poor, but at least no crash. Mixed? It acknowledges a small positive (no crash) but overall negative about error messages. Could be mixed sentiment. I'd say mixed.
+
+3. "The server has maintained 99.97% uptime, missing our 99.99% SLA by exactly 13 minutes." Uptime is high but missed SLA slightly. Slight negative? It's basically good but fell short. Could be neutral? It's stating fact with slight negative connotation. I'd say neutral? But maybe mixed: positive uptime, negative missing SLA. I'd choose mixed.
+
+4. "Oh wonderful, they deprecated the only API endpoint that actually worked. Progress!" Sarcasm: wonderful = negative. So negative.
+
+5. "Not the worst migration I've survived, which is genuinely the highest praise I can give." This is understatement: saying it's not the worst is high praise, implying it's bad but not worst. So sentiment: negative? Actually it's a backhanded compliment: it's not the worst, so it's bad but tolerable. Could be mixed? The phrase "genuinely the highest praise I can give" indicates that the speaker thinks it's not good. So overall negative sentiment about migration. I'd label negative.
+
+6. "Revenue grew 2% while the market grew 15%." Revenue growth lower than market, indicating underperformance. Negative.
+
+7. "The intern's first PR had fewer bugs than our senior dev's last three combined." This is praising intern relative to senior devs (implies senior devs buggy). Could be mixed: positive about intern, negative about senior devs. Overall sentiment? Might be mixed. I'd say mixed.
+
+8. "Sure, the UI redesign is 'modern' — if by modern you mean it takes 3 clicks to do what used to take 1." Sarcasm: calling modern but actually worse. Negative.
+
+9. "The battery lasts all day... if your day ends at 2 PM." Sarcasm: battery insufficient. Negative.
+
+10. "I'm not saying the documentation is bad. I'm saying archaeologists would have an easier time with the Dead Sea Scrolls." This is saying documentation is extremely bad (hard to understand). Negative.
+
+11. "Achieved $2M ARR in 18 months with zero paid marketing." Positive achievement. Positive.
+
+12. "The refactoring reduced code complexity by 40% and only introduced 2 new regressions." Positive improvement with minor drawback. Could be mixed? The "only introduced 2 new regressions" is a small negative but overall positive. I'd say positive (overall positive). But could be mixed. I'd lean positive.
+
+13. "Their 'AI-powered' search still can't find an exact title match, but hey, it suggests related products really well." Mixed: negative about exact match, positive about suggestions. So mixed.
+
+14. "Lost only 3 customers this quarter, down from 47 last quarter." Improvement (lost fewer). Positive sentiment about reduction. Positive.
+
+15. "The team delivered on time and on budget for the first time in the company's history. Nobody believed it was possible." Positive achievement, surprise. Positive.
+
+16. "Stack Overflow copypasta with zero understanding, submitted as 'original implementation'." Criticism: negative.
+
+17. "The framework has excellent documentation, an active community, and absolutely no backwards compatibility." Mixed: excellent docs and community positive, but no backwards compatibility negative. So mixed.
+
+18. "Despite the layoffs, remaining employees report higher satisfaction — likely because the complainers were let go." This is sarcastic: higher satisfaction because complainers left, implying negative environment. Overall negative? The statement notes higher satisfaction but reason is negative. Could be mixed. I'd say mixed (positive outcome but negative cause). However sentiment of statement maybe negative about layoffs. I'd choose mixed.
+
+19. "Q3 results were flat, exactly matching analyst expectations." Flat results, meeting expectations: neutral. Not positive nor negative. So neutral.
+
+20. "I wouldn't call it technical debt. It's more like technical bankruptcy with no restructuring plan." Strong negative. Negative.
+
+Now produce JSON.
+
+Let's list:
+
+1 negative
+2 mixed
+3 mixed
+4 negative
+5 negative
+6 negative
+7 mixed
+8 negative
+9 negative
+10 negative
+11 positive
+12 positive (or mixed? I'll choose positive)
+13 mixed
+14 positive
+15 positive
+16 negative
+17 mixed
+18 mixed
+19 neutral
+20 negative
+
+Check consistency.
+
+Now output JSON with keys as strings? The prompt: {"1": "sentiment", ..., "20": "sentiment"} So keys as strings numbers.
+
+Let's craft.
+
+</think>
+
+{
+  "1": "negative",
+  "2": "mixed",
+  "3": "mixed",
+  "4": "negative",
+  "5": "negative",
+  "6": "negative",
+  "7": "mixed",
+  "8": "negative",
+  "9": "negative",
+  "10": "negative",
+  "11": "positive",
+  "12": "positive",
+  "13": "mixed",
+  "14": "positive",
+  "15": "positive",
+  "16": "negative",
+  "17": "mixed",
+  "18": "mixed",
+  "19": "neutral",
+  "20": "negative"
+}

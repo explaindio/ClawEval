@@ -71,8 +71,11 @@ def _try_parse_json(text):
         return None
 
 def extract_json(text):
-    """Extract JSON from response text, handling markdown code fences."""
+    """Extract JSON from response text, handling markdown code fences and preamble."""
     text = text.strip()
+    # Strip any residual </think> tags (e.g. Nemotron inline thinking)
+    if "</think>" in text:
+        text = text.split("</think>")[-1].strip()
     if "```" in text:
         m = re.search(r'```(?:json)?\s*\n?(.*?)\n?```', text, re.DOTALL)
         if m:
@@ -86,17 +89,38 @@ def extract_json(text):
     result = _try_parse_json(cleaned)
     if result is not None:
         return result
-    # Try regex extraction
+    # Try regex extraction — try ALL matches and return last valid (handles preamble prose)
     for pattern in [r'\{[^{}]*(?:\{[^{}]*\}[^{}]*)*\}', r'\[.*\]']:
-        m = re.search(pattern, text, re.DOTALL)
-        if m:
+        matches = list(re.finditer(pattern, text, re.DOTALL))
+        # Try last match first (model often puts answer at end after reasoning)
+        for m in reversed(matches):
             result = _try_parse_json(m.group())
             if result is not None:
                 return result
             result = _try_parse_json(_clean_json_text(m.group()))
             if result is not None:
                 return result
-    # Try finding deeply nested JSON
+    # Try finding deeply nested JSON — scan from last { backwards
+    try:
+        # Find last complete JSON object by scanning from end
+        last_close = text.rfind('}')
+        if last_close >= 0:
+            depth = 0
+            for i in range(last_close, -1, -1):
+                if text[i] == '}': depth += 1
+                elif text[i] == '{': depth -= 1
+                if depth == 0:
+                    candidate = text[i:last_close+1]
+                    result = _try_parse_json(candidate)
+                    if result is not None:
+                        return result
+                    result = _try_parse_json(_clean_json_text(candidate))
+                    if result is not None:
+                        return result
+                    break
+    except:
+        pass
+    # Fallback: scan from first { forward (original behaviour)
     try:
         start = text.index('{')
         depth = 0
@@ -115,6 +139,7 @@ def extract_json(text):
     except:
         pass
     return None
+
 
 
 # ============================================================

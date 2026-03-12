@@ -1,0 +1,75 @@
+{
+  "vulnerabilities": [
+    {
+      "id": 1,
+      "type": "Hardcoded Weak Secret Key",
+      "severity": "medium",
+      "location": "app.secret_key = \"password123\"",
+      "fix": "Generate a strong random secret key and store it in an environment variable or secure config; never hardcode."
+    },
+    {
+      "id": 2,
+      "type": "Cross‑Site Scripting (XSS)",
+      "severity": "high",
+      "location": "/search route: render_template_string(f\"Results for: {q}\")",
+      "fix": "Escape user input (e.g., use Flask's auto‑escaping templates or MarkupSafe.escape) before rendering."
+    },
+    {
+      "id": 3,
+      "type": "SQL Injection",
+      "severity": "critical",
+      "location": "/user/<id> route: db.execute(f\"SELECT * FROM users WHERE id = {id}\")",
+      "fix": "Use parameterized queries: db.execute(\"SELECT * FROM users WHERE id = ?\", (id,))."
+    },
+    {
+      "id": 4,
+      "type": "Insecure Deserialization (Pickle RCE)",
+      "severity": "critical",
+      "location": "/upload route: obj = pickle.loads(data)",
+      "fix": "Avoid pickle for untrusted data; use a safe format like JSON and validate/sanitize input."
+    },
+    {
+      "id": 5,
+      "type": "Command Injection",
+      "severity": "critical",
+      "location": "/run route: subprocess.check_output(cmd, shell=True)",
+      "fix": "Do not use shell=True; if external commands are needed, use a whitelist and pass arguments as a list."
+    },
+    {
+      "id": 6,
+      "type": "Path Traversal / Arbitrary File Read",
+      "severity": "high",
+      "location": "/file route: open(path).read()",
+      "fix": "Validate and sanitize the path, restrict to a safe directory (e.g., using os.path.realpath and checking prefix)."
+    },
+    {
+      "id": 7,
+      "type": "Weak/Default Hardcoded Password",
+      "severity": "medium",
+      "location": "/login route: if pw == os.environ.get(\"ADMIN_PW\", \"admin\"):",
+      "fix": "Remove the default fallback; require a strong password set via environment variable and consider using proper authentication/hashing."
+    },
+    {
+      "id": 8,
+      "type": "Information Exposure (Environment Variables)",
+      "severity": "medium",
+      "location": "/debug route: return str(os.environ)",
+      "fix": "Remove or restrict the debug endpoint in production; never expose env vars to users."
+    },
+    {
+      "id": 9,
+      "type": "Missing HTTPS Enforcement",
+      "severity": "medium",
+      "location": "Application overall (no TLS enforcement)",
+      "fix": "Deploy behind TLS (HTTPS) and redirect HTTP to HTTPS; use secure cookies and HSTS."
+    },
+    {
+      "id": 10,
+      "type": "Missing Rate Limiting",
+      "severity": "low",
+      "location": "Application overall (no throttling on endpoints)",
+      "fix": "Implement rate limiting (e.g., Flask-Limiter) on sensitive endpoints to prevent abuse."
+    }
+  ],
+  "count": 10
+}

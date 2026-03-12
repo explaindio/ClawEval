@@ -1,0 +1,202 @@
+We need to produce a 4-week content calendar with columns: Week, Day, Type, Topic, Channel.
+
+Constraints:
+
+1. Exactly 3 posts per week (12 total). So each week has 3 posts.
+
+2. No posts on weekends (Sat/Sun). So only Monday-Friday.
+
+3. At least 1 blog post per week. So each week has at least 1 blog. Since total blogs = 4 (constraint 9), each week must have exactly 1 blog (since 4 weeks, at least 1 per week, total 4). So each week exactly 1 blog.
+
+4. At least 1 social media post per week. Social posts total = 5 (constraint 9). Over 4 weeks, at least 1 per week, total 5, so distribution: three weeks have 1 social, one week has 2 social (since total 5). Also each week must have at least 1 social.
+
+5. Each blog must be preceded by a related social post within 2 days before. Means for each blog post, there must be a social post (type social) on either the day before or two days before (i.e., within previous 2 calendar days) that is related (topic related). We'll need to ensure that.
+
+6. Week themes: W1=Awareness, W2=Education, W3=Engagement, W4=Conversion. So topics should align with theme.
+
+7. No two blogs on the same day of the week across the 4 weeks. Means if we assign blog day for week1 (e.g., Monday), then week2 blog cannot be on Monday, week3 cannot be on Monday, week4 cannot be on Monday. Similarly for each day of week (Mon-Fri). So each blog must be on a unique weekday across weeks. Since we have 4 weeks and 5 weekdays, we can assign 4 distinct weekdays.
+
+8. At least 2 different channels used per week (blog, twitter, linkedin, email). So each week must have posts on at least 2 distinct channels among those.
+
+9. Total: exactly 4 blogs, exactly 5 social posts, exactly 3 emails. So we have 4 blog posts (type Blog), 5 social posts (type Social, channel either Twitter or LinkedIn), 3 emails (type Email). Total posts = 4+5+3 =12, matches 3 per week.
+
+10. No more than 2 consecutive days with posts in any week. Means you cannot have posts on three consecutive days (e.g., Mon, Tue, Wed all have posts). At most two consecutive days with posts.
+
+We need to output a table with columns Week, Day, Type, Topic, Channel.
+
+We need to verify each constraint with a numbered checklist at the end.
+
+We need to design schedule.
+
+Let's define weeks: Week 1 (Awareness), Week 2 (Education), Week 3 (Engagement), Week 4 (Conversion).
+
+We need each week 3 posts: 1 blog, plus remaining 2 posts are mix of social and email to meet totals.
+
+Total social =5, email=3.
+
+We have 4 weeks, each week at least 1 social. So allocate socials: 2 weeks with 2 socials, 2 weeks with 1 social? Wait total social 5 across 4 weeks, min 1 each => 4 accounted, leaving 1 extra social to allocate to any week => one week gets 2 socials, others 1 social each.
+
+Similarly email total 3 across 4 weeks, at least? No constraint about email per week, just total. So we can allocate emails as needed, ensuring each week at least 2 different channels used.
+
+We also need each week at least 2 different channels used. Since each week has a blog (channel Blog) plus at least one social or email, that'll give at least 2 channels. But we need to ensure that if a week only has blog + social (or blog+email) that's 2 channels. If a week has blog + social + email, that's 3 channels.
+
+Now constraint 5: each blog must be preceded by a related social post within 2 days before. So for each blog day, we need a social post either 1 day before or 2 days before (i.e., previous day or two days prior). That social post must be related topic.
+
+Thus we need to schedule for each week: pick a blog day (Mon-Fri). Then ensure that either the day before or two days before is a social post (type Social). Also that social post must be within same week? It could be previous week? The constraint says within 2 days before, not specifying same week, but likely within same week because we only schedule per week. We'll assume within same week (since we only have Monday-Friday). If blog is on Monday, there is no day before within same week (since Sunday is weekend no posts). So we cannot have blog on Monday because we need a social post within 2 days before (i.e., Saturday or Sunday) but those are weekends no posts allowed. So blog cannot be on Monday. Similarly blog on Tuesday: need social on Monday or Sunday (Sunday not allowed). So we need social on Monday (allowed). So blog Tuesday possible if Monday is social. Blog Wednesday: need social on Tuesday or Monday. Both allowed. Blog Thursday: need social on Wednesday or Tuesday. Blog Friday: need social on Thursday or Wednesday.
+
+Thus blog cannot be on Monday.
+
+Now constraint 7: No two blogs on same day of week across weeks. So we need to assign blog days for weeks 1-4 each on distinct weekdays (Mon-Fri) but not Monday (due to constraint). So we have Tuesday, Wednesday, Thursday, Friday available (4 days). Perfect: assign each week a different day among Tue-Fri.
+
+Now we need to allocate social posts to satisfy preceding condition and totals.
+
+Let's assign:
+
+Week1 (Awareness): Blog on Tuesday. Then need social on Monday (1 day before) or Sunday (not allowed) => must have social on Monday. So Monday social.
+
+Week2 (Education): Blog on Wednesday. Need social on Tuesday or Monday. We'll decide later.
+
+Week3 (Engagement): Blog on Thursday. Need social on Wednesday or Tuesday.
+
+Week4 (Conversion): Blog on Friday. Need social on Thursday or Wednesday.
+
+Now we need to allocate total socials =5. We already have at least one social per week due to preceding condition: each week's blog requires a social before it (within 2 days). That gives at least 4 socials (one per week). Since we need total 5 socials, we need one extra social somewhere (could be any week, maybe as an additional social post not required for blog precedence). Also we need to meet email total 3.
+
+Now we need to allocate emails: 3 emails across weeks. Each week must have at least 2 different channels used. Since each week already has blog (channel Blog) and at least one social (due to precedence), that satisfies at least 2 channels (Blog + Social). So we can allocate emails optionally, but we need exactly 3 emails total. We can put emails in some weeks, possibly replacing a social? But we need to keep at least 1 social per week (constraint 4). So we cannot replace the required social for blog precedence with email; we need at least one social each week. However we could have weeks where we have blog + social + email (3 posts) meeting 3 posts per week. Or we could have blog + social + social (if we need extra social). Since each week must have exactly 3 posts.
+
+Let's compute: each week we have 1 blog (mandatory). For each week we also need at least 1 social (due to precedence and also constraint 4). That's 2 posts. We need a third post per week to reach 3 posts. That third post can be either social or email.
+
+We have total socials needed =5. We already have 4 required socials (one per week for blog precedence). So we need 1 extra social (making total 5). Emails needed =3. So we need to allocate 3 emails across weeks as the third post in some weeks, and the extra social as third post in one week.
+
+Thus distribution: For 3 weeks, third post = email. For 1 week, third post = extra social (making that week have 2 socials + 1 blog). All weeks have at least 1 social (the required one). Good.
+
+Now we need to ensure no more than 2 consecutive days with posts in any week. Since we have posts on certain days (Monday-Friday). We need to avoid having posts on three consecutive days.
+
+Let's design each week's schedule.
+
+We have weekdays: Mon, Tue, Wed, Thu, Fri.
+
+We need to place blog on assigned day (Tue-Fri). Also need a social preceding blog within 2 days before (i.e., either day-1 or day-2). We'll choose to place the required social on the day immediately before blog (day-1) to simplify, except for Tuesday where day-1 is Monday (allowed). For Wednesday blog, we can put social on Tuesday. For Thursday blog, social on Wednesday. For Friday blog, social on Thursday.
+
+Thus each week we will have social on day-1 (the day before blog). That ensures precedence.
+
+Now we need to add third post (email or extra social) on some other day, ensuring not more than 2 consecutive days with posts.
+
+Let's list days for each week:
+
+Week1: Blog Tue, Social Mon (required). So we have posts Mon and Tue. That's two consecutive days (Mon-Tue). That's okay (max 2). Need third post either email or extra social on a day not causing >2 consecutive. Options: Wed, Thu, Fri. If we add on Wed, then we would have Mon-Tue-Wed = three consecutive days (Mon,Tue,Wed) => violates. So cannot add on Wed. If we add on Thu, we have Mon-Tue (posts), gap Wed no post, Thu post => not more than 2 consecutive (Mon-Tue is 2, Thu alone). If we add on Fri, similar: Mon-Tue, gap Wed-Thu, Fri post => okay. So we can place third post on Thu or Fri.
+
+Week2: Blog Wed, Social Tue (required). Posts Tue, Wed. That's two consecutive. Need third post on a day not causing >2 consecutive. Options: Mon, Thu, Fri. If we add on Mon, we have Mon-Tue-Wed? Actually Mon (post), Tue (post), Wed (post) => three consecutive (Mon,Tue,Wed) => violates. So cannot add on Mon. If we add on Thu, we have Tue-Wed (posts), gap? Actually Wed-Thu are consecutive? Wait we have posts Tue, Wed, Thu => that's three consecutive (Tue,Wed,Thu) => violates. So cannot add on Thu. If we add on Fri, we have Tue-Wed (posts), gap Thu no post, Fri post => okay (max consecutive 2). So third post must be on Fri.
+
+Week3: Blog Thu, Social Wed (required). Posts Wed, Thu. Two consecutive. Need third post on a day not causing >2 consecutive. Options: Mon, Tue, Fri. If we add on Mon: we have Mon (post), Tue no, Wed Thu posts => not consecutive >2 (Mon alone). However need to check if Mon-Tue? Tue no post, so fine. If we add on Tue: we have Tue (post), Wed (post), Thu (post) => three consecutive (Tue,Wed,Thu) => violates. So cannot add on Tue. If we add on Fri: we have Wed-Thu (posts), gap? Thu-Fri are consecutive? Actually we have posts Wed, Thu, Fri => three consecutive (Wed,Thu,Fri) => violates. So cannot add on Fri. So third post must be on Mon.
+
+Week4: Blog Fri, Social Thu (required). Posts Thu, Fri. Two consecutive. Need third post on a day not causing >2 consecutive. Options: Mon, Tue, Wed. If we add on Mon: we have Mon (post), Tue no, Wed no, Thu Fri posts => okay (max consecutive 2). If we add on Tue: we have Tue (post), Wed no, Thu Fri posts => but check Thu-Fri are consecutive (2), Tue alone => okay. However need to check if we have Tue, Wed? Wed no post, so fine. If we add on Wed: we have Wed (post), Thu Fri posts => Wed-Thu-Fri are three consecutive? Actually we have posts Wed, Thu, Fri => three consecutive (Wed,Thu,Fri) => violates. So cannot add on Wed. So third post can be Mon or Tue.
+
+Now we need to allocate emails (3) and extra social (1) as third posts across weeks.
+
+We have four weeks; we need exactly 3 emails and 1 extra social as third posts.
+
+Let's assign:
+
+Week1: third post = email (choose Thu or Fri). We'll decide later.
+
+Week2: third post must be Fri (as per constraint). We'll assign email or extra social? We need total emails 3, extra social 1. Let's see.
+
+Week3: third post must be Mon (email or extra social).
+
+Week4: third post can be Mon or Tue (email or extra social).
+
+We need to allocate exactly 3 emails and 1 extra social.
+
+Let's count possibilities.
+
+If we assign extra social to Week2 (third post Fri), then we have emails needed for Week1, Week3, Week4 = 3 emails. That works.
+
+Check each week's third post day availability:
+
+Week1: we can place email on Thu or Fri (both not causing >2 consecutive). Choose Thu.
+
+Week2: extra social on Fri (allowed). Good.
+
+Week3: email on Mon (allowed). Good.
+
+Week4: email on Mon or Tue (choose Mon maybe). But note Week3 already has email on Mon; having email on Mon in Week4 also okay (different week). No constraint about same day across weeks. So Week4 email on Mon.
+
+Now check each week's posts:
+
+Week1:
+- Mon: Social (required preceding blog)
+- Tue: Blog
+- Thu: Email (third post)
+Days: Mon, Tue, Thu. No Fri. Check consecutive: Mon-Tue are consecutive (2), Tue-Wed? Wed no post, Thu alone => max 2 consecutive. Good.
+
+Week2:
+- Tue: Social (required)
+- Wed: Blog
+- Fri: Extra Social (third post)
+Days: Tue, Wed, Fri. Consecutive: Tue-Wed are 2, Wed-Thu? Thu no post, Fri alone => max 2. Good.
+
+Week3:
+- Mon: Email (third post)
+- Wed: Social (required)
+- Thu: Blog
+Days: Mon, Wed, Thu. Check: Mon-Tue? Tue no post, so Mon alone. Wed-Thu are consecutive (2). No three consecutive. Good.
+
+Week4:
+- Mon: Email (third post)
+- Thu: Social (required)
+- Fri: Blog
+Days: Mon, Thu, Fri. Check: Thu-Fri are consecutive (2). Mon alone. No three consecutive. Good.
+
+Now we need to ensure each week uses at least 2 different channels. Let's list channels:
+
+Week1: Mon Social (Twitter or LinkedIn), Tue Blog, Thu Email. Channels: Social, Blog, Email => at least 2.
+
+Week2: Tue Social, Wed Blog, Fri Social (extra). Channels: Social, Blog => at least 2 (Social appears twice but still at least 2 distinct). Good.
+
+Week3: Mon Email, Wed Social, Thu Blog. Channels: Email, Social, Blog => at least 2.
+
+Week4: Mon Email, Thu Social, Fri Blog. Channels: Email, Social, Blog => at least 2.
+
+Now check total counts:
+
+Blogs: each week one blog => 4 blogs. Good.
+
+Social posts: Week1: 1 social (Mon). Week2: 2 socials (Tue, Fri). Week3: 1 social (Wed). Week4: 1 social (Thu). Total = 1+2+1+1 =5 socials. Good.
+
+Emails: Week1: 1 email (Thu). Week2: 0 email. Week3: 1 email (Mon). Week4: 1 email (Mon). Total = 3 emails. Good.
+
+Now check constraint 5: each blog must be preceded by a related social post within 2 days before.
+
+We need to ensure that the social post we placed as preceding is related topic. We'll assume we can make topics related.
+
+Let's list each blog day and preceding social:
+
+Week1 Blog Tue: preceding social on Mon (1 day before). Good.
+
+Week2 Blog Wed: preceding social on Tue (1 day before). Good.
+
+Week3 Blog Thu: preceding social on Wed (1 day before). Good.
+
+Week4 Blog Fri: preceding social on Thu (1 day before). Good.
+
+All within 2 days before.
+
+Now need to ensure no two blogs on same day of week across weeks: Blog days: Week1 Tue, Week2 Wed, Week3 Thu, Week4 Fri. All distinct. Good.
+
+Now need to ensure at least 1 blog per week (yes), at least 1 social per week (yes each week has at least 1 social). Week2 has 2 socials, others 1.
+
+Now need to ensure at least 2 different channels per week (we already checked).
+
+Now need to ensure no more than 2 consecutive days with posts in any week (we checked each week). Let's double-check each week for any hidden consecutive due to weekend? No posts on weekends, but we consider only weekdays; consecutive days across weekend not count because no posts Saturday/Sunday, but if we had posts on Friday and Monday, that's not consecutive because Saturday/Sunday gap. So fine.
+
+Now need to ensure week themes: W1 Awareness, W2 Education, W3 Engagement, W4 Conversion. We need to assign topics accordingly.
+
+We can assign topics for each post type aligning with theme.
+
+Let's create topics:
+
+Week1 Awareness:
+- Mon Social: "Intro to our SaaS platform: why businesses are switching" (Twitter)
+- Tue Blog: "The State of Workflow Automation in 2025: Key Trends" (Blog)
+- Thu Email: "Awareness Webinar Invitation: Learn how our

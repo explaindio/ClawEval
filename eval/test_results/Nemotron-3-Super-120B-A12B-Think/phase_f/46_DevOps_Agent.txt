@@ -1,0 +1,55 @@
+{
+  "issues": [
+    {
+      "line": "1",
+      "problem": "version '2' is outdated",
+      "fix": "Use a newer Compose file version, e.g., version: '3.8' or higher."
+    },
+    {
+      "line": "4",
+      "problem": "'latest' tag is non-deterministic",
+      "fix": "Pin to a specific Node version, e.g., image: node:18-alpine."
+    },
+    {
+      "line": "8",
+      "problem": "DB password in plaintext (should use secrets)",
+      "fix": "Use Docker secrets or external secret management; do not commit passwords in plaintext."
+    },
+    {
+      "line": "9",
+      "problem": "NODE_ENV should be 'production'",
+      "fix": "Set NODE_ENV: production for production builds."
+    },
+    {
+      "line": "11",
+      "problem": "Source volume mount (.:/app) in production",
+      "fix": "Replace with a named volume or a specific host directory; avoid mounting the entire source tree."
+    },
+    {
+      "line": "12",
+      "problem": "restart: no — should be 'unless-stopped' or 'always'",
+      "fix": "Set restart: unless-stopped (or always) to ensure service resilience."
+    },
+    {
+      "line": "15",
+      "problem": "MySQL 5.6 is EOL",
+      "fix": "Use a supported MySQL version, e.g., image: mysql:8.0."
+    },
+    {
+      "line": "17",
+      "problem": "DB port 3306 exposed publicly",
+      "fix": "Remove the port mapping (or bind to localhost only) if external access is not needed."
+    },
+    {
+      "line": "21",
+      "problem": "/tmp for persistent data (will be lost)",
+      "fix": "Use a named volume or a persistent host directory, e.g., ./mysql-data:/var/lib/mysql."
+    },
+    {
+      "line": "26",
+      "problem": "Redis port exposed publicly + no auth",
+      "fix": "Remove the port mapping or protect with a password (e.g., via REDIS_PASSWORD and requirepass) and consider using a redis config file."
+    }
+  ],
+  "count": 10
+}

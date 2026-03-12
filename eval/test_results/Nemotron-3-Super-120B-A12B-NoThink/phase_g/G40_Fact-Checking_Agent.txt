@@ -1,0 +1,105 @@
+We need to evaluate each claim.
+
+1. Python 3.0 was released in December 2008. Python 3.0 released on December 3, 2008. So TRUE.
+
+2. Git was initially released in 2004 by Linus Torvalds. Git first released April 7, 2005. So FALSE.
+
+3. The first version of JavaScript was created in 10 days. Brendan Eich created JavaScript in 10 days in May 1995. So TRUE.
+
+4. Redis is single-threaded for all operations including I/O. Redis is single-threaded for command processing, but I/O uses non-blocking I/O and can use multiple threads for certain operations (since Redis 6.0 introduced threaded I/O). So claim "single-threaded for all operations including I/O" is false. So FALSE.
+
+5. Docker containers share the host OS kernel. True. Containers share kernel. So TRUE.
+
+6. REST was defined by Roy Fielding in his 2000 doctoral dissertation. Yes, Fielding's dissertation 2000 defined REST. So TRUE.
+
+7. SHA-256 has never had a collision found. As of now, no collision found for SHA-256. It's considered secure. So TRUE.
+
+8. IPv6 addresses are 64 bits long. IPv6 addresses are 128 bits. So FALSE.
+
+9. The CAP theorem states you can only have 2 of: Consistency, Availability, Performance. CAP theorem is Consistency, Availability, Partition tolerance. Not Performance. So FALSE.
+
+10. Kubernetes was originally developed at Google based on their Borg system. Yes, Kubernetes originated from Borg. So TRUE.
+
+11. The first commit to Linux kernel was in 1991. Linux kernel first released 1991 (version 0.01) September 1991. First commit? The initial import was 1991. So TRUE.
+
+12. TCP guarantees in-order delivery of packets. TCP provides ordered, reliable delivery. So TRUE.
+
+13. UTF-8 can encode any Unicode character in at most 4 bytes. UTF-8 uses up to 4 bytes for code points up to U+10FFFF. So TRUE.
+
+14. MongoDB is ACID compliant for single-document operations. MongoDB provides atomicity on single document operations, and as of version 4.0 multi-document ACID transactions. Single-document operations are ACID (atomic, consistent, isolated, durable). So claim: MongoDB is ACID compliant for single-document operations. That's true. So TRUE.
+
+15. The HTTP/2 protocol was standardized in 2015. HTTP/2 was published as RFC 7540 in May 2015. So TRUE.
+
+16. Rust was first released by Mozilla in 2010. Rust first appeared 2010 (initial release 0.1) by Mozilla. So TRUE.
+
+17. WebAssembly became a W3C recommendation in December 2019. WebAssembly became a W3C Recommendation on December 5, 2019. So TRUE.
+
+18. The maximum length of a URL is 2,048 characters per the HTTP spec. There is no official limit in HTTP spec; browsers impose limits (IE 2048). So claim is false. So FALSE.
+
+19. Python's GIL prevents all multi-threaded execution. GIL prevents parallel execution of Python bytecode across threads, but threads can still run (e.g., I/O, C extensions release GIL). So statement "prevents all multi-threaded execution" is false. So FALSE.
+
+20. gzip compression uses the DEFLATE algorithm. Yes, gzip uses DEFLATE. So TRUE.
+
+Now produce JSON mapping 1-20 to TRUE/FALSE.
+
+Let's list:
+
+1 TRUE
+2 FALSE
+3 TRUE
+4 FALSE
+5 TRUE
+6 TRUE
+7 TRUE
+8 FALSE
+9 FALSE
+10 TRUE
+11 TRUE
+12 TRUE
+13 TRUE
+14 TRUE
+15 TRUE
+16 TRUE
+17 TRUE
+18 FALSE
+19 FALSE
+20 TRUE
+
+Check any nuance:
+
+Claim 4: "Redis is single-threaded for all operations including I/O." Since Redis 6.0 introduced I/O threads, it's not single-threaded for I/O. So FALSE.
+
+Claim 14: "MongoDB is ACID compliant for single-document operations." MongoDB provides atomicity, consistency, isolation, durability for single document writes. Yes. So TRUE.
+
+Claim 18: "The maximum length of a URL is 2,048 characters per the HTTP spec." HTTP spec does not define a maximum length; it's implementation dependent. So FALSE.
+
+Claim 19: "Python's GIL prevents all multi-threaded execution." GIL only prevents parallel execution of Python bytecode; threads can still run, especially for I/O or when using C extensions that release GIL. So FALSE.
+
+All good.
+
+Now output JSON.
+
+</think>
+
+{
+  "1": "TRUE",
+  "2": "FALSE",
+  "3": "TRUE",
+  "4": "FALSE",
+  "5": "TRUE",
+  "6": "TRUE",
+  "7": "TRUE",
+  "8": "FALSE",
+  "9": "FALSE",
+  "10": "TRUE",
+  "11": "TRUE",
+  "12": "TRUE",
+  "13": "TRUE",
+  "14": "TRUE",
+  "15": "TRUE",
+  "16": "TRUE",
+  "17": "TRUE",
+  "18": "FALSE",
+  "19": "FALSE",
+  "20": "TRUE"
+}

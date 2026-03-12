@@ -1,0 +1,35 @@
+{
+  "bugs": [
+    {
+      "line": 8,
+      "issue": "discount value is not validated; a discount >100 (or negative) can produce a negative price after calculation.",
+      "fix": "Clamp discount to a sensible range (e.g., 0‑100) before using it: discount = min(max(order.get('discount', 0), 0), 100)"
+    },
+    {
+      "line": 10,
+      "issue": "The price < 0 check only clamps after a potentially invalid discount; better to prevent negative price by validating discount earlier.",
+      "fix": "Move validation to before the calculation (see line 8 fix) and remove the redundant clamp, or keep it as a safety net after validation."
+    },
+    {
+      "line": 18,
+      "issue": "ZeroDivisionError occurs when no orders have status 'pending' (processed list is empty).",
+      "fix": "Guard the division: avg = total / len(processed) if processed else 0 (or None, depending on desired behavior)."
+    },
+    {
+      "line": 23,
+      "issue": "The returned 'count' uses len(orders) instead of len(processed), misrepresenting the number of processed orders.",
+      "fix": "Change to 'count': len(processed)."
+    },
+    {
+      "line": 5,
+      "issue": "The function mutates the original order dictionaries (adds final_price and changes status), causing unintended side effects for the caller.",
+      "fix": "Work on a copy of each order: order_copy = order.copy() and modify/order_append the copy instead of the original."
+    },
+    {
+      "line": 5,
+      "issue": "No type checking on 'price' and 'quantity'; if they are None, strings, or other non‑numeric types, a TypeError will be raised.",
+      "fix": "Validate or convert: try: price = float(order.get('price', 0)) * float(order.get('quantity', 0)) except (ValueError, TypeError): price = 0"
+    }
+  ],
+  "count": 6
+}

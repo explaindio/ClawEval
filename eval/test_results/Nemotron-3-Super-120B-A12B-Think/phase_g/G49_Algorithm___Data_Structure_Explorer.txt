@@ -1,0 +1,215 @@
+We need to output only the class code, no explanation. Provide Python class LRUCache with time-based expiration, O(1) get/put using OrderedDict (which maintains insertion order). Need to handle expiration lazily: on get, put, delete, size, keys, get_stats, clear we need to check expiration.
+
+We need to store for each key: value, expiry timestamp (or None for no expiry), and maybe insertion order. Use OrderedDict to maintain LRU order: on get, if key exists and not expired, move to end (most recent). On put, if key exists, update value and expiry, move to end; else insert at end; if exceeds capacity, evict LRU (popitem(last=False)) but need to skip expired entries? Actually we need to evict based on LRU among non-expired? Usually LRU eviction considers all entries, but expired entries should be lazily removed; they still count toward capacity? Usually they'd be considered as entries but we can treat them as still present but they will be removed lazily; but capacity check should consider current number of entries (including expired) maybe? The requirement: size() returns number of non-expired entries. For eviction, we need to evict when number of entries (including expired?) exceeds capacity? Usually LRU cache with expiration: you still have max capacity of items; expired items are considered as items but they will be removed lazily; but to keep O(1) we can treat them as still present; when we need to evict, we pop from front until we find a non-expired entry (or we just pop the front regardless; if it's expired, we discard it and continue). That ensures we eventually make room.
+
+We'll maintain stats: hits, misses, evictions (when we remove due to capacity), expirations (when we detect an entry expired during get/put/size/keys etc). We'll increment expirations when we find an expired entry and remove it.
+
+Implementation details:
+
+- Use collections.OrderedDict.
+- self._cache: OrderedDict mapping key -> [value, expiry] (expiry is float or None).
+- self._capacity.
+- self._hits, self._misses, self._evictions, self._expirations.
+
+Methods:
+
+- _is_expired(expiry): return expiry is not None and time.time() >= expiry.
+
+- _remove_expired_key(key): if key in cache and expired, delete from cache, increment expirations, return True else False.
+
+But we need lazy removal: on get, we check if key exists; if not, miss; if exists, check expiry; if expired, treat as miss, delete it, increment expirations, return None.
+
+On put: if key exists, we need to update; first remove existing entry (if any) to avoid duplicate; then insert new at end; if after insertion size (including expired?) > capacity, we need to evict LRU entries until size <= capacity. We'll evict from front, skipping expired entries (but we should count evictions only when we remove a non-expired entry due to capacity). However, if we remove an expired entry during eviction, we should count as expiration not eviction. So while len(self._cache) > self._capacity: popitem(last=False) gives (key, [value, expiry]); if expired, increment expirations, else increment evictions. Continue.
+
+But note: len(self._cache) includes expired entries; we want to ensure after eviction loop, len <= capacity. That's fine.
+
+Delete: if key exists, remove it; if expired? We'll treat as existing regardless of expiry? Probably delete should remove if present (even if expired) and return True. We'll check existence; if not present return False; else delete and if expired increment expirations? Actually if we delete explicitly, it's not an expiration; we just remove. So we just delete and return True. No stats change for expiration.
+
+size(): need to count non-expired entries. Could iterate over cache and count those not expired; but that would be O(n). However requirement: size() should return current number of non-expired entries. Could be O(n) but maybe acceptable? They didn't specify O(1) for size. We'll implement O(n) but we could maintain a counter of non-expired entries updated on get/put/delete/expiration detection. Simpler: maintain self._non_expired_count that we update on changes. We'll need to adjust when entries expire lazily (we detect and remove). We'll also adjust on put (if replacing existing, adjust count based on expiry change). Might be complex but doable.
+
+Given constraints only mention get and put O(1). size can be O(n). We'll implement O(n) for simplicity.
+
+keys(): return all non-expired keys in most-recently-used order. Need to iterate over OrderedDict from most recent to least? OrderedDict maintains insertion order; moving to end on get/put makes most recent at end. So to get most-recently-used order, we can iterate reversed(self._cache) and filter non-expired. Return list.
+
+get_stats: return dict with hits, misses, evictions, expirations.
+
+clear: remove all entries, reset stats, reset OrderedDict.
+
+Implementation steps:
+
+- Import time, collections.
+
+- Class LRUCache:
+
+    def __init__(self, capacity: int):
+        self._capacity = capacity
+        self._cache = collections.OrderedDict()
+        self._hits = self._misses = self._evictions = self._expirations = 0
+
+    def _expired(self, expiry):
+        return expiry is not None and time.time() >= expiry
+
+    def get(self, key: str):
+        if key in self._cache:
+            value, expiry = self._cache[key]
+            if self._expired(expiry):
+                # remove expired
+                del self._cache[key]
+                self._expirations += 1
+                self._misses += 1
+                return None
+            # move to end (most recent)
+            self._cache.move_to_end(key)
+            self._hits += 1
+            return value
+        else:
+            self._misses += 1
+            return None
+
+    def put(self, key: str, value: any, ttl: float = None):
+        expiry = None if ttl is None else time.time() + ttl
+        # If key exists, remove it first (we will reinsert)
+        if key in self._cache:
+            del self._cache[key]
+        # Insert new
+        self._cache[key] = (value, expiry)
+        self._cache.move_to_end(key)  # ensure at end
+        # Enforce capacity
+        while len(self._cache) > self._capacity:
+            old_key, (old_value, old_expiry) = self._cache.popitem(last=False)
+            if self._expired(old_expiry):
+                self._expirations += 1
+            else:
+                self._evictions += 1
+
+    def delete(self, key: str) -> bool:
+        if key in self._cache:
+            del self._cache[key]
+            return True
+        return False
+
+    def size(self) -> int:
+        count = 0
+        now = time.time()
+        for value, expiry in self._cache.values():
+            if expiry is None or now < expiry:
+                count += 1
+        return count
+
+    def get_stats(self) -> dict:
+        return {"hits": self._hits,
+                "misses": self._misses,
+                "evictions": self._evictions,
+                "expirations": self._expirations}
+
+    def keys(self) -> list:
+        now = time.time()
+        result = []
+        # iterate from most recent to least: reversed order
+        for key in reversed(self._cache):
+            value, expiry = self._cache[key]
+            if expiry is None or now < expiry:
+                result.append(key)
+        return result
+
+    def clear(self) -> None:
+        self._cache.clear()
+        self._hits = self._misses = self._evictions = self._expirations = 0
+
+Edge Cases: ttl=0 means immediate expiry? We'll treat expiry = now + 0 => now, which is expired immediately (since time.time() >= expiry). That's fine.
+
+Potential issue: In put, after deleting existing key, we insert new and move_to_end (though insertion already at end). Actually OrderedDict insertion puts at end; but if we deleted and reinsert same key, it will be at end. So move_to_end not needed but fine.
+
+When we evict due to capacity, we popitem(last=False) which is LRU (least recent). However, if there are expired entries at front, we will remove them and count as expiration. That's fine.
+
+Need to import collections.
+
+Make sure to use typing.Any for value? Not required.
+
+We'll output just the class code.
+
+Check that get and put are O(1) average: yes.
+
+Now produce final answer.
+
+</think>
+
+```python
+import time
+import collections
+from typing import Any, Dict, List, Tuple, Optional
+
+class LRUCache:
+    def __init__(self, capacity: int):
+        self._capacity: int = capacity
+        self._cache: collections.OrderedDict[str, Tuple[Any, Optional[float]]] = collections.OrderedDict()
+        self._hits: int = 0
+        self._misses: int = 0
+        self._evictions: int = 0
+        self._expirations: int = 0
+
+    def _is_expired(self, expiry: Optional[float]) -> bool:
+        return expiry is not None and time.time() >= expiry
+
+    def get(self, key: str) -> Any:
+        if key in self._cache:
+            value, expiry = self._cache[key]
+            if self._is_expired(expiry):
+                del self._cache[key]
+                self._expirations += 1
+                self._misses += 1
+                return None
+            self._cache.move_to_end(key)
+            self._hits += 1
+            return value
+        self._misses += 1
+        return None
+
+    def put(self, key: str, value: Any, ttl: Optional[float] = None) -> None:
+        expiry: Optional[float] = None if ttl is None else time.time() + ttl
+        if key in self._cache:
+            del self._cache[key]
+        self._cache[key] = (value, expiry)
+        self._cache.move_to_end(key)
+        while len(self._cache) > self._capacity:
+            old_key, (_, old_expiry) = self._cache.popitem(last=False)
+            if self._is_expired(old_expiry):
+                self._expirations += 1
+            else:
+                self._evictions += 1
+
+    def delete(self, key: str) -> bool:
+        if key in self._cache:
+            del self._cache[key]
+            return True
+        return False
+
+    def size(self) -> int:
+        now = time.time()
+        cnt = 0
+        for _, expiry in self._cache.values():
+            if expiry is None or now < expiry:
+                cnt += 1
+        return cnt
+
+    def get_stats(self) -> Dict[str, int]:
+        return {
+            "hits": self._hits,
+            "misses": self._misses,
+            "evictions": self._evictions,
+            "expirations": self._expirations,
+        }
+
+    def keys(self) -> List[str]:
+        now = time.time()
+        result: List[str] = []
+        for key in reversed(self._cache):
+            _, expiry = self._cache[key]
+            if expiry is None or now < expiry:
+                result.append(key)
+        return result
+
+    def clear(self) -> None:
+        self._cache.clear()
+        self._hits = self._misses = self._evictions = self._expirations = 0
+```

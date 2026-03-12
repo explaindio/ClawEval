@@ -1,0 +1,220 @@
+We need to output JSON with phases, decision_points, escalation, total_phases, max_time_minutes, rollback_conditions.
+
+We need at least 5 phases. Phase 1 must run diagnostic agents in parallel. Must have at least 2 decision points with branching logic. Notification must happen within phase 1 or 2. Customer communication must happen before any rollback. Escalation trigger must include time-based condition. Rollback conditions must be specific. Must include verification phase after any remediation. Max time reasonable 5-30 minutes. Each agent must have a timeout.
+
+We need to design workflow: phases list.
+
+Let's design:
+
+Phase 1: initial diagnostics: run log_analyzer, metric_checker, db_checker, config_auditor, capacity_planner in parallel. Also notification_agent to send initial alert. So notification in phase 1.
+
+Phase 2: dependency mapping and incident reporting: dependency_mapper, incident_reporter (create ticket). Possibly also start customer communication? But requirement: customer communication must happen before any rollback, not necessarily before phase 2. Could be phase 3.
+
+Phase 3: analysis and decision: based on collected data, decide if rollback needed, or if need to investigate further. Could have decision point after phase 2.
+
+Phase 4: remediation: either rollback_agent or apply fix (maybe config_auditor suggests revert config). We'll have two possible paths: if rollback condition true, run rollback_agent; else run config_auditor fix or db_checker fix.
+
+Phase 5: verification: after remediation, run metric_checker, log_analyzer, db_checker to verify health. Also incident_reporter update ticket. Customer communication in phase 5? Actually requirement: customer communication must happen before any rollback. So if rollback occurs, customer communication must be before rollback. So we need to place customer_communicator before rollback phase. So maybe phase 3 includes customer communication before decision to rollback. Let's restructure.
+
+Phase 1: diagnostics + notification.
+
+Phase 2: dependency mapping + incident creation + customer communication (initial status update). So customer communication before any rollback.
+
+Phase 3: analysis and decision point: based on data, decide if rollback needed.
+
+Decision point after phase 2: if rollback_needed true -> go to phase 4 (rollback), else go to phase 5 (investigate further/fix).
+
+Phase 4: rollback_agent (execute rollback). Then after rollback, need verification phase.
+
+Phase 5: further investigation: maybe config_auditor to revert bad config, db_checker to fix locks, capacity_planner to scale, etc. Then after that, verification.
+
+Phase 6: verification phase: run metric_checker, log_analyzer, db_checker to confirm health, incident_reporter update, customer_communicator final update.
+
+We need at least 5 phases; we have 6.
+
+Need decision points: at least 2. We have one after phase 2. Another after phase 4 or 5? Could have decision after verification to see if issue resolved; if not, escalate.
+
+Decision point after phase 6: if health ok -> close incident; else -> escalate.
+
+Now escalation trigger must include time-based condition: e.g., if total time exceeds max_time_minutes or if no improvement after X minutes.
+
+We'll set escalation trigger: if after phase 6 verification fails and elapsed time > max_time_minutes (or after 10 minutes of no improvement). Action: notify senior on-call via notification_agent with high severity.
+
+Rollback conditions must be specific: e.g., if log_analyzer detects error pattern "NullPointerException in service X after deployment Y" AND metric_checker shows error rate >5% for >2 minutes AND dependency_mapper shows recent deployment of service X. So we can list conditions.
+
+Each agent must have timeout: we assign e.g., 30 seconds for log_analyzer, metric_checker, etc. For rollback maybe 60 seconds.
+
+Now produce JSON.
+
+Structure:
+
+{
+  "phases": [
+    {"phase":1, "name":"Initial Diagnostics & Alerting", "agents":[...], "parallel":true, "gate":"All diagnostic agents completed or timed out"},
+    {"phase":2, "name":"Dependency Mapping & Incident Creation", "agents":[...], "parallel":false?, maybe parallel for dependency_mapper and incident_reporter and customer_communicator? Could be parallel. We'll set parallel true for speed. Gate: "Dependency map created and incident ticket opened"},
+    {"phase":3, "name":"Analysis & Decision", "agents":[{"agent":"incident_reporter","input":"update ticket with findings","timeout_seconds":10}], "parallel":false, "gate":"Analysis complete"},
+    {"phase":4, "name":"Rollback Remediation", "agents":[{"agent":"rollback_agent","input":"rollback to previous stable deployment","timeout_seconds":60}], "parallel":false, "gate":"Rollback executed"},
+    {"phase":5, "name":"Corrective Actions", "agents":[{"agent":"config_auditor","input":"revert offending config change","timeout_seconds":30},{"agent":"db_checker","input":"resolve DB locks","timeout_seconds":30}], "parallel":true, "gate":"Corrective actions applied"},
+    {"phase":6, "name":"Verification & Customer Update", "agents":[{"agent":"metric_checker","input":"verify error rate <1%","timeout_seconds":30},{"agent":"log_analyzer","input":"check for residual errors","timeout_seconds":30},{"agent":"db_checker","input":"confirm DB health","timeout_seconds":30},{"agent":"incident_reporter","input":"update incident status","timeout_seconds":10},{"agent":"customer_communicator","input":"send final status update","timeout_seconds":10}], "parallel":true, "gate":"All verification checks passed"}
+  ],
+  "decision_points":[
+    {"after_phase":2,"condition":"rollback_needed == true","if_true":"go to phase 4","if_false":"go to phase 5"},
+    {"after_phase":6,"condition":"verification_passed == true","if_true":"go to phase 7 (close incident)","if_false":"go to phase 8 (escalate)"}
+  ],
+  "escalation":{"trigger":"(verification_failed AND elapsed_time_minutes >= max_time_minutes) OR (no_improvement_for_5_minutes AFTER phase 6)","action":"notification_agent with high severity to on-call lead and create critical incident ticket"},
+  "total_phases":6,
+  "max_time_minutes":20,
+  "rollback_conditions":[
+    "log_analyzer reports error pattern 'NullPointerException' in service X within last 5 minutes",
+    "metric_checker shows error rate >5% for service X for >2 consecutive minutes",
+    "dependency_mapper indicates service X was deployed in the last 10 minutes",
+    "config_auditor shows a config change to service X in the same deployment"
+  ]
+}
+
+But we need to ensure each agent has timeout defined. Already done.
+
+We also need to include notification in phase 1 or 2. We have notification in phase 1? Actually we didn't include notification_agent in any phase. Need to add notification in phase 1 or 2. Let's add notification_agent in phase 1.
+
+Add to phase 1 agents: notification_agent with input "Send initial outage alert to Slack/PagerDuty/email", timeout 10.
+
+Also need to ensure customer communication before any rollback: we have customer_communicator in phase 2 (initial status update) and also in phase 6 final update. That satisfies before rollback (phase 4). Good.
+
+Now decision points: we have after phase 2 and after phase 6. Need to ensure after phase 6 we have go to phase 7 (close incident) and phase 8 (escalate). But we didn't define phases 7 and 8. Could just say go to "close incident" and "escalate". Or we could add phases 7 and 8 as closing and escalation. But requirement only says decision points with go to phase N. We can reference phases that exist. Let's add phase 7: Incident Closure, phase 8: Escalation Handling.
+
+Add phases 7 and 8.
+
+Phase 7: Incident Closure: incident_reporter close ticket, notification_agent inform stakeholders, customer_communicator final "resolved" maybe already done. We'll keep simple.
+
+Phase 8: Escalation Handling: notification_agent high severity, incident_reporter update severity, maybe run additional diagnostics.
+
+Now total_phases becomes 8.
+
+Update decision points accordingly.
+
+Let's craft final JSON.
+
+Check each agent timeout: assign appropriate.
+
+Now produce final answer.
+
+</think>
+
+{
+  "phases": [
+    {
+      "phase": 1,
+      "name": "Initial Diagnostics & Alerting",
+      "agents": [
+        { "agent": "log_analyzer", "input": "Retrieve and analyze logs from affected services", "timeout_seconds": 30 },
+        { "agent": "metric_checker", "input": "Query Prometheus for error rates, latency, throughput", "timeout_seconds": 30 },
+        { "agent": "db_checker", "input": "Check database health, connections, locks", "timeout_seconds": 30 },
+        { "agent": "config_auditor", "input": "List recent configuration changes", "timeout_seconds": 20 },
+        { "agent": "capacity_planner", "input": "Assess CPU, memory, disk utilization", "timeout_seconds": 20 },
+        { "agent": "notification_agent", "input": "Send initial outage alert to Slack/PagerDuty/email", "timeout_seconds": 10 }
+      ],
+      "parallel": true,
+      "gate": "All diagnostic agents have completed (or timed out) and initial alert sent"
+    },
+    {
+      "phase": 2,
+      "name": "Dependency Mapping, Incident Creation & Customer Update",
+      "agents": [
+        { "agent": "dependency_mapper", "input": "Generate service dependency graph for the last deployment", "timeout_seconds": 25 },
+        { "agent": "incident_reporter", "input": "Create incident ticket with preliminary findings", "timeout_seconds": 10 },
+        { "agent": "customer_communicator", "input": "Send initial status update to affected customers", "timeout_seconds": 10 }
+      ],
+      "parallel": true,
+      "gate": "Dependency map created, incident ticket opened, and customer notified"
+    },
+    {
+      "phase": 3,
+      "name": "Analysis & Decision Preparation",
+      "agents": [
+        { "agent": "incident_reporter", "input": "Update ticket with aggregated diagnostic data", "timeout_seconds": 10 }
+      ],
+      "parallel": false,
+      "gate": "Analysis data consolidated in incident ticket"
+    },
+    {
+      "phase": 4,
+      "name": "Rollback Remediation",
+      "agents": [
+        { "agent": "rollback_agent", "input": "Rollback to previous stable deployment (triggered only if rollback conditions met)", "timeout_seconds": 60 }
+      ],
+      "parallel": false,
+      "gate": "Rollback execution completed"
+    },
+    {
+      "phase": 5,
+      "name": "Corrective Actions (Non‑rollback)",
+      "agents": [
+        { "agent": "config_auditor", "input": "Revert offending configuration change identified in logs", "timeout_seconds": 30 },
+        { "agent": "db_checker", "input": "Resolve database locks or kill long‑running queries", "timeout_seconds": 30 }
+      ],
+      "parallel": true,
+      "gate": "Corrective actions applied"
+    },
+    {
+      "phase": 6,
+      "name": "Verification & Customer Update",
+      "agents": [
+        { "agent": "metric_checker", "input": "Verify error rate <1% and latency within SLA", "timeout_seconds": 30 },
+        { "agent": "log_analyzer", "input": "Check for residual error patterns", "timeout_seconds": 30 },
+        { "agent": "db_checker", "input": "Confirm database health (no locks, healthy connections)", "timeout_seconds": 30 },
+        { "agent": "incident_reporter", "input": "Update incident ticket with verification results", "timeout_seconds": 10 },
+        { "agent": "customer_communicator", "input": "Send final status update to customers", "timeout_seconds": 10 }
+      ],
+      "parallel": true,
+      "gate": "All verification checks passed and customer informed"
+    },
+    {
+      "phase": 7,
+      "name": "Incident Closure",
+      "agents": [
+        { "agent": "incident_reporter", "input": "Close incident ticket and record root cause", "timeout_seconds": 10 },
+        { "agent": "notification_agent", "input": "Notify stakeholders of incident resolution", "timeout_seconds": 10 }
+      ],
+      "parallel": false,
+      "gate": "Incident ticket closed and stakeholders notified"
+    },
+    {
+      "phase": 8,
+      "name": "Escalation Handling",
+      "agents": [
+        { "agent": "notification_agent", "input": "Send high‑severity alert to on‑call lead and management", "timeout_seconds": 10 },
+        { "agent": "incident_reporter", "input": "Update incident ticket with escalation severity and attach logs", "timeout_seconds": 10 },
+        { "agent": "log_analyzer", "input": "Perform deep log dive for hidden issues", "timeout_seconds": 40 },
+        { "agent": "metric_checker", "input": "Run extended metric query for trend analysis", "timeout_seconds": 40 }
+      ],
+      "parallel": true,
+      "gate": "Escalation actions executed and additional diagnostics gathered"
+    }
+  ],
+  "decision_points": [
+    {
+      "after_phase": 2,
+      "condition": "rollback_needed == true",
+      "if_true": "go to phase 4",
+      "if_false": "go to phase 5"
+    },
+    {
+      "after_phase": 6,
+      "condition": "verification_passed == true",
+      "if_true": "go to phase 7",
+      "if_false": "go to phase 8"
+    }
+  ],
+  "escalation": {
+    "trigger": "(verification_failed AND elapsed_time_minutes >= max_time_minutes) OR (no_improvement_for_5_minutes AFTER phase 6)",
+    "action": "notification_agent with high severity to on‑call lead and create critical incident ticket"
+  },
+  "total_phases": 8,
+  "max_time_minutes": 20,
+  "rollback_conditions": [
+    "log_analyzer reports error pattern 'NullPointerException' in service X within the last 5 minutes",
+    "metric_checker shows error rate >5% for service X for >2 consecutive minutes",
+    "dependency_mapper indicates service X was deployed in the last 10 minutes",
+    "config_auditor shows a configuration change to service X in the same deployment"
+  ]
+}

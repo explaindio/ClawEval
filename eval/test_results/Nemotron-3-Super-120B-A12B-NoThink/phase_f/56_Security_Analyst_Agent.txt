@@ -1,0 +1,75 @@
+{
+  "vulnerabilities": [
+    {
+      "id": 1,
+      "type": "Insecure Secret Key",
+      "severity": "high",
+      "location": "app.secret_key = \"password123\"",
+      "fix": "Generate a strong random secret key and store it in an environment variable or secure config."
+    },
+    {
+      "id": 2,
+      "type": "Cross‑Site Scripting (XSS)",
+      "severity": "high",
+      "location": "@app.route(\"/search\") -> render_template_string(f\"Results for: {q}\")",
+      "fix": "Escape user input (e.g., using Flask's escape or Jinja2 auto‑escape) or use a proper template file."
+    },
+    {
+      "id": 3,
+      "type": "SQL Injection",
+      "severity": "critical",
+      "location": "@app.route(\"/user/<id>\") -> db.execute(f\"SELECT * FROM users WHERE id = {id}\")",
+      "fix": "Use parameterized queries: db.execute(\"SELECT * FROM users WHERE id = ?\", (id,))."
+    },
+    {
+      "id": 4,
+      "type": "Insecure Deserialization (Pickle RCE)",
+      "severity": "critical",
+      "location": "@app.route(\"/upload\") -> obj = pickle.loads(data)",
+      "fix": "Avoid pickle for untrusted data; use a safe format like JSON with json.loads."
+    },
+    {
+      "id": 5,
+      "type": "OS Command Injection",
+      "severity": "critical",
+      "location": "@app.route(\"/run\") -> subprocess.check_output(cmd, shell=True)",
+      "fix": "Do not use shell=True; if external commands are needed, use a whitelist and pass arguments as a list."
+    },
+    {
+      "id": 6,
+      "type": "Arbitrary File Read (Path Traversal)",
+      "severity": "high",
+      "location": "@app.route(\"/file\") -> open(path).read()",
+      "fix": "Validate and sanitize the path, restrict to a safe directory, and use safe joining (e.g., os.path.join with base directory)."
+    },
+    {
+      "id": 7,
+      "type": "Weak/Default Credentials",
+      "severity": "medium",
+      "location": "@app.route(\"/login\") -> if pw == os.environ.get(\"ADMIN_PW\", \"admin\"):",
+      "fix": "Require a strong password set via environment variable, store a salted hash, and remove the hardcoded fallback."
+    },
+    {
+      "id": 8,
+      "type": "Information Exposure (Environment Variables)",
+      "severity": "medium",
+      "location": "@app.route(\"/debug\") -> return str(os.environ)",
+      "fix": "Remove or restrict the debug endpoint in production; never expose env vars."
+    },
+    {
+      "id": 9,
+      "type": "Missing HTTPS Enforcement",
+      "severity": "medium",
+      "location": "Application overall (no TLS enforcement)",
+      "fix": "Deploy behind a TLS‑terminating proxy or use Flask‑Talisman/SSLify to enforce HTTPS."
+    },
+    {
+      "id": 10,
+      "type": "Missing Rate Limiting",
+      "severity": "low",
+      "location": "Application overall (no limits on endpoints)",
+      "fix": "Add rate limiting (e.g., Flask‑Limiter) to protect against brute‑force and DoS attacks."
+    }
+  ],
+  "count": 10
+}

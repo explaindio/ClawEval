@@ -1,0 +1,88 @@
+{
+  "components": [
+    {
+      "name": "Global Load Balancer",
+      "technology": "AWS Global Accelerator + Amazon CloudFront",
+      "purpose": "Distribute incoming client traffic to the nearest edge location, provide DDoS protection and TLS termination.",
+      "scaling_strategy": "Automatically scales with traffic; regional anycast IPs ensure low-latency entry points."
+    },
+    {
+      "name": "API Gateway / Signaling Layer",
+      "technology": "Amazon API Gateway (WebSocket) + AWS Lambda (authorizers)",
+      "purpose": "Handle WebSocket handshake, authentication, JWT validation, and route messages to backend services.",
+      "scaling_strategy": "Fully managed, scales to millions of concurrent connections; Lambda concurrency auto‑scales."
+    },
+    {
+      "name": "Real‑time Message Broker",
+      "technology": "Apache Kafka (self‑managed on EKS) with MirrorMaker 2 for cross‑region replication",
+      "purpose": "Publish/subscribe chat messages, presence events, and file‑metadata notifications with low latency and ordering guarantees.",
+      "scaling_strategy": "Partitioned topics; increase broker nodes and partitions as load grows; Kafka Streams for per‑room fan‑out."
+    },
+    {
+      "name": "WebSocket Application Servers",
+      "technology": "Go (Gorilla WebSocket) containers running in Amazon EKS (autoscaling groups)",
+      "purpose": "Maintain long‑lived client connections, forward inbound messages to Kafka, push outbound messages to clients, handle read receipts and typing indicators.",
+      "scaling_strategy": "Horizontal pod autoscaler based on connection count and CPU; each pod supports ~10k connections → ~100 pods for 1M users."
+    },
+    {
+      "name": "Presence & Status Service",
+      "technology": "Redis Cluster (AWS Elasticache) with Redis‑Pub/Sub for online/offline events",
+      "purpose": "Store user session IDs, last seen timestamps, and broadcast presence updates.",
+      "scaling_strategy": "Sharded Redis cluster; add shards as needed; replication for HA."
+    },
+    {
+      "name": "Message Persistence Store",
+      "technology": "Amazon DynamoDB (global tables) with DAX for read acceleration",
+      "purpose": "Persist chat messages, group metadata, and read receipts; provide low‑latency reads for history.",
+      "scaling_strategy": "On‑demand capacity mode; global tables replicate across regions; partition key = conversation_id, sort key = timestamp."
+    },
+    {
+      "name": "File Attachment Service",
+      "technology": "Amazon S3 (multipart upload) + AWS Lambda (virus scan, thumbnail generation) + Amazon CloudFront (signed URLs)",
+      "purpose": "Store binary attachments up to 50MB, enforce size limits, generate pre‑signed URLs for secure download.",
+      "scaling_strategy": "S3 scales automatically; Lambda concurrency scales with upload volume; CloudFront edge caching reduces latency."
+    },
+    {
+      "name": "End‑to‑End Encryption Library",
+      "technology": "libsodium (via Go bindings) integrated in WebSocket servers",
+      "purpose": "Perform client‑side key exchange (Double Ratchet) and encrypt/decrypt message payloads before they touch Kafka or storage.",
+      "scaling_strategy": "CPU‑bound; scale WebSocket pods accordingly; hardware‑accelerated AES‑NI on EC2 instances."
+    },
+    {
+      "name": "Metadata & Analytics Store",
+      "technology": "Amazon Aurora PostgreSQL (global)",
+      "purpose": "Store user profiles, group memberships, settings, and audit logs for GDPR compliance.",
+      "scaling_strategy": "Read replicas for scaling reads; automatic storage growth; multi‑AZ for HA."
+    },
+    {
+      "name": "Monitoring, Logging & Alerting",
+      "technology": "Amazon CloudWatch + OpenTelemetry + Loki + Grafana",
+      "purpose": "Collect metrics, traces, and logs; set SLO alerts for latency <100ms and error rates.",
+      "scaling_strategy": "Fully managed; scales with ingest volume."
+    },
+    {
+      "name": "Security & Compliance Layer",
+      "technology": "AWS IAM, KMS, GuardDuty, Macie, AWS Artifact (GDPR)",
+      "purpose": "Enforce least‑privilege access, encrypt data at rest/in‑transit, detect anomalies, provide compliance reports.",
+      "scaling_strategy": "Managed services scale automatically; KMS keys can be rotated without downtime."
+    }
+  ],
+  "data_flow": "1. Client connects via TLS-terminated Global Load Balancer → API Gateway (WebSocket auth). 2. Upon successful auth, a persistent WebSocket session is established with an EKS‑hosted Go server. 3. Inbound chat messages are encrypted client‑side (libsodium) and sent over the WebSocket to the server, which forwards the ciphertext to a Kafka topic partitioned by conversation_id. 4. Kafka consumers (also running in EKS) persist the encrypted message to DynamoDB (global tables) and publish a lightweight notification to Redis‑Pub/Sub for presence/read‑receipt updates. 5. Outbound flow: consumers read from Kafka, push the encrypted payload to each participant's WebSocket connection (fan‑out via subscription mapping). 6. File attachments: client uploads multipart to S3 via a pre‑signed URL generated by Lambda; S3 event triggers Lambda for virus scan/thumbnail; metadata (S3 key, size) is sent as a message through the same Kafka path. 7. Presence: WebSocket server sends heartbeat to Redis; Redis Pub/Sub broadcasts status changes to interested clients. 8. Read receipts: client sends a receipt message; server treats it like any other message, persisting it and notifying sender. 9. All stored data (messages, files, metadata) is encrypted at rest with KMS; backups are retained for GDPR‑required periods and can be deleted on request.",
+  "infrastructure": {
+    "cloud": "AWS",
+    "regions": 3
+  },
+  "estimated_monthly_cost": "$250,000 - $350,000",
+  "bottlenecks": [
+    "WebSocket connection handling limits per instance (mitigated by horizontal pod autoscaling).",
+    "Kafka write throughput during peak bursts (addressed by increasing partitions and broker count).",
+    "DynamoDB write latency under heavy write‑heavy workloads (mitigated by on‑demand capacity and DAX caching).",
+    "File upload bandwidth for large attachments (mitigated by S3 multipart uploads and edge‑optimized CloudFront)."
+  ],
+  "tradeoffs": [
+    "Strong consistency vs latency: using DynamoDB global tables provides eventual consistency across regions; we accept sub‑second replication lag for lower latency reads.",
+    "End‑to‑end encryption adds CPU overhead; we offset this by using compute‑optimized EC2 instances (c5.2xlarge) and hardware AES‑NI.",
+    "Operational complexity of self‑managed Kafka vs managed services; we chose Kafka for fine‑grained tuning and cross‑region MirrorMaker2 to meet latency and compliance needs.",
+    "Cost vs durability: storing encrypted blobs in S3 with Glacier Deep Archive for long‑term backups reduces cost while meeting GDPR retention requirements."
+  ]
+}

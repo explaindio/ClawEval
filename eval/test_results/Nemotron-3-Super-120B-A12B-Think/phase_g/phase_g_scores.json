@@ -1,0 +1,120 @@
+{
+  "model": "Nemotron-3-Super-120B-A12B-Think",
+  "phase": "G",
+  "timestamp": "2026-03-12T18:07:39.002381",
+  "total_score": 99,
+  "total_max": 110,
+  "percentage": 90.0,
+  "results": [
+    {
+      "id": 36,
+      "role": "Code Generation Agent",
+      "tier": 3,
+      "scoring_type": "code",
+      "score": 10,
+      "max": 10,
+      "detail": "10/10 tests passed",
+      "tokens": 4745
+    },
+    {
+      "id": 2,
+      "role": "Input Validator / Sanitizer",
+      "tier": 1,
+      "scoring_type": "exact",
+      "score": 10,
+      "max": 10,
+      "detail": "Found 15/15 errors",
+      "tokens": 7166
+    },
+    {
+      "id": 5,
+      "role": "Sentiment Analysis Agent",
+      "tier": 1,
+      "scoring_type": "exact",
+      "score": 8,
+      "max": 10,
+      "detail": "16/20 correct | 3: expected 'negative', got 'mixed'; 5: expected 'mixed', got 'negative'; 12: expected 'mixed', got 'positive'; 13: expected 'negative', got 'mixed'",
+      "tokens": 1354
+    },
+    {
+      "id": 40,
+      "role": "Fact-Checking Agent",
+      "tier": 3,
+      "scoring_type": "exact",
+      "score": 10,
+      "max": 10,
+      "detail": "19/20 correct | 16: expected 'FALSE', got 'TRUE'",
+      "tokens": 1347
+    },
+    {
+      "id": 49,
+      "role": "Algorithm / Data Structure Explorer",
+      "tier": 4,
+      "scoring_type": "code",
+      "score": 10,
+      "max": 10,
+      "detail": "15/15 tests passed",
+      "tokens": 2565
+    },
+    {
+      "id": 51,
+      "role": "System Architect",
+      "tier": 5,
+      "scoring_type": "constraint",
+      "score": 9,
+      "max": 10,
+      "detail": "14/15 constraints met | Missing: handles_traffic_spikes",
+      "tokens": 1591
+    },
+    {
+      "id": 48,
+      "role": "STEM Research Analyst",
+      "tier": 4,
+      "scoring_type": "exact",
+      "score": 5,
+      "max": 10,
+      "detail": "4/8 correct | q1: expected 252000\u00b110000, got 201600.0; q6: expected 5000000\u00b1500000, got 5055000000.0; q7: expected 2.44\u00b10.5, got 0.26; q8: expected 1440\u00b150, got 1008.0",
+      "tokens": 4081
+    },
+    {
+      "id": 9,
+      "role": "Research Agent",
+      "tier": 2,
+      "scoring_type": "exact",
+      "score": 9,
+      "max": 10,
+      "detail": "9/10 correct | q6: expected '0.25', got '1/4'",
+      "tokens": 1393
+    },
+    {
+      "id": 12,
+      "role": "Content Planner / Strategist",
+      "tier": 2,
+      "scoring_type": "exact",
+      "score": 9,
+      "max": 10,
+      "detail": "14/15 constraints met | Missing: empty_violations",
+      "tokens": 8000
+    },
+    {
+      "id": 50,
+      "role": "Orchestrator / Meta-Agent",
+      "tier": 5,
+      "scoring_type": "exact",
+      "score": 9,
+      "max": 10,
+      "detail": "13/15 constraints met | Missing: early_notification; no_circular_phases",
+      "tokens": 3353
+    },
+    {
+      "id": 23,
+      "role": "Web Scraping / Data Extraction",
+      "tier": 2,
+      "scoring_type": "exact",
+      "score": 10,
+      "max": 10,
+      "detail": "5/5 correct",
+      "tokens": 2656
+    }
+  ]
+}

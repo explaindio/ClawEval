@@ -1,0 +1,326 @@
+We need to write a Python class RateLimiter implementing hybrid token-bucket / sliding-window.
+
+We need to track per (user_id, endpoint) pair: sliding window count of requests in last window_seconds, plus token bucket for burst.
+
+Hybrid: base limit max_requests per window, plus burst extra tokens that regenerate slower (2x window). So we can think: each key has a token bucket with capacity = max_requests + burst, where tokens are replenished at rate = max_requests / window_seconds (i.e., refill per second). Burst tokens regenerate slower: maybe they have separate bucket? Actually description: burst tokens regenerate slower (2x window). Means that the burst allowance refills at half the rate (i.e., rate = max_requests / (2*window_seconds)). Or we can treat burst tokens as separate bucket with capacity = burst, refill rate = burst / (2*window_seconds). Simpler: maintain two counters: normal tokens (replenish at rate max_requests/window_seconds) and burst tokens (replenish at rate burst/(2*window_seconds)). When a request arrives, we first consume normal tokens up to max_requests; if insufficient, we consume burst tokens. If both insufficient, deny.
+
+Alternatively sliding window: we need to track requests in window for normal limit; burst is extra allowed above max, but burst tokens regenerate slower. So we can combine: sliding window count for normal requests; burst tokens are like a token bucket that refills slower.
+
+Simplify: For each key, store:
+- timestamps list of requests (for sliding window) to compute used in window.
+- normal_tokens: current available normal tokens (starts at max_requests)
+- burst_tokens: current available burst tokens (starts at burst)
+- last_refill_time: time of last token refill (for both normal and burst? maybe separate)
+We can refill both based on elapsed time since last_refill.
+
+But sliding window also needs to know used count; we could compute used = len(timestamps) after pruning old ones. Then allowed if used < max_requests + burst? Not exactly because burst tokens regenerate slower; but we can treat burst as extra capacity that is not instantly available; we need to track burst token count.
+
+Simpler: Use token bucket only: capacity = max_requests + burst, refill rate = max_requests / window_seconds (for normal) plus burst/(2*window_seconds) for burst? Actually we could have two separate rates: normal refill rate = max_requests / window_seconds; burst refill rate = burst / (2*window_seconds). Then total refill rate = normal_rate + burst_rate. But burst tokens only replenish slower; but we can just have two buckets.
+
+Implementation details:
+
+Data structure: self._data = {} mapping (user_id, endpoint) -> dict with:
+- 'timestamps': deque of request times (for sliding window)
+- 'normal_tokens': float
+- 'burst_tokens': float
+- 'last_refill': float
+
+When allow called:
+- prune timestamps older than now - window_seconds
+- compute used_normal = len(timestamps) (these are requests that counted against normal limit)
+But we also need to deduct tokens when request allowed. Instead of using timestamps for counting, we can just use token bucket and also maintain sliding window for burst? Hmm.
+
+Alternative: Use sliding window for normal limit: we compute if len(timestamps) < max_requests then allow using normal; else if burst_tokens > 0 allow using burst; else deny.
+
+When we allow via normal, we append timestamp to deque. When we allow via burst, we also append timestamp? Probably yes, because request still counts for window? But burst tokens are extra allowed above max, but they still count towards window? Usually burst allows exceeding limit temporarily but still counts against window? Might be okay to still add timestamp; but then sliding window will count them as part of used, potentially causing normal limit to be exceeded later. However burst tokens regenerate slower, so we need to track burst token count separately.
+
+Simplify: Use token bucket only: capacity = max_requests + burst, refill rate = max_requests / window_seconds (normal) + burst/(2*window_seconds) (burst). But then burst tokens regenerate slower implicitly because overall refill rate includes slower part. However we need to differentiate burst_remaining for get_usage.
+
+We can store:
+- normal_tokens: capacity max_requests, refill rate = max_requests / window_seconds
+- burst_tokens: capacity burst, refill rate = burst / (2*window_seconds)
+
+When request:
+- refill both based on elapsed time since last_refill (update each)
+- if normal_tokens >= 1: consume 1 normal token, allow, decrement normal_tokens
+- else if burst_tokens >= 1: consume 1 burst token, allow, decrement burst_tokens
+- else deny.
+
+We also need sliding window? Not needed if we use token bucket; but spec says hybrid token-bucket / sliding-window. Perhaps they want sliding window for normal limit and token bucket for burst. We'll implement as described: sliding window for normal, token bucket for burst.
+
+Thus:
+- For each key, store deque of timestamps for requests that counted against normal limit (i.e., when allowed via normal). Burst requests also maybe stored? Not needed for normal limit but could be stored for completeness; but we can store all requests timestamps for sliding window to compute used normal count? Actually sliding window used to enforce max_requests per window; we can compute used = number of timestamps in window (including both normal and burst requests?) If we only store normal requests, burst requests wouldn't count towards limit, allowing infinite burst as long as burst tokens available. That's okay because burst tokens limited.
+
+Thus algorithm for allow:
+1. prune timestamps older than now - window_seconds.
+2. used_normal = len(timestamps)
+3. if used_normal < max_requests:
+       allow via normal: append now to timestamps; return allowed.
+   else:
+       # need burst
+       # refill burst tokens based on time since last_burst_refill (store)
+       if burst_tokens >= 1:
+            consume burst token; allowed; (do not append timestamp? maybe not)
+            return allowed
+       else: deny.
+
+We need to track burst token refill: last_burst_refill time per key.
+
+When burst token consumed, we don't add timestamp; but maybe we should still add to timestamps for sliding window? Not required.
+
+For get_usage: used = len(timestamps) (normal used). limit = max_requests. burst_remaining = int(burst_tokens). window_seconds as given.
+
+For allow_priority: always allowed, but we still might want to update timestamps? Probably not needed; but we can just return allowed True with remaining etc. For simplicity, just return allowed True, remaining = max_requests (or infinite?), retry_after None. We'll not update state.
+
+cleanup: iterate over self._data, remove entries where last activity (maybe last timestamp or last refill) older than max_age_seconds. We'll store also 'last_seen' timestamp updated on each allow (normal or burst) and priority? We'll update on any allow (including burst) to track activity. So each entry has 'last_seen': time of last request (any). Then cleanup removes if now - last_seen > max_age_seconds.
+
+Return count removed.
+
+to_dict: need to serialize deque as list of timestamps, plus normal_tokens, burst_tokens, last_refill (maybe not needed if we compute on demand), last_seen. We'll store last_refill for normal? Actually we don't have normal token bucket; we rely on sliding window only. So we don't need normal token refill. For burst we need last_burst_refill and burst_tokens. So store:
+- 'timestamps': list
+- 'burst_tokens': float
+- 'burst_last_refill': float
+- 'last_seen': float
+
+allow_priority does not modify state.
+
+allow: steps:
+   now = time.time()
+   key = (user_id, endpoint)
+   data = self._data.get(key)
+   if data is None:
+        initialize: timestamps deque(), burst_tokens = burst (float), burst_last_refill = now, last_seen = now
+   else:
+        # update burst tokens based on elapsed
+        elapsed = now - data['burst_last_refill']
+        if elapsed > 0:
+            # refill rate = burst / (2*window_seconds)
+            refill = elapsed * (burst / (2 * self.window_seconds))
+            data['burst_tokens'] = min(self.burst, data['burst_tokens'] + refill)
+            data['burst_last_refill'] = now
+        # prune timestamps
+        window = self.window_seconds
+        while data['timestamps'] and now - data['timestamps'][0] > window:
+            data['timestamps'].popleft()
+        data['last_seen'] = now
+
+   used_normal = len(data['timestamps'])
+   if used_normal < self.max_requests:
+        data['timestamps'].append(now)
+        remaining = self.max_requests - used_normal - 1  # after consumption
+        return {"allowed": True, "remaining": remaining, "retry_after": None}
+   else:
+        if data['burst_tokens'] >= 1:
+            data['burst_tokens'] -= 1
+            # not adding timestamp
+            remaining = int(data['burst_tokens'])  # burst remaining after consumption
+            return {"allowed": True, "remaining": remaining, "retry_after": None}
+        else:
+            # compute retry_after: time until either normal slot frees or burst token refills enough
+            # For normal: earliest timestamp that will exit window: data['timestamps'][0] if any else now
+            # time_to_normal = max(0, data['timestamps'][0] + window - now) if timestamps else 0
+            # For burst: time to get 1 burst token: needed = 1 - data['burst_tokens']; rate = burst/(2*window); time_burst = needed / rate if rate>0 else inf
+            # retry_after = min(time_to_normal, time_burst)
+            # If both inf, set None? but shouldn't.
+            timestamps = data['timestamps']
+            if timestamps:
+                oldest = timestamps[0]
+                time_to_normal = max(0.0, oldest + self.window_seconds - now)
+            else:
+                time_to_normal = 0.0
+            # burst refill
+            if self.burst > 0:
+                rate_burst = self.burst / (2 * self.window_seconds)
+                if rate_burst > 0:
+                    needed = 1.0 - data['burst_tokens']
+                    if needed > 0:
+                        time_to_burst = needed / rate_burst
+                    else:
+                        time_to_burst = 0.0
+                else:
+                    time_to_burst = float('inf')
+            else:
+                time_to_burst = float('inf')
+            retry_after = min(time_to_normal, time_to_burst)
+            if retry_after == float('inf'):
+                retry_after = None
+            else:
+                retry_after = max(0.0, retry_after)
+            return {"allowed": False, "remaining": 0, "retry_after": retry_after}
+
+allow_priority: just return {"allowed": True, "remaining": self.max_requests, "retry_after": None} maybe not modify state.
+
+get_usage: compute used = len(timestamps); limit = self.max_requests; burst_remaining = int(data['burst_tokens']); return dict.
+
+cleanup: iterate over items, if now - data['last_seen'] > max_age_seconds (default 2*window_seconds) then delete; count.
+
+to_dict: return {"max_requests": self.max_requests, "window_seconds": self.window_seconds, "burst": self.burst, "data": {key: {"timestamps": list(val['timestamps']), "burst_tokens": val['burst_tokens'], "burst_last_refill": val['burst_last_refill'], "last_seen": val['last_seen']} for key,val in self._data.items()}}.
+
+from_dict: create instance with given params, then set self._data accordingly converting lists back to deque.
+
+Edge Cases: burst may be 0; then burst token refill rate zero; we should avoid division by zero.
+
+We need to store self.max_requests, self.window_seconds, self.burst as instance vars.
+
+Import time, threading (maybe for lock), collections.deque.
+
+We need thread-safety? Not required but we can add a threading.RLock for safety.
+
+Implement methods with lock.
+
+Now produce final code.
+
+</think>
+
+```python
+import time
+import threading
+from collections import deque
+from typing import Dict, Tuple, Any, List, Optional
+
+
+class RateLimiter:
+    def __init__(self, max_requests: int, window_seconds: float, burst: int = 0):
+        self.max_requests: int = max_requests
+        self.window_seconds: float = window_seconds
+        self.burst: int = burst
+        self._data: Dict[Tuple[str, str], Dict[str, Any]] = {}
+        self._lock = threading.RLock()
+
+    def _init_entry(self, now: float) -> Dict[str, Any]:
+        return {
+            "timestamps": deque(),
+            "burst_tokens": float(self.burst),
+            "burst_last_refill": now,
+            "last_seen": now,
+        }
+
+    def _prune_timestamps(self, timestamps: deque, now: float) -> None:
+        window = self.window_seconds
+        while timestamps and now - timestamps[0] > window:
+            timestamps.popleft()
+
+    def _refill_burst(self, entry: Dict[str, Any], now: float) -> None:
+        if self.burst == 0:
+            return
+        elapsed = now - entry["burst_last_refill"]
+        if elapsed <= 0:
+            return
+        rate = self.burst / (2 * self.window_seconds)
+        if rate <= 0:
+            return
+        to_add = elapsed * rate
+        entry["burst_tokens"] = min(self.burst, entry["burst_tokens"] + to_add)
+        entry["burst_last_refill"] = now
+
+    def allow(self, user_id: str, endpoint: str = "default") -> dict:
+        now = time.time()
+        key = (user_id, endpoint)
+        with self._lock:
+            entry = self._data.get(key)
+            if entry is None:
+                entry = self._init_entry(now)
+                self._data[key] = entry
+            else:
+                self._refill_burst(entry, now)
+                self._prune_timestamps(entry["timestamps"], now)
+                entry["last_seen"] = now
+
+            used_normal = len(entry["timestamps"])
+            if used_normal < self.max_requests:
+                entry["timestamps"].append(now)
+                remaining = self.max_requests - used_normal - 1
+                return {"allowed": True, "remaining": remaining, "retry_after": None}
+            else:
+                if entry["burst_tokens"] >= 1.0:
+                    entry["burst_tokens"] -= 1.0
+                    remaining = int(entry["burst_tokens"])
+                    return {"allowed": True, "remaining": remaining, "retry_after": None}
+                else:
+                    # compute retry_after
+                    timestamps = entry["timestamps"]
+                    if timestamps:
+                        oldest = timestamps[0]
+                        time_to_normal = max(0.0, oldest + self.window_seconds - now)
+                    else:
+                        time_to_normal = 0.0
+
+                    if self.burst > 0:
+                        rate_burst = self.burst / (2 * self.window_seconds)
+                        if rate_burst > 0:
+                            needed = 1.0 - entry["burst_tokens"]
+                            time_to_burst = needed / rate_burst if needed > 0 else 0.0
+                        else:
+                            time_to_burst = float('inf')
+                    else:
+                        time_to_burst = float('inf')
+
+                    retry_after = min(time_to_normal, time_to_burst)
+                    if retry_after == float('inf'):
+                        retry_after = None
+                    else:
+                        retry_after = max(0.0, retry_after)
+                    return {"allowed": False, "remaining": 0, "retry_after": retry_after}
+
+    def allow_priority(self, user_id: str, endpoint: str = "default") -> dict:
+        # Priority users bypass limits; state unchanged.
+        return {"allowed": True, "remaining": self.max_requests, "retry_after": None}
+
+    def cleanup(self, max_age_seconds: float = None) -> int:
+        if max_age_seconds is None:
+            max_age_seconds = 2 * self.window_seconds
+        now = time.time()
+        removed = 0
+        with self._lock:
+            to_delete = [
+                key
+                for key, entry in self._data.items()
+                if now - entry["last_seen"] > max_age_seconds
+            ]
+            for key in to_delete:
+                del self._data[key]
+                removed += 1
+        return removed
+
+    def get_usage(self, user_id: str, endpoint: str = "default") -> dict:
+        now = time.time()
+        key = (user_id, endpoint)
+        with self._lock:
+            entry = self._data.get(key)
+            if entry is None:
+                used = 0
+                burst_remaining = self.burst
+            else:
+                self._refill_burst(entry, now)
+                self._prune_timestamps(entry["timestamps"], now)
+                used = len(entry["timestamps"])
+                burst_remaining = int(entry["burst_tokens"])
+        return {
+            "used": used,
+            "limit": self.max_requests,
+            "window_seconds": self.window_seconds,
+            "burst_remaining": burst_remaining,
+        }
+
+    def to_dict(self) -> dict:
+        with self._lock:
+            data_serialized = {}
+            for key, entry in self._data.items():
+                data_serialized[f"{key[0]}:{key[1]}"] = {
+                    "timestamps": list(entry["timestamps"]),
+                    "burst_tokens": entry["burst_tokens"],
+                    "burst_last_refill": entry["burst_last_refill"],
+                    "last_seen": entry["last_seen"],
+                }
+            return {
+                "max_requests": self.max_requests,
+                "window_seconds": self.window_seconds,
+                "burst": self.burst,
+                "data": data_serialized,
+            }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> "RateLimiter":
+        instance = cls(
+            max_requests=data["max_requests"],
+            window_seconds=data["

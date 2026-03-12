@@ -1,0 +1,120 @@
+{
+  "model": "Nemotron-3-Super-120B-A12B-NoThink",
+  "phase": "G",
+  "timestamp": "2026-03-12T17:53:31.149590",
+  "total_score": 78,
+  "total_max": 110,
+  "percentage": 70.9,
+  "results": [
+    {
+      "id": 36,
+      "role": "Code Generation Agent",
+      "tier": 3,
+      "scoring_type": "code",
+      "score": 0,
+      "max": 10,
+      "detail": "0/10 tests passed | basic_allow: invalid decimal literal (<string>, line 9); basic_allow2: invalid decimal literal (<string>, line 9); per_user: invalid decimal literal (<string>, line 9)",
+      "tokens": 4000
+    },
+    {
+      "id": 2,
+      "role": "Input Validator / Sanitizer",
+      "tier": 1,
+      "scoring_type": "exact",
+      "score": 10,
+      "max": 10,
+      "detail": "Found 15/15 errors",
+      "tokens": 4000
+    },
+    {
+      "id": 5,
+      "role": "Sentiment Analysis Agent",
+      "tier": 1,
+      "scoring_type": "exact",
+      "score": 8,
+      "max": 10,
+      "detail": "17/20 correct | 3: expected 'negative', got 'mixed'; 12: expected 'mixed', got 'positive'; 13: expected 'negative', got 'mixed'",
+      "tokens": 1432
+    },
+    {
+      "id": 40,
+      "role": "Fact-Checking Agent",
+      "tier": 3,
+      "scoring_type": "exact",
+      "score": 10,
+      "max": 10,
+      "detail": "19/20 correct | 16: expected 'FALSE', got 'TRUE'",
+      "tokens": 1250
+    },
+    {
+      "id": 49,
+      "role": "Algorithm / Data Structure Explorer",
+      "tier": 4,
+      "scoring_type": "code",
+      "score": 4,
+      "max": 10,
+      "detail": "6/15 tests passed | stats_hits_misses: 'LRUCache' object has no attribute 'get_stats'; stats_evictions: 'LRUCache' object has no attribute 'get_stats'; delete: 'LRUCache' object has no attribute 'delete'",
+      "tokens": 2613
+    },
+    {
+      "id": 51,
+      "role": "System Architect",
+      "tier": 5,
+      "scoring_type": "constraint",
+      "score": 8,
+      "max": 10,
+      "detail": "12/15 constraints met | Missing: custom_alias_support; link_expiration_mechanism; handles_traffic_spikes",
+      "tokens": 1902
+    },
+    {
+      "id": 48,
+      "role": "STEM Research Analyst",
+      "tier": 4,
+      "scoring_type": "exact",
+      "score": 0,
+      "max": 10,
+      "detail": "Could not parse JSON",
+      "tokens": 4000
+    },
+    {
+      "id": 9,
+      "role": "Research Agent",
+      "tier": 2,
+      "scoring_type": "exact",
+      "score": 10,
+      "max": 10,
+      "detail": "10/10 correct",
+      "tokens": 1337
+    },
+    {
+      "id": 12,
+      "role": "Content Planner / Strategist",
+      "tier": 2,
+      "scoring_type": "exact",
+      "score": 9,
+      "max": 10,
+      "detail": "13/15 constraints met | Missing: empty_violations; correct_json_structure",
+      "tokens": 4000
+    },
+    {
+      "id": 50,
+      "role": "Orchestrator / Meta-Agent",
+      "tier": 5,
+      "scoring_type": "exact",
+      "score": 9,
+      "max": 10,
+      "detail": "13/15 constraints met | Missing: early_notification; no_circular_phases",
+      "tokens": 4000
+    },
+    {
+      "id": 23,
+      "role": "Web Scraping / Data Extraction",
+      "tier": 2,
+      "scoring_type": "exact",
+      "score": 10,
+      "max": 10,
+      "detail": "5/5 correct",
+      "tokens": 2711
+    }
+  ]
+}

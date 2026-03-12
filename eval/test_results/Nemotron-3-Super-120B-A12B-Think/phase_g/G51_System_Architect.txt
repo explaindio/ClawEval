@@ -1,0 +1,103 @@
+We need to output JSON exactly as specified. Must fill fields with plausible design. Ensure numbers fit budget $5k/month. Provide cost estimate with breakdown. Must be JSON, no extra text. Ensure proper quoting, numbers as numbers, booleans true/false.
+
+Let's craft.
+
+Components: API service, Redirect service, Alias service, Expiration service, GDPR deletion worker, Metrics, Logging, Load balancer, CDN.
+
+Database: primary: PostgreSQL (or maybe MySQL) with justification: ACID, support for custom aliases, expiration, GDPR deletion. Could also use Cassandra for write scaling but need reads heavy. Use PostgreSQL with read replicas.
+
+Cache: type: Redis (or Memcached). Strategy: cache hot URLs (top 1%). Invalidation: TTL + explicit delete on update/deletion.
+
+Hash strategy: algorithm: base62 encoding of auto-increment ID or using Snowflake-like ID then base62. Length: 7 chars (62^7 ~ 3.5 trillion > needed). Collision handling: retry with next ID or use random generation with retry.
+
+Scaling: read_write_ratio: "100:1". read_optimization: "read replicas, CDN caching of redirects, cache layer". write_path: "writes go to primary DB, async replication to replicas". horizontal_scaling: "stateless API services behind autoscaling groups, sharding by hash prefix".
+
+Reliability: uptime_strategy: "multi-AZ deployment, health checks, rolling updates". failover: "automatic failover via managed DB with standby replica, DNS failover". data_replication: "synchronous replication to standby, async to read replicas".
+
+Compliance: gdpr_deletion: "background job that scans for deletion requests, removes record from DB and cache, logs deletion". data_retention: "retain URLs until expiration or user deletion; expired links purged daily". analytics_separation: "separate analytics DB (e.g., ClickHouse) for click events, no personal data".
+
+Cost estimate: monthly_total maybe $4,800. Breakdown: compute $1,200 (EC2 or similar), database $1,500 (managed PostgreSQL with read replicas), cache $600 (Redis Elasticache), CDN $800 (CloudFront), other $700 (logging, monitoring, load balancer). fits_budget true.
+
+Rate limiting: strategy: token bucket per IP/API key; limits: 1000 req/sec per IP for redirect, 10 req/sec for create.
+
+Monitoring: metrics: ["request_latency", "error_rate", "cache_hit_ratio", "db_cpu", "db_connections", "redirect_qps", "create_qps", "gdp_deletion_lag"]; alerting: "PagerDuty via Prometheus alerts on latency >50ms p99, error rate >1%, CPU >80%".
+
+Make sure JSON is valid. Use numbers for N where needed. Ensure no trailing commas.
+
+Let's craft final JSON.
+
+</think>
+
+{
+  "architecture": {
+    "components": [
+      "API Gateway",
+      "URL Creation Service",
+      "Redirect Service",
+      "Alias Management Service",
+      "Expiration Worker",
+      "GDPR Deletion Worker",
+      "Metrics & Logging Service",
+      "Load Balancer",
+      "CDN Edge Nodes"
+    ],
+    "database": {
+      "primary": "PostgreSQL (managed)",
+      "justification": "Provides strong ACID guarantees for custom aliases, expiration timestamps, and GDPR deletion; supports efficient indexing on short_code and created_at; mature ecosystem for read replicas and point-in-time recovery."
+    },
+    "cache": {
+      "type": "Redis (managed)",
+      "strategy": "Cache hot short URLs (top 1% by request count) with TTL matching URL expiration; fallback to DB on miss.",
+      "invalidation": "Explicit delete on URL update/deletion; background TTL cleanup; cache warm‑up via async preload of newly popular links."
+    },
+    "hash_strategy": {
+      "algorithm": "Base62 encoding of a monotonic Snowflake‑like ID (timestamp + worker + sequence)",
+      "length": 7,
+      "collision_handling": "If generated code exists (extremely rare), increment sequence and retry; guaranteed uniqueness by ID generation."
+    }
+  },
+  "scaling": {
+    "read_write_ratio": "100:1",
+    "read_optimization": "Read replicas for DB, Redis cache for hot URLs, CDN caching of redirect responses (301/302) at edge.",
+    "write_path": "Writes go to primary PostgreSQL; asynchronous streaming replication to read replicas; write path is stateless service behind autoscaling group.",
+    "horizontal_scaling": "Stateless services scaled via Kubernetes/Auto Scaling Groups; DB sharded by hash prefix (e.g., first 2 chars) to distribute write load; read replicas added as needed."
+  },
+  "reliability": {
+    "uptime_strategy": "Multi‑AZ deployment with health checks, rolling updates, and blue‑green deployments; circuit breaker pattern for downstream dependencies.",
+    "failover": "Managed PostgreSQL provides automatic standby promotion; DNS failover via Route53/Alias records; API services use load balancer with target group health checks.",
+    "data_replication": "Synchronous replication to standby AZ for zero‑loss failover; asynchronous replication to read replicas for read scaling; Redis uses multi‑AZ with auto‑failover."
+  },
+  "compliance": {
+    "gdpr_deletion": "GDPR worker consumes deletion requests from a queue, removes the record from PostgreSQL, purges associated keys from Redis, and logs deletion for audit.",
+    "data_retention": "URLs retained until expiration or explicit user deletion; expired links purged nightly by a batch job; analytics data stored separately and anonymized.",
+    "analytics_separation": "Click events written to a separate analytics store (e.g., ClickHouse) that does not contain personal data; GDPR deletion does not affect analytics."
+  },
+  "cost_estimate": {
+    "monthly_total": 4800,
+    "breakdown": {
+      "compute": 1200,
+      "database": 1500,
+      "cache": 600,
+      "cdn": 800,
+      "other": 700
+    },
+    "fits_budget": true
+  },
+  "rate_limiting": {
+    "strategy": "Token bucket per API key/IP; separate buckets for create and redirect endpoints.",
+    "limits": "Create: 10 req/sec per key; Redirect: 1000 req/sec per IP (burstable to 2000)."
+  },
+  "monitoring": {
+    "metrics": [
+      "request_latency_p99",
+      "error_rate",
+      "cache_hit_ratio",
+      "db_cpu_utilization",
+      "db_connections",
+      "redirect_qps",
+      "create_qps",
+      "gdpr_deletion_lag_seconds"
+    ],
+    "alerting": "Prometheus alerts routed to PagerDuty/Slack: latency >50ms p99, error rate >1%, CPU >80%, cache hit <90%, GDPR deletion lag >5m."
+  }
+}

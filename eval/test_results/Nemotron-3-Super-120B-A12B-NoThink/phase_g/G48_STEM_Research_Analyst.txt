@@ -1,0 +1,33 @@
+We need to solve each problem.
+
+Q1: Data center consumes 2.5 MW. PUE = 1.4. So total facility power = IT power * PUE? Usually PUE = total facility power / IT equipment power. So total = IT * PUE = 2.5 MW * 1.4 = 3.5 MW. Electricity cost $0.08/kWh. Monthly bill: need energy consumption in kWh per month. Power 3.5 MW = 3500 kW. Hours per month: assume 30 days? Usually month = 30 days * 24 = 720 hours. Energy = 3500 kW * 720 h = 2,520,000 kWh. Multiply by $0.08 = $201,600. Round to 2 decimal places: 201600.00.
+
+Q2: API latency normal distribution with mean 50ms, std dev 15ms. Want percentage exceeding 80ms. Compute Z = (80-50)/15 = 30/15 = 2. So probability > 2 sigma = 1 - Φ(2). Φ(2) ≈ 0.97725. So exceed = 0.02275 = 2.275%. Round to 2 decimal places: 2.28.
+
+Q3: 5 nodes each with uptime 99.9% = 0.999 independent. System requires at least 3 of 5 nodes functioning (quorum). Compute probability that at least 3 nodes are up. Use binomial: sum_{k=3}^{5} C(5,k) p^k (1-p)^{5-k}. p=0.999, q=0.001.
+
+Compute:
+
+k=3: C(5,3)=10 * p^3 * q^2
+k=4: C(5,4)=5 * p^4 * q^1
+k=5: C(5,5)=1 * p^5 * q^0
+
+Let's compute approximate.
+
+p^3 = 0.999^3 ≈ (1 - 0.001)^3 ≈ 1 - 3*0.001 + 3*0.001^2 - 0.001^3 ≈ 1 -0.003 +0.000003 -0.000000001 ≈ 0.997003 approx. Actually compute more precisely: 0.999^2 = 0.998001; times 0.999 = 0.997002999. Good.
+
+q^2 = 0.001^2 = 1e-6.
+
+So term k=3: 10 * 0.997002999 * 1e-6 = 10 * 0.997002999e-6 = 9.97002999e-6 ≈ 0.00000997003.
+
+k=4: p^4 = p^3 * p = 0.997002999 * 0.999 = 0.996005996001? Let's compute: 0.997002999 * 0.999 = 0.996005996001 (makes sense). q = 0.001. C=5. So term =5 * 0.996005996001 * 0.001 =5 * 0.000996005996001 =0.00498002998.
+
+k=5: p^5 = p^4 * p =0.996005996001 *0.999 =0.995009990405? Let's compute: 0.996005996001*0.999 =0.995009990405 approx. term =1 * that =0.995009990405.
+
+Sum = 0.995009990405 + 0.00498002998 + 0.00000997003 ≈ 0.999999990415? Let's add: 0.995009990405 + 0.00498002998 = 0.999990020385. Add 0.00000997003 = 0.999999990415. So probability ≈ 0.9999999904. As percentage: 99.9999990415%. Need 6 decimal places: 99.999999 (since 6 decimal places after decimal point). Actually they want percentage with 6 decimal places. So format like 99.999999. Let's compute more precisely: 0.999999990415 *100 = 99.9999990415. Round to 6 decimal places: look at 7th decimal: digits: 99.9999990... The 6 decimal places after decimal: we have .999999? Let's write: 99.9999990415. Decimal part: .9999990415. Six decimal places: .999999 (since the 7th digit is 0). Actually .9999990415: digits after decimal: 9 9 9 9 9 9 0 4 1 5. So first six are 999999, seventh is 0. So rounding to six decimal places yields .999999. So answer: 99.999999.
+
+Q4: Model 70B parameters, FP16 2 bytes each => memory = 70e9 *2 = 140e9 bytes = 140 GB. H100 GPU 80GB each. Number needed = ceil(140/80) = ceil(1.75) = 2 GPUs. Answer integer: 2.
+
+Q5: 1TB dataset compressed with gzip achieving 3.2:1 ratio. So compressed size = 1TB / 3.2 = 0.3125 TB? Actually 1 /3.2 = 0.3125 TB. Convert to bits for transfer over 10 Gbps link. 1 TB = 10^12 bytes? Usually in data transfer, 1 TB = 10^12 bytes (decimal). We'll assume that. So compressed size in bytes = 1e12 /3.2 = 3.125e11 bytes. In bits = *8 = 2.5e12 bits? Let's compute: 3.125e11 *8 = 2.5e12 bits exactly. Link speed 10 Gbps = 10 *10^9 bits per second = 1e10 bits/s. Time = bits / rate = 2.5e12 / 1e10 = 250 seconds. Convert to minutes: 250/60 = 4.166666... minutes. Round to 2 decimal places: 4.17 minutes.
+
+Q6: Birthday problem for 64-bit hash. Probability of at least one collision >0.5 when N ≈ sqrt(2 * ln(2) * 2^b)?? Actually approximation: N ≈ 1.2 * sqrt(2^b). More precisely, for probability p, N ≈ sqrt(2 * 2^b * ln(1/(1-p))). For p=0.5, ln(1/(0.5)) = ln2 ≈0.6931. So N ≈ sqrt(2 * 2^64 * 0.6931) = sqrt(1.3862 * 2^64) = sqrt(1.3862) * 2^32. sqrt(1.3862) ≈1.177. So N ≈1.177 * 2^32. 2^32 = 4294967296 ≈4.294967e9. Multiply: 1.177*4.294967e9 ≈5.053e9. Let's compute: 4.294967296e9 *1.177 = 4.294967296e9 * (1 +0.177) =4.294967296e9 +0.177*4.294967296e9 =4.294967296e9 +0.760...e9 =5.055e9 approx. So N ≈5.05e9. Rounded to nearest thousand: 5,055,000,000? Actually nearest thousand: we need integer rounded to nearest thousand. So compute more precisely: N = ceil? We'll compute using approximation formula: N ≈ sqrt(2 * 2^64 * ln(2)) = sqrt(2 * ln2) * 2^32. sqrt(2*ln2) = sqrt(1.38629436112) = 1.1774100225. Multiply by 2^32 = 4294967296 => N = 1.1774100225 * 4294967296 = let's compute: 4294967296 *1 =4294967296; *0.1774100225 = 4294967296 *0.1774100225. 4294967296 *0.1 =429496729.6; *0.07=300647710.72; *0.007=30064771.072; *0.0004=1,717,986.9184; *0.00001=42,949.67296; *0.0000000225? This is messy. Let's do direct multiplication using high precision: 4294967296 * 1.1774100225 = 4294967296 * (11774100225 / 10^10) maybe. But approximate: 4.294967296e9 *1.1774100225 = (4.294967296 *1.1774100225)e9. Compute 4.294967296 *1.1774100225: 4.294967296*1 =4.294967296; *0.1774100225 = 4.294967296*0.1774100225. Compute 4.294967296*0.177 =0.760... Let's do precise: 4.294967296 *0.1774100225 = 4.294967296 * (1774100225/10^10) = (4.294967296*1774100225)/10^10. 4.294967296*1,774,100,225 ≈? Let's approximate using calculator mental: 4.294967296 *1.774100225e9 = (4.294967296*1.774100225)*1e9. 4.294967296*1.774100225 ≈? 4.294967296*1.7=7.3014444032; *0.074100225=0.318... Actually let's do: 4.294967296 *1.774100225 = 4.294967296*(1 +0.774100225) =4.294967296 +4.294967296*0.774100225. 4.294967296*0.774100225 ≈4.294967296*0.774 ≈3.324... plus small. Let's compute: 4.294967296*0.774 = 4.294967296*(774/1000) = (4.294967296*774)/1000. 4.294967296*774 ≈4.294967296*700 +*74 =3006.4771072 +317.827... Actually 4.294967296*700=3006.4771072; *74=4.294967296*70 +*4 =300.64771072 +17.179869184 =317.827579904. Sum=3324.304687104. Divide by1000 =>3.324304687104. Now need extra 0.000100225*4.294967296 ≈0.000430? Actually 4.294967296*0.000100225 ≈0.000430? Compute: 4.294967296*1.00225e-4 =4.294967296*0.000100225 ≈0.000430? Let's do: 4.294967296*0.0001=0.00042949673; plus *0.000000225=4.294967296*2.25e-7≈9.663e-7=0.0000009663. Sum≈0.000430463. So total for 0.774100225 ≈3.324304687+0.000430463=3.32473515. Add the 4.294967296 (from *1) =>7.619702446. So product ≈7.619702446. Then times 1e9 =>7.619702446e9. Add the base 4.294967296e9? Wait we already included the *1 part? Actually we did: 4.294967296 *1.1774100225 = 4.294967296*(1+0.1774100225) = 4.294967296 + 4.294967296*0.1774100225. We computed the second term as approx 0.7619702446? Let's check: we computed 4.294967296*0

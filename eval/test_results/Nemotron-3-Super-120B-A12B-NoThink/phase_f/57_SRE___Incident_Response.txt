@@ -1,0 +1,12 @@
+{
+  "time_to_detect_min": 5,
+  "time_to_respond_min": 20,
+  "time_to_resolve_min": 10,
+  "total_incident_min": 40,
+  "root_cause": "Memory leak in the new caching layer causing OOM kills in canary pods",
+  "blast_radius_pct": 0.6,
+  "detection_method": "Canary error rate monitoring",
+  "correct_rollback_decision": true,
+  "canary_caught_issue": true,
+  "improvement_suggestions_count": 5
+}

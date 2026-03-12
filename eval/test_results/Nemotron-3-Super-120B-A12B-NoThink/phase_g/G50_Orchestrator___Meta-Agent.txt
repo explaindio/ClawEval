@@ -1,0 +1,186 @@
+We need to output JSON with phases, decision_points, escalation, total_phases, max_time_minutes, rollback_conditions.
+
+We need at least 5 phases. Phase 1 must run diagnostic agents in parallel. Must have at least 2 decision points with branching logic. Notification must happen within phase 1 or 2. Customer communication must happen before any rollback. Escalation trigger must include time-based condition. Rollback conditions must be specific. Must include verification phase after any remediation. Max time reasonable 5-30 minutes. Each agent must have a timeout.
+
+We need to design workflow for production outage.
+
+Let's design phases:
+
+Phase 1: Initial diagnostics: run log_analyzer, metric_checker, db_checker, config_auditor, capacity_planner in parallel. Also notification_agent to send initial alert. So notification in phase 1.
+
+Phase 2: Dependency mapping and incident reporting: dependency_mapper, incident_reporter (create ticket). Possibly also start customer communication? But requirement: customer communication must happen before any rollback, not necessarily before phase 2. Could be phase 3.
+
+Phase 3: Analysis and decision: based on collected data, decide if rollback needed, or if need to investigate further. Could have decision point after phase 2.
+
+Phase 4: Remediation: either rollback_agent or apply fix (maybe config_auditor suggests revert). Also maybe capacity_planner triggers scaling.
+
+Phase 5: Verification: after remediation, run metric_checker, log_analyzer, db_checker to confirm health. Also incident_reporter update ticket. Customer communication in this phase (or before rollback). Actually requirement: customer communication must happen before any rollback. So if rollback is in phase 4, customer communication must be before that, i.e., phase 3. So we need customer_communicator in phase 3 (before rollback). Good.
+
+Thus:
+
+Phase 1: parallel diagnostics + notification.
+
+Phase 2: dependency mapping + incident reporter (create ticket) + maybe config_auditor? Actually config_auditor already in phase1. We'll keep.
+
+Phase 3: analysis decision point? Actually decision points are separate from phases. We'll have decision after phase 2 to decide if we need to rollback or investigate further. Then phase 3 could be customer communication and maybe further analysis (like log_analyzer deeper). Then decision after phase 3 to decide if rollback needed.
+
+Phase 4: remediation (rollback_agent or apply fix). Phase 5: verification.
+
+We need at least 5 phases, we have 5.
+
+Decision points: at least 2. We'll have decision after phase 2 (if error pattern indicates recent deployment issue -> go to rollback path; else go to investigation path). And decision after phase 3 (if remediation identified -> go to rollback; else go to scaling or config fix). We'll define.
+
+Escalation trigger: time-based condition, e.g., if no resolution within 15 minutes, escalate to senior on-call via notification_agent.
+
+Rollback conditions: specific, e.g., "log_analyzer detects crashloopbackoff in service X after deployment Y within last 5 minutes" OR "metric_checker shows error rate > 5% and latency > 2x baseline for > 3 minutes". Provide list.
+
+Each agent must have timeout_seconds.
+
+We need to output JSON with fields.
+
+Let's craft.
+
+Phase 1:
+
+agents: log_analyzer (input: recent logs from all services, timeout 30), metric_checker (input: query Prometheus for error rates, latency, timeout 20), db_checker (input: DB health check, timeout 15), config_auditor (input: recent config changes last 15m, timeout 10), capacity_planner (input: resource utilization, timeout 20), notification_agent (input: initial alert message, timeout 10). parallel: true. gate: "All diagnostic agents have completed and returned results".
+
+Phase 2:
+
+agents: dependency_mapper (input: list of services from phase1, timeout 20), incident_reporter (input: create ticket with summary from phase1, timeout 10). parallel: true? Could be sequential but we can set parallel false? Not required. We'll set parallel: true. gate: "Dependency map created and incident ticket opened".
+
+Phase 3:
+
+agents: customer_communicator (input: status update based on phase1&2, timeout 10), log_analyzer_deep (maybe same agent but deeper analysis, we can reuse log_analyzer with different input: focus on error patterns, timeout 30). We'll have two agents: customer_communicator and log_analyzer (deep). parallel: true. gate: "Customer notified and deep log analysis completed".
+
+Phase 4:
+
+agents: rollback_agent (input: target version to rollback to, timeout 60), config_auditor_revert (if needed, but we can just have rollback). We'll also have metric_checker to verify pre-rollback baseline? But verification is after remediation. So phase4 just remediation. We'll set parallel: false (single agent). gate: "Rollback initiated".
+
+Phase 5:
+
+agents: metric_checker (post-rollback health, timeout 20), log_analyzer (post-rollback logs, timeout 20), db_checker (post-rollback DB health, timeout 15), incident_reporter (update ticket with resolution, timeout 10), notification_agent (send resolution notice, timeout 10). parallel: true. gate: "All health checks pass and incident updated".
+
+Decision points:
+
+After phase 2: condition: if log_analyzer from phase1 shows error pattern matching recent deployment (e.g., "CrashLoopBackOff" in service X) AND metric_checker shows error rate >5% for >3min -> if_true: go to phase 3 (customer comm & deep analysis) then proceed to rollback path? Actually we need branching: if true -> go to phase 3 (investigation) then later decision to rollback; if false -> go to phase 3? Hmm we need at least 2 decision points with branching. Let's design:
+
+Decision point 1 after phase2: condition: "Recent deployment detected (config_auditor shows change in last 10m) AND error rate >5%". If true -> go to phase 3 (customer comm & deep analysis) then proceed to rollback path; if false -> go to phase 3 (customer comm) then go to capacity scaling path (maybe we add a phase for scaling). But we only have 5 phases; we can still have branching within same phases but decision leads to different subsequent phases.
+
+We could add a phase 3a and 3b but we limited to 5 phases. Instead we can have decision after phase2 leading to either phase3 (investigation) or phase4 (remediation) directly. Then decision after phase3 leading to either phase4 (rollback) or phase5 (verification). That satisfies.
+
+Thus:
+
+Decision point 1 after phase2: condition: "Recent deployment AND high error rate". If true -> go to phase 3 (investigation). If false -> go to phase 4 (remediation via scaling/config fix). But we don't have a scaling phase; we could treat phase4 as remediation (could be rollback or config fix). We'll need to differentiate.
+
+Simplify: We'll have two decision points:
+
+Decision point 1 after phase2: condition: "Error pattern indicates recent deployment issue". If true -> go to phase 3 (customer comm & deep analysis). If false -> go to phase 3 as well? Actually both go to phase3 but we need branching. Let's make decision point 1: if recent deployment -> go to phase3 (investigation) else go to phase3 (skip deep analysis?) Not good.
+
+Alternative: Have decision after phase2: if recent deployment -> go to phase3 (investigation) else go to phase4 (remediation via config fix). Then decision after phase3: if deep analysis confirms root cause requiring rollback -> go to phase4 (rollback) else go to phase4 (apply config fix). Then phase5 verification.
+
+Thus we need two distinct remediation paths: rollback vs config fix. But we only have one rollback_agent; we could have config_auditor to revert changes. But we can treat phase4 as generic remediation agent that could be either rollback_agent or config_auditor (revert). For simplicity, we can have phase4 run both agents in parallel? But we need specific rollback conditions.
+
+We can define rollback conditions list: specific conditions that trigger rollback_agent. If not met, we proceed with config_auditor revert (or scaling). But we need to include verification after any remediation.
+
+Thus decision point after phase3: condition: "Rollback criteria met". If true -> go to phase4 with rollback_agent; if false -> go to phase4 with config_auditor (revert) or capacity_planner (scale). We'll just say "go to phase4 (rollback)" vs "go to phase4 (config fix)". But our JSON expects if_true: "go to phase N", if_false: "go to phase N". So both go to same phase number but we need to differentiate action inside phase? Could embed condition inside phase's agents list? Might be okay to have same phase but different agents based on condition. But spec expects go to phase N. We could have two different phases: phase4_rollback and phase4_configfix, but that would increase phases beyond 5. Could restructure: have phase4 be remediation, and inside we conditionally run either rollback_agent or config_auditor based on decision. But spec doesn't allow that.
+
+Simplify: Have decision point after phase3: if true -> go to phase4 (rollback), if false -> go to phase5 (verification) and skip remediation? Not correct because we need remediation before verification.
+
+Alternative: Have decision point after phase2: if true -> go to phase3 (investigation) then phase4 (rollback) then phase5 (verification). If false -> go to phase3 (investigation) then phase4 (config fix) then phase5 (verification). So both paths go through same phases but with different agents in phase4 depending on earlier decision. We can encode that by having phase4 agents list include both rollback_agent and config_auditor, but we can add a flag? Not in spec.
+
+Maybe we can have decision point after phase2 that leads to either phase3 (investigation) or phase4 (remediation). Then decision point after phase3 leads to phase5 (verification). This would give us 5 phases: phase1, phase2, phase3 (investigation), phase4 (remediation), phase5 (verification). Decision point 1 after phase2: if recent deployment -> go to phase3 (investigation) else go to phase4 (remediation). Decision point 2 after phase3: if root cause requires rollback -> go to phase4 (rollback) else go to phase4 (config fix). But both go to phase4, which is same phase number; but we can differentiate by having phase4 contain both agents and we rely on earlier decision to choose which to run? Not ideal.
+
+Given the spec, we can have decision points that point to different phase numbers. So we need at least 2 decision points with branching logic, each pointing to different phases.
+
+We can design:
+
+Phase1: diagnostics + notification
+
+Phase2: dependency mapping + incident creation
+
+Phase3: analysis and customer communication
+
+Phase4: remediation (could be rollback or config fix)
+
+Phase5: verification
+
+Decision point 1 after phase2: condition: "Recent deployment detected". If true -> go to phase3 (analysis). If false -> go to phase4 (remediation) (skip analysis). Decision point 2 after phase3: condition: "Rollback criteria met". If true -> go to phase4 (rollback). If false -> go to phase4 (config fix). Both go to phase4 but we need different phase numbers? Could have phase4_rollback and phase4_configfix as separate phases, but then we would have more than 5 phases. However we could make phase4 be remediation and inside we have two possible agents; decision point chooses which agent to run within phase4 by specifying different agent lists? Not allowed.
+
+Maybe we can have decision point after phase3 that leads to either phase4 (rollback) or phase5 (verification) directly, and then have another decision after phase4 leading to phase5. That would give us branching.
+
+Let's design:
+
+Phase1: diagnostics + notification
+
+Phase2: dependency mapping + incident
+
+Phase3: customer communication + deep analysis
+
+Phase4: rollback_agent (if needed)
+
+Phase5: verification (metric, log, db, incident update, notification)
+
+Decision point 1 after phase2: condition: "Recent deployment detected". If true -> go to phase3 (customer comm & deep analysis). If false -> go to phase4 (rollback) ??? Not correct because if no recent deployment, we might not need rollback; we could go to phase5 verification directly? But we need remediation before verification. Could go to phase4 (config fix) but we don't have that agent. We could treat config_auditor as remediation agent in phase4. So phase4 could run either rollback_agent or config_auditor based on earlier decision. But we need to differentiate.
+
+Maybe we can have two remediation phases: phase4_rollback and phase4_configfix, but we can rename them as phase4 and phase5, and have verification as phase6. But we need at least 5 phases, we can have 6 phases. Max time 5-30 minutes, we can have 6 phases still okay.
+
+Let's do 6 phases:
+
+Phase1: diagnostics + notification (parallel)
+
+Phase2: dependency mapping + incident
+
+Phase3: customer communication + deep analysis
+
+Phase4: rollback_agent (conditional)
+
+Phase5: config_auditor (revert) or capacity_planner (scale) (alternative remediation)
+
+Phase6: verification
+
+Now we need decision points: after phase3 decide whether to go to phase4 (rollback) or phase5 (alternative remediation). After phase4 or phase5 go to phase6 (verification). That's two decision points.
+
+Decision point 1 after phase3: condition: "Rollback criteria met". If true -> go to phase4; if false -> go to phase5.
+
+Decision point 2 after phase4: condition: "Rollback completed". If true -> go to phase6; if false -> go to phase6 (maybe retry). Similarly after phase5: condition: "Alternative remediation completed". If true -> go to phase6.
+
+But spec expects decision_points list with after_phase, condition, if_true, if_false. We can have two decision points: after_phase 3 and after_phase 4 (or after_phase 5). However after_phase 4 only relevant if we took rollback path; after_phase 5 only if we took alt path. Could have decision point after phase4: if rollback succeeded -> go to phase6 else go to phase6 (retry). Not useful.
+
+Simplify: Decision point after phase3: choose rollback vs alt remediation. Decision point after phase4 (rollback) or phase5 (alt) to go to verification. We'll define two decision points: after_phase 3 and after_phase 4 (assuming we always go through phase4? Not good). Better: after_phase 3 decision leads to either phase4 or phase5. Then after_phase 4 decision leads to phase6 (verification). after_phase 5 decision also leads to phase6. We can have two decision points: after_phase 3 and after_phase 4 (but after_phase 4 only applies if we took rollback path). If we took alt path, we would skip decision after_phase 4 and go directly to verification? Not defined.
+
+We could instead have decision point after_phase 3: if rollback criteria -> go to phase4 else go to phase5. Then decision point after_phase 4: always go to phase6 (verification). decision point after_phase 5: always go to phase6. That's three decision points, but we need at least 2, okay.
+
+We'll include decision points after phase3 and after phase4 (and after phase5). But spec only requires list; we can include multiple.
+
+Let's define:
+
+decision_points:
+- after_phase: 3, condition: "Rollback criteria met (log_analyzer shows CrashLoopBackOff in service X after recent deployment AND metric_checker error rate >5% for >3min)", if_true: "go to phase 4", if_false: "go to phase 5"
+- after_phase: 4, condition: "Rollback agent completed successfully", if_true: "go to phase 6", if_false: "go to phase 6" (maybe retry but we just go to verification)
+- after_phase: 5, condition: "Alternative remediation (config_auditor revert) completed", if_true: "go to phase 6", if_false: "go to phase 6"
+
+But we could simplify second and third as just go to verification regardless.
+
+Now we need to define agents per phase with timeouts.
+
+Phase1 agents: log_analyzer, metric_checker, db_checker, config_auditor, capacity_planner, notification_agent.
+
+Set timeouts: log_analyzer 30s, metric_checker 20s, db_checker 15s, config_auditor 10s, capacity_planner 20s, notification_agent 10s.
+
+Phase2 agents: dependency_mapper 20s, incident_reporter 10s.
+
+Phase3 agents: customer_communicator 10s, log_analyzer (deep) 30s.
+
+Phase4 agents: rollback_agent 60s.
+
+Phase5 agents: config_auditor (revert) 15s (or capacity_planner 20s). We'll choose config_auditor for revert.
+
+Phase6 agents: metric_checker 20s, log_analyzer 20s, db_checker 15s, incident_reporter (update) 10s, notification_agent (resolution) 10s.
+
+Now gate descriptions: each phase gate must describe what must be true to proceed.
+
+Phase1 gate: "All diagnostic agents have completed and returned results".
+
+Phase2 gate: "Dependency map created and incident ticket opened".
+
+Phase3 gate:

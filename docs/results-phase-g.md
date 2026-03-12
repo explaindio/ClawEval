@@ -57,22 +57,22 @@ Phase F tests showed identical scores (10/10) across all models for ~15 roles, m
 
 ## 64–96GB VRAM Results
 
-| # | Test | 122B NoThink | GPT-OSS-120B Med |
-|---|------|:----------:|:----------:|
-| | | Qwen3.5-122B-A10B | GPT-OSS-120B |
-| | | NVFP4 · SGLang | GGUF · llama.cpp |
-| 36 | Code Gen (RateLimiter) | 🟢 8 | 🟡 7 |
-| 2 | Input Validator (nested) | 🟢 **10** | 🟢 9 |
-| 5 | Sentiment (hard, 20 items) | 🟢 **8** | 🟡 6 |
-| 40 | Fact-Checking (plausible) | 🟢 **10** | 🟢 9 |
-| 49 | Algorithm (LRU Cache + TTL) | 🟢 **10** | 🟢 **10** |
-| 51 | Architect (trade-offs) | 🟢 **10** | 🟢 9 |
-| 48 | STEM (multi-step calc) | 🟡 **5** | 🟡 **5** |
-| 9 | Research (contradictions) | 🟢 8 | 🟢 **9** |
-| 12 | Content Planner (15 constraints) | 🔴 1 | 🔴 1 |
-| 50 | Orchestrator (multi-agent) | 🟡 **7** | 🟡 **7** |
-| 23 | Web Scraping (messy HTML) | 🟢 **10** | 🟢 **10** |
-| | **TOTAL** | **87 (79%)** | **82 (75%)** |
+| # | Test | Nemotron Think | Nemotron NoThink | 122B NoThink | GPT-OSS-120B Med |
+|---|------|:----------:|:----------:|:----------:|:----------:|
+| | | Nemotron-3-Super-120B | Nemotron-3-Super-120B | Qwen3.5-122B-A10B | GPT-OSS-120B |
+| | | NVFP4 · SGLang | NVFP4 · SGLang | NVFP4 · SGLang | GGUF · llama.cpp |
+| 36 | Code Gen (RateLimiter) | 🟢 **10** | 🔴 0 | 🟢 8 | 🟡 7 |
+| 2 | Input Validator (nested) | 🟢 **10** | 🟢 **10** | 🟢 **10** | 🟢 9 |
+| 5 | Sentiment (hard, 20 items) | 🟢 8 | 🟢 8 | 🟢 8 | 🟡 6 |
+| 40 | Fact-Checking (plausible) | 🟢 **10** | 🟢 **10** | 🟢 **10** | 🟢 9 |
+| 49 | Algorithm (LRU Cache + TTL) | 🟢 **10** | 🟡 4 | 🟢 **10** | 🟢 **10** |
+| 51 | Architect (trade-offs) | 🟢 9 | 🟢 8 | 🟢 **10** | 🟢 9 |
+| 48 | STEM (multi-step calc) | 🟡 5 | 🔴 0 | 🟡 5 | 🟡 5 |
+| 9 | Research (contradictions) | 🟢 9 | 🟢 **10** | 🟢 8 | 🟢 9 |
+| 12 | Content Planner (15 constraints) | 🟢 9 | 🟢 9 | 🔴 1 | 🔴 1 |
+| 50 | Orchestrator (multi-agent) | 🟢 9 | 🟢 9 | 🟡 7 | 🟡 7 |
+| 23 | Web Scraping (messy HTML) | 🟢 **10** | 🟢 **10** | 🟢 **10** | 🟢 **10** |
+| | **TOTAL** | **99/110 (90%)** 🥇 | **78/110 (71%)** | **87 (79%)** | **82 (75%)** |
 
 ---
 
@@ -106,18 +106,20 @@ Phase F tests showed identical scores (10/10) across all models for ~15 roles, m
 
 | Rank | Model | Score | Notes |
 |------|-------|-------|-------|
-| 🥇 | **Kimi K2.5 Think** | 96/110 (87%) | Cloud · Champion · No test below 7 |
-| 🥈 | **Kimi K2.5 NoThink** | 91/110 (83%) | Cloud · Faster · No thinking overhead |
-| 🥉 | **122B NoThink** | 87/110 (79%) | Local 64-96GB · Best local model |
-| 4 | **Qwen3.5-Plus Think** | 86/110 (78%) | Cloud · Fact-Check 10/10, Algorithm 10/10 |
-| 5 | **27B NoThink** | 83/110 (75%) | Local 24GB · Best budget model |
-| 6 | **GPT-OSS-120B** | 82/110 (75%) | Local 64-96GB · Good all-rounder |
-| 7 | **GLM-5 NoThink** | 80/110 (73%) | Cloud · Better than Think mode |
-| 8 | **MiniMax-M2.5** | 78/110 (71%) | Cloud · Fastest (~85 t/s) · Think only |
-| 9 | **35B NoThink** | 77/110 (70%) | Local 24GB |
-| 10 | **GLM-5 Think** | 76/110 (69%) | Cloud · Timeout hurt score |
-| 11 | **35B Think** | 51/60 (85%)* | Local · 5/11 tests overflow |
-| 12 | **0.8B Think / NT** | 33/110 (30%) | Local 8GB · Research 8/10 is impressive |
+| 🥇 | **Nemotron-3-Super-120B Think** | 99/110 (90%) | Local 64-96GB · New champion · Content Planner 9/10 |
+| 🥈 | **Kimi K2.5 Think** | 96/110 (87%) | Cloud · No test below 7 |
+| 🥉 | **Kimi K2.5 NoThink** | 91/110 (83%) | Cloud · Faster · No thinking overhead |
+| 4 | **122B NoThink** | 87/110 (79%) | Local 64-96GB |
+| 5 | **Qwen3.5-Plus Think** | 86/110 (78%) | Cloud · Fact-Check 10/10, Algorithm 10/10 |
+| 6 | **27B NoThink** | 83/110 (75%) | Local 24GB · Best budget model |
+| 7 | **GPT-OSS-120B** | 82/110 (75%) | Local 64-96GB · Good all-rounder |
+| 8 | **GLM-5 NoThink** | 80/110 (73%) | Cloud · Better than Think mode |
+| 9 | **Nemotron NoThink** | 78/110 (71%) | Local 64-96GB · Code Gen 0 hurts |
+| 10 | **MiniMax-M2.5** | 78/110 (71%) | Cloud · Think only |
+| 11 | **35B NoThink** | 77/110 (70%) | Local 24GB |
+| 12 | **GLM-5 Think** | 76/110 (69%) | Cloud · Timeout hurt score |
+| 13 | **35B Think** | 51/60 (85%)* | Local · 5/11 tests overflow |
+| 14 | **0.8B Think / NT** | 33/110 (30%) | Local 8GB · Research 8/10 is impressive |
 
 \* Only 6/11 tests completed due to SGLang thinking budget bug
 

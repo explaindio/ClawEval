@@ -1,0 +1,98 @@
+{
+  "tasks": [
+    {
+      "id": "T1",
+      "name": "Set up PostgreSQL database and schema",
+      "depends_on": [],
+      "estimated_hours": 4,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T2",
+      "name": "Implement user registration endpoint (JWT)",
+      "depends_on": ["T1"],
+      "estimated_hours": 6,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T3",
+      "name": "Implement user login endpoint (JWT)",
+      "depends_on": ["T1"],
+      "estimated_hours": 5,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T4",
+      "name": "Implement JWT authentication middleware",
+      "depends_on": ["T2", "T3"],
+      "estimated_hours": 4,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T5",
+      "name": "Implement CRUD endpoints for todos (protected)",
+      "depends_on": ["T4"],
+      "estimated_hours": 8,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T6",
+      "name": "Add todo categories/tags model and endpoints",
+      "depends_on": ["T5"],
+      "estimated_hours": 5,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T7",
+      "name": "Implement due date reminders (background job or endpoint)",
+      "depends_on": ["T5"],
+      "estimated_hours": 6,
+      "assignable_to": "fullstack"
+    },
+    {
+      "id": "T8",
+      "name": "Add rate limiting middleware",
+      "depends_on": ["T4"],
+      "estimated_hours": 3,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T9",
+      "name": "Write unit tests targeting 80%+ coverage",
+      "depends_on": ["T2", "T3", "T4", "T5", "T6", "T7", "T8"],
+      "estimated_hours": 10,
+      "assignable_to": "backend/fullstack"
+    },
+    {
+      "id": "T10",
+      "name": "Generate OpenAPI (Swagger) documentation",
+      "depends_on": ["T5", "T6", "T7", "T8"],
+      "estimated_hours": 5,
+      "assignable_to": "fullstack"
+    },
+    {
+      "id": "T11",
+      "name": "Dockerize application (Dockerfile, docker-compose)",
+      "depends_on": ["T5", "T6", "T7", "T8"],
+      "estimated_hours": 4,
+      "assignable_to": "devops"
+    },
+    {
+      "id": "T12",
+      "name": "Set up CI/CD pipeline (GitHub Actions)",
+      "depends_on": ["T9", "T11"],
+      "estimated_hours": 6,
+      "assignable_to": "devops"
+    },
+    {
+      "id": "T13",
+      "name": "Final validation and deployment smoke test",
+      "depends_on": ["T12"],
+      "estimated_hours": 2,
+      "assignable_to": "devops/fullstack"
+    }
+  ],
+  "critical_path": ["T1", "T2", "T4", "T5", "T7", "T9", "T12", "T13"],
+  "total_hours": 68,
+  "parallel_tracks": 2
+}

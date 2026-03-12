@@ -1,0 +1,30 @@
+{
+  "bugs": [
+    {
+      "line": 8,
+      "issue": "price calculation uses order['price'] and order['quantity'] without type checking; if they are None or non-numeric, a TypeError occurs.",
+      "fix": "Validate that price and quantity are numeric (e.g., using isinstance) or provide default values before multiplication."
+    },
+    {
+      "line": 9,
+      "issue": "discount value may exceed 100, causing negative price after discount application.",
+      "fix": "Clamp discount to the range [0, 100] before applying it, e.g., discount = min(max(order.get('discount', 0), 0), 100)."
+    },
+    {
+      "line": 14,
+      "issue": "Mutates the original order dict by adding 'final_price' and changing 'status', causing unintended side effects on the caller's data.",
+      "fix": "Create a copy of the order (e.g., order_copy = order.copy()) and modify the copy before appending to processed."
+    },
+    {
+      "line": 19,
+      "issue": "Division by zero when no orders are pending (len(processed) == 0) leads to ZeroDivisionError.",
+      "fix": "Check if processed is empty; set avg = 0 (or None) in that case before division."
+    },
+    {
+      "line": 25,
+      "issue": "Returned 'count' uses len(orders) instead of len(processed), misrepresenting the number of processed orders.",
+      "fix": "Replace len(orders) with len(processed) in the returned dictionary."
+    }
+  ],
+  "count": 5
+}

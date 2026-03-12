@@ -1,0 +1,282 @@
+[
+  {
+    "id": 1,
+    "name": "Morning routine – gradual lights",
+    "trigger": {
+      "type": "time",
+      "schedule": {
+        "weekdays": "06:30",
+        "weekends": "08:00"
+      }
+    },
+    "conditions": [],
+    "actions": [
+      {
+        "device": "master_bedroom_lights",
+        "action": "set_brightness",
+        "value": 0,
+        "transition": "30min"
+      },
+      {
+        "device": "hallway_lights",
+        "action": "set_brightness",
+        "value": 0,
+        "transition": "30min"
+      },
+      {
+        "device": "kitchen_lights",
+        "action": "set_brightness",
+        "value": 0,
+        "transition": "30min"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Thermostat – occupancy & sleep",
+    "trigger": {
+      "type": "presence",
+      "entities": ["phone_alice", "phone_bob"]
+    },
+    "conditions": [
+      {
+        "type": "time",
+        "range": ["23:00", "06:00"],
+        "label": "sleeping_hours"
+      }
+    ],
+    "actions": [
+      {
+        "device": "thermostat",
+        "action": "set_temperature",
+        "value": {
+          "if": [
+            {"condition": "all_away", "then": 65},
+            {"condition": "any_home_and_not_sleeping", "then": 72},
+            {"condition": "sleeping_hours", "then": 68}
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "name": "Security – arm/disarm via geofence",
+    "trigger": {
+      "type": "geofence",
+      "entities": ["phone_alice", "phone_bob"],
+      "events": ["exit", "enter"]
+    },
+    "conditions": [],
+    "actions": [
+      {
+        "device": "security_system",
+        "action": "arm",
+        "when": "all_exited"
+      },
+      {
+        "device": "security_system",
+        "action": "disarm",
+        "when": "any_entered"
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "name": "Pet care – auto feeder",
+    "trigger": {
+      "type": "time",
+      "schedule": ["07:00", "18:00"]
+    },
+    "conditions": [],
+    "actions": [
+      {
+        "device": "pet_feeder",
+        "action": "dispense_food",
+        "value": 1
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "name": "Pet care – cat camera when away",
+    "trigger": {
+      "type": "presence",
+      "entities": ["phone_alice", "phone_bob"],
+      "event": "all_exited"
+    },
+    "conditions": [],
+    "actions": [
+      {
+        "device": "cat_camera",
+        "action": "turn_on"
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "name": "Energy – solar priority & battery use",
+    "trigger": {
+      "type": "time",
+      "range": ["14:00", "19:00"]
+    },
+    "conditions": [
+      {
+        "type": "sensor",
+        "entity": "solar_production",
+        "comparison": ">",
+        "value": 0
+      }
+    ],
+    "actions": [
+      {
+        "device": "energy_management",
+        "action": "set_source_priority",
+        "priority": ["solar", "grid", "battery"]
+      },
+      {
+        "device": "battery",
+        "action": "charge",
+        "when": "solar_excess"
+      }
+    ],
+    "else": [
+      {
+        "device": "energy_management",
+        "action": "set_source_priority",
+        "priority": ["battery", "grid"]
+      },
+      {
+        "device": "battery",
+        "action": "discharge",
+        "when": "evening_peak"
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "name": "Hallway motion‑activated lights (night)",
+    "trigger": {
+      "type": "motion",
+      "entity": "hallway_motion_sensor"
+    },
+    "conditions": [
+      {
+        "type": "time",
+        "range": ["22:00", "06:00"]
+      }
+    ],
+    "actions": [
+      {
+        "device": "hallway_lights",
+        "action": "set_brightness",
+        "value": 20
+      },
+      {
+        "device": "hallway_lights",
+        "action": "turn_on",
+        "delay": "0s"
+      },
+      {
+        "device": "hallway_lights",
+        "action": "turn_off",
+        "delay": "5min",
+        "reset_on_motion": true
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "name": "Bob's office – desk lamp & A/C",
+    "trigger": {
+      "type": "device_state",
+      "entity": "bob_computer",
+      "state": "on"
+    },
+    "conditions": [],
+    "actions": [
+      {
+        "device": "bob_desk_lamp",
+        "action": "turn_on"
+      },
+      {
+        "device": "office_ac",
+        "action": "set_temperature",
+        "value": 70
+      }
+    ]
+  },
+  {
+    "id": 9,
+    "name": "Laundry completion notification",
+    "trigger": {
+      "type": "device_state",
+      "entity": ["washer", "dryer"],
+      "state": "cycle_complete"
+    },
+    "conditions": [],
+    "actions": [
+      {
+        "device": "phone_alice",
+        "action": "send_notification",
+        "message": "Laundry cycle finished"
+      },
+      {
+        "device": "phone_bob",
+        "action": "send_notification",
+        "message": "Laundry cycle finished"
+      }
+    ]
+  },
+  {
+    "id": 10,
+    "name": "Water leak – shut off valve & alert",
+    "trigger": {
+      "type": "sensor",
+      "entity": "water_leak_detector",
+      "state": "wet"
+    },
+    "conditions": [],
+    "actions": [
+      {
+        "device": "main_water_valve",
+        "action": "close"
+      },
+      {
+        "device": "phone_alice",
+        "action": "send_alert",
+        "message": "Water leak detected – main valve shut off"
+      },
+      {
+        "device": "phone_bob",
+        "action": "send_alert",
+        "message": "Water leak detected – main valve shut off"
+      }
+    ]
+  },
+  {
+    "id": 11,
+    "name": "Guest mode – temporary code, climate & Wi‑Fi",
+    "trigger": {
+      "type": "manual",
+      "entity": "guest_mode_button"
+    },
+    "conditions": [],
+    "actions": [
+      {
+        "device": "smart_lock",
+        "action": "set_temporary_code",
+        "duration": "4h"
+      },
+      {
+        "device": "thermostat",
+        "action": "set_temperature",
+        "value": 72
+      },
+      {
+        "device": "guest_wifi",
+        "action": "enable"
+      }
+    ]
+  }
+]

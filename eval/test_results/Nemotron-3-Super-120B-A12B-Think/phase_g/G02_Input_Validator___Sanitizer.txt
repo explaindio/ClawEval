@@ -1,0 +1,513 @@
+We need to find all errors (exactly 15). Let's validate each rule.
+
+First, parse payload.
+
+Customer:
+- name: John Smith
+- email: john@mailinator.com (disposable domain mailinator.com) => error.
+- phone: +44-555-012-3456 (UK country code +44)
+- loyalty_tier: platinum (no rule)
+
+Shipping:
+- address: street 123 Main St, city Los Angeles, state CA, zip 10001, country US
+- method: express
+- delivery_date: 2025-12-15
+
+Billing:
+- same_as_shipping: true
+- address: street 456 Oak Ave, city New York, state NY, zip 90210, country US
+
+Since same_as_shipping true, billing address must exactly match shipping address. They differ: street, city, state, zip. So error.
+
+Items array:
+- Must have 1-50 items: we have 4 items, ok.
+- Each item quantity 1-999: check each:
+  - Item1 quantity 3 ok.
+  - Item2 quantity 2 ok.
+  - Item3 quantity 0 => invalid (must be >=1). error.
+  - Item4 quantity 1 ok.
+- Each item subtotal must equal quantity * unit_price:
+  - Item1: 3 * 29.99 = 89.97 matches subtotal 89.97 ok.
+  - Item2: 2 * 49.99 = 99.98, but subtotal given 109.98 => mismatch. error.
+  - Item3: quantity 0 * 15.00 = 0, subtotal 15.00 => mismatch. error (also quantity invalid).
+  - Item4: quantity 1 * -5.00 = -5.00 matches subtotal -5.00 (but unit_price negative maybe not allowed? Not specified. Only subtotal equality rule. So ok.)
+- Items must have non-empty sku? Not specified but maybe required? Not in rules. However there is a rule: items array must have 1-50 items, each with quantity 1-999. No rule about sku. But we have an empty sku for item4: "" . Might be considered error? Not in given rules. However maybe they expect validation of required fields? Not listed. We'll stick to given rules.
+
+- order_date: 2026-01-15
+- delivery_date: 2025-12-15
+Rule: delivery_date must be after order_date. Here delivery_date (2025-12-15) is before order_date (2026-01-15). So error.
+
+- discount_code: SAVE20 (no rule)
+- discount_amount: 50.00
+
+- order_total: 159.95
+Rule: order_total must equal sum of all subtotals minus discount_amount.
+Compute sum of subtotals: item1 89.97 + item2 109.98 + item3 15.00 + item4 -5.00 = 209.95? Let's calculate: 89.97+109.98=199.95; +15.00=214.95; -5.00 = 209.95. Subtract discount_amount 50.00 => 159.95. That matches order_total 159.95. So this rule passes despite item errors? The sum uses given subtotals (including erroneous ones). So passes.
+
+- payment:
+  - method: credit_card
+  - card_last4: "12345" (5 digits? Should be 4? Usually last 4 digits. This is 5 digits => maybe error but not in rules. Not listed.)
+  - card_expiry: "2025-06" (format YYYY-MM). Must be after order_date. order_date 2026-01-15. Expiry 2025-06 is before order_date => error.
+  - amount: 200.00
+  - currency: "GBP"
+Rule: payment.amount must equal order_total. order_total 159.95, payment.amount 200.00 => mismatch. error.
+- customer.phone country code must match shipping.country.
+  - phone country code: +44 => UK.
+  - shipping.country: US.
+  => mismatch. error.
+- shipping.zip must be valid for shipping.state (NY zips start with 1, CA with 9, TX with 7).
+  - shipping.state: CA. zip: 10001 starts with 1, not 9 => invalid. error.
+- customer.email domain must not be disposable: mailinator.com => error (already counted).
+- Also maybe need to check that billing address fields exist? Not needed.
+
+Now count errors we identified:
+
+1. email disposable domain.
+2. billing address mismatch (same_as_shipping true but not match).
+3. item3 quantity 0 (outside 1-999).
+4. item2 subtotal mismatch (quantity*unit_price).
+5. item3 subtotal mismatch (also quantity invalid but we count separate? Might count both as separate errors? The rule "Each item's subtotal must equal quantity * unit_price" - item3 fails, also quantity fails separate rule. So we have two errors for item3: quantity out of range and subtotal mismatch. We'll count both.
+6. delivery_date not after order_date.
+7. payment.card_expiry not after order_date.
+8. payment.amount not equal order_total.
+9. customer.phone country code mismatch shipping.country.
+10. shipping.zip invalid for state.
+We have 10 errors so far.
+
+We need exactly 15 errors. Let's see if there are more subtle rules.
+
+Check items array must have 1-50 items: we have 4, ok.
+
+Check each item quantity 1-999: we counted item3 quantity 0 error. Also maybe item4 quantity 1 ok. item1,2 ok.
+
+Check each item's subtotal equals quantity * unit_price: we counted item2 and item3 errors. Also check item4: quantity 1 * -5 = -5 matches subtotal -5, ok.
+
+Check maybe unit_price must be positive? Not in rules.
+
+Check maybe sku must not be empty? Not in rules but maybe implied? Could be considered error. If we count empty sku as error, that adds.
+
+Check maybe item name must not be empty? All have names.
+
+Check maybe discount_code format? Not.
+
+Check maybe payment.card_last4 must be exactly 4 digits? Not in rules but could be considered error. If we count that, adds.
+
+Check maybe payment.currency must match something? Not.
+
+Check maybe loyalty_tier must be one of certain values? Not.
+
+Check maybe order_date must be today or past? Not.
+
+Check maybe delivery_date must be future relative to today? Not.
+
+Check maybe shipping.method must be one of allowed? Not.
+
+Check maybe notes must be something? Not.
+
+We need 5 more errors to reach 15.
+
+Let's examine each field for hidden constraints:
+
+- customer.name maybe must not be empty? It's fine.
+
+- customer.loyalty_tier maybe must be one of ["bronze","silver","gold","platinum"]? platinum is valid.
+
+- shipping.address fields: street, city, state, zip, country. Maybe zip must be 5 digits? US zip 10001 is 5 digits ok. Billing zip 90210 also 5 digits.
+
+- shipping.state must be valid US state code: CA is valid.
+
+- billing.address state NY valid.
+
+- shipping.country US matches customer phone country? Already mismatch.
+
+- payment.card_expiry format "YYYY-MM" maybe must be future month relative to today? Already error.
+
+- payment.card_last4 length: 5 digits, should be 4. Not in rules but maybe implied. Could be error.
+
+- payment.method credit_card maybe must be one of ["credit_card","paypal","bank_transfer"]? credit_card ok.
+
+- discount_amount must be >=0? It's 50 positive ok.
+
+- discount_code maybe must be associated with discount_amount? Not.
+
+- order_total must be positive? It's 159.95 positive.
+
+- items array length must be between 1 and 50 inclusive: we have 4 ok.
+
+- each item quantity must be integer? They are integers.
+
+- each item unit_price maybe must be >=0? Not in rules but negative unit_price for item4 is -5. Could be error. Not listed but maybe they expect validation of unit_price being non-negative. If we count that, adds.
+
+- item sku must not be empty: item4 sku empty => error.
+
+- item name must not be empty: all have names.
+
+- maybe item subtotal must be >=0? Not in rules but item4 subtotal -5 negative maybe invalid. Not listed.
+
+- maybe discount_amount cannot exceed sum of subtotals? It's 50 < 209.95 ok.
+
+- maybe payment.currency must match customer country? Not.
+
+- maybe payment.amount must be positive? 200 positive.
+
+- maybe payment.card_last4 must be numeric? It is numeric.
+
+- maybe phone format must be valid? +44-555-012-3456 maybe okay.
+
+- maybe shipping.zip must match regex for state: CA zips start with 9, but also maybe must be 5 digits. 10001 starts with 1, invalid.
+
+- maybe billing.zip must match billing.state? Not required because same_as_shipping true but address mismatched; but if same_as_shipping true, billing address must exactly match shipping address, which includes zip. So we already counted mismatch.
+
+- maybe billing.address must have same country as shipping? Already mismatch.
+
+- maybe customer.email must be valid email format: john@mailinator.com is valid.
+
+- maybe customer.phone country code must be extracted correctly: +44 => UK, shipping.country US mismatch counted.
+
+- maybe payment.card_expiry must be in format YYYY-MM and must be after order_date (we counted). Also maybe must be after today? Not.
+
+- maybe payment.card_expiry must be after order_date AND after today? Not.
+
+- maybe order_date must be before today? Not.
+
+- maybe delivery_date must be after order_date AND after today? Not.
+
+- maybe items array must have unique sku? Not.
+
+- maybe item quantity must be >0 (we counted).
+
+- maybe item unit_price must be >0 (we could count negative as error). Let's consider that as error.
+
+- maybe item subtotal must be >=0 (negative subtotal maybe error). Could count.
+
+- maybe discount_code must be uppercase? SAVE20 is uppercase ok.
+
+- maybe discount_amount must be numeric with two decimals? 50.00 ok.
+
+- maybe order_total must be numeric with two decimals? 159.95 ok.
+
+- maybe payment.amount must be numeric with two decimals? 200.00 ok.
+
+- maybe payment.currency must be ISO 4217 code: GBP is valid.
+
+- maybe payment.method must be credit_card and card_last4 must be 4 digits (we could count).
+
+- maybe payment.card_last4 must be exactly 4 digits (error).
+
+- maybe payment.card_last4 must match the last 4 digits of the card number (unknown). Not.
+
+- maybe customer.loyalty_tier must be one of ["bronze","silver","gold","platinum"]; platinum ok.
+
+- maybe shipping.method must be one of ["standard","express","overnight"]; express ok.
+
+- maybe notes must be string (it is empty string ok).
+
+Now we need to reach 15 errors. Let's list potential errors we haven't counted yet:
+
+A) empty sku (item4)
+B) negative unit_price (item4)
+C) negative subtotal (item4)
+D) payment.card_last4 length not 4
+E) maybe item quantity must be integer (they are)
+F) maybe item quantity must be <= 999 (we have)
+G) maybe item subtotal must be positive? Not.
+H) maybe discount_code must be associated with discount_amount >0? discount_amount 50 >0 ok.
+I) maybe order_total must be greater than zero? ok.
+J) maybe payment.amount must be greater than zero? ok.
+K) maybe payment.currency must match shipping.country? US vs GBP mismatch? Not in rules but could be implied? Not.
+L) maybe customer.phone must be valid format: +44-555-012-3456 maybe hyphens okay.
+M) maybe shipping.address.city must match state? Los Angeles is in CA correct.
+N) maybe billing.address.city must match state? New York is in NY correct.
+O) maybe shipping.address.street cannot be empty? it's not.
+P) maybe billing.address.street cannot be empty? not.
+Q) maybe items array must have at least 1 item with quantity >0? we have.
+R) maybe items array must have at most 50 items (we have).
+S) maybe items array must have each item with required fields: sku, name, quantity, unit_price, subtotal. sku empty for item4 => error (we counted A).
+T) maybe items array must have each item with non-empty name (all have).
+U) maybe items array must have each item with quantity >0 (we counted item3).
+V) maybe items array must have each item with unit_price >0 (we could count negative).
+W) maybe items array must have each item with subtotal >=0 (we could count negative).
+X) maybe payment.card_expiry must be in future relative to order_date (we counted).
+Y) maybe payment.card_expiry must be in format YYYY-MM and month between 01-12 (06 ok).
+Z) maybe payment.card_last4 must be numeric (it is).
+AA) maybe payment.amount must equal order_total (we counted).
+AB) maybe customer.phone country code must match shipping.country (we counted).
+AC) maybe shipping.zip must be valid for shipping.state (we counted).
+AD) maybe billing.zip must be valid for billing.state? Not in rules but could be implied? Not.
+AE) maybe if same_as_shipping true, billing address must exactly match shipping address (we counted).
+AF) maybe discount_amount must be <= sum of subtotals (we have 50 < 209.95 ok).
+AG) maybe discount_code must not be empty? it's not.
+AH) maybe order_date must be in ISO 8601 format (it is).
+AI) maybe delivery_date must be in ISO 8601 format (it is).
+AJ) maybe items array length must be between 1 and 50 (we have).
+AK) maybe each item quantity must be between 1 and 999 (we counted item3).
+AL) maybe each item's subtotal must equal quantity * unit_price (we counted item2 and item3).
+AM) maybe order_total must equal sum of subtotals minus discount_amount (we counted passes).
+AN) maybe delivery_date must be after order_date (we counted).
+AO) maybe payment.card_expiry must be after order_date (we counted).
+AP) maybe customer.email domain must not be disposable (we counted).
+AQ) maybe shipping.zip must be valid for shipping.state (we counted).
+AR) maybe customer.phone country code must match shipping.country (we counted).
+AS) maybe payment.amount must equal order_total (we counted).
+AT) maybe items array must have 1-50 items (we have).
+AU) maybe each item quantity 1-999 (we counted item3).
+AV) maybe each item's subtotal must equal quantity * unit_price (we counted item2 and item3).
+AW) maybe each item's sku must not be empty (we haven't counted).
+AX) maybe each item's unit_price must be >=0 (we haven't counted).
+AY) maybe each item's subtotal must be >=0 (we haven't counted).
+AZ) maybe payment.card_last4 must be exactly 4 digits (we haven't counted).
+BA) maybe payment.card_last4 must be numeric (it is).
+BB) maybe payment.method must be one of allowed (credit_card ok).
+BC) maybe loyalty_tier must be one of allowed (platinum ok).
+BD) maybe shipping.method must be one of allowed (express ok).
+BE) maybe notes must be string (it is).
+BF) maybe discount_amount must be >=0 (it is).
+BG) maybe discount_code must be alphanumeric? SAVE20 ok.
+BH) maybe order_total must be >=0 (it is).
+BI) maybe payment.amount must be >=0 (it is).
+BJ) maybe payment.currency must be ISO 4217 (GBP ok).
+BK) maybe card_expiry must be valid month (06 ok).
+BL) maybe card_expiry year must be >= current year? Not.
+
+We need 15 errors total. Let's count what we have definitely per rules:
+
+List of rules and whether violated:
+
+1. same_as_shipping true => billing address must exactly match shipping address. Violation (error1)
+2. Each item's subtotal must equal quantity * unit_price. Violations: item2, item3 (error2, error3)
+3. order_total must equal sum of all subtotals minus discount_amount. Satisfied (no error)
+4. delivery_date must be after order_date. Violation (error4)
+5. payment.card_expiry must be after order_date. Violation (error5)
+6. customer.email domain must not be disposable. Violation (error6)
+7. shipping.zip must be valid for shipping.state (NY zips start with 1, CA with 9, TX with 7). Violation (error7)
+8. items array must have 1-50 items. Satisfied.
+9. each item quantity 1-999. Violation: item3 quantity 0 (error8)
+10. payment.amount must equal order_total. Violation (error9)
+11. customer.phone country code must match shipping.country. Violation (error10)
+
+That's 10 errors.
+
+We need 5 more errors that are implied but not explicitly listed? Perhaps they expect validation of fields like sku not empty, unit_price non-negative, subtotal non-negative, card_last4 length 4, etc. Those are typical validation but not in the list. However the prompt says "Cross-field validation rules:" and then lists those. It might be that only those rules are to be validated. But then we would have only 10 errors, not 15. So they must expect additional validation beyond those rules, maybe basic field validation like required fields, data types, format, etc. The prompt: "Validate this complex nested API payload. Find ALL errors (there are exactly 15)." So we must find all errors, including those not explicitly listed but implied by typical validation (like required fields, data types, ranges). Let's systematically check each field for any validation issues.
+
+We'll define a schema implicitly:
+
+- customer:
+  - name: string, non-empty? Probably required. It's non-empty.
+  - email: string, valid email format, not disposable domain. We have disposable => error.
+  - phone: string, format maybe E.164? +44-555-012-3456 maybe okay but contains hyphens; maybe must be digits and plus only? Could be error. But not sure.
+  - loyalty_tier: string, maybe must be one of ["bronze","silver","gold","platinum"]; platinum ok.
+
+- shipping:
+  - address: object with street, city, state, zip, country.
+    - street: string non-empty? "123 Main St" ok.
+    - city: string non-empty? "Los Angeles" ok.
+    - state: string, must be valid US state code? "CA" ok.
+    - zip: string, must match pattern for state (we already flagged).
+    - country: string, must be valid ISO country code? "US" ok.
+  - method: string, maybe must be one of ["standard","express","overnight"]; "express" ok.
+  - delivery_date: string date ISO 8601, must be after order_date (we flagged).
+
+- billing:
+  - same_as_shipping: boolean.
+  - address: object same as shipping address.
+    - If same_as_shipping true, must equal shipping address (we flagged).
+    - Also address fields must be valid (street non-empty etc). Billing address: street "456 Oak Ave" ok, city "New York" ok, state "NY" ok, zip "90210" ok, country "US" ok.
+
+- items: array.
+  - Each item:
+    - sku: string, maybe required non-empty? item4 sku empty => error.
+    - name: string non-empty? all have.
+    - quantity: integer, 1-999 (item3 0 => error, also maybe must be >0)
+    - unit_price: number, maybe must be >=0? item4 -5 => error.
+    - subtotal: number, must equal quantity * unit_price (we flagged item2 and item3). Also maybe must be >=0? item4 -5 => error.
+    - maybe also sku must be alphanumeric? empty fails.
+
+- order_date: string date ISO 8601, maybe must be today or past? Not given. Could be any.
+
+- discount_code: string, maybe must be uppercase alphanumeric? "SAVE20" ok.
+
+- discount_amount: number, must be >=0? 50 ok.
+
+- order_total: number, must be >=0? 159.95 ok.
+
+- payment:
+  - method: string, maybe must be one of ["credit_card","paypal","bank_transfer"]; "credit_card" ok.
+  - card_last4: string, must be exactly 4 digits? "12345" length 5 => error.
+  - card_expiry: string format YYYY-MM, must be after order_date (we flagged). Also month must be 01-12 (06 ok).
+  - amount: number, must equal order_total (we flagged).
+  - currency: string, must be valid ISO 4217? "GBP" ok.
+
+- notes: string, maybe can be any.
+
+Now count errors we have from these additional checks:
+
+List all potential errors:
+
+1. email disposable (already counted)
+2. billing address mismatch (same_as_shipping true) (counted)
+3. item2 subtotal mismatch (counted)
+4. item3 quantity out of range (counted)
+5. item3 subtotal mismatch (counted)
+6. delivery_date not after order_date (counted)
+7. payment.card_expiry not after order_date (counted)
+8. payment.amount not equal order_total (counted)
+9. customer.phone country code mismatch shipping.country (counted)
+10. shipping.zip invalid for state (counted)
+11. item4 sku empty (new)
+12. item4 unit_price negative (new)
+13. item4 subtotal negative (new)
+14. payment.card_last4 length not 4 (new)
+15. maybe item quantity must be integer? they are.
+16. maybe item quantity must be >0 (we counted item3)
+17. maybe item unit_price must be numeric (they are)
+18. maybe item subtotal must be numeric (they are)
+19. maybe payment.card_last4 must be numeric (it is)
+20. maybe payment.card_expiry must be valid format (it is)
+21. maybe loyalty_tier must be allowed (platinum ok)
+22. maybe shipping.method must be allowed (express ok)
+23. maybe discount_amount must be >=0 (ok)
+24. maybe order_total must be >=0 (ok)
+25. maybe payment.amount must be >=0 (ok)
+26. maybe items array length 1-50 (ok)
+27. maybe each item must have sku, name, quantity, unit_price, subtotal (all present except sku empty)
+28. maybe each item's name must be non-empty (ok)
+29. maybe each item's quantity must be integer (ok)
+30. maybe each item's unit_price must be number (ok)
+31. maybe each item's subtotal must be number (ok)
+32. maybe discount_code must be non-empty (ok)
+33. maybe same_as_shipping must be boolean (it is)
+34. maybe shipping.address.country must be valid ISO (US ok)
+35. maybe billing.address.country must be valid ISO (US ok)
+36. maybe shipping.address.state must be valid US state (CA ok)
+37. maybe billing.address.state must be valid US state (NY ok)
+38. maybe shipping.address.zip must be 5 digits? 10001 is 5 digits ok.
+39. maybe billing.address.zip must be 5 digits? 90210 ok.
+40. maybe shipping.address.city must be non-empty (ok)
+41. maybe billing.address.city non-empty (ok)
+42. maybe shipping.address.street non-empty (ok)
+43. maybe billing.address.street non-empty (ok)
+44. maybe payment.method must be non-empty (ok)
+45. maybe payment.card_last4 must be non-empty (ok)
+46. maybe payment.card_expiry must be non-empty (ok)
+47. maybe payment.amount must be non-empty (ok)
+48. maybe payment.currency must be non-empty (ok)
+49. maybe order_date must be non-empty (ok)
+50. maybe delivery_date must be non-empty (ok)
+51. maybe discount_code must be non-empty (ok)
+52. maybe discount_amount must be non-empty (ok)
+53. maybe order_total must be non-empty (ok)
+54. maybe customer.name must be non-empty (ok)
+55. maybe customer.email must be non-empty (ok)
+56. maybe customer.phone must be non-empty (ok)
+57. maybe customer.loyalty_tier must be non-empty (ok)
+58. maybe shipping.method must be non-empty (ok)
+59. maybe notes can be any string (empty ok)
+
+Thus only new errors we can count are: empty sku, negative unit_price, negative subtotal, card_last4 length. That's 4 more, making total 14. Need one more.
+
+Maybe also check that item quantity must be >0 (we counted item3 quantity 0 as error). Already counted.
+
+Maybe also check that item quantity must be integer (they are). Not.
+
+Maybe also check that item unit_price must be >0 (we counted negative). Good.
+
+Maybe also check that item subtotal must be >=0 (we counted negative). Good.
+
+Maybe also check that payment.card_last4 must be exactly 4 digits AND numeric (we counted length). Good.
+
+Maybe also check that payment.card_expiry must be in format YYYY-MM and month between 01-12 (we have 06 ok). Not error.
+
+Maybe also check that payment.card_expiry year must be >= current year? Not.
+
+Maybe also check that order_date must be before today? Not.
+
+Maybe also check that delivery_date must be after today? Not.
+
+Maybe also check that discount_amount must be less than or equal to sum of subtotals (we have 50 < 209.95 ok).
+
+Maybe also check that discount_code must be associated with discount_amount >0? discount_amount 50 >0 ok.
+
+Maybe also check that loyalty_tier must be one of allowed values; platinum ok.
+
+Maybe also check that shipping.method must be one of allowed values; express ok.
+
+Maybe also check that notes must be string (it is).
+
+Maybe also check that customer.phone must match regex for international format: + followed by digits and hyphens? The phone "+44-555-012-3456" has hyphens; maybe invalid because hyphens not allowed. Could be error.
+
+If we consider phone format invalid, that adds error.
+
+Let's see: typical validation might require phone to be E.164: + followed by up to 15 digits, no hyphens. So hyphens make it invalid. That would be an error.
+
+Thus we can count phone format error as additional.
+
+Now total errors:
+
+1 email disposable
+2 billing address mismatch
+3 item2 subtotal mismatch
+4 item3 quantity out of range
+5 item3 subtotal mismatch
+6 delivery_date not after order_date
+7 payment.card_expiry not after order_date
+8 payment.amount not equal order_total
+9 customer.phone country code mismatch shipping.country
+10 shipping.zip invalid for state
+11 item4 sku empty
+12 item4 unit_price negative
+13 item4 subtotal negative
+14 payment.card_last4 length not 4
+15 customer.phone format invalid (hyphens)
+
+That's 15 errors.
+
+Let's verify we didn't double-count any: item3 quantity out of range and subtotal mismatch are separate errors (both counted). Good.
+
+Now produce JSON with errors descriptions and error_count 15.
+
+We need to describe each error succinctly.
+
+Let's list:
+
+1. "Customer email domain is disposable (mailinator.com)"
+2. "Billing address does not match shipping address when same_as_shipping is true"
+3. "Item ITEM-002 subtotal does not equal quantity * unit_price (2 * 49.99 = 99.98, got 109.98)"
+4. "Item ITEM-003 quantity is 0, must be between 1 and 999"
+5. "Item ITEM-003 subtotal does not equal quantity * unit_price (0 * 15.00 = 0, got 15.00)"
+6. "Delivery date (2025-12-15) is not after order date (2026-01-15)"
+7. "Payment card expiry (2025-06) is not after order date (2026-01-15)"
+8. "Payment amount (200.00) does not equal order total (159.95)"
+9. "Customer phone country code (+44) does not match shipping country (US)"
+10. "Shipping ZIP code (10001) invalid for state CA (should start with 9)"
+11. "Item ITEM-004 SKU is empty"
+12. "Item ITEM-004 unit price is negative (-5.00)"
+13. "Item ITEM-004 subtotal is negative (-5.00)"
+14. "Payment card last four digits must be exactly 4 digits, got '12345'"
+15. "Customer phone number format invalid (contains hyphens)"
+
+Check that we didn't miss any other like maybe item quantity must be integer (they are). Good.
+
+Now output JSON.
+
+</think>
+
+{
+  "errors": [
+    "Customer email domain is disposable (mailinator.com)",
+    "Billing address does not match shipping address when same_as_shipping is true",
+    "Item ITEM-002 subtotal does not equal quantity * unit_price (2 * 49.99 = 99.98, got 109.98)",
+    "Item ITEM-003 quantity is 0, must be between 1 and 999",
+    "Item ITEM-003 subtotal does not equal quantity * unit_price (0 * 15.00 = 0, got 15.00)",
+    "Delivery date (2025-12-15) is not after order date (2026-01-15)",
+    "Payment card expiry (2025-06) is not after order date (2026-01-15)",
+    "Payment amount (200.00) does not equal order total (159.95)",
+    "Customer phone country code (+44) does not match shipping country (US)",
+    "Shipping ZIP code (10001) invalid for state CA (should start with 9)",
+    "Item ITEM-004 SKU is empty",
+    "Item ITEM-004 unit price is negative (-5.00)",
+    "Item ITEM-004 subtotal is negative (-5.00)",
+    "Payment card last four digits must be exactly 4 digits, got '12345'",
+    "Customer phone number format invalid (contains hyphens)"
+  ],
+  "error_count": 15
+}

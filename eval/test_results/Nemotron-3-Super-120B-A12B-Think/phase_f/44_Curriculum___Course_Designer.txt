@@ -1,0 +1,251 @@
+{
+  "weeks": [
+    {
+      "week": 1,
+      "theme": "Fundamentals – Variables, Data Types & Control Flow",
+      "sessions": [
+        {
+          "day": 1,
+          "topic": "Introduction & Setting Up Environment",
+          "objectives": [
+            "Install Python and configure an IDE",
+            "Understand the REPL and run a simple script",
+            "Declare variables and identify basic data types (int, float, str, bool)"
+          ],
+          "lecture_min": 45,
+          "handson_min": 45
+        },
+        {
+          "day": 2,
+          "topic": "Control Structures – Conditionals & Loops",
+          "objectives": [
+            "Write if/elif/else statements",
+            "Implement while and for loops with range",
+            "Apply loops to iterate over strings and lists"
+          ],
+          "lecture_min": 45,
+          "handson_min": 45
+        },
+        {
+          "day": 3,
+          "topic": "Functions – Definition, Parameters & Return Values",
+          "objectives": [
+            "Define functions with def and call them",
+            "Use positional and keyword arguments",
+            "Return values and understand None"
+          ],
+          "lecture_min": 45,
+          "handson_min": 45
+        }
+      ],
+      "quiz": "Quiz on variables, data types, conditionals, loops, and basic functions",
+      "assignment": "Create a script that prompts the user for numbers, stores them in a list, and prints the sum, average, and max using a function"
+    },
+    {
+      "week": 2,
+      "theme": "Fundamentals – Data Structures, File I/O & Error Handling",
+      "sessions": [
+        {
+          "day": 1,
+          "topic": "Core Data Structures – Lists, Tuples, Dictionaries, Sets",
+          "objectives": [
+            "Create and manipulate lists and tuples",
+            "Work with dictionaries for key‑value storage",
+            "Use sets for unique items and basic set operations"
+          ],
+          "lecture_min": 45,
+          "handson_min": 45
+        },
+        {
+          "day": 2,
+          "topic": "File I/O – Reading & Writing Text Files",
+          "objectives": [
+            "Open files with different modes (r, w, a)",
+            "Read lines, split content, and write formatted output",
+            "Use context managers (with) to safely handle files"
+          ],
+          "lecture_min": 45,
+          "handson_min": 45
+        },
+        {
+          "day": 3,
+          "topic": "Error Handling – Exceptions & Defensive Coding",
+          "objectives": [
+            "Raise and catch exceptions with try/except/else/finally",
+            "Distinguish common built‑in exceptions (ValueError, IOError, etc.)",
+            "Create custom exception classes"
+          ],
+          "lecture_min": 45,
+          "handson_min": 45
+        }
+      ],
+      "quiz": "Quiz on lists, dicts, file operations, and exception handling",
+      "assignment": "Write a program that reads a CSV‑like text file, converts each line to a dictionary, and writes the data to a JSON file, handling missing fields gracefully"
+    },
+    {
+      "week": 3,
+      "theme": "Intermediate – Functions, Modules & Testing Basics",
+      "sessions": [
+        {
+          "day": 1,
+          "topic": "Advanced Functions – Defaults, *args/**kwargs, Lambdas",
+          "objectives": [
+            "Define functions with default argument values",
+            "Use *args and **kwargs for flexible argument passing",
+            "Write simple lambda expressions and use them with map/filter"
+          ],
+          "lecture_min": 45,
+          "handson_min": 45
+        },
+        {
+          "day": 2,
+          "topic": "Modules & Packages – Importing and Creating Libraries",
+          "objectives": [
+            "Import standard library modules (math, random, datetime)",
+            "Create a custom module and import it in another script",
+            "Understand __name__ == '__main__' for script reuse"
+          ],
+          "lecture_min": 45,
+          "handson_min": 45
+        },
+        {
+          "day": 3,
+          "topic": "Introduction to Testing – Assertions & unittest",
+          "objectives": [
+            "Write assert statements to verify conditions",
+            "Structure a basic unittest test case with setUp and tearDown",
+            "Run tests from the command line and interpret results"
+          ],
+          "lecture_min": 45,
+          "handson_min": 45
+        }
+      ],
+      "quiz": "Quiz on function arguments, modules, and basic unit testing",
+      "assignment": "Develop a module that provides statistical functions (mean, median, mode) and write a unittest suite that tests edge cases"
+    },
+    {
+      "week": 4,
+      "theme": "Intermediate – Classes, APIs & Generators",
+      "sessions": [
+        {
+          "day": 1,
+          "topic": "Object‑Oriented Programming – Classes, Attributes & Methods",
+          "objectives": [
+            "Define a class with __init__, instance attributes, and methods",
+            "Differentiate between class and instance variables",
+            "Implement a simple class representing a bank account"
+          ],
+          "lecture_min": 45,
+          "handson_min": 45
+        },
+        {
+          "day": 2,
+          "topic": "Consuming REST APIs – requests library & JSON",
+          "objectives": [
+            "Install and import the requests package",
+            "Perform GET requests and parse JSON responses",
+            "Handle HTTP errors and query parameters"
+          ],
+          "lecture_min": 45,
+          "handson_min": 45
+        },
+        {
+          "day": 3,
+          "topic": "Generators & Iterators – yield and lazy evaluation",
+          "objectives": [
+            "Write a generator function using yield",
+            "Explain the difference between generators and lists",
+            "Use generator expressions and built‑ins like any/all with generators"
+          ],
+          "lecture_min": 45,
+          "handson_min": 45
+        }
+      ],
+      "quiz": "Quiz on classes, API requests, and generators",
+      "assignment": "Create a class that fetches weather data from a public API, stores the result, and provides a generator that yields forecast entries one by one"
+    },
+    {
+      "week": 5,
+      "theme": "Advanced – Decorators, Testing Frameworks & Advanced File I/O",
+      "sessions": [
+        {
+          "day": 1,
+          "topic": "Decorators – Function Wrappers & @property",
+          "objectives": [
+            "Create a simple decorator that logs function calls",
+            "Apply decorators to functions and methods",
+            "Use @property to manage attribute access"
+          ],
+          "lecture_min": 45,
+          "handson_min": 45
+        },
+        {
+          "day": 2,
+          "topic": "Testing with pytest – Fixtures & Parametrization",
+          "objectives": [
+            "Write test functions using pytest syntax",
+            "Implement fixtures for setup/teardown",
+            "Use @pytest.mark.parametrize to test multiple inputs"
+          ],
+          "lecture_min": 45,
+          "handson_min": 45
+        },
+        {
+          "day": 3,
+          "topic": "Advanced File I/O – CSV, JSON & Binary Files",
+          "objectives": [
+            "Read and write CSV files with the csv module",
+            "Serialize and deserialize complex objects to JSON",
+            "Handle binary files (e.g., images) using 'rb' and 'wb' modes"
+          ],
+          "lecture_min": 45,
+          "handson_min": 45
+        }
+      ],
+      "quiz": "Quiz on decorators, pytest, and advanced file handling",
+      "assignment": "Build a utility that reads a CSV of user data, decorates a processing function to log each record, writes the processed data to JSON, and includes a pytest suite verifying the transformation"
+    },
+    {
+      "week": 6,
+      "theme": "Advanced – Project Integration & Review",
+      "sessions": [
+        {
+          "day": 1,
+          "topic": "Project Planning – Architecture & Concept Mapping",
+          "objectives": [
+            "Identify which core concepts will be used in the final project",
+            "Sketch a simple data flow diagram",
+            "Assign tasks and set milestones for the week"
+          ],
+          "lecture_min": 45,
+          "handson_min": 45
+        },
+        {
+          "day": 2,
+          "topic": "Hands‑On Development – Coding the Solution",
+          "objectives": [
+            "Implement API data fetching with requests",
+            "Process streams using generators",
+            "Persist results to a file and apply decorators for logging"
+          ],
+          "lecture_min": 45,
+          "handson_min": 45
+        },
+        {
+          "day": 3,
+          "topic": "Testing, Refinement & Presentation",
+          "objectives": [
+            "Write unit tests for critical components",
+            "Debug and optimize the code",
+            "Present the final project and discuss lessons learned"
+          ],
+          "lecture_min": 45,
+          "handson_min": 45
+        }
+      ],
+      "quiz": "Quiz reviewing all course concepts (variables, functions, classes, file I/O, APIs, testing, data structures, error handling, decorators, generators)",
+      "assignment": "Complete the final project: a command‑line tool that retrieves data from a public API, processes it with generators, saves results to a file, includes a test suite, and uses decorators for logging and timing"
+    }
+  ],
+  "final_project": "Build a command‑line utility that: 1) calls a public REST API (e.g., OpenWeather or GitHub) using the requests library; 2) streams the response through a generator to extract relevant fields; 3) writes the extracted data to a CSV/JSON file using appropriate file I/O; 4) applies at least two custom decorators (e.g., logging and timing) to key functions; 5) includes a pytest test suite validating the API wrapper, generator, and file output; 6) demonstrates use of classes (e.g., a WeatherData class) and error handling for network failures."
+}
