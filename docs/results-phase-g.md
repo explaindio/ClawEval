@@ -57,7 +57,7 @@ Phase F tests showed identical scores (10/10) across all models for ~15 roles, m
 
 ## 64–96GB VRAM Results
 
-| # | Test | Nemotron Think | Nemotron NoThink | 122B NoThink | GPT-OSS-120B Med |
+| # | Test | Nemotron-3-Super-120B-A12B Think | Nemotron-3-Super-120B-A12B NoThink | 122B NoThink | GPT-OSS-120B Med |
 |---|------|:----------:|:----------:|:----------:|:----------:|
 | | | Nemotron-3-Super-120B | Nemotron-3-Super-120B | Qwen3.5-122B-A10B | GPT-OSS-120B |
 | | | NVFP4 · SGLang | NVFP4 · SGLang | NVFP4 · SGLang | GGUF · llama.cpp |
@@ -114,7 +114,7 @@ Phase F tests showed identical scores (10/10) across all models for ~15 roles, m
 | 6 | **27B NoThink** | 83/110 (75%) | Local 24GB · Best budget model |
 | 7 | **GPT-OSS-120B** | 82/110 (75%) | Local 64-96GB · Good all-rounder |
 | 8 | **GLM-5 NoThink** | 80/110 (73%) | Cloud · Better than Think mode |
-| 9 | **Nemotron NoThink** | 78/110 (71%) | Local 64-96GB · Code Gen 0 hurts |
+| 9 | **Nemotron-3-Super-120B-A12B NoThink** | 78/110 (71%) | Local 64-96GB · Code Gen 0 hurts |
 | 10 | **MiniMax-M2.5** | 78/110 (71%) | Cloud · Think only |
 | 11 | **35B NoThink** | 77/110 (70%) | Local 24GB |
 | 12 | **GLM-5 Think** | 76/110 (69%) | Cloud · Timeout hurt score |

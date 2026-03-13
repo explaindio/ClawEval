@@ -2,7 +2,7 @@
 
 [← Back to Main Results](../README.md) · [Full Detailed Results →](../RESULTS.md)
 
-| # | Agent Role | GPT-OSS-120B Med | 122B Think 16K | Nemotron Think | Nemotron NoThink |
+| # | Agent Role | GPT-OSS-120B Med | 122B Think 16K | Nemotron-3-Super-120B-A12B Think | Nemotron-3-Super-120B-A12B NoThink |
 |---|---|---|---|---|---|
 | | | GPT-OSS-120B · GGUF · llama.cpp | Qwen3.5-122B-A10B · NVFP4 · SGLang | Nemotron-3-Super-120B · NVFP4 · SGLang | Nemotron-3-Super-120B · NVFP4 · SGLang |
 | | **Tier 1 — Utility** | | | | |
@@ -77,8 +77,8 @@
 - **GPT-OSS-120B** runs on llama-server with GGUF weights (~61GB). Tool calling: 9/10 (90%)
 - **Qwen3.5-122B-A10B** runs on SGLang with NVFP4 and 16K thinking budget
 - **Nemotron-3-Super-120B-A12B** is a hybrid SSM/Transformer (Mamba) architecture, 69.7 GB model, runs on SGLang with NVFP4, 262K context
-- Nemotron Think excels on: Travel (10), Market Research (8), Task Planning (10), Lead Scoring (10)
-- Nemotron NoThink matches or beats Think on: Recipe (9 vs 2), Medical (10 vs 9), most Tier 2 roles
+- Nemotron-3-Super-120B-A12B Think excels on: Travel (10), Market Research (8), Task Planning (10), Lead Scoring (10)
+- Nemotron-3-Super-120B-A12B NoThink matches or beats Think on: Recipe (9 vs 2), Medical (10 vs 9), most Tier 2 roles
 
 ### 122B NoThink (Phase G only)
 
