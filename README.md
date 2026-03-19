@@ -29,6 +29,31 @@ We test quantized open-source models that fit on hardware you already own. Find 
 
 > 📖 **VRAM Guides:** [8–16GB Small Models](docs/results-small-vram.md) · [16GB](docs/OpenClaw%2016GB%20VRAM%20Local%20LLM%20Subagents.md) · [24GB](docs/The%2024GB%20VRAM%20Tier_%20Where%20Local%20AI%20Agents%20Get%20Serious.md) · [32GB](docs/openclaw-model-selection-32gb-tier.md) · [48GB](docs/openclaw-48gb-tier.md) · [64GB](docs/openclaw-64gb-tier.md) · [96GB](docs/openclaw-96gb-tier.md) — Which models fit, context limits, speed estimates
 
+#### 🧩 Which Tested Models Fit on Your Hardware?
+
+No discrete GPU? Unified-memory devices can run these models directly. Estimates are **conservative** — they account for OS overhead (~4–8 GB) and KV cache for reasonable context windows.
+
+| Model (as tested) | Weights | Mac Mini M4 (16 GB) | Mac Mini M4 Pro (24 GB) | Mac Mini M4 Pro (48 GB) | Strix Halo (128 GB) | DGX Spark (128 GB) |
+|---|---|:---:|:---:|:---:|:---:|:---:|
+| Qwen3.5-0.8B Q4_K_M | ~0.5 GB | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Qwen3.5-2B Q4_K_M | ~1.5 GB | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Qwen3.5-4B Q4_K_M | ~2.8 GB | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Ministral-3B Q4_K_M | ~2 GB | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Ministral-8B Q4_K_M | ~5 GB | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Qwen3.5-9B Q4_K_M | ~6 GB | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Ministral-14B Q4_K_M | ~9 GB | ⚠️ tight | ✅ | ✅ | ✅ | ✅ |
+| Qwen3.5-27B Q4_K_M | ~17 GB | ❌ | ⚠️ tight | ✅ | ✅ | ✅ |
+| Qwen3.5-35B-A3B NVFP4 | ~20 GB | ❌ | ❌ | ✅ | ✅ | ✅ |
+| GPT-OSS-120B GGUF | ~61 GB | ❌ | ❌ | ❌ | ✅ | ✅ |
+| Qwen3.5-122B-A10B NVFP4 | ~70 GB | ❌ | ❌ | ❌ | ✅ | ✅ |
+| Nemotron-3-Super-120B-A12B NVFP4 | ~70 GB | ❌ | ❌ | ❌ | ✅ | ✅ |
+
+> ⚠️ **tight** = model loads but leaves little room for KV cache / long context. Short prompts only.
+>
+> **Strix Halo** = AMD Ryzen AI Max (up to 128 GB LPDDR5X, 96 GB allocatable to GPU). **DGX Spark** = NVIDIA GB10 (128 GB LPDDR5X unified). Both can run 120B-class models locally.
+>
+> Mac Mini M4 Pro 64 GB and M4 Max 128 GB configs exist but are not listed — they slot between the columns above.
+
 ### ☁️ CLOUD Models — Run via API
 
 Don't have a GPU? We also test open-source models hosted on cloud providers so you can compare **local vs cloud performance at every agent role.** Same tests, same scoring — find out if paying for cloud is worth it, or if your local setup already matches.
