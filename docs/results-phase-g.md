@@ -112,15 +112,15 @@ Phase F tests showed identical scores (10/10) across all models for ~15 roles, m
 | 🥉 | **Kimi K2.5 NoThink** | 91/110 (83%) | Cloud · Faster · No thinking overhead |
 | 4 | **122B NoThink** | 87/110 (79%) | Local 64-96GB |
 | 5 | **Qwen3.5-Plus Think** | 86/110 (78%) | Cloud · Fact-Check 10/10, Algorithm 10/10 |
+| 6 | **MiniMax-M2.7** | 83/110 (75%) | Cloud · With 16-24k tokens. Input Validator 9/10 |
 | 6 | **27B NoThink** | 83/110 (75%) | Local 24GB · Best budget model |
-| 7 | **GPT-OSS-120B** | 82/110 (75%) | Local 64-96GB · Good all-rounder |
-| 7 | **Mistral-Small-4-119B** | 82/110 (75%) | Local 64-96GB · Research 10/10 |
-| 9 | **GLM-5 NoThink** | 80/110 (73%) | Cloud · Better than Think mode |
-| 10 | **Nemotron-3-Super-120B-A12B NoThink** | 78/110 (71%) | Local 64-96GB · Code Gen 0 hurts |
-| 10 | **MiniMax-M2.5** | 78/110 (71%) | Cloud · Think only |
-| 12 | **35B NoThink** | 77/110 (70%) | Local 24GB |
-| 13 | **GLM-5 Think** | 76/110 (69%) | Cloud · Timeout hurt score |
-| 14 | **MiniMax-M2.7** | 64/110 (58%) | Cloud · Reasoning overflow on 4 tests |
+| 8 | **GPT-OSS-120B** | 82/110 (75%) | Local 64-96GB · Good all-rounder |
+| 8 | **Mistral-Small-4-119B** | 82/110 (75%) | Local 64-96GB · Research 10/10 |
+| 10 | **GLM-5 NoThink** | 80/110 (73%) | Cloud · Better than Think mode |
+| 11 | **Nemotron-3-Super-120B-A12B NoThink** | 78/110 (71%) | Local 64-96GB · Code Gen 0 hurts |
+| 11 | **MiniMax-M2.5** | 78/110 (71%) | Cloud · Think only |
+| 13 | **35B NoThink** | 77/110 (70%) | Local 24GB |
+| 14 | **GLM-5 Think** | 76/110 (69%) | Cloud · Timeout hurt score |
 | 15 | **35B Think** | 51/60 (85%)* | Local · 5/11 tests overflow |
 | 16 | **0.8B Think / NT** | 33/110 (30%) | Local 8GB · Research 8/10 is impressive |
 

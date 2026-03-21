@@ -7,15 +7,15 @@
 | Model | Score | Total Tokens | Avg Tok/Test | Speed |
 |-------|-------|:---:|:---:|:---:|
 | **Qwen3.5+ NT** 🥇 | **482/590 (82%)** | 36K | **609** | ~40 t/s |
+| **M2.7 Think** 🥇 | **482/590 (82%)** | ~280K | ~4,750 | ~45 t/s |
 | **K2.5 Think** | 473/590 (80%) | 43K | 734 | ~30 t/s |
 | **K2.5 NoThink** | 469/590 (80%) | 46K | 774 | ~35 t/s |
 | **Qwen3.5+ Think** | 465/590 (79%) | **328K** | **5,562** | ~60 t/s |
 | **GLM-5 Think** | 465/590 (79%) | 185K | 3,137 | ~45 t/s |
 | **M2.5 Think** | 465/590 (79%) | 125K | 2,112 | **~85 t/s** |
 | **GLM-5 NoThink** | 461/590 (78%) | 34K | 578 | ~30 t/s |
-| **M2.7 Think** | 444/582 (76%) | ~190K | ~3,200 | ~45 t/s |
 
-> 💡 **Qwen3.5-Plus NoThink is the new Phase F champion** at 482/590 (82%) — beating K2.5 Think by 9 points. It's also the most token-efficient (609 tok/test). MiniMax-M2.5 is the fastest per-token (~85 t/s). Qwen3.5-Plus Think uses the most tokens (328K) due to heavy reasoning.
+> 💡 **Qwen3.5-Plus NoThink and MiniMax-M2.7 tie for Phase F champion** at 482/590 (82%). Qwen is the most token-efficient (609 tok/test), M2.7 uses heavy reasoning (~4,750 tok/test) but needs 16-24k max_tokens to avoid truncation.
 
 ---
 
@@ -133,7 +133,7 @@ See [Phase G Results](results-phase-g.md#%EF%B8%8F-cloud-models) for the 11 hard
 - Think: 78/110 (71%) — Content Planner timed out (0/10), NoThink not supported
 
 **MiniMax-M2.7:**
-- Think: 64/110 (58%) — Regresses from M2.5. Code Gen 0/10, Input Validator 0/10, STEM 0/10 (all reasoning overflow at 8000 tokens)
+- Think: 83/110 (75%) — With proper token budget (16-24k). Input Validator 9/10, Algorithm 9/10, STEM 5/10. Content Planner 0/10 (genuine failure).
 
 **Qwen3.5-Plus:**
 - Think: 86/110 (78%) — Fact-Check 10/10 (20/20), Algorithm 10/10

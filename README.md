@@ -65,10 +65,10 @@ Don't have a GPU? We also test open-source models hosted on cloud providers so y
 | Alibaba Coding Plan | **Kimi K2.5** — 473/590 (80%) Phase F, 96/110 (87%) Phase G | ✅ Tested |
 | Alibaba Coding Plan | **GLM-5** — 465/590 (79%) Phase F, 80/110 (73%) Phase G | ✅ Tested |
 | Alibaba Coding Plan | **MiniMax-M2.5** — 465/590 (79%) Phase F, 78/110 (71%) Phase G | ✅ Tested |
-| Ollama Cloud | **MiniMax-M2.7** — 444/582 (76%) Phase F, 64/110 (58%) Phase G | ✅ Tested |
+| Ollama Cloud | **MiniMax-M2.7** — 482/590 (82%) Phase F, 83/110 (75%) Phase G | ✅ Tested |
 | OpenRouter, Alibaba, and other affordable providers | Open-source models via API | 🔜 Coming soon |
 
-> ⚠️ **Why is M2.7 lower than M2.5?** M2.7 over-thinks. It burns its entire token budget on internal reasoning and never produces the actual answer on structured tasks (Translation, Content Planner, Home Automation, Travel Planning all score 0/10). We tested all three `reasoning_effort` levels (low/medium/high) — High scored best at 444. The issue is not fixable via API parameters; it's a model-level regression on structured output tasks.
+> 💡 **M2.7 ties Qwen3.5-Plus for Phase F champion** at 482/590 (82%). Initial low scores were caused by insufficient token budget — M2.7's reasoning tokens count against `max_tokens`, requiring 16-24k to avoid truncation.
 
 ## 🏆 Best Model Per Role — Which One Should You Run?
 
