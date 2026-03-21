@@ -68,6 +68,7 @@ Don't have a GPU? We also test open-source models hosted on cloud providers so y
 | Ollama Cloud | **MiniMax-M2.7** — 444/582 (76%) Phase F, 64/110 (58%) Phase G | ✅ Tested |
 | OpenRouter, Alibaba, and other affordable providers | Open-source models via API | 🔜 Coming soon |
 
+> ⚠️ **Why is M2.7 lower than M2.5?** M2.7 over-thinks. It burns its entire token budget on internal reasoning and never produces the actual answer on structured tasks (Translation, Content Planner, Home Automation, Travel Planning all score 0/10). We tested all three `reasoning_effort` levels (low/medium/high) — High scored best at 444. The issue is not fixable via API parameters; it's a model-level regression on structured output tasks.
 
 ## 🏆 Best Model Per Role — Which One Should You Run?
 
