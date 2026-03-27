@@ -1,25 +1,22 @@
+**Step‑by‑step calculation of the true total cost for each deal**
 
-**Step‑by‑step cost calculations**
-
-| # | Deal | Base price | Discounts / Rebates | Shipping | Warranty / Add‑ons | Fees | **True total** |
-|---|------|-----------|--------------------|----------|--------------------|------|----------------|
-| 1 | MacBook Air M3 | $1,099.00 | – (AppleCare $199 included in price) | $0.00 | $0.00 (AppleCare already included) | $0.00 | **$1,099.00** |
-| 2 | Dell XPS 15 | $1,249.00 | –15 % → $1,249 × 0.15 = $187.35 discount → $1,061.65 | $49.99 | $129.00 (2‑yr warranty) | $0.00 | **$1,240.64** |
-| 3 | ThinkPad X1 | $1,399.00 | –$200 instant rebate → $1,199.00 <br> –$100 student discount → $1,099.00 | $0.00 (free) | $0.00 (3‑yr warranty free) | $0.00 | **$1,099.00** |
-| 4 | HP Spectre | $999.00 | – | $79.99 | $149.00 (2‑yr warranty) | $29.99 (recycling fee) | **$1,257.98** |
-| 5 | ASUS ZenBook | $1,149.00 | –10 % → $1,149 × 0.10 = $114.90 discount → $1,034.10 | $0.00 (free) | $99.00 (1‑yr extended warranty) | $0.00 | **$1,133.10** |
+| # | Base price | Discount / rebate | Adjusted price | + Shipping | + Warranty / add‑ons | = True total |
+|---|------------|-------------------|----------------|------------|----------------------|--------------|
+| **1 – MacBook Air M3** | $1,099.00 | – | $1,099.00 | $0.00 (free) | $0.00 (AppleCare $199 included) | **$1,099.00** |
+| **2 – Dell XPS 15** | $1,249.00 | –15 % coupon → –$187.35 | $1,061.65 | $49.99 | $129.00 (2‑yr warranty) | **$1,240.64** |
+| **3 – ThinkPad X1** | $1,399.00 | –$200.00 instant rebate → $1,199.00 <br> –$100.00 student discount → $1,099.00 | $1,099.00 | $0.00 (free) | $0.00 (3‑yr warranty included) | **$1,099.00** |
+| **4 – HP Spectre** | $999.00 | – | $999.00 | $79.99 | $149.00 (2‑yr warranty) <br> $29.99 (recycling fee) | **$1,257.98** |
+| **5 – ASUS ZenBook** | $1,149.00 | –10 % loyalty discount → –$114.90 | $1,034.10 | $0.00 (free) | $99.00 (1‑yr extended warranty) | **$1,133.10** |
 
 **Ranking (cheapest → most expensive)**  
 
-- $1,099.00 → Deal 1 (MacBook Air)  
-- $1,099.00 → Deal 3 (ThinkPad X1) – tied, placed after Deal 1 by lower ID  
-- $1,133.10 → Deal 5 (ASUS ZenBook)  
-- $1,240.64 → Deal 2 (Dell XPS 15)  
-- $1,257.98 → Deal 4 (HP Spectre)
+1. **Deal 1** – $1,099.00  
+2. **Deal 3** – $1,099.00 (tie; listed after Deal 1 to preserve original order)  
+3. **Deal 5** – $1,133.10  
+4. **Deal 2** – $1,240.64  
+5. **Deal 4** – $1,257.98  
 
----
-
-### JSON output
+**JSON output**
 
 ```json
 {

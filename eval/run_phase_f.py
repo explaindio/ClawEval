@@ -616,6 +616,7 @@ def main():
     parser.add_argument("--max-tokens", type=int, default=4000, help="Max tokens per response")
     parser.add_argument("--timeout", type=int, default=300, help="Request timeout in seconds")
     parser.add_argument("--delay", type=int, default=0, help="Delay in seconds between tests (for rate-limited APIs)")
+    parser.add_argument("--openrouter-keys", action="store_true", help="Use multi-key rotation for OpenRouter free tier (loads keys from .env)")
     parser.add_argument("--thinking-budget", type=int, help="SGLang thinking token budget")
     parser.add_argument("--nothink", action="store_true", help="Disable thinking (Kimi: chat_template_kwargs.thinking=False)")
     parser.add_argument("--nothink-root", action="store_true", help="Disable thinking (GLM-5: enable_thinking=false at root level)")
@@ -624,6 +625,21 @@ def main():
     parser.add_argument("--test-ids", type=int, nargs="*", help="Run only these test IDs")
     parser.add_argument("--tier", type=int, help="Run only this tier")
     args = parser.parse_args()
+
+    # Initialize OpenRouter key rotator if requested
+    rotator = None
+    if args.openrouter_keys:
+        env_path = str(Path(__file__).parent.parent / ".env")
+        # Manually load .env file into os.environ
+        if os.path.exists(env_path):
+            with open(env_path) as ef:
+                for line in ef:
+                    line = line.strip()
+                    if line and not line.startswith('#') and '=' in line:
+                        k, v = line.split('=', 1)
+                        os.environ[k.strip()] = v.strip()
+        from openrouter_keys import OpenRouterKeyRotator
+        rotator = OpenRouterKeyRotator()
 
     api_model = args.api_model or args.model
     reasoning_prefix = f"Reasoning: {args.reasoning}" if args.reasoning else None
@@ -668,8 +684,8 @@ def main():
         is_manual = test["scoring_type"] == "manual"
         manual_tag = " [MANUAL]" if is_manual else ""
 
-        # Delay between tests (for rate-limited cloud APIs)
-        if i > 0 and args.delay:
+        # Delay between tests (for rate-limited cloud APIs) — skip if using key rotation
+        if i > 0 and args.delay and not rotator:
             import random
             jitter = random.randint(0, max(3, args.delay // 4))
             wait = args.delay + jitter
@@ -678,7 +694,28 @@ def main():
 
         print(f"[{i+1}/{len(tests)}] #{tid} T{tier}: {role}{manual_tag}")
 
-        result = run_test(test, args.base_url, api_model, args.max_tokens, args.timeout, extra_body=extra_body, reasoning_prefix=reasoning_prefix, api_key=args.api_key)
+        if rotator:
+            # Use key rotation — call_llm is handled by the rotator
+            messages = []
+            if reasoning_prefix:
+                messages.append({"role": "system", "content": reasoning_prefix})
+            messages.append({"role": "user", "content": test["prompt"]})
+            content, tokens, tps, elapsed = rotator.call_llm(
+                messages, args.base_url, api_model, args.max_tokens, args.timeout, extra_body=extra_body
+            )
+            scoring = test["scoring"]
+            stype = scoring["type"]
+            scorer = SCORERS.get(stype)
+            if scorer:
+                score, max_score, detail = scorer(content, scoring)
+            else:
+                score, max_score, detail = 0, 10, f"Unknown scoring type: {stype}"
+            result = {
+                "score": score, "max_score": max_score, "detail": detail,
+                "tokens": tokens, "tps": tps, "elapsed": elapsed, "response": content,
+            }
+        else:
+            result = run_test(test, args.base_url, api_model, args.max_tokens, args.timeout, extra_body=extra_body, reasoning_prefix=reasoning_prefix, api_key=args.api_key)
 
         score = result["score"]
         max_score = result["max_score"]
@@ -704,6 +741,10 @@ def main():
         resp_file = out_dir / f"{tid:02d}_{safe_role}.txt"
         with open(resp_file, "w") as f:
             f.write(result.get("response", ""))
+
+    # Print rotation stats if used
+    if rotator:
+        rotator.print_stats()
 
     # Summary
     print(f"\n{'='*60}")

@@ -1,0 +1,17 @@
+```json
+{
+  "issues": [
+    {"line": "1", "problem": "Compose file version '2' is outdated and no longer supported", "fix": "Use version '3.8' or higher (e.g., version: '3.8')"},
+    {"line": "4", "problem": "Using 'latest' tag is non-deterministic - image may change unexpectedly", "fix": "Use a specific version tag (e.g., image: node:18-alpine)"},
+    {"line": "7", "problem": "Database password stored in plaintext in environment variables", "fix": "Use Docker secrets: define secret in compose file and reference via 'secrets' key"},
+    {"line": "8", "problem": "NODE_ENV set to 'development' - should be 'production' for production", "fix": "Change to NODE_ENV: production"},
+    {"line": "10", "problem": "Host directory mount (.:/app) makes container dependent on host filesystem and is not reproducible", "fix": "Remove host volume mount or use a named volume instead"},
+    {"line": "11", "problem": "restart: no means container won't restart after crash or reboot", "fix": "Change to 'unless-stopped' or 'always'"},
+    {"line": "14", "problem": "MySQL 5.6 reached End of Life (EOL) and no longer receives security updates", "fix": "Upgrade to MySQL 8.0 or 8.4 LTS"},
+    {"line": "18", "problem": "MySQL root password stored in plaintext in environment variables", "fix": "Use Docker secrets or environment file with restricted permissions"},
+    {"line": "20", "problem": "Using /tmp for persistent data - contents will be lost on reboot", "fix": "Use a named volume (e.g., mysql-data:/var/lib/mysql) or persistent storage path"},
+    {"line": "22", "problem": "Redis port exposed publicly without authentication", "fix": "Remove public port mapping or add password authentication via redis.conf"}
+  ],
+  "count": 10
+}
+```

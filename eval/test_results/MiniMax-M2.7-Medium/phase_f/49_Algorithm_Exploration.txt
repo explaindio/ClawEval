@@ -1,0 +1,70 @@
+```python
+def lru_cache(capacity):
+    class Node:
+        __slots__ = ("key", "val", "prev", "next")
+        def __init__(self, key=0, val=0):
+            self.key = key
+            self.val = val
+            self.prev = None
+            self.next = None
+
+    class DoublyLinkedList:
+        def __init__(self):
+            self.head = Node()   # sentinel LRU end
+            self.tail = Node()   # sentinel MRU end
+            self.head.next = self.tail
+            self.tail.prev = self.head
+
+        def add_to_tail(self, node):
+            node.prev = self.tail.prev
+            node.next = self.tail
+            self.tail.prev.next = node
+            self.tail.prev = node
+
+        def remove_node(self, node):
+            node.prev.next = node.next
+            node.next.prev = node.prev
+
+        def pop_head(self):
+            if self.head.next is self.tail:
+                return None
+            lru = self.head.next
+            self.remove_node(lru)
+            return lru
+
+    class LRUCache:
+        __slots__ = ("capacity", "cache", "dll")
+        def __init__(self, cap):
+            self.capacity = cap
+            self.cache = {}
+            self.dll = DoublyLinkedList()
+
+        def get(self, key):
+            if key in self.cache:
+                node = self.cache[key]
+                # move to most‑recently‑used position
+                self.dll.remove_node(node)
+                self.dll.add_to_tail(node)
+                return node.val
+            return -1
+
+        def put(self, key, value):
+            if key in self.cache:
+                node = self.cache[key]
+                node.val = value
+                # update recency
+                self.dll.remove_node(node)
+                self.dll.add_to_tail(node)
+            else:
+                # evict LRU if at capacity
+                if self.capacity > 0 and len(self.cache) == self.capacity:
+                    lru_node = self.dll.pop_head()
+                    if lru_node:
+                        del self.cache[lru_node.key]
+                if self.capacity > 0:
+                    new_node = Node(key, value)
+                    self.cache[key] = new_node
+                    self.dll.add_to_tail(new_node)
+
+    return LRUCache(capacity)
+```

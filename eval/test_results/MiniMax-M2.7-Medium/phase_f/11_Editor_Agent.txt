@@ -1,0 +1,55 @@
+```json
+{
+  "errors": [
+    {
+      "type": "factual",
+      "location": "sentence 1",
+      "error": "The Eiffel Tower is in Paris, France, not London",
+      "fix": "Replace 'London' with 'Paris'"
+    },
+    {
+      "type": "grammar",
+      "location": "sentence 3",
+      "error": "'recieves' is misspelled",
+      "fix": "Replace 'recieves' with 'receives'"
+    },
+    {
+      "type": "grammar",
+      "location": "sentence 3",
+      "error": "'monument' should be plural to follow 'one of the most visited'",
+      "fix": "Replace 'monument' with 'monuments'"
+    },
+    {
+      "type": "factual",
+      "location": "sentence 4",
+      "error": "The Eiffel Tower is made of iron, not copper",
+      "fix": "Replace 'copper' with 'iron'"
+    },
+    {
+      "type": "factual",
+      "location": "sentence 4",
+      "error": "The Eiffel Tower weighs approximately 7,300 tons (tonnes), not 10,100 tons",
+      "fix": "Replace '10,100' with '7,300'"
+    },
+    {
+      "type": "logic",
+      "location": "sentence 5",
+      "error": "Metal contracts (shrinks) when cold and expands when heated; the statement 'expands when it gets cold' is backwards",
+      "fix": "Replace 'expands when it gets cold' with 'contracts when it gets cold' or 'expands when it gets hot'"
+    },
+    {
+      "type": "grammar",
+      "location": "sentence 6",
+      "error": "'have been' is incorrect; the subject 'the tower' is singular",
+      "fix": "Replace 'have been' with 'has been'"
+    },
+    {
+      "type": "style/grammar",
+      "location": "sentence 6",
+      "error": "'it's' (contraction) is incorrect for possession; 'its' (possessive) should be used",
+      "fix": "Replace 'it's' with 'its'"
+    }
+  ],
+  "count": 8
+}
+```

@@ -1,0 +1,15 @@
+def merge_intervals(intervals):
+    if not intervals:
+        return []
+    sorted_intervals = sorted(intervals, key=lambda x: x[0])
+    merged = []
+    cur_start, cur_end = sorted_intervals[0]
+    for s, e in sorted_intervals[1:]:
+        if s <= cur_end:
+            if e > cur_end:
+                cur_end = e
+        else:
+            merged.append([cur_start, cur_end])
+            cur_start, cur_end = s, e
+    merged.append([cur_start, cur_end])
+    return merged

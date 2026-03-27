@@ -1,0 +1,48 @@
+{
+  "components": [
+    {
+      "name": "Load Balancer",
+      "technology": "AWS Application Load Balancer (ALB) with WebSocket support",
+      "purpose": "Distributes WebSocket connections across WebSocket servers, handles TLS termination, and provides health checks.",
+      "scaling_strategy": "Auto-scaling based on connection count and CPU; scales horizontally with no single point of failure."
+    },
+    {
+      "name": "WebSocket Servers",
+      "technology": "Go (gorilla/websocket) or Elixir/Phoenix for high concurrency",
+      "purpose": "Maintains persistent WebSocket connections, handles message routing, presence registration, and publishes messages to Redis. Stateless design allows horizontal scaling.",
+      "scaling_strategy": "Each server handles ~50k connections; add instances as user count grows. User connections distributed by load balancer using consistent hashing for affinity."
+    },
+    {
+      "name": "Redis Pub/Sub Cluster",
+      "technology": "Redis Cluster (open-source) or AWS ElastiCache Redis",
+      "purpose": "Routes real-time messages via per-user channels. Servers subscribe to channels for their connected users; messages published to user channels are delivered only to servers with active connections.",
+      "scaling_strategy": "Sharded by user_id hash (e.g., 10-20 shards). Add shards as user base grows. Each WebSocket server maintains connections to all shards for subscription management."
+    },
+    {
+      "name": "Redis Presence Cluster",
+      "technology": "Redis Cluster with TTL-based keys",
+      "purpose": "Stores online status (key: presence:{user_id}) with short TTL (e.g., 30s). WebSocket servers refresh TTL on heartbeat; absence indicates offline.",
+      "scaling_strategy": "Sharded by user_id; independent of pub/sub cluster. Handles 1M+ keys with efficient memory usage."
+    },
+    {
+      "name": "Database Cluster",
+      "technology": "CockroachDB (distributed SQL) or Amazon Aurora PostgreSQL",
+      "purpose": "Persists messages, chat metadata, users, and read receipts. Provides strong consistency for message ordering and history queries.",
+      "scaling_strategy": "Horizontal scaling by adding nodes; data sharded by chat_id or user_id. Uses multi-region replication for HA."
+    },
+    {
+      "name": "Object Storage",
+      "technology": "Amazon S3 with CloudFront CDN",
+      "purpose": "Stores file attachments (up to 50MB). Clients upload via pre-signed URLs; downloads served via CDN for low latency.",
+      "scaling_strategy": "Virtually unlimited; pay-per-use. Versioning and encryption at rest enabled for GDPR."
+    },
+    {
+      "name": "API Servers",
+      "technology": "Go/Node.js with REST/GraphQL",
+      "purpose": "Handles non-real-time operations: authentication, chat/group management, history pagination, pre-signed URL generation, and GDPR data deletion requests.",
+      "scaling_strategy": "Stateless horizontal scaling behind a load balancer; auto-scales based on request rate."
+    },
+    {
+      "name": "CDN",
+      "technology": "Amazon CloudFront",
+      "purpose": "Caches static assets (

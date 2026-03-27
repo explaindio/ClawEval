@@ -1,0 +1,82 @@
+{
+  "tasks": [
+    {
+      "id": "T1",
+      "agent": "data_analyst",
+      "action": "Analyze Q3 earnings data and generate summary metrics.",
+      "depends_on": [],
+      "input_from": []
+    },
+    {
+      "id": "T2",
+      "agent": "writer",
+      "action": "Write blog post about Q3 earnings.",
+      "depends_on": ["T1"],
+      "input_from": ["T1"]
+    },
+    {
+      "id": "T3",
+      "agent": "writer",
+      "action": "Draft email newsletter summary of Q3 earnings.",
+      "depends_on": ["T1"],
+      "input_from": ["T1"]
+    },
+    {
+      "id": "T4",
+      "agent": "editor",
+      "action": "Edit and proofread blog post.",
+      "depends_on": ["T2"],
+      "input_from": ["T2"]
+    },
+    {
+      "id": "T5",
+      "agent": "editor",
+      "action": "Edit and proofread email newsletter.",
+      "depends_on": ["T3"],
+      "input_from": ["T3"]
+    },
+    {
+      "id": "T6",
+      "agent": "seo",
+      "action": "Optimize blog post for search engines.",
+      "depends_on": ["T4"],
+      "input_from": ["T4"]
+    },
+    {
+      "id": "T7",
+      "agent": "web_publisher",
+      "action": "Publish blog post on website.",
+      "depends_on": ["T6", "T4"],
+      "input_from": ["T6", "T4"]
+    },
+    {
+      "id": "T8",
+      "agent": "designer",
+      "action": "Create social media graphics for Q3 earnings announcement.",
+      "depends_on": ["T2"],
+      "input_from": ["T2"]
+    },
+    {
+      "id": "T9",
+      "agent": "social_media",
+      "action": "Post social media updates with graphics and link to blog.",
+      "depends_on": ["T8"],
+      "input_from": ["T8"]
+    },
+    {
+      "id": "T10",
+      "agent": "email_marketing",
+      "action": "Send email newsletter with summary to subscribers.",
+      "depends_on": ["T5"],
+      "input_from": ["T5"]
+    }
+  ],
+  "execution_order": ["T1", "T2", "T3", "T4", "T5", "T8", "T6", "T9", "T10", "T7"],
+  "parallel_groups": [
+    ["T1"],
+    ["T2", "T3"],
+    ["T4", "T5", "T8"],
+    ["T6", "T9", "T10"],
+    ["T7"]
+  ]
+}

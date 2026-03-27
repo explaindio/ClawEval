@@ -1,0 +1,121 @@
+{
+  "components": [
+    {
+      "name": "Edge Load Balancer",
+      "technology": "AWS ALB / Azure Application Gateway / Cloudflare Load Balancer",
+      "purpose": "Terminate TLS, route user traffic to the nearest regional entry point, and distribute load across WebSocket servers.",
+      "scaling_strategy": "Anycast DNS + geo‑routing; ALB auto‑scales behind Route 53 with health checks."
+    },
+    {
+      "name": "WebSocket Gateway",
+      "technology": "Go‑based gateway (gorilla/websocket) or Nginx stream module",
+      "purpose": "Maintain persistent connections for up to 1 M users, handle frame parsing, authenticate JWTs, and publish inbound messages to the broker.",
+      "scaling_strategy": "Stateless pods in Kubernetes; HPA scales on connection count (~10 k connections per pod → ~100 pods). Use consistent hashing for session affinity."
+    },
+    {
+      "name": "Message Broker",
+      "technology": "Apache Kafka (MSK) or self‑hosted on Kubernetes",
+      "purpose": "Durably queue inbound messages for fan‑out, guarantee delivery, and enable replay.",
+      "scaling_strategy": "Topics partitioned by conversation ID; add brokers and partitions as throughput grows; replication factor 3 across AZs."
+    },
+    {
+      "name": "Real‑Time Delivery Service",
+      "technology": "Redis Cluster (pub/sub + sorted sets)",
+      "purpose": "Subscribe WebSocket gateways to messages for a given user, propagate presence updates, read receipts, and typing indicators.",
+      "scaling_strategy": "Redis Cluster sharded by user ID; horizontal sharding, replica reads for low latency."
+    },
+    {
+      "name": "Message Persistence Store",
+      "technology": "ScyllaDB (Cassandra‑compatible) for message logs + PostgreSQL (RDS) for user/group metadata",
+      "purpose": "Store all messages time‑ordered, support range queries, enforce GDPR retention policies.",
+      "scaling_strategy": "ScyllaDB tables partitioned by conversation_id + bucket (e.g., day); add nodes to increase IOPS; PostgreSQL read replicas for query workloads."
+    },
+    {
+      "name": "Presence & Last‑Seen Service",
+      "technology": "Redis Sorted Sets with TTL",
+      "purpose": "Track online/offline status, last activity timestamps, and device tokens.",
+      "scaling_strategy": "Sharded Redis clusters per region; TTL auto‑expire for offline detection; background job reconciles stale entries."
+    },
+    {
+      "name": "Read‑Receipt Service",
+      "technology": "Redis cache (write‑through) + PostgreSQL/ScyllaDB table",
+      "purpose": "Persist per‑user, per‑message read acknowledgments; serve recent receipts from cache.",
+      "scaling_strategy": "Batch flush to DB every few seconds; read‑replicas for query side."
+    },
+    {
+      "name": "File Attachment Service",
+      "technology": "S3 (or GCS) + CloudFront CDN",
+      "purpose": "Store uploaded files up to 50 MB, generate pre‑signed URLs, virus‑scan, and serve via CDN.",
+      "scaling_strategy": "S3 auto‑scales unlimited; CloudFront edge caches reduce origin load; multipart upload for large files."
+    },
+    {
+      "name": "Push Notification Service",
+      "technology": "Firebase Cloud Messaging (FCM) / Apple Push Notification service (APNs)",
+      "purpose": "Deliver real‑time alerts to offline users across iOS/Android/Web.",
+      "scaling_strategy": "Throttle per‑user, use topic subscriptions per conversation; rely on external managed service."
+    },
+    {
+      "name": "End‑to‑End Encryption Module",
+      "technology": "Signal Protocol (libsignal) or custom Double‑Ratchet",
+      "purpose": "Encrypt messages on the client before they leave the device; server stores only ciphertext.",
+      "scaling_strategy": "Key bundles stored in a separate encrypted store (e.g., DynamoDB with KMS); horizontally scalable key‑lookup service."
+    },
+    {
+      "name": "Authentication & Identity Service",
+      "technology": "OAuth2 / OpenID Connect (Auth0, Cognito)",
+      "purpose": "Issue short‑lived JWTs, manage refresh tokens, support MFA.",
+      "scaling_strategy": "Stateless JWT validation across all services; scale horizontally; integrate with GDPR consent storage."
+    },
+    {
+      "name": "User & Group Management Service",
+      "technology": "Go / Java microservice with PostgreSQL",
+      "purpose": "CRUD for users, groups (up to 500 members), roles, and group membership.",
+      "scaling_strategy": "Sharded PostgreSQL by user ID; read replicas for read‑heavy operations."
+    },
+    {
+      "name": "GDPR Compliance & Audit Service",
+      "technology": "Spring Boot / Node.js microservice with audit log (Elasticsearch) and data‑deletion workflow",
+      "purpose": "Handle right‑to‑erasure requests, data residency, consent management, and audit trails.",
+      "scaling_strategy": "Event‑driven (Kafka) deletion tasks; horizontal worker pods; GDPR data stored in EU‑only regions."
+    },
+    {
+      "name": "Monitoring & Alerting",
+      "technology": "Prometheus + Grafana, ELK Stack, Datadog",
+      "purpose": "Collect metrics (latency, connection count, error rates), logs, and traces; trigger auto‑scaling.",
+      "scaling_strategy": "Sidecar export of metrics; central aggregation scales horizontally; alert on SLA breach."
+    },
+    {
+      "name": "Kubernetes Orchestration",
+      "technology": "EKS / GKE / AKS",
+      "purpose": "Deploy, scale, and manage all microservices with HPA, pod disruption budgets, and multi‑AZ scheduling.",
+      "scaling_strategy": "Cluster autoscaler adds nodes when CPU/memory pressure rises; node pools for different workload types."
+    },
+    {
+      "name": "Global Traffic Management",
+      "technology": "AWS Route 53 + latency‑based routing / Azure Traffic Manager",
+      "purpose": "Route users to the closest region while respecting GDPR data residency.",
+      "scaling_strategy": "DNS failover on health checks; latency routing ensures <100 ms RTT to nearest edge."
+    }
+  ],
+  "data_flow": "Client initiates WebSocket handshake via Edge Load Balancer (TLS termination). Edge LB routes to the nearest regional WebSocket Gateway. Gateway authenticates JWT, registers connection in Redis Presence, and subscribes the user to a personal Redis channel (user:{uid}). Client encrypts message with E2EE, sends ciphertext. Gateway publishes inbound message to Kafka topic 'messages'. Kafka consumer (Message Processor) reads message: (1) writes to ScyllaDB/PostgreSQL for persistence; (2) publishes to Redis pub/sub channel for each recipient (fan‑out); (3) triggers Push Notification for offline recipients via FCM/APNs; (4) stores read‑receipt in Redis and periodically flushes to DB. File attachments are uploaded directly to S3 via pre‑signed URL; the attachment URL is included in the message payload. Read receipts and typing indicators flow through Redis pub/sub similarly. Presence updates (online/offline) are written to Redis sorted sets and propagated to interested contacts. GDPR Service listens to Kafka 'user‑deletion' events and removes PII from all stores after verification.",
+  "infrastructure": {
+    "cloud": "AWS (or Azure/GCP) – choose a provider with strong SLA and multi‑region presence.",
+    "regions": 3
+  },
+  "estimated_monthly_cost": "Approx. $45k–$70k (depending on actual traffic). This includes ~120 WebSocket nodes (c5.xlarge), 6‑node ScyllaDB cluster (i3en.2xlarge), 3‑node PostgreSQL RDS (r5.large Multi‑AZ), Redis Cluster (6 shards, r5.large), Kafka (MSK 6‑broker), S3 storage (~50 TB) + CloudFront, FCM/APNs, EKS cluster + data transfer, and monitoring tools.",
+  "bottlenecks": [
+    "WebSocket connection limit per node → need careful connection distribution and HPA tuning.",
+    "Fan‑out for group messages (up to 500 members) may saturate Redis pub/sub bandwidth; mitigate by batching or hierarchical distribution.",
+    "Database write throughput for message persistence (ScyllaDB) under peak load; require careful partition design and eventual write‑through caching.",
+    "File upload bandwidth and virus‑scanning latency for 50 MB attachments; offload to async processing.",
+    "E2EE key exchange overhead on first message with new participants; pre‑bundle keys where possible.",
+    "Presence updates causing hot keys in Redis; need sharding and TTL tuning.",
+    "Cross‑region replication latency for global consistency; can accept eventual consistency for non‑critical metadata."
+  ],
+  "tradeoffs": [
+    "Durability vs latency: Kafka provides at‑least‑once delivery but adds ~5 ms; we accept this to guarantee no message loss.",
+    "Server‑side search vs E2EE: Encrypted payloads prevent server‑wide search; implement client‑side search indexes (e.g., secure enclave) if needed.",
+    "Horizontal scaling vs stateful connections: Stateless WebSocket servers simplify scaling but require external state (Redis) for presence, which can become a chokepoint; mitigated by sharding.",
+    "Strong consistency for read receipts vs performance: We flush read receipts asynchronously to DB, accepting eventual consistency for older receipts.",
+    "Cost vs redundancy: Multi‑AZ deployments double compute cost but are required for 99.99% SLA; offset by using spot/preemptible instances for non‑critical workers.",
+    "GDPR data residency vs performance: Storing all EU data in‑region may increase latency for non‑EU users; we use geo‑routing to direct EU users to

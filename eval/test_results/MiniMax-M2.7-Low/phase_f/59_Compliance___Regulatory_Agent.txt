@@ -1,0 +1,67 @@
+```json
+{
+  "violations": [
+    {
+      "id": 1,
+      "article": "Articles 5(1)(a), 6, 7, 13/14 – Lawfulness, Fairness, Transparency & Consent",
+      "practice": "User data is collected without any consent form or notice.",
+      "fix": "Implement a clear, opt‑in consent mechanism and provide a transparent privacy notice at the point of collection that explains the purpose, legal basis, and user rights."
+    },
+    {
+      "id": 2,
+      "article": "Articles 5(1)(f), 32 – Integrity & Confidentiality, Security",
+      "practice": "Personal data is stored in plain text in the database.",
+      "fix": "Apply strong encryption (e.g., AES‑256) for data at rest and in transit, and adopt pseudonymisation where feasible to protect confidentiality."
+    },
+    {
+      "id": 3,
+      "article": "Article 17 – Right to Erasure",
+      "practice": "Users cannot request deletion of their data — 'we keep everything forever'.",
+      "fix": "Create a verifiable process for users to submit erasure requests and delete all personal data (including backups) within the statutory timeframe, documenting compliance."
+    },
+    {
+      "id": 4,
+      "article": "Articles 5(1)(a), 13/14, 28 – Transparency & Processor Agreements",
+      "practice": "Data is shared with 15 third‑party vendors without user knowledge.",
+      "fix": "Maintain an up‑to‑date inventory of third‑party processors, disclose them in the privacy notice, establish a lawful basis for each share, and sign Data Processing Agreements (DPAs) with every processor."
+    },
+    {
+      "id": 5,
+      "article": "Article 37 – Data Protection Officer",
+      "practice": "There is no Data Protection Officer appointed.",
+      "fix": "Appoint a qualified DPO where required, ensuring independence, appropriate expertise, and public contact details, and reflect this role in the organization’s governance."
+    },
+    {
+      "id": 6,
+      "article": "Articles 44‑49 – Transfers of Personal Data to Third Countries",
+      "practice": "EU user data is transferred to servers in a country without an adequacy decision, with no safeguards.",
+      "fix": "Implement approved transfer mechanisms such as Standard Contractual Clauses (SCCs), Binding Corporate Rules (BCRs), or secure an adequacy decision before transferring data outside the EU."
+    },
+    {
+      "id": 7,
+      "article": "Article 33 – Notification of a Personal Data Breach",
+      "practice": "Data breaches are reported to authorities 'when we get around to it, usually within 6 months'.",
+      "fix": "Establish a breach detection and response process that notifies the supervisory authority within 72 hours of becoming aware of a breach, as mandated by GDPR."
+    },
+    {
+      "id": 8,
+      "article": "Article 8 – Conditions for Consent in Relation to a Child’s Information",
+      "practice": "Children under 16 can sign up without parental consent.",
+      "fix": "Implement age‑gating and require verifiable parental consent for users below the applicable age threshold (e.g., 16, or 13 if a member‑state limit applies) before allowing registration."
+    },
+    {
+      "id": 9,
+      "article": "Article 20 – Right to Data Portability",
+      "practice": "Users cannot export their data in any format.",
+      "fix": "Provide a self‑service data export feature that delivers personal data in a commonly used, machine‑readable format (e.g., CSV, JSON) within the stipulated timeframe."
+    },
+    {
+      "id": 10,
+      "article": "Articles 5(1)(a), 13/14, 30 – Transparency, Accountability & Records of Processing Activities",
+      "practice": "Privacy policy was last updated in 2015 and doesn't mention half these practices.",
+      "fix": "Review and revise the privacy notice at least annually or whenever processing changes occur, ensuring it fully describes all data processing activities, purposes, legal bases, and user rights."
+    }
+  ],
+  "count": 10
+}
+```

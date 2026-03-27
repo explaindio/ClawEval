@@ -1,69 +1,70 @@
+```json
 {
   "tasks": [
     {
       "id": "T1",
       "agent": "data_analyst",
-      "action": "Analyze Q3 earnings data and produce a summary report with key metrics, charts, and insights",
+      "action": "Analyze Q3 earnings data and produce summary",
       "depends_on": [],
       "input_from": []
     },
     {
       "id": "T2",
       "agent": "writer",
-      "action": "Write an initial blog‑post draft based on the Q3 earnings summary",
+      "action": "Write blog post about Q3 earnings based on data summary",
       "depends_on": ["T1"],
       "input_from": ["T1"]
     },
     {
       "id": "T3",
       "agent": "editor",
-      "action": "Edit and proofread the blog post for clarity, tone, and brand consistency",
+      "action": "Edit and refine blog post for clarity, tone, and accuracy",
       "depends_on": ["T2"],
       "input_from": ["T2"]
     },
     {
       "id": "T4",
       "agent": "seo",
-      "action": "Optimize the blog post for SEO: meta title, description, keywords, and internal linking",
+      "action": "Optimize blog post for SEO keywords, meta description, and structure",
       "depends_on": ["T3"],
       "input_from": ["T3"]
     },
     {
       "id": "T5",
-      "agent": "web_publisher",
-      "action": "Publish the final, SEO‑optimized blog post on the company website",
-      "depends_on": ["T4"],
-      "input_from": ["T4"]
-    },
-    {
-      "id": "T6",
       "agent": "designer",
-      "action": "Create social‑media graphics (banners, quote cards) based on the edited blog content",
+      "action": "Design social media graphics based on blog content",
       "depends_on": ["T3"],
       "input_from": ["T3"]
     },
     {
-      "id": "T7",
+      "id": "T6",
       "agent": "social_media",
-      "action": "Draft and publish social‑media posts linking to the blog post across all platforms",
-      "depends_on": ["T6"],
-      "input_from": ["T6", "T3"]
+      "action": "Schedule and publish blog post link and graphics on social media platforms",
+      "depends_on": ["T5", "T3"],
+      "input_from": ["T5"]
+    },
+    {
+      "id": "T7",
+      "agent": "email_marketing",
+      "action": "Compose and send email newsletter with Q3 earnings summary to subscribers",
+      "depends_on": ["T3"],
+      "input_from": ["T3"]
     },
     {
       "id": "T8",
-      "agent": "email_marketing",
-      "action": "Compose and send an email newsletter with the Q3 earnings summary to subscribers",
-      "depends_on": ["T1", "T3"],
-      "input_from": ["T1", "T3"]
+      "agent": "web_publisher",
+      "action": "Publish final blog post on website, ensuring SEO implementation",
+      "depends_on": ["T4", "T3"],
+      "input_from": ["T4"]
     }
   ],
-  "execution_order": ["T1", "T2", "T3", "T4", "T6", "T5", "T7", "T8"],
+  "execution_order": ["T1", "T2", "T3", "T4", "T5", "T8", "T6", "T7"],
   "parallel_groups": [
     ["T1"],
     ["T2"],
     ["T3"],
-    ["T4", "T6"],
-    ["T5"],
-    ["T7", "T8"]
+    ["T4", "T5"],
+    ["T8", "T6", "T7"]
   ]
 }
+```

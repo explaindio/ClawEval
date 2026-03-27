@@ -1,67 +1,65 @@
-```json
 {
   "errors": [
     {
       "type": "factual",
       "location": "in the heart of London",
-      "error": "The Eiffel Tower is located in Paris, France, not London.",
-      "fix": "in the heart of Paris, France"
+      "error": "Eiffel Tower is located in Paris, not London.",
+      "fix": "Replace 'London' with 'Paris'."
     },
     {
       "type": "grammar",
       "location": "recieves",
-      "error": "Spelling error: 'recieves' should be 'receives'.",
+      "error": "Misspelled word 'recieves' should be 'receives'.",
       "fix": "receives"
     },
     {
       "type": "grammar",
-      "location": "most visited paid monument",
-      "error": "Subject-verb agreement error: 'monument' should be plural to match 'one of the most visited'.",
+      "location": "most visited paid monument in the world",
+      "error": "Subject‑verb agreement error: 'monument' should be plural.",
       "fix": "most visited paid monuments"
     },
     {
       "type": "factual",
       "location": "It's made entirely of copper",
-      "error": "The Eiffel Tower is made of iron (puddled iron), not copper.",
+      "error": "Eiffel Tower is made of iron, not copper.",
       "fix": "It's made entirely of iron"
     },
     {
       "type": "factual",
-      "location": "visitors can only access two of them",
-      "error": "The Eiffel Tower has three levels accessible to visitors (first, second, and summit/top).",
-      "fix": "visitors can only access three of them"
+      "location": "weighing around 10,100 tons",
+      "error": "Weight is approximately 7,300 metric tons, not 10,100 tons.",
+      "fix": "weighing around 7,300 metric tons"
     },
     {
-      "type": "logic/factual",
+      "type": "factual",
+      "location": "visitors can only access two of them",
+      "error": "Visitors can access all three levels of the tower.",
+      "fix": "visitors can access all three levels"
+    },
+    {
+      "type": "logic",
       "location": "metal always expands when it gets cold",
-      "error": "This statement is factually and logically wrong. Metal contracts (shrinks) when cold and expands when hot—the text already stated it shrinks due to thermal contraction, contradicting itself.",
+      "error": "Metal contracts when cold and expands when heated; the statement is reversed.",
       "fix": "metal contracts when it gets cold"
     },
     {
       "type": "grammar",
       "location": "have been 18 different colors",
-      "error": "Subject-verb agreement error: 'have' should be 'has' because the subject '60 tons of paint' is singular.",
+      "error": "Subject‑verb agreement error: singular 'the tower' requires 'has'.",
       "fix": "has been 18 different colors"
     },
     {
       "type": "grammar",
-      "location": "throughout it's history",
-      "error": "Possessive pronoun error: 'it's' (contraction of 'it is') should be 'its' (possessive).",
-      "fix": "throughout its history"
+      "location": "it's history",
+      "error": "Possessive pronoun requires 'its', not 'it's'.",
+      "fix": "its history"
     },
     {
       "type": "factual",
-      "location": "weighing around 10,100 tons",
-      "error": "The Eiffel Tower weighs approximately 7,300 tons (10,100 tonnes metric), not 10,100 tons. This conflates metric tonnes with short tons.",
-      "fix": "weighing around 7,300 tons"
-    },
-    {
-      "type": "factual",
-      "location": "During winter, it shrinks by 6 inches",
-      "error": "The Eiffel Tower does not shrink by exactly 6 inches in winter. It expands and contracts seasonally by approximately 6 inches (15 cm) total variation, but this is a year-round thermal effect, not a specific winter shrinkage.",
-      "fix": "During temperature changes, its height can vary by about 6 inches due to thermal expansion and contraction"
+      "location": "18 different colors",
+      "error": "The Eiffel Tower has historically been painted 19 times, not 18.",
+      "fix": "19 different colors"
     }
   ],
   "count": 10
 }
-```

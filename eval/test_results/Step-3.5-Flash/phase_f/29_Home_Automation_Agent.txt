@@ -1,0 +1,362 @@
+```json
+[
+  {
+    "name": "Morning Routine Weekdays",
+    "trigger": {
+      "type": "time",
+      "time": "06:30",
+      "days": ["Mon", "Tue", "Wed", "Thu", "Fri"]
+    },
+    "conditions": [],
+    "actions": [
+      {
+        "type": "scene",
+        "scene": "morning_routine_weekday"
+      }
+    ]
+  },
+  {
+    "name": "Morning Routine Weekends",
+    "trigger": {
+      "type": "time",
+      "time": "08:00",
+      "days": ["Sat", "Sun"]
+    },
+    "conditions": [],
+    "actions": [
+      {
+        "type": "scene",
+        "scene": "morning_routine_weekend"
+      }
+    ]
+  },
+  {
+    "name": "Thermostat - Both Away",
+    "trigger": {
+      "type": "device_state",
+      "device_id": "occupancy_status",
+      "attribute": "occupied",
+      "value": false
+    },
+    "conditions": [
+      {
+        "type": "device_state",
+        "device_id": "guest_mode",
+        "attribute": "switch",
+        "value": "off"
+      }
+    ],
+    "actions": [
+      {
+        "type": "device_command",
+        "device_id": "main_thermostat",
+        "command": "set_temperature",
+        "parameters": { "temperature": 65 }
+      }
+    ]
+  },
+  {
+    "name": "Thermostat - Sleeping Hours",
+    "trigger": {
+      "type": "time_range",
+      "start": "23:00",
+      "end": "06:00"
+    },
+    "conditions": [
+      {
+        "type": "device_state",
+        "device_id": "occupancy_status",
+        "attribute": "occupied",
+        "value": true
+      },
+      {
+        "type": "device_state",
+        "device_id": "guest_mode",
+        "attribute": "switch",
+        "value": "off"
+      }
+    ],
+    "actions": [
+      {
+        "type": "device_command",
+        "device_id": "main_thermostat",
+        "command": "set_temperature",
+        "parameters": { "temperature": 68 }
+      }
+    ]
+  },
+  {
+    "name": "Thermostat - Daytime Occupied",
+    "trigger": {
+      "type": "time_range",
+      "start": "06:00",
+      "end": "23:00"
+    },
+    "conditions": [
+      {
+        "type": "device_state",
+        "device_id": "occupancy_status",
+        "attribute": "occupied",
+        "value": true
+      },
+      {
+        "type": "device_state",
+        "device_id": "guest_mode",
+        "attribute": "switch",
+        "value": "off"
+      }
+    ],
+    "actions": [
+      {
+        "type": "device_command",
+        "device_id": "main_thermostat",
+        "command": "set_temperature",
+        "parameters": { "temperature": 72 }
+      }
+    ]
+  },
+  {
+    "name": "Security - Arm When Both Away",
+    "trigger": {
+      "type": "device_state",
+      "device_id": "occupancy_status",
+      "attribute": "occupied",
+      "value": false
+    },
+    "conditions": [
+      {
+        "type": "device_state",
+        "device_id": "security_system",
+        "attribute": "armed",
+        "value": false
+      }
+    ],
+    "actions": [
+      {
+        "type": "device_command",
+        "device_id": "security_system",
+        "command": "arm"
+      }
+    ]
+  },
+  {
+    "name": "Security - Disarm When Either Home",
+    "trigger": {
+      "type": "device_state",
+      "device_id": "occupancy_status",
+      "attribute": "occupied",
+      "value": true
+    },
+    "conditions": [
+      {
+        "type": "device_state",
+        "device_id": "security_system",
+        "attribute": "armed",
+        "value": true
+      }
+    ],
+    "actions": [
+      {
+        "type": "device_command",
+        "device_id": "security_system",
+        "command": "disarm"
+      }
+    ]
+  },
+  {
+    "name": "Pet Feeder - Morning",
+    "trigger": {
+      "type": "time",
+      "time": "07:00",
+      "days": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+    },
+    "conditions": [],
+    "actions": [
+      {
+        "type": "device_command",
+        "device_id": "auto_feeder",
+        "command": "feed"
+      }
+    ]
+  },
+  {
+    "name": "Pet Feeder - Evening",
+    "trigger": {
+      "type": "time",
+      "time": "18:00",
+      "days": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+    },
+    "conditions": [],
+    "actions": [
+      {
+        "type": "device_command",
+        "device_id": "auto_feeder",
+        "command": "feed"
+      }
+    ]
+  },
+  {
+    "name": "Cat Camera - Turn On When Both Away",
+    "trigger": {
+      "type": "device_state",
+      "device_id": "occupancy_status",
+      "attribute": "occupied",
+      "value": false
+    },
+    "conditions": [
+      {
+        "type": "device_state",
+        "device_id": "cat_camera",
+        "attribute": "power",
+        "value": "off"
+      }
+    ],
+    "actions": [
+      {
+        "type": "device_command",
+        "device_id": "cat_camera",
+        "command": "turn_on"
+      }
+    ]
+  },
+  {
+    "name": "Cat Camera - Turn Off When Home",
+    "trigger": {
+      "type": "device_state",
+      "device_id": "occupancy_status",
+      "attribute": "occupied",
+      "value": true
+    },
+    "conditions": [
+      {
+        "type": "device_state",
+        "device_id": "cat_camera",
+        "attribute": "power",
+        "value": "on"
+      }
+    ],
+    "actions": [
+      {
+        "type": "device_command",
+        "device_id": "cat_camera",
+        "command": "turn_off"
+      }
+    ]
+  },
+  {
+    "name": "Energy - Solar Priority Mode",
+    "trigger": {
+      "type": "time",
+      "time": "14:00",
+      "days": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+    },
+    "conditions": [],
+    "actions": [
+      {
+        "type": "device_command",
+        "device_id": "energy_system",
+        "command": "set_mode",
+        "parameters": { "mode": "solar_priority" }
+      }
+    ]
+  },
+  {
+    "name": "Energy - Battery Backup Mode",
+    "trigger": {
+      "type": "time",
+      "time": "19:00",
+      "days": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+    },
+    "conditions": [],
+    "actions": [
+      {
+        "type": "device_command",
+        "device_id": "energy_system",
+        "command": "set_mode",
+        "parameters": { "mode": "battery_backup" }
+      }
+    ]
+  },
+  {
+    "name": "Hallway Light - Motion Night",
+    "trigger": {
+      "type": "device_event",
+      "device_id": "hallway_motion",
+      "event": "motion_detected"
+    },
+    "conditions": [
+      {
+        "type": "time_range",
+        "start": "22:00",
+        "end": "06:00"
+      }
+    ],
+    "actions": [
+      {
+        "type": "device_command",
+        "device_id": "hallway_light",
+        "command": "turn_on",
+        "parameters": { "brightness": 20 }
+      },
+      {
+        "type": "timer",
+        "device_id": "hallway_light",
+        "duration": "5 minutes",
+        "command": "turn_off"
+      }
+    ]
+  },
+  {
+    "name": "Bob's Office - Computer On",
+    "trigger": {
+      "type": "device_state",
+      "device_id": "bob_computer",
+      "attribute": "power",
+      "value": "on"
+    },
+    "conditions": [
+      {
+        "type": "device_state",
+        "device_id": "bob_presence",
+        "attribute": "presence",
+        "value": "home"
+      }
+    ],
+    "actions": [
+      {
+        "type": "device_command",
+        "device_id": "desk_lamp",
+        "command": "turn_on"
+      },
+      {
+        "type": "device_command",
+        "device_id": "office_thermostat",
+        "command": "set_temperature",
+        "parameters": { "temperature": 70 }
+      }
+    ]
+  },
+  {
+    "name": "Laundry - Washer Complete",
+    "trigger": {
+      "type": "device_event",
+      "device_id": "washer",
+      "event": "cycle_complete"
+    },
+    "conditions": [],
+    "actions": [
+      {
+        "type": "notification",
+        "targets": ["alice_phone", "bob_phone"],
+        "message": "Washing machine cycle complete"
+      }
+    ]
+  },
+  {
+    "name": "Laundry - Dryer Complete",
+    "trigger": {
+      "type": "device_event",
+      "device_id": "dryer",
+      "event": "cycle_complete"
+    },
+   

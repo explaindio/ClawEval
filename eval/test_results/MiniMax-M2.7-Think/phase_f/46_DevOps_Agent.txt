@@ -1,18 +1,67 @@
 ```json
 {
   "issues": [
-    {"line": "1", "problem": "version '2' is outdated", "fix": "Use version '3' or later (e.g., '3.8')"},
-    {"line": "4", "problem": "'latest' tag is non-deterministic", "fix": "Use a specific version tag (e.g., 'node:18')"},
-    {"line": "8", "problem": "DB_PASSWORD in plaintext", "fix": "Use Docker secrets or reference from .env file"},
-    {"line": "9", "problem": "NODE_ENV set to 'development'", "fix": "Set NODE_ENV to 'production' for production"},
-    {"line": "11", "problem": "Source volume mount (.:/app) in production", "fix": "Use a named volume or build context instead of binding current directory"},
-    {"line": "12", "problem": "restart: no", "fix": "Change to 'unless-stopped' or 'always' for production"},
-    {"line": "15", "problem": "MySQL 5.6 is EOL", "fix": "Use MySQL 8.0 or later (e.g., 'mysql:8.0')"},
-    {"line": "17", "problem": "DB port 3306 exposed publicly", "fix": "Remove the port mapping or restrict to localhost"},
-    {"line": "19", "problem": "MYSQL_ROOT_PASSWORD in plaintext", "fix": "Use Docker secrets or reference from .env file"},
-    {"line": "21", "problem": "/tmp used for persistent data", "fix": "Use a named volume (e.g., 'mysql-data:/var/lib/mysql')"},
-    {"line": "26", "problem": "Redis port exposed publicly without authentication", "fix": "Remove port mapping or add password authentication"}
+    {
+      "line": "1",
+      "problem": "Version '2' is outdated and no longer supported",
+      "fix": "Use version '3.8' or higher"
+    },
+    {
+      "line": "4",
+      "problem": "'latest' tag is non-deterministic - image can change unexpectedly",
+      "fix": "Pin to a specific version tag (e.g., 'node:18-alpine')"
+    },
+    {
+      "line": "7",
+      "problem": "Database password in plaintext environment variable",
+      "fix": "Use Docker secrets: 'secrets: - db_password' and define in 'secrets' section"
+    },
+    {
+      "line": "8",
+      "problem": "NODE_ENV set to 'development' - insecure for production",
+      "fix": "Set NODE_ENV: production"
+    },
+    {
+      "line": "10",
+      "problem": "Source volume mount ('.:/app') includes all host files in container",
+      "fix": "Use named volume or .dockerignore to exclude unnecessary files"
+    },
+    {
+      "line": "11",
+      "problem": "'restart: no' means containers won't restart after crashes or reboots",
+      "fix": "Use 'restart: unless-stopped' or 'restart: always'"
+    },
+    {
+      "line": "14",
+      "problem": "MySQL 5.6 reached End of Life (EOL) and receives no security updates",
+      "fix": "Use MySQL 8.0 or 8.4 (e.g., 'mysql:8.4')"
+    },
+    {
+      "line": "16",
+      "problem": "Database port 3306 exposed publicly to all network interfaces",
+      "fix": "Remove port mapping or bind to localhost: '127.0.0.1:3306:3306'"
+    },
+    {
+      "line": "18",
+      "problem": "Database root password in plaintext environment variable",
+      "fix": "Use Docker secrets or environment file with proper permissions"
+    },
+    {
+      "line": "20",
+      "problem": "Using /tmp for persistent data - contents will be lost on reboot (tmpfs)",
+      "fix": "Use named volume: 'mysql-data:/var/lib/mysql'"
+    },
+    {
+      "line": "22",
+      "problem": "Redis image has no version tag (defaults to 'latest')",
+      "fix": "Pin version: 'redis:7-alpine'"
+    },
+    {
+      "line": "23",
+      "problem": "Redis port 6379 exposed publicly with no authentication configured",
+      "fix": "Bind to localhost '127.0.0.1:6379:6379' and configure Redis AUTH or use protected mode"
+    }
   ],
-  "count": 11
+  "count": 12
 }
 ```

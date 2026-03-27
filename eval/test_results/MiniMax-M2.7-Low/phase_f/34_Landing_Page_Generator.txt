@@ -1,0 +1,363 @@
+# TaskFlow — AI-Powered Project Management Landing Page
+
+Here's the complete semantic HTML structure:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="TaskFlow - AI-Powered Project Management for modern teams. Streamline workflows, automate tasks, and boost productivity.">
+    <title>TaskFlow — AI-Powered Project Management</title>
+</head>
+<body>
+
+    <!-- ==================== HEADER / NAVIGATION ==================== -->
+    <header>
+        <nav aria-label="Main navigation">
+            <!-- Logo -->
+            <a href="#" aria-label="TaskFlow Home">
+                <svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+                    <rect width="32" height="32" rx="8" fill="#6366f1"/>
+                    <path d="M8 16L14 22L24 10" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>TaskFlow</span>
+            </a>
+
+            <!-- Menu Items -->
+            <ul>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#pricing">Pricing</a></li>
+                <li><a href="#testimonials">Testimonials</a></li>
+                <li><a href="#faq">FAQ</a></li>
+            </ul>
+
+            <!-- CTA Button -->
+            <a href="#" role="button">Get Started Free</a>
+        </nav>
+    </header>
+
+    <main>
+
+        <!-- ==================== HERO SECTION ==================== -->
+        <section id="hero" aria-labelledby="hero-heading">
+            <h1 id="hero-heading">Manage Projects with AI Intelligence</h1>
+            <p>TaskFlow uses artificial intelligence to automate task assignment, predict project risks, and optimize team workflows. Spend less time managing and more time delivering.</p>
+            
+            <div>
+                <a href="#" role="button">Start Free Trial</a>
+                <a href="#" role="button">Watch Demo</a>
+            </div>
+
+            <!-- Trust Badges -->
+            <div aria-label="Trusted by leading companies">
+                <p>Trusted by teams at</p>
+                <ul>
+                    <li><img src="placeholder-logo-1.svg" alt="Acme Corp"></li>
+                    <li><img src="placeholder-logo-2.svg" alt="TechStart"></li>
+                    <li><img src="placeholder-logo-3.svg" alt="GlobalTech"></li>
+                    <li><img src="placeholder-logo-4.svg" alt="Innovate Inc"></li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- ==================== FEATURES SECTION ==================== -->
+        <section id="features" aria-labelledby="features-heading">
+            <header>
+                <h2 id="features-heading">Everything you need to ship faster</h2>
+                <p>Powerful features powered by machine learning to help your team collaborate and deliver on time.</p>
+            </header>
+
+            <div>
+                <article>
+                    <h3>Smart Task Automation</h3>
+                    <p>AI automatically assigns tasks to the right team members based on skills, availability, and workload. No more manual planning headaches.</p>
+                </article>
+
+                <article>
+                    <h3>Risk Prediction</h3>
+                    <p>Our algorithms analyze project patterns to identify potential delays before they happen. Get early warnings and actionable recommendations.</p>
+                </article>
+
+                <article>
+                    <h3>Workflow Optimization</h3>
+                    <p>Continuous learning from your team's performance helps identify bottlenecks and suggests process improvements for maximum efficiency.</p>
+                </article>
+
+                <article>
+                    <h3>Team Analytics</h3>
+                    <p>Comprehensive dashboards and reports give you insights into team productivity, project health, and resource utilization.</p>
+                </article>
+
+                <article>
+                    <h3>Smart Notifications</h3>
+                    <p>AI prioritizes notifications based on urgency and context. Stay focused on what matters most without information overload.</p>
+                </article>
+
+                <article>
+                    <h3>Integrations</h3>
+                    <p>Connect with your favorite tools including Slack, GitHub, Jira, Google Workspace, and 50+ other applications.</p>
+                </article>
+            </div>
+        </section>
+
+        <!-- ==================== PRICING SECTION ==================== -->
+        <section id="pricing" aria-labelledby="pricing-heading">
+            <header>
+                <h2 id="pricing-heading">Simple, transparent pricing</h2>
+                <p>Start free and scale as you grow. No hidden fees, cancel anytime.</p>
+            </header>
+
+            <div>
+                <!-- Free Tier -->
+                <article>
+                    <header>
+                        <h3>Free</h3>
+                        <p>For individuals and small teams getting started</p>
+                    </header>
+                    <p><strong>$0</strong><span>/month</span></p>
+                    <ul>
+                        <li>Up to 5 team members</li>
+                        <li>5 projects</li>
+                        <li>Basic AI task suggestions</li>
+                        <li>1GB storage</li>
+                        <li>Email support</li>
+                    </ul>
+                    <a href="#" role="button">Get Started</a>
+                </article>
+
+                <!-- Pro Tier -->
+                <article>
+                    <header>
+                        <h3>Pro</h3>
+                        <p>For growing teams that need advanced features</p>
+                    </header>
+                    <p><strong>$15</strong><span>/user/month</span></p>
+                    <ul>
+                        <li>Unlimited team members</li>
+                        <li>Unlimited projects</li>
+                        <li>Full AI suite (automation, predictions)</li>
+                        <li>100GB storage</li>
+                        <li>Priority support</li>
+                        <li>Advanced analytics</li>
+                        <li>Custom integrations</li>
+                    </ul>
+                    <a href="#" role="button">Start Free Trial</a>
+                </article>
+
+                <!-- Enterprise Tier -->
+                <article>
+                    <header>
+                        <h3>Enterprise</h3>
+                        <p>For large organizations with custom requirements</p>
+                    </header>
+                    <p><strong>Custom</strong><span>pricing</span></p>
+                    <ul>
+                        <li>Everything in Pro</li>
+                        <li>SSO & SAML</li>
+                        <li>Custom AI models</li>
+                        <li>Unlimited storage</li>
+                        <li>Dedicated support manager</li>
+                        <li>SLA guarantee</li>
+                        <li>On-premise deployment option</li>
+                        <li>Custom contracts</li>
+                    </ul>
+                    <a href="#" role="button">Contact Sales</a>
+                </article>
+            </div>
+        </section>
+
+        <!-- ==================== TESTIMONIALS SECTION ==================== -->
+        <section id="testimonials" aria-labelledby="testimonials-heading">
+            <header>
+                <h2 id="testimonials-heading">Loved by teams worldwide</h2>
+                <p>See what project managers and team leads say about TaskFlow.</p>
+            </header>
+
+            <div>
+                <article>
+                    <blockquote>
+                        <p>"TaskFlow's AI predictions saved us from missing our Q3 deadline. It flagged risks we would never have caught manually. Our delivery rate improved by 40% in just two months."</p>
+                    </blockquote>
+                    <footer>
+                        <img src="avatar-1.jpg" alt="">
+                        <cite>
+                            <span>Sarah Chen</span>
+                            <span>Engineering Manager, Streamline</span>
+                        </cite>
+                    </footer>
+                </article>
+
+                <article>
+                    <blockquote>
+                        <p>"The automated task assignment feature alone is worth it. My team no longer argues about workload distribution because the AI handles it fairly and transparently."</p>
+                    </blockquote>
+                    <footer>
+                        <img src="avatar-2.jpg" alt="">
+                        <cite>
+                            <span>Marcus Johnson</span>
+                            <span>Product Lead, BuildRight</span>
+                        </cite>
+                    </footer>
+                </article>
+
+                <article>
+                    <blockquote>
+                        <p>"We manage 50+ concurrent projects and TaskFlow keeps everything organized. The risk prediction alerts have prevented countless scope creeps and missed milestones."</p>
+                    </blockquote>
+                    <footer>
+                        <img src="avatar-3.jpg" alt="">
+                        <cite>
+                            <span>Elena Rodriguez</span>
+                            <span>Director of Operations, ScaleUp Inc</span>
+                        </cite>
+                    </footer>
+                </article>
+            </div>
+        </section>
+
+        <!-- ==================== FAQ SECTION ==================== -->
+        <section id="faq" aria-labelledby="faq-heading">
+            <header>
+                <h2 id="faq-heading">Frequently asked questions</h2>
+                <p>Everything you need to know about TaskFlow.</p>
+            </header>
+
+            <div>
+                <details>
+                    <summary>How does the AI task assignment work?</summary>
+                    <p>Our AI analyzes each team member's skills, past performance, current workload, and availability. It then assigns tasks to the optimal person based on these factors. Managers always have the final say and can override suggestions.</p>
+                </details>
+
+                <details>
+                    <summary>Is my data secure with TaskFlow?</summary>
+                    <p>Absolutely. We use bank-level encryption (AES-256) for all data at rest and TLS 1.3 for data in transit. We're SOC 2 Type II certified and GDPR compliant. Enterprise customers can also opt for dedicated infrastructure.</p>
+                </details>
+
+                <details>
+                    <summary>Can I import data from other project management tools?</summary>
+                    <p>Yes! TaskFlow supports one-click imports from Asana, Trello, Jira, Monday.com, Basecamp, and more. Our migration wizard walks you through the entire process, and our support team can assist if needed.</p>
+                </details>
+
+                <details>
+                    <summary>What happens when my free trial ends?</summary>
+                    <p>After your 14-day free trial, your account automatically downgrades to our Free tier. Your data remains safe, and you can upgrade to Pro or Enterprise anytime. No credit card required to start the trial.</p>
+                </details>
+
+                <details>
+                    <summary>Does TaskFlow work offline?</summary>
+                    <p>TaskFlow is primarily a cloud-based application for real-time collaboration. However, our mobile apps for iOS and Android have offline mode, allowing you to view and update tasks when you don't have an internet connection. Changes sync automatically when you're back online.</p>
+                </details>
+            </div>
+        </section>
+
+        <!-- ==================== FINAL CTA SECTION ==================== -->
+        <section id="cta" aria-labelledby="cta-heading">
+            <h2 id="cta-heading">Ready to transform your project management?</h2>
+            <p>Join 10,000+ teams already using AI to ship faster and work smarter.</p>
+            <div>
+                <a href="#" role="button">Start Your Free Trial</a>
+                <a href="#" role="button">Talk to Sales</a>
+            </div>
+            <p>No credit card required • 14-day free trial • Cancel anytime</p>
+        </section>
+
+    </main>
+
+    <!-- ==================== FOOTER ==================== -->
+    <footer>
+        <div>
+            <!-- Brand Column -->
+            <div>
+                <a href="#" aria-label="TaskFlow Home">
+                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+                        <rect width="32" height="32" rx="8" fill="#6366f1"/>
+                        <path d="M8 16L14 22L24 10" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span>TaskFlow</span>
+                </a>
+                <p>AI-Powered Project Management for modern teams.</p>
+                <ul>
+                    <li><a href="#" aria-label="Twitter">Twitter</a></li>
+                    <li><a href="#" aria-label="LinkedIn">LinkedIn</a></li>
+                    <li><a href="#" aria-label="GitHub">GitHub</a></li>
+                </ul>
+            </div>
+
+            <!-- Product Links -->
+            <nav aria-label="Product links">
+                <h3>Product</h3>
+                <ul>
+                    <li><a href="#">Features</a></li>
+                    <li><a href="#">Pricing</a></li>
+                    <li><a href="#">Integrations</a></li>
+                    <li><a href="#">Changelog</a></li>
+                    <li><a href="#">Roadmap</a></li>
+                </ul>
+            </nav>
+
+            <!-- Resources Links -->
+            <nav aria-label="Resources links">
+                <h3>Resources</h3>
+                <ul>
+                    <li><a href="#">Documentation</a></li>
+                    <li><a href="#">API Reference</a></li>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">Case Studies</a></li>
+                    <li><a href="#">Community</a></li>
+                </ul>
+            </nav>
+
+            <!-- Company Links -->
+            <nav aria-label="Company links">
+                <h3>Company</h3>
+                <ul>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Press Kit</a></li>
+                    <li><a href="#">Contact</a></li>
+                    <li><a href="#">Partners</a></li>
+                </ul>
+            </nav>
+
+            <!-- Legal Links -->
+            <nav aria-label="Legal links">
+                <h3>Legal</h3>
+                <ul>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#">Cookie Policy</a></li>
+                    <li><a href="#">Security</a></li>
+                    <li><a href="#">GDPR</a></li>
+                </ul>
+            </nav>
+        </div>
+
+        <!-- Bottom Bar -->
+        <div>
+            <p>&copy; 2026 TaskFlow, Inc. All rights reserved.</p>
+        </div>
+    </footer>
+
+</body>
+</html>
+```
+
+---
+
+## Key Semantic Features Used:
+
+| Element | Purpose |
+|---------|---------|
+| `<header>` + `<nav>` | Navigation with proper landmark roles |
+| `<main>` | Primary content wrapper |
+| `<section>` + `aria-labelledby` | Sectioned content with accessible headings |
+| `<article>` | Self-contained content (features, testimonials, pricing cards) |
+| `<blockquote>` + `<cite>` | Testimonial quotes with attribution |
+| `<details>` + `<summary>` | Native accordion (no JavaScript required) |
+| `<footer>` + `<nav>` | Footer with categorized links |
+| `aria-label` | Accessible labels for icons and link groups |
+| `<svg>` | Inline logo icons with `aria-hidden="true"` |
+
+The FAQ uses the semantic `<details>` and `<summary>` elements, which provide native accordion functionality without requiring JavaScript.

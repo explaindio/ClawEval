@@ -1,0 +1,161 @@
+import time
+import threading
+from collections import deque
+
+class RateLimiter:
+    def __init__(self, max_requests: int, window_seconds: float, burst: int = 0):
+        self.max_requests = max_requests
+        self.window_seconds = window_seconds
+        self.burst = burst
+        self._buckets = {}
+        self._lock = threading.Lock()
+
+    def _refill(self, entry, now):
+        dt = now - entry["last_update"]
+        if dt <= 0:
+            return
+        if self.window_seconds > 0 and self.max_requests > 0:
+            main_rate = self.max_requests / self.window_seconds
+            entry["tokens_main"] = min(self.max_requests,
+                                        entry["tokens_main"] + dt * main_rate)
+        else:
+            entry["tokens_main"] = float(self.max_requests)
+        if self.burst > 0 and self.window_seconds > 0:
+            burst_rate = self.burst / (2.0 * self.window_seconds)
+            entry["tokens_burst"] = min(self.burst,
+                                         entry["tokens_burst"] + dt * burst_rate)
+        else:
+            entry["tokens_burst"] = 0.0
+        entry["last_update"] = now
+
+    def allow(self, user_id: str, endpoint: str = "default") -> dict:
+        with self._lock:
+            key = (user_id, endpoint)
+            now = time.time()
+            entry = self._buckets.get(key)
+            if entry is None:
+                entry = {
+                    "timestamps": deque(),
+                    "tokens_main": float(self.max_requests),
+                    "tokens_burst": float(self.burst),
+                    "last_update": now
+                }
+                self._buckets[key] = entry
+            self._refill(entry, now)
+            window_start = now - self.window_seconds
+            while entry["timestamps"] and entry["timestamps"][0] < window_start:
+                entry["timestamps"].popleft()
+            if entry["tokens_main"] >= 1.0:
+                entry["tokens_main"] -= 1.0
+                entry["timestamps"].append(now)
+                remaining = int(entry["tokens_main"]) + int(entry["tokens_burst"])
+                return {"allowed": True, "remaining": remaining, "retry_after": None}
+            if entry["tokens_burst"] >= 1.0:
+                entry["tokens_burst"] -= 1.0
+                entry["timestamps"].append(now)
+                remaining = int(entry["tokens_main"]) + int(entry["tokens_burst"])
+                return {"allowed": True, "remaining": remaining, "retry_after": None}
+            if self.max_requests > 0 and self.window_seconds > 0:
+                main_rate = self.max_requests / self.window_seconds
+                needed_main = (1.0 - entry["tokens_main"]) / main_rate if entry["tokens_main"] < 1.0 else 0.0
+            else:
+                needed_main = float('inf')
+            if self.burst > 0 and self.window_seconds > 0:
+                burst_rate = self.burst / (2.0 * self.window_seconds)
+                needed_burst = (1.0 - entry["tokens_burst"]) / burst_rate if entry["tokens_burst"] < 1.0 else 0.0
+            else:
+                needed_burst = float('inf')
+            retry_after = min(needed_main, needed_burst)
+            if retry_after < 0:
+                retry_after = 0.0
+            return {"allowed": False, "remaining": 0, "retry_after": retry_after}
+
+    def allow_priority(self, user_id: str, endpoint: str = "default") -> dict:
+        with self._lock:
+            key = (user_id, endpoint)
+            now = time.time()
+            entry = self._buckets.get(key)
+            if entry is None:
+                used = 0
+                remaining = self.max_requests + self.burst
+            else:
+                window_start = now - self.window_seconds
+                while entry["timestamps"] and entry["timestamps"][0] < window_start:
+                    entry["timestamps"].popleft()
+                used = len(entry["timestamps"])
+                remaining = (self.max_requests + self.burst) - used
+                if remaining < 0:
+                    remaining = 0
+            return {"allowed": True, "remaining": remaining, "retry_after": None}
+
+    def cleanup(self, max_age_seconds: float = None) -> int:
+        if max_age_seconds is None:
+            max_age_seconds = 2.0 * self.window_seconds
+        with self._lock:
+            now = time.time()
+            to_remove = [key for key, entry in self._buckets.items()
+                         if now - entry["last_update"] > max_age_seconds]
+            for key in to_remove:
+                del self._buckets[key]
+            return len(to_remove)
+
+    def get_usage(self, user_id: str, endpoint: str = "default") -> dict:
+        with self._lock:
+            key = (user_id, endpoint)
+            now = time.time()
+            entry = self._buckets.get(key)
+            if entry is None:
+                return {
+                    "used": 0,
+                    "limit": self.max_requests + self.burst,
+                    "window_seconds": self.window_seconds,
+                    "burst_remaining": self.burst
+                }
+            self._refill(entry, now)
+            window_start = now - self.window_seconds
+            while entry["timestamps"] and entry["timestamps"][0] < window_start:
+                entry["timestamps"].popleft()
+            used = len(entry["timestamps"])
+            burst_remaining = int(entry["tokens_burst"])
+            return {
+                "used": used,
+                "limit": self.max_requests + self.burst,
+                "window_seconds": self.window_seconds,
+                "burst_remaining": burst_remaining
+            }
+
+    def to_dict(self) -> dict:
+        with self._lock:
+            buckets_data = {}
+            for (user_id, endpoint), entry in self._buckets.items():
+                buckets_data[f"{user_id}|{endpoint}"] = {
+                    "tokens_main": entry["tokens_main"],
+                    "tokens_burst": entry["tokens_burst"],
+                    "last_update": entry["last_update"],
+                    "timestamps": list(entry["timestamps"])
+                }
+            return {
+                "max_requests": self.max_requests,
+                "window_seconds": self.window_seconds,
+                "burst": self.burst,
+                "buckets": buckets_data
+            }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> "RateLimiter":
+        obj = cls.__new__(cls)
+        obj.max_requests = data["max_requests"]
+        obj.window_seconds = data["window_seconds"]
+        obj.burst = data["burst"]
+        obj._buckets = {}
+        obj._lock = threading.Lock()
+        for key_str, entry_data in data["buckets"].items():
+            user_id, endpoint = key_str.split("|", 1)
+            entry = {
+                "tokens_main": entry_data["tokens_main"],
+                "tokens_burst": entry_data["tokens_burst"],
+                "last_update": entry_data["last_update"],
+                "timestamps": deque(entry_data["timestamps"])
+            }
+            obj._buckets[(user_id, endpoint)] = entry
+        return obj

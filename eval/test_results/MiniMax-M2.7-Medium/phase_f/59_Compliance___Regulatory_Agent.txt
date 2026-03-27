@@ -1,0 +1,67 @@
+```json
+{
+  "violations": [
+    {
+      "id": 1,
+      "article": "Article 6(1)(a) & Article 7 – Lawfulness of processing and conditions for consent",
+      "practice": "User data is collected without any consent form or notice.",
+      "fix": "Implement an explicit, informed consent mechanism that meets the requirements of Articles 6 and 7, providing clear information about the purposes and giving users the ability to opt‑in before any data is collected."
+    },
+    {
+      "id": 2,
+      "article": "Article 32 – Security of processing",
+      "practice": "Personal data is stored in plain text in the database.",
+      "fix": "Apply appropriate technical measures such as encryption at rest (e.g., AES‑256) and in transit (TLS), implement access controls, and regularly audit security practices to protect personal data."
+    },
+    {
+      "id": 3,
+      "article": "Article 17 – Right to erasure (right to be forgotten)",
+      "practice": "Users cannot request deletion of their data — 'we keep everything forever.'",
+      "fix": "Establish and enforce a process for handling erasure requests within the time limits stipulated by Article 17, including deletion from all backups and third‑party processors."
+    },
+    {
+      "id": 4,
+      "article": "Articles 13/14 & Article 28 – Transparency obligations and data‑processing agreements",
+      "practice": "Data is shared with 15 third‑party vendors without user knowledge.",
+      "fix": "Update the privacy notice to disclose all third‑party recipients, the purposes of sharing, and the legal basis. Execute written Data Processing Agreements (DPAs) with each vendor as required by Article 28."
+    },
+    {
+      "id": 5,
+      "article": "Article 37 – Designation of a Data Protection Officer",
+      "practice": "There is no Data Protection Officer appointed.",
+      "fix": "Assess whether the organization meets the criteria that require a DPO (e.g., large‑scale systematic monitoring of individuals). If required, formally appoint a DPO and publicize their contact details."
+    },
+    {
+      "id": 6,
+      "article": "Articles 44‑49 – Transfers of personal data to third countries",
+      "practice": "The company transfers EU user data to servers in a country without an adequacy decision, with no safeguards.",
+      "fix": "Before any transfer, either obtain an adequacy decision for the destination country, or implement one of the lawful transfer mechanisms (e.g., Standard Contractual Clauses, Binding Corporate Rules, or approved certification mechanisms) and document the safeguards in the Records of Processing Activities."
+    },
+    {
+      "id": 7,
+      "article": "Article 33 – Notification of a personal data breach to the supervisory authority",
+      "practice": "Data breaches are reported to authorities 'when we get around to it, usually within 6 months.'",
+      "fix": "Establish an incident‑response procedure that ensures any personal data breach is reported to the competent supervisory authority within 72 hours of becoming aware of it, and that high‑risk breaches are communicated to affected individuals without undue delay."
+    },
+    {
+      "id": 8,
+      "article": "Article 8 – Conditions applicable to child's consent in relation to information society services",
+      "practice": "Children under 16 can sign up without parental consent.",
+      "fix": "Implement age‑verification checks and require verifiable parental consent for users under the applicable age threshold (e.g., 16) before allowing registration."
+    },
+    {
+      "id": 9,
+      "article": "Article 20 – Right to data portability",
+      "practice": "Users cannot export their data in any format.",
+      "fix": "Provide a user‑friendly mechanism that allows individuals to receive their personal data in a structured, commonly used, and machine‑readable format (e.g., CSV, JSON) and, where feasible, to transmit those data to another controller."
+    },
+    {
+      "id": 10,
+      "article": "Articles 13/14 – Information to be provided to data subjects",
+      "practice": "Privacy policy was last updated in 2015 and doesn't mention half these practices.",
+      "fix": "Revise and publish an up‑to‑date privacy notice that accurately reflects all current data‑processing activities, including purposes, legal bases, recipients, international transfers, retention periods, and users' rights, in clear and plain language."
+    }
+  ],
+  "count": 10
+}
+```

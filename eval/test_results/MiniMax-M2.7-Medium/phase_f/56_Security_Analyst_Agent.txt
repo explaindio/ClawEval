@@ -1,0 +1,77 @@
+```json
+{
+  "vulnerabilities": [
+    {
+      "id": 1,
+      "type": "Hardcoded secret",
+      "severity": "critical",
+      "location": "app.py:5 (app.secret_key = \"password123\")",
+      "fix": "Generate a random secret key with os.urandom(32) and store it securely (e.g., in an environment variable). Never hard‑code secrets in source code."
+    },
+    {
+      "id": 2,
+      "type": "Server‑side template injection (SSTI)",
+      "severity": "high",
+      "location": "/search route (render_template_string with user‑controlled query)",
+      "fix": "Do not pass unsanitised user input directly to render_template_string. Use Jinja2 templates with explicit context variables and escape any raw user data that must be displayed."
+    },
+    {
+      "id": 3,
+      "type": "SQL injection",
+      "severity": "critical",
+      "location": "/user/<id> route (db.execute with f‑string)",
+      "fix": "Use parameterised queries: cur.execute('SELECT * FROM users WHERE id = ?', (id,)) or an ORM that handles escaping automatically."
+    },
+    {
+      "id": 4,
+      "type": "Insecure deserialization",
+      "severity": "critical",
+      "location": "/upload route (pickle.loads(request.get_data()))",
+      "fix": "Avoid pickle for untrusted data. Use a safe format such as JSON, or if you must serialise objects, sign them with HMAC and verify the signature before deserialising."
+    },
+    {
+      "id": 5,
+      "type": "OS command injection",
+      "severity": "critical",
+      "location": "/run route (subprocess.check_output(cmd, shell=True))",
+      "fix": "Remove shell=True and split the command into a list of arguments. Validate the input against a strict allow‑list of permitted commands."
+    },
+    {
+      "id": 6,
+      "type": "Path traversal",
+      "severity": "high",
+      "location": "/file route (open(path).read())",
+      "fix": "Resolve the requested path with os.path.realpath, ensure it lies within a designated base directory, and reject any attempts to escape the root (e.g., containing '..')."
+    },
+    {
+      "id": 7,
+      "type": "Hardcoded credentials / weak fallback password",
+      "severity": "high",
+      "location": "/login route (if pw == os.environ.get('ADMIN_PW', 'admin'))",
+      "fix": "Remove the default fallback password. Enforce that ADMIN_PW is set to a strong, unique value, and use proper password hashing when comparing."
+    },
+    {
+      "id": 8,
+      "type": "Information disclosure (environment variables)",
+      "severity": "high",
+      "location": "/debug route (return str(os.environ))",
+      "fix": "Remove or restrict the debug endpoint (require authentication, do not expose it in production). Never dump environment variables to users."
+    },
+    {
+      "id": 9,
+      "type": "Missing transport layer protection",
+      "severity": "medium",
+      "location": "Application‑wide (no HTTPS enforcement)",
+      "fix": "Serve the app over HTTPS only, set Flask’s SESSION_COOKIE_SECURE, SESSION_COOKIE_HTTPONLY, and optionally enable HSTS (Strict‑Transport‑Security)."
+    },
+    {
+      "id": 10,
+      "type": "Lack of rate limiting",
+      "severity": "medium",
+      "location": "All routes (no rate‑limit protection)",
+      "fix": "Add rate limiting with a library such as Flask‑Limiter. Configure limits appropriate for each endpoint (e.g., stricter limits on login, file upload, and command execution)."
+    }
+  ],
+  "count": 10
+}
+```

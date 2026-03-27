@@ -1,0 +1,83 @@
+```python
+import time
+import threading
+from collections import deque
+
+class RateLimiter:
+    def __init__(self, max_requests: int, window_seconds: float, burst: int = 0):
+        self.max_requests = max_requests
+        self.window_seconds = window_seconds
+        self.burst = burst
+        self._state = {}
+        self._lock = threading.RLock()
+
+    def allow(self, user_id: str, endpoint: str = "default") -> dict:
+        key = (user_id, endpoint)
+        current_time = time.time()
+        with self._lock:
+            state = self._state.get(key, {'regular': deque(), 'burst': deque()})
+            
+            while state['regular'] and state['regular'][0] <= current_time - self.window_seconds:
+                state['regular'].popleft()
+            while state['burst'] and state['burst'][0] <= current_time - 2 * self.window_seconds:
+                state['burst'].popleft()
+            
+            if len(state['regular']) < self.max_requests:
+                state['regular'].append(current_time)
+                allowed = True
+            elif len(state['burst']) < self.burst:
+                state['burst'].append(current_time)
+                allowed = True
+            else:
+                allowed = False
+            
+            total_used = len(state['regular']) + len(state['burst'])
+            remaining = (self.max_requests + self.burst) - total_used
+            
+            if allowed:
+                retry_after = None
+            else:
+                time_regular = 0
+                if state['regular'] and len(state['regular']) >= self.max_requests:
+                    time_regular = state['regular'][0] + self.window_seconds - current_time
+                    if time_regular < 0:
+                        time_regular = 0
+                time_burst = 0
+                if state['burst'] and len(state['burst']) >= self.burst:
+                    time_burst = state['burst'][0] + 2 * self.window_seconds - current_time
+                    if time_burst < 0:
+                        time_burst = 0
+                retry_after = min(time_regular, time_burst) if (time_regular > 0 or time_burst > 0) else 0
+            
+            if state['regular'] or state['burst']:
+                self._state[key] = state
+            elif key in self._state:
+                del self._state[key]
+            
+            return {"allowed": allowed, "remaining": remaining, "retry_after": retry_after}
+
+    def allow_priority(self, user_id: str, endpoint: str = "default") -> dict:
+        return {"allowed": True, "remaining": 10**9, "retry_after": None}
+
+    def cleanup(self, max_age_seconds: float = None) -> int:
+        if max_age_seconds is None:
+            max_age_seconds = 2 * self.window_seconds
+        current_time = time.time()
+        removed = 0
+        with self._lock:
+            for key in list(self._state.keys()):
+                state = self._state[key]
+                last_regular = state['regular'][-1] if state['regular'] else 0
+                last_burst = state['burst'][-1] if state['burst'] else 0
+                last_request = max(last_regular, last_burst)
+                if current_time - last_request > max_age_seconds:
+                    del self._state[key]
+                    removed += 1
+        return removed
+
+    def get_usage(self, user_id: str, endpoint: str = "default") -> dict:
+        key = (user_id, endpoint)
+        current_time = time.time()
+        with self._lock:
+            state = self._state.get(key, {'regular': deque(), 'burst': deque()})
+            while state['regular

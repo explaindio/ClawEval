@@ -1,28 +1,39 @@
+
 ```python
 from collections import OrderedDict
 
-class _LRUCache:
-    __slots__ = ('capacity', '_cache')
-    def __init__(self, capacity: int):
-        self.capacity = capacity
-        self._cache = OrderedDict()
+def lru_cache(capacity):
+    """Return an LRU cache with the given capacity supporting O(1) get and put."""
+    class LRUCache:
+        def __init__(self, cap):
+            self.capacity = cap
+            self.cache = {}          # key -> value
+            self.order = OrderedDict()  # maintains usage order
 
-    def get(self, key):
-        if key in self._cache:
-            self._cache.move_to_end(key)   # mark as most‑recently used
-            return self._cache[key]
-        return -1
+        def get(self, key):
+            if key not in self.cache:
+                return -1
+            # Move to the end (most recently used)
+            self.order.move_to_end(key)
+            return self.cache[key]
 
-    def put(self, key, value):
-        if key in self._cache:
-            self._cache.move_to_end(key)   # update position
-            self._cache[key] = value
-        else:
-            if len(self._cache) >= self.capacity:
-                self._cache.popitem(last=False)  # evict least‑recently used
-            self._cache[key] = value
+        def put(self, key, value):
+            # If key already exists, update and mark as recently used
+            if key in self.cache:
+                self.cache[key] = value
+                self.order.move_to_end(key)
+                return
 
-def lru_cache(capacity: int):
-    """Return an LRU cache with the given capacity."""
-    return _LRUCache(capacity)
+            # If at capacity, evict the least recently used item
+            if self.capacity > 0 and len(self.cache) >= self.capacity:
+                oldest = next(iter(self.order))
+                del self.cache[oldest]
+                self.order.pop(oldest)
+
+            # Insert new key‑value pair
+            if self.capacity > 0:
+                self.cache[key] = value
+                self.order[key] = None  # value stored only in `cache`
+
+    return LRUCache(capacity)
 ```

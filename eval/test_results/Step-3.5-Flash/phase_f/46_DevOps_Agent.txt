@@ -1,0 +1,65 @@
+{
+  "issues": [
+    {
+      "line": 1,
+      "problem": "version '2' is outdated",
+      "fix": "Update to a newer version, e.g., '3.8' or the latest compatible version"
+    },
+    {
+      "line": 4,
+      "problem": "'latest' tag is non-deterministic for node image",
+      "fix": "Use a specific version tag, e.g., 'node:18-alpine'"
+    },
+    {
+      "line": 24,
+      "problem": "'latest' tag is non-deterministic for redis image (defaults to latest)",
+      "fix": "Use a specific version tag, e.g., 'redis:7-alpine'"
+    },
+    {
+      "line": 8,
+      "problem": "DB_PASSWORD in plaintext",
+      "fix": "Use Docker secrets or external secret management (e.g., environment files with restricted access)"
+    },
+    {
+      "line": 9,
+      "problem": "NODE_ENV set to 'development' in production",
+      "fix": "Change to 'production' for optimal performance and security"
+    },
+    {
+      "line": 11,
+      "problem": "Source volume mount (.:/app) in production",
+      "fix": "Remove the volume mount or build a production image without it; use multi-stage builds for code inclusion"
+    },
+    {
+      "line": 12,
+      "problem": "restart policy set to 'no'",
+      "fix": "Set to 'unless-stopped' or 'always' for automatic recovery"
+    },
+    {
+      "line": 15,
+      "problem": "MySQL 5.6 is EOL (end-of-life)",
+      "fix": "Use a supported version, e.g., 'mysql:8.0' or 'mysql:5.7'"
+    },
+    {
+      "line": 17,
+      "problem": "DB port 3306 exposed publicly",
+      "fix": "Remove the port mapping or restrict access using custom networks and internal DNS"
+    },
+    {
+      "line": 19,
+      "problem": "MYSQL_ROOT_PASSWORD in plaintext",
+      "fix": "Use Docker secrets or external secret management (e.g., environment files with restricted access)"
+    },
+    {
+      "line": 21,
+      "problem": "/tmp used for persistent data (data lost on reboot)",
+      "fix": "Use a named volume (e.g., mysql-data:/var/lib/mysql) or bind mount to a persistent directory"
+    },
+    {
+      "line": 26,
+      "problem": "Redis port exposed publicly and no authentication",
+      "fix": "Remove port mapping, configure Redis with 'requirepass' in command or config, and use internal network isolation"
+    }
+  ],
+  "count": 12
+}

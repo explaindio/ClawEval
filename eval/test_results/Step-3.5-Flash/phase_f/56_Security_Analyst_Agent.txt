@@ -1,0 +1,77 @@
+```json
+{
+  "vulnerabilities": [
+    {
+      "id": 1,
+      "type": "Hardcoded Secret",
+      "severity": "critical",
+      "location": "app.secret_key = 'password123'",
+      "fix": "Generate a strong random secret key and store it in environment variables or a secure configuration management system. Example: app.secret_key = os.environ.get('SECRET_KEY')"
+    },
+    {
+      "id": 2,
+      "type": "Server-Side Template Injection (SSTI)",
+      "severity": "critical",
+      "location": "/search route: render_template_string(f'Results for: {q}')",
+      "fix": "Use Flask's render_template with separate template files and pass user input as context variables, or escape user input. Example: return render_template('search.html', query=q)"
+    },
+    {
+      "id": 3,
+      "type": "SQL Injection",
+      "severity": "critical",
+      "location": "/user/<id> route: db.execute(f'SELECT * FROM users WHERE id = {id}')",
+      "fix": "Use parameterized queries. Example: db.execute('SELECT * FROM users WHERE id = ?', (id,))"
+    },
+    {
+      "id": 4,
+      "type": "Unsafe Deserialization",
+      "severity": "critical",
+      "location": "/upload route: pickle.loads(data)",
+      "fix": "Avoid pickle for untrusted data. Use JSON or other safe serialization formats. If pickle is required, implement strict class allowlisting and digital signatures."
+    },
+    {
+      "id": 5,
+      "type": "Command Injection",
+      "severity": "critical",
+      "location": "/run route: subprocess.check_output(cmd, shell=True)",
+      "fix": "Avoid shell=True. Use subprocess with a list of arguments and validate/whitelist commands. Example: subprocess.check_output(['safe_command', arg1, arg2])"
+    },
+    {
+      "id": 6,
+      "type": "Path Traversal",
+      "severity": "high",
+      "location": "/file route: open(path).read()",
+      "fix": "Validate and sanitize the path. Use os.path.abspath and ensure it stays within an allowed directory. Example: base_dir = '/allowed/dir'; safe_path = os.path.join(base_dir, path); if not safe_path.startswith(base_dir): abort(403)"
+    },
+    {
+      "id": 7,
+      "type": "Weak Credential Check",
+      "severity": "high",
+      "location": "/login route: if pw == os.environ.get('ADMIN_PW', 'admin')",
+      "fix": "Use strong, unique passwords stored as hashes (e.g., bcrypt) in a database. Never use default passwords. Example: from werkzeug.security import check_password_hash; stored_hash = get_user_hash(username); if check_password_hash(stored_hash, pw): ..."
+    },
+    {
+      "id": 8,
+      "type": "Information Disclosure",
+      "severity": "critical",
+      "location": "/debug route: return str(os.environ)",
+      "fix": "Remove the debug endpoint in production. If needed, restrict it to localhost or authenticated admin users only."
+    },
+    {
+      "id": 9,
+      "type": "Missing HTTPS Enforcement",
+      "severity": "high",
+      "location": "Global configuration: No HTTPS enforcement",
+      "fix": "Enforce HTTPS by setting app.config['PREFERRED_URL_SCHEME'] = 'https' and using a reverse proxy (e.g., nginx) with SSL/TLS. Consider Flask-TLS extension."
+    },
+    {
+      "id": 10,
+      "type": "Missing Rate Limiting",
+      "severity": "medium",
+      "location": "Global configuration: No rate limiting on any endpoint",
+      "fix": "Implement rate limiting using Flask-Limiter. Example: from flask_limiter import Limiter; limiter = Limiter(app, key_func=lambda: request.args.get('ip') or request.remote_addr); @app.route('/login') @limiter.limit('5 per minute') def login(): ..."
+    }
+  ],
+  "count": 10
+}
+```

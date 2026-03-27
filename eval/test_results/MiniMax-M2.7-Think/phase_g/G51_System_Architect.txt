@@ -1,72 +1,75 @@
 {
   "architecture": {
     "components": [
-      "API Gateway / Load Balancer (e.g., AWS ALB)",
-      "Stateless API Servers (auto‑scaling group of containerized microservices)",
-      "Redis Cluster (for caching short‑URL mappings and rate‑limit counters)",
-      "Primary PostgreSQL database (write‑optimized, partitioned by short code)",
-      "Read Replicas of PostgreSQL (multiple AZs for read traffic)",
-      "CDN (e.g., CloudFront) to serve redirects close to users",
-      "Analytics/Logging Service (separate, GDPR‑sanitised)",
-      "Background Workers (for link‑expiration cleanup, GDPR deletion jobs)"
+      "Load Balancer (AWS ALB) – global entry point with SSL termination",
+      "CDN (CloudFront) – edge caching for static assets and geo‑distributed redirect hints",
+      "API Gateway / Edge Functions – lightweight request validation and rate‑limiting at the edge",
+      "Application Servers (Auto‑Scaling Group) – stateless Node.js/Go services handling business logic",
+      "Redis Cache Cluster (ElastiCache) – in‑memory store for hot short‑code → destination mappings",
+      "Primary Database (Aurora PostgreSQL) – ACID‑compliant, multi‑AZ, auto‑scaling storage",
+      "Read Replicas (Aurora) – offload read‑heavy traffic and provide low‑latency lookups",
+      "Message Queue (SQS) – decouples write path for burst handling and async URL expiration jobs",
+      "Object Storage (S3) – raw click‑log storage for analytics, separate from PII",
+      "Monitoring & Alerting (CloudWatch + DataDog) – centralized metrics, logs, and alerting"
     ],
     "database": {
-      "primary": "PostgreSQL 14 with partitioned tables on the short code column (e.g., range partitioning by first two characters); write‑optimised settings (async commit, bulk insert).",
-      "justification": "Provides ACID guarantees for custom alias uniqueness, supports JSON for metadata, easy partitioning for high‑write workloads, and has mature read‑replica ecosystem for scaling reads."
+      "primary": "Aurora PostgreSQL (compatible with MySQL) – serverless instance with up to 15 read replicas",
+      "justification": "Aurora delivers high write throughput (10 M writes/day) with automatic sharding and built‑in multi‑AZ replication, meeting the 99.99 % uptime SLA while keeping operational overhead low. Its read‑replica feature allows horizontal scaling of the read path (1 B redirects/day) with sub‑millisecond latency."
     },
     "cache": {
-      "type": "Redis 7 (cluster mode) with ~15‑20 nodes across AZs",
-      "strategy": "Write‑through cache: every created or updated short URL is immediately written to Redis; reads hit Redis first (TTL of 24 h for most URLs, configurable up to 30 d for long‑lived aliases).",
-      "invalidation": "On update or deletion, the specific key is deleted; background expiration uses Redis keyspace notifications to trigger cleanup of stale DB records."
+      "type": "Redis (ElastiCache, cluster mode enabled)",
+      "strategy": "Write‑through caching on URL creation (short‑code → original URL) and read‑through on redirects. Frequently accessed URLs are cached with a TTL of 1 hour; less popular entries are evicted based on LRU. Local LRU caches (e.g., Go/Java in‑process maps) supplement Redis for ultra‑low latency.",
+      "invalidation": "Explicit invalidation on URL deletion or user‑initiated “right to be forgotten” requests; TTL‑driven expiration; event‑driven cache updates via Redis pub/sub when background jobs purge expired entries."
     },
     "hash_strategy": {
-      "algorithm": "Base‑62 (a‑z, A‑Z, 0‑9) with a cryptographically‑secure random generator (e.g., /dev/urandom). A 7‑character string yields 62^7 ≈ 3.5 trillion possible values.",
+      "algorithm": "MurmurHash3‑64bit, then Base62 encoding (alphabet a‑z, A‑Z, 0‑9)",
       "length": 7,
-      "collision_handling": "If the generated code already exists (UNIQUE constraint violation), retry with a new random code up to 3 times; after 3 retries, append a random suffix (max 2 extra chars). Custom aliases bypass this step."
+      "collision_handling": "Before committing, check DB for uniqueness of the generated short code. If a collision occurs, append a random 2‑character suffix and re‑check (up to 3 retries). After 3 attempts, fall back to a DB‑generated sequence number and encode it."
     }
   },
   "scaling": {
-    "read_write_ratio": "100:1 (≈1 billion redirects per day vs 10 million short‑URL creations)",
-    "read_optimization": "Serve all redirect lookups from Redis; on a cache miss, query one of the PostgreSQL read‑replicas using connection pooling (PgBouncer). Replicas are spread across 3 AZs to keep latency < 5 ms for cache‑misses.",
-    "write_path": "Client → API GW → API Server → Primary DB (synchronous commit) → Async Redis write‑through (publish to cache). Writes are batched (up to 500/s per server) to smooth peaks.",
-    "horizontal_scaling": "Add API server instances behind the ALB as CPU/request‑rate thresholds are crossed (e.g., > 60 % CPU or > 30 k req/s per instance). Add Redis shards when cluster memory usage exceeds 70 %. Add PostgreSQL read‑replicas or sharding partitions when read latency > 10 ms."
+    "read_write_ratio": "100:1 (≈1 B reads, ≈10 M writes per day)",
+    "read_optimization": "Redis cache with 1‑hour TTL reduces DB load by >95 %; local in‑process LRU caches on app servers handle the hottest 1 % of URLs with sub‑millisecond latency; Aurora read replicas spread reads across three AZs.",
+    "write_path": "Synchronous write to Aurora (short‑code generation → DB insert) → immediate Redis cache population. During traffic spikes (10×), writes are queued in SQS and processed by a batch‑insert worker, preserving the 50 ms p99 SLA for reads.",
+    "horizontal_scaling": "Stateless app servers auto‑scale based on CPU/ request count; Redis cluster shards as needed; Aurora auto‑scales read replicas; CDN边缘节点absorb massive redirect bursts."
   },
   "reliability": {
-    "uptime_strategy": "Deploy across at least 3 Availability Zones; use an Application Load Balancer with health checks; keep spare capacity for 10× spikes (auto‑scaling policies set to scale up quickly). Implement circuit‑breaker logic on Redis and DB calls to degrade gracefully.",
-    "failover": "Primary DB uses synchronous streaming replication to a hot standby; automatic failover via AWS RDS Multi‑AZ (or Patroni for self‑managed). Redis Sentinel monitors primary; on failure, automatic replica promotion with < 30 s RTO. CDN provides geographic redundancy for redirects.",
-    "data_replication": "PostgreSQL: 1 primary + 2 synchronous standbys + 4 asynchronous read‑replicas (total 5 copies). Redis: 3‑node cluster with replication factor 3 (each slot replicated to 3 nodes). Analytics data replicated to a separate data warehouse with eventual consistency."
+    "uptime_strategy": "Multi‑AZ deployment (minimum two AZs) for all components; automated health checks and self‑healing instances; circuit breakers on DB and cache calls to degrade gracefully; regular blue/green deployments to avoid downtime.",
+    "failover": "Aurora automatic failover (< 30 s) to standby; Redis cluster supports automatic replica promotion; Route 53 health checks trigger DNS failover to a secondary region; SQS queues provide durability for pending writes during outages.",
+    "data_replication": "Aurora uses synchronous replication across AZs (zero‑RPO) for the primary; asynchronous replication to read replicas for low‑latency reads. Redis replicates data across cluster nodes with automatic failover. S3 data is replicated across regions for durability."
   },
   "compliance": {
-    "gdpr_deletion": "Upon receiving a user deletion request, a background worker marks the short URL as 'deleted' in the DB, immediately removes the entry from Redis, and cascades the deletion to all analytics tables. A hard‑delete job runs nightly to purge marked records after a 24‑hour grace period.",
-    "data_retention": "Short‑URL metadata (original URL, creation timestamp, owner) retained for 90 days after expiration or deletion, then permanently erased. Analytics aggregates (click counts, geo‑distribution) are anonymized and kept indefinitely for reporting.",
-    "analytics_separation": "Click‑stream events are streamed to a separate, GDPR‑sanitised data lake (e.g., Kafka → S3) where PII (e.g., IP address) is hashed or omitted before storage. No personal data resides in the primary DB."
+    "gdpr_deletion": "Users can submit a “delete personal data” request via a GDPR portal. The request triggers: (1) removal of the original URL and any PII from Aurora, (2) purge of the corresponding entry from Redis, (3) deletion of click‑log entries associated with the short‑code from S3, (4) anonymisation of any aggregated analytics that could re‑identify the user.",
+    "data_retention": "Personally identifiable data (original URL, user metadata) is retained only while the link is active and for a 30‑day grace period after expiration or deletion. After this window, the data is permanently erased. Aggregated, non‑personal analytics are kept for 90 days and then archived in S3‑Glacier.",
+    "analytics_separation": "Click‑event logs are stored in a separate S3 bucket using a pseudonymised short‑code ID and contain no PII. Access to the analytics store is IAM‑controlled and audited, ensuring separation from user‑identifiable data."
   },
   "cost_estimate": {
-    "monthly_total": 3300,
+    "monthly_total": 5000,
     "breakdown": {
-      "compute": 500,
-      "database": 800,
-      "cache": 150,
-      "cdn": 1500,
-      "other": 350
+      "compute": 1500,
+      "database": 1500,
+      "cache": 800,
+      "cdn": 300,
+      "other": 900
     },
     "fits_budget": true
   },
   "rate_limiting": {
-    "strategy": "Token‑bucket per API key (or per IP for unauthenticated requests) implemented with Redis (INCR + EXPIRE). Limits are enforced at the API Gateway (ALB) and within the application layer for fine‑grained control.",
-    "limits": "Authenticated writes: 1,000 requests/min; Authenticated reads: 10,000 requests/min; Anonymous reads: 300 requests/min per IP; Burst allowance of 2× for up to 5 seconds."
+    "strategy": "Token‑bucket algorithm implemented in Redis (one per IP address and per API key). Each bucket refills at a defined rate and allows bursts up to a defined size.",
+    "limits": "IP‑based: 1,000 requests/minute with a burst of 200; API‑key based: 10,000 requests/minute with a burst of 500. Exceeding the limit returns HTTP 429 and Retry‑After header."
   },
   "monitoring": {
     "metrics": [
-      "Request latency (p50, p95, p99) – measured via CloudWatch/Datadog",
-      "Error rate (5xx, 4xx) – per endpoint",
-      "Cache hit ratio (Redis)",
-      "DB query latency (read replica vs primary)",
-      "CPU / memory utilization on API servers and DB nodes",
-      "Active connections (API, DB, Redis)",
-      "Queue depth for background jobs (link‑expiration, GDPR deletion)",
-      "CDN cache hit ratio and origin request rate"
+      "Redirect request latency (p50, p95, p99)",
+      "API error rate (5xx, 4xx)",
+      "Cache hit/miss ratio",
+      "Database query latency and connection pool usage",
+      "Redis cluster memory usage and command rate",
+      "CDN edge request count and byte transfer",
+      "Queue depth (SQS) for deferred writes",
+      "Application server CPU, memory, and goroutine count",
+      "Active auto‑scaling events"
     ],
-    "alerting": "CloudWatch Alarms for p99 latency > 50 ms, error rate > 0.1 %, Redis memory > 70 % or cluster nodes down; PagerDuty integration for critical alerts; dashboards in Grafana for on‑call review."
+    "alerting": "CloudWatch alarms on p99 latency > 50 ms, error rate > 0.01 %, cache hit ratio < 70 %, DB CPU > 70 %, Redis memory > 80 %, queue depth > 10 k. Alerts routed through SNS to PagerDuty for on‑call response; Slack notifications for operational awareness."
   }
 }

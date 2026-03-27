@@ -1,218 +1,120 @@
 ```python
 # test_calculate_tax.py
-# Adjust the import to match the location of calculate_tax.
-from tax import calculate_tax  # type: ignore
-
 import pytest
-
-
-# ----------------------------------------------------------------------
-# Helpers
-# ----------------------------------------------------------------------
-def _tax_and_rate(income, status):
-    """Return (tax, effective_rate) for the given income and status."""
-    return calculate_tax(income, status)
-
+from tax import calculate_tax  # adjust import as needed for your project
 
 # ----------------------------------------------------------------------
-# Valid input tests
+# Zero income
 # ----------------------------------------------------------------------
 def test_zero_income_single():
-    tax, rate = _tax_and_rate(0, "single")
-    assert tax == 0.0
-    assert rate == 0.0
-
+    tax, rate = calculate_tax(0, 'single')
+    assert tax == 0
+    assert rate == 0
 
 def test_zero_income_married():
-    tax, rate = _tax_and_rate(0, "married")
-    assert tax == 0.0
-    assert rate == 0.0
+    tax, rate = calculate_tax(0, 'married')
+    assert tax == 0
+    assert rate == 0
 
-
+# ----------------------------------------------------------------------
+# Typical incomes
+# ----------------------------------------------------------------------
 def test_typical_income_single():
-    # Income $50,000 – single
-    tax, rate = _tax_and_rate(50_000, "single")
-    assert tax == pytest.approx(6_053.0, abs=0.01)
-    assert rate == pytest.approx(12.11, abs=0.01)
-
+    tax, rate = calculate_tax(30_000, 'single')
+    assert tax == 3368.0
+    assert rate == 11.23
 
 def test_typical_income_married():
-    # Income $80,000 – married
-    tax, rate = _tax_and_rate(80_000, "married")
-    assert tax == pytest.approx(9_136.0, abs=0.01)
-    assert rate == pytest.approx(11.42, abs=0.01)
+    tax, rate = calculate_tax(30_000, 'married')
+    assert tax == 3136.0
+    assert rate == 10.45
 
-
+# ----------------------------------------------------------------------
+# High incomes (above top bracket)
+# ----------------------------------------------------------------------
 def test_high_income_single():
-    # Income $1,000,000 – single
-    tax, rate = _tax_and_rate(1_000_000, "single")
-    assert tax == pytest.approx(328_187.75, abs=0.01)
-    assert rate == pytest.approx(32.82, abs=0.01)
-
+    tax, rate = calculate_tax(1_000_000, 'single')
+    assert tax == 328_187.75
+    assert rate == 32.82
 
 def test_high_income_married():
-    # Income $1,000,000 – married
-    tax, rate = _tax_and_rate(1_000_000, "married")
-    assert tax == pytest.approx(296_125.5, abs=0.01)
-    assert rate == pytest.approx(29.61, abs=0.01)
-
-
-def test_single_vs_married_same_income():
-    """Ensure different results for the same income."""
-    tax_s, rate_s = _tax_and_rate(75_000, "single")
-    tax_m, rate_m = _tax_and_rate(75_000, "married")
-    assert tax_s != tax_m or rate_s != rate_m
-    # Spot‑check a known difference:
-    # $75k single → tax ≈ $12,125.00 (effective ≈ 16.17%)
-    # $75k married → tax ≈ $11,020.00 (effective ≈ 14.69%)
-    assert tax_s == pytest.approx(12_125.0, abs=0.5)
-    assert tax_m == pytest.approx(11_020.0, abs=0.5)
-
+    tax, rate = calculate_tax(1_000_000, 'married')
+    assert tax == 296_125.5
+    assert rate == 29.61
 
 # ----------------------------------------------------------------------
-# Bracket‑boundary tests
+# Bracket boundary – single
 # ----------------------------------------------------------------------
-def test_single_at_first_bracket_limit():
-    # Exactly $11,600 – top of 10 % bracket
-    tax, rate = _tax_and_rate(11_600, "single")
-    assert tax == pytest.approx(1_160.0, abs=0.01)
-    assert rate == pytest.approx(10.0, abs=0.01)
+def test_bracket_boundary_single_at_limit():
+    tax, rate = calculate_tax(11_600, 'single')
+    assert tax == 1_160.0
+    assert rate == 10.0
 
+def test_bracket_boundary_single_just_above():
+    tax, rate = calculate_tax(47_151, 'single')
+    assert tax == 5_426.22
+    assert rate == 11.51
 
-def test_single_just_below_first_bracket_limit():
-    tax, rate = _tax_and_rate(11_599, "single")
-    assert tax == pytest.approx(1_159.9, abs=0.01)
-    assert rate == pytest.approx(10.0, abs=0.01)
-
-
-def test_single_just_above_first_bracket_limit():
-    tax, rate = _tax_and_rate(11_601, "single")
-    assert tax == pytest.approx(1_160.12, abs=0.01)
-    assert rate == pytest.approx(10.0, abs=0.01)
-
-
-def test_single_at_second_bracket_limit():
-    # Exactly $47,150 – top of 12 % bracket
-    tax, rate = _tax_and_rate(47_150, "single")
-    assert tax == pytest.approx(5_426.0, abs=0.01)
-    assert rate == pytest.approx(11.51, abs=0.01)
-
-
-def test_single_just_above_second_bracket_limit():
-    tax, rate = _tax_and_rate(47_151, "single")
-    assert tax == pytest.approx(5_426.22, abs=0.01)
-    assert rate == pytest.approx(11.51, abs=0.01)
-
-
-def test_single_at_third_bracket_limit():
-    # Exactly $100,525 – top of 22 % bracket
-    tax, rate = _tax_and_rate(100_525, "single")
-    assert tax == pytest.approx(17_168.5, abs=0.01)
-    assert rate == pytest.approx(17.08, abs=0.01)
-
-
-def test_single_just_above_third_bracket_limit():
-    tax, rate = _tax_and_rate(100_526, "single")
-    assert tax == pytest.approx(17_168.74, abs=0.01)
-    assert rate == pytest.approx(17.08, abs=0.01)
-
-
-def test_single_at_last_before_top_bracket():
-    # Exactly $609,350 – top of 35 % bracket
-    tax, rate = _tax_and_rate(609_350, "single")
-    assert tax == pytest.approx(183_647.25, abs=0.01)
-    assert rate == pytest.approx(30.14, abs=0.01)
-
-
-def test_single_just_above_last_bracket():
-    tax, rate = _tax_and_rate(609_351, "single")
-    assert tax == pytest.approx(183_647.62, abs=0.01)
-    assert rate == pytest.approx(30.14, abs=0.01)
-
-
-def test_married_at_first_bracket_limit():
-    # Exactly $23,200 – top of 10 % bracket
-    tax, rate = _tax_and_rate(23_200, "married")
-    assert tax == pytest.approx(2_320.0, abs=0.01)
-    assert rate == pytest.approx(10.0, abs=0.01)
-
-
-def test_married_just_below_first_bracket_limit():
-    tax, rate = _tax_and_rate(23_199, "married")
-    assert tax == pytest.approx(2_319.9, abs=0.01)
-    assert rate == pytest.approx(10.0, abs=0.01)
-
-
-def test_married_just_above_first_bracket_limit():
-    tax, rate = _tax_and_rate(23_201, "married")
-    assert tax == pytest.approx(2_320.12, abs=0.01)
-    assert rate == pytest.approx(10.0, abs=0.01)
-
-
-def test_married_at_second_bracket_limit():
-    # Exactly $94,300 – top of 12 % bracket
-    tax, rate = _tax_and_rate(94_300, "married")
-    assert tax == pytest.approx(10_852.0, abs=0.01)
-    assert rate == pytest.approx(11.51, abs=0.01)
-
-
-def test_married_just_above_second_bracket_limit():
-    tax, rate = _tax_and_rate(94_301, "married")
-    assert tax == pytest.approx(10_852.22, abs=0.01)
-    assert rate == pytest.approx(11.51, abs=0.01)
-
-
-def test_married_at_last_before_top_bracket():
-    # Exactly $731,200 – top of 35 % bracket
-    tax, rate = _tax_and_rate(731_200, "married")
-    assert tax == pytest.approx(196_669.5, abs=0.01)
-    assert rate == pytest.approx(26.89, abs=0.01)
-
-
-def test_married_just_above_last_bracket():
-    tax, rate = _tax_and_rate(731_201, "married")
-    assert tax == pytest.approx(196_669.87, abs=0.01)
-    assert rate == pytest.approx(26.89, abs=0.01)
-
+def test_bracket_boundary_single_at_second_limit():
+    tax, rate = calculate_tax(47_150, 'single')
+    assert tax == 5_426.0
+    assert rate == 11.51
 
 # ----------------------------------------------------------------------
-# Floating‑point income tests
+# Bracket boundary – married
 # ----------------------------------------------------------------------
-def test_floating_point_income_single():
-    # Income $12,345.67 – single
-    tax, rate = _tax_and_rate(12_345.67, "single")
-    assert tax == pytest.approx(1_249.48, abs=0.01)
-    assert rate == pytest.approx(10.12, abs=0.01)
+def test_bracket_boundary_married_at_limit():
+    tax, rate = calculate_tax(23_200, 'married')
+    assert tax == 2_320.0
+    assert rate == 10.0
 
+def test_bracket_boundary_married_just_above():
+    tax, rate = calculate_tax(94_301, 'married')
+    assert tax == 10_852.22
+    assert rate == 11.51
 
-def test_floating_point_income_married():
-    # Income $55,555.55 – married
-    tax, rate = _tax_and_rate(55_555.55, "married")
-    # Manual check:
-    # 0‑23200 → 2320
-    # 23200‑55555.55 → (55555.55‑23200)=32355.55*0.12=3_882.666
-    # total tax ≈ 6_202.666 → round to 6202.67
-    assert tax == pytest.approx(6_202.67, abs=0.01)
-    assert rate == pytest.approx(6_202.67 / 55_555.55 * 100, abs=0.01)
-
+def test_bracket_boundary_married_at_second_limit():
+    tax, rate = calculate_tax(94_300, 'married')
+    assert tax == 10_852.0
+    assert rate == 11.51
 
 # ----------------------------------------------------------------------
-# Effective‑rate rounding tests
+# Edge cases – floating‑point incomes, minimum taxable amount
 # ----------------------------------------------------------------------
-def test_effective_rate_rounded_to_two_decimals():
-    # Income $25,000 – single
-    tax, rate = _tax_and_rate(25_000, "single")
-    assert tax == pytest.approx(2_768.0, abs=0.01)
-    # 2,768 / 25,000 * 100 = 11.072 → should round to 11.07
-    assert rate == pytest.approx(11.07, abs=0.01)
+def test_float_income():
+    tax, rate = calculate_tax(50_000.75, 'single')
+    assert isinstance(tax, float)
+    assert isinstance(rate, float)
+    assert tax > 0
 
+def test_minimum_taxable_income():
+    tax, rate = calculate_tax(1, 'single')
+    assert tax == 0.1
+    assert rate == 10.0
 
 # ----------------------------------------------------------------------
-# Return‑type tests
+# Invalid inputs – filing status, negative income, non‑numeric income
 # ----------------------------------------------------------------------
-def test_returns_tuple():
-    result = _tax_and_rate(10_000, "single")
-    assert isinstance(result, tuple)
-    assert len(result) == 2
-    # Both elements should be numeric (int or float)
-    assert isinstance(result[0], (int,
+def test_invalid_filing_status():
+    with pytest.raises(ValueError, match="Invalid filing status"):
+        calculate_tax(50_000, 'head_of_household')
+
+def test_negative_income():
+    with pytest.raises(ValueError, match="Income must be non-negative"):
+        calculate_tax(-1_000, 'single')
+
+def test_non_numeric_income_string():
+    with pytest.raises(ValueError, match="Income must be non-negative"):
+        calculate_tax("50000", 'single')
+
+def test_non_numeric_income_none():
+    with pytest.raises(ValueError, match="Income must be non-negative"):
+        calculate_tax(None, 'married')
+
+# ----------------------------------------------------------------------
+# Effective rate edge case – zero income yields 0%
+# ----------------------------------------------------------------------
+def test_effective_rate_zero_income():
+    _, rate = calculate_tax(0, 'single')
+    assert rate == 0
+```

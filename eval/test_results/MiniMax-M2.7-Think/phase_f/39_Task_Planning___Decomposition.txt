@@ -1,98 +1,114 @@
+```json
 {
   "tasks": [
     {
       "id": "T1",
-      "name": "Project Setup",
+      "name": "Project setup and initialization",
       "depends_on": [],
       "estimated_hours": 4,
       "assignable_to": "fullstack"
     },
     {
       "id": "T2",
-      "name": "Database Design & Setup (PostgreSQL)",
+      "name": "Database design and setup (PostgreSQL)",
       "depends_on": ["T1"],
       "estimated_hours": 8,
       "assignable_to": "backend"
     },
     {
       "id": "T3",
-      "name": "User Registration Endpoint",
+      "name": "User registration and login with JWT",
       "depends_on": ["T2"],
-      "estimated_hours": 5,
+      "estimated_hours": 12,
       "assignable_to": "backend"
     },
     {
       "id": "T4",
-      "name": "User Login & JWT Generation",
+      "name": "Todo CRUD API (protected endpoints)",
       "depends_on": ["T3"],
-      "estimated_hours": 5,
+      "estimated_hours": 16,
       "assignable_to": "backend"
     },
     {
       "id": "T5",
-      "name": "Secure API Endpoints with JWT Middleware",
+      "name": "Todo categories/tags feature",
       "depends_on": ["T4"],
-      "estimated_hours": 3,
-      "assignable_to": "backend"
-    },
-    {
-      "id": "T6",
-      "name": "Todo CRUD Operations",
-      "depends_on": ["T5"],
       "estimated_hours": 8,
       "assignable_to": "backend"
     },
     {
+      "id": "T6",
+      "name": "Due date reminders",
+      "depends_on": ["T4"],
+      "estimated_hours": 12,
+      "assignable_to": "backend"
+    },
+    {
       "id": "T7",
-      "name": "Category/Tag Management",
-      "depends_on": ["T5"],
+      "name": "Rate limiting middleware",
+      "depends_on": ["T3"],
       "estimated_hours": 6,
       "assignable_to": "backend"
     },
     {
       "id": "T8",
-      "name": "Due Date Reminders",
-      "depends_on": ["T6"],
-      "estimated_hours": 5,
+      "name": "Unit tests for authentication (80%+ coverage)",
+      "depends_on": ["T3"],
+      "estimated_hours": 8,
       "assignable_to": "backend"
     },
     {
       "id": "T9",
-      "name": "Rate Limiting Implementation",
+      "name": "Unit tests for Todo CRUD (80%+ coverage)",
+      "depends_on": ["T4"],
+      "estimated_hours": 8,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T10",
+      "name": "Unit tests for categories/tags (80%+ coverage)",
       "depends_on": ["T5"],
       "estimated_hours": 4,
       "assignable_to": "backend"
     },
     {
-      "id": "T10",
-      "name": "API Documentation (OpenAPI)",
-      "depends_on": ["T6", "T7", "T9"],
-      "estimated_hours": 4,
-      "assignable_to": "fullstack"
-    },
-    {
       "id": "T11",
-      "name": "Unit Tests (80%+ Coverage)",
-      "depends_on": ["T6", "T7", "T8", "T9"],
-      "estimated_hours": 16,
+      "name": "Unit tests for due date reminders (80%+ coverage)",
+      "depends_on": ["T6"],
+      "estimated_hours": 4,
       "assignable_to": "backend"
     },
     {
       "id": "T12",
-      "name": "Docker Setup & docker-compose",
-      "depends_on": ["T6"],
-      "estimated_hours": 5,
-      "assignable_to": "devops"
+      "name": "Unit tests for rate limiting (80%+ coverage)",
+      "depends_on": ["T7"],
+      "estimated_hours": 4,
+      "assignable_to": "backend"
     },
     {
       "id": "T13",
-      "name": "CI/CD Pipeline",
-      "depends_on": ["T11", "T12"],
-      "estimated_hours": 6,
+      "name": "API documentation (OpenAPI)",
+      "depends_on": ["T4"],
+      "estimated_hours": 8,
+      "assignable_to": "fullstack"
+    },
+    {
+      "id": "T14",
+      "name": "Docker deployment",
+      "depends_on": ["T6", "T7"],
+      "estimated_hours": 8,
+      "assignable_to": "devops"
+    },
+    {
+      "id": "T15",
+      "name": "CI/CD pipeline",
+      "depends_on": ["T14", "T12"],
+      "estimated_hours": 12,
       "assignable_to": "devops"
     }
   ],
-  "critical_path": ["T1","T2","T3","T4","T5","T6","T8","T11","T13"],
-  "total_hours": 79,
-  "parallel_tracks": 3
+  "critical_path": ["T1", "T2", "T3", "T4", "T6", "T14", "T15"],
+  "total_hours": 122,
+  "parallel_tracks": 4
 }
+```

@@ -1,0 +1,25 @@
+{
+  "tasks": [
+    {
+      "id": "T1",
+      "name": "Project Setup & Repository Initialization",
+      "depends_on": [],
+      "estimated_hours": 2,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T2",
+      "name": "Database Schema Design & DDL Scripts",
+      "depends_on": ["T1"],
+      "estimated_hours": 4,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T3",
+      "name": "PostgreSQL Setup & Configuration",
+      "depends_on": ["T2"],
+      "estimated_hours": 3,
+      "assignable_to": "devops"
+    },
+    {
+      "id

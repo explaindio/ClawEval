@@ -1,0 +1,251 @@
+{
+  "weeks": [
+    {
+      "week": 1,
+      "theme": "Python Foundations & Environment",
+      "sessions": [
+        {
+          "day": 1,
+          "topic": "Introduction to Python and Development Setup",
+          "objectives": [
+            "Install Python 3.x and a code editor/IDE (e.g., VS Code, PyCharm).",
+            "Execute the first Python script and understand the interpreter workflow.",
+            "Recognize Python's philosophy: readability, simplicity, and the Zen of Python."
+          ],
+          "lecture_min": 45,
+          "handson_min": 45
+        },
+        {
+          "day": 2,
+          "topic": "Variables, Basic Data Types, and Operators",
+          "objectives": [
+            "Declare variables using standard naming conventions.",
+            "Demonstrate usage of core types (int, float, str, bool) and their immutability.",
+            "Apply arithmetic, comparison, and logical operators to produce results."
+          ],
+          "lecture_min": 45,
+          "handson_min": 45
+        },
+        {
+          "day": 3,
+          "topic": "Control Flow: Conditionals and Loops",
+          "objectives": [
+            "Write conditional statements using if, elif, and else.",
+            "Implement for loops iterating over sequences and while loops with termination conditions.",
+            "Utilize break, continue, and pass to control loop execution."
+          ],
+          "lecture_min": 45,
+          "handson_min": 45
+        }
+      ],
+      "quiz": "Quiz 1 – 10 multiple‑choice questions covering Python installation, variable types, and control‑flow constructs.",
+      "assignment": "Assignment 1 – Build a command‑line program that asks the user for a number and prints whether it is prime, even/odd, or both, using proper loops and conditionals."
+    },
+    {
+      "week": 2,
+      "theme": "Functions and Core Data Structures",
+      "sessions": [
+        {
+          "day": 1,
+          "topic": "Function Definitions and Scope",
+          "objectives": [
+            "Define functions with positional, keyword, and default arguments.",
+            "Return values explicitly or implicitly (None) and explain variable scope (local, enclosing, global).",
+            "Apply recursion to solve a simple problem."
+          ],
+          "lecture_min": 45,
+          "handson_min": 45
+        },
+        {
+          "day": 2,
+          "topic": "Lists, Tuples, Dictionaries, and Sets",
+          "objectives": [
+            "Create and manipulate lists, tuples, dictionaries, and sets using built‑in methods.",
+            "Compare mutability across these structures and explain when to use each.",
+            "Perform common operations: indexing, slicing, membership testing, and iteration."
+          ],
+          "lecture_min": 45,
+          "handson_min": 45
+        },
+        {
+          "day": 3,
+          "topic": "File Input/Output with Context Managers",
+          "objectives": [
+            "Open, read, write, and close text files safely using the with statement.",
+            "Process file contents line‑by‑line and handle large files efficiently.",
+            "Serialize data to and from a simple text format (e.g., CSV)."
+          ],
+          "lecture_min": 45,
+          "handson_min": 45
+        }
+      ],
+      "quiz": "Quiz 2 – 5 short‑answer questions plus 5 code‑snippet exercises on functions, collections, and file I/O.",
+      "assignment": "Assignment 2 – Write a script that reads a CSV file of student scores, computes average scores using functions, and writes the results to a new CSV file."
+    },
+    {
+      "week": 3,
+      "theme": "Error Handling, Modules, and Advanced Data Structures",
+      "sessions": [
+        {
+          "day": 1,
+          "topic": "Exception Handling",
+          "objectives": [
+            "Catch and handle built‑in exceptions with try/except/finally.",
+            "Raise custom exceptions and propagate errors up the call stack.",
+            "Design robust code that provides meaningful error messages."
+          ],
+          "lecture_min": 45,
+          "handson_min": 45
+        },
+        {
+          "day": 2,
+          "topic": "Modules, Packages, and the Standard Library",
+          "objectives": [
+            "Create a Python module and import it using various import forms.",
+            "Organize modules into packages and use __init__.py appropriately.",
+            "Navigate the standard library to solve problems (e.g., os, json, datetime)."
+          ],
+          "lecture_min": 45,
+          "handson_min": 45
+        },
+        {
+          "day": 3,
+          "topic": "List Comprehensions, Generator Expressions, and Sorting",
+          "objectives": [
+            "Write concise list comprehensions with conditional logic.",
+            "Create memory‑efficient generator expressions and understand lazy evaluation.",
+            "Sort sequences with custom keys using the sorted() function and operator.itemgetter."
+          ],
+          "lecture_min": 45,
+          "handson_min": 45
+        }
+      ],
+      "quiz": "Quiz 3 – 8 questions mixing multiple‑choice and hands‑on tasks focusing on error handling, modular code, and comprehensions.",
+      "assignment": "Assignment 3 – Develop a utility module that defines a custom exception class, includes functions for parsing JSON files, and uses list comprehensions to filter data."
+    },
+    {
+      "week": 4,
+      "theme": "Object‑Oriented Programming, Inheritance, and Decorators",
+      "sessions": [
+        {
+          "day": 1,
+          "topic": "Classes and Instances",
+          "objectives": [
+            "Define a class with an __init__ method, instance attributes, and methods.",
+            "Distinguish between instance variables, class variables, and static methods.",
+            "Instantiate objects and call methods, reinforcing the concept of self."
+          ],
+          "lecture_min": 45,
+          "handson_min": 45
+        },
+        {
+          "day": 2,
+          "topic": "Inheritance, Polymorphism, and Encapsulation",
+          "objectives": [
+            "Create subclasses that inherit attributes and methods from a parent class.",
+            "Override methods to achieve polymorphic behavior.",
+            "Apply naming conventions (_name, __name) to indicate encapsulation levels."
+          ],
+          "lecture_min": 45,
+          "handson_min": 45
+        },
+        {
+          "day": 3,
+          "topic": "Closures and Decorators",
+          "objectives": [
+            "Explain closures and demonstrate how they capture enclosing scope.",
+            "Write a simple decorator that adds functionality to a function.",
+            "Use functools.wraps to preserve function metadata."
+          ],
+          "lecture_min": 45,
+          "handson_min": 45
+        }
+      ],
+      "quiz": "Quiz 4 – Theoretical questions on OOP principles plus a coding challenge to design a class hierarchy with a decorator.",
+      "assignment": "Assignment 4 – Implement a Shape hierarchy (e.g., Circle, Rectangle) with a decorator that logs method calls, and write a script that computes areas and perimeters."
+    },
+    {
+      "week": 5,
+      "theme": "Generators, Advanced File I/O, and API Integration",
+      "sessions": [
+        {
+          "day": 1,
+          "topic": "Generators and Iterators",
+          "objectives": [
+            "Create generator functions using the yield keyword.",
+            "Iterate over generator objects and compose them with itertools.",
+            "Illustrate memory benefits by processing large datasets lazily."
+          ],
+          "lecture_min": 45,
+          "handson_min": 45
+        },
+        {
+          "day": 2,
+          "topic": "Binary Files, CSV, JSON, and pathlib",
+          "objectives": [
+            "Read/write binary data using the struct module.",
+            "Serialize and deserialize data with csv and json libraries.",
+            "Navigate the filesystem using pathlib.Path objects."
+          ],
+          "lecture_min": 45,
+          "handson_min": 45
+        },
+        {
+          "day": 3,
+          "topic": "HTTP APIs and the requests Library",
+          "objectives": [
+            "Send GET and POST requests, handle query parameters and headers.",
+            "Parse JSON responses and transform them into Python objects.",
+            "Implement error handling for network failures and non‑2xx status codes."
+          ],
+          "lecture_min": 45,
+          "handson_min": 45
+        }
+      ],
+      "quiz": "Quiz 5 – 10 mixed‑format questions covering generators, file formats, and API calls.",
+      "assignment": "Assignment 5 – Build a script that fetches current weather data from a public API, processes the data using generators, and writes the results to a JSON file, including proper error handling."
+    },
+    {
+      "week": 6,
+      "theme": "Testing, Quality Assurance, and Capstone Project",
+      "sessions": [
+        {
+          "day": 1,
+          "topic": "Unit Testing with unittest",
+          "objectives": [
+            "Write test cases by subclassing unittest.TestCase.",
+            "Use setUp/tearDown to prepare and clean up test fixtures.",
+            "Run tests and interpret outcomes (pass, fail, error)."
+          ],
+          "lecture_min": 45,
+          "handson_min": 45
+        },
+        {
+          "day": 2,
+          "topic": "Advanced Testing: pytest, Mocking, and Coverage",
+          "objectives": [
+            "Utilize pytest fixtures and parametrize for concise tests.",
+            "Apply unittest.mock to simulate external dependencies.",
+            "Measure code coverage with coverage.py and interpret reports."
+          ],
+          "lecture_min": 45,
+          "handson_min": 45
+        },
+        {
+          "day": 3,
+          "topic": "Capstone Project Workshop",
+          "objectives": [
+            "Design and implement a command‑line tool that integrates at least five core concepts: functions, classes, file I/O, error handling, decorators, generators, API calls, and testing.",
+            "Apply version control (Git) and code review practices.",
+            "Deliver a functional project with documentation, unit tests, and a demonstration."
+          ],
+          "lecture_min": 45,
+          "handson_min": 45
+        }
+      ],
+      "quiz": "Quiz 6 – Comprehensive test covering testing frameworks, mocking, and code quality metrics.",
+      "assignment": "Assignment 6 – Final Project: Create a weather‑data aggregator that (1) defines a WeatherData class, (2) uses a decorator for logging, (3) fetches data from an API, (4) processes records with a generator, (5) writes results to CSV/JSON, (6) handles errors gracefully, and (7) includes a full test suite using pytest."
+    }
+  ],
+  "final_project": "Capstone Weather Aggregator: Build a CLI tool that retrieves real‑time weather information from a public API (e.g., OpenWeatherMap), processes the JSON payload using generator functions, stores the results in both CSV and JSON files, defines custom exception classes for API and file errors, logs method invocations with a decorator, implements a WeatherData class hierarchy, and provides comprehensive unit tests with pytest (including mocking of HTTP calls). This project integrates at least five required concepts: variables, functions, classes, file I/O, error handling, decorators, generators, APIs, and testing."
+}

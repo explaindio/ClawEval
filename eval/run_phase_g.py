@@ -460,6 +460,7 @@ def main():
     parser.add_argument("--max-tokens", type=int, default=8000, help="Max tokens per response (default: 8000)")
     parser.add_argument("--timeout", type=int, default=600, help="Request timeout in seconds (default: 600)")
     parser.add_argument("--delay", type=int, default=0, help="Delay in seconds between tests (for rate-limited APIs)")
+    parser.add_argument("--openrouter-keys", action="store_true", help="Use multi-key rotation for OpenRouter free tier (loads keys from .env)")
     parser.add_argument("--thinking-budget", type=int, help="SGLang thinking token budget")
     parser.add_argument("--nothink", action="store_true", help="Disable thinking (Kimi: chat_template_kwargs.thinking=False)")
     parser.add_argument("--nothink-root", action="store_true", help="Disable thinking (GLM-5: enable_thinking=false at root level)")
@@ -467,6 +468,21 @@ def main():
     parser.add_argument("--reasoning-effort", choices=["low", "medium", "high"], help="Mistral reasoning_effort param (low/medium/high)")
     parser.add_argument("--test-ids", type=int, nargs="*", help="Run only these test IDs")
     args = parser.parse_args()
+
+    # Initialize OpenRouter key rotator if requested
+    rotator = None
+    if args.openrouter_keys:
+        env_path = str(Path(__file__).parent.parent / ".env")
+        # Manually load .env file into os.environ
+        if os.path.exists(env_path):
+            with open(env_path) as ef:
+                for line in ef:
+                    line = line.strip()
+                    if line and not line.startswith('#') and '=' in line:
+                        k, v = line.split('=', 1)
+                        os.environ[k.strip()] = v.strip()
+        from openrouter_keys import OpenRouterKeyRotator
+        rotator = OpenRouterKeyRotator()
 
     api_model = args.api_model or args.model
     reasoning_prefix = f"Reasoning: {args.reasoning}" if args.reasoning else None
@@ -510,8 +526,8 @@ def main():
         tid = test["id"]
         role = test["role"]
 
-        # Delay between tests (for rate-limited cloud APIs)
-        if i > 0 and args.delay:
+        # Delay between tests (for rate-limited cloud APIs) — skip if using key rotation
+        if i > 0 and args.delay and not rotator:
             import random
             jitter = random.randint(0, max(5, args.delay // 3))
             wait = args.delay + jitter
@@ -520,8 +536,32 @@ def main():
 
         print(f"[{i+1}/{len(tests)}] G-{tid}: {role}")
 
-        result = run_test(test, args.base_url, api_model, args.max_tokens, args.timeout,
-                         extra_body=extra_body, reasoning_prefix=reasoning_prefix, api_key=args.api_key)
+        if rotator:
+            # Use key rotation
+            messages = []
+            if reasoning_prefix:
+                messages.append({"role": "system", "content": reasoning_prefix})
+            messages.append({"role": "user", "content": test["prompt"]})
+            content, tokens, tps, elapsed = rotator.call_llm(
+                messages, args.base_url, api_model, args.max_tokens, args.timeout, extra_body=extra_body
+            )
+            scoring = test["scoring"]
+            stype = scoring["type"]
+            scorer = SCORERS.get(stype)
+            if scorer:
+                try:
+                    score, max_score, detail = scorer(content, scoring)
+                except Exception as e:
+                    score, max_score, detail = 0, 10, f"Scorer error: {str(e)[:80]}"
+            else:
+                score, max_score, detail = 0, 10, f"Unknown scoring type: {stype}"
+            result = {
+                "score": score, "max_score": max_score, "detail": detail,
+                "tokens": tokens, "tps": tps, "elapsed": elapsed, "response": content,
+            }
+        else:
+            result = run_test(test, args.base_url, api_model, args.max_tokens, args.timeout,
+                             extra_body=extra_body, reasoning_prefix=reasoning_prefix, api_key=args.api_key)
 
         score = result["score"]
         max_score = result["max_score"]
@@ -543,6 +583,10 @@ def main():
         resp_file = out_dir / f"G{tid:02d}_{safe_role}.txt"
         with open(resp_file, "w") as f:
             f.write(result.get("response", ""))
+
+    # Print rotation stats if used
+    if rotator:
+        rotator.print_stats()
 
     # Summary
     print(f"\n{'='*60}")

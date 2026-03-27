@@ -3,251 +3,251 @@
   "weeks": [
     {
       "week": 1,
-      "theme": "Fundamentals of Python",
+      "theme": "Python Fundamentals: Variables, Data Types, and Control Flow",
       "sessions": [
         {
           "day": 1,
-          "topic": "Introduction to Python and Development Environment",
+          "topic": "Introduction to Python & Variable Basics",
           "objectives": [
-            "Set up a Python environment and run the first script",
-            "Understand Python syntax, indentation, and basic constructs",
-            "Execute a simple Hello World program"
+            "Set up a Python development environment (interpreter, IDE).",
+            "Understand variable naming conventions and assignment.",
+            "Work with basic data types: int, float, str, bool."
           ],
           "lecture_min": 45,
           "handson_min": 45
         },
         {
           "day": 2,
-          "topic": "Variables, Data Types, and Operators",
+          "topic": "Operators, Expressions, and Control Flow",
           "objectives": [
-            "Declare and use variables of basic data types (int, float, str, bool)",
-            "Apply arithmetic, comparison, and logical operators",
-            "Perform type casting and understand type hints"
+            "Use arithmetic, comparison, and logical operators.",
+            "Write conditional statements (if, elif, else).",
+            "Implement loops (for, while) to iterate over sequences."
           ],
           "lecture_min": 45,
           "handson_min": 45
         },
         {
           "day": 3,
-          "topic": "Control Flow and Basic I/O",
+          "topic": "Core Data Structures: Lists, Tuples, Dictionaries, Sets",
           "objectives": [
-            "Write conditional statements using if, elif, else",
-            "Implement loops (for, while) and loop control statements",
-            "Use print() and input() for console I/O"
+            "Create, index, slice, and modify lists and tuples.",
+            "Use dictionaries for key‑value mappings and sets for unique collections.",
+            "Understand mutability and when to choose each structure."
           ],
           "lecture_min": 45,
           "handson_min": 45
         }
       ],
-      "quiz": "Week 1 Quiz: Basics, Variables, and Control Flow",
-      "assignment": "Assignment 1: Develop a simple number guessing game that uses variables, conditionals, and loops."
+      "quiz": "Week 1 Quiz – Variables, Data Types, Control Flow, and Data Structures",
+      "assignment": "Write a script that prompts the user for their name and birth year, then prints the year they will turn 100."
     },
     {
       "week": 2,
-      "theme": "Functions and Core Data Structures",
+      "theme": "Functions, Modules, and Basic File I/O",
       "sessions": [
         {
           "day": 1,
           "topic": "Defining and Calling Functions",
           "objectives": [
-            "Create functions with parameters and return values",
-            "Understand function scope and the use of global vs. local variables",
-            "Write docstrings and type hints for functions"
+            "Define functions with positional, keyword, default arguments.",
+            "Return single or multiple values.",
+            "Use *args and **kwargs for flexible argument passing."
           ],
           "lecture_min": 45,
           "handson_min": 45
         },
         {
           "day": 2,
-          "topic": "Lists, Tuples, Dictionaries, and Sets",
+          "topic": "Scope, Lambda Functions, and Higher‑Order Functions",
           "objectives": [
-            "Create, index, slice, and mutate lists and tuples",
-            "Use dictionaries for key‑value mapping and sets for unique collections",
-            "Choose appropriate data structures for a given problem"
+            "Explain LEGB rule and variable scope.",
+            "Write concise lambda expressions.",
+            "Apply map, filter, and reduce to process iterables."
           ],
           "lecture_min": 45,
           "handson_min": 45
         },
         {
           "day": 3,
-          "topic": "Error Handling with Exceptions",
+          "topic": "Modules, Packages, and Introductory File I/O",
           "objectives": [
-            "Raise built‑in exceptions and create custom exception classes",
-            "Catch and handle exceptions using try/except/finally",
-            "Apply best practices for graceful error management"
+            "Create, import, and use custom modules.",
+            "Navigate the standard library and third‑party packages.",
+            "Read from and write to text files using open/close and context managers."
           ],
           "lecture_min": 45,
           "handson_min": 45
         }
       ],
-      "quiz": "Week 2 Quiz: Functions, Data Structures, and Exception Handling",
-      "assignment": "Assignment 2: Build a statistics module that accepts a list of numbers, returns sum, mean, median, and standard deviation, with proper error handling for empty or invalid input."
+      "quiz": "Week 2 Quiz – Functions, Modules, and Basic File I/O",
+      "assignment": "Develop a module that provides mean, median, and mode functions. Write a script that reads a list of numbers from a file, uses the module to compute these statistics, and writes the results back to another file."
     },
     {
       "week": 3,
-      "theme": "Object‑Oriented Programming, File I/O, and Unit Testing Basics",
+      "theme": "Object‑Oriented Programming (OOP) with Classes",
       "sessions": [
         {
           "day": 1,
-          "topic": "Classes, Objects, and Instance Methods",
+          "topic": "Classes, Instances, and the __init__ Method",
           "objectives": [
-            "Define a class with attributes and methods, using the __init__ constructor",
-            "Create instances and call methods with proper use of self",
-            "Understand the difference between instance and class variables"
+            "Define a class and instantiate objects.",
+            "Use __init__ to initialize instance attributes.",
+            "Write instance methods that operate on object state."
           ],
           "lecture_min": 45,
           "handson_min": 45
         },
         {
           "day": 2,
-          "topic": "Inheritance, Polymorphism, and Encapsulation",
+          "topic": "Class Methods, Static Methods, Inheritance, and Polymorphism",
           "objectives": [
-            "Implement single and multiple inheritance, overriding methods",
-            "Apply encapsulation through naming conventions for private members",
-            "Demonstrate polymorphism with method overriding and abstract base classes"
+            "Distinguish between instance, class, and static methods.",
+            "Implement inheritance and method overriding.",
+            "Apply polymorphism to design flexible APIs."
           ],
           "lecture_min": 45,
           "handson_min": 45
         },
         {
           "day": 3,
-          "topic": "File I/O with Context Managers",
+          "topic": "Magic Methods, Operator Overloading, and Encapsulation",
           "objectives": [
-            "Open, read, write, and close text and binary files",
-            "Use the with statement to ensure proper resource cleanup",
-            "Handle file‑related exceptions and navigate file paths"
+            "Use __str__, __repr__, __add__, etc., to customize behavior.",
+            "Apply encapsulation with name mangling (_name, __name).",
+            "Create read‑only properties using @property."
           ],
           "lecture_min": 45,
           "handson_min": 45
         }
       ],
-      "quiz": "Week 3 Quiz: OOP Concepts and File I/O",
-      "assignment": "Assignment 3: Create a Student class that stores name, id, and grades, persists the student list to a CSV file, and reads it back to display average grades."
+      "quiz": "Week 3 Quiz – Object‑Oriented Programming Concepts",
+      "assignment": "Design a class hierarchy for a simple banking system: base class BankAccount, with subclasses CheckingAccount and SavingsAccount. Implement deposit, withdrawal, and balance reporting. Include a demonstration script that shows inheritance and method overriding."
     },
     {
       "week": 4,
-      "theme": "Intermediate Programming: Advanced Data Structures, Functional Style, and Decorators",
+      "theme": "Error Handling, Testing, and Decorators",
       "sessions": [
         {
           "day": 1,
-          "topic": "Advanced Data Structures – Stacks, Queues, Linked Lists",
+          "topic": "Exception Handling and Custom Exceptions",
           "objectives": [
-            "Implement stack and queue using Python lists or collections.deque",
-            "Design a simple singly linked list with insert, delete, and traversal operations",
-            "Analyze time‑complexity of basic operations for each structure"
+            "Catch and handle exceptions using try/except/finally.",
+            "Raise built‑in and custom exceptions.",
+            "Implement robust error reporting and recovery."
           ],
           "lecture_min": 45,
           "handson_min": 45
         },
         {
           "day": 2,
-          "topic": "Functional Programming: Comprehensions, map/filter/reduce, and Lambda",
+          "topic": "Unit Testing with unittest and pytest",
           "objectives": [
-            "Write list, dict, and set comprehensions for concise data transformations",
-            "Use map, filter, and functools.reduce for functional pipelines",
-            "Create and compose lambda functions responsibly"
+            "Write test cases that verify expected behavior.",
+            "Use assertions, fixtures, and test discovery.",
+            "Run test suites and interpret results."
           ],
           "lecture_min": 45,
           "handson_min": 45
         },
         {
           "day": 3,
-          "topic": "Decorators – Function Wrappers and functools",
+          "topic": "Function Decorators and Advanced Decorator Patterns",
           "objectives": [
-            "Define simple function decorators and apply them with the @decorator syntax",
-            "Preserve function metadata using functools.wraps",
-            "Chain multiple decorators and understand their order of execution"
+            "Create simple function decorators using @decorator.",
+            "Chain multiple decorators and pass arguments.",
+            "Apply decorators for logging, timing, and access control."
           ],
           "lecture_min": 45,
           "handson_min": 45
         }
       ],
-      "quiz": "Week 4 Quiz: Advanced Data Structures, Functional Programming, and Decorators",
-      "assignment": "Assignment 4: Write a logging decorator that records function name, arguments, and return value to a file, then use it with a stack‑based expression evaluator that you also implement."
+      "quiz": "Week 4 Quiz – Error Handling, Testing, and Decorators",
+      "assignment": "Add comprehensive error handling to the banking system (invalid deposits, insufficient funds). Write unit tests for deposit, withdrawal, and transfer operations. Create a decorator that logs each transaction with a timestamp."
     },
     {
       "week": 5,
-      "theme": "APIs, Testing, Generators, and Advanced Error Handling",
+      "theme": "Generators, Advanced File I/O, and REST APIs",
       "sessions": [
         {
           "day": 1,
-          "topic": "Working with HTTP APIs – requests and JSON",
+          "topic": "Generators and Lazy Evaluation",
           "objectives": [
-            "Perform GET and POST requests using the requests library",
-            "Parse JSON responses and convert them to Python objects",
-            "Handle network errors and API‑specific exceptions gracefully"
+            "Write generator functions using yield.",
+            "Understand memory‑efficient iteration with generators.",
+            "Compose generators with itertools for data processing pipelines."
           ],
           "lecture_min": 45,
           "handson_min": 45
         },
         {
           "day": 2,
-          "topic": "Testing – unittest, pytest, and Test‑Driven Development",
+          "topic": "Advanced File I/O: CSV, JSON, and Binary Data",
           "objectives": [
-            "Write unit tests using unittest.TestCase and pytest",
-            "Apply fixtures, parameterised tests, and mocking with unittest.mock",
-            "Integrate testing into the development workflow"
+            "Read/write CSV files using the csv module.",
+            "Serialize and deserialize JSON with the json module.",
+            "Handle binary files (images, pickle) safely."
           ],
           "lecture_min": 45,
           "handson_min": 45
         },
         {
           "day": 3,
-          "topic": "Generators and Iterators – yield and itertools",
+          "topic": "Consuming RESTful APIs with HTTP Requests",
           "objectives": [
-            "Create generator functions using the yield statement",
-            "Use generator expressions for memory‑efficient iteration",
-            "Combine generators with itertools for advanced iteration patterns"
+            "Perform GET and POST requests using the requests library.",
+            "Parse JSON responses and handle pagination.",
+            "Manage API authentication (API keys) and error responses."
           ],
           "lecture_min": 45,
           "handson_min": 45
         }
       ],
-      "quiz": "Week 5 Quiz: APIs, Testing, and Generators",
-      "assignment": "Assignment 5: Build a data‑pipeline script that fetches weather data from a public API, processes the JSON using generators, writes the results to a JSON file, and includes a comprehensive test suite."
+      "quiz": "Week 5 Quiz – Generators, Advanced File I/O, and APIs",
+      "assignment": "Build a script that fetches the current International Space Station (ISS) location from a public API, stores each location reading in a JSON file, and provides a generator to iterate over stored records. Include error handling for network failures."
     },
     {
       "week": 6,
-      "theme": "Advanced Integration, Project Development, and Final Assessment",
+      "theme": "Integration Project, Debugging, Performance, and Best Practices",
       "sessions": [
         {
           "day": 1,
-          "topic": "Project Planning and Architecture",
+          "topic": "Debugging & Logging Best Practices",
           "objectives": [
-            "Define the scope, functional requirements, and non‑functional goals of the final project",
-            "Select appropriate design patterns (e.g., MVC, DAO) and plan class responsibilities",
-            "Create a high‑level project outline and assign tasks"
+            "Use Python’s pdb debugger to step through code.",
+            "Configure the logging module for different severity levels.",
+            "Interpret stack traces and fix common bugs."
           ],
           "lecture_min": 45,
           "handson_min": 45
         },
         {
           "day": 2,
-          "topic": "Implementation – Core Features, Integration, and Version Control",
+          "topic": "Performance Optimization and Profiling",
           "objectives": [
-            "Implement core functionality using OOP, file I/O, and API consumption",
-            "Integrate decorators for logging/timing and generators for streaming data",
-            "Write unit and integration tests, and use Git for source control"
+            "Identify bottlenecks using cProfile and timeit.",
+            "Replace loops with list comprehensions or generator expressions.",
+            "Select appropriate data structures for speed and memory efficiency."
           ],
           "lecture_min": 45,
           "handson_min": 45
         },
         {
           "day": 3,
-          "topic": "Project Presentation, Code Review, and Course Wrap‑up",
+          "topic": "Final Project Workshop: Design, Implementation, and Code Review",
           "objectives": [
-            "Demonstrate the completed application, highlighting the integrated concepts",
-            "Receive and provide constructive feedback on code quality and design",
-            "Summarize key learning outcomes and discuss further learning paths"
+            "Integrate at least five core concepts (classes, file I/O, API, error handling, decorators, generators, testing).",
+            "Follow PEP‑8 style guidelines and documentation standards.",
+            "Present a functional project with a clear README and test suite."
           ],
           "lecture_min": 45,
           "handson_min": 45
         }
       ],
-      "quiz": "Week 6 Final Quiz: Comprehensive Python Knowledge",
-      "assignment": "Final Project: Develop a fully functional Python application (e.g., a personal finance tracker) that incorporates at least five of the following concepts: object‑oriented design (classes), file I/O (read/write JSON or CSV), external API consumption (e.g., exchange rates), unit testing (pytest), decorator‑based logging/timing, generator‑based data processing, and robust error handling. Submit the source code, a README with usage instructions, and a brief design document."
+      "quiz": "Week 6 Comprehensive Quiz – All Advanced Topics",
+      "assignment": "Final Project – Weather Dashboard:\nDesign a command‑line weather dashboard that:\n1. Uses a public weather API (e.g., OpenWeatherMap) to fetch current weather for user‑specified cities.\n2. Stores historical weather data in a JSON file (file I/O).\n3. Implements a City class and a WeatherData class (OOP).\n4. Handles network errors with custom exceptions and robust error handling.\n5. Applies a decorator to log each API request.\n6. Uses a generator to iterate over stored historical records.\n7. Includes a test suite covering core functionality (unittest/pytest).\nDeliver a working Python project with documentation and a short demo video."
     }
   ],
-  "final_project": "A comprehensive Python application (e.g., personal finance tracker) that demonstrates mastery of at least five core concepts: OOP (classes and inheritance), file I/O (reading/writing JSON or CSV), REST API integration (fetching live data), testing (unit tests with pytest), decorators (logging or performance timing), generators (streaming data processing), and robust error handling. The project must be well‑structured, documented, and include a brief design rationale."
+  "final_project": "Weather Dashboard – a command‑line application that fetches real‑time weather data from OpenWeatherMap, stores historical records in JSON, uses OOP (City and WeatherData classes), custom exceptions for error handling, a logging decorator for API calls, a generator for iterating over history, and comprehensive unit tests."
 }
 ```

@@ -1,0 +1,75 @@
+{
+  "vulnerabilities": [
+    {
+      "id": 1,
+      "type": "Hardcoded secret key",
+      "severity": "high",
+      "location": "Line 5: app.secret_key",
+      "fix": "Generate a random secret key and store it in an environment variable, e.g., os.environ.get('SECRET_KEY')."
+    },
+    {
+      "id": 2,
+      "type": "Server-Side Template Injection (SSTI)",
+      "severity": "critical",
+      "location": "Function search(): render_template_string with user input",
+      "fix": "Pass user input as a template variable, e.g., render_template_string('Results for: {{ q }}', q=q), and avoid embedding raw input."
+    },
+    {
+      "id": 3,
+      "type": "SQL Injection",
+      "severity": "critical",
+      "location": "Function get_user(): SQL query with string formatting",
+      "fix": "Use parameterized queries: cur.execute('SELECT * FROM users WHERE id = ?', (id,))."
+    },
+    {
+      "id": 4,
+      "type": "Insecure Deserialization (pickle)",
+      "severity": "critical",
+      "location": "Function upload(): pickle.loads(data)",
+      "fix": "Replace pickle with a safe format such as JSON and use json.loads instead."
+    },
+    {
+      "id": 5,
+      "type": "Command Injection",
+      "severity": "critical",
+      "location": "Function run_cmd(): subprocess.check_output(cmd, shell=True)",
+      "fix": "Avoid shell=True; pass arguments as a list and validate/sanitize the input, or eliminate dynamic command execution."
+    },
+    {
+      "id": 6,
+      "type": "Path Traversal / Arbitrary File Read",
+      "severity": "high",
+      "location": "Function read_file(): open(path).read()",
+      "fix": "Validate the path, resolve it with os.path.realpath, restrict access to a designated base directory, and sanitize directory separators."
+    },
+    {
+      "id": 7,
+      "type": "Weak Default Password",
+      "severity": "high",
+      "location": "Function login(): default password 'admin'",
+      "fix": "Do not provide a default password; enforce strong password requirements and ensure ADMIN_PW is set securely via environment."
+    },
+    {
+      "id": 8,
+      "type": "Information Disclosure (debug endpoint)",
+      "severity": "medium",
+      "location": "Function debug(): returns os.environ",
+      "fix": "Remove or protect the debug endpoint (require authentication, enable only in development)."
+    },
+    {
+      "id": 9,
+      "type": "Missing HTTPS Enforcement",
+      "severity": "medium",
+      "location": "Application-wide: no HTTPS configuration",
+      "fix": "Enable HTTPS, set HSTS header, and set the Secure flag on session cookies."
+    },
+    {
+      "id": 10,
+      "type": "Lack of Rate Limiting",
+      "severity": "medium",
+      "location": "Application-wide: no rate limiting mechanism",
+      "fix": "Implement rate limiting using a library such as Flask-Limiter to restrict request rates per IP."
+    }
+  ],
+  "count": 10
+}

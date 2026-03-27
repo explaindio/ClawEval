@@ -1,0 +1,110 @@
+```json
+{
+  "components": [
+    {
+      "name": "API Gateway & Load Balancer",
+      "technology": "AWS ALB + Amazon API Gateway (for REST) or Kong/NGINX Plus",
+      "purpose": "Entry point for API requests, TLS termination, rate limiting, routing, health checks",
+      "scaling_strategy": "Horizontal auto-scaling across AZs, regional endpoints, Global Accelerator for failover"
+    },
+    {
+      "name": "WebSocket Server Cluster",
+      "technology": "Node.js (Socket.IO) or Go (melody/gorilla/websocket) or Elixir (Phoenix)",
+      "purpose": "Maintain persistent connections, handle real-time bidirectional messaging (<100ms), connection management",
+      "scaling_strategy": "Horizontal scaling via Kubernetes HPA (based on connection count/CPU). Sticky sessions via Redis or consistent hashing. Each node handles ~10-50k concurrent connections."
+    },
+    {
+      "name": "Message Broker / Pub-Sub",
+      "technology": "Redis Cluster (v7+), Apache Kafka (for event sourcing/audit) or RabbitMQ",
+      "purpose": "Decouple message delivery, enable fan-out for group chats, handle presence events, act as message buffer",
+      "scaling_strategy": "Redis Cluster with 3+ masters for HA. Kafka for message persistence/audit trail with 3x replication factor."
+    },
+    {
+      "name": "Core Backend Services (Microservices)",
+      "technology": "Go, Rust, or Java (Spring Boot); Node.js for I/O-bound tasks",
+      "purpose": "Business logic: message routing, user authentication, group management, presence, read receipts, file metadata, encryption key exchange",
+      "scaling_strategy": "Kubernetes Deployment with HPA. Stateless services. Separate deployments for: Auth, Message, Presence, Group, File, Notification services."
+    },
+    {
+      "name": "Message Persistence & History Store",
+      "technology": "Apache Cassandra (or ScyllaDB), Amazon DynamoDB, or CockroachDB",
+      "purpose": "Store all messages permanently, support history queries, time-series data",
+      "scaling_strategy": "Sharding by tenant_id or user_id (hash). DynamoDB on-demand/Provisioned with auto-scaling. 99.99% SLA via multi-AZ replication."
+    },
+    {
+      "name": "User & Metadata Store",
+      "technology": "PostgreSQL (RDS or Aurora Serverless v2), Redis",
+      "purpose": "User profiles, contacts, group memberships, encryption public keys (X25519), settings, authentication tokens",
+      "scaling_strategy": "Read replicas for scaling reads. Aurora Global Tables for cross-region replication. Redis for session/token caching."
+    },
+    {
+      "name": "File/Attachment Object Storage",
+      "technology": "Amazon S3 (or MinIO for self-hosted) + AWS CloudFront CDN",
+      "purpose": "Store files up to 50MB, serve them via CDN for low latency",
+      "scaling_strategy": "S3 Standard + Intelligent Tiering. CloudFront edge caches. Pre-signed URLs for secure direct upload/download."
+    },
+    {
+      "name": "Real-time Cache Layer",
+      "technology": "Redis Cluster",
+      "purpose": "Cache recent messages (LRU), user presence, rate limiting counters, pub-sub for real-time delivery",
+      "scaling_strategy": "Redis Cluster with read replicas. TTLs for all keys. Consistent hashing for sharding."
+    },
+    {
+      "name": "Search Service (Optional)",
+      "technology": "Elasticsearch or OpenSearch",
+      "purpose": "Full-text search within messages, message indexing for compliance",
+      "scaling_strategy": "Managed service (e.g., Amazon OpenSearch) with 3 dedicated master nodes and auto-scaling data nodes."
+    },
+    {
+      "name": "End-to-End Encryption (E2EE)",
+      "technology": "Signal Protocol (libsignal) or custom X25519+Ed25519+HMAC-SHA256",
+      "purpose": "Client-side encryption for message content, media keys, group keys. Server stores only encrypted blobs.",
+      "scaling_strategy": "Key distribution via Key Transparency or server-signed key bundles. Clients manage private keys in secure enclaves (Secure Enclave/TEE)."
+    },
+    {
+      "name": "Notification Push Service",
+      "technology": "Apple Push Notification Service (APNs), Firebase Cloud Messaging (FCM)",
+      "purpose": "Offline push notifications for new messages, calls, etc.",
+      "scaling_strategy": "Managed services, scale automatically."
+    },
+    {
+      "name": "Observability & Monitoring",
+      "technology": "Datadog, Prometheus + Grafana, Jaeger/Correlation/Context propagation",
+      "purpose": "Metrics, logs (ELK), distributed tracing (for <100ms latency debugging), alerting",
+      "scaling_strategy": "Sidecar pattern or centralized logging. Sampling for high-throughput traces."
+    },
+    {
+      "name": "Compliance & Security Layer",
+      "technology": "AWS WAF/Shield, Cloudflare, custom GDPR right-to-erasure service",
+      "purpose": "DDoS protection, rate limiting, PII masking/encryption, data residency, GDPR compliance (right to deletion, portability)",
+      "scaling_strategy": "Global CDN/WAF edge rules. Automated data lifecycle policies (e.g., delete user data within 30 days of deletion request)."
+    }
+  ],
+  "data_flow": "1. User opens app → API Gateway authenticates (OAuth2/JWT). 2. Client establishes WebSocket connection to WebSocket Server via Load Balancer. 3. Client performs E2EE key exchange (X25519) with Auth Service to get/verify public keys of recipients. 4. Client encrypts message locally using recipient's public key + own private key (Signal Protocol). 5. Encrypted message sent via WebSocket to WebSocket Server. 6. WebSocket Server publishes message to Message Broker (Redis Pub/Sub). 7. Message Service consumes message, persists encrypted blob to Message Store (Cassandra) with TTL. 8. Message Service also pushes message to recipient's WebSocket server via Redis Pub/Sub (for online users) or queues for offline users. 9. For online users: recipient's WebSocket Server delivers encrypted message to client. 10. Client decrypts message using own private key. 11. For group chats: Message Service retrieves group member list (up to 500), encrypts message for each member (group key) or uses sender's group key, and fans out via Message Broker. 12. Read receipts: Client sends encrypted receipt → WebSocket → Read Receipt Service → updates Message Store (updates 'read_by' set). 13. Presence: Client sends periodic heartbeat via WebSocket → Presence Service updates Redis (online/offline). 14. Files: Client uploads file directly to S3 via pre-signed URL (or chunks through File Service for resumable uploads) → S3 → CloudFront CDN for distribution. 15. Search (if enabled): Message Service sends encrypted message to Search Service for indexing (searchable encrypted index, e.g., using deterministic encryption or client-side indexing). 16. GDPR: Deletion request triggers Auth Service → anonymizes/deletes user data from all stores (PostgreSQL, Cassandra, Redis, S3) within 30 days via async job queue.",
+  "infrastructure": {
+    "cloud": "AWS (or GCP/Azure for multi-cloud). For 99.99% uptime: multi-AZ, multi-region active-active.",
+    "regions": 3
+  },
+  "estimated_monthly_cost": "Estimated for 1M concurrent users (assuming ~10 bytes/message avg, 10 messages/user/day, 100GB/day file uploads):\n- Compute (ECS/EKS): $50k-$80k\n- Database (Cassandra/RDS): $20k-$40k\n- Redis Cache: $10k-$20k\n- Object Storage & CDN: $30k-$60k (bandwidth-heavy)\n- Networking (Data Transfer, Load Balancers): $20k-$40k\n- Observability: $5k-$10k\n- Total: ~$135k-$250k/month\nNote: Costs vary widely based on data volume, file sizes, and optimization. E2EE adds minimal server cost.",
+  "bottlenecks": [
+    "1. WebSocket Connection Limit: Single server can handle limited connections (~10-50k). Mitigation: horizontal scaling, connection draining during updates.",
+    "2. Message Fan-out for Large Groups (500 members): O(n) delivery time. Mitigation: Message Service batch delivery with parallel workers, eventual consistency.",
+    "3. Database Write Throughput: 1M users * 10 messages/day = 10M writes/day (~115 writes/sec). Manageable with Cassandra, but hot spots if not sharded correctly.",
+    "4. E2EE Key Management: Key exchange overhead on first message to new recipient. Mitigation: Pre-fetch keys, use server-stored key bundles.",
+    "5. File Upload/Download Bandwidth: 50MB files * many users = huge bandwidth. Mitigation: CDN, resumable uploads, compression, efficient chunking.",
+    "6. Global Latency: <100ms is challenging across regions. Mitigation: Edge deployments (WebSocket servers in major regions), closest-region routing.",
+    "7. Real-time Search: Searching encrypted messages requires special techniques (deterministic encryption or client-side indexing). Can impact performance.",
+    "8. Presence Updates: Heartbeats for 1M users generate high pub-sub volume. Mitigation: Batch presence updates, use Redis sorted sets with TTLs."
+  ],
+  "tradeoffs": [
+    "1. E2EE vs. Searchability: Server cannot search E2EE messages. Solution: Use deterministic encryption for search keywords or client-side encrypted search index (increases client complexity).",
+    "2. Horizontal Scaling vs. Stateful Connections: WebSockets are stateful. Solution: Redis pub-sub for message routing, sticky sessions, or distributed connection state.",
+    "3. Message Persistence vs. Latency: Storing every message in real-time adds latency. Solution: Async persistence (write-behind), but risk data loss. Trade-off: Use message brokers (Kafka) for durability with acceptable latency.",
+    "4. Scalability vs. Group Chat Size: 500 members per group is large for real-time fan-out. Solution: Accept slightly higher latency for group messages (e.g., 500ms) or use hierarchical delivery (message sent to super nodes).",
+    "5. Cost vs. 99.99% SLA: Multi-region, multi-AZ deployment is expensive. Mitigation: Use managed services (RDS Multi-AZ, Cassandra on DSE, S3), reserved instances, spot instances for fault tolerance.",
+    "6. GDPR Compliance vs. Performance: Right to deletion may conflict with immutable message logs. Solution: Anonymize user data (delete PII but keep encrypted message blobs for other users), implement data lifecycle policies.",
+    "7. File Attachments (50MB) vs. WebSocket Efficiency: Uploading large files over WebSocket is inefficient. Solution: Use pre-signed S3 URLs or dedicated chunked upload API.",
+    "8. Open Source vs. Managed Services: Using open-source components (Kafka, Cassandra) gives control but increases operational complexity. Managed services (Amazon MSK, Keyspaces) reduce ops but add cost."
+  ]
+}
+```

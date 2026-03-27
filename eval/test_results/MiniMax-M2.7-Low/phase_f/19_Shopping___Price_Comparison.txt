@@ -1,0 +1,31 @@
+**Math breakdown**
+
+| ID | Base price | Discounts / Rebates | Additions (shipping, warranties, fees) | True total |
+|----|------------|---------------------|----------------------------------------|------------|
+| 1 – MacBook Air M3 | $1,099.00 | – | AppleCare $199 (included) <br> Shipping $0 | **$1,099.00** |
+| 2 – Dell XPS 15 | $1,249.00 | 15 % coupon → –$187.35 | Shipping $49.99 <br> 2‑yr warranty $129.00 | $1,249.00 – $187.35 + $49.99 + $129.00 = **$1,240.64** |
+| 3 – ThinkPad X1 | $1,399.00 | –$200 instant rebate <br> –$100 student discount | Shipping $0 <br> 3‑yr warranty $0 | $1,399.00 – $200 – $100 = **$1,099.00** |
+| 4 – HP Spectre | $999.00 | – | Shipping $79.99 <br> 2‑yr warranty $149.00 <br> Recycling fee $29.99 | $999.00 + $79.99 + $149.00 + $29.99 = **$1,257.98** |
+| 5 – ASUS ZenBook | $1,149.00 | 10 % loyalty → –$114.90 | Shipping $0 <br> 1‑yr extended warranty $99.00 | $1,149.00 – $114.90 + $99.00 = **$1,133.10** |
+
+**Ranking (cheapest → most expensive)**  
+1️⃣ MacBook Air M3 ($1,099.00)  
+2️⃣ ThinkPad X1 ($1,099.00) – tie broken by lower ID  
+3️⃣ ASUS ZenBook ($1,133.10)  
+4️⃣ Dell XPS 15 ($1,240.64)  
+5️⃣ HP Spectre ($1,257.98)
+
+---
+
+```json
+{
+  "ranking": [1, 3, 5, 2, 4],
+  "totals": {
+    "1": 1099.00,
+    "3": 1099.00,
+    "5": 1133.10,
+    "2": 1240.64,
+    "4": 1257.98
+  }
+}
+```

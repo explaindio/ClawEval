@@ -1,0 +1,67 @@
+```json
+{
+  "errors": [
+    {
+      "type": "factual",
+      "location": "in the heart of London",
+      "error": "The Eiffel Tower is in Paris, France, not London",
+      "fix": "in the heart of Paris"
+    },
+    {
+      "type": "spelling",
+      "location": "recieves",
+      "error": "Misspelled word",
+      "fix": "receives"
+    },
+    {
+      "type": "grammar",
+      "location": "most visited paid monument",
+      "error": "Subject-verb agreement error - 'one of' requires plural noun",
+      "fix": "most visited paid monuments"
+    },
+    {
+      "type": "factual",
+      "location": "made entirely of copper",
+      "error": "The Eiffel Tower is made of iron/lattice iron, not copper",
+      "fix": "made entirely of iron"
+    },
+    {
+      "type": "logic",
+      "location": "metal always expands when it gets cold",
+      "error": "Contradiction - metals contract when cold and expand when hot",
+      "fix": "metal contracts when it gets cold"
+    },
+    {
+      "type": "grammar",
+      "location": "have been 18 different colors",
+      "error": "Subject-verb agreement - 'have' should be 'has' to agree with the singular subject '60 tons of paint'",
+      "fix": "has been 18 different colors"
+    },
+    {
+      "type": "grammar",
+      "location": "it's history",
+      "error": "Incorrect use of contraction - 'its' (possessive) should be used, not 'it's' (it is)",
+      "fix": "its history"
+    },
+    {
+      "type": "factual",
+      "location": "During winter, it shrinks by 6 inches",
+      "error": "The tower's thermal contraction is approximately 6 centimeters (about 2.4 inches), not 6 inches",
+      "fix": "During winter, it shrinks by about 6 centimeters"
+    },
+    {
+      "type": "factual",
+      "location": "visitors can only access two of them",
+      "error": "The Eiffel Tower has three levels, and all three are accessible to visitors (ground, second floor, and summit)",
+      "fix": "visitors can access all three levels"
+    },
+    {
+      "type": "factual",
+      "location": "60 tons of paint...18 different colors",
+      "error": "While the tower has been repainted many times, the claim of exactly 18 colors throughout its history is a commonly repeated myth without verified documentation",
+      "fix": "60 tons of paint, and various shades throughout its history"
+    }
+  ],
+  "count": 10
+}
+```

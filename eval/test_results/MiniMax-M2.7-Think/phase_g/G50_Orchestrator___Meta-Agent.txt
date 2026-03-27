@@ -1,105 +1,109 @@
-```json
 {
   "phases": [
     {
       "phase": 1,
-      "name": "Triage and Initial Alerting",
+      "name": "Initial Detection & Diagnostics",
       "agents": [
-        {"agent": "log_analyzer", "input": "latest 5 minutes of service logs", "timeout_seconds": 60},
-        {"agent": "metric_checker", "input": "error_rate, latency, CPU; query last 5m", "timeout_seconds": 45},
-        {"agent": "db_checker", "input": "connection_pool, locks, replication lag", "timeout_seconds": 30},
-        {"agent": "config_auditor", "input": "recent config changes in last hour", "timeout_seconds": 30},
-        {"agent": "notification_agent", "input": "critical alert to on-call and #incidents channel", "timeout_seconds": 20}
+        {"agent": "log_analyzer", "input": "latest 5 minutes of logs from all services", "timeout_seconds": 30},
+        {"agent": "metric_checker", "input": "current error rate, latency, throughput", "timeout_seconds": 30},
+        {"agent": "db_checker", "input": "database health, connection pool, locks", "timeout_seconds": 20},
+        {"agent": "capacity_planner", "input": "CPU, memory, disk usage across cluster", "timeout_seconds": 20},
+        {"agent": "config_auditor", "input": "config changes in last 1 hour", "timeout_seconds": 20},
+        {"agent": "dependency_mapper", "input": "service dependency graph", "timeout_seconds": 20},
+        {"agent": "notification_agent", "input": "Production outage reported, incident opened", "timeout_seconds": 10},
+        {"agent": "incident_reporter", "input": "create incident ticket with description", "timeout_seconds": 15}
       ],
       "parallel": true,
-      "gate": "At least one diagnostic agent reports a critical severity (log error pattern, metric breach, DB lock) OR any metric threshold exceeded."
+      "gate": "All diagnostic agents have completed and initial alerts sent."
     },
     {
       "phase": 2,
-      "name": "Deep Diagnostic Analysis",
+      "name": "Customer Communication & Targeted Checks",
       "agents": [
-        {"agent": "dependency_mapper", "input": "service map for affected service; current deployment version", "timeout_seconds": 45},
-        {"agent": "capacity_planner", "input": "current CPU, memory, pod count vs. baselines", "timeout_seconds": 30},
-        {"agent": "metric_checker", "input": "detailed time series for last 15m; compare with pre‑deployment baseline", "timeout_seconds": 45}
+        {"agent": "customer_communicator", "input": "initial status update to affected customers (investigating, no impact details yet)", "timeout_seconds": 20},
+        {"agent": "log_analyzer", "input": "deep dive logs around detected error patterns", "timeout_seconds": 30},
+        {"agent": "metric_checker", "input": "historical metrics for past 30 minutes", "timeout_seconds": 30},
+        {"agent": "db_checker", "input": "lock contention and long-running queries", "timeout_seconds": 20},
+        {"agent": "config_auditor", "input": "diff of config changes since last known good state", "timeout_seconds": 20}
       ],
       "parallel": true,
-      "gate": "A root‑cause hypothesis is formed (e.g., recent deployment, config drift, resource exhaustion) and sufficient evidence is gathered to decide next steps."
+      "gate": "Customer status sent and targeted checks completed."
     },
     {
       "phase": 3,
-      "name": "Customer Communication",
+      "name": "Root Cause Analysis & Remediation Planning",
       "agents": [
-        {"agent": "customer_communicator", "input": "templated impact statement: service X degraded, expected resolution time, mitigation steps", "timeout_seconds": 30}
+        {"agent": "dependency_mapper", "input": "update dependency map with failure propagation", "timeout_seconds": 20},
+        {"agent": "rollback_agent", "input": "evaluate rollback feasibility: check version, deployment time, change logs", "timeout_seconds": 30},
+        {"agent": "capacity_planner", "input": "project resource needs after potential rollback", "timeout_seconds": 20},
+        {"agent": "incident_reporter", "input": "update incident ticket with RCA findings", "timeout_seconds": 15}
       ],
       "parallel": false,
-      "gate": "Phase 2 completed and a preliminary impact assessment is available."
+      "gate": "Root cause identified and remediation options documented."
     },
     {
       "phase": 4,
-      "name": "Non‑Rollback Remediation",
+      "name": "Execute Rollback",
       "agents": [
-        {"agent": "config_auditor", "input": "revert recent config changes identified in Phase 2", "timeout_seconds": 30},
-        {"agent": "capacity_planner", "input": "scale up pod replica count based on capacity analysis", "timeout_seconds": 30}
+        {"agent": "rollback_agent", "input": "execute rollback to previous known good version", "timeout_seconds": 120},
+        {"agent": "notification_agent", "input": "alert stakeholders that rollback is in progress", "timeout_seconds": 15},
+        {"agent": "incident_reporter", "input": "update ticket with rollback start time and target version", "timeout_seconds": 15}
       ],
       "parallel": false,
-      "gate": "Decision point 2 evaluated rollback NOT required."
+      "gate": "Rollback completed successfully."
     },
     {
       "phase": 5,
-      "name": "Rollback Execution",
+      "name": "Verification & Monitoring",
       "agents": [
-        {"agent": "rollback_agent", "input": "target version = previous known good deployment; reason = deployment introduced error", "timeout_seconds": 120}
+        {"agent": "metric_checker", "input": "post-rollback error rate, latency, throughput", "timeout_seconds": 30},
+        {"agent": "log_analyzer", "input": "post-rollback logs confirm recovery", "timeout_seconds": 30},
+        {"agent": "db_checker", "input": "post-rollback database health", "timeout_seconds": 20},
+        {"agent": "capacity_planner", "input": "post-rollback resource utilization", "timeout_seconds": 20},
+        {"agent": "customer_communicator", "input": "final resolution update to customers", "timeout_seconds": 20}
       ],
-      "parallel": false,
-      "gate": "Decision point 2 evaluated rollback required."
+      "parallel": true,
+      "gate": "All metrics and logs confirm service is healthy."
     },
     {
       "phase": 6,
-      "name": "Post‑Remediation Verification",
+      "name": "Incident Closure & Notification",
       "agents": [
-        {"agent": "metric_checker", "input": "error_rate, latency, resource usage after remediation; compare to SLA thresholds", "timeout_seconds": 45},
-        {"agent": "log_analyzer", "input": "recent logs after remediation; ensure error patterns have subsided", "timeout_seconds": 60}
-      ],
-      "parallel": true,
-      "gate": "Metrics and logs indicate error rate below threshold and latency within SLA."
-    },
-    {
-      "phase": 7,
-      "name": "Incident Closure and Notification",
-      "agents": [
-        {"agent": "incident_reporter", "input": "update ticket with root cause, remediation steps, resolution time, lessons learned", "timeout_seconds": 30},
-        {"agent": "notification_agent", "input": "resolution message to on‑call, stakeholders, and #incidents channel", "timeout_seconds": 20}
+        {"agent": "notification_agent", "input": "send closure notification to stakeholders", "timeout_seconds": 15},
+        {"agent": "incident_reporter", "input": "close incident ticket with summary and lessons learned", "timeout_seconds": 15}
       ],
       "parallel": false,
-      "gate": "All verification checks passed."
+      "gate": "Incident closed and all parties notified."
     }
   ],
   "decision_points": [
     {
-      "after_phase": 1,
-      "condition": "Critical errors detected by any diagnostic agent in Phase 1 (log_analyzer severity=critical OR metric_checker error_rate > 5% OR db_checker lock timeout)",
-      "if_true": "go to phase 2",
-      "if_false": "go to phase 6"
+      "after_phase": 3,
+      "condition": "Rollback conditions met AND rollback is safe (see rollback_conditions)",
+      "if_true": "go to phase 4",
+      "if_false": "go to phase 5"
     },
     {
-      "after_phase": 2,
-      "condition": "Root cause identified as a recent deployment AND rollback conditions met (error rate > 2% after deployment, previous version had < 0.5% error rate, rollback safe per dependency_mapper, no dependent services rely on new features that cannot be reverted)",
-      "if_true": "go to phase 5",
-      "if_false": "go to phase 4"
+      "after_phase": 5,
+      "condition": "Service health confirmed (error rate < threshold, latency normal, no recurring issues)",
+      "if_true": "go to phase 6",
+      "if_false": "escalate"
     }
   ],
   "escalation": {
-    "trigger": "If total elapsed time since Phase 1 start exceeds 15 minutes without meeting the Phase 6 gate (i.e., incident not resolved)",
-    "action": "Escalate to on‑call SRE manager, open incident bridge, notify executive stakeholders via notification_agent"
+    "trigger": "Incident unresolved after 15 minutes from creation OR verification fails after Phase 5",
+    "action": "Escalate to on-call manager via PagerDuty, open high‑priority bridge line, notify executive stakeholders, and assign a dedicated incident commander."
   },
+  "total_phases": 6,
+  "max_time_minutes": 25,
   "rollback_conditions": [
-    "Error rate increased > 2% after the most recent deployment, while the previous version had < 0.5% error rate",
-    "Dependency mapper confirms no downstream services depend on new features that cannot be rolled back",
-    "Log analyzer detects a reproducible crash pattern introduced by the new version",
-    "Metric checker shows latency p99 exceeds SLA threshold (e.g., > 500 ms) for at least 3 minutes after deployment",
-    "No successful manual mitigation (e.g., config revert) has resolved the issue within 5 minutes"
-  ],
-  "total_phases": 7,
-  "max_time_minutes": 20
+    "Error rate > 5% for more than 2 consecutive minutes after initial detection",
+    "Latency p99 > 2 seconds for more than 1 minute",
+    "Database connection pool exhausted or lock contention causing timeouts > 30 seconds",
+    "Memory usage > 95% on critical nodes for > 1 minute",
+    "Root cause traced to a deployment made within the last 2 hours",
+    "Config change applied within the last 1 hour that correlates with error spike",
+    "Service dependency map shows a cascading failure originating from a single misconfigured component",
+    "Capacity planner indicates resource exhaustion that cannot be mitigated by scaling within 5 minutes"
+  ]
 }
-```

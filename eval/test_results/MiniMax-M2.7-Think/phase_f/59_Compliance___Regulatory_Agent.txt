@@ -3,63 +3,63 @@
   "violations": [
     {
       "id": 1,
-      "article": "Articles 5(1)(a), 6, 7, 13",
-      "practice": "User data is collected without any consent form or notice.",
-      "fix": "Implement a clear, affirmative opt‑in consent mechanism and provide a concise privacy notice at the point of collection, documenting the lawful basis and the information required by Articles 13/14."
+      "article": "Article 6(1)(a) & Article 7 – Lawful basis of consent; Article 13 – Transparency",
+      "practice": "Collecting personal data without any consent form or notice",
+      "fix": "Implement a GDPR‑compliant consent mechanism (freely given, specific, informed, unambiguous) and provide the required privacy notice at the point of data collection."
     },
     {
       "id": 2,
-      "article": "Articles 5(1)(f), 32",
-      "practice": "Personal data is stored in plain text in the database.",
-      "fix": "Apply strong encryption (e.g., AES‑256) for data at rest, enforce role‑based access controls, and conduct regular security reviews to meet the requirements of Article 32."
+      "article": "Article 5(1)(f) & Article 32 – Security of processing",
+      "practice": "Storing personal data in plain text (unencrypted) in the database",
+      "fix": "Apply appropriate technical measures such as encryption at rest, pseudonymisation, and robust access controls to protect personal data."
     },
     {
       "id": 3,
-      "article": "Article 17",
-      "practice": "Users cannot request deletion of their data — 'we keep everything forever.'",
-      "fix": "Build a data‑erasure workflow that allows users to invoke the right to erasure, verifies identity, and deletes (or anonymises) the data within the statutory 30‑day period."
+      "article": "Article 17 – Right to erasure (right to be forgotten)",
+      "practice": "Users cannot request deletion of their data; company retains data indefinitely",
+      "fix": "Create a data‑deletion request workflow, verify the requestor’s identity, and erase data within the statutory period unless a lawful exemption applies."
     },
     {
       "id": 4,
-      "article": "Articles 13/14, 28, 44‑49",
-      "practice": "Data is shared with 15 third‑party vendors without user knowledge.",
-      "fix": "Execute Data‑Processing Agreements with each vendor, conduct privacy impact assessments, and update the privacy notice to list all third‑party recipients and the purposes of the sharing."
+      "article": "Article 13/14 – Transparency; Article 6 – Lawful basis; Article 28 – Processor agreements",
+      "practice": "Sharing data with 15 third‑party vendors without informing users or establishing a lawful basis",
+      "fix": "Identify a valid lawful basis for each data share, execute Data Processing Agreements with all vendors, and disclose the third‑party list in the privacy notice."
     },
     {
       "id": 5,
-      "article": "Article 37",
-      "practice": "There is no Data Protection Officer appointed.",
-      "fix": "Designate a qualified DPO, publish the DPO’s contact details, and ensure the DPO is involved in all data‑protection matters as required by Article 37."
+      "article": "Article 37 – Appointment of a Data Protection Officer",
+      "practice": "No DPO has been appointed despite large‑scale processing of personal data",
+      "fix": "Designate a qualified Data Protection Officer, especially if processing is large‑scale or involves systematic monitoring, and publish the DPO’s contact details."
     },
     {
       "id": 6,
-      "article": "Articles 44‑49",
-      "practice": "The company transfers EU user data to servers in a country without adequacy decision, with no safeguards.",
-      "fix": "Utilise an approved transfer mechanism such as Standard Contractual Clauses, Binding Corporate Rules, or obtain an adequacy decision before transferring data to that country."
+      "article": "Article 44‑46 – International transfers of personal data",
+      "practice": "Transferring EU user data to servers in a country without an adequacy decision and without safeguards",
+      "fix": "Use approved transfer mechanisms (e.g., Standard Contractual Clauses, Binding Corporate Rules, or obtain an adequacy decision) before moving data abroad."
     },
     {
       "id": 7,
-      "article": "Article 33",
-      "practice": "Data breaches are reported to authorities 'when we get around to it, usually within 6 months.'",
-      "fix": "Implement a breach‑response plan that detects incidents promptly and notifies the supervisory authority within 72 hours, and notifies affected data subjects when required."
+      "article": "Article 33 – Notification of a personal data breach to the supervisory authority",
+      "practice": "Reporting breaches to authorities only when convenient, usually after 6 months",
+      "fix": "Establish a breach‑response procedure that notifies the relevant supervisory authority within 72 hours of becoming aware of a breach."
     },
     {
       "id": 8,
-      "article": "Article 8",
-      "practice": "Children under 16 can sign up without parental consent.",
-      "fix": "Add an age‑verification gate at registration and obtain verifiable parental consent for any user under 16, complying with the conditions set out in Article 8."
+      "article": "Article 8 – Conditions applicable to a child’s consent in relation to information‑society services",
+      "practice": "Allowing children under 16 to sign up without parental consent",
+      "fix": "Implement age‑verification checks and obtain verifiable parental consent for users under 16."
     },
     {
       "id": 9,
-      "article": "Article 20",
-      "practice": "Users cannot export their data in any format.",
-      "fix": "Provide a self‑service data‑portability feature that exports personal data in a commonly used, machine‑readable format (e.g., CSV, JSON) upon user request."
+      "article": "Article 20 – Right to data portability",
+      "practice": "Users cannot export their personal data in any format",
+      "fix": "Provide a portable, machine‑readable copy of the user’s data (e.g., CSV, JSON) upon request, and allow direct transmission to another controller where feasible."
     },
     {
       "id": 10,
-      "article": "Articles 13/14, 12",
-      "practice": "Privacy policy was last updated in 2015 and doesn't mention half these practices.",
-      "fix": "Conduct a comprehensive review and rewrite the privacy notice to reflect current processing activities, ensure it is easily accessible, and update it at least annually or whenever material changes occur."
+      "article": "Article 13/14 – Information to be provided; Article 12 – Transparent communication",
+      "practice": "Privacy policy is outdated (last updated 2015) and does not reflect current data practices",
+      "fix": "Review and revise the privacy notice to accurately describe all processing activities, third‑party sharing, retention periods, and users’ rights, and update it regularly."
     }
   ],
   "count": 10

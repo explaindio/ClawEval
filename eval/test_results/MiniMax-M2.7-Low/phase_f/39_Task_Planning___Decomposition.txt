@@ -1,0 +1,269 @@
+```json
+{
+  "tasks": [
+    {
+      "id": "T1",
+      "name": "Project initialization and folder structure",
+      "depends_on": [],
+      "estimated_hours": 8,
+      "assignable_to": "fullstack"
+    },
+    {
+      "id": "T2",
+      "name": "PostgreSQL database setup and configuration",
+      "depends_on": ["T1"],
+      "estimated_hours": 4,
+      "assignable_to": "devops"
+    },
+    {
+      "id": "T3",
+      "name": "Database schema design (users, todos, tags, reminders)",
+      "depends_on": ["T2"],
+      "estimated_hours": 12,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T4",
+      "name": "Database migrations setup and scripts",
+      "depends_on": ["T3"],
+      "estimated_hours": 8,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T5",
+      "name": "User registration endpoint",
+      "depends_on": ["T4"],
+      "estimated_hours": 8,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T6",
+      "name": "User login with JWT generation",
+      "depends_on": ["T5"],
+      "estimated_hours": 8,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T7",
+      "name": "JWT authentication middleware",
+      "depends_on": ["T6"],
+      "estimated_hours": 6,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T8",
+      "name": "Todo model and repository layer",
+      "depends_on": ["T7"],
+      "estimated_hours": 8,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T9",
+      "name": "Create todo endpoint",
+      "depends_on": ["T8"],
+      "estimated_hours": 4,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T10",
+      "name": "Read todo(s) endpoint(s)",
+      "depends_on": ["T9"],
+      "estimated_hours": 6,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T11",
+      "name": "Update todo endpoint",
+      "depends_on": ["T10"],
+      "estimated_hours": 4,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T12",
+      "name": "Delete todo endpoint",
+      "depends_on": ["T11"],
+      "estimated_hours": 3,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T13",
+      "name": "Tag model and repository layer",
+      "depends_on": ["T4"],
+      "estimated_hours": 6,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T14",
+      "name": "Tag CRUD endpoints",
+      "depends_on": ["T13"],
+      "estimated_hours": 8,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T15",
+      "name": "Todo-Tag association logic",
+      "depends_on": ["T14", "T12"],
+      "estimated_hours": 6,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T16",
+      "name": "Due date reminder service",
+      "depends_on": ["T12"],
+      "estimated_hours": 16,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T17",
+      "name": "Reminder scheduling and notification system",
+      "depends_on": ["T16"],
+      "estimated_hours": 8,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T18",
+      "name": "OpenAPI specification document",
+      "depends_on": ["T1"],
+      "estimated_hours": 8,
+      "assignable_to": "fullstack"
+    },
+    {
+      "id": "T19",
+      "name": "API documentation integration (Swagger UI)",
+      "depends_on": ["T18", "T12"],
+      "estimated_hours": 4,
+      "assignable_to": "fullstack"
+    },
+    {
+      "id": "T20",
+      "name": "Rate limiting middleware implementation",
+      "depends_on": ["T7"],
+      "estimated_hours": 10,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T21",
+      "name": "Rate limiting configuration and tuning",
+      "depends_on": ["T20"],
+      "estimated_hours": 6,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T22",
+      "name": "Test database setup and fixtures",
+      "depends_on": ["T4"],
+      "estimated_hours": 6,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T23",
+      "name": "Authentication unit tests",
+      "depends_on": ["T22", "T7"],
+      "estimated_hours": 12,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T24",
+      "name": "Todo CRUD unit tests",
+      "depends_on": ["T22", "T12"],
+      "estimated_hours": 16,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T25",
+      "name": "Tag system unit tests",
+      "depends_on": ["T22", "T15"],
+      "estimated_hours": 8,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T26",
+      "name": "Reminder system unit tests",
+      "depends_on": ["T22", "T17"],
+      "estimated_hours": 8,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T27",
+      "name": "Rate limiting unit tests",
+      "depends_on": ["T22", "T21"],
+      "estimated_hours": 6,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T28",
+      "name": "Dockerfile and application containerization",
+      "depends_on": ["T1", "T12"],
+      "estimated_hours": 8,
+      "assignable_to": "devops"
+    },
+    {
+      "id": "T29",
+      "name": "Docker Compose setup (app + PostgreSQL)",
+      "depends_on": ["T28", "T2"],
+      "estimated_hours": 8,
+      "assignable_to": "devops"
+    },
+    {
+      "id": "T30",
+      "name": "Docker environment configuration and secrets",
+      "depends_on": ["T29"],
+      "estimated_hours": 4,
+      "assignable_to": "devops"
+    },
+    {
+      "id": "T31",
+      "name": "CI/CD pipeline configuration (GitHub Actions)",
+      "depends_on": ["T30", "T23", "T24", "T25", "T26", "T27"],
+      "estimated_hours": 12,
+      "assignable_to": "devops"
+    },
+    {
+      "id": "T32",
+      "name": "CI/CD build and test stages",
+      "depends_on": ["T31"],
+      "estimated_hours": 8,
+      "assignable_to": "devops"
+    },
+    {
+      "id": "T33",
+      "name": "CI/CD deploy stage",
+      "depends_on": ["T32"],
+      "estimated_hours": 4,
+      "assignable_to": "devops"
+    },
+    {
+      "id": "T34",
+      "name": "Final integration and end-to-end testing",
+      "depends_on": ["T33", "T19"],
+      "estimated_hours": 8,
+      "assignable_to": "fullstack"
+    }
+  ],
+  "critical_path": [
+    "T1",
+    "T2",
+    "T3",
+    "T4",
+    "T5",
+    "T6",
+    "T7",
+    "T8",
+    "T9",
+    "T10",
+    "T11",
+    "T12",
+    "T22",
+    "T23",
+    "T24",
+    "T28",
+    "T29",
+    "T30",
+    "T31",
+    "T32",
+    "T33"
+  ],
+  "total_hours": 265,
+  "parallel_tracks": 6
+}
+```

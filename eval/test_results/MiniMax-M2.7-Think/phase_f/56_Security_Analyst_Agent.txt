@@ -1,77 +1,75 @@
-```json
 {
   "vulnerabilities": [
     {
       "id": 1,
       "type": "Hardcoded secret key",
       "severity": "high",
-      "location": "Line 5: app.secret_key = \"password123\"",
-      "fix": "Generate a cryptographically random secret key and store it securely, e.g., in environment variables or a secrets manager."
+      "location": "app.secret_key (line 5)",
+      "fix": "Replace the hardcoded value with a cryptographically random secret loaded from a secure source (e.g., an environment variable or a secrets manager). Do not commit secrets in source code."
     },
     {
       "id": 2,
-      "type": "Server-Side Template Injection (SSTI) / XSS",
-      "severity": "critical",
-      "location": "Line 8-9: render_template_string with user input",
-      "fix": "Use template rendering with context variables, e.g., render_template('search.html', query=q) and escape output appropriately."
+      "type": "Reflected XSS (Server‑Side XSS)",
+      "severity": "high",
+      "location": "search() function, render_template_string (line 11)",
+      "fix": "Escape the user‑provided query before inserting it into the template. Use Jinja2’s default auto‑escaping or explicitly escape with Markup: render_template_string('Results for: {{ q | e }}', q=q)."
     },
     {
       "id": 3,
-      "type": "SQL Injection",
+      "type": "SQL injection",
       "severity": "critical",
-      "location": "Line 13-14: db.execute with string formatting",
-      "fix": "Use parameterized queries: db.execute('SELECT * FROM users WHERE id = ?', (id,))."
+      "location": "get_user() function, f‑string query (line 15)",
+      "fix": "Use parameterized queries: cur.execute('SELECT * FROM users WHERE id = ?', (id,)) instead of string formatting."
     },
     {
       "id": 4,
-      "type": "Insecure Deserialization (pickle)",
+      "type": "Insecure deserialization (pickle)",
       "severity": "critical",
-      "location": "Line 19: pickle.loads(data)",
-      "fix": "Avoid pickle for untrusted data; use a safe serialization format like JSON or a signed serialization scheme."
+      "location": "upload() function, pickle.loads (line 21)",
+      "fix": "Avoid pickle for untrusted data. Use a safe, language‑agnostic format such as JSON, and validate the data schema before processing."
     },
     {
       "id": 5,
-      "type": "OS Command Injection",
+      "type": "OS command injection",
       "severity": "critical",
-      "location": "Line 24-25: subprocess.check_output with shell=True",
-      "fix": "Avoid shell=True; use subprocess.run with a list of arguments, and validate/sanitize input."
+      "location": "run_cmd() function, subprocess.check_output (line 26)",
+      "fix": "Never pass raw user input to a shell command. Use subprocess with a list of arguments and avoid shell=True. Validate and whitelist allowed commands if necessary."
     },
     {
       "id": 6,
-      "type": "Path Traversal / Arbitrary File Read",
+      "type": "Path traversal / arbitrary file read",
       "severity": "high",
-      "location": "Line 28: open(path).read()",
-      "fix": "Validate and sanitize the path, restrict to a safe base directory, use os.path.realpath and whitelist."
+      "location": "read_file() function, open(path).read (line 31)",
+      "fix": "Restrict file access to a predefined directory (e.g., a ‘uploads’ folder). Resolve the real path with os.path.realpath and verify it starts with the allowed base directory before opening."
     },
     {
       "id": 7,
-      "type": "Weak Default Admin Password",
+      "type": "Weak authentication fallback password",
       "severity": "high",
-      "location": "Line 33-34: password comparison with environment variable default 'admin'",
-      "fix": "Enforce strong password policy; do not provide a default fallback; ensure password is set via secure secret management."
+      "location": "login() function, default fallback 'admin' (line 36)",
+      "fix": "Do not provide a default password. Require the ADMIN_PW environment variable to be set; if missing, raise an error or abort startup. Remove any hard‑coded fallbacks."
     },
     {
       "id": 8,
-      "type": "Information Disclosure (Environment Variables)",
+      "type": "Information disclosure (exposed environment variables)",
       "severity": "high",
-      "location": "Line 38-39: debug endpoint returns os.environ",
-      "fix": "Remove or restrict debug endpoint; do not expose environment variables in responses."
+      "location": "debug() function, returning os.environ (line 40)",
+      "fix": "Remove or protect the debug endpoint (e.g., require authentication, IP whitelist, or disable it in production). Never expose environment variables to unauthenticated users."
     },
     {
       "id": 9,
-      "type": "Missing HTTPS Enforcement",
+      "type": "Missing HTTPS enforcement",
       "severity": "medium",
-      "location": "Application configuration (no SSL/TLS settings)",
-      "fix": "Enable HTTPS, set HSTS headers, and enforce TLS (e.g., using Flask-TLS or a reverse proxy)."
+      "location": "Flask app configuration (no SSL/TLS settings)",
+      "fix": "Configure the WSGI server (e.g., gunicorn) to use TLS, enable HSTS, set the 'Secure' flag on cookies, and redirect HTTP traffic to HTTPS."
     },
     {
       "id": 10,
-      "type": "No Rate Limiting",
+      "type": "Missing rate limiting",
       "severity": "medium",
-      "location": "All endpoints (no rate limit configuration)",
-      "fix": "Implement rate limiting (e.g., using Flask-Limiter) to protect against brute-force and DoS attacks."
+      "location": "All Flask routes (no rate‑limit controls)",
+      "fix": "Add a rate‑limiting extension such as Flask‑Limiter to throttle repeated requests per IP, especially on sensitive endpoints like /login, /upload, and /run."
     }
   ],
   "count": 10
 }
-```

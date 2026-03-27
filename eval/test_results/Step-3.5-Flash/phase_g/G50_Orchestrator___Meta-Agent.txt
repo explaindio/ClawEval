@@ -1,0 +1,96 @@
+```json
+{
+  "phases": [
+    {
+      "phase": 1,
+      "name": "Initial Diagnostics & Alert",
+      "agents": [
+        {"agent": "log_analyzer", "input": "Analyze last 30 minutes of logs from affected service and dependencies for error patterns, exceptions, and deployment timestamps", "timeout_seconds": 60},
+        {"agent": "metric_checker", "input": "Query Prometheus for error rates, latency, and resource metrics of affected service and immediate dependencies over last 15 minutes", "timeout_seconds": 45},
+        {"agent": "db_checker", "input": "Check database connection pool, slow queries, locks, and replication status for databases used by affected service", "timeout_seconds": 60},
+        {"agent": "dependency_mapper", "input": "Generate real-time dependency graph for affected service and identify failing upstream/downstream services", "timeout_seconds": 45},
+        {"agent": "config_auditor", "input": "Check configuration changes (last 24 hours) for affected service and its critical dependencies", "timeout_seconds": 30},
+        {"agent": "notification_agent", "input": "Alert internal incident response team via Slack and PagerDuty with outage details and initial diagnostics summary", "timeout_seconds": 30}
+      ],
+      "parallel": true,
+      "gate": "All diagnostic agents must complete. If any agent fails, proceed with available data and log the failure. Notification agent must succeed to proceed."
+    },
+    {
+      "phase": 2,
+      "name": "Incident Triage & Customer Notification",
+      "agents": [
+        {"agent": "incident_reporter", "input": "Create incident ticket with diagnostic results, impact assessment, and initial hypothesis", "timeout_seconds": 30},
+        {"agent": "customer_communicator", "input": "Notify affected customers of outage, acknowledge impact, and provide initial ETA for updates", "timeout_seconds": 45}
+      ],
+      "parallel": true,
+      "gate": "Both agents must succeed. Customer communication must complete before any remediation action."
+    },
+    {
+      "phase": 3,
+      "name": "Root Cause Analysis & Decision",
+      "agents": [
+        {"agent": "capacity_planner", "input": "Analyze resource utilization trends (CPU, memory, network) for affected service and dependencies over last 2 hours", "timeout_seconds": 30}
+      ],
+      "parallel": false,
+      "gate": "Synthesize all diagnostic data. Determine if root cause meets specific rollback conditions."
+    },
+    {
+      "phase": 4,
+      "name": "Remediation - Rollback",
+      "agents": [
+        {"agent": "rollback_agent", "input": "Rollback affected service to previous stable deployment (last known good version from last 24 hours)", "timeout_seconds": 180}
+      ],
+      "parallel": false,
+      "gate": "Rollback must complete successfully. If rollback fails, immediately proceed to Phase 6 (Escalation)."
+    },
+    {
+      "phase": 5,
+      "name": "Post-Remediation Verification",
+      "agents": [
+        {"agent": "metric_checker", "input": "Verify error rates, latency, and resource metrics have returned to normal baseline", "timeout_seconds": 45},
+        {"agent": "log_analyzer", "input": "Confirm error patterns have ceased and service logs show healthy operations", "timeout_seconds": 45},
+        {"agent": "db_checker", "input": "Re-verify database health and connection stability post-rollback", "timeout_seconds": 45}
+      ],
+      "parallel": true,
+      "gate": "All verification agents must report healthy status. If any agent reports persistent issues, proceed to Phase 6."
+    },
+    {
+      "phase": 6,
+      "name": "Escalation & Resolution",
+      "agents": [
+        {"agent": "notification_agent", "input": "Escalate to senior engineering leadership and SRE managers via PagerDuty with high priority", "timeout_seconds": 30},
+        {"agent": "incident_reporter", "input": "Update incident with resolution status, root cause, and action items for post-mortem", "timeout_seconds": 30}
+      ],
+      "parallel": true,
+      "gate": "Escalation must be sent and incident updated. Workflow terminates after this phase."
+    }
+  ],
+  "decision_points": [
+    {
+      "after_phase": 2,
+      "condition": "If (log_analyzer found error pattern starting within 5 minutes of a deployment timestamp AND config_auditor found no configuration changes for affected service) OR (config_auditor found a specific configuration change that correlates with error start time AND dependency_mapper shows no external dependency failures) OR (db_checker found deadlocks or connection exhaustion that resolved after connection pool reset)",
+      "if_true": 3,
+      "if_false": 6
+    },
+    {
+      "after_phase": 4,
+      "condition": "If rollback_agent succeeded AND metric_checker reports error rates < baseline threshold AND log_analyzer reports no new error patterns AND db_checker reports healthy connections",
+      "if_true": 5,
+      "if_false": 6
+    }
+  ],
+  "escalation": {
+    "trigger": "If total workflow time exceeds 10 minutes without reaching Phase 5 (Verification) OR if Phase 5 verification fails",
+    "action": "Immediate PagerDuty escalation to Level 3/4 responders, conference bridge creation, and executive stakeholder notification"
+  },
+  "total_phases": 6,
+  "max_time_minutes": 20,
+  "rollback_conditions": [
+    "Log analyzer shows error pattern start time within 5 minutes of a deployment event for the affected service",
+    "Config auditor shows no configuration changes for affected service in last 24 hours (excluding the deployment)",
+    "Dependency mapper shows all upstream/downstream dependencies are healthy (no cascading failures)",
+    "Database checker shows no underlying database issues (no locks, connection pool exhaustion, or replication lag)",
+    "Capacity planner shows no resource saturation (CPU > 90% sustained, memory pressure, or disk I/O bottlenecks)"
+  ]
+}
+```

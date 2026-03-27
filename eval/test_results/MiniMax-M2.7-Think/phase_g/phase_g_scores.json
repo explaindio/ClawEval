@@ -1,120 +1,20 @@
 {
   "model": "MiniMax-M2.7-Think",
   "phase": "G",
-  "timestamp": "2026-03-20T18:34:59.024136",
-  "total_score": 64,
-  "total_max": 110,
-  "percentage": 58.2,
+  "timestamp": "2026-03-21T16:12:20.203257",
+  "total_score": 5,
+  "total_max": 10,
+  "percentage": 50.0,
   "results": [
-    {
-      "id": 36,
-      "role": "Code Generation Agent",
-      "tier": 3,
-      "scoring_type": "code",
-      "score": 0,
-      "max": 10,
-      "detail": "0/10 tests passed | basic_allow: name 'RateLimiter' is not defined; basic_allow2: name 'RateLimiter' is not defined; per_user: name 'RateLimiter' is not defined",
-      "tokens": 8000
-    },
-    {
-      "id": 2,
-      "role": "Input Validator / Sanitizer",
-      "tier": 1,
-      "scoring_type": "exact",
-      "score": 0,
-      "max": 10,
-      "detail": "Found 0/15 errors | Missed: disposable email (mailinator.com); phone country code +44 doesn't match US ; CA zip 10001 invalid (should start with ",
-      "tokens": 8000
-    },
-    {
-      "id": 5,
-      "role": "Sentiment Analysis Agent",
-      "tier": 1,
-      "scoring_type": "exact",
-      "score": 8,
-      "max": 10,
-      "detail": "17/20 correct | 1: expected 'negative', got 'mixed'; 3: expected 'negative', got 'mixed'; 13: expected 'negative', got 'mixed'",
-      "tokens": 3136
-    },
-    {
-      "id": 40,
-      "role": "Fact-Checking Agent",
-      "tier": 3,
-      "scoring_type": "exact",
-      "score": 10,
-      "max": 10,
-      "detail": "19/20 correct | 16: expected 'FALSE', got 'TRUE'",
-      "tokens": 4803
-    },
-    {
-      "id": 49,
-      "role": "Algorithm / Data Structure Explorer",
-      "tier": 4,
-      "scoring_type": "code",
-      "score": 10,
-      "max": 10,
-      "detail": "15/15 tests passed",
-      "tokens": 5115
-    },
-    {
-      "id": 51,
-      "role": "System Architect",
-      "tier": 5,
-      "scoring_type": "constraint",
-      "score": 10,
-      "max": 10,
-      "detail": "15/15 constraints met",
-      "tokens": 4359
-    },
     {
       "id": 48,
       "role": "STEM Research Analyst",
       "tier": 4,
       "scoring_type": "exact",
-      "score": 0,
+      "score": 5,
       "max": 10,
-      "detail": "Could not parse JSON",
-      "tokens": 8000
-    },
-    {
-      "id": 9,
-      "role": "Research Agent",
-      "tier": 2,
-      "scoring_type": "exact",
-      "score": 9,
-      "max": 10,
-      "detail": "9/10 correct | q8_contains: expected contains 'yes', got 'No, because A reports infrastructure cost being 3.2\u00d7 higher while E shows total cost of ownership can be 20% lower for >200 devs, indicating different cost dimensions.'",
-      "tokens": 2003
-    },
-    {
-      "id": 12,
-      "role": "Content Planner / Strategist",
-      "tier": 2,
-      "scoring_type": "exact",
-      "score": 0,
-      "max": 10,
-      "detail": "0/15 constraints met | Missing: has_20_pieces; 5_per_week; correct_type_counts",
-      "tokens": 8000
-    },
-    {
-      "id": 50,
-      "role": "Orchestrator / Meta-Agent",
-      "tier": 5,
-      "scoring_type": "exact",
-      "score": 7,
-      "max": 10,
-      "detail": "11/15 constraints met | Missing: phase1_parallel_diagnostics; early_notification; branching_logic_valid",
-      "tokens": 5733
-    },
-    {
-      "id": 23,
-      "role": "Web Scraping / Data Extraction",
-      "tier": 2,
-      "scoring_type": "exact",
-      "score": 10,
-      "max": 10,
-      "detail": "5/5 correct",
-      "tokens": 4645
+      "detail": "4/8 correct | q1: expected 252000\u00b110000, got 201600.0; q6: expected 5000000\u00b1500000, got 5056937000.0; q7: expected 2.44\u00b10.5, got 0.256; q8: expected 1440\u00b150, got 1008.0",
+      "tokens": 8308
     }
   ]
 }
