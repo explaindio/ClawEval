@@ -1,601 +1,305 @@
 {
   "model": "Step-3.5-Flash",
-  "timestamp": "2026-03-26T21:20:54.302365",
+  "timestamp": "2026-03-27T08:50:51.163691",
   "total_score": 438,
   "total_max": 590,
   "percentage": 74.2,
-  "manual_tests": 6,
-  "note": "Best scores merged from multiple runs (8k + 16k max_tokens). #16 capped at 10.",
+  "note": "Best scores merged from multiple runs (8k + 16k + 24k max_tokens). #16 capped at 10. Tests #8,#35,#37,#47 confirmed genuine 0 at 24k.",
   "results": [
     {
       "id": 1,
-      "role": "Router / Triage Agent",
-      "tier": 1,
-      "scoring_type": "exact",
       "score": 10,
-      "max": 10,
-      "detail": "10/10 correct",
-      "tokens": 1160
+      "max": 10
     },
     {
       "id": 2,
-      "role": "Input Validator / Sanitizer",
-      "tier": 1,
-      "scoring_type": "exact",
       "score": 10,
-      "max": 10,
-      "detail": "10/10 errors found",
-      "tokens": 2580
+      "max": 10
     },
     {
       "id": 3,
-      "role": "Heartbeat / Health Monitor",
-      "tier": 1,
-      "scoring_type": "exact",
       "score": 5,
-      "max": 10,
-      "detail": "3/6 correct",
-      "tokens": 7367
+      "max": 10
     },
     {
       "id": 4,
-      "role": "Notification / Alert Agent",
-      "tier": 1,
-      "scoring_type": "exact",
       "score": 9,
-      "max": 10,
-      "detail": "9/10 correct",
-      "tokens": 1539
+      "max": 10
     },
     {
       "id": 5,
-      "role": "Sentiment Analysis Agent",
-      "tier": 1,
-      "scoring_type": "exact",
       "score": 10,
-      "max": 10,
-      "detail": "10/10 correct",
-      "tokens": 1425
+      "max": 10
     },
     {
       "id": 6,
-      "role": "FAQ Generation Agent",
-      "tier": 1,
-      "scoring_type": "constraint",
       "score": 5,
-      "max": 10,
-      "detail": "5/10 constraints",
-      "tokens": 7796
+      "max": 10
     },
     {
       "id": 7,
-      "role": "Translation Agent",
-      "tier": 1,
-      "scoring_type": "constraint",
       "score": 2,
-      "max": 10,
-      "detail": "2/10 constraints",
-      "tokens": 923
+      "max": 10
     },
     {
       "id": 8,
-      "role": "Calendar / Scheduling Agent",
-      "tier": 1,
-      "scoring_type": "exact",
       "score": 0,
-      "max": 10,
-      "detail": "0/10 (known broken test)",
-      "tokens": 0
+      "max": 10
     },
     {
       "id": 9,
-      "role": "Priority / Escalation Manager",
-      "tier": 1,
-      "scoring_type": "exact",
       "score": 10,
-      "max": 10,
-      "detail": "10/10",
-      "tokens": 0
+      "max": 10
     },
     {
       "id": 10,
-      "role": "Content Writer / Blog Writer",
-      "tier": 2,
-      "scoring_type": "manual",
       "score": 5,
-      "max": 10,
-      "detail": "MANUAL",
-      "tokens": 1113
+      "max": 10
     },
     {
       "id": 11,
-      "role": "Editor Agent",
-      "tier": 2,
-      "scoring_type": "exact",
       "score": 9,
-      "max": 10,
-      "detail": "9/10 found",
-      "tokens": 10557
+      "max": 10
     },
     {
       "id": 12,
-      "role": "Content Planner",
-      "tier": 2,
-      "scoring_type": "constraint",
       "score": 10,
-      "max": 10,
-      "detail": "10/10 constraints",
-      "tokens": 6648
+      "max": 10
     },
     {
       "id": 13,
-      "role": "Email Drafting / Summarization",
-      "tier": 2,
-      "scoring_type": "exact",
       "score": 9,
-      "max": 10,
-      "detail": "7/8 correct",
-      "tokens": 2172
+      "max": 10
     },
     {
       "id": 14,
-      "role": "Document Summarization",
-      "tier": 2,
-      "scoring_type": "exact",
       "score": 10,
-      "max": 10,
-      "detail": "10/10 correct",
-      "tokens": 977
+      "max": 10
     },
     {
       "id": 15,
-      "role": "Meeting Notes / Transcription Agent",
-      "tier": 2,
-      "scoring_type": "exact",
       "score": 8,
-      "max": 10,
-      "detail": "6/8 action items",
-      "tokens": 4274
+      "max": 10
     },
     {
       "id": 16,
-      "role": "Social Media Scouting / Monitoring",
-      "tier": 2,
-      "scoring_type": "exact",
       "score": 10,
-      "max": 10,
-      "detail": "10.0/5.0 checks",
-      "tokens": 1543
+      "max": 10
     },
     {
       "id": 17,
-      "role": "Social Media Content Agent",
-      "tier": 2,
-      "scoring_type": "manual",
       "score": 5,
-      "max": 10,
-      "detail": "MANUAL",
-      "tokens": 1664
+      "max": 10
     },
     {
       "id": 18,
-      "role": "News Aggregation Agent",
-      "tier": 2,
-      "scoring_type": "exact",
       "score": 10,
-      "max": 10,
-      "detail": "2/2 found",
-      "tokens": 4617
+      "max": 10
     },
     {
       "id": 19,
-      "role": "Shopping / Price Comparison",
-      "tier": 2,
-      "scoring_type": "exact",
       "score": 10,
-      "max": 10,
-      "detail": "5/5 correct",
-      "tokens": 3595
+      "max": 10
     },
     {
       "id": 20,
-      "role": "Memory / Knowledge Management",
-      "tier": 2,
-      "scoring_type": "exact",
       "score": 9,
-      "max": 10,
-      "detail": "9/10 correct",
-      "tokens": 792
+      "max": 10
     },
     {
       "id": 21,
-      "role": "RAG / Retrieval Agent",
-      "tier": 2,
-      "scoring_type": "exact",
       "score": 6,
-      "max": 10,
-      "detail": "3/5 correct",
-      "tokens": 2349
+      "max": 10
     },
     {
       "id": 22,
-      "role": "Data Analysis Agent",
-      "tier": 2,
-      "scoring_type": "exact",
       "score": 2,
-      "max": 10,
-      "detail": "2/10 correct",
-      "tokens": 5696
+      "max": 10
     },
     {
       "id": 23,
-      "role": "Website Scraping / Understanding",
-      "tier": 2,
-      "scoring_type": "exact",
       "score": 10,
-      "max": 10,
-      "detail": "10/10 correct",
-      "tokens": 4980
+      "max": 10
     },
     {
       "id": 24,
-      "role": "Image Description / Understanding",
-      "tier": 2,
-      "scoring_type": "manual",
       "score": 5,
-      "max": 10,
-      "detail": "MANUAL",
-      "tokens": 2037
+      "max": 10
     },
     {
       "id": 25,
-      "role": "Customer Support Agent",
-      "tier": 2,
-      "scoring_type": "exact",
       "score": 9,
-      "max": 10,
-      "detail": "9/10 correct",
-      "tokens": 1307
+      "max": 10
     },
     {
       "id": 26,
-      "role": "Lead Scoring / Prospecting",
-      "tier": 2,
-      "scoring_type": "exact",
       "score": 8,
-      "max": 10,
-      "detail": "4/5 correct",
-      "tokens": 2615
+      "max": 10
     },
     {
       "id": 27,
-      "role": "Sprint / Project Summarizer",
-      "tier": 2,
-      "scoring_type": "exact",
       "score": 9,
-      "max": 10,
-      "detail": "9/10 correct",
-      "tokens": 7141
+      "max": 10
     },
     {
       "id": 28,
-      "role": "Transaction / Approval Agent",
-      "tier": 2,
-      "scoring_type": "exact",
       "score": 10,
-      "max": 10,
-      "detail": "10/10 correct",
-      "tokens": 10954
+      "max": 10
     },
     {
       "id": 29,
-      "role": "Home Automation Agent",
-      "tier": 2,
-      "scoring_type": "constraint",
       "score": 8,
-      "max": 10,
-      "detail": "8/10 constraints",
-      "tokens": 16000
+      "max": 10
     },
     {
       "id": 30,
-      "role": "Fitness / Health Tracking",
-      "tier": 2,
-      "scoring_type": "exact",
       "score": 9,
-      "max": 10,
-      "detail": "9/10 correct",
-      "tokens": 6733
+      "max": 10
     },
     {
       "id": 31,
-      "role": "Recipe / Cooking Agent",
-      "tier": 2,
-      "scoring_type": "exact",
       "score": 2,
-      "max": 10,
-      "detail": "2/9 correct",
-      "tokens": 9868
+      "max": 10
     },
     {
       "id": 32,
-      "role": "Personal Finance Tracking",
-      "tier": 2,
-      "scoring_type": "exact",
       "score": 7,
-      "max": 10,
-      "detail": "7/10 correct",
-      "tokens": 8381
+      "max": 10
     },
     {
       "id": 33,
-      "role": "SEO Optimization Agent",
-      "tier": 2,
-      "scoring_type": "constraint",
       "score": 9,
-      "max": 10,
-      "detail": "9/10 constraints",
-      "tokens": 1071
+      "max": 10
     },
     {
       "id": 34,
-      "role": "Landing Page Generator",
-      "tier": 2,
-      "scoring_type": "manual",
       "score": 5,
-      "max": 10,
-      "detail": "MANUAL",
-      "tokens": 2901
+      "max": 10
     },
     {
       "id": 35,
-      "role": "Travel Planning Agent",
-      "tier": 2,
-      "scoring_type": "constraint",
       "score": 0,
-      "max": 10,
-      "detail": "0/10 constraints",
-      "tokens": 16000
+      "max": 10
     },
     {
       "id": 36,
-      "role": "Code Generation Agent",
-      "tier": 3,
-      "scoring_type": "code",
       "score": 10,
-      "max": 10,
-      "detail": "10/10 test cases",
-      "tokens": 3069
+      "max": 10
     },
     {
       "id": 37,
-      "role": "Code Review Agent",
-      "tier": 3,
-      "scoring_type": "exact",
       "score": 0,
-      "max": 10,
-      "detail": "0/5 found",
-      "tokens": 16000
+      "max": 10
     },
     {
       "id": 38,
-      "role": "QA / Test Writing Agent",
-      "tier": 3,
-      "scoring_type": "constraint",
       "score": 8,
-      "max": 10,
-      "detail": "8/10 constraints",
-      "tokens": 4785
+      "max": 10
     },
     {
       "id": 39,
-      "role": "Task Planning / Decomposition",
-      "tier": 3,
-      "scoring_type": "constraint",
       "score": 9,
-      "max": 10,
-      "detail": "9/10 constraints",
-      "tokens": 14917
+      "max": 10
     },
     {
       "id": 40,
-      "role": "Fact-Checking Agent",
-      "tier": 3,
-      "scoring_type": "exact",
       "score": 10,
-      "max": 10,
-      "detail": "10/10 correct",
-      "tokens": 757
+      "max": 10
     },
     {
       "id": 41,
-      "role": "Critic / Review Agent",
-      "tier": 3,
-      "scoring_type": "manual",
       "score": 5,
-      "max": 10,
-      "detail": "MANUAL",
-      "tokens": 2287
+      "max": 10
     },
     {
       "id": 42,
-      "role": "Market Research Agent",
-      "tier": 3,
-      "scoring_type": "exact",
       "score": 8,
-      "max": 10,
-      "detail": "8/10 correct",
-      "tokens": 3785
+      "max": 10
     },
     {
       "id": 43,
-      "role": "Synthesizer / Aggregator",
-      "tier": 3,
-      "scoring_type": "exact",
       "score": 9,
-      "max": 10,
-      "detail": "6/7 found",
-      "tokens": 8206
+      "max": 10
     },
     {
       "id": 44,
-      "role": "Curriculum / Course Designer",
-      "tier": 3,
-      "scoring_type": "constraint",
       "score": 5,
-      "max": 10,
-      "detail": "5/10 constraints",
-      "tokens": 8000
+      "max": 10
     },
     {
       "id": 45,
-      "role": "Prototype Generator",
-      "tier": 3,
-      "scoring_type": "constraint",
       "score": 7,
-      "max": 10,
-      "detail": "7/10 constraints",
-      "tokens": 1808
+      "max": 10
     },
     {
       "id": 46,
-      "role": "DevOps Agent",
-      "tier": 3,
-      "scoring_type": "exact",
       "score": 10,
-      "max": 10,
-      "detail": "10/10 found",
-      "tokens": 6970
+      "max": 10
     },
     {
       "id": 47,
-      "role": "Math / Logic Reasoning",
-      "tier": 4,
-      "scoring_type": "exact",
       "score": 0,
-      "max": 10,
-      "detail": "0/10",
-      "tokens": 16000
+      "max": 10
     },
     {
       "id": 48,
-      "role": "STEM Analysis",
-      "tier": 4,
-      "scoring_type": "exact",
       "score": 10,
-      "max": 10,
-      "detail": "5/5 correct",
-      "tokens": 3865
+      "max": 10
     },
     {
       "id": 49,
-      "role": "Algorithm Exploration",
-      "tier": 4,
-      "scoring_type": "code",
       "score": 10,
-      "max": 10,
-      "detail": "10/10 test cases",
-      "tokens": 1916
+      "max": 10
     },
     {
       "id": 50,
-      "role": "Orchestrator / Manager Agent",
-      "tier": 5,
-      "scoring_type": "constraint",
       "score": 8,
-      "max": 10,
-      "detail": "8/10 constraints",
-      "tokens": 14128
+      "max": 10
     },
     {
       "id": 51,
-      "role": "Software Architect Agent",
-      "tier": 5,
-      "scoring_type": "constraint",
       "score": 9,
-      "max": 10,
-      "detail": "9/10 constraints",
-      "tokens": 16000
+      "max": 10
     },
     {
       "id": 52,
-      "role": "Complex Debugger Agent",
-      "tier": 5,
-      "scoring_type": "exact",
       "score": 10,
-      "max": 10,
-      "detail": "5/5 found",
-      "tokens": 13802
+      "max": 10
     },
     {
       "id": 53,
-      "role": "Legal Document Review",
-      "tier": 5,
-      "scoring_type": "exact",
       "score": 10,
-      "max": 10,
-      "detail": "10/10 found",
-      "tokens": 2764
+      "max": 10
     },
     {
       "id": 54,
-      "role": "Medical / Health Analysis",
-      "tier": 5,
-      "scoring_type": "exact",
       "score": 10,
-      "max": 10,
-      "detail": "10/10 found",
-      "tokens": 4317
+      "max": 10
     },
     {
       "id": 55,
-      "role": "Financial Analysis / Stock Research",
-      "tier": 5,
-      "scoring_type": "exact",
       "score": 6,
-      "max": 10,
-      "detail": "6/10 correct",
-      "tokens": 2785
+      "max": 10
     },
     {
       "id": 56,
-      "role": "Security Analyst Agent",
-      "tier": 5,
-      "scoring_type": "exact",
       "score": 10,
-      "max": 10,
-      "detail": "10/10 found",
-      "tokens": 2390
+      "max": 10
     },
     {
       "id": 57,
-      "role": "SRE / Incident Response",
-      "tier": 5,
-      "scoring_type": "exact",
       "score": 6,
-      "max": 10,
-      "detail": "5/9 correct",
-      "tokens": 3326
+      "max": 10
     },
     {
       "id": 58,
-      "role": "Book / Long-Form Writing",
-      "tier": 5,
-      "scoring_type": "manual",
       "score": 5,
-      "max": 10,
-      "detail": "MANUAL",
-      "tokens": 1339
+      "max": 10
     },
     {
       "id": 59,
-      "role": "Compliance / Regulatory Agent",
-      "tier": 5,
-      "scoring_type": "exact",
       "score": 8,
-      "max": 10,
-      "detail": "8/10 found",
-      "tokens": 3823
+      "max": 10
     }
   ]
 }

@@ -1,21 +1,11 @@
 {
   "model": "Step-3.5-Flash",
   "phase": "G",
-  "timestamp": "2026-03-26T21:46:34.991513",
-  "total_score": 46,
-  "total_max": 110,
-  "percentage": 41.8,
+  "timestamp": "2026-03-27T08:49:58.877804",
+  "total_score": 20,
+  "total_max": 50,
+  "percentage": 40.0,
   "results": [
-    {
-      "id": 36,
-      "role": "Code Generation Agent",
-      "tier": 3,
-      "scoring_type": "code",
-      "score": 0,
-      "max": 10,
-      "detail": "0/10 tests passed | basic_allow: unterminated string literal (detected at line 87) ; basic_allow2: unterminated string literal (detected at line 87) ; per_user: unterminated string literal (detected at line 87) ",
-      "tokens": 16000
-    },
     {
       "id": 2,
       "role": "Input Validator / Sanitizer",
@@ -24,47 +14,27 @@
       "score": 0,
       "max": 10,
       "detail": "Found 0/15 errors | Missed: disposable email (mailinator.com); phone country code +44 doesn't match US ; CA zip 10001 invalid (should start with ",
-      "tokens": 16000
-    },
-    {
-      "id": 5,
-      "role": "Sentiment Analysis Agent",
-      "tier": 1,
-      "scoring_type": "exact",
-      "score": 9,
-      "max": 10,
-      "detail": "18/20 correct | 13: expected 'negative', got 'mixed'; 14: expected 'positive', got 'mixed'",
-      "tokens": 2418
-    },
-    {
-      "id": 40,
-      "role": "Fact-Checking Agent",
-      "tier": 3,
-      "scoring_type": "exact",
-      "score": 10,
-      "max": 10,
-      "detail": "20/20 correct",
-      "tokens": 2263
+      "tokens": 24000
     },
     {
       "id": 49,
       "role": "Algorithm / Data Structure Explorer",
       "tier": 4,
       "scoring_type": "code",
-      "score": 0,
+      "score": 10,
       "max": 10,
-      "detail": "0/15 tests passed | basic_put_get: name 'LRUCache' is not defined; capacity_eviction: name 'LRUCache' is not defined; lru_order: name 'LRUCache' is not defined",
-      "tokens": 16000
+      "detail": "15/15 tests passed",
+      "tokens": 5481
     },
     {
       "id": 51,
       "role": "System Architect",
       "tier": 5,
       "scoring_type": "constraint",
-      "score": 0,
+      "score": 10,
       "max": 10,
-      "detail": "0/15 constraints met | Missing: mentions_read_write_ratio_100_1; has_caching_with_invalidation_strategy; database_has_justification_not_just_name",
-      "tokens": 16000
+      "detail": "15/15 constraints met",
+      "tokens": 16802
     },
     {
       "id": 48,
@@ -74,17 +44,7 @@
       "score": 0,
       "max": 10,
       "detail": "Could not parse JSON",
-      "tokens": 16000
-    },
-    {
-      "id": 9,
-      "role": "Research Agent",
-      "tier": 2,
-      "scoring_type": "exact",
-      "score": 9,
-      "max": 10,
-      "detail": "9/10 correct | q8_contains: expected contains 'yes', got 'no, because Source A reports infrastructure cost multiplier while Source E reports total cost of ownership with varying outcomes by team size, so they measure different aspects without direct contradiction.'",
-      "tokens": 2597
+      "tokens": 24000
     },
     {
       "id": 12,
@@ -94,27 +54,7 @@
       "score": 0,
       "max": 10,
       "detail": "0/15 constraints met | Missing: has_20_pieces; 5_per_week; correct_type_counts",
-      "tokens": 16000
-    },
-    {
-      "id": 50,
-      "role": "Orchestrator / Meta-Agent",
-      "tier": 5,
-      "scoring_type": "exact",
-      "score": 8,
-      "max": 10,
-      "detail": "12/15 constraints met | Missing: early_notification; branching_logic_valid; no_circular_phases",
-      "tokens": 9030
-    },
-    {
-      "id": 23,
-      "role": "Web Scraping / Data Extraction",
-      "tier": 2,
-      "scoring_type": "exact",
-      "score": 10,
-      "max": 10,
-      "detail": "5/5 correct",
-      "tokens": 5925
+      "tokens": 24000
     }
   ]
 }

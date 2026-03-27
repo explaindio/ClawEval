@@ -142,7 +142,7 @@ See [Phase G Results](results-phase-g.md#%EF%B8%8F-cloud-models) for the 11 hard
 - NoThink: 86/110 (78%) — Sentiment 10/10 (19/20), Architect 10/10
 
 **Step-3.5-Flash:**
-- 46/110 (42%) — via OpenRouter free tier. Struggles with harder discriminator tests. Sentiment 9/10, Fact-Check 10/10, Web Scraping 10/10, Orchestrator 8/10. Code Gen, Input Validator, Algorithm, Architect, STEM, Content Planner all 0/10.
+- 66/110 (60%) — via OpenRouter free tier. Needed 24k max_tokens for Algorithm (10/10) and Architect (10/10). Also strong on Fact-Check 10/10, Web Scraping 10/10, Sentiment 9/10, Research 9/10, Orchestrator 8/10.
 
 ---
 

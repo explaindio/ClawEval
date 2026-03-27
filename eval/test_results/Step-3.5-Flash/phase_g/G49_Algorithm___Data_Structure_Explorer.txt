@@ -1,0 +1,81 @@
+```python
+import time
+from collections import OrderedDict
+
+class LRUCache:
+    def __init__(self, capacity: int):
+        self.capacity = capacity
+        self.cache = OrderedDict()
+        self.stats = {"hits": 0, "misses": 0, "evictions": 0, "expirations": 0}
+    
+    def _is_expired(self, expiration):
+        return expiration is not None and time.time() >= expiration
+    
+    def _cleanup_key(self, key):
+        if key in self.cache:
+            _, expiration = self.cache[key]
+            if self._is_expired(expiration):
+                del self.cache[key]
+                self.stats["expirations"] += 1
+                return True
+        return False
+    
+    def get(self, key: str):
+        if key not in self.cache:
+            self.stats["misses"] += 1
+            return None
+        
+        if self._cleanup_key(key):
+            self.stats["misses"] += 1
+            return None
+        
+        value, _ = self.cache[key]
+        self.cache.move_to_end(key)
+        self.stats["hits"] += 1
+        return value
+    
+    def put(self, key: str, value: any, ttl: float = None):
+        if key in self.cache:
+            self._cleanup_key(key)
+            if key in self.cache:
+                self.cache[key] = (value, None if ttl is None else time.time() + ttl)
+                self.cache.move_to_end(key)
+                return
+        
+        if len(self.cache) >= self.capacity:
+            self.cache.popitem(last=False)
+            self.stats["evictions"] += 1
+        
+        expiration = None if ttl is None else time.time() + ttl
+        self.cache[key] = (value, expiration)
+    
+    def delete(self, key: str) -> bool:
+        if key in self.cache:
+            del self.cache[key]
+            return True
+        return False
+    
+    def size(self) -> int:
+        now = time.time()
+        count = 0
+        for _, expiration in self.cache.values():
+            if expiration is None or now < expiration:
+                count += 1
+        return count
+    
+    def get_stats(self) -> dict:
+        return self.stats.copy()
+    
+    def keys(self) -> list:
+        now = time.time()
+        result = []
+        for key in reversed(self.cache):
+            _, expiration = self.cache[key]
+            if expiration is None or now < expiration:
+                result.append(key)
+        return result
+    
+    def clear(self) -> None:
+        self.cache.clear()
+        self.stats = {"hits": 0, "misses": 0, "evictions": 0, "expirations": 0}
+```

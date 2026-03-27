@@ -1,0 +1,69 @@
+{
+  "architecture": {
+    "components": [
+      "Global Load Balancer (Route 53 + ALB)",
+      "Stateless Application Servers (Auto-scaling Group)",
+      "Multi-Region DynamoDB (Global Tables)",
+      "Redis Cluster (ElastiCache) per Region",
+      "Background Worker (for expiration/GDPR deletion)"
+    ],
+    "database": {
+      "primary": "DynamoDB",
+      "justification": "Serverless NoSQL with automatic scaling, 99.99% SLA, global replication, and pay-per-request pricing fits variable load. Handles 10M+ writes/day and 100M+ reads/day with single-digit ms latency. Supports TTL for expiration."
+    },
+    "cache": {
+      "type": "Redis (ElastiCache)",
+      "strategy": "Write-through cache with LRU eviction. Cache stores: {short_code: {long_url, expires_at, created_at}}. Cache TTL = min(remaining_expiry, 24h) to balance freshness/staleness.",
+      "invalidation": "1) Write: Delete cache key after DB write. 2) Read: If cache hit but expired, delete from cache & DB, return 404. 3) GDPR: Immediate cache invalidation on deletion request."
+    },
+    "hash_strategy": {
+      "algorithm": "Base62-encoded random 7-byte (56-bit) integer from cryptographically secure RNG",
+      "length": 7,
+      "collision_handling": "Check DynamoDB for existence (using conditional write). If collision (extremely rare: ~0.001% at 10M/day), regenerate new random ID. Max 3 retries before failing request."
+    }
+  },
+  "scaling": {
+    "read_write_ratio": "100:1 (1B reads/day, 10M writes/day)",
+    "read_optimization": "1) Redis cache targets 99% hit rate for redirects. 2) DynamoDB DAX (optional) for microsecond reads on cache misses. 3) Short codes are hot keys; cache stores full mapping (not just pointers).",
+    "write_path": "1) Generate random short code (or validate custom alias). 2) Conditional write to DynamoDB (reject if alias exists). 3) Invalidate Redis key. 4) Async write to analytics DB. All steps < 10ms.",
+    "horizontal_scaling": "1) App servers: CPU-based auto-scaling (target 50% utilization). 2) DynamoDB: On-demand mode auto-scales to 10x spike. 3) Redis: Cluster mode with 3 shards (each 1 master + 2 replicas) per region; add shards if memory > 80%."
+  },
+  "reliability": {
+    "uptime_strategy": "Multi-region active-active (us-east-1, eu-west-1). Route 53 latency-based routing with health checks. Each region independent.",
+    "failover": "1) DynamoDB Global Tables: automatic multi-region replication, < 1s failover. 2) Redis: Cluster mode with replica promotion. 3) App: Stateless; ALB drains connections before terminating instances.",
+    "data_replication": "DynamoDB Global Tables async replication (typical < 100ms). Redis replication within region (async). No cross-region cache sync; cache misses read from local DynamoDB replica."
+  },
+  "compliance": {
+    "gdpr_deletion": "1) User requests via authenticated API (if accounts exist) or via email verification for anonymous links. 2) Soft-delete in DynamoDB (is_deleted flag, TTL 30d). 3) Hard-delete via background worker (scrubs all tables including analytics). 4) Immediate cache invalidation.",
+    "data_retention": "1) Active links: stored indefinitely unless expiration set. 2) Expired links: TTL in DynamoDB (auto-delete after 30d post-expiry). 3) Analytics: aggregated after 90d, raw data deleted after 180d.",
+    "analytics_separation": "Analytics (IP, UA, timestamp) stored in separate DynamoDB table (or S3/Redshift) with pseudonymized IPs (/24). No PII in core tables. Access controls isolate analytics DB."
+  },
+  "cost_estimate": {
+    "monthly_total": 3876.42,
+    "breakdown": {
+      "compute": 1248.00,
+      "database": 1450.00,
+      "cache": 768.00,
+      "cdn": 0.00,
+      "other": 410.42
+    },
+    "fits_budget": true
+  },
+  "rate_limiting": {
+    "strategy": "Distributed token bucket in Redis per IP (and per user if authenticated). Burst allowed (2x rate).",
+    "limits": "Creation: 60/min per IP. Redirect: 1000/min per IP. Global: 10k req/sec per region (burst to 20k)."
+  },
+  "monitoring": {
+    "metrics": [
+      "Redirect latency (p50, p99, p99.9)",
+      "Cache hit rate",
+      "DynamoDB throttled requests",
+      "Redis memory usage & evictions",
+      "App server error rate (5xx)",
+      "GDPR deletion queue depth",
+      "Custom alias collision rate",
+      "Regional traffic distribution"
+    ],
+    "alerting": "PagerDuty/Opsgenie alerts for: p99 redirect > 50ms, cache hit rate < 95%, DynamoDB throttling > 0.1%, Redis memory > 85%, app error rate > 0.5%, region failover. Daily digest of deletion compliance."
+  }
+}
