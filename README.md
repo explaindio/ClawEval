@@ -69,6 +69,10 @@ Don't have a GPU? We also test open-source models hosted on cloud providers so y
 | OpenRouter (Free) | **Step-3.5-Flash** — 438/590 (74%) Phase F, 66/110 (60%) Phase G | ✅ Tested |
 
 > 💡 **M2.7 ties Qwen3.5-Plus for Phase F champion** at 482/590 (82%). Initial low scores were caused by insufficient token budget — M2.7's reasoning tokens count against `max_tokens`, requiring 16-24k to avoid truncation.
+>
+> 📊 **Detailed cloud comparisons:**
+> - [☁️ Full cloud model comparison (all scores per role) →](docs/results-cloud.md)
+> - [🆕 Phase G — Discriminator Tests (harder tests) →](docs/results-phase-g.md)
 
 ## 🏆 Best Model Per Role — Which One Should You Run?
 
