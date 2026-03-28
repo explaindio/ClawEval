@@ -1,0 +1,40 @@
+{
+  "model": "Nemotron-3-Nano-30B",
+  "timestamp": "2026-03-28T11:28:17.222855",
+  "total_score": 8,
+  "total_max": 18,
+  "percentage": 44.4,
+  "manual_tests": 0,
+  "results": [
+    {
+      "id": 3,
+      "role": "Heartbeat / Health Monitor",
+      "tier": 1,
+      "scoring_type": "exact",
+      "score": 0,
+      "max": 6,
+      "detail": "Could not parse JSON",
+      "tokens": 24000
+    },
+    {
+      "id": 8,
+      "role": "Calendar / Scheduling Agent",
+      "tier": 1,
+      "scoring_type": "exact",
+      "score": 0,
+      "max": 2,
+      "detail": "Could not parse JSON",
+      "tokens": 24000
+    },
+    {
+      "id": 35,
+      "role": "Travel Planning Agent",
+      "tier": 2,
+      "scoring_type": "constraint",
+      "score": 8,
+      "max": 10,
+      "detail": "8/10 constraints | Missing: budget_breakdown, 1_activity_per_day",
+      "tokens": 19214
+    }
+  ]
+}

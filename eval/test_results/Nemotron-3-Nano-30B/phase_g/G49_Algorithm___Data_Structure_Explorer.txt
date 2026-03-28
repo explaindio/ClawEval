@@ -1,0 +1,74 @@
+```python
+import time
+from collections import OrderedDict
+
+class LRUCache:
+    def __init__(self, capacity: int):
+        self._data = OrderedDict()          # key -> {'value': ..., 'expiry': ...}
+        self.capacity = capacity        self._size = 0
+        self.hits = 0
+        self.misses = 0
+        self.evictions = 0
+        self.expirations = 0
+
+    def _now(self):
+        return time.time()
+
+    def _is_expired(self, expiry):
+        return expiry is not None and self._now() > expiry
+
+    def get(self, key: str):
+        if key not in self._data:
+            self.misses += 1
+            return None
+        entry = self._data[key]
+        if self._is_expired(entry['expiry']):
+            del self._data[key]
+            self.expirations += 1
+            self._size -= 1
+            self.misses += 1            return None
+        self._data.move_to_end(key)
+        self.hits += 1
+        return entry['value']
+
+    def put(self, key: str, value, ttl: float = None):
+        now = self._now()
+        if key in self._data:
+            entry = self._data[key]
+            entry['value'] = value
+            if ttl is not None:
+                entry['expiry'] = now + ttl
+            self._data.move_to_end(key)
+        else:
+            if self._size >= self.capacity:
+                evicted_key, _ = self._data.popitem(last=False)
+                self.evictions += 1
+                self._size -= 1
+            expiry = now + ttl if ttl is not None else None
+            self._data[key] = {'value': value, 'expiry': expiry}
+            self._size += 1
+
+    def delete(self, key: str) -> bool:
+        if key in self._data:
+            del self._data[key]
+            self._size -= 1
+            return True
+        return False
+
+    def size(self) -> int:
+        return self._size    def get_stats(self) -> dict:
+        return {
+            "hits": self.hits,
+            "misses": self.misses,
+            "evictions": self.evictions,
+            "expirations": self.expirations,
+        }
+
+    def keys(self) -> list:
+        return list(reversed(self._data.keys()))
+
+    def clear(self) -> None:
+        self._data.clear()
+        self.hits = self.misses = self.evictions = self.expirations = 0
+        self._size = 0
+```

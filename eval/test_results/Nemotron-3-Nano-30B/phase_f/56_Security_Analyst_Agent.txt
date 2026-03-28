@@ -1,0 +1,74 @@
+{
+  "vulnerabilities": [
+    {
+      "id": 1,
+      "type": "Hardcoded Secret",
+      "severity": "high",
+      "location": "app.secret_key = \"password123\"",
+      "fix": "Use a strong, randomly generated secret key stored in an environment variable or configuration file, and rotate it regularly."
+    },
+    {
+      "id": 2,
+      "type": "Cross-Site Scripting (XSS)",
+      "severity": "medium",
+      "location": "render_template_string(f\"Results for: {q}\")",
+      "fix": "Avoid embedding raw user input into HTML; use Flask's template engine auto-escaping or explicitly escape the input."
+    },
+    {
+      "id": 3,
+      "type": "SQL Injection",
+      "severity": "critical",
+      "location": "db.execute(f\"SELECT * FROM users WHERE id = {id}\")",
+      "fix": "Use parameterized queries (e.g., db.execute(\"SELECT * FROM users WHERE id = ?\", (id,)))"
+    },
+    {
+      "id": 4,
+      "type": "Insecure Deserialization / Remote Code Execution",
+      "severity": "critical",
+      "location": "obj = pickle.loads(data)",
+      "fix": "Do not deserialize untrusted data with pickle; use a safe format like JSON and validate input."
+    },
+    {
+      "id": 5,
+      "type": "Command Injection",
+      "severity": "critical",
+      "location": "subprocess.check_output(cmd, shell=True)",
+      "fix": "Avoid shell=True; pass arguments as a list and validate/sanitize cmd, or restrict allowed commands."
+    },
+    {
+      "id": 6,
+      "type": "Path Traversal / Local File Inclusion",
+      "severity": "high",
+      "location": "open(path).read()",
+      "fix": "Validate that the path is within an allowed directory (e.g., using os.path.realpath and a whitelist) before opening."
+    },
+    {
+      "id": 7,
+      "type": "Insecure Authentication / Hardcoded Default Password",
+      "severity": "high",
+      "location": "if pw == os.environ.get(\"ADMIN_PW\", \"admin\"):",
+      "fix": "Implement proper password hashing and storage; remove fallback to a default password and use secure authentication mechanisms."
+    },
+    {
+      "id": 8,
+      "type": "Information Disclosure",
+      "severity": "low",
+      "location": "return str(os.environ)",
+      "fix": "Remove or restrict the debug endpoint; do not expose environment variables to clients."
+    },
+    {
+      "id": 9,
+      "type": "Insecure Transport (Missing HTTPS Enforcement)",
+      "severity": "low",
+      "location": "Comment: No HTTPS enforcement",
+      "fix": "Deploy the application behind TLS and enforce HTTPS at the reverse proxy or web server level."
+    },
+    {
+      "id": 10,
+      "type": "Missing Rate Limiting",
+      "severity": "low",
+      "location": "Comment: No rate limiting",
+      "fix": "Add rate limiting (e.g., Flask-Limiter) to mitigate abuse and DoS attacks."
+    }
+  ],
+  "count": 10}

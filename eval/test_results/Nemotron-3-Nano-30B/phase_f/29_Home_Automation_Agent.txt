@@ -1,0 +1,252 @@
+```json
+[
+ {
+    "id": 1,
+    "name": "Morning Lights",
+    "trigger": {
+      "type": "time",
+      "value": "06:30",
+      "days": ["Mon", "Tue", "Wed", "Thu", "Fri"]
+    },
+    "conditions": [
+      { "type": "occupancy", "status": "home" }
+    ],
+    "actions": [
+      {
+        "type": "light",
+        "target": "living_room",
+        "state": "on",
+        "transition": "gradual 10m"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Thermostat Occupancy",
+    "trigger": {
+      "type": "time",
+      "value": "23:00",
+      "duration": "05:00"
+    },
+    "conditions": [
+      { "type": "occupancy", "status": "sleeping" }
+    ],
+    "actions": [
+      { "type": "thermostat", "setpoint": 68 }
+    ]
+  },
+  {
+    "id": 3,
+    "name": "Thermostat Occupied",
+    "trigger": {
+      "type": "occupancy",
+      "source": "phone_geofence",
+      "status": "present"
+    },
+    "conditions": [],
+    "actions": [
+      { "type": "thermostat", "setpoint": 72 }
+    ]
+  },
+  {
+    "id": 4,
+    "name": "Thermostat Empty",
+    "trigger": {
+      "type": "occupancy",
+      "status": "absent"
+    },
+    "conditions": [],
+    "actions": [
+      { "type": "thermostat", "setpoint": 65 }
+    ]
+  },
+  {
+    "id": 5,
+    "name": "Security Arm/Disarm",
+    "trigger": {
+      "type": "presence",
+      "device": "phone_Alice",
+      "action": "arrives_or_leaves"
+    },
+    "conditions": [
+      {
+        "type": "both_phones",
+        "status": "away"
+      }
+    ],
+    "actions": [
+      {
+        "type": "security",
+        "mode": "arm_away"
+      }
+    ],
+    "complement": {
+      "trigger": {
+        "type": "presence",
+        "device": "phone_Alice",
+        "action": "arrives_or_leaves"
+      },
+      "conditions": [
+        {
+          "type": "both_phones",
+          "status": "home"
+        }
+      ],
+      "actions": [
+        { "type": "security", "mode": "disarm" }
+      ]
+    }
+  },
+  {
+    "id": 6,
+    "name": "Pet Feeder & Camera",
+    "trigger": {
+      "type": "time",
+      "values": ["07:00", "18:00"]
+    },
+    "conditions": [
+      {
+        "type": "both_phones",
+        "status": "away"
+      }
+    ],
+    "actions": [
+      { "type": "auto_feeder", "dispense": "portion" },
+      { "type": "camera", "power": "on", "target": "cat_camera" }
+    ]
+  },
+  {
+    "id": 7,
+    "name": "Solar Priority",
+    "trigger": {
+      "type": "time",
+      "range": ["14:00", "19:00"]
+    },
+    "conditions": [
+      {
+        "type": "solar_output",
+        "min_watts": 3000      }
+    ],
+    "actions": [
+      { "type": "energy_manager", "mode": "solar_first" }
+    ]
+  },
+  {
+    "id": 8,
+    "name": "Evening Battery Backup",
+    "trigger": {
+      "type": "time",
+      "range": ["19:00", "23:59"]
+    },
+    "conditions": [
+      {
+        "type": "grid_status",
+        "value": "off_peak"
+      }
+    ],
+    "actions": [
+      { "type": "energy_manager", "mode": "battery_backup" }
+    ]
+  },
+  {
+    "id": 9,
+    "name": "Hallway Motion Lights",
+    "trigger": {
+      "type": "motion",
+      "sensor": "hallway_motion"
+    },
+    "conditions": [
+      {
+        "type": "time",
+        "range": ["22:00", "06:00"]
+      }
+    ],
+    "actions": [
+      {
+        "type": "light",
+        "target": "hallway",
+        "state": "on",
+        "brightness": 20,
+        "auto_off": "5m"
+      }
+    ]
+  },
+  {
+    "id": 10,
+    "name": "Bob's Office Activation",
+    "trigger": {
+      "type": "device",
+      "device": "desktop_Bob",
+      "event": "power_on"
+    },
+    "conditions": [
+      { "type": "location", "value": "Bob's Office" }
+    ],
+    "actions": [
+      { "type": "light", "target": "desk_lamp", "state": "on" },
+      { "type": "thermostat", "setpoint": 70 }
+    ]
+  },
+  {
+    "id": 11,
+    "name": "Laundry Completion Notification",
+    "trigger": {
+      "type": "sensor",
+      "device": "washer",
+      "state": "complete"
+    },
+    "conditions": [
+      { "type": "occupancy", "status": "home" }
+    ],
+    "actions": [
+      {
+        "type": "notification",
+        "message": "Laundry cycle finished",
+        "recipients": ["Alice", "Bob"]
+      }
+    ]
+  },
+  {
+    "id": 12,
+    "name": "Water Leak Emergency",
+    "trigger": {
+      "type": "sensor",
+      "device": "water_leak_detector",
+      "event": "detected"
+    },
+    "conditions": [],
+    "actions": [
+      { "type": "valve", "action": "close", "target": "main_water_valve" },
+      {
+        "type": "notification",
+        "message": "Water leak detected! Valve shut off.",
+        "recipients": ["Alice", "Bob"]
+      }
+    ]
+  },
+  {
+    "id": 13,
+    "name": "Guest Mode",
+    "trigger": {
+      "type": "mode",
+      "value": "guest"
+    },
+    "conditions": [],
+    "actions": [
+      {
+        "type": "lock",
+        "action": "set_temporary_code",
+        "code": "GUEST123",
+        "duration": "48h"
+      },
+      { "type": "thermostat", "setpoint": 72 },
+      {
+        "type": "wifi",
+        "action": "enable",
+        "ssid": "GuestWiFi",
+        "password": "guestpass123"
+      }
+    ]
+  }
+]
+```

@@ -1,0 +1,69 @@
+{
+  "architecture":{
+    "components": [
+      "URL Service (stateless API)",
+      "Short URL Generator",
+      "Metadata Store",
+      "Cache Layer",
+      "CDN Edge Layer",
+      "Analytics Service",
+      "Deletion Worker"
+    ],
+    "database": {
+      "primary": "Cassandra",
+      "justification": "High write throughput, tunable consistency, horizontal scaling, built‑in TTL support for link expiration"
+    },
+    "cache": {
+      "type": "Redis (clustered)",
+      "strategy": "Cache reads of short URL mappings with a 5‑minute TTL",
+      "invalidation": "Write‑through on new URL creation; explicit purge on expiration; LRU eviction for memory pressure"
+    },
+    "hash_strategy": {
+      "algorithm": "MurmurHash3",
+      "length": 6,
+      "collision_handling": "Append a random 2‑character suffix and retry up to 3 times"
+    }
+  },
+  "scaling": {
+    "read_write_ratio": "100:1 (read dominant)",
+    "read_optimization": "Cache hot URLs in Redis; pre‑warm cache; serve redirects from CDN edge; use HTTP 301/302 with minimal payload",
+    "write_path": "Write to durable store via async batch job; acknowledge after durable log entry; background job handles TTL and expiration cleanup",
+    "horizontal_scaling": "Deploy stateless API pods behind a load balancer; auto‑scale pods based on request rate; shard metadata across multiple Cassandra nodes"
+  },
+  "reliability": {
+    "uptime_strategy": "Multi‑region active‑active deployment with health‑checked load balancer",
+    "failover": "DNS weighted routing to secondary region; automatic switchover on health check failure",
+    "data_replication": "Write‑ahead logs replicated to 3 nodes across zones; eventual consistency for analytics; read replicas for redirect traffic"
+  },
+  "compliance": {
+    "gdpr_deletion": "On deletion request, mark URL as deleted, remove mapping from metadata, purge from cache, and trigger background job to permanently delete data within 24 h",
+    "data_retention": "Redirect logs retained 30 days for abuse monitoring; custom alias mappings retained 90 days; deletion requests cause immediate logical delete",
+    "analytics_separation": "Analytics processed in a separate ClickHouse cluster; data anonymized; retained 14 days; isolated from primary store"
+  },
+  "cost_estimate": {
+    "monthly_total": 4800,
+    "breakdown": {
+      "compute": 1500,
+      "database": 1200,
+      "cache": 800,
+      "cdn": 800,
+      "other": 500
+    },
+    "fits_budget": true
+  },
+  "rate_limiting": {
+    "strategy": "Token bucket per user/IP with burst allowance",
+    "limits": "1000 requests/min per IP; 10,000 requests/min per API key"
+  },
+  "monitoring": {
+    "metrics": [
+      "request_rate",
+      "p99_latency",
+      "error_rate",
+      "cache_hit_ratio",
+      "storage_utilization",
+      "deletion_requests"
+    ],
+    "alerting": "PagerDuty alerts when p99 latency > 50 ms, error_rate > 0.5 %, or storage utilization > 80 %"
+  }
+}

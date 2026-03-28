@@ -1,0 +1,78 @@
+import pytestfrom calculate_tax import calculate_tax
+
+def test_zero_income():
+    assert calculate_tax(0, 'single') == (0.0, 0.0)
+
+def test_negative_income_raises():
+    with pytest.raises(ValueError):
+        calculate_tax(-5, 'single')
+
+def test_invalid_filing_status_raises():
+    with pytest.raises(ValueError):
+        calculate_tax(50000, 'head_of_household')
+
+def test_non_numeric_income_raises():
+    with pytest.raises(ValueError):
+        calculate_tax('10000', 'single')
+
+def test_single_bracket_boundary_11600():
+    assert calculate_tax(11600, 'single') == (1160.0, 10.0)
+
+def test_single_bracket_boundary_47150():
+    tax, eff = calculate_tax(47150, 'single')
+    assert round(tax, 2) == 5426.0
+    assert round(eff, 2) == 11.51
+
+def test_single_bracket_boundary_100525():
+    tax, eff = calculate_tax(100525, 'single')
+    assert round(tax, 2) == 17168.5
+    assert round(eff, 2) == 17.08def test_single_bracket_boundary_191950():
+    tax, eff = calculate_tax(191950, 'single')
+    assert round(tax, 2) == 39110.5
+    assert round(eff, 2) == 20.38
+
+def test_single_bracket_boundary_243725():
+    tax, eff = calculate_tax(243725, 'single')
+    assert round(tax, 2) == 55678.5
+    assert round(eff, 2) == 22.84
+
+def test_single_bracket_boundary_609350():
+    tax, eff = calculate_tax(609350, 'single')
+    assert round(tax, 2) == 183647.25
+    assert round(eff, 2) == 30.14
+
+def test_single_above_top_bracket():
+    tax, eff = calculate_tax(800000, 'single')
+    assert round(tax, 2) == 254187.75
+    assert round(eff, 2) == 31.77
+
+def test_married_bracket_boundary_23200():
+    assert calculate_tax(23200, 'married') == (2320.0, 10.0)
+
+def test_married_bracket_boundary_94300():
+    tax, eff = calculate_tax(94300, 'married')
+    assert round(tax, 2) == 10852.0
+    assert round(eff, 2) == 11.51
+
+def test_married_bracket_boundary_201050():
+    tax, eff = calculate_tax(201050, 'married')
+    assert round(tax, 2) == 34337.0
+    assert round(eff, 2) == 17.06
+
+def test_married_bracket_boundary_383900():
+    tax, eff = calculate_tax(383900, 'married')
+    assert round(tax, 2) == 78221.0
+    assert round(eff, 2) == 20.38def test_married_bracket_boundary_487450():
+    tax, eff = calculate_tax(487450, 'married')
+    assert round(tax, 2) == 111357.0
+    assert round(eff, 2) == 22.84
+
+def test_married_bracket_boundary_731200():
+    tax, eff = calculate_tax(731200, 'married')
+    assert round(tax, 2) == 196569.5
+    assert round(eff, 2) == 26.88
+
+def test_married_above_top_bracket():
+    tax, eff = calculate_tax(800000, 'married')
+    assert round(tax, 2) == 260739.5
+    assert round(eff, 2) == 32.59

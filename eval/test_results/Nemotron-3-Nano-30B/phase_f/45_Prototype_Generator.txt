@@ -1,0 +1,88 @@
+```python
+from flask import Flask,request, jsonify
+from dataclasses import dataclass
+from typing import List
+
+app = Flask(__name__)
+
+BOOKS: List[dict] = []
+next_id = 1@dataclass
+class Book:
+    id: int
+    title: str
+    author: str
+    isbn: str
+    price: float
+
+def error_response(msg, code):
+    return jsonify({"error": msg}), code
+
+@app.route('/books', methods=['GET'])
+def list_books():
+    global BOOKS
+    page = max(int(request.args.get('page', 1)), 1)
+    per_page = max(int(request.args.get('per_page', 10)), 1)
+    start = (page - 1) * per_page
+    end = start + per_page
+    items = BOOKS[start:end]
+    return jsonify([asdict(b) for b in items]), 200
+
+@app.route('/books/<int:book_id>', methods=['GET'])
+def get_book(book_id):
+    book = next((b for b in BOOKS if b.id == book_id), None)
+    if not book:
+        return error_response("Book not found", 404)
+    return jsonify(asdict(book)), 200
+
+def validate_book_data(data):
+    required = ['title', 'author', 'isbn', 'price']
+    missing = [f for f in required if f not in data]
+    if missing:
+        return error_response(f"Missing fields: {', '.join(missing)}", 400)
+    if not isinstance(data['price'], (int, float)) or data['price'] < 0:
+        return error_response("Price must be a non-negative number", 422)
+    if not isinstance(data['isbn'], str) or not data['isbn']:
+        return error_response("ISBN must be a non-empty string", 422)
+    return None
+
+@app.route('/books', methods=['POST'])
+def create_book():
+    global next_id, BOOKS
+    if not request.is_json:
+        return error_response("Request must be JSON", 400)
+    data = request.get_json()
+    validation_error = validate_book_data(data)
+    if validation_error:
+        return validation_error
+    book = Book(id=next_id, **data)
+    BOOKS.append(asdict(book))
+    next_id += 1
+    return jsonify(asdict(book)), 201
+
+@app.route('/books/<int:book_id>', methods=['PUT'])
+def update_book(book_id):
+    if not request.is_json:
+        return error_response("Request must be JSON", 400)
+    data = request.get_json()
+    validation_error = validate_book_data(data)
+    if validation_error:
+        return validation_error
+    idx = next((i for i, b in enumerate(BOOKS) if b['id'] == book_id), None)
+    if idx is None:
+        return error_response("Book not found", 404)
+    updated = Book(id=book_id, **data)
+    BOOKS[idx] = asdict(updated)
+    return jsonify(asdict(updated)), 200
+
+@app.route('/books/<int:book_id>', methods=['DELETE'])
+def delete_book(book_id):
+    global BOOKS
+    idx = next((i for i, b in enumerate(BOOKS) if b['id'] == book_id), None)
+    if idx is None:
+        return error_response("Book not found", 404)
+    del BOOKS[idx]
+    return '', 204
+
+if __name__ == '__main__':
+    app.run(debug=True)
+```

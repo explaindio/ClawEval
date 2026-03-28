@@ -1,0 +1,35 @@
+{
+  "bugs": [
+    {
+      "line": 8,
+      "issue": "Discount may exceed 100, leading to negative or unrealistic final prices.",
+      "fix": "Clamp discount to a maximum of 100 (e.g., discount = min(discount, 100)) before applying it."
+    },
+    {
+      "line": 8,
+      "issue": "price and quantity are accessed without checking type or existence, risking TypeError or incorrect calculations.",
+      "fix": "Validate that price and quantity are numeric and present; use order.get with defaults or raise a clear error."
+    },
+    {
+      "line": 18,
+      "issue": "Division by zero when no pending orders are processed (len(processed) == 0).",
+      "fix": "Check if processed is empty; if so, set avg to 0 or None instead of performing the division."
+    },
+    {
+      "line": 23,
+      "issue": "Returns len(orders) instead of the number of processed orders, giving an incorrect count.",
+      "fix": "Replace with len(processed) to report the actual count of processed orders."
+    },
+    {
+      "line": 13,
+      "issue": "Modifies the original order dictionary, causing side effects for the caller.",
+      "fix": "Create a shallow copy of the order before mutating (e.g., order_copy = order.copy())."
+    },
+    {
+      "line": 8,
+      "issue": "No validation of price/quantity types can cause TypeError if they are None or non‑numeric.",
+      "fix": "Ensure price and quantity are numbers (int/float) before multiplication; handle missing/invalid values appropriately."
+    }
+  ],
+  "count": 6
+}

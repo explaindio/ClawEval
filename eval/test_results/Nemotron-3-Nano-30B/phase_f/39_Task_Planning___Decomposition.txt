@@ -1,0 +1,84 @@
+{
+  "tasks": [
+    {
+      "id": "T0",
+      "name": "Project Planning & Requirements Gathering",
+      "depends_on": [],
+      "estimated_hours": 8,
+      "assignable_to": "fullstack"
+    },
+    {
+      "id": "T1",
+      "name": "Database Setup (PostgreSQL schema & initial tables)",
+      "depends_on": ["T0"],
+      "estimated_hours": 12,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T2",
+      "name": "User Authentication Service (registration, login, JWT)",
+      "depends_on": ["T1"],
+      "estimated_hours": 20,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T3",
+      "name": "Todo CRUD API (create, read, update, delete)",
+      "depends_on": ["T2"],
+      "estimated_hours": 30,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T4",
+      "name": "Todo Categories/Tags Feature",
+      "depends_on": ["T3"],
+      "estimated_hours": 15,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T5",
+      "name": "Due Date & Reminder Service",
+      "depends_on": ["T3"],
+      "estimated_hours": 12,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T6",
+      "name": "Rate Limiting Middleware",
+      "depends_on": ["T3"],
+      "estimated_hours": 8,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T7",
+      "name": "OpenAPI Documentation",
+      "depends_on": ["T3"],
+      "estimated_hours": 10,
+      "assignable_to": "fullstack"
+    },
+    {
+      "id": "T8",
+      "name": "Unit Tests (80%+ coverage)",
+      "depends_on": ["T2", "T3", "T4", "T5", "T6", "T7"],
+      "estimated_hours": 25,
+      "assignable_to": "qa"
+    },
+    {
+      "id": "T9",
+      "name": "CI/CD Pipeline Setup",
+      "depends_on": ["T8", "T10"],
+      "estimated_hours": 15,
+      "assignable_to": "devops"
+    },
+    {
+      "id": "T10",
+      "name": "Docker Containerization & Deployment",
+      "depends_on": ["T3"],
+      "estimated_hours": 10,
+      "assignable_to": "devops"
+    }
+  ],
+  "critical_path": ["T0", "T1", "T2", "T3", "T8", "T9", "T10"],
+  "total_hours": 165,
+  "parallel_tracks": 3
+}

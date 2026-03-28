@@ -1,0 +1,79 @@
+{
+"phases": [
+    {
+      "phase": 1,
+      "name": "Initial Diagnostics",
+      "agents": [
+        { "agent": "log_analyzer", "input": "latest application logs", "timeout_seconds": 60 },
+        { "agent": "metric_checker", "input": "service latency and error rate metrics", "timeout_seconds": 60 },
+        { "agent": "db_checker", "input": "database health and connection status", "timeout_seconds": 60 },
+        { "agent": "config_auditor", "input": "recent configuration changes diff", "timeout_seconds": 60 },
+        { "agent": "notification_agent", "input": "alert to Slack/PagerDuty channel", "timeout_seconds": 30 }
+      ],
+      "parallel": true,
+      "gate": "All diagnostic agents have returned their results"
+    },
+    {
+      "phase": 2,
+      "name": "Root Cause Analysis",
+      "agents": [
+        { "agent": "dependency_mapper", "input": "service dependency graph", "timeout_seconds": 60 },
+        { "agent": "capacity_planner", "input": "resource utilization report", "timeout_seconds": 60 }
+      ],
+      "parallel": true,
+      "gate": "Root cause hypothesis generated"
+    },
+    {
+      "phase": 3,
+      "name": "Customer Communication",
+      "agents": [
+        { "agent": "customer_communicator", "input": "status update to affected customers", "timeout_seconds": 30 }
+      ],
+      "parallel": false,
+      "gate": "Customer notified and acknowledgment received"
+    },
+    {
+      "phase": 4,
+      "name": "Remediation",
+      "agents": [
+        { "agent": "rollback_agent", "input": "rollback to previous deployment", "timeout_seconds": 120 }
+      ],
+      "parallel": false,
+      "gate": "Rollback completed successfully"
+    },
+    {
+      "phase": 5,
+      "name": "Verification",
+      "agents": [
+        { "agent": "metric_checker", "input": "post‑rollback metrics", "timeout_seconds": 60 },
+        { "agent": "log_analyzer", "input": "post‑rollback logs", "timeout_seconds": 60 }
+      ],
+      "parallel": true,
+      "gate": "All metrics and logs confirm service restored"
+    }
+  ],
+  "decision_points": [
+    {
+      "after_phase": 1,
+      "condition": "Root cause identified in diagnostic results",
+      "if_true": "go to phase 3",
+      "if_false": "go to phase 2"
+    },
+    {
+      "after_phase": 4,
+      "condition": "Rollback succeeded and verification passed",
+      "if_true": "go to phase 5",
+      "if_false": "escalate to incident commander"
+    }
+  ],
+  "escalation": {
+    "trigger": "If total elapsed time exceeds 15 minutes without reaching verification",
+    "action": "Notify incident commander and open high‑severity ticket"
+  },
+  "total_phases": 5,
+  "max_time_minutes": 15,
+  "rollback_conditions": [
+    "Error rate >30% for 5 consecutive minutes AND service unavailable for >2 minutes",
+    "Critical database lock detected AND query latency >5s for 3 minutes"
+  ]
+}

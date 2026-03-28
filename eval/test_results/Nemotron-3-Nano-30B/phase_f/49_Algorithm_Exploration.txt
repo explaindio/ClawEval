@@ -1,0 +1,20 @@
+```python
+from collections import OrderedDictdef lru_cache(capacity: int):
+    class Cache:
+        def __init__(self, cap):
+            self.cap = cap
+            self.store = OrderedDict()          # key -> value
+
+        def get(self, key: int) -> int:
+            if key not in self.store:
+                return -1
+            self.store.move_to_end(key)         # mark as most‑recently used
+            return self.store[key]
+
+        def put(self, key: int, value: int) -> None:
+            if key in self.store:
+                self.store.move_to_end(key)     # update existing key
+            elif len(self.store) >= self.cap:
+                self.store.popitem(last=False)  # evict LRU
+            self.store[key] = value              # insert/update and mark MRU    return Cache(capacity)
+```

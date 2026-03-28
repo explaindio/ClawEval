@@ -1,0 +1,88 @@
+{
+  "components":[
+    {
+      "name": "Client SDK",
+      "technology": "React Native / iOS / Android native + Web SDK (WebRTC)",
+      "purpose": "Provide low‑latency UI, handle reconnection, presence, and encryption",
+      "scaling_strategy": "Stateless distribution via CDN edge caching; client‑side exponential back‑off for reconnects"
+    },
+    {
+      "name": "API Gateway",
+      "technology": "AWS API Gateway / Cloudflare Workers",
+      "purpose": "Auth, rate‑limit, route requests to micro‑services",
+      "scaling_strategy": "Auto‑scale with regional edge nodes; request‑level sharding"
+    },
+    {
+      "name": "Authentication Service",
+      "technology": "OAuth2 / OIDC (Keycloak)",
+      "purpose": "User login, token issuance, MFA",
+      "scaling_strategy": "Stateless JWT validation; horizontal scaling behind load balancer"
+    },
+    {
+      "name": "Presence Service",
+      "technology": "Redis Cluster (Pub/Sub + Sorted Sets)",
+      "purpose": "Track online/offline status, presence channels",
+      "scaling_strategy": "Shard by user ID; in‑memory replication across 3 availability zones"
+    },
+    {
+      "name": "Real‑Time Messaging Service",
+      "technology": "WebSocket + MQTT broker (EMQX)",
+      "purpose": "Push messages with <100 ms latency",
+      "scaling_strategy": "Stateless broker nodes; horizontal scaling via consistent hashing; back‑pressure handling"
+    },
+    {
+      "name": "Message Persistence Service",
+      "technology": "Cassandra (wide‑row) + S3 for blob storage",
+      "purpose": "Durable message storage, history retrieval",
+      "scaling_strategy": "Partition by conversation ID; write‑ahead logs for durability; auto‑scale nodes"
+    },
+    {
+      "name": "Read Receipt Service",
+      "technology": "Kafka Streams",
+      "purpose": "Track read events, generate receipts",
+      "scaling_strategy": "Stream partitioning; exactly‑once processing; scale consumers per partition"
+    },
+    {
+      "name": "File Attachment Service",
+      "technology": "MinIO (S3‑compatible) + CDN (CloudFront)",
+      "purpose": "Store up to 50 MB files, serve via CDN",
+      "scaling_strategy": "Object sharding; multipart upload; CDN edge caching"
+    },
+    {
+      "name": "Search & Index Service",
+      "technology": "Elasticsearch Service",
+      "purpose": "Message search, filtering, archiving",
+      "scaling_strategy": "Index shards per tenant; horizontal scaling via rollover"
+    },
+    {
+      "name": "Encryption Service",
+      "technology": "libsodium (libsodium‑js) + TLS 1.3",
+      "purpose": "End‑to‑end encryption of payloads",
+      "scaling_strategy": "Client‑side encryption; no server‑side state; can be off‑loaded to CDN workers"
+    },
+    {
+      "name": "Monitoring & Alerting",
+      "technology": "Prometheus + Grafana + Alertmanager",
+      "purpose": "SLA compliance, latency, error rates",
+      "scaling_strategy": "Scrape metrics from all nodes; auto‑scale alerting agents"
+    }
+  ],
+  "data_flow": "Client SDK establishes TLS‑encrypted WebSocket → API Gateway authenticates → Presence Service updates status → Real‑Time Messaging Service routes encrypted payload → Message Persistence Service writes to Cassandra & S3 → Read Receipt Service consumes events via Kafka → Search Service indexes → File Attachment Service stores blobs → Response returned to client",
+  "infrastructure": {
+    "cloud": "AWS",
+    "regions": 3
+  },
+  "estimated_monthly_cost": "$2.3M",
+  "bottlenecks": [
+    "WebSocket connection churn at peak concurrent sessions",
+    "Cassandra write throughput for high‑volume message ingestion",
+    "Encryption overhead on client‑side for large payloads",
+    "Kafka consumer lag during burst read‑receipt spikes"
+  ],
+  "tradeoffs": [
+    "Prioritized sub‑100 ms latency over strict linearizability for presence data",
+    "Chose eventual consistency for message storage to achieve horizontal scalability",
+    "Implemented client‑side encryption to meet GDPR but introduced extra CPU load on mobile devices",
+    "Deployed multi‑region active‑active architecture for 99.99% SLA, increasing operational complexity and cost"
+  ]
+}

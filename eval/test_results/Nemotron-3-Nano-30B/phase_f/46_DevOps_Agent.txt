@@ -1,0 +1,55 @@
+{
+  "issues": [
+   {
+      "line": "version: '2'",
+      "problem": "Version '2' is outdated; newer versions include 3.x with additional features and security fixes.",
+      "fix": "Upgrade to a recent version, e.g., version: '3.8' or version: '2.4'."
+    },
+    {
+      "line": "    image: node:latest",
+      "problem": "Using the 'latest' tag is non-deterministic; it can change unexpectedly.",
+      "fix": "Pin to a specific version, e.g., node:18-alpine."
+    },
+    {
+      "line": "      DB_PASSWORD: supersecret123",
+      "problem": "Database password is stored in plaintext in the environment.",
+      "fix": "Move the password to a Docker secret or an .env file and reference it via secrets."
+    },
+    {
+      "line": "      NODE_ENV: development",
+      "problem": "NODE_ENV is set to development, which is not suitable for production.",
+      "fix": "Set NODE_ENV to 'production' in production deployments."
+    },
+    {
+      "line": "      - .:/app",
+      "problem": "Binding the host's current directory into the container is unsafe for production.",
+      "fix": "Use a named volume or bind to a specific host path, e.g., './app-data:/app'."
+    },
+    {
+      "line": "    restart: no",
+      "problem": "No restart policy is defined; containers may not recover on failure.",
+      "fix": "Set a policy such as 'restart: unless-stopped' or 'restart: always'."
+    },
+    {
+      "line": "    image: mysql:5.6",
+      "problem": "MySQL 5.6 is end-of-life and no longer receives security updates.",
+      "fix": "Upgrade to a supported version, e.g., mysql:8.0 or at least mysql:5.7."
+    },
+    {
+      "line": "      - \"3306:3306\"",
+      "problem": "MySQL port 3306 is exposed publicly, posing a security risk.",
+      "fix": "Remove the port mapping or restrict it to an internal network only."
+    },
+    {
+      "line": "      - /tmp/mysql-data:/var/lib/mysql",
+      "problem": "Persisting data in /tmp will cause data loss on container restart.",
+      "fix": "Use a named volume or a host directory that persists, e.g., './mysql-data:/var/lib/mysql'."
+    },
+    {
+      "line": "      - \"6379:6379\"",
+      "problem": "Redis port is exposed publicly and Redis runs without authentication.",
+      "fix": "Remove the port exposure or add Redis authentication and limit access."
+    }
+  ],
+  "count": 10
+}

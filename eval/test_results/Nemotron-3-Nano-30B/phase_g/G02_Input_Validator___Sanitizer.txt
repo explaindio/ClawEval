@@ -1,0 +1,20 @@
+{
+  "errors": [
+"customer.email domain is disposable (mailinator.com)",
+    "billing same_as_shipping is true but billing address does not exactly match shipping address",
+    "item subtotal for sku ITEM-002 does not equal quantity * unit_price (expected 99.98, got 109.98)",
+    "item quantity for sku ITEM-003 is 0, must be between 1 and 999",
+    "item subtotal for sku ITEM-003 does not equal quantity * unit_price (expected 0, got 15.00)",
+    "item unit_price for sku ITEM-004 is negative (-5.00)",
+    "item sku for ITEM-004 is empty string",
+    "shipping.zip 10001 is not valid for state CA (CA zips must start with 9)",
+    "delivery_date 2025-12-15 is not after order_date 2026-01-15",
+    "payment.card_expiry 2025-06 is not after order_date 2026-01-15",
+    "payment.amount 200.00 does not equal order_total 159.95",
+    "customer.phone country code +44 does not match shipping.country US",
+    "order_total 159.95 does not equal sum of subtotals (209.95) minus discount_amount 50.00",
+    "payment.card_last4 must be exactly 4 digits, but provided 5 digits '12345'",
+    "item subtotal for sku ITEM-004 is negative (-5.00), subtotals must be non‑negative"
+  ],
+  "error_count": 15
+}
