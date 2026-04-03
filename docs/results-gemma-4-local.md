@@ -24,6 +24,8 @@ System Specs: Single NVIDIA RTX 3090 (24 GB VRAM).
 
 All tests run locally via `llama.cpp` server perfectly controlling reasoning budget using the new OpenAI compliant `reasoning_budget_tokens` and global `max_tokens` settings. E.g. `max_tokens: 16000`, `reasoning_budget_tokens: 8192`.
 
+> 💡 **Standout Gemma-4-E2B Capabilities**: Despite its microscopic 2B size, it scored a perfect 10/10 on the complex **Input Validator** and **Web Scraping** tests across both Phase F and the discriminator Phase G.
+
 | # | Agent Role | Gemma-4-E2B | Gemma-4-E4B | Gemma-4-A4B | Gemma-4-31B |
 |---|---|---|---|---|---|
 | | **Tier 1 — Utility** | | | | |
