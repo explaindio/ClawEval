@@ -1,0 +1,64 @@
+```json
+{
+  "components": [
+    {
+      "name": "WebSocket Gateway",
+      "technology": "Go / Netty",
+      "purpose": "Maintains persistent full-duplex connections with clients for real-time bidirectional communication.",
+      "scaling_strategy": "Horizontal scaling via Load Balancer (L4) with session affinity; distributed across multiple availability zones."
+    },
+    {
+      "name": "Message Broker",
+      "technology": "Redis Pub/Sub & Apache Kafka",
+      "purpose": "Redis for low-latency real-time routing between WebSocket nodes; Kafka for asynchronous persistence and event sourcing.",
+      "scaling_strategy": "Redis Cluster for sharding; Kafka partitions based on ConversationID to ensure message ordering."
+    },
+    {
+      "name": "Presence Service",
+      "technology": "Redis (Sorted Sets/Hashes)",
+      "purpose": "Tracks online/offline status and 'last seen' timestamps using heartbeats.",
+      "scaling_strategy": "Distributed Redis cluster with TTLs to automatically handle disconnected users."
+    },
+    {
+      "name": "Chat History Store",
+      "technology": "ScyllaDB / Cassandra",
+      "purpose": "High-write throughput storage for message history, optimized for time-series queries.",
+      "scaling_strategy": "Wide-column store sharded by ConversationID to allow linear horizontal scaling."
+    },
+    {
+      "name": "User & Metadata Store",
+      "technology": "PostgreSQL (with Citus)",
+      "purpose": "Stores user profiles, group memberships, and encryption public keys.",
+      "scaling_strategy": "Read replicas for high read volume; Citus for sharding user data across nodes."
+    },
+    {
+      "name": "File Storage & Delivery",
+      "technology": "AWS S3 + CloudFront CDN",
+      "purpose": "Stores encrypted file attachments and serves them via edge locations to reduce latency.",
+      "scaling_strategy": "S3 managed scaling; CDN caching for frequently accessed public/shared files."
+    },
+    {
+      "name": "Encryption Layer",
+      "technology": "Signal Protocol (Client-side)",
+      "purpose": "Implements End-to-End Encryption (E2EE) where keys are stored on devices, not servers.",
+      "scaling_strategy": "Stateless; processing happens on the client device."
+    }
+  ],
+  "data_flow": "Client A sends encrypted message via WebSocket -> Gateway -> Redis Pub/Sub (for real-time delivery) -> Gateway -> Client B. Simultaneously, Gateway -> Kafka -> Chat Service -> ScyllaDB (for persistence). Read receipts follow a similar path but trigger a 'read' event in the Presence/Status service.",
+  "infrastructure": {
+    "cloud": "AWS",
+    "regions": 3
+  },
+  "estimated_monthly_cost": "$80,000 - $150,000 (Driven primarily by cross-region data transfer and ScyllaDB/Redis memory requirements)",
+  "bottlenecks": [
+    "Redis Pub/Sub throughput limits at 1M+ concurrent users (requires sharding by channel).",
+    "Database write amplification during massive group chat bursts (500 members receiving 1 message = 500 write operations for read receipts).",
+    "WebSocket connection limits per VM (requires tuning OS file descriptors and using high-memory instances)."
+  ],
+  "tradeoffs": [
+    "Eventual Consistency: Message history is eventually consistent across regions to maintain <100ms latency.",
+    "E2EE vs Search: Server-side search is impossible due to E2EE; search must be implemented locally on the client device.",
+    "Availability vs Consistency: Prioritizing Availability (AP in CAP theorem) to ensure the chat remains functional during network partitions."
+  ]
+}
+```

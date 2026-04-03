@@ -1,0 +1,56 @@
+```python
+import pytest
+
+def test_zero_income():
+    """Test that zero income results in zero tax and zero effective rate."""
+    assert calculate_tax(0, 'single') == (0.0, 0)
+    assert calculate_tax(0, 'married') == (0.0, 0)
+
+def test_typical_income_single():
+    """Test a standard income falling into the second bracket for single filers."""
+    # 11,600 * 0.10 = 1,160
+    # (20,000 - 11,600) * 0.12 = 8,400 * 0.12 = 1,008
+    # Total = 2,168. Effective = 2,168 / 20,000 = 10.84%
+    assert calculate_tax(20000, 'single') == (2168.0, 10.84)
+
+def test_typical_income_married():
+    """Test a standard income falling into the first bracket for married filers."""
+    # 20,000 * 0.10 = 2,000
+    # Effective = 2,000 / 20,000 = 10%
+    assert calculate_tax(20000, 'married') == (2000.0, 10.0)
+
+def test_high_income():
+    """Test income that reaches the highest tax bracket."""
+    # Testing a very high value to ensure the float('inf') bracket works
+    tax, rate = calculate_tax(1000000, 'single')
+    assert tax > 0
+    assert rate > 30  # High earners should have a high effective rate
+
+def test_bracket_boundaries():
+    """Test income exactly at the boundary of the first bracket."""
+    # Single boundary: 11,600 * 0.10 = 1,160
+    assert calculate_tax(11600, 'single') == (1160.0, 10.0)
+    # Married boundary: 23,200 * 0.10 = 2,320
+    assert calculate_tax(23200, 'married') == (2320.0, 10.0)
+
+def test_invalid_income_value():
+    """Test that negative income raises a ValueError."""
+    with pytest.raises(ValueError, match="Income must be non-negative number"):
+        calculate_tax(-100, 'single')
+
+def test_invalid_income_type():
+    """Test that non-numeric income raises a ValueError."""
+    with pytest.raises(ValueError, match="Income must be non-negative number"):
+        calculate_tax("10000", 'single')
+
+def test_invalid_filing_status():
+    """Test that an unsupported filing status raises a ValueError."""
+    with pytest.raises(ValueError, match="Invalid filing status"):
+        calculate_tax(50000, 'head_of_household')
+
+def test_floating_point_income():
+    """Test that the function handles float income correctly."""
+    # 10000.50 * 0.10 = 1000.05
+    # Effective = 1000.05 / 10000.50 = 10%
+    assert calculate_tax(10000.50, 'single') == (1000.05, 10.0)
+```

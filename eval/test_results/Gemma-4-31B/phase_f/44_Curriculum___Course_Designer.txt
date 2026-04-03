@@ -1,0 +1,253 @@
+```json
+{
+  "weeks": [
+    {
+      "week": 1,
+      "theme": "Fundamentals I: Basic Syntax and Control Flow",
+      "sessions": [
+        {
+          "day": 1,
+          "topic": "Introduction to Python and Variables",
+          "objectives": [
+            "Set up Python environment and IDE",
+            "Understand dynamic typing and basic data types (int, float, string, bool)",
+            "Perform basic arithmetic and string operations"
+          ],
+          "lecture_min": 45,
+          "handson_min": 45
+        },
+        {
+          "day": 2,
+          "topic": "Control Flow: Conditionals and Loops",
+          "objectives": [
+            "Implement logic using if, elif, and else statements",
+            "Create loops using for and while",
+            "Utilize break and continue keywords"
+          ],
+          "lecture_min": 45,
+          "handson_min": 45
+        },
+        {
+          "day": 3,
+          "topic": "Introduction to Data Structures: Lists and Tuples",
+          "objectives": [
+            "Create and manipulate lists (indexing, slicing, appending)",
+            "Understand the immutability of tuples",
+            "Implement basic list traversal techniques"
+          ],
+          "lecture_min": 45,
+          "handson_min": 45
+        }
+      ],
+      "quiz": "Basic syntax, variable types, and loop logic",
+      "assignment": "Build a simple Grade Calculator that takes a list of scores and returns the average and letter grade."
+    },
+    {
+      "week": 2,
+      "theme": "Fundamentals II: Data Organization and Modularization",
+      "sessions": [
+        {
+          "day": 4,
+          "topic": "Advanced Data Structures: Dictionaries and Sets",
+          "objectives": [
+            "Implement key-value pairs using dictionaries",
+            "Perform set operations (union, intersection, difference)",
+            "Choose the correct data structure based on time complexity needs"
+          ],
+          "lecture_min": 45,
+          "handson_min": 45
+        },
+        {
+          "day": 5,
+          "topic": "Functions and Scope",
+          "objectives": [
+            "Define functions with parameters and return values",
+            "Distinguish between local and global scope",
+            "Implement default and keyword arguments"
+          ],
+          "lecture_min": 45,
+          "handson_min": 45
+        },
+        {
+          "day": 6,
+          "topic": "Modules and Standard Library",
+          "objectives": [
+            "Import and use built-in modules (math, random, datetime)",
+            "Create custom modules to organize code",
+            "Understand the __name__ == '__main__' idiom"
+          ],
+          "lecture_min": 45,
+          "handson_min": 45
+        }
+      ],
+      "quiz": "Dictionary manipulation and function scope",
+      "assignment": "Create a Contact Management System that stores contacts in a dictionary and uses functions for CRUD operations."
+    },
+    {
+      "week": 3,
+      "theme": "Intermediate I: Robustness and Data Handling",
+      "sessions": [
+        {
+          "day": 7,
+          "topic": "Error Handling and Exception Management",
+          "objectives": [
+            "Implement try-except-finally blocks",
+            "Raise custom exceptions for specific error cases",
+            "Understand the hierarchy of Python built-in exceptions"
+          ],
+          "lecture_min": 45,
+          "handson_min": 45
+        },
+        {
+          "day": 8,
+          "topic": "File I/O and Context Managers",
+          "objectives": [
+            "Read from and write to text files using the 'with' statement",
+            "Handle different file modes (r, w, a)",
+            "Process CSV files using the csv module"
+          ],
+          "lecture_min": 45,
+          "handson_min": 45
+        },
+        {
+          "day": 9,
+          "topic": "Functional Programming Tools",
+          "objectives": [
+            "Write concise code using List Comprehensions",
+            "Implement anonymous functions using lambda",
+            "Apply map, filter, and zip functions"
+          ],
+          "lecture_min": 45,
+          "handson_min": 45
+        }
+      ],
+      "quiz": "Exception handling and file stream management",
+      "assignment": "Develop a Log File Analyzer that reads a system log file, filters errors using list comprehensions, and writes a summary report to a new file."
+    },
+    {
+      "week": 4,
+      "theme": "Intermediate II: Object-Oriented Programming and Quality",
+      "sessions": [
+        {
+          "day": 10,
+          "topic": "OOP Basics: Classes and Objects",
+          "objectives": [
+            "Define classes and instantiate objects",
+            "Implement the __init__ method and instance attributes",
+            "Create instance methods to define object behavior"
+          ],
+          "lecture_min": 45,
+          "handson_min": 45
+        },
+        {
+          "day": 11,
+          "topic": "Advanced OOP: Inheritance and Polymorphism",
+          "objectives": [
+            "Implement class inheritance to reuse code",
+            "Override methods to achieve polymorphism",
+            "Understand the use of super() for parent class access"
+          ],
+          "lecture_min": 45,
+          "handson_min": 45
+        },
+        {
+          "day": 12,
+          "topic": "Software Testing Fundamentals",
+          "objectives": [
+            "Write unit tests using the unittest framework",
+            "Implement test cases and assertions",
+            "Understand the concept of Test-Driven Development (TDD)"
+          ],
+          "lecture_min": 45,
+          "handson_min": 45
+        }
+      ],
+      "quiz": "OOP principles and unit testing syntax",
+      "assignment": "Design a Library Management System using OOP (Book and Member classes) with a full suite of unit tests for the borrowing logic."
+    },
+    {
+      "week": 5,
+      "theme": "Advanced I: Pythonic Patterns and External Integration",
+      "sessions": [
+        {
+          "day": 13,
+          "topic": "Iterators and Generators",
+          "objectives": [
+            "Understand the iterator protocol (__iter__, __next__)",
+            "Create memory-efficient sequences using yield",
+            "Compare generators with list comprehensions"
+          ],
+          "lecture_min": 45,
+          "handson_min": 45
+        },
+        {
+          "day": 14,
+          "topic": "Decorators and Closures",
+          "objectives": [
+            "Implement closures to encapsulate state",
+            "Create decorators to modify function behavior",
+            "Apply built-in decorators like @property"
+          ],
+          "lecture_min": 45,
+          "handson_min": 45
+        },
+        {
+          "day": 15,
+          "topic": "Working with APIs and JSON",
+          "objectives": [
+            "Make HTTP requests using the requests library",
+            "Parse and manipulate JSON data",
+            "Handle API authentication and rate limiting"
+          ],
+          "lecture_min": 45,
+          "handson_min": 45
+        }
+      ],
+      "quiz": "Generators, Decorators, and API request methods",
+      "assignment": "Build a Weather Dashboard that fetches real-time data from an API, uses a decorator to log request times, and a generator to process historical data."
+    },
+    {
+      "week": 6,
+      "theme": "Advanced II: Optimization and Final Integration",
+      "sessions": [
+        {
+          "day": 16,
+          "topic": "Advanced Data Structures and Collections",
+          "objectives": [
+            "Utilize namedtuple, deque, and Counter from the collections module",
+            "Implement a priority queue using heapq",
+            "Analyze time and space complexity of Python collections"
+          ],
+          "lecture_min": 45,
+          "handson_min": 45
+        },
+        {
+          "day": 17,
+          "topic": "Final Project: Architecture and Development",
+          "objectives": [
+            "Design a system architecture integrating 5+ course concepts",
+            "Implement core logic and data persistence",
+            "Apply error handling to user inputs"
+          ],
+          "lecture_min": 45,
+          "handson_min": 45
+        },
+        {
+          "day": 18,
+          "topic": "Final Project: Testing and Presentation",
+          "objectives": [
+            "Perform final integration testing",
+            "Refactor code for readability and PEP 8 compliance",
+            "Demonstrate the final working application"
+          ],
+          "lecture_min": 45,
+          "handson_min": 45
+        }
+      ],
+      "quiz": "Comprehensive final review quiz",
+      "assignment": "Final Project Submission"
+    }
+  ],
+  "final_project": "Develop a 'Personal Finance Tracker' application. Requirements: 1) Use OOP to manage Accounts and Transactions. 2) Use File I/O to save/load data. 3) Integrate an API for real-time currency conversion. 4) Implement a Generator to process large transaction histories. 5) Include a comprehensive test suite using unittest. 6) Use a Decorator to validate user permissions for sensitive operations."
+}
+```

@@ -1,0 +1,22 @@
+```json
+{
+  "errors": [
+    "customer.email domain is a disposable email (mailinator.com)",
+    "customer.phone country code (+44) does not match shipping.country (US)",
+    "shipping.address.zip (10001) is invalid for shipping.address.state (CA)",
+    "billing.address.street does not match shipping.address.street",
+    "billing.address.city does not match shipping.address.city",
+    "billing.address.state does not match shipping.address.state",
+    "billing.address.zip does not match shipping.address.zip",
+    "billing.address.zip (90210) is invalid for billing.address.state (NY)",
+    "items[1].subtotal (109.98) does not equal quantity * unit_price (99.98)",
+    "items[2].quantity (0) is outside the allowed range of 1-999",
+    "items[2].subtotal (15.00) does not equal quantity * unit_price (0)",
+    "items[3].unit_price (-5.00) cannot be negative",
+    "delivery_date (2025-12-15) must be after order_date (2026-01-15)",
+    "payment.card_expiry (2025-06) must be after order_date (2026-01-15)",
+    "payment.amount (200.00) does not equal order_total (159.95)"
+  ],
+  "error_count": 15
+}
+```

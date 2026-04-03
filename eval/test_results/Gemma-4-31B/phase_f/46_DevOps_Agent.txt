@@ -1,0 +1,62 @@
+```json
+{
+  "issues": [
+    {
+      "line": "1",
+      "problem": "version '2' is outdated",
+      "fix": "Use version '3.8' or remove the version key entirely for the latest Compose specification."
+    },
+    {
+      "line": "4",
+      "problem": "'latest' tag is non-deterministic",
+      "fix": "Use a specific version tag (e.g., node:18-alpine) to ensure build consistency."
+    },
+    {
+      "line": "8",
+      "problem": "DB password in plaintext",
+      "fix": "Use Docker secrets or an external .env file."
+    },
+    {
+      "line": "9",
+      "problem": "NODE_ENV should be 'production'",
+      "fix": "Change 'development' to 'production'."
+    },
+    {
+      "line": "11",
+      "problem": "Source volume mount (.:/app) in production",
+      "fix": "Use a named volume or use the COPY instruction in a Dockerfile."
+    },
+    {
+      "line": "12",
+      "problem": "restart: no — should be 'unless-stopped' or 'always'",
+      "fix": "Change 'no' to 'unless-stopped'."
+    },
+    {
+      "line": "15",
+      "problem": "MySQL 5.6 is EOL",
+      "fix": "Upgrade to a supported version such as mysql:8.0."
+    },
+    {
+      "line": "17",
+      "problem": "DB port 3306 exposed publicly",
+      "fix": "Remove the ports mapping or bind it to localhost (127.0.0.1:3306:3306)."
+    },
+    {
+      "line": "20",
+      "problem": "DB password in plaintext",
+      "fix": "Use Docker secrets or an external .env file."
+    },
+    {
+      "line": "22",
+      "problem": "/tmp for persistent data (will be lost)",
+      "fix": "Use a named Docker volume for database persistence."
+    },
+    {
+      "line": "28",
+      "problem": "Redis port exposed publicly + no auth",
+      "fix": "Remove the ports mapping or configure a password via the redis command."
+    }
+  ],
+  "count": 11
+}
+```

@@ -1,0 +1,77 @@
+```json
+{
+  "vulnerabilities": [
+    {
+      "id": 1,
+      "type": "Hardcoded Secret Key",
+      "severity": "high",
+      "location": "app.secret_key = \"password123\"",
+      "fix": "Use a strong, randomly generated key stored in an environment variable (e.g., os.environ.get('SECRET_KEY'))."
+    },
+    {
+      "id": 2,
+      "type": "Server-Side Template Injection (SSTI)",
+      "severity": "critical",
+      "location": "render_template_string(f\"Results for: {q}\")",
+      "fix": "Pass the variable as a keyword argument to the template: render_template_string(\"Results for: {{ q }}\", q=q)."
+    },
+    {
+      "id": 3,
+      "type": "SQL Injection",
+      "severity": "critical",
+      "location": "db.execute(f\"SELECT * FROM users WHERE id = {id}\")",
+      "fix": "Use parameterized queries: db.execute(\"SELECT * FROM users WHERE id = ?\", (id,))."
+    },
+    {
+      "id": 4,
+      "type": "Insecure Deserialization",
+      "severity": "critical",
+      "location": "pickle.loads(data)",
+      "fix": "Use a safe data serialization format like JSON (json.loads(data)) instead of pickle."
+    },
+    {
+      "id": 5,
+      "type": "OS Command Injection",
+      "severity": "critical",
+      "location": "subprocess.check_output(cmd, shell=True)",
+      "fix": "Avoid shell=True. Use a list of arguments and validate input against a strict allowlist."
+    },
+    {
+      "id": 6,
+      "type": "Local File Inclusion (LFI) / Path Traversal",
+      "severity": "high",
+      "location": "open(path).read()",
+      "fix": "Validate the path, use os.path.basename(), or use Flask's send_from_directory() with a restricted folder."
+    },
+    {
+      "id": 7,
+      "type": "Use of Default Credentials",
+      "severity": "medium",
+      "location": "os.environ.get(\"ADMIN_PW\", \"admin\")",
+      "fix": "Remove the default 'admin' fallback; require the environment variable to be explicitly set."
+    },
+    {
+      "id": 8,
+      "type": "Sensitive Information Exposure",
+      "severity": "medium",
+      "location": "return str(os.environ)",
+      "fix": "Remove the /debug endpoint or implement strict authentication and authorization checks."
+    },
+    {
+      "id": 9,
+      "type": "Missing HTTPS Enforcement",
+      "severity": "medium",
+      "location": "Global Configuration",
+      "fix": "Configure the application to use HTTPS and implement HSTS headers (e.g., using Flask-Talisman)."
+    },
+    {
+      "id": 10,
+      "type": "Missing Rate Limiting",
+      "severity": "medium",
+      "location": "Global Configuration",
+      "fix": "Implement rate limiting using a library like Flask-Limiter to prevent Brute Force and DoS attacks."
+    }
+  ],
+  "count": 10
+}
+```

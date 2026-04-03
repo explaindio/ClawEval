@@ -1,0 +1,120 @@
+{
+  "model": "Gemma-4-31B",
+  "phase": "G",
+  "timestamp": "2026-04-03T15:49:24.627116",
+  "total_score": 76,
+  "total_max": 110,
+  "percentage": 69.1,
+  "results": [
+    {
+      "id": 36,
+      "role": "Code Generation Agent",
+      "tier": 3,
+      "scoring_type": "code",
+      "score": 0,
+      "max": 10,
+      "detail": "0/10 tests passed | basic_allow: name 'RateLimiter' is not defined; basic_allow2: name 'RateLimiter' is not defined; per_user: name 'RateLimiter' is not defined",
+      "tokens": 16000
+    },
+    {
+      "id": 2,
+      "role": "Input Validator / Sanitizer",
+      "tier": 1,
+      "scoring_type": "exact",
+      "score": 10,
+      "max": 10,
+      "detail": "Found 15/15 errors",
+      "tokens": 9053
+    },
+    {
+      "id": 5,
+      "role": "Sentiment Analysis Agent",
+      "tier": 1,
+      "scoring_type": "exact",
+      "score": 8,
+      "max": 10,
+      "detail": "17/20 correct | 5: expected 'mixed', got 'negative'; 13: expected 'negative', got 'mixed'; 15: expected 'positive', got 'mixed'",
+      "tokens": 1641
+    },
+    {
+      "id": 40,
+      "role": "Fact-Checking Agent",
+      "tier": 3,
+      "scoring_type": "exact",
+      "score": 10,
+      "max": 10,
+      "detail": "19/20 correct | 16: expected 'FALSE', got 'TRUE'",
+      "tokens": 1798
+    },
+    {
+      "id": 49,
+      "role": "Algorithm / Data Structure Explorer",
+      "tier": 4,
+      "scoring_type": "code",
+      "score": 10,
+      "max": 10,
+      "detail": "15/15 tests passed",
+      "tokens": 2137
+    },
+    {
+      "id": 51,
+      "role": "System Architect",
+      "tier": 5,
+      "scoring_type": "constraint",
+      "score": 9,
+      "max": 10,
+      "detail": "14/15 constraints met | Missing: handles_traffic_spikes",
+      "tokens": 1892
+    },
+    {
+      "id": 48,
+      "role": "STEM Research Analyst",
+      "tier": 4,
+      "scoring_type": "exact",
+      "score": 6,
+      "max": 10,
+      "detail": "5/8 correct | q1: expected 252000\u00b110000, got 201600.0; q6: expected 5000000\u00b1500000, got 5057000000.0; q7: expected 2.44\u00b10.5, got 0.26",
+      "tokens": 6536
+    },
+    {
+      "id": 9,
+      "role": "Research Agent",
+      "tier": 2,
+      "scoring_type": "exact",
+      "score": 5,
+      "max": 10,
+      "detail": "5/10 correct | q3: expected '67', got '67%'; q6: expected '0.25', got '25%'; q8_contains: expected contains 'yes', got 'no, Source A refers specifically to infrastructure costs while Source E refers to Total Cost of Ownership (TCO) which varies by team size.'; q9: expected '15', got '15%'; q10: expected '40', got '40%'",
+      "tokens": 999
+    },
+    {
+      "id": 12,
+      "role": "Content Planner / Strategist",
+      "tier": 2,
+      "scoring_type": "exact",
+      "score": 1,
+      "max": 10,
+      "detail": "2/15 constraints met | Missing: has_20_pieces; 5_per_week; no_consecutive_same_type",
+      "tokens": 3512
+    },
+    {
+      "id": 50,
+      "role": "Orchestrator / Meta-Agent",
+      "tier": 5,
+      "scoring_type": "exact",
+      "score": 7,
+      "max": 10,
+      "detail": "11/15 constraints met | Missing: phase1_parallel_diagnostics; early_notification; branching_logic_valid",
+      "tokens": 2430
+    },
+    {
+      "id": 23,
+      "role": "Web Scraping / Data Extraction",
+      "tier": 2,
+      "scoring_type": "exact",
+      "score": 10,
+      "max": 10,
+      "detail": "5/5 correct",
+      "tokens": 2423
+    }
+  ]
+}

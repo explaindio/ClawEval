@@ -1,0 +1,159 @@
+```json
+{
+  "phases": [
+    {
+      "phase": 1,
+      "name": "Initial Triage and Alerting",
+      "agents": [
+        {
+          "agent": "incident_reporter",
+          "input": "Create high-priority incident ticket for production outage",
+          "timeout_seconds": 30
+        },
+        {
+          "agent": "notification_agent",
+          "input": "Alert on-call engineers via PagerDuty and Slack",
+          "timeout_seconds": 30
+        },
+        {
+          "agent": "log_analyzer",
+          "input": "Scan production logs for 5xx errors and stack traces",
+          "timeout_seconds": 60
+        },
+        {
+          "agent": "metric_checker",
+          "input": "Query Prometheus for latency spikes and error rates",
+          "timeout_seconds": 60
+        },
+        {
+          "agent": "db_checker",
+          "input": "Check for database connection pool exhaustion and deadlocks",
+          "timeout_seconds": 60
+        },
+        {
+          "agent": "config_auditor",
+          "input": "Identify configuration changes in the last 60 minutes",
+          "timeout_seconds": 60
+        }
+      ],
+      "parallel": true,
+      "gate": "Incident ticket created and initial diagnostic data gathered from logs, metrics, and config."
+    },
+    {
+      "phase": 2,
+      "name": "Root Cause Analysis",
+      "agents": [
+        {
+          "agent": "dependency_mapper",
+          "input": "Map failing services to upstream/downstream dependencies",
+          "timeout_seconds": 60
+        },
+        {
+          "agent": "capacity_planner",
+          "input": "Analyze CPU/Memory utilization across the cluster",
+          "timeout_seconds": 60
+        }
+      ],
+      "parallel": true,
+      "gate": "Root cause identified as either a deployment error or a resource/infrastructure failure."
+    },
+    {
+      "phase": 3,
+      "name": "Deployment Remediation",
+      "agents": [
+        {
+          "agent": "customer_communicator",
+          "input": "Notify affected customers that a fix is being deployed",
+          "timeout_seconds": 45
+        },
+        {
+          "agent": "rollback_agent",
+          "input": "Revert to the last known stable deployment version",
+          "timeout_seconds": 180
+        }
+      ],
+      "parallel": false,
+      "gate": "Rollback successfully executed and deployment version reverted."
+    },
+    {
+      "phase": 4,
+      "name": "Infrastructure Remediation",
+      "agents": [
+        {
+          "agent": "customer_communicator",
+          "input": "Notify affected customers that infrastructure scaling is in progress",
+          "timeout_seconds": 45
+        },
+        {
+          "agent": "db_checker",
+          "input": "Clear blocking locks and optimize connection limits",
+          "timeout_seconds": 120
+        }
+      ],
+      "parallel": false,
+      "gate": "Infrastructure adjustments applied and database health restored."
+    },
+    {
+      "phase": 5,
+      "name": "Verification",
+      "agents": [
+        {
+          "agent": "metric_checker",
+          "input": "Verify that error rates have dropped below 1% threshold",
+          "timeout_seconds": 60
+        },
+        {
+          "agent": "log_analyzer",
+          "input": "Confirm absence of critical error patterns in logs",
+          "timeout_seconds": 60
+        }
+      ],
+      "parallel": true,
+      "gate": "System metrics and logs confirm service stability."
+    },
+    {
+      "phase": 6,
+      "name": "Closure",
+      "agents": [
+        {
+          "agent": "customer_communicator",
+          "input": "Send final resolution update to customers",
+          "timeout_seconds": 45
+        },
+        {
+          "agent": "incident_reporter",
+          "input": "Update incident ticket with root cause and resolve ticket",
+          "timeout_seconds": 30
+        }
+      ],
+      "parallel": true,
+      "gate": "All stakeholders notified and ticket closed."
+    }
+  ],
+  "decision_points": [
+    {
+      "after_phase": 2,
+      "condition": "config_auditor detected changes OR log_analyzer found deployment-related errors",
+      "if_true": "go to phase 3",
+      "if_false": "go to phase 4"
+    },
+    {
+      "after_phase": 4,
+      "condition": "remediation successful",
+      "if_true": "go to phase 5",
+      "if_false": "go to phase 3"
+    }
+  ],
+  "escalation": {
+    "trigger": "Total elapsed time > 15 minutes OR Phase 5 verification fails twice",
+    "action": "Trigger P1 Critical Bridge call and notify Engineering VP"
+  },
+  "total_phases": 6,
+  "max_time_minutes": 20,
+  "rollback_conditions": [
+    "config_auditor identifies a production config change within 60 minutes of outage start",
+    "log_analyzer detects a spike in NullPointerExceptions immediately following a CI/CD pipeline completion",
+    "metric_checker shows a 100% correlation between deployment timestamp and error rate increase"
+  ]
+}
+```

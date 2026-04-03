@@ -1,0 +1,32 @@
+```json
+{
+  "bugs": [
+    {
+      "line": 18,
+      "issue": "ZeroDivisionError occurs when no orders have a 'pending' status, as len(processed) will be 0.",
+      "fix": "avg = total / len(processed) if processed else 0"
+    },
+    {
+      "line": 23,
+      "issue": "The 'count' key returns the total number of input orders instead of the number of orders actually processed.",
+      "fix": "'count': len(processed)"
+    },
+    {
+      "line": 8,
+      "issue": "There is no validation for the discount value; a discount greater than 100 would result in a negative price (though partially mitigated by line 10).",
+      "fix": "discount = min(order.get('discount', 0), 100)"
+    },
+    {
+      "line": 13,
+      "issue": "The function mutates the original order dictionaries in the input list, which is a side effect that can lead to bugs elsewhere in the application.",
+      "fix": "new_order = order.copy() and use new_order for updates"
+    },
+    {
+      "line": 7,
+      "issue": "No type checking or existence validation for 'price' and 'quantity'; if either is missing or None, the code will raise a KeyError or TypeError.",
+      "fix": "price = order.get('price', 0) * order.get('quantity', 0)"
+    }
+  ],
+  "count": 5
+}
+```

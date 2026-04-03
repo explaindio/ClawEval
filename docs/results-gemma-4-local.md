@@ -105,5 +105,5 @@ All tests run locally via `llama.cpp` server perfectly controlling reasoning bud
 | **Gemma-4-E2B** | **74/110 (67%)** | Perfect 10s on Input Validator and Web Scraping. Struggles hard on Content Planner (1/10) and Algorithm drops to 3/10. Phenomenal overall given 2B sizing. ~140-160 t/s locally on RTX 3090. |
 | **Gemma-4-E4B** | **78/110 (71%)** | Huge jump in Algorithm / Data Structure tests (9/10 up from E2B's 3/10). Retains perfect 10/10 on Input Validator. Consistent ~100-115 t/s locally. |
 | **Gemma-4-26B-A4B** | **23/110 (21%)** | ⚠️ Severely impacted by `llama.cpp` MoE reasoning loop bug — 8/11 tests hit 32K token ceiling with blank output. Tests that completed show high capability: Algorithm 10/10, Orchestrator 7/10, Research 6/10. ~54-65 t/s on RTX 3090. |
-| **Gemma-4-31B** | TBD | |
+| **Gemma-4-31B** | **76/110 (69%)** | Perfect 10s on Input Validator, Fact-Checking, Algorithm, and Web Scraping! Extremely stable dense architecture, completely immune to the MoE looping bugs. Very reliable logic limits. Generates at ~15 t/s locally on RTX 3090. |
 

@@ -1,0 +1,71 @@
+```json
+{
+  "architecture": {
+    "components": [
+      "Global CDN (Edge Redirects)",
+      "Load Balancer",
+      "Stateless Redirect Service (Read Path)",
+      "URL Generation Service (Write Path)",
+      "Distributed ID Generator (Snowflake-like)",
+      "Redis Cache Cluster",
+      "DynamoDB (Primary Store)",
+      "Kinesis Data Stream (Analytics)"
+    ],
+    "database": {
+      "primary": "Amazon DynamoDB",
+      "justification": "Provides single-digit millisecond latency at scale, native TTL for link expiration, and seamless horizontal scaling to handle 10x spikes without manual sharding."
+    },
+    "cache": {
+      "type": "Redis (Cluster Mode)",
+      "strategy": "Cache-aside (Lazy Loading)",
+      "invalidation": "TTL-based expiration and explicit eviction on custom alias update/deletion."
+    },
+    "hash_strategy": {
+      "algorithm": "Base62 encoding of a 64-bit unique sequence ID",
+      "length": 7,
+      "collision_handling": "Collision-free by using a distributed sequence generator (Snowflake ID) rather than hashing the URL."
+    }
+  },
+  "scaling": {
+    "read_write_ratio": "100:1",
+    "read_optimization": "Edge caching via CDN for the most popular 1% of links and Redis for the top 20% to minimize DB hits.",
+    "write_path": "Synchronous write to DynamoDB for custom aliases (to ensure uniqueness) and asynchronous ID generation for standard links.",
+    "horizontal_scaling": "Auto-scaling groups for compute based on CPU/Request count; DynamoDB On-Demand or Auto-scaling provisioned capacity."
+  },
+  "reliability": {
+    "uptime_strategy": "Multi-AZ deployment across 3 availability zones with a global load balancer.",
+    "failover": "Automatic health-check based failover at the Load Balancer level; DynamoDB native replication.",
+    "data_replication": "Cross-region replication (Global Tables) to ensure 99.99% availability and lower latency for global users."
+  },
+  "compliance": {
+    "gdpr_deletion": "API endpoint for 'Right to be Forgotten' that triggers a hard delete in DynamoDB and a cache purge in Redis.",
+    "data_retention": "DynamoDB TTL (Time to Live) attribute automatically purges expired links without consuming write throughput.",
+    "analytics_separation": "PII is stripped at the API Gateway; clickstream data is sent to a separate S3/Athena data lake via Kinesis."
+  },
+  "cost_estimate": {
+    "monthly_total": 4600,
+    "breakdown": {
+      "compute": 800,
+      "database": 2200,
+      "cache": 700,
+      "cdn": 600,
+      "other": 300
+    },
+    "fits_budget": true
+  },
+  "rate_limiting": {
+    "strategy": "Token Bucket algorithm implemented via Redis",
+    "limits": "100 requests/sec per IP for writes; 1000 requests/sec per IP for reads."
+  },
+  "monitoring": {
+    "metrics": [
+      "p99 Redirect Latency",
+      "Cache Hit Ratio",
+      "HTTP 5xx Error Rate",
+      "DynamoDB Throttled Requests",
+      "Request Volume (RPS)"
+    ],
+    "alerting": "CloudWatch Alarms integrated with PagerDuty for p99 latency > 100ms or error rate > 0.1%."
+  }
+}
+```

@@ -1,0 +1,67 @@
+```python
+import time
+from collections import OrderedDict
+
+class LRUCache:
+    def __init__(self, capacity: int):
+        self.capacity = capacity
+        self.cache = OrderedDict()
+        self.stats = {"hits": 0, "misses": 0, "evictions": 0, "expirations": 0}
+
+    def get(self, key: str) -> any:
+        if key not in self.cache:
+            self.stats["misses"] += 1
+            return None
+        
+        value, expiry = self.cache[key]
+        if expiry is not None and time.time() > expiry:
+            del self.cache[key]
+            self.stats["expirations"] += 1
+            self.stats["misses"] += 1
+            return None
+        
+        self.cache.move_to_end(key)
+        self.stats["hits"] += 1
+        return value
+
+    def put(self, key: str, value: any, ttl: float = None):
+        if key in self.cache:
+            del self.cache[key]
+        elif len(self.cache) >= self.capacity:
+            self.cache.popitem(last=False)
+            self.stats["evictions"] += 1
+        
+        expiry = time.time() + ttl if ttl is not None else None
+        self.cache[key] = (value, expiry)
+
+    def delete(self, key: str) -> bool:
+        if key in self.cache:
+            del self.cache[key]
+            return True
+        return False
+
+    def size(self) -> int:
+        now = time.time()
+        count = 0
+        for key, (_, expiry) in self.cache.items():
+            if expiry is None or now <= expiry:
+                count += 1
+        return count
+
+    def get_stats(self) -> dict:
+        return self.stats.copy()
+
+    def keys(self) -> list:
+        now = time.time()
+        valid_keys = []
+        # OrderedDict iterates in LRU order (oldest first)
+        for key, (_, expiry) in self.cache.items():
+            if expiry is None or now <= expiry:
+                valid_keys.append(key)
+        # Return in MRU order (newest first)
+        return valid_keys[::-1]
+
+    def clear(self) -> None:
+        self.cache.clear()
+        self.stats = {"hits": 0, "misses": 0, "evictions": 0, "expirations": 0}
+```

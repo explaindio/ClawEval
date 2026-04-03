@@ -1,0 +1,79 @@
+```json
+{
+  "tasks": [
+    {
+      "id": "T1",
+      "name": "Database Schema Design and PostgreSQL Setup",
+      "depends_on": [],
+      "estimated_hours": 6,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T2",
+      "name": "User Authentication System (JWT, Registration, Login)",
+      "depends_on": ["T1"],
+      "estimated_hours": 10,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T3",
+      "name": "Todo CRUD Endpoints (Protected)",
+      "depends_on": ["T2"],
+      "estimated_hours": 8,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T4",
+      "name": "Todo Categories and Tags Implementation",
+      "depends_on": ["T3"],
+      "estimated_hours": 6,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T5",
+      "name": "Due Date Reminder Logic and Scheduling",
+      "depends_on": ["T3"],
+      "estimated_hours": 8,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T6",
+      "name": "API Rate Limiting Middleware",
+      "depends_on": ["T2"],
+      "estimated_hours": 4,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T7",
+      "name": "Unit Testing (Auth, CRUD, Categories, Reminders)",
+      "depends_on": ["T4", "T5", "T6"],
+      "estimated_hours": 12,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T8",
+      "name": "OpenAPI Specification and Documentation",
+      "depends_on": ["T4", "T5", "T6"],
+      "estimated_hours": 6,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T9",
+      "name": "Dockerization (Dockerfile, docker-compose)",
+      "depends_on": ["T7", "T8"],
+      "estimated_hours": 6,
+      "assignable_to": "devops"
+    },
+    {
+      "id": "T10",
+      "name": "CI/CD Pipeline Setup (GitHub Actions/GitLab CI)",
+      "depends_on": ["T7", "T9"],
+      "estimated_hours": 8,
+      "assignable_to": "devops"
+    }
+  ],
+  "critical_path": ["T1", "T2", "T3", "T5", "T7", "T9", "T10"],
+  "total_hours": 74,
+  "parallel_tracks": 3
+}
+```
