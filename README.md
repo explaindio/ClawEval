@@ -37,12 +37,16 @@ No discrete GPU? Unified-memory devices can run these models directly. Estimates
 |---|---|:---:|:---:|:---:|:---:|:---:|
 | Qwen3.5-0.8B Q4_K_M | ~0.5 GB | ✅ | ✅ | ✅ | ✅ | ✅ |
 | Qwen3.5-2B Q4_K_M | ~1.5 GB | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Gemma-4-E2B Q4_K_M | ~1.5 GB | ✅ | ✅ | ✅ | ✅ | ✅ |
 | Qwen3.5-4B Q4_K_M | ~2.8 GB | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Gemma-4-E4B Q4_K_M | ~2.5 GB | ✅ | ✅ | ✅ | ✅ | ✅ |
 | Ministral-3B Q4_K_M | ~2 GB | ✅ | ✅ | ✅ | ✅ | ✅ |
 | Ministral-8B Q4_K_M | ~5 GB | ✅ | ✅ | ✅ | ✅ | ✅ |
 | Qwen3.5-9B Q4_K_M | ~6 GB | ✅ | ✅ | ✅ | ✅ | ✅ |
 | Ministral-14B Q4_K_M | ~9 GB | ⚠️ tight | ✅ | ✅ | ✅ | ✅ |
+| Gemma-4-26B-A4B Q4_K_M | ~15 GB | ❌ | ⚠️ tight | ✅ | ✅ | ✅ |
 | Qwen3.5-27B Q4_K_M | ~17 GB | ❌ | ⚠️ tight | ✅ | ✅ | ✅ |
+| Gemma-4-31B Q4_K_M | ~19 GB | ❌ | ⚠️ tight | ✅ | ✅ | ✅ |
 | Qwen3.5-35B-A3B NVFP4 | ~20 GB | ❌ | ❌ | ✅ | ✅ | ✅ |
 | GPT-OSS-120B GGUF | ~61 GB | ❌ | ❌ | ❌ | ✅ | ✅ |
 | Qwen3.5-122B-A10B NVFP4 | ~70 GB | ❌ | ❌ | ❌ | ✅ | ✅ |
