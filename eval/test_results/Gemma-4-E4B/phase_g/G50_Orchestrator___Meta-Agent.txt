@@ -1,0 +1,85 @@
+```json
+{
+  "phases": [
+    {
+      "phase": 1,
+      "name": "Initial Triage and Alerting",
+      "agents": [
+        {"agent": "log_analyzer", "input": "outage_event", "timeout_seconds": 120},
+        {"agent": "metric_checker", "input": "outage_event", "timeout_seconds": 120},
+        {"agent": "dependency_mapper", "input": "outage_event", "timeout_seconds": 90},
+        {"agent": "config_auditor", "input": "outage_event", "timeout_seconds": 90},
+        {"agent": "capacity_planner", "input": "outage_event", "timeout_seconds": 120}
+      ],
+      "parallel": true,
+      "gate": "All diagnostic agents must return results, and the incident_reporter must create the ticket."
+    },
+    {
+      "phase": 2,
+      "name": "Deep Dive and Root Cause Hypothesis",
+      "agents": [
+        {"agent": "db_checker", "input": "outage_event", "timeout_seconds": 180},
+        {"agent": "incident_reporter", "input": "phase_1_results", "timeout_seconds": 60},
+        {"agent": "customer_communicator", "input": "outage_event", "timeout_seconds": 30}
+      ],
+      "parallel": false,
+      "gate": "DB health check is complete, and initial customer communication has been sent."
+    },
+    {
+      "phase": 3,
+      "name": "Remediation Execution",
+      "agents": [
+        {"agent": "rollback_agent", "input": "phase_2_diagnosis", "timeout_seconds": 300},
+        {"agent": "config_auditor", "input": "phase_2_diagnosis", "timeout_seconds": 180}
+      ],
+      "parallel": false,
+      "gate": "A remediation action (rollback or config revert) has been executed based on the root cause hypothesis."
+    },
+    {
+      "phase": 4,
+      "name": "Verification and Validation",
+      "agents": [
+        {"agent": "metric_checker", "input": "post_remediation_check", "timeout_seconds": 180},
+        {"agent": "log_analyzer", "input": "post_remediation_check", "timeout_seconds": 180}
+      ],
+      "parallel": true,
+      "gate": "Metrics and logs confirm the service is operating within normal parameters (e.g., latency < 100ms, error rate = 0)."
+    },
+    {
+      "phase": 5,
+      "name": "Post-Incident Reporting and Closure",
+      "agents": [
+        {"agent": "incident_reporter", "input": "phase_4_results", "timeout_seconds": 60},
+        {"agent": "customer_communicator", "input": "resolution_summary", "timeout_seconds": 30}
+      ],
+      "parallel": true,
+      "gate": "Incident ticket is marked resolved, and final customer communication is sent."
+    }
+  ],
+  "decision_points": [
+    {
+      "after_phase": 2,
+      "condition": "Is the primary failure mode related to resource saturation (Capacity Planner output)?",
+      "if_true": "Execute scaling/resource adjustment (external action, bypass Phase 3 remediation agents)",
+      "if_false": "Proceed to Phase 3 (Remediation Execution)"
+    },
+    {
+      "after_phase": 4,
+      "condition": "Are the service metrics and logs stable and within acceptable thresholds?",
+      "if_true": "Proceed to Phase 5 (Post-Incident Reporting and Closure)",
+      "if_false": "Trigger Escalation and re-evaluate Phase 3 (Remediation Execution)"
+    }
+  ],
+  "escalation": {
+    "trigger": "Time elapsed since Phase 1 start exceeds 15 minutes AND Phase 4 verification failed.",
+    "action": "Notify PagerDuty/On-Call Lead and automatically transition incident severity to Critical."
+  },
+  "total_phases": 5,
+  "max_time_minutes": 30,
+  "rollback_conditions": [
+    "Metrics show a sharp increase in 5xx errors immediately following a deployment.",
+    "Log analyzer identifies a critical dependency failure pattern coinciding with the last deployment.",
+    "DB checker reports connection pool exhaustion immediately after a configuration change."
+  ]
+}
+```

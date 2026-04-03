@@ -1,0 +1,57 @@
+```json
+{
+  "issues": [
+    {
+      "line": "version: '2'",
+      "problem": "The Docker Compose file uses version '2', which is outdated. Modern best practices recommend using version '3.x'.",
+      "fix": "Update 'version: '2'' to 'version: '3.8'' (or higher)."
+    },
+    {
+      "line": "image: node:latest",
+      "problem": "Using the 'latest' tag is non-deterministic, meaning the image pulled might change unexpectedly between deployments.",
+      "fix": "Specify a stable, versioned tag, e.g., 'image: node:18-alpine'."
+    },
+    {
+      "line": "DB_PASSWORD: supersecret123",
+      "problem": "Database passwords are stored in plaintext within the configuration, which is a major security risk.",
+      "fix": "Use Docker Secrets or external secret management tools (like Vault) instead of hardcoding credentials."
+    },
+    {
+      "line": "NODE_ENV: development",
+      "problem": "The application is running in 'development' mode, which is unsuitable for production environments (e.g., it might expose debugging features or use inefficient configurations).",
+      "fix": "Change 'NODE_ENV: development' to 'NODE_ENV: production'."
+    },
+    {
+      "line": "volumes: - .:/app",
+      "problem": "Mounting the current directory (`.:/app`) as a volume is dangerous in production as it exposes the host filesystem to the container, potentially leading to data leakage or unintended modifications.",
+      "fix": "Use a named volume or ensure the volume mount is only used during local development/testing."
+    },
+    {
+      "line": "restart: no",
+      "problem": "Setting 'restart: no' means the container will not automatically restart if it crashes or if the Docker daemon restarts, leading to service downtime.",
+      "fix": "Change 'restart: no' to 'restart: unless-stopped' or 'restart: always' to ensure service resilience."
+    },
+    {
+      "line": "image: mysql:5.6",
+      "problem": "MySQL 5.6 is an End-of-Life (EOL) version and no longer receives security updates, making it highly vulnerable.",
+      "fix": "Upgrade the image to a modern, supported version, such as 'image: mysql:8.0'."
+    },
+    {
+      "line": "ports: - \"3306:3306\"",
+      "problem": "Exposing the database port (3306) publicly is a significant security risk, allowing external access to the database.",
+      "fix": "Remove the port mapping (`ports:`) or restrict access using Docker network configuration so the database is only accessible internally by other services."
+    },
+    {
+      "line": "volumes: - /tmp/mysql-data:/var/lib/mysql",
+      "problem": "Using a temporary host path (`/tmp/mysql-data`) for persistent data is unreliable and may lead to data loss if the host system cleans up the directory.",
+      "fix": "Use a named volume for persistent storage: 'volumes: - mysql_data:/var/lib/mysql' and define 'mysql_data' in the volumes section."
+    },
+    {
+      "line": "ports: - \"6379:6379\"",
+      "problem": "Exposing the Redis port publicly without authentication is a major security vulnerability, allowing anyone to connect and potentially manipulate data.",
+      "fix": "Remove the port mapping or, preferably, implement authentication (e.g., using the `requirepass` configuration) and restrict network access."
+    }
+  ],
+  "count": 10
+}
+```

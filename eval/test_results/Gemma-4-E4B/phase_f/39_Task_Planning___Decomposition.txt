@@ -1,0 +1,155 @@
+```json
+{
+  "tasks": [
+    {
+      "id": "T1",
+      "name": "Project Setup & Environment Configuration",
+      "depends_on": [],
+      "estimated_hours": 4,
+      "assignable_to": "fullstack"
+    },
+    {
+      "id": "T2",
+      "name": "Database Setup (PostgreSQL Schema & ORM)",
+      "depends_on": [
+        "T1"
+      ],
+      "estimated_hours": 8,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T3",
+      "name": "Basic API Structure & Health Check Endpoint",
+      "depends_on": [
+        "T2"
+      ],
+      "estimated_hours": 4,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T4",
+      "name": "User Model & Registration Endpoint (Auth Foundation)",
+      "depends_on": [
+        "T3"
+      ],
+      "estimated_hours": 8,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T5",
+      "name": "Login Endpoint & JWT Generation",
+      "depends_on": [
+        "T4"
+      ],
+      "estimated_hours": 6,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T6",
+      "name": "Auth Middleware Implementation",
+      "depends_on": [
+        "T5"
+      ],
+      "estimated_hours": 5,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T7",
+      "name": "Todo CRUD Endpoints (Protected)",
+      "depends_on": [
+        "T6"
+      ],
+      "estimated_hours": 10,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T8",
+      "name": "Todo Categories/Tags Implementation",
+      "depends_on": [
+        "T7"
+      ],
+      "estimated_hours": 8,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T9",
+      "name": "Due Date Reminder Logic Implementation",
+      "depends_on": [
+        "T8"
+      ],
+      "estimated_hours": 10,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T10",
+      "name": "Rate Limiting Implementation",
+      "depends_on": [
+        "T7"
+      ],
+      "estimated_hours": 6,
+      "assignable_to": "backend"
+    },
+    {
+      "id": "T11",
+      "name": "Unit Test Development (80%+ Coverage)",
+      "depends_on": [
+        "T4",
+        "T5",
+        "T7",
+        "T8",
+        "T9",
+        "T10"
+      ],
+      "estimated_hours": 20,
+      "assignable_to": "fullstack"
+    },
+    {
+      "id": "T12",
+      "name": "API Documentation (OpenAPI Specification)",
+      "depends_on": [
+        "T7",
+        "T8",
+        "T9"
+      ],
+      "estimated_hours": 12,
+      "assignable_to": "fullstack"
+    },
+    {
+      "id": "T13",
+      "name": "Dockerization (Dockerfile & Docker Compose)",
+      "depends_on": [
+        "T9",
+        "T10"
+      ],
+      "estimated_hours": 8,
+      "assignable_to": "devops"
+    },
+    {
+      "id": "T14",
+      "name": "CI/CD Pipeline Setup (Testing & Deployment)",
+      "depends_on": [
+        "T11",
+        "T13"
+      ],
+      "estimated_hours": 12,
+      "assignable_to": "devops"
+    }
+  ],
+  "critical_path": [
+    "T1",
+    "T2",
+    "T3",
+    "T4",
+    "T5",
+    "T6",
+    "T7",
+    "T8",
+    "T9",
+    "T11",
+    "T13",
+    "T14"
+  ],
+  "total_hours": 157,
+  "parallel_tracks": 3
+}
+```

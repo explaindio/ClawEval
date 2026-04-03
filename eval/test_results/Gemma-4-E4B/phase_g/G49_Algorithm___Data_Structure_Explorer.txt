@@ -1,0 +1,131 @@
+```python
+import time
+from collections import OrderedDict
+
+class LRUCache:
+    """
+    An LRU Cache implementation with time-based expiration.
+    """
+    def __init__(self, capacity: int):
+        if capacity <= 0:
+            raise ValueError("Capacity must be positive")
+        self.capacity = capacity
+        # OrderedDict stores key -> entry_data
+        # entry_data = {'value': any, 'expiry': float}
+        self.cache = OrderedDict()
+        self.stats = {
+            "hits": 0,
+            "misses": 0,
+            "evictions": 0,
+            "expirations": 0
+        }
+
+    def _is_expired(self, entry: dict) -> bool:
+        """Checks if the entry has passed its expiration time."""
+        return entry['expiry'] is not None and time.time() > entry['expiry']
+
+    def _cleanup_entry(self, key: str) -> bool:
+        """
+        Checks and removes an entry if it is expired.
+        Returns True if the entry was removed (expired).
+        """
+        if key in self.cache:
+            entry = self.cache[key]
+            if self._is_expired(entry):
+                del self.cache[key]
+                self.stats["expirations"] += 1
+                return True
+        return False
+
+    def get(self, key: str) -> any:
+        """
+        Returns the value associated with the key, or None if missing or expired.
+        O(1) average time complexity.
+        """
+        # 1. Check for expiration (Lazy removal)
+        if key in self.cache:
+            if self._is_expired(self.cache[key]):
+                self._cleanup_entry(key)
+                return None
+            
+            # 2. Hit: Move to MRU position
+            self.cache.move_to_end(key)
+            self.stats["hits"] += 1
+            return self.cache[key]['value']
+        
+        # 3. Miss
+        self.stats["misses"] += 1
+        return None
+
+    def put(self, key: str, value: any, ttl: float = None):
+        """
+        Inserts or updates a key-value pair.
+        O(1) average time complexity.
+        """
+        expiry_time = time.time() + ttl if ttl is not None else None
+        
+        # If key exists, update it and move to MRU
+        if key in self.cache:
+            self.cache[key]['value'] = value
+            self.cache[key]['expiry'] = expiry_time
+            self.cache.move_to_end(key)
+            return
+
+        # Check capacity and evict if necessary
+        if len(self.cache) >= self.capacity:
+            # Evict the LRU item (the first item in OrderedDict)
+            lru_key, _ = self.cache.popitem(last=False)
+            self.stats["evictions"] += 1
+
+        # Insert new item
+        self.cache[key] = {'value': value, 'expiry': expiry_time}
+        # New items are automatically placed at the end (MRU)
+        
+    def delete(self, key: str) -> bool:
+        """
+        Removes a key from the cache.
+        Returns True if the key existed and was removed.
+        """
+        if key in self.cache:
+            del self.cache[key]
+            return True
+        return False
+
+    def size(self) -> int:
+        """
+        Returns the current number of entries in the cache.
+        Note: This returns the structural size. Expired items may be present 
+        until accessed, but lazy cleanup ensures they are removed quickly.
+        """
+        return len(self.cache)
+
+    def get_stats(self) -> dict:
+        """
+        Returns the current operational statistics.
+        """
+        return self.stats
+
+    def keys(self) -> list:
+        """
+        Returns all non-expired keys in most-recently-used order.
+        """
+        # We iterate over the keys and filter out expired ones before returning
+        non_expired_keys = []
+        for key in self.cache:
+            entry = self.cache[key]
+            if not self._is_expired(entry):
+                non_expired_keys.append(key)
+        return non_expired_keys
+
+    def clear(self) -> None:
+        """
+        Removes all entries and resets statistics.
+        """
+        self.cache.clear()
+        self.stats = {
+            "hits": 0,
+            "misses": 0,
+            "evictions": 0,
+            "expirations": 0
+        }
+```

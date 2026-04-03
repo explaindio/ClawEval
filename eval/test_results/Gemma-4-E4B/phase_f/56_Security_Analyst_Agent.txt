@@ -1,0 +1,77 @@
+```json
+{
+  "vulnerabilities": [
+    {
+      "id": 1,
+      "type": "Weak Secret Key",
+      "severity": "high",
+      "location": "app.secret_key = \"password123\"",
+      "fix": "Use a cryptographically secure, randomly generated secret key (e.g., using os.urandom(24))."
+    },
+    {
+      "id": 2,
+      "type": "Cross-Site Scripting (XSS)",
+      "severity": "medium",
+      "location": "@app.route(\"/search\")",
+      "fix": "Use Flask's Jinja2 templating engine and ensure proper context-aware escaping for all user input (e.g., `render_template_string(f\"Results for: {q}\")` should be replaced with safe template rendering)."
+    },
+    {
+      "id": 3,
+      "type": "SQL Injection",
+      "severity": "critical",
+      "location": "@app.route(\"/user/<id>\")",
+      "fix": "Use parameterized queries instead of string formatting for database interactions. Example: `db.execute(\"SELECT * FROM users WHERE id = ?\", (id,))`."
+    },
+    {
+      "id": 4,
+      "type": "Insecure Deserialization",
+      "severity": "critical",
+      "location": "@app.route(\"/upload\")",
+      "fix": "Never use `pickle.loads()` on untrusted data. Use safer serialization formats like JSON, and validate the input data structure strictly."
+    },
+    {
+      "id": 5,
+      "type": "OS Command Injection",
+      "severity": "critical",
+      "location": "@app.route(\"/run\")",
+      "fix": "Avoid using `shell=True`. Pass commands as a list of arguments to `subprocess.check_output` to prevent shell interpretation of user input."
+    },
+    {
+      "id": 6,
+      "type": "Path Traversal / Local File Inclusion (LFI)",
+      "severity": "high",
+      "location": "@app.route(\"/file\")",
+      "fix": "Validate the input path to ensure it is within an expected directory structure and does not contain traversal sequences (e.g., '..', '/'). Use `os.path.abspath` and check against a safe base directory."
+    },
+    {
+      "id": 7,
+      "type": "Weak Authentication / Default Credentials",
+      "severity": "high",
+      "location": "@app.route(\"/login\")",
+      "fix": "Do not rely on default credentials. Enforce strong password policies and ensure the environment variable is set securely and is not easily guessable."
+    },
+    {
+      "id": 8,
+      "type": "Information Disclosure",
+      "severity": "medium",
+      "location": "@app.route(\"/debug\")",
+      "fix": "Remove the debug endpoint entirely in production. If debugging is necessary, implement strict access controls (e.g., IP whitelisting or authentication)."
+    },
+    {
+      "id": 9,
+      "type": "Lack of Transport Layer Security (TLS/HTTPS)",
+      "severity": "high",
+      "location": "Global Configuration",
+      "fix": "Enforce HTTPS for all traffic using a reverse proxy (like Nginx or Apache) and configure the application to reject non-secure connections."
+    },
+    {
+      "id": 10,
+      "type": "Lack of Rate Limiting",
+      "severity": "medium",
+      "location": "Global Configuration",
+      "fix": "Implement rate limiting on critical endpoints (like login, search, and API calls) using middleware or a dedicated service (e.g., Redis) to prevent brute-force attacks and DoS."
+    }
+  ],
+  "count": 10
+}
+```

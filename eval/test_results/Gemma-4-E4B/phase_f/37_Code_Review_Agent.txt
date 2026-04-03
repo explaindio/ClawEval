@@ -1,0 +1,32 @@
+```json
+{
+  "bugs": [
+    {
+      "line": 18,
+      "issue": "ZeroDivisionError: If no orders are 'pending', the 'processed' list will be empty, causing division by zero when calculating the average.",
+      "fix": "Add a check to ensure len(processed) > 0 before performing the division. If it is zero, the average should be 0."
+    },
+    {
+      "line": 23,
+      "issue": "Incorrect Count: The function returns len(orders) (total input orders) instead of len(processed) (orders that were actually processed and included in the results).",
+      "fix": "Change 'count': len(orders) to 'count': len(processed)"
+    },
+    {
+      "line": 8,
+      "issue": "Lack of Input Validation (Discount): The code does not validate that the 'discount' is between 0 and 100. A discount > 100 results in a negative price, which is handled later, but this is poor business logic.",
+      "fix": "Add validation to ensure 0 <= discount <= 100."
+    },
+    {
+      "line": 8,
+      "issue": "Lack of Input Validation (Type Safety): The code assumes 'price' and 'quantity' are numeric. If they are None or non-numeric, a TypeError will occur.",
+      "fix": "Implement type checking (e.g., using isinstance) for 'price' and 'quantity' before calculation."
+    },
+    {
+      "line": 12,
+      "issue": "Side Effect (Mutation): The code modifies the original 'order' dictionary passed into the function (e.g., adding 'final_price' and changing 'status'). This is an undesirable side effect.",
+      "fix": "Create a deep copy of the order dictionary at the start of the loop before making any modifications."
+    }
+  ],
+  "count": 5
+}
+```

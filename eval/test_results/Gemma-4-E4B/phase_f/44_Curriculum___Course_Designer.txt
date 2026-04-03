@@ -1,0 +1,245 @@
+```json
+{
+  "weeks": [
+    {
+      "week": 1,
+      "theme": "Python Fundamentals: Syntax and Data Types",
+      "sessions": [
+        {
+          "day": 1,
+          "topic": "Introduction to Python & Variables",
+          "objectives": [
+            "Understand the Python environment and basic syntax.",
+            "Define and manipulate variables using various data types (int, float, str, bool)."
+          ],
+          "lecture_min": 45,
+          "handson_min": 45
+        },
+        {
+          "day": 2,
+          "topic": "Control Flow: Conditionals and Loops",
+          "objectives": [
+            "Implement conditional logic using if/elif/else statements.",
+            "Utilize 'for' and 'while' loops to automate repetitive tasks."
+          ],
+          "lecture_min": 45,
+          "handson_min": 45
+        },
+        {
+          "day": 3,
+          "topic": "Basic Input/Output and Operators",
+          "objectives": [
+            "Handle user input using the input() function.",
+            "Apply arithmetic, comparison, and logical operators effectively."
+          ],
+          "lecture_min": 45,
+          "handson_min": 45
+        }
+      ],
+      "quiz": "Quiz 1: Variables, Data Types, and Control Flow",
+      "assignment": "Assignment 1: Simple Calculator Program (using variables and conditionals)"
+    },
+    {
+      "week": 2,
+      "theme": "Data Structures and Functional Programming Basics",
+      "sessions": [
+        {
+          "day": 4,
+          "topic": "Lists and Tuples",
+          "objectives": [
+            "Master the creation and manipulation of mutable lists.",
+            "Understand the immutability and use cases of tuples."
+          ],
+          "lecture_min": 45,
+          "handson_min": 45
+        },
+        {
+          "day": 5,
+          "topic": "Dictionaries and Sets",
+          "objectives": [
+            "Use dictionaries for efficient key-value storage.",
+            "Leverage sets for unique element management and set operations."
+          ],
+          "lecture_min": 45,
+          "handson_min": 45
+        },
+        {
+          "day": 6,
+          "topic": "Defining and Calling Functions",
+          "objectives": [
+            "Write reusable functions with parameters and return values.",
+            "Understand scope (local vs. global) and function documentation."
+          ],
+          "lecture_min": 45,
+          "handson_min": 45
+        }
+      ],
+      "quiz": "Quiz 2: Data Structures and Function Definition",
+      "assignment": "Assignment 2: Inventory Manager (using lists, dictionaries, and functions)"
+    },
+    {
+      "week": 3,
+      "theme": "Robustness and Persistence: Error Handling and File I/O",
+      "sessions": [
+        {
+          "day": 7,
+          "topic": "Error and Exception Handling",
+          "objectives": [
+            "Identify common runtime errors (e.g., ZeroDivisionError, TypeError).",
+            "Implement try/except/finally blocks for graceful error management."
+          ],
+          "lecture_min": 45,
+          "handson_min": 45
+        },
+        {
+          "day": 8,
+          "topic": "Reading and Writing Files (Text)",
+          "objectives": [
+            "Read data from text files using 'with open(...)' context manager.",
+            "Write and append data to files, ensuring proper resource cleanup."
+          ],
+          "lecture_min": 45,
+          "handson_min": 45
+        },
+        {
+          "day": 9,
+          "topic": "Working with JSON Data",
+          "objectives": [
+            "Understand the structure and purpose of JSON.",
+            "Use the 'json' module to serialize and deserialize Python objects."
+          ],
+          "lecture_min": 45,
+          "handson_min": 45
+        }
+      ],
+      "quiz": "Quiz 3: Error Handling and File Operations",
+      "assignment": "Assignment 3: Data Logger (reads configuration from a JSON file and logs events to a text file)"
+    },
+    {
+      "week": 4,
+      "theme": "Object-Oriented Programming (OOP)",
+      "sessions": [
+        {
+          "day": 10,
+          "topic": "Classes and Objects",
+          "objectives": [
+            "Define classes and create instances (objects).",
+            "Implement the constructor (__init__) and manage object state using attributes."
+          ],
+          "lecture_min": 45,
+          "handson_min": 45
+        },
+        {
+          "day": 11,
+          "topic": "Inheritance and Polymorphism",
+          "objectives": [
+            "Implement inheritance to reuse code and establish 'is-a' relationships.",
+            "Apply polymorphism by overriding methods in subclasses."
+          ],
+          "lecture_min": 45,
+          "handson_min": 45
+        },
+        {
+          "day": 12,
+          "topic": "Encapsulation and Magic Methods",
+          "objectives": [
+            "Understand encapsulation using private/protected attributes.",
+            "Implement common magic methods (e.g., __str__, __len__) to customize object behavior."
+          ],
+          "lecture_min": 45,
+          "handson_min": 45
+        }
+      ],
+      "quiz": "Quiz 4: OOP Concepts (Classes, Inheritance, Methods)",
+      "assignment": "Assignment 4: Simple Bank Account System (using classes, inheritance for different account types)"
+    },
+    {
+      "week": 5,
+      "theme": "Advanced Python Techniques: Efficiency and Testing",
+      "sessions": [
+        {
+          "day": 13,
+          "topic": "Generators and Iterators",
+          "objectives": [
+            "Understand the concept of lazy evaluation.",
+            "Implement generators using 'yield' for memory-efficient iteration."
+          ],
+          "lecture_min": 45,
+          "handson_min": 45
+        },
+        {
+          "day": 14,
+          "topic": "Decorators",
+          "objectives": [
+            "Understand how decorators modify function behavior.",
+            "Write simple decorators to log function calls or measure execution time."
+          ],
+          "lecture_min": 45,
+          "handson_min": 45
+        },
+        {
+          "day": 15,
+          "topic": "Unit Testing with unittest",
+          "objectives": [
+            "Learn the principles of Test-Driven Development (TDD).",
+            "Write effective unit tests for functions and classes using the 'unittest' module."
+          ],
+          "lecture_min": 45,
+          "handson_min": 45
+        }
+      ],
+      "quiz": "Quiz 5: Generators, Decorators, and Testing Principles",
+      "assignment": "Assignment 5: Refactoring and Testing (Take a previous assignment and implement generators/decorators and write comprehensive unit tests for it)"
+    },
+    {
+      "week": 6,
+      "theme": "Real-World Applications: APIs and Integration",
+      "sessions": [
+        {
+          "day": 16,
+          "topic": "Working with External APIs (Requests)",
+          "objectives": [
+            "Use the 'requests' library to make GET and POST HTTP calls.",
+            "Handle API responses, including status codes and JSON data."
+          ],
+          "lecture_min": 45,
+          "handson_min": 45
+        },
+        {
+          "day": 17,
+          "topic": "Integration and Data Processing",
+          "objectives": [
+            "Integrate API data into custom Python classes.",
+            "Use generators to process large streams of data retrieved from an API."
+          ],
+          "lecture_min": 45,
+          "handson_min": 45
+        },
+        {
+          "day": 18,
+          "topic": "Final Project Work Session & Review",
+          "objectives": [
+            "Review all core concepts (OOP, I/O, APIs, Testing).",
+            "Work on integrating all learned concepts into the final project."
+          ],
+          "lecture_min": 45,
+          "handson_min": 45
+        }
+      ],
+      "quiz": "Quiz 6: API Interaction and Integration Concepts",
+      "assignment": "Final Project: Automated Data Fetcher/Processor"
+    }
+  ],
+  "final_project": {
+    "title": "Automated Data Fetcher and Analyzer",
+    "description": "Build a system that fetches data from a public API (e.g., weather, stock, or joke API). The system must store the raw data, process it using custom classes, and provide a summary report.",
+    "required_concepts_integration": [
+      "APIs (requests)",
+      "Classes (OOP structure for data objects)",
+      "File I/O (saving processed data to a file)",
+      "Generators (efficiently processing large API responses)",
+      "Unit Testing (testing the data processing logic)"
+    ]
+  }
+}
+```

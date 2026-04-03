@@ -1,0 +1,168 @@
+```python
+import time
+import threading
+import collections
+
+class RateLimiter:
+    """
+    Implements a hybrid token-bucket / sliding-window rate limiter.
+    """
+    def __init__(self, max_requests: int, window_seconds: float, burst: int = 0):
+        self.max_requests = max_requests
+        self.window_seconds = window_seconds
+        self.burst_capacity = burst
+        self.burst_refill_period = 2 * window_seconds
+        
+        # Storage structure: {(user_id, endpoint): limit_data}
+        # limit_data contains:
+        # 'requests': list of timestamps (for sliding window)
+        # 'burst_tokens': current available burst tokens
+        # 'burst_last_refill': timestamp of last burst token calculation
+        self.limits = {}
+        self._lock = threading.Lock()
+
+    def _get_limit_data(self, user_id: str, endpoint: str) -> dict:
+        """Retrieves or initializes the limit data for a specific key."""
+        key = (user_id, endpoint)
+        if key not in self.limits:
+            self.limits[key] = {
+                'requests': [],
+                'burst_tokens': self.burst_capacity,
+                'burst_last_refill': time.time(),
+                'max_requests': self.max_requests,
+                'window_seconds': self.window_seconds,
+                'burst_capacity': self.burst_capacity,
+                'burst_refill_period': self.burst_refill_period
+            }
+        return self.limits[key]
+
+    def _refill_burst(self, data: dict):
+        """Calculates and refills burst tokens based on the slower regeneration rate."""
+        now = time.time()
+        time_passed = now - data['burst_last_refill']
+        
+        # Calculate how many tokens should have regenerated
+        # Rate = 1 / burst_refill_period
+        tokens_to_add = time_passed / data['burst_refill_period']
+        
+        # Update tokens, ensuring we don't exceed capacity
+        data['burst_tokens'] = min(
+            data['burst_tokens'] + tokens_to_add, 
+            data['burst_capacity']
+        )
+        data['burst_last_refill'] = now
+
+    def allow(self, user_id: str, endpoint: str = "default") -> dict:
+        """
+        Checks if a request is allowed based on sliding window and burst limits.
+        """
+        with self._lock:
+            data = self._get_limit_data(user_id, endpoint)
+            now = time.time()
+            
+            # 1. Refill burst tokens before checking limits
+            self._refill_burst(data)
+
+            # 2. Sliding Window Cleanup (Remove old requests)
+            window_start = now - data['window_seconds']
+            data['requests'] = [t for t in data['requests'] if t >= window_start]
+            
+            current_requests = len(data['requests'])
+            
+            # 3. Check Primary Limit (Sliding Window)
+            if current_requests < data['max_requests']:
+                data['requests'].append(now)
+                return {"allowed": True, "remaining": data['max_requests'] - len(data['requests']), "retry_after": None}
+
+            # 4. Check Burst Limit (If sliding window is full)
+            if data['burst_tokens'] > 0:
+                data['requests'].append(now) # Still count against the window
+                data['burst_tokens'] -= 1
+                return {"allowed": True, "remaining": data['max_requests'] - len(data['requests']), "retry_after": None}
+
+            # 5. Denied
+            # Calculate time until the oldest request leaves the window
+            oldest_request_time = data['requests'][0]
+            retry_after = (oldest_request_time + data['window_seconds']) - now
+            
+            return {"allowed": False, "remaining": 0, "retry_after": max(0.0, retry_after)}
+
+    def allow_priority(self, user_id: str, endpoint: str = "default") -> dict:
+        """
+        Priority users always bypass rate limits.
+        """
+        return {"allowed": True, "remaining": float('inf'), "retry_after": None}
+
+    def cleanup(self, max_age_seconds: float = None) -> int:
+        """
+        Removes entries older than max_age_seconds.
+        Default max_age_seconds is 2 * window_seconds.
+        """
+        if max_age_seconds is None:
+            max_age_seconds = 2 * self.window_seconds
+        
+        removed_count = 0
+        keys_to_delete = []
+        now = time.time()
+
+        for key, data in self.limits.items():
+            # Check the timestamp of the oldest request
+            if data['requests']:
+                oldest_request_time = data['requests'][0]
+                if now - oldest_request_time > max_age_seconds:
+                    keys_to_delete.append(key)
+            # If no requests, but the entry is very old (e.g., burst tokens haven't been touched)
+            # We rely on the request timestamps for cleanup, but if the entry is completely stale, we can remove it.
+            # For simplicity, we only clean based on request timestamps.
+
+        for key in keys_to_delete:
+            del self.limits[key]
+            removed_count += 1
+            
+        return removed_count
+
+    def get_usage(self, user_id: str, endpoint: str = "default") -> dict:
+        """
+        Returns current usage statistics for a specific user/endpoint.
+        """
+        with self._lock:
+            data = self._get_limit_data(user_id, endpoint)
+            
+            # Ensure burst tokens are up-to-date before reporting
+            self._refill_burst(data)
+            
+            # Clean up the request list for accurate usage reporting
+            now = time.time()
+            window_start = now - data['window_seconds']
+            current_requests = len([t for t in data['requests'] if t >= window_start])
+            
+            return {
+                "used": current_requests,
+                "limit": data['max_requests'],
+                "window_seconds": data['window_seconds'],
+                "burst_remaining": data['burst_tokens']
+            }
+
+    def to_dict(self) -> dict:
+        """Serializes the entire state of the rate limiter."""
+        with self._lock:
+            return {
+                "max_requests": self.max_requests,
+                "window_seconds": self.window_seconds,
+                "burst_capacity": self.burst_capacity,
+                "limits": self.limits
+            }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> 'RateLimiter':
+        """Deserializes the rate limiter state from a dictionary."""
+        max_requests = data['max_requests']
+        window_seconds = data['window_seconds']
+        burst_capacity = data['burst_capacity']
+        
+        instance = cls(max_requests, window_seconds, burst_capacity)
+        
+        # Restore the internal state
+        instance.limits = data['limits']
+        return instance
+```

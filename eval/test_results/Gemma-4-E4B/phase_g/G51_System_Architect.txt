@@ -1,0 +1,68 @@
+```json
+{
+  "architecture": {
+    "components": [
+      "API Gateway (Edge Routing)",
+      "Write Service (URL Creation/Metadata Storage)",
+      "Read Service (Redirection Logic)",
+      "CDN (Edge Caching/DDoS Protection)",
+      "Worker Service (Asynchronous tasks: Expiration checks, Analytics)"
+    ],
+    "database": {
+      "primary": "Amazon DynamoDB (Global Tables)",
+      "justification": "DynamoDB provides predictable, single-digit millisecond latency at massive scale (1B+ reads/day) and supports high throughput writes. Global Tables ensure multi-region redundancy for 99.99% uptime."
+    },
+    "cache": {
+      "type": "Redis Cluster (ElastiCache)",
+      "strategy": "Cache-Aside (Read Service checks cache first; if miss, hits DynamoDB and populates cache)",
+      "invalidation": "Time-To-Live (TTL) based on link expiration, and explicit invalidation upon metadata update (e.g., custom alias change)."
+    },
+    "hash_strategy": {
+      "algorithm": "Base62 Encoding of a unique 64-bit ID (e.g., Snowflake ID)",
+      "length": 7,
+      "collision_handling": "Primary lookup is by generated ID. Custom aliases are stored as a secondary index in DynamoDB, ensuring uniqueness checks during the write path."
+    }
+  },
+  "scaling": {
+    "read_write_ratio": "100:1",
+    "read_optimization": "Aggressive caching (95%+ hit rate target) via Redis Cluster, leveraging CDN edge caching for static redirects.",
+    "write_path": "Asynchronous processing. Write Service validates input, generates ID, writes to DynamoDB, and queues a notification to the Worker Service for metadata processing (e.g., expiration setup).",
+    "horizontal_scaling": "All services (Write/Read) are deployed as stateless containers (e.g., AWS Fargate/EKS) allowing automatic scaling based on request queue depth and CPU utilization to handle 10x spikes."
+  },
+  "reliability": {
+    "uptime_strategy": "Multi-AZ deployment across at least three availability zones. Active-Active configuration for all services.",
+    "failover": "Automated DNS failover (Route 53) and load balancer health checks. DynamoDB Global Tables provide automatic cross-region replication failover.",
+    "data_replication": "DynamoDB Global Tables (Active-Active replication across regions) and Redis Cluster replication."
+  },
+  "compliance": {
+    "gdpr_deletion": "A dedicated 'Deletion Service' is triggered upon request. This service uses the user ID/alias to locate and atomically delete all associated records (link, metadata, analytics) from DynamoDB and invalidates the corresponding cache entries.",
+    "data_retention": "Metadata (creation date, expiration date) is stored in DynamoDB. Automated TTL policies are used for non-essential data, while user-requested data is retained only as long as necessary for service operation.",
+    "analytics_separation": "Analytics data is anonymized and aggregated immediately upon ingestion. PII is stripped before being written to the analytics data warehouse (e.g., Snowflake/S3)."
+  },
+  "cost_estimate": {
+    "monthly_total": 4800,
+    "breakdown": {
+      "compute": 1200,
+      "database": 1800,
+      "cache": 800,
+      "cdn": 500,
+      "other": 50
+    },
+    "fits_budget": true
+  },
+  "rate_limiting": {
+    "strategy": "Token Bucket algorithm implemented at the API Gateway level.",
+    "limits": "100 requests/minute per IP for creation (Write); 5000 requests/minute per IP for redirection (Read)."
+  },
+  "monitoring": {
+    "metrics": [
+      "P99 Redirect Latency (Target < 50ms)",
+      "Cache Hit Ratio (Target > 95%)",
+      "Error Rates (5xx/4xx)",
+      "DynamoDB Throttling Events",
+      "Service CPU Utilization"
+    ],
+    "alerting": "Automated alerts via PagerDuty/SNS triggered if P99 latency exceeds 60ms for 5 minutes, or if cache hit ratio drops below 90%."
+  }
+}
+```

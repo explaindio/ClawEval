@@ -1,0 +1,67 @@
+```json
+{
+  "violations": [
+    {
+      "id": 1,
+      "article": "Article 6 & 7 (Lawfulness of processing & Consent)",
+      "practice": "User data is collected without any consent form or notice.",
+      "fix": "Implement clear, granular, and informed consent mechanisms before collecting any personal data."
+    },
+    {
+      "id": 2,
+      "article": "Article 32 (Security of processing)",
+      "practice": "Personal data is stored in plain text in the database.",
+      "fix": "Encrypt all sensitive personal data both at rest (in the database) and in transit."
+    },
+    {
+      "id": 3,
+      "article": "Article 17 (Right to erasure)",
+      "practice": "Users cannot request deletion of their data — 'we keep everything forever.'",
+      "fix": "Establish a verifiable and accessible mechanism for users to request and receive the permanent deletion of their data."
+    },
+    {
+      "id": 4,
+      "article": "Article 13 & 14 (Transparency) & Article 28 (Processor obligations)",
+      "practice": "Data is shared with 15 third-party vendors without user knowledge.",
+      "fix": "Obtain explicit, informed consent for all third-party data sharing and ensure all vendors have signed Data Processing Agreements (DPAs)."
+    },
+    {
+      "id": 5,
+      "article": "Article 37 (Data Protection Officer)",
+      "practice": "There is no Data Protection Officer appointed.",
+      "fix": "Appoint a qualified Data Protection Officer (DPO) and ensure they are registered as required by the GDPR."
+    },
+    {
+      "id": 6,
+      "article": "Chapter V (International Transfers)",
+      "practice": "The company transfers EU user data to servers in a country without adequacy decision, with no safeguards.",
+      "fix": "Implement appropriate safeguards for international transfers, such as Standard Contractual Clauses (SCCs) or Binding Corporate Rules (BCRs)."
+    },
+    {
+      "id": 7,
+      "article": "Article 33 (Breach notification)",
+      "practice": "Data breaches are reported to authorities 'when we get around to it, usually within 6 months.'",
+      "fix": "Establish immediate incident response protocols and ensure notification to the supervisory authority within 72 hours of becoming aware of the breach."
+    },
+    {
+      "id": 8,
+      "article": "Article 8 (Consent of children)",
+      "practice": "Children under 16 can sign up without parental consent.",
+      "fix": "Implement robust age verification mechanisms and obtain verifiable parental consent before processing the data of minors."
+    },
+    {
+      "id": 9,
+      "article": "Article 20 (Right to data portability)",
+      "practice": "Users cannot export their data in any format.",
+      "fix": "Provide users with an easy, functional mechanism to download their personal data in a structured, commonly used, and machine-readable format."
+    },
+    {
+      "id": 10,
+      "article": "Article 12 (Transparency)",
+      "practice": "Privacy policy was last updated in 2015 and doesn't mention half these practices.",
+      "fix": "Conduct a mandatory audit of all data practices and update the privacy policy immediately to accurately reflect all current data processing activities."
+    }
+  ],
+  "count": 10
+}
+```

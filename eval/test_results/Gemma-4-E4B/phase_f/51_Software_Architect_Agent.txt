@@ -1,0 +1,65 @@
+```json
+{
+  "components": [
+    {
+      "name": "API Gateway / Load Balancer",
+      "technology": "AWS API Gateway / NGINX / Cloudflare",
+      "purpose": "Entry point for all client requests (REST/WebSocket). Handles authentication, rate limiting, and routing.",
+      "scaling_strategy": "Horizontal scaling via managed load balancers (L7)."
+    },
+    {
+      "name": "Connection Service (Chat Servers)",
+      "technology": "Go / Rust (for high concurrency) running WebSockets",
+      "purpose": "Manages persistent connections (WebSockets) for real-time messaging and presence. Acts as the message distribution hub.",
+      "scaling_strategy": "Stateless microservices deployed across multiple availability zones (AZs). Uses a distributed Pub/Sub system (Kafka) for inter-service communication."
+    },
+    {
+      "name": "Message Broker / Event Bus",
+      "technology": "Apache Kafka (or AWS Kinesis)",
+      "purpose": "Decouples services, handles high-throughput message ingestion, ensures message ordering, and facilitates reliable delivery to subscribers (Connection Services).",
+      "scaling_strategy": "Partitioned topics across multiple brokers. Scaling is achieved by adding more brokers and partitions."
+    },
+    {
+      "name": "Chat Persistence Service",
+      "technology": "Cassandra / CockroachDB (for high write throughput and distributed nature)",
+      "purpose": "Stores message history, chat metadata, and user profiles. Optimized for high-volume writes and eventual consistency.",
+      "scaling_strategy": "Sharding based on Chat ID or User ID. Data replication across multiple nodes/AZs for fault tolerance."
+    },
+    {
+      "name": "Presence Service",
+      "technology": "Redis Cluster (or dedicated distributed cache)",
+      "purpose": "Stores real-time online/offline status, user session tokens, and last seen timestamps. Extremely low latency required.",
+      "scaling_strategy": "Clustering and sharding based on User ID. High availability achieved through replication."
+    },
+    {
+      "name": "File Storage Service",
+      "technology": "AWS S3 (or Google Cloud Storage)",
+      "purpose": "Stores large file attachments (up to 50MB). Handles secure uploads and generates signed URLs for direct client access.",
+      "scaling_strategy": "Managed object storage (inherently scalable). Uses CDN (CloudFront) for global delivery."
+    },
+    {
+      "name": "Notification Service",
+      "technology": "Microservice (e.g., Node.js) + Push Notification Gateways (FCM/APNS)",
+      "purpose": "Handles delivery of messages to offline users (push notifications) and manages read receipt acknowledgments.",
+      "scaling_strategy": "Stateless microservice, scaled horizontally based on notification volume."
+    }
+  ],
+  "data_flow": "1. **Client $\\rightarrow$ API Gateway:** Client establishes a WebSocket connection to the Connection Service. 2. **Message Ingestion:** Sender sends a message. The Connection Service validates the message and publishes it to a Kafka topic (e.g., 'chat_messages'). 3. **Persistence:** The Chat Persistence Service consumes the message from Kafka and writes it to Cassandra. 4. **Distribution:** The Connection Service (subscribers) consumes the message from Kafka. It checks the Presence Service to see if the recipient is online. 5. **Real-Time Delivery:** If online, the Connection Service pushes the message directly via WebSocket. 6. **Offline Delivery:** If offline, the Connection Service triggers the Notification Service, which sends a push notification. 7. **File Handling:** Files are uploaded directly by the client to the File Storage Service (S3) via a pre-signed URL, and only the file metadata (URL) is sent through the chat flow.",
+  "infrastructure": {
+    "cloud": "AWS (Amazon Web Services)",
+    "regions": 3,
+    "details": "Multi-Region Active-Active deployment (e.g., US-East-1, EU-Central-1, AP-Southeast-1) to meet 99.99% SLA and GDPR requirements (data residency)."
+  },
+  "estimated_monthly_cost": "$30,000 - $70,000+",
+  "bottlenecks": [
+    "Kafka Throughput/Latency: If message volume exceeds the capacity of the Kafka cluster or network bandwidth, latency will increase.",
+    "Database Hotspots: Poor sharding strategy in Cassandra could lead to single-node performance degradation under heavy load.",
+    "Connection Service State Management: While Connection Services are designed to be stateless, managing session state (e.g., for read receipts) across thousands of nodes requires robust distributed caching (Redis)."
+  ],
+  "tradeoffs": [
+    "Consistency vs. Availability (CAP Theorem): We prioritize Availability (A) and Partition Tolerance (P) over strong Consistency (C) for message delivery (using eventual consistency in Cassandra) to ensure high uptime and low latency.",
+    "Complexity vs. Performance: Using Kafka and microservices provides maximum scalability and resilience but significantly increases operational complexity and maintenance overhead.",
+    "Encryption Overhead: End-to-end encryption (E2EE) requires cryptographic processing on the client side, which adds computational overhead and complexity to the client application development."
+  ]
+}
+```

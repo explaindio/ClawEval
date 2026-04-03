@@ -1,0 +1,155 @@
+```json
+[
+  {
+    "rule_id": 1,
+    "description": "Morning Routine: Gradual light activation",
+    "trigger": {
+      "type": "time",
+      "time": "06:30:00",
+      "days": ["Mon", "Tue", "Wed", "Thu", "Fri"]
+    },
+    "conditions": [
+      {"type": "day_of_week", "value": "weekday"}
+    ],
+    "actions": [
+      {"action": "set_light_brightness", "device": "main_lights", "value": "10%"},
+      {"action": "schedule_light_increase", "device": "main_lights", "rate": "5% per 15 minutes", "duration": "1 hour"}
+    ]
+  },
+  {
+    "rule_id": 2,
+    "description": "Thermostat Management based on occupancy and time",
+    "trigger": {
+      "type": "state_change",
+      "device": "occupancy_sensor",
+      "states": ["occupied", "empty", "sleeping"]
+    },
+    "conditions": [
+      {"type": "time_range", "start": "23:00:00", "end": "06:00:00", "condition": "sleeping"}
+    ],
+    "actions": [
+      {"action": "set_thermostat_temp", "value": "72°F", "if_occupied": true},
+      {"action": "set_thermostat_temp", "value": "65°F", "if_occupied": false},
+      {"action": "set_thermostat_temp", "value": "68°F", "if_sleeping": true}
+    ]
+  },
+  {
+    "rule_id": 3,
+    "description": "Security System Arm/Disarm based on Geo-fencing",
+    "trigger": {
+      "type": "geo_fence_status",
+      "devices": ["Alice_phone", "Bob_phone"]
+    },
+    "conditions": [
+      {"type": "location_check", "status": "all_away", "trigger_action": "arm"},
+      {"type": "location_check", "status": "any_return", "trigger_action": "disarm"}
+    ],
+    "actions": [
+      {"action": "arm_security_system", "mode": "away"},
+      {"action": "disarm_security_system"}
+    ]
+  },
+  {
+    "rule_id": 4,
+    "description": "Pet Care Automation (Feeding and Monitoring)",
+    "trigger": {
+      "type": "time",
+      "times": ["07:00:00", "18:00:00"]
+    },
+    "conditions": [
+      {"type": "time_check", "time": "07:00:00", "action": "feed"},
+      {"type": "time_check", "time": "18:00:00", "action": "feed"}
+    ],
+    "actions": [
+      {"action": "activate_auto_feeder", "device": "cat_feeder"},
+      {"action": "turn_on_camera", "device": "cat_camera", "if_condition": "both_away"}
+    ]
+  },
+  {
+    "rule_id": 5,
+    "description": "Energy Management: Solar Priority and Battery Backup",
+    "trigger": {
+      "type": "time",
+      "time_range": "14:00:00-19:00:00"
+    },
+    "conditions": [
+      {"type": "energy_source_status", "source": "solar_panels", "status": "active"}
+    ],
+    "actions": [
+      {"action": "prioritize_energy_source", "source": "solar"}
+    ]
+  },
+  {
+    "rule_id": 6,
+    "description": "Nighttime Hallway Motion Lighting",
+    "trigger": {
+      "type": "motion_detected",
+      "device": "hallway_sensor"
+    },
+    "conditions": [
+      {"type": "time_range", "start": "22:00:00", "end": "06:00:00"}
+    ],
+    "actions": [
+      {"action": "set_light_brightness", "device": "hallway_lights", "value": "20%"},
+      {"action": "turn_off_light", "device": "hallway_lights", "delay": "5 minutes"}
+    ]
+  },
+  {
+    "rule_id": 7,
+    "description": "Bob's Office Setup Automation",
+    "trigger": {
+      "type": "device_state_change",
+      "device": "bob_computer",
+      "state": "on"
+    },
+    "conditions": [
+      {"type": "device_id", "value": "bob_computer"}
+    ],
+    "actions": [
+      {"action": "turn_on_device", "device": "desk_lamp"},
+      {"action": "set_thermostat_temp", "value": "70°F", "device": "office_ac"}
+    ]
+  },
+  {
+    "rule_id": 8,
+    "description": "Laundry Cycle Completion Notification",
+    "trigger": {
+      "type": "appliance_status_change",
+      "device": "washer_dryer",
+      "state": "cycle_complete"
+    },
+    "conditions": [],
+    "actions": [
+      {"action": "send_notification", "recipients": ["Alice", "Bob"], "message": "Laundry cycle complete!"}
+    ]
+  },
+  {
+    "rule_id": 9,
+    "description": "Water Leak Emergency Protocol",
+    "trigger": {
+      "type": "sensor_alert",
+      "device": "water_leak_detector",
+      "state": "leak_detected"
+    },
+    "conditions": [],
+    "actions": [
+      {"action": "shut_off_valve", "device": "main_water_valve"},
+      {"action": "send_alert", "recipients": ["Alice_phone", "Bob_phone"], "priority": "critical"}
+    ]
+  },
+  {
+    "rule_id": 10,
+    "description": "Guest Mode Activation",
+    "trigger": {
+      "type": "manual_activation",
+      "source": "user_app"
+    },
+    "conditions": [],
+    "actions": [
+      {"action": "set_door_code", "code": "temporary_guest_code"},
+      {"action": "set_thermostat_temp", "value": "72°F"},
+      {"action": "enable_wifi", "network": "guest_wifi"}
+    ]
+  }
+]
+```

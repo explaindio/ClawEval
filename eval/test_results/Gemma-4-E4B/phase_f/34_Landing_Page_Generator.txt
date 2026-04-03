@@ -1,0 +1,209 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskFlow — AI-Powered Project Management</title>
+</head>
+<body>
+
+    <!-- 1. Navigation -->
+    <header>
+        <nav aria-label="Main navigation">
+            <div class="logo">
+                <a href="/">TaskFlow</a>
+            </div>
+            <ul>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#pricing">Pricing</a></li>
+                <li><a href="#testimonials">Testimonials</a></li>
+                <li><a href="#faq">FAQ</a></li>
+            </ul>
+            <a href="/signup" class="cta-button">Start Free Trial</a>
+        </nav>
+    </header>
+
+    <main>
+        <!-- 2. Hero Section -->
+        <section id="hero" aria-labelledby="hero-heading">
+            <div class="hero-content">
+                <h1 id="hero-heading">Manage Projects Smarter with AI.</h1>
+                <p class="subheadline">TaskFlow automates workflows, predicts bottlenecks, and keeps your team perfectly aligned, so you can focus on execution.</p>
+                <a href="/signup" class="cta-primary">Get Started for Free</a>
+                <a href="/demo" class="cta-secondary">Watch Demo</a>
+            </div>
+            <div class="trust-badges">
+                <h2>Trusted by Industry Leaders:</h2>
+                <ul>
+                    <li><a href="#">TechCorp</a></li>
+                    <li><a href="#">Innovate Solutions</a></li>
+                    <li><a href="#">Global Dynamics</a></li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 3. Features Section -->
+        <section id="features" aria-labelledby="features-heading">
+            <h2 id="features-heading">Powerful Features Designed for Modern Teams</h2>
+            <div class="feature-grid">
+                <article class="feature-card">
+                    <h3>🧠 AI Workflow Automation</h3>
+                    <p>Let TaskFlow handle repetitive tasks, automatically assigning priorities and optimizing resource allocation based on real-time data.</p>
+                </article>
+                <article class="feature-card">
+                    <h3>📊 Real-Time Progress Tracking</h3>
+                    <p>Visualize project health with dynamic dashboards. See exactly where every task stands, instantly, without manual reporting.</p>
+                </article>
+                <article class="feature-card">
+                    <h3>💬 Integrated Communication</h3>
+                    <p>Keep conversations tied directly to tasks. Eliminate context switching by managing discussions and feedback within the platform.</p>
+                </article>
+            </div>
+        </section>
+
+        <!-- 4. Pricing Table -->
+        <section id="pricing" aria-labelledby="pricing-heading">
+            <h2 id="pricing-heading">Simple Pricing for Every Team Size</h2>
+            <div class="pricing-grid">
+
+                <!-- Tier 1: Free -->
+                <div class="price-tier">
+                    <h3>Free</h3>
+                    <p class="price">$0 / month</p>
+                    <p>Perfect for individuals and small teams testing the waters.</p>
+                    <ul>
+                        <li>✅ Basic Task Management</li>
+                        <li>✅ Unlimited Users</li>
+                        <li>❌ Advanced AI Features</li>
+                        <li>❌ Priority Support</li>
+                    </ul>
+                    <a href="/signup/free" class="cta-small">Start Free</a>
+                </div>
+
+                <!-- Tier 2: Pro (Recommended) -->
+                <div class="price-tier recommended">
+                    <h3>Pro</h3>
+                    <p class="price">$19 / user / month</p>
+                    <p>The best value for growing teams needing full functionality.</p>
+                    <ul>
+                        <li>✅ All Free Features</li>
+                        <li>✅ Advanced AI Automation</li>
+                        <li>✅ Custom Integrations</li>
+                        <li>✅ Priority Support</li>
+                    </ul>
+                    <a href="/signup/pro" class="cta-primary">Choose Pro</a>
+                </div>
+
+                <!-- Tier 3: Enterprise -->
+                <div class="price-tier">
+                    <h3>Enterprise</h3>
+                    <p class="price">Custom</p>
+                    <p>For large organizations requiring dedicated infrastructure and support.</p>
+                    <ul>
+                        <li>✅ All Pro Features</li>
+                        <li>✅ Dedicated Account Manager</li>
+                        <li>✅ SSO & Compliance</li>
+                        <li>✅ On-Premise Deployment</li>
+                    </ul>
+                    <a href="/contact" class="cta-small">Contact Sales</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. Testimonials Section -->
+        <section id="testimonials" aria-labelledby="testimonials-heading">
+            <h2 id="testimonials-heading">What Our Users Say</h2>
+            <div class="testimonial-grid">
+                <blockquote class="testimonial-card">
+                    <p>"TaskFlow completely revolutionized how our remote team operates. The AI features saved us dozens of hours every week."</p>
+                    <footer>— Sarah K., CTO at Innovate Solutions</footer>
+                </blockquote>
+                <blockquote class="testimonial-card">
+                    <p>"We struggled with project visibility until TaskFlow. The real-time dashboards gave us the clarity we desperately needed."</p>
+                    <footer>— Michael P., Project Lead</footer>
+                </blockquote>
+                <blockquote class="testimonial-card">
+                    <p>"The transition was seamless. TaskFlow integrated perfectly with our existing tools and scaled with us effortlessly."</p>
+                    <footer>— Jessica L., Operations Manager</footer>
+                </blockquote>
+            </div>
+        </section>
+
+        <!-- 6. FAQ Accordion Section -->
+        <section id="faq" aria-labelledby="faq-heading">
+            <h2 id="faq-heading">Frequently Asked Questions</h2>
+            <div class="faq-container">
+                <!-- Note: In a real implementation, these would be interactive/collapsible -->
+                <details class="faq-item">
+                    <summary>Is TaskFlow suitable for small teams?</summary>
+                    <p>Yes, absolutely. Our Free and Pro tiers are specifically designed to provide powerful tools for small teams and startups.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>How does the AI feature work?</summary>
+                    <p>The AI analyzes task dependencies, team workload, and historical data to proactively suggest optimal task assignments and flag potential delays before they happen.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>Can I integrate TaskFlow with other tools like Slack or Jira?</summary>
+                    <p>Yes, TaskFlow offers extensive API access and pre-built integrations with major productivity tools to ensure a seamless workflow.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>What is the difference between Pro and Enterprise?</summary>
+                    <p>The Enterprise plan includes advanced features like Single Sign-On (SSO), dedicated compliance support, and custom deployment options, which are not available in the Pro tier.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>Is there a free trial available?</summary>
+                    <p>We offer a generous free trial period for all new users, allowing you to test the full capabilities of TaskFlow before committing to a plan.</p>
+                </details>
+            </div>
+        </section>
+
+        <!-- 7. Final CTA Section -->
+        <section id="final-cta" aria-labelledby="final-cta-heading">
+            <div class="cta-content">
+                <h2 id="final-cta-heading">Ready to Transform Your Workflow?</h2>
+                <p>Stop managing tasks and start mastering projects. Join TaskFlow today and see the power of AI in action.</p>
+                <a href="/signup" class="cta-primary large-cta">Start Your Free Trial Now</a>
+            </div>
+        </section>
+    </main>
+
+    <!-- 8. Footer -->
+    <footer aria-label="Site footer">
+        <div class="footer-links">
+            <div class="footer-column">
+                <h4>Product</h4>
+                <ul>
+                    <li><a href="#">Features</a></li>
+                    <li><a href="#">Pricing</a></li>
+                    <li><a href="#">Integrations</a></li>
+                    <li><a href="#">Roadmap</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Contact</a></li>
+                    <li><a href="#">Blog</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Resources</h4>
+                <ul>
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">Documentation</a></li>
+                    <li><a href="#">Security</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 TaskFlow. All rights reserved.</p>
+        </div>
+    </footer>
+
+</body>
+</html>
+```
