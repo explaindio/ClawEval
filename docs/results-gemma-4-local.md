@@ -102,7 +102,7 @@ All tests run locally via `llama.cpp` server perfectly controlling reasoning bud
 
 | Model | Phase G Score | Notes |
 |---|---|---|
-| **Gemma-4-E2B** | **74/110 (67%)** | Perfect 10s on Input Validator and Web Scraping. Struggles hard on Content Planner (1/10) and Algorithm drops to 3/10. Phenomenal overall given 2B sizing. ~140-160 t/s locally. |
+| **Gemma-4-E2B** | **74/110 (67%)** | Perfect 10s on Input Validator and Web Scraping. Struggles hard on Content Planner (1/10) and Algorithm drops to 3/10. Phenomenal overall given 2B sizing. ~140-160 t/s locally on RTX 3090. |
 | **Gemma-4-E4B** | TBD | |
 | **Gemma-4-26B-A4B** | TBD | |
 | **Gemma-4-31B** | TBD | |
