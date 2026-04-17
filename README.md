@@ -99,10 +99,10 @@ Don't have a GPU? We also test open-source models hosted on cloud providers so y
 | 4 | Notification | Qwen3.5-27B Think | 🟢 9 | GPT-OSS-120B / Nemotron-3-Super-120B-A12B NT | 🟢 9 |
 | 5 | Sentiment | Qwen3.5-27B NT / 35B-A3B NT | 🟢 8† | Qwen3.5-122B-A10B NT / Nemotron-3-Super-120B-A12B NT | 🟢 8† |
 | 6 | FAQ Generation | Qwen3.5-27B Think | 🟢 8 | Nemotron-3-Super-120B-A12B Think | 🟢 8 |
-| 7 | Translation | Qwen3.5-27B NT | 🟢 10 | Qwen3.5-122B-A10B Think | 🟢 10 |
+| 7 | Translation | Qwen3.5-27B NT / Qwen3.6-35B-A3B | 🟢 10 | Qwen3.5-122B-A10B Think | 🟢 10 |
 | 8 | Calendar | — | 🔴 0 | — | 🔴 0 |
 | | **Tier 2 — Moderate** | | | | |
-| 9 | Research Agent | Qwen3.5-27B NT / 35B-A3B NT | 🟢 10 | Nemotron-3-Super-120B-A12B NT | 🟢 10† |
+| 9 | Research Agent | Qwen3.6-35B-A3B | 🟢 9† | Nemotron-3-Super-120B-A12B NT | 🟢 10† |
 | 10 | Content Writer | 📝 Manual | 📝 5 | 📝 Manual | 📝 5 |
 | 11 | Editor | Qwen3.5-27B NT / 35B-A3B NT | 🟢 10 | GPT-OSS-120B / Nemotron-3-Super-120B-A12B NT | 🟢 9 |
 | 12 | Content Planner | Qwen3.5-27B NT / 35B-A3B NT | 🟢 10 | Qwen3.5-122B-A10B NT / Nemotron-3-Super-120B-A12B Think | 🟢 9† |
@@ -120,7 +120,7 @@ Don't have a GPU? We also test open-source models hosted on cloud providers so y
 | 24 | Image Description | 📝 Manual | 📝 5 | 📝 Manual | 📝 5 |
 | 25 | Customer Support | Qwen3.5-27B Think / 35B-A3B Think | 🟢 10 | Qwen3.5-122B-A10B NT / Nemotron-3-Super-120B-A12B NT | 🟢 10 |
 | 26 | Lead Scoring | Qwen3.5-27B NT | 🟢 10 | Nemotron-3-Super-120B-A12B Think | 🟢 10 |
-| 27 | Sprint Summary | Qwen3.5-27B NT | 🟡 7 | Qwen3.5-122B-A10B Think | 🟢 10 |
+| 27 | Sprint Summary | Qwen3.6-35B-A3B | 🟢 9 | Qwen3.5-122B-A10B Think | 🟢 10 |
 | 28 | Transaction | Qwen3.5-27B Think | 🟢 10 | Qwen3.5-122B-A10B NT / GPT-OSS | 🟢 10 |
 | 29 | Home Automation | Qwen3.5-27B Think / 35B-A3B Think | 🟢 10 | Qwen3.5-122B-A10B Think / Nemotron-3-Super-120B-A12B NT | 🟢 10 |
 | 30 | Fitness Tracking | Qwen3.5-27B NT / Think | 🟢 9 | Qwen3.5-122B-A10B NT / Nemotron-3-Super-120B-A12B NT | 🟢 9 |
@@ -130,13 +130,13 @@ Don't have a GPU? We also test open-source models hosted on cloud providers so y
 | 34 | Landing Page | 📝 Manual | 📝 5 | 📝 Manual | 📝 5 |
 | 35 | Travel Planning | Qwen3.5-27B NT / 35B-A3B NT | 🟡 7 | Nemotron-3-Super-120B-A12B Think | 🟢 10 |
 | | **Tier 3 — Advanced** | | | | |
-| 36 | Code Generation | Qwen3.5-27B NT | 🟢 10† | Nemotron-3-Super-120B-A12B Think | 🟢 10† |
+| 36 | Code Generation | Qwen3.6-35B-A3B | 🟢 8† | Nemotron-3-Super-120B-A12B Think | 🟢 10† |
 | 37 | Code Review | Qwen3.5-35B-A3B NT / 27B Think | 🟢 10 | Qwen3.5-122B-A10B Think / Nemotron-3-Super-120B-A12B NT | 🟢 10 |
 | 38 | QA / Test Writing | Qwen3.5-35B-A3B NT | 🟢 10 | Qwen3.5-122B-A10B / Nemotron-3-Super-120B-A12B NT | 🟢 8 |
 | 39 | Task Planning | Qwen3.5-35B-A3B NT | 🟢 10 | Nemotron-3-Super-120B-A12B Think | 🟢 10 |
 | 40 | Fact-Checking | Qwen3.5-27B NT / Gemma-4-31B | 🟢 10† | Qwen3.5-122B-A10B NT / Nemotron-3-Super-120B-A12B NT | 🟢 10† |
 | 41 | Critic / Review | 📝 Manual | 📝 5 | 📝 Manual | 📝 5 |
-| 42 | Market Research | Qwen3.5-27B NT | 🟢 8 | Nemotron-3-Super-120B-A12B NoThink | 🟢 9 |
+| 42 | Market Research | Qwen3.6-35B-A3B | 🟢 9 | Nemotron-3-Super-120B-A12B NoThink | 🟢 9 |
 | 43 | Synthesizer | Qwen3.5-27B Think / 35B-A3B Think | 🟢 9 | GPT-OSS-120B | 🟢 10 |
 | 44 | Curriculum Design | Qwen3.5-27B NT / 35B-A3B NT | 🟡 6 | GPT-OSS-120B | 🟡 7 |
 | 45 | Prototype Gen | Qwen3.5-27B / 35B-A3B | 🟡 6 | Qwen3.5-122B-A10B Think / Nemotron-3-Super-120B-A12B NT | 🟡 6 |
@@ -146,8 +146,8 @@ Don't have a GPU? We also test open-source models hosted on cloud providers so y
 | 48 | STEM Analysis | Gemma-4-31B | 🟡 6† | Qwen3.5-122B-A10B NT / Nemotron-3-Super-120B-A12B Think | 🟡 5† |
 | 49 | Algorithm | Gemma-4-31B | 🟢 10† | Qwen3.5-122B-A10B NT / Nemotron-3-Super-120B-A12B Think | 🟢 10† |
 | | **Tier 5 — Senior** | | | | |
-| 50 | Orchestrator | Qwen3.5-27B NT / 35B-A3B NT | 🟡 7† | Nemotron-3-Super-120B-A12B NoThink | 🟢 9† |
-| 51 | Architect | Qwen3.5-27B NT / Gemma-4-31B | 🟢 9† | Qwen3.5-122B-A10B NT | 🟢 10† |
+| 50 | Orchestrator | Qwen3.6-35B-A3B | 🟢 8† | Nemotron-3-Super-120B-A12B NoThink | 🟢 9† |
+| 51 | Architect | Qwen3.6-35B-A3B | 🟢 10† | Qwen3.5-122B-A10B NT | 🟢 10† |
 | 52 | Debugger | Qwen3.5-35B-A3B NT | 🟢 10 | Qwen3.5-122B-A10B NT / GPT-OSS | 🟢 10 |
 | 53 | Legal Review | Qwen3.5-27B NT / 35B-A3B NT | 🟢 10 | Qwen3.5-122B-A10B Think / Nemotron-3-Super-120B-A12B NT | 🟢 10 |
 | 54 | Medical | Qwen3.5-27B NT / 35B-A3B NT | 🟢 10 | Nemotron-3-Super-120B-A12B NoThink | 🟢 10 |
