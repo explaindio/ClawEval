@@ -14,6 +14,8 @@
 
 Most benchmarks tell you a model is "smart." ClawEval tells you if it can **do the work** — route tickets, review code, analyze financials, draft legal docs, plan sprints, and 54 more agent roles. Each test has an exact expected answer. No LLM-as-judge. No vibes.
 
+**Built for agent frameworks like [OpenClaw](https://github.com/AIgenteur/ClawEval) and [Hermes Agent](https://github.com/NousResearch/hermes-agent)** — any system where you need to pick the right LLM backend for specialized sub-agent roles. If your framework is model-agnostic, ClawEval shows you exactly which model to plug in for each job.
+
 ### 🖥️ LOCAL Models — Run on YOUR Hardware
 
 > 📄 **[OpenClaw Backend: Local on 3090 — The Complete Guide (PDF)](docs/OpenClaw_Backend_Local_on_3090.pdf)** — An interactive walkthrough of running the full OpenClaw backend locally on an RTX 3090. Covers setup, model selection, and performance tips with step-by-step calls to action.
