@@ -84,6 +84,28 @@ Don't have a GPU? We also test open-source models hosted on cloud providers so y
 > - [☁️ Full cloud model comparison (all scores per role) →](docs/results-cloud.md)
 > - [🆕 Phase G — Discriminator Tests (harder tests) →](docs/results-phase-g.md)
 
+## ⚡ Token Efficiency — Which Models Waste the Fewest Tokens?
+
+Two models both score 10/10 — but one used 500 tokens, the other 5,000. **The efficient one saves 10× on compute, cost, and latency.** This is hardware-independent: it measures model behavior, not GPU speed.
+
+| Rank | Model | VRAM | Score | Tokens/Point | Verdict |
+|------|-------|------|-------|-------------|---------|
+| 🥇 | **Trinity-Large** | ☁️ | 414 | **39** | Ultra-lean |
+| 🥈 | **Mistral-119B NT** | 🔵 64GB | 419 | **49** | Ultra-lean |
+| 🥉 | **GLM-5 NT** | ☁️ | 421 | **61** | Lean |
+| 4 | **Qwen3.5-Plus NT** | ☁️ | 442 | **63** | Lean |
+| 5 | **Qwen3.5-35B-A3B NT** | 🟢 24GB | 432 | **76** | Efficient |
+| 6 | **Kimi K2.5 Think** | ☁️ | 443 | **80** | Efficient |
+| | ... | | | | |
+| 32 | **Qwen3.6-35B-A3B** | 🟢 24GB | 430 | **696** | Heavy |
+| 35 | **Qwen3.5-35B-A3B Think** | 🟢 24GB | 395 | **1,524** | Extremely Heavy |
+
+> 💡 **Key insight:** Thinking models use **10–20× more tokens** than NoThink variants for similar scores. For cost-sensitive agent pipelines, NoThink wins massively on efficiency.
+>
+> 📊 **[Full Token Efficiency Leaderboard (35 models) →](docs/results-token-efficiency.md)** — complete rankings, Think vs NoThink gaps, best per VRAM tier
+
+---
+
 ## 🏆 Best Model Per Role — Which One Should You Run?
 
 🟢 = 8-10 &nbsp; 🟡 = 5-7 &nbsp; 🔴 = 0-4 &nbsp; 📝 = Manual review (5)
