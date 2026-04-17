@@ -1,6 +1,6 @@
 # 🦞 ClawEval — Can Your Local or Cloud LLM Actually Do the Job?
 
-**The only deterministic benchmark that tests LLMs as real AI agents** — not trivia, not chat, not vibes. 59 specialized roles. Hard, verifiable tasks. Every score is reproducible.
+**The only deterministic benchmark that tests LLMs as real AI agents** — not trivia, not chat, not vibes. 59 specialized roles. Hard, verifiable tasks. Every score is reproducible. Built for [OpenClaw](https://github.com/AIgenteur/ClawEval), [Hermes Agent](https://github.com/NousResearch/hermes-agent), and any model-agnostic agent framework.
 
 > 🔥 **New models added regularly.** Star ⭐ this repo to get notified when new results drop.
 >
