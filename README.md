@@ -50,6 +50,7 @@ No discrete GPU? Unified-memory devices can run these models directly. Estimates
 | Qwen3.5-27B Q4_K_M | ~17 GB | ❌ | ⚠️ tight | ✅ | ✅ | ✅ |
 | Gemma-4-31B Q4_K_M | ~19 GB | ❌ | ⚠️ tight | ✅ | ✅ | ✅ |
 | Qwen3.5-35B-A3B NVFP4 | ~20 GB | ❌ | ❌ | ✅ | ✅ | ✅ |
+| Qwen3.6-35B-A3B Q4_K_M | ~20 GB | ❌ | ❌ | ✅ | ✅ | ✅ |
 | GPT-OSS-120B GGUF | ~61 GB | ❌ | ❌ | ❌ | ✅ | ✅ |
 | Qwen3.5-122B-A10B NVFP4 | ~70 GB | ❌ | ❌ | ❌ | ✅ | ✅ |
 | Nemotron-3-Super-120B-A12B NVFP4 | ~70 GB | ❌ | ❌ | ❌ | ✅ | ✅ |
