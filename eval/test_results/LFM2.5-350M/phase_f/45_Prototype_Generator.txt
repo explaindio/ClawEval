@@ -1,0 +1,46 @@
+
+
+```
+from flask import Flask, jsonify, request
+
+app = Flask(__name__)
+
+books_db = []
+
+def get_pagination(query):
+    page = int(request.args.get('page', 1))
+    per_page = int(request.args.get('per_page', 10))
+    return page, per_page
+
+def get_book(book_id):
+    book = books_db.find(book_id)
+    if not book:
+        return None, 404
+    return book
+
+def create_book(book_data):
+    book = dict(data)
+    book_db.append(book)
+    return 201, 201
+
+def update_book(book_id, updated_data):
+    book = books_db.find(book_id)
+    if not book:
+        return None, 404
+    if updated_data:
+        updated_data = updated_data.__dict__
+    book.update(updated_data)
+    return 200, 200
+
+def delete_book(book_id):
+    book = books_db.find(book_id)
+    if not book:
+        return None, 404
+    books_db.remove(book)
+    return 404
+
+def main():
+if __name__ == '__main__':
+    app.run(debug=True, port=5000)
+
+```

@@ -1,0 +1,43 @@
+
+
+```
+def test_zero_income():
+    """Test zero income scenario."""
+    assert calculate_tax(0, 'single') == (0, 0.0))
+
+def test_typical_income():
+    """Test typical income scenario."""
+    assert calculate_tax(1000, 'single') == (1000, 0.0))
+
+def test_high_income():
+    """Test high income scenario."""
+    assert calculate_tax(5000, 'married') == (5000, 0.0))
+
+def test_single_income():
+    """Test single income scenario."""
+    assert calculate_tax(0, 'single') == (0, 0.0))
+
+def test_invalid_inputs():
+    """Test invalid inputs."""
+    assert calculate_tax(-100, 'single') == (ValueError, 0.0))
+
+def test_bracket_boundaries():
+    """Test bracket boundaries."""
+    assert calculate_tax(11600, 0.10) == (11600, 10.0))
+
+def test_bracket_married():
+    """Test bracket married scenario."""
+    assert calculate_tax(23200, 0.10) == (23200, 10.0))
+
+def test_bracket_married_income():
+    """Test bracket married with income > 5000."""
+    assert calculate_tax(94300, 0.12) == (94300, 12.0))
+
+def test_bracket_married_rate():
+    """Test bracket married with rate > 0.37."""
+    assert calculate_tax(487450, 0.37) == (487450, 37.0))
+
+def test_invalid_inputs_one():
+    """Test one input with invalid format."""
+    assert calculate_tax(1, 'single') == (ValueError, 0.0))
+```

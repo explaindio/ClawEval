@@ -124,7 +124,7 @@ class OpenRouterKeyRotator:
             headers = {
                 "Content-Type": "application/json",
                 "Authorization": f"Bearer {key}",
-                "HTTP-Referer": "https://github.com/explaindio/ClawEval",
+                "HTTP-Referer": "https://github.com/AIgenteur/ClawEval",
                 "X-Title": "ClawEval Benchmark",
             }
             body = {

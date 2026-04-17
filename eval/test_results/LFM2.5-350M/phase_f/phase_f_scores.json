@@ -1,0 +1,600 @@
+{
+  "model": "LFM2.5-350M",
+  "timestamp": "2026-04-07T10:01:40.119877",
+  "total_score": 78,
+  "total_max": 570,
+  "percentage": 13.7,
+  "manual_tests": 6,
+  "results": [
+    {
+      "id": 1,
+      "role": "Router / Triage Agent",
+      "tier": 1,
+      "scoring_type": "exact",
+      "score": 0,
+      "max": 10,
+      "detail": "0/10 correct | 1: not found; 2: not found; 3: not found; 4: not found; 5: not found",
+      "tokens": 2
+    },
+    {
+      "id": 2,
+      "role": "Input Validator / Sanitizer",
+      "tier": 1,
+      "scoring_type": "exact",
+      "score": 0,
+      "max": 10,
+      "detail": "Fallback: 0/10 error keywords found",
+      "tokens": 1
+    },
+    {
+      "id": 3,
+      "role": "Heartbeat / Health Monitor",
+      "tier": 1,
+      "scoring_type": "exact",
+      "score": 0,
+      "max": 6,
+      "detail": "Could not parse JSON",
+      "tokens": 1
+    },
+    {
+      "id": 4,
+      "role": "Notification / Alert Agent",
+      "tier": 1,
+      "scoring_type": "exact",
+      "score": 0,
+      "max": 10,
+      "detail": "Could not parse JSON",
+      "tokens": 1
+    },
+    {
+      "id": 5,
+      "role": "Sentiment Analysis Agent",
+      "tier": 1,
+      "scoring_type": "exact",
+      "score": 1,
+      "max": 10,
+      "detail": "1/10 correct | 1: expected positive, got negative; 2: expected negative, got neutral; 3: expected neutral, got positive; 4: expected negative, got neutral; 5: expected positive, got negative",
+      "tokens": 66
+    },
+    {
+      "id": 6,
+      "role": "FAQ Generation Agent",
+      "tier": 1,
+      "scoring_type": "constraint",
+      "score": 1,
+      "max": 10,
+      "detail": "1/10 constraints | Missing: has_8_faqs, mentions_mobile_contradiction, mentions_sla_contradiction, q_a_format, covers_pricing",
+      "tokens": 42
+    },
+    {
+      "id": 7,
+      "role": "Translation Agent",
+      "tier": 1,
+      "scoring_type": "constraint",
+      "score": 0,
+      "max": 10,
+      "detail": "0/10 constraints | Missing: has_spanish, has_japanese, has_notes, handles_home_run, handles_cake_idiom",
+      "tokens": 13
+    },
+    {
+      "id": 8,
+      "role": "Calendar / Scheduling Agent",
+      "tier": 1,
+      "scoring_type": "exact",
+      "score": 0,
+      "max": 10,
+      "detail": "0/2 correct | utc_start: expected 17:00, got 00:00; utc_end: expected 17:30, got 23:59",
+      "tokens": 70
+    },
+    {
+      "id": 9,
+      "role": "Research / Web Search Agent",
+      "tier": 2,
+      "scoring_type": "exact",
+      "score": 0,
+      "max": 10,
+      "detail": "Could not parse JSON",
+      "tokens": 1
+    },
+    {
+      "id": 10,
+      "role": "Content Writer / Blog Writer",
+      "tier": 2,
+      "scoring_type": "manual",
+      "score": 5,
+      "max": 10,
+      "detail": "MANUAL \u2014 10 criteria to review",
+      "tokens": 510
+    },
+    {
+      "id": 11,
+      "role": "Editor Agent",
+      "tier": 2,
+      "scoring_type": "exact",
+      "score": 0,
+      "max": 10,
+      "detail": "0/10 found | missed: London; missed: recieves; missed: visited paid monument; missed: copper; missed: can only access two",
+      "tokens": 1
+    },
+    {
+      "id": 12,
+      "role": "Content Planner",
+      "tier": 2,
+      "scoring_type": "constraint",
+      "score": 3,
+      "max": 10,
+      "detail": "3/10 constraints | Missing: exactly_12_posts, no_weekends, blog_preceded_by_social, correct_themes, no_repeat_blog_day",
+      "tokens": 51
+    },
+    {
+      "id": 13,
+      "role": "Email Drafting / Summarization",
+      "tier": 2,
+      "scoring_type": "exact",
+      "score": 0,
+      "max": 10,
+      "detail": "0/8 correct | 1: expected P1, got P1/P2/P3; 2: expected P2, got P4; 3: expected P4, got P5; 4: not found; 5: not found",
+      "tokens": 27
+    },
+    {
+      "id": 14,
+      "role": "Document Summarization",
+      "tier": 2,
+      "scoring_type": "exact",
+      "score": 0,
+      "max": 10,
+      "detail": "Could not parse JSON",
+      "tokens": 3
+    },
+    {
+      "id": 15,
+      "role": "Meeting Notes / Transcription Agent",
+      "tier": 2,
+      "scoring_type": "exact",
+      "score": 0,
+      "max": 10,
+      "detail": "0/8 action items | missed: Mike - API docs; missed: Mike - Lisa access; missed: Lisa - user research",
+      "tokens": 1
+    },
+    {
+      "id": 16,
+      "role": "Social Media Scouting / Monitoring",
+      "tier": 2,
+      "scoring_type": "exact",
+      "score": 0,
+      "max": 10,
+      "detail": "Could not parse JSON",
+      "tokens": 14
+    },
+    {
+      "id": 17,
+      "role": "Social Media Content Agent",
+      "tier": 2,
+      "scoring_type": "manual",
+      "score": 5,
+      "max": 10,
+      "detail": "MANUAL \u2014 10 criteria to review",
+      "tokens": 65
+    },
+    {
+      "id": 18,
+      "role": "News Aggregation Agent",
+      "tier": 2,
+      "scoring_type": "exact",
+      "score": 0,
+      "max": 10,
+      "detail": "0/2 found | missed: NASA didn't launch Starlink; missed: Blue Origin didn't launch Starlink",
+      "tokens": 1
+    },
+    {
+      "id": 19,
+      "role": "Shopping / Price Comparison",
+      "tier": 2,
+      "scoring_type": "exact",
+      "score": 0,
+      "max": 5,
+      "detail": "Could not parse JSON",
+      "tokens": 1
+    },
+    {
+      "id": 20,
+      "role": "Memory / Knowledge Management",
+      "tier": 2,
+      "scoring_type": "exact",
+      "score": 0,
+      "max": 10,
+      "detail": "Could not parse JSON",
+      "tokens": 1
+    },
+    {
+      "id": 21,
+      "role": "RAG / Retrieval Agent",
+      "tier": 2,
+      "scoring_type": "exact",
+      "score": 0,
+      "max": 5,
+      "detail": "Could not parse JSON",
+      "tokens": 1
+    },
+    {
+      "id": 22,
+      "role": "Data Analysis Agent",
+      "tier": 2,
+      "scoring_type": "exact",
+      "score": 0,
+      "max": 10,
+      "detail": "Could not parse JSON",
+      "tokens": 1
+    },
+    {
+      "id": 23,
+      "role": "Website Scraping / Understanding",
+      "tier": 2,
+      "scoring_type": "exact",
+      "score": 0,
+      "max": 10,
+      "detail": "Could not parse JSON",
+      "tokens": 1
+    },
+    {
+      "id": 24,
+      "role": "Image Description / Understanding",
+      "tier": 2,
+      "scoring_type": "manual",
+      "score": 5,
+      "max": 10,
+      "detail": "MANUAL \u2014 10 criteria to review",
+      "tokens": 2
+    },
+    {
+      "id": 25,
+      "role": "Customer Support Agent",
+      "tier": 2,
+      "scoring_type": "exact",
+      "score": 0,
+      "max": 10,
+      "detail": "Could not parse JSON",
+      "tokens": 1
+    },
+    {
+      "id": 26,
+      "role": "Lead Scoring / Prospecting",
+      "tier": 2,
+      "scoring_type": "exact",
+      "score": 0,
+      "max": 5,
+      "detail": "Could not parse JSON",
+      "tokens": 1
+    },
+    {
+      "id": 27,
+      "role": "Sprint / Project Summarizer",
+      "tier": 2,
+      "scoring_type": "exact",
+      "score": 0,
+      "max": 10,
+      "detail": "Could not parse JSON",
+      "tokens": 1
+    },
+    {
+      "id": 28,
+      "role": "Transaction / Approval Agent",
+      "tier": 2,
+      "scoring_type": "exact",
+      "score": 0,
+      "max": 10,
+      "detail": "Could not parse JSON",
+      "tokens": 1
+    },
+    {
+      "id": 29,
+      "role": "Home Automation Agent",
+      "tier": 2,
+      "scoring_type": "constraint",
+      "score": 4,
+      "max": 10,
+      "detail": "4/10 constraints | Missing: has_morning_routine, has_thermostat_logic, has_security_arm_disarm, has_pet_care, has_laundry_notify",
+      "tokens": 309
+    },
+    {
+      "id": 30,
+      "role": "Fitness / Health Tracking",
+      "tier": 2,
+      "scoring_type": "exact",
+      "score": 0,
+      "max": 10,
+      "detail": "Could not parse JSON",
+      "tokens": 1
+    },
+    {
+      "id": 31,
+      "role": "Recipe / Cooking Agent",
+      "tier": 2,
+      "scoring_type": "exact",
+      "score": 0,
+      "max": 10,
+      "detail": "0/9 correct | flour_cups: missing; baking_powder_tsp: missing; salt_tsp: missing; butter_cups: missing; sugar_cups: missing",
+      "tokens": 31
+    },
+    {
+      "id": 32,
+      "role": "Personal Finance Tracking",
+      "tier": 2,
+      "scoring_type": "exact",
+      "score": 0,
+      "max": 10,
+      "detail": "Could not parse JSON",
+      "tokens": 1
+    },
+    {
+      "id": 33,
+      "role": "SEO Optimization Agent",
+      "tier": 2,
+      "scoring_type": "constraint",
+      "score": 9,
+      "max": 10,
+      "detail": "9/10 constraints | Missing: og_fields_present",
+      "tokens": 255
+    },
+    {
+      "id": 34,
+      "role": "Landing Page Generator",
+      "tier": 2,
+      "scoring_type": "manual",
+      "score": 5,
+      "max": 10,
+      "detail": "MANUAL \u2014 10 criteria to review",
+      "tokens": 822
+    },
+    {
+      "id": 35,
+      "role": "Travel Planning Agent",
+      "tier": 2,
+      "scoring_type": "constraint",
+      "score": 0,
+      "max": 10,
+      "detail": "0/10 constraints | Missing: budget_total, budget_breakdown, 1_activity_per_day, time_bounds, required_activities",
+      "tokens": 1
+    },
+    {
+      "id": 36,
+      "role": "Code Generation Agent",
+      "tier": 3,
+      "scoring_type": "code",
+      "score": 0,
+      "max": 10,
+      "detail": "Function 'merge_intervals' not defined",
+      "tokens": 1
+    },
+    {
+      "id": 37,
+      "role": "Code Review Agent",
+      "tier": 3,
+      "scoring_type": "exact",
+      "score": 8,
+      "max": 10,
+      "detail": "4/5 found | missed: None",
+      "tokens": 121
+    },
+    {
+      "id": 38,
+      "role": "QA / Test Writing Agent",
+      "tier": 3,
+      "scoring_type": "code",
+      "score": 8,
+      "max": 10,
+      "detail": "8/10 constraints | Missing: has_8_tests, all_tests_pass",
+      "tokens": 404
+    },
+    {
+      "id": 39,
+      "role": "Task Planning / Decomposition",
+      "tier": 3,
+      "scoring_type": "constraint",
+      "score": 0,
+      "max": 10,
+      "detail": "0/10 constraints | Missing: has_db_task_first, auth_before_crud, tests_after_features, docker_after_app, cicd_after_tests_docker",
+      "tokens": 1
+    },
+    {
+      "id": 40,
+      "role": "Fact-Checking Agent",
+      "tier": 3,
+      "scoring_type": "exact",
+      "score": 3,
+      "max": 10,
+      "detail": "3/10 correct | 2: expected TRUE, got FALSE; 3: expected FALSE, got TRUE; 4: expected TRUE, got FALSE; 5: expected FALSE, got TRUE; 6: expected TRUE, got FALSE",
+      "tokens": 73
+    },
+    {
+      "id": 41,
+      "role": "Critic / Review Agent",
+      "tier": 3,
+      "scoring_type": "manual",
+      "score": 5,
+      "max": 10,
+      "detail": "MANUAL \u2014 10 criteria to review",
+      "tokens": 364
+    },
+    {
+      "id": 42,
+      "role": "Market Research Agent",
+      "tier": 3,
+      "scoring_type": "exact",
+      "score": 0,
+      "max": 10,
+      "detail": "Could not parse JSON",
+      "tokens": 1
+    },
+    {
+      "id": 43,
+      "role": "Synthesizer / Aggregator",
+      "tier": 3,
+      "scoring_type": "exact",
+      "score": 0,
+      "max": 10,
+      "detail": "0/7 found | missed: productivity; missed: remote; missed: work; missed: communication; missed: experience",
+      "tokens": 41
+    },
+    {
+      "id": 44,
+      "role": "Curriculum / Course Designer",
+      "tier": 3,
+      "scoring_type": "constraint",
+      "score": 0,
+      "max": 10,
+      "detail": "0/10 constraints | Missing: has_18_sessions, session_duration_90, prerequisites_ordered, correct_week_themes, covers_all_topics",
+      "tokens": 1
+    },
+    {
+      "id": 45,
+      "role": "Prototype Generator",
+      "tier": 3,
+      "scoring_type": "code",
+      "score": 2,
+      "max": 10,
+      "detail": "2/10 constraints | Missing: has_get_list, has_get_single, has_post, has_put, has_validation",
+      "tokens": 275
+    },
+    {
+      "id": 46,
+      "role": "DevOps Agent",
+      "tier": 3,
+      "scoring_type": "exact",
+      "score": 5,
+      "max": 10,
+      "detail": "5/10 found | missed: latest; missed: development; missed: 3306 exposed; missed: /tmp; missed: redis exposed",
+      "tokens": 228
+    },
+    {
+      "id": 47,
+      "role": "Math / Logic Reasoning",
+      "tier": 4,
+      "scoring_type": "exact",
+      "score": 0,
+      "max": 10,
+      "detail": "0/5 correct | p1: not found; p2: not found; p3: not found; p4: not found; p5: not found",
+      "tokens": 2
+    },
+    {
+      "id": 48,
+      "role": "STEM Analysis",
+      "tier": 4,
+      "scoring_type": "exact",
+      "score": 0,
+      "max": 10,
+      "detail": "0/5 correct | p1: not numeric: {'answer': 2.0, 'rounded_to': 2}; p2: not numeric: {'answer': 1.0, 'rounded_to': 2}; p3: not numeric: {'answer': 0.5, 'rounded_to': 2}; p4: not numeric: {'answer': 0.5, 'rounded_to': 2}; p5: not numeric: {'answer': 6.0, 'rounded_to': 2}",
+      "tokens": 138
+    },
+    {
+      "id": 49,
+      "role": "Algorithm Exploration",
+      "tier": 4,
+      "scoring_type": "code",
+      "score": 0,
+      "max": 10,
+      "detail": "0/10 test cases passed | tc1: error: 'dict' object has no attribute 'put'; tc2: error: 'dict' object has no attribute 'put'; tc3: error: 'dict' object has no attribute 'put'",
+      "tokens": 90
+    },
+    {
+      "id": 50,
+      "role": "Orchestrator / Manager Agent",
+      "tier": 5,
+      "scoring_type": "constraint",
+      "score": 0,
+      "max": 10,
+      "detail": "0/10 constraints | Missing: data_before_writing, write_before_edit, edit_before_publish, seo_before_web, social_parallel_email",
+      "tokens": 1
+    },
+    {
+      "id": 51,
+      "role": "Software Architect Agent",
+      "tier": 5,
+      "scoring_type": "constraint",
+      "score": 0,
+      "max": 10,
+      "detail": "0/10 constraints | Missing: has_websocket_layer, has_message_store, has_presence_service, has_file_storage, has_encryption",
+      "tokens": 1
+    },
+    {
+      "id": 52,
+      "role": "Complex Debugger Agent",
+      "tier": 5,
+      "scoring_type": "exact",
+      "score": 4,
+      "max": 10,
+      "detail": "2/5 found | missed: None; missed: validation; missed: concurrent",
+      "tokens": 174
+    },
+    {
+      "id": 53,
+      "role": "Legal Document Review",
+      "tier": 5,
+      "scoring_type": "exact",
+      "score": 0,
+      "max": 10,
+      "detail": "0/10 found | missed: perpetual; missed: payment terms; missed: pre-existing IP; missed: unlimited liability; missed: one-sided termination",
+      "tokens": 1
+    },
+    {
+      "id": 54,
+      "role": "Medical / Health Analysis",
+      "tier": 5,
+      "scoring_type": "exact",
+      "score": 0,
+      "max": 10,
+      "detail": "0/10 found | missed: troponin elevated; missed: ST elevation; missed: hypertension; missed: tachycardia; missed: tachypnea",
+      "tokens": 1
+    },
+    {
+      "id": 55,
+      "role": "Financial Analysis / Stock Research",
+      "tier": 5,
+      "scoring_type": "exact",
+      "score": 0,
+      "max": 10,
+      "detail": "Could not parse JSON",
+      "tokens": 1
+    },
+    {
+      "id": 56,
+      "role": "Security Analyst Agent",
+      "tier": 5,
+      "scoring_type": "exact",
+      "score": 0,
+      "max": 10,
+      "detail": "0/10 found | missed: hardcoded secret; missed: XSS/template injection; missed: SQL injection; missed: pickle deserialization; missed: command injection",
+      "tokens": 405
+    },
+    {
+      "id": 57,
+      "role": "SRE / Incident Response",
+      "tier": 5,
+      "scoring_type": "exact",
+      "score": 0,
+      "max": 9,
+      "detail": "Could not parse JSON",
+      "tokens": 1
+    },
+    {
+      "id": 58,
+      "role": "Book / Long-Form Writing",
+      "tier": 5,
+      "scoring_type": "manual",
+      "score": 5,
+      "max": 10,
+      "detail": "MANUAL \u2014 10 criteria to review",
+      "tokens": 659
+    },
+    {
+      "id": 59,
+      "role": "Compliance / Regulatory Agent",
+      "tier": 5,
+      "scoring_type": "exact",
+      "score": 0,
+      "max": 10,
+      "detail": "0/10 found | missed: no consent; missed: no encryption; missed: no deletion right; missed: unauthorized sharing; missed: no DPO",
+      "tokens": 1
+    }
+  ]
+}

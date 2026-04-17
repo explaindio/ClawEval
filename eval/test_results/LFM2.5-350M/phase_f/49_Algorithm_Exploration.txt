@@ -1,0 +1,17 @@
+
+
+```
+def lru_cache(capacity):
+    cache = {}
+    def get(key):
+        return value if value in cache else -1
+    def put(key, value):
+        if value in cache:
+            cache[value] = True
+        else:
+            cache[value] = True
+            if len(cache) > capacity:
+                cache.pop(next(iter(cache)))
+
+    return cache
+```

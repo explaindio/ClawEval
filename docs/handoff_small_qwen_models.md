@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-**ClawEval** is a deterministic benchmark for evaluating LLMs as AI agents across 59 specialized roles. Located at `/Users/andrew/Documents/AAAPPS5/OpenClaw`. GitHub: `explaindio/ClawEval`.
+**ClawEval** is a deterministic benchmark for evaluating LLMs as AI agents across 59 specialized roles. Located at `/Users/andrew/Documents/AAAPPS5/OpenClaw`. GitHub: `AIgenteur/ClawEval`.
 
 The project tests models in two main phases:
 - **Phase F** — 59 role-specific hard tests with automated scoring (exact JSON, code exec, keyword detection, constraints). ~590 max points.

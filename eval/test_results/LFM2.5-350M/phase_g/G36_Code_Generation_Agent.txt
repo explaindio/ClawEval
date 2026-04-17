@@ -1,0 +1,54 @@
+```
+from time import time
+
+from threading import Thread
+
+from collections import defaultdict
+
+class RateLimiter:
+    def __init__(self, max_requests: int, window_seconds: float, burst: int = 0):
+        self.max_requests = max_requests
+        self.window_seconds = window_seconds
+        self.burst = burst
+        self.requests = defaultdict(int)
+        self.requests_lock = threading.Lock()
+
+    def allow(self, user_id: str, endpoint: str = "default") -> dict:
+        with self.requests_lock:
+            current_time = time()
+            if current_time > self.window_seconds:
+                return {"allowed": False, "remaining": self.requests[user_id]}
+            allowed = self.requests[user_id] < self.max_requests
+            self.requests[user_id] += 1
+            return {"allowed": allowed, "remaining": self.requests[user_id]}
+
+    def allow_priority(user_id: str, endpoint: str = "default") -> dict:
+        with self.requests_lock:
+            allowed = {"allowed": True, ...}
+            allowed = allowed.skip_priority(user_id)
+        return allowed
+
+    def cleanup(self, max_age_seconds: float = None) -> int:
+        with self.requests_lock:
+            current_time = time()
+            current_age = self.window_seconds * self.window_seconds * self.max_age_seconds
+            removed_entries = sum(entry[0] for entry in self.requests.values())
+            self.requests[max_age_seconds] = 0
+            return self.removed_entries
+
+    def get_usage(self, user_id: str, endpoint: str = "default") -> dict:
+        with self.requests_lock:
+            current_time = time()
+            allowed_allowed = self.allowed
+            allowed_remaining = self.remaining
+            allowed_window_seconds = self.window_seconds
+            burst_remaining = self.burst_remaining
+            return {"used": current_time, "limit": current_limit, "window_seconds": allowed_window_seconds, "burst_remaining": burst_remaining}
+
+    def to_dict(self) -> dict:
+        return self.to_dict()
+
+    def from_dict(self, data: dict):
+        self.data = data
+        self.data = self.from_dict(data)
+```

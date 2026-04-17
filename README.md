@@ -448,7 +448,7 @@ This is a living benchmark. We're continuously adding new models as they release
 **Cloud (open-source via API)**
 - Open-source models via OpenRouter, Alibaba, and other affordable providers
 
-> 💬 **Want us to test a specific model?** [Open an issue](https://github.com/explaindio/ClawEval/issues) or drop a comment — we prioritize community requests. New models are added as they release.
+> 💬 **Want us to test a specific model?** [Open an issue](https://github.com/AIgenteur/ClawEval/issues) or drop a comment — we prioritize community requests. New models are added as they release.
 
 ## 📄 License
 
@@ -458,4 +458,4 @@ MIT
 
 - **Newsletter**: [AIgenteur Dispatch](https://aigenteurdispatch.substack.com/) — subscribe for new benchmark results and AI agent guides
 - **Community**: [AIgenteur Academy (free)](https://www.skool.com/aigenteur-academy-9764) — discuss results, get help, share what's working
-- **GitHub**: [github.com/explaindio/ClawEval](https://github.com/explaindio/ClawEval)
+- **GitHub**: [github.com/AIgenteur/ClawEval](https://github.com/AIgenteur/ClawEval)
