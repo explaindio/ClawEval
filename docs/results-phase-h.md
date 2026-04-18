@@ -19,14 +19,14 @@ python3 eval/run_phase_h.py \
 
 ## Baseline: Qwen3.6-35B-A3B
 
-**Overall Score:** 862 / 1100 (78.36%)
+**Overall Score:** 871 / 1100 (79.18%)
 
 *This model establishes the highest baseline ceiling, successfully navigating extensive prompt constraints but failing on the most complex debugging and architectural loops.*
 
 ### Detailed Scores
 - ✅ H-01 Router / Triage Agent: 28/30 (93%)
 - ✅ H-02 Input Validator / Sanitizer: 29/30 (97%)
-- ✅ H-03 Heartbeat / Health Monitor: 14/15 (93%)
+- ❌ H-03 Heartbeat / Health Monitor: 0/15 (0%)
 - ⚠️ H-04 Notification / Alert Agent: 23/30 (77%)
 - ✅ H-05 Sentiment Analysis Agent: 27/30 (90%)
 - ✅ H-06 FAQ Generation Agent: 15/15 (100%)
@@ -56,19 +56,19 @@ python3 eval/run_phase_h.py \
 - ❌ H-33 SEO Optimization Agent: 5/15 (33%)
 - ❌ H-35 Travel Planning Agent: 1/15 (7%)
 - ✅ H-36 Code Generation Agent: 30/30 (100%)
-- ❌ H-37 Code Review Agent: 0/15 (0%)
+- ❌ H-37 Code Review Agent: 5/15 (33%)
 - ✅ H-38 QA / Test Writing Agent: 13/15 (87%)
 - ❌ H-39 Task Planning / Decomposition: 1/18 (6%)
 - ✅ H-40 Fact-Checking Agent: 29/30 (97%)
 - ✅ H-42 Market Research Agent: 14/15 (93%)
 - ✅ H-43 Synthesizer / Aggregator: 13/15 (87%)
-- ❌ H-44 Curriculum Designer: 1/15 (7%)
+- ❌ H-44 Curriculum Designer: 7/15 (47%)
 - ✅ H-45 Prototype Generator: 15/15 (100%)
 - ❌ H-46 DevOps Agent: 0/15 (0%)
-- ✅ H-47 Math / Logic Reasoning: 15/15 (100%)
+- ✅ H-47 Math / Logic Reasoning: 14/15 (93%)
 - ✅ H-48 STEM Research Analyst: 15/15 (100%)
 - ✅ H-49 Algorithm Explorer: 30/30 (100%)
-- ❌ H-50 Orchestrator Agent: 0/15 (0%)
+- ✅ H-50 Orchestrator Agent: 13/15 (87%)
 - ❌ H-51 Software Architect Agent: 6/15 (40%)
 - ❌ H-52 Complex Debugger Agent: 0/15 (0%)
 - ❌ H-53 Legal Document Review: 6/15 (40%)

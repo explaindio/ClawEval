@@ -166,32 +166,36 @@ def score_h_security_vulns(content, scoring):
     if missed:
         msg += " | missed: " + "; ".join(missed[:8])
     return found, total, msg
-
 def score_h_keywords(content, scoring):
-    """Score by checking if the expected keyword/phrase strings are present in the output text."""
+    """Score by checking if the expected keyword strings are present in the output text."""
     answers = scoring.get("answers", {})
     if not answers:
         return 0, 0, "No answers defined."
-    
     total = len(answers)
     text = content.lower()
-    
+    import re
     correct = 0
     wrong = []
     
     for key, expected in answers.items():
-        if isinstance(expected, str):
-            kw_lower = expected.lower()
-        else:
-            kw_lower = str(expected).lower()
+        kw_lower = str(expected).lower()
+        if kw_lower == "yes":
+            # For boolean constraints, check if the key's words are in the text
+            words = [w for w in key.replace("_", " ").split() if len(w) >= 3]
+            if words and all(w in text for w in words):
+                correct += 1
+            else:
+                wrong.append(f"#{key}: missing")
+            continue
             
-        if kw_lower in text:
+        # Strip L12: prefixes from kw_lower
+        kw_clean = re.sub(r'l\d+:\s*', '', kw_lower)
+        if kw_clean in text:
             correct += 1
-        elif kw_lower.replace("→", "->") in text:
+        elif kw_clean.replace("→", "->") in text:
             correct += 1
         else:
-            # try fuzzy matching of >3 char words
-            words = [w for w in kw_lower.replace("/", " ").replace("→", " ").replace("-", " ").split() if len(w) > 3]
+            words = [w for w in kw_clean.replace("/", " ").replace("→", " ").replace("-", " ").split() if len(w) > 3]
             if words and all(w in text for w in words):
                 correct += 1
             else:
@@ -202,7 +206,6 @@ def score_h_keywords(content, scoring):
         msg += " | " + "; ".join(wrong[:5])
         
     return correct, total, msg
-
 
 def score_h_content_planner(content, scoring):
     """Score content planner with dense constraint checking."""
