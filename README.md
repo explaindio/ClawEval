@@ -28,48 +28,6 @@ Most benchmarks tell you a model is "smart." ClawEval tells you if it can **do t
 >
 > Phase F tests have **ceiling effects** — most strong models score 8–10/10. Phase H uses **30–50 checkpoints** per test with adversarial traps, sarcasm, and near-truths to create real ranking spread. Same roles, much harder.
 
-#### Phase H Leaderboard — Qwen3.6-35B-A3B (79.2% · 871/1100)
-
-| Test | Role | Score | % |
-|------|------|-------|---|
-| H-02 | Input Validator / Sanitizer | 29/30 | ✅ 97% |
-| H-15 | Meeting Notes / Transcription | 34/35 | ✅ 97% |
-| H-40 | Fact-Checking Agent | 29/30 | ✅ 97% |
-| H-06 | FAQ Generation Agent | 15/15 | ✅ 100% |
-| H-07 | Translation Agent | 15/15 | ✅ 100% |
-| H-14 | Document Summarization | 15/15 | ✅ 100% |
-| H-19 | Shopping / Price Comparison | 15/15 | ✅ 100% |
-| H-20 | Memory Management | 20/20 | ✅ 100% |
-| H-23 | Website Scraping | 15/15 | ✅ 100% |
-| H-27 | Sprint Summarizer | 15/15 | ✅ 100% |
-| H-30 | Fitness Tracking | 15/15 | ✅ 100% |
-| H-31 | Recipe / Cooking Agent | 15/15 | ✅ 100% |
-| H-32 | Personal Finance | 15/15 | ✅ 100% |
-| H-36 | Code Generation Agent | 30/30 | ✅ 100% |
-| H-45 | Prototype Generator | 15/15 | ✅ 100% |
-| H-47 | Math / Logic Reasoning | 14/15 | ✅ 93% |
-| H-48 | STEM Research Analyst | 15/15 | ✅ 100% |
-| H-49 | Algorithm Explorer | 30/30 | ✅ 100% |
-| H-54 | Medical / Health Analysis | 15/15 | ✅ 100% |
-| H-50 | Orchestrator / Manager Agent | 13/15 | ✅ 87% |
-| H-18 | News Aggregation | 7/7 | ✅ 100% |
-| H-08 | Calendar / Scheduling | 10/20 | ⚠️ 50% |
-| H-21 | RAG / Retrieval Agent | 9/15 | ⚠️ 60% |
-| H-44 | Curriculum / Course Designer | 7/15 | ⚠️ 47% |
-| H-29 | Home Automation Agent | 7/20 | ❌ 35% |
-| H-33 | SEO Optimization Agent | 5/15 | ❌ 33% |
-| H-37 | Code Review Agent | 5/15 | ❌ 33% |
-| H-51 | Software Architect | 6/15 | ❌ 40% |
-| H-53 | Legal Document Review | 6/15 | ❌ 40% |
-| H-35 | Travel Planning Agent | 1/15 | ❌ 7% |
-| H-39 | Task Planning / Decomposition | 1/18 | ❌ 6% |
-| H-59 | Compliance Agent | 1/15 | ❌ 7% |
-| H-03 | Heartbeat / Health Monitor | 0/15 | ❌ 0% |
-| H-46 | DevOps Agent | 0/15 | ❌ 0% |
-| H-52 | Complex Debugger Agent | 0/15 | ❌ 0% |
-
-> 📊 **[Full Phase H results with per-checkpoint detail →](docs/results-phase-h.md)** · More models coming soon
-
 ### 🖥️ LOCAL Models — Run on YOUR Hardware
 
 > 📄 **[OpenClaw Backend: Local on 3090 — The Complete Guide (PDF)](docs/OpenClaw_Backend_Local_on_3090.pdf)** — An interactive walkthrough of running the full OpenClaw backend locally on an RTX 3090. Covers setup, model selection, and performance tips with step-by-step calls to action.
@@ -157,6 +115,55 @@ Two models both score 10/10 — but one used 500 tokens, the other 5,000. **The 
 > 💡 **Key insight:** Thinking models use **10–20× more tokens** than NoThink variants for similar scores. For cost-sensitive agent pipelines, NoThink wins massively on efficiency.
 >
 > 📊 **[Full Token Efficiency Leaderboard (35 models) →](docs/results-token-efficiency.md)** — complete rankings, Think vs NoThink gaps, best per VRAM tier
+
+---
+
+## 🔬 Phase H — Dense Constraint Leaderboard
+
+53 tests · 1,100 checkpoints · 30–50 checkpoints per test. **Baseline: Qwen3.6-35B-A3B — 871/1100 (79.2%)**
+
+| Test | Role | Score | % |
+|------|------|-------|---|
+| H-06 | FAQ Generation Agent | 15/15 | ✅ 100% |
+| H-07 | Translation Agent | 15/15 | ✅ 100% |
+| H-14 | Document Summarization | 15/15 | ✅ 100% |
+| H-18 | News Aggregation | 7/7 | ✅ 100% |
+| H-19 | Shopping / Price Comparison | 15/15 | ✅ 100% |
+| H-20 | Memory Management | 20/20 | ✅ 100% |
+| H-23 | Website Scraping | 15/15 | ✅ 100% |
+| H-27 | Sprint Summarizer | 15/15 | ✅ 100% |
+| H-30 | Fitness Tracking | 15/15 | ✅ 100% |
+| H-31 | Recipe / Cooking Agent | 15/15 | ✅ 100% |
+| H-32 | Personal Finance | 15/15 | ✅ 100% |
+| H-36 | Code Generation Agent | 30/30 | ✅ 100% |
+| H-45 | Prototype Generator | 15/15 | ✅ 100% |
+| H-48 | STEM Research Analyst | 15/15 | ✅ 100% |
+| H-49 | Algorithm Explorer | 30/30 | ✅ 100% |
+| H-54 | Medical / Health Analysis | 15/15 | ✅ 100% |
+| H-02 | Input Validator / Sanitizer | 29/30 | ✅ 97% |
+| H-15 | Meeting Notes / Transcription | 34/35 | ✅ 97% |
+| H-40 | Fact-Checking Agent | 29/30 | ✅ 97% |
+| H-01 | Router / Triage Agent | 28/30 | ✅ 93% |
+| H-09 | Research / Web Search Agent | 28/30 | ✅ 93% |
+| H-47 | Math / Logic Reasoning | 14/15 | ✅ 93% |
+| H-50 | Orchestrator / Manager Agent | 13/15 | ✅ 87% |
+| H-11 | Editor Agent | 25/30 | ✅ 83% |
+| H-08 | Calendar / Scheduling | 10/20 | ⚠️ 50% |
+| H-21 | RAG / Retrieval Agent | 9/15 | ⚠️ 60% |
+| H-44 | Curriculum / Course Designer | 7/15 | ⚠️ 47% |
+| H-29 | Home Automation Agent | 7/20 | ❌ 35% |
+| H-33 | SEO Optimization Agent | 5/15 | ❌ 33% |
+| H-37 | Code Review Agent | 5/15 | ❌ 33% |
+| H-51 | Software Architect | 6/15 | ❌ 40% |
+| H-53 | Legal Document Review | 6/15 | ❌ 40% |
+| H-35 | Travel Planning Agent | 1/15 | ❌ 7% |
+| H-39 | Task Planning / Decomposition | 1/18 | ❌ 6% |
+| H-59 | Compliance Agent | 1/15 | ❌ 7% |
+| H-03 | Heartbeat / Health Monitor | 0/15 | ❌ 0% |
+| H-46 | DevOps Agent | 0/15 | ❌ 0% |
+| H-52 | Complex Debugger Agent | 0/15 | ❌ 0% |
+
+> 📊 **[Full Phase H results with per-checkpoint detail →](docs/results-phase-h.md)** · More models coming soon
 
 ---
 
