@@ -22,11 +22,11 @@ Most benchmarks tell you a model is "smart." ClawEval tells you if it can **do t
 >
 > Two models both score 10/10 — but one used 500 tokens, the other 5,000. The efficient one saves **10× on compute, cost, and latency.** We rank 35 models by tokens-per-point. Think modes use 10–20× more tokens for marginal gains. **This metric is hardware-independent.**
 
-### 🔬 NEW: Phase H — Dense Constraint Tests (1,100 Checkpoints)
+### 🚀 NEW: ClawEval v2 — 59 Agents, 1,220 Checkpoints, Zero Ceiling Effects
 
-> 🏆 **[Can your model handle 30–50 checkpoints per test? →](docs/results-phase-h.md)**
+> 🏆 **[The definitive dense evaluation →](docs/results-phase-h.md)**
 >
-> Phase F tests have **ceiling effects** — most strong models score 8–10/10. Phase H uses **30–50 checkpoints** per test with adversarial traps, sarcasm, and near-truths to create real ranking spread. Same roles, much harder.
+> Phase F scored x/10 — everyone got 8+. **ClawEval v2 upgrades all 59 agents** to 15–30 checkpoints each with adversarial traps, sarcasm, and near-truths. Real separation, real rankings. **First results (Kimi K2.6, GLM-5.1) dropping now.**
 
 ### 🖥️ LOCAL Models — Run on YOUR Hardware
 
@@ -118,7 +118,33 @@ Two models both score 10/10 — but one used 500 tokens, the other 5,000. **The 
 
 ---
 
-## 🔬 Phase H — Dense Constraint Leaderboard
+## 🚀 ClawEval v2 — Full 59-Agent Dense Evaluation
+
+> **The next generation of ClawEval testing.** Every agent role now has a dense constraint test with **15–30 checkpoints** — no more x/10 ceiling effects. This is the definitive leaderboard.
+
+Phase F gave every model 8–10/10 on most roles. ClawEval v2 replaces that with **granular percentage scoring** across all 59 agents. Same roles, dramatically harder prompts, real separation between models.
+
+| Metric | Phase F (v1) | ClawEval v2 |
+|--------|-------------|-------------|
+| Tests | 59 roles × 10 pts | **59 roles × 15–30 checkpoints** |
+| Total checkpoints | 590 | **1,220** |
+| Scoring | x/10 (ceiling effect) | **Raw % (fine-grained)** |
+| Manual-only tests | 6 | **0 — fully automated** |
+| Discriminating power | Low (everyone scores 8+) | **High (real spread)** |
+
+### 🏅 ClawEval v2 Leaderboard
+
+| Model | Provider | Score | Checkpoints | Notes |
+|-------|----------|-------|-------------|-------|
+| Kimi K2.6 | ☁️ Ollama Cloud | 🔄 Running... | /1220 | First v2 model — results dropping soon |
+| GLM-5.1 | ☁️ Ollama Cloud | ⏳ Queued | /1220 | Next in line |
+| Qwen3.6-35B-A3B | 🟢 24GB Local | ⏳ Pending | /1220 | Baseline re-run needed for 6 new tests |
+
+> 📊 **[Full ClawEval v2 results →](docs/results-phase-h.md)** · Models are tested sequentially — star ⭐ this repo to get notified when results drop.
+
+---
+
+## 🔬 Phase H — Dense Constraint Leaderboard (v1 · 53 tests)
 
 53 tests · 1,100 checkpoints · 30–50 checkpoints per test. **Baseline: Qwen3.6-35B-A3B — 871/1100 (79.2%)**
 
