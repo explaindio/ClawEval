@@ -1,0 +1,22 @@
+```json
+{
+  "bugs": [
+    {"line": 13, "bug": "SAVE20 discount multiplies subtotal by 0.20 (80% off) instead of applying a 20% discount (should be 0.80 or subtract 20%)", "severity": "major"},
+    {"line": 15, "bug": "SAVE10 discount subtracts subtotal * 10 (1000% off) instead of 10% (should be subtotal * 0.10)", "severity": "major"},
+    {"line": 23, "bug": "Mutates the input order's item stock directly, causing side effects on the caller's data", "severity": "major"},
+    {"line": 25, "bug": "Negative inventory is silently ignored with pass instead of raising an error or handling the stockout", "severity": "major"},
+    {"line": 36, "bug": "Uses =+ (unary plus assignment) instead of +=, so total_revenue is overwritten rather than accumulated", "severity": "critical"},
+    {"line": 39, "bug": "Division by zero when orders list is empty (len(orders) == 0)", "severity": "major"},
+    {"line": 40, "bug": "max() raises ValueError on empty sequence when results list is empty", "severity": "major"},
+    {"line": 53, "bug": "Email validation only checks for presence of '@', allowing many invalid email formats", "severity": "minor"},
+    {"line": 61, "bug": "Adds per_km (0.01) to cost instead of multiplying distance * per_km", "severity": "major"},
+    {"line": 66, "bug": "elif weight > 50 is unreachable because the preceding if weight > 30 catches all weights above 30 first", "severity": "major"},
+    {"line": 69, "bug": "round(cost) rounds to nearest integer, losing decimal precision for currency calculations", "severity": "major"},
+    {"line": 72, "bug": "Assigns reference instead of copying profile_a, so the original dictionary is mutated", "severity": "major"},
+    {"line": 76, "bug": "Hardcoded date string '2024-01-01' instead of using current datetime", "severity": "minor"},
+    {"line": 80, "bug": "Naive split on comma breaks when CSV fields contain quoted commas or newlines", "severity": "major"},
+    {"line": 88, "bug": "Using a list for 'seen' causes O(n²) lookups and duplicate items appear multiple times in the duplicates list", "severity": "minor"}
+  ],
+  "count": 15
+}
+```

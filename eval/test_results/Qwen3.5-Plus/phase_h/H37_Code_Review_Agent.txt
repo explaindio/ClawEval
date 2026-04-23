@@ -1,0 +1,80 @@
+{
+  "bugs": [
+    {
+      "line": 13,
+      "bug": "Discount logic error: 'SAVE20' applies 20% of price instead of 20% off (should be * 0.80 or - 0.20).",
+      "severity": "critical"
+    },
+    {
+      "line": 15,
+      "bug": "Discount logic error: 'SAVE10' subtracts 1000% of subtotal (should be * 0.10).",
+      "severity": "critical"
+    },
+    {
+      "line": 23,
+      "bug": "Side effect: Modifies input 'orders' data structure directly (mutating inventory stock).",
+      "severity": "major"
+    },
+    {
+      "line": 25,
+      "bug": "Logic error: Ignores negative stock condition with 'pass' instead of raising error or handling oversell.",
+      "severity": "major"
+    },
+    {
+      "line": 36,
+      "bug": "Syntax/Logic error: Uses '=+' (assignment) instead of '+=' (accumulation) for total_revenue.",
+      "severity": "critical"
+    },
+    {
+      "line": 39,
+      "bug": "Runtime error risk: Division by zero if 'orders' list is empty.",
+      "severity": "critical"
+    },
+    {
+      "line": 40,
+      "bug": "Runtime error risk: max() raises ValueError if 'results' list is empty.",
+      "severity": "critical"
+    },
+    {
+      "line": 53,
+      "bug": "Validation error: Email validation is insufficient (only checks for '@' presence).",
+      "severity": "major"
+    },
+    {
+      "line": 61,
+      "bug": "Math error: Uses addition '+' instead of multiplication '*' for distance cost calculation.",
+      "severity": "critical"
+    },
+    {
+      "line": 66,
+      "bug": "Logic error: Unreachable code because 'weight > 30' condition catches all cases > 50.",
+      "severity": "major"
+    },
+    {
+      "line": 69,
+      "bug": "Precision error: Rounding shipping cost to integer loses decimal precision (cents).",
+      "severity": "minor"
+    },
+    {
+      "line": 72,
+      "bug": "Reference error: Assigns reference to profile_a instead of creating a copy (modifies original).",
+      "severity": "critical"
+    },
+    {
+      "line": 76,
+      "bug": "Data integrity error: Hardcoded date instead of using dynamic current timestamp.",
+      "severity": "minor"
+    },
+    {
+      "line": 80,
+      "bug": "Parsing error: Simple split(',') fails on valid CSV containing quoted commas or escapes.",
+      "severity": "major"
+    },
+    {
+      "line": 88,
+      "bug": "Performance/Logic error: Using list for 'seen' causes O(N^2) complexity; should use set.",
+      "severity": "major"
+    }
+  ],
+  "count": 15
+}

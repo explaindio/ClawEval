@@ -1,0 +1,17 @@
+{
+  "q1": "CRDT (Conflict-free Replicated Data Types) for automatic conflict resolution without central locking.",
+  "q2": "WebSocket for full-duplex, low-latency bi-directional communication.",
+  "q3": "PostgreSQL with JSONB for structured metadata and flexible document content storage.",
+  "q4": "Local-first architecture using IndexedDB to queue operations and sync upon network restoration.",
+  "q5": "Redis Pub/Sub for low-latency message broadcasting between WebSocket server nodes.",
+  "q6": "Stateless WebSocket servers backed by a Redis adapter to share connection state across instances.",
+  "q7": "Ephemeral presence events broadcast via WebSocket/Redis, not persisted to the database.",
+  "q8": "JWT (JSON Web Tokens) validated during the WebSocket handshake and API requests.",
+  "q9": "Immutable snapshots stored periodically combined with operation logs for replay capability.",
+  "q10": "Global Multi-CDN (e.g., CloudFront) with versioned asset caching and cache invalidation.",
+  "q11": "Virtualization and lazy loading of document segments (blocks/pages) rather than loading the whole file.",
+  "q12": "Token Bucket algorithm enforced at the API Gateway using Redis for distributed state.",
+  "q13": "Automated daily snapshots with Point-in-Time Recovery (PITR) and cross-region replication.",
+  "q14": "Pre-signed URLs for direct-to-S3 uploads, inserting placeholders until processing completes.",
+  "q15": "Prometheus and Grafana for metrics, ELK Stack for logging, and Jaeger for distributed tracing."
+}

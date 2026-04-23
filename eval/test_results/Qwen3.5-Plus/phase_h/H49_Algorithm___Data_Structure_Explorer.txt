@@ -1,0 +1,122 @@
+class LRUCache:
+    class DListNode:
+        def __init__(self, key=0, val=0):
+            self.key = key
+            self.val = val
+            self.prev = None
+            self.next = None
+
+    def __init__(self, capacity):
+        self.cap = capacity
+        self.cache = {}
+        self.head = self.DListNode()
+        self.tail = self.DListNode()
+        self.head.next = self.tail
+        self.tail.prev = self.head
+
+    def _add(self, node):
+        node.prev = self.head
+        node.next = self.head.next
+        self.head.next.prev = node
+        self.head.next = node
+
+    def _remove(self, node):
+        node.prev.next = node.next
+        node.next.prev = node.prev
+
+    def _move_to_head(self, node):
+        self._remove(node)
+        self._add(node)
+
+    def _pop_tail(self):
+        node = self.tail.prev
+        self._remove(node)
+        return node
+
+    def get(self, key):
+        if key in self.cache:
+            node = self.cache[key]
+            self._move_to_head(node)
+            return node.val
+        return -1
+
+    def put(self, key, value):
+        if key in self.cache:
+            node = self.cache[key]
+            node.val = value
+            self._move_to_head(node)
+        else:
+            node = self.DListNode(key, value)
+            self.cache[key] = node
+            self._add(node)
+            if len(self.cache) > self.cap:
+                tail = self._pop_tail()
+                del self.cache[tail.key]
+
+class MinStack:
+    def __init__(self):
+        self.stack = []
+        self.min_stack = []
+
+    def push(self, val):
+        self.stack.append(val)
+        if not self.min_stack:
+            self.min_stack.append(val)
+        else:
+            self.min_stack.append(min(val, self.min_stack[-1]))
+
+    def pop(self):
+        self.stack.pop()
+        self.min_stack.pop()
+
+    def top(self):
+        return self.stack[-1]
+
+    def get_min(self):
+        return self.min_stack[-1]
+
+def find_median(stream):
+    def heap_push(h, val):
+        h.append(val)
+        i = len(h) - 1
+        while i > 0:
+            p = (i - 1) // 2
+            if h[i] < h[p]:
+                h[i], h[p] = h[p], h[i]
+                i = p
+            else:
+                break
+
+    def heap_pop(h):
+        if not h: return None
+        root = h[0]
+        h[0] = h[-1]
+        h.pop()
+        i = 0
+        n = len(h)
+        while True:
+            l, r = 2 * i + 1, 2 * i + 2
+            smallest = i
+            if l < n and h[l] < h[smallest]: smallest = l
+            if r < n and h[r] < h[smallest]: smallest = r
+            if smallest != i:
+                h[i], h[smallest] = h[smallest], h[i]
+                i = smallest
+            else:
+                break
+        return root
+
+    low = []
+    high = []
+    res = []
+    for num in stream:
+        heap_push(low, -num)
+        heap_push(high, -heap_pop(low))
+        if len(low) < len(high):
+            heap_push(low, -heap_pop(high))
+        
+        if len(low) > len(high):
+            res.append(float(-low[0]))
+        else:
+            res.append((-low[0] + high[0]) / 2.0)
+    return res

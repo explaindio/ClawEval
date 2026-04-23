@@ -1,0 +1,844 @@
+```html
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="QuillAI - The most advanced AI writing assistant for creators, marketers, and teams. Generate high-quality content in seconds.">
+    <title>QuillAI - AI Writing Assistant for Professionals</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Space Grotesk', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            200: '#bae6fd',
+                            300: '#7dd3fc',
+                            400: '#38bdf8',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                        },
+                        dark: {
+                            900: '#0f172a',
+                            800: '#1e293b',
+                            700: '#334155',
+                        }
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'gradient-x': 'gradient-x 15s ease infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        'gradient-x': {
+                            '0%, 100%': {
+                                'background-size': '200% 200%',
+                                'background-position': 'left center'
+                            },
+                            '50%': {
+                                'background-size': '200% 200%',
+                                'background-position': 'right center'
+                            },
+                        },
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+
+        /* Glassmorphism Utilities */
+        .glass {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .glass-card {
+            background: rgba(30, 41, 59, 0.4);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .glass-card:hover {
+            background: rgba(30, 41, 59, 0.6);
+            border-color: rgba(56, 189, 248, 0.3);
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px -15px rgba(14, 165, 233, 0.2);
+        }
+
+        /* Text Gradient */
+        .text-gradient {
+            background: linear-gradient(to right, #38bdf8, #818cf8, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Comparison Slider Styles */
+        .comparison-container {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            overflow: hidden;
+            border-radius: 1rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+        .comparison-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+        }
+        .comparison-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 50%; /* Initial split */
+            height: 100%;
+            overflow: hidden;
+            border-right: 2px solid white;
+            background-color: #1e293b; /* Fallback */
+            z-index: 10;
+        }
+        .comparison-handle {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 40px;
+            height: 40px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: ew-resize;
+            z-index: 20;
+            box-shadow: 0 0 15px rgba(0,0,0,0.5);
+        }
+
+        /* Background Animation */
+        .bg-grid {
+            background-size: 40px 40px;
+            background-image: linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+        }
+        
+        .blob {
+            position: absolute;
+            filter: blur(80px);
+            opacity: 0.4;
+            z-index: -1;
+            animation: float 10s ease-in-out infinite;
+        }
+
+        /* Reveal Animation Classes */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="bg-dark-900 text-slate-300 font-sans antialiased overflow-x-hidden selection:bg-brand-500 selection:text-white">
+
+    <!-- Background Effects -->
+    <div class="fixed inset-0 bg-grid pointer-events-none z-0"></div>
+    <div class="blob bg-brand-600 w-96 h-96 rounded-full top-0 left-0 -translate-x-1/2 -translate-y-1/2"></div>
+    <div class="blob bg-purple-600 w-96 h-96 rounded-full bottom-0 right-0 translate-x-1/2 translate-y-1/2 animation-delay-2000"></div>
+
+    <!-- Navigation -->
+    <header class="fixed w-full top-0 z-50 transition-all duration-300" id="navbar">
+        <div class="glass border-b border-white/5">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center h-20">
+                    <!-- Logo -->
+                    <div class="flex-shrink-0 flex items-center gap-2 cursor-pointer" onclick="window.scrollTo(0,0)">
+                        <div class="w-10 h-10 bg-gradient-to-br from-brand-400 to-purple-500 rounded-lg flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-brand-500/20">
+                            Q
+                        </div>
+                        <span class="font-display font-bold text-2xl text-white tracking-tight">Quill<span class="text-brand-400">AI</span></span>
+                    </div>
+
+                    <!-- Desktop Menu -->
+                    <nav class="hidden md:flex space-x-8 items-center">
+                        <a href="#features" class="text-sm font-medium text-slate-300 hover:text-white transition-colors">Features</a>
+                        <a href="#how-it-works" class="text-sm font-medium text-slate-300 hover:text-white transition-colors">How it Works</a>
+                        <a href="#pricing" class="text-sm font-medium text-slate-300 hover:text-white transition-colors">Pricing</a>
+                        <a href="#testimonials" class="text-sm font-medium text-slate-300 hover:text-white transition-colors">Testimonials</a>
+                        <a href="#contact" class="text-sm font-medium text-slate-300 hover:text-white transition-colors">Contact</a>
+                    </nav>
+
+                    <!-- CTA & Mobile Toggle -->
+                    <div class="flex items-center gap-4">
+                        <a href="#pricing" class="hidden md:inline-flex items-center justify-center px-5 py-2.5 border border-transparent text-sm font-medium rounded-full text-white bg-brand-600 hover:bg-brand-700 transition-all shadow-lg shadow-brand-500/25 hover:shadow-brand-500/40">
+                            Start Free Trial
+                        </a>
+                        <button id="mobile-menu-btn" class="md:hidden text-slate-300 hover:text-white focus:outline-none" aria-label="Open Menu">
+                            <i class="fas fa-bars text-2xl"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden glass border-b border-white/5 absolute w-full">
+            <div class="px-4 pt-2 pb-6 space-y-2">
+                <a href="#features" class="block px-3 py-2 rounded-md text-base font-medium text-slate-300 hover:text-white hover:bg-white/5">Features</a>
+                <a href="#how-it-works" class="block px-3 py-2 rounded-md text-base font-medium text-slate-300 hover:text-white hover:bg-white/5">How it Works</a>
+                <a href="#pricing" class="block px-3 py-2 rounded-md text-base font-medium text-slate-300 hover:text-white hover:bg-white/5">Pricing</a>
+                <a href="#testimonials" class="block px-3 py-2 rounded-md text-base font-medium text-slate-300 hover:text-white hover:bg-white/5">Testimonials</a>
+                <a href="#contact" class="block px-3 py-2 rounded-md text-base font-medium text-slate-300 hover:text-white hover:bg-white/5">Contact</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="relative z-10 pt-20">
+        <!-- Hero Section -->
+        <section class="relative pt-20 pb-32 lg:pt-32 lg:pb-40 overflow-hidden">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+                <div class="grid lg:grid-cols-2 gap-12 items-center">
+                    <!-- Text Content -->
+                    <div class="text-center lg:text-left reveal active">
+                        <div class="inline-flex items-center px-3 py-1 rounded-full border border-brand-500/30 bg-brand-500/10 text-brand-300 text-xs font-medium mb-6">
+                            <span class="flex h-2 w-2 rounded-full bg-brand-400 mr-2 animate-pulse"></span>
+                            v2.0 is now live
+                        </div>
+                        <h1 class="text-5xl lg:text-7xl font-display font-bold text-white tracking-tight leading-tight mb-6">
+                            Write Faster with <br>
+                            <span class="text-gradient">Artificial Intelligence</span>
+                        </h1>
+                        <p class="text-lg text-slate-400 mb-8 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
+                            QuillAI helps you generate high-quality content, from blog posts to marketing copy, in seconds. Stop staring at a blank page.
+                        </p>
+                        
+                        <!-- Email Signup Form -->
+                        <form class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto lg:mx-0 mb-8" onsubmit="event.preventDefault(); alert('Thanks for signing up!');">
+                            <label for="hero-email" class="sr-only">Email address</label>
+                            <input type="email" id="hero-email" placeholder="Enter your email" class="flex-1 appearance-none rounded-lg border border-slate-700 bg-dark-800 text-white px-4 py-3 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-all" required>
+                            <button type="submit" class="w-full sm:w-auto px-6 py-3 rounded-lg bg-brand-600 text-white font-medium hover:bg-brand-500 transition-colors shadow-lg shadow-brand-500/25">
+                                Get Started
+                            </button>
+                        </form>
+
+                        <div class="flex items-center justify-center lg:justify-start gap-6 text-sm text-slate-500">
+                            <span class="flex items-center gap-2"><i class="fas fa-check text-brand-400"></i> No credit card</span>
+                            <span class="flex items-center gap-2"><i class="fas fa-check text-brand-400"></i> 14-day trial</span>
+                        </div>
+                    </div>
+
+                    <!-- Hero Visual -->
+                    <div class="relative lg:h-auto h-64 reveal delay-200">
+                        <!-- Abstract UI Mockup -->
+                        <div class="relative mx-auto w-full max-w-lg">
+                            <div class="absolute top-0 -left-4 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
+                            <div class="absolute top-0 -right-4 w-72 h-72 bg-brand-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
+                            <div class="absolute -bottom-8 left-20 w-72 h-72 bg-pink-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000"></div>
+                            
+                            <div class="relative glass rounded-2xl p-6 shadow-2xl border border-white/10 transform rotate-[-2deg] hover:rotate-0 transition-transform duration-500">
+                                <div class="flex items-center gap-2 mb-4 border-b border-white/5 pb-4">
+                                    <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                                    <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                                    <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                                    <div class="ml-auto text-xs text-slate-500">QuillAI Editor</div>
+                                </div>
+                                <div class="space-y-3">
+                                    <div class="h-2 bg-slate-700 rounded w-3/4 animate-pulse"></div>
+                                    <div class="h-2 bg-slate-700 rounded w-full animate-pulse"></div>
+                                    <div class="h-2 bg-slate-700 rounded w-5/6 animate-pulse"></div>
+                                    <div class="h-2 bg-slate-700 rounded w-1/2 animate-pulse"></div>
+                                    <div class="mt-4 p-3 bg-brand-900/30 border border-brand-500/20 rounded-lg">
+                                        <div class="flex items-start gap-3">
+                                            <i class="fas fa-robot text-brand-400 mt-1"></i>
+                                            <div class="space-y-2 w-full">
+                                                <div class="h-2 bg-brand-500/20 rounded w-full"></div>
+                                                <div class="h-2 bg-brand-500/20 rounded w-4/5"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Social Proof -->
+        <section class="py-10 border-y border-white/5 bg-dark-800/50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <p class="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-6">Trusted by 10,000+ content creators and teams</p>
+                <div class="flex flex-wrap justify-center gap-8 md:gap-16 opacity-50 grayscale hover:grayscale-0 transition-all duration-500">
+                    <!-- Simple CSS Logos for demo -->
+                    <div class="flex items-center gap-2 text-xl font-bold text-slate-300"><i class="fab fa-google"></i> Google</div>
+                    <div class="flex items-center gap-2 text-xl font-bold text-slate-300"><i class="fab fa-spotify"></i> Spotify</div>
+                    <div class="flex items-center gap-2 text-xl font-bold text-slate-300"><i class="fab fa-aws"></i> AWS</div>
+                    <div class="flex items-center gap-2 text-xl font-bold text-slate-300"><i class="fab fa-stripe"></i> Stripe</div>
+                    <div class="flex items-center gap-2 text-xl font-bold text-slate-300"><i class="fab fa-slack"></i> Slack</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section id="features" class="py-24 relative">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto mb-16 reveal">
+                    <h2 class="text-brand-400 font-semibold tracking-wide uppercase text-sm mb-3">Features</h2>
+                    <h3 class="text-3xl md:text-4xl font-display font-bold text-white mb-4">Everything you need to write better</h3>
+                    <p class="text-slate-400 text-lg">Our AI engine is trained on millions of high-performing content pieces to deliver results that matter.</p>
+                </div>
+
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Feature 1 -->
+                    <div class="glass-card p-8 rounded-2xl reveal">
+                        <div class="w-12 h-12 bg-brand-500/10 rounded-lg flex items-center justify-center text-brand-400 text-2xl mb-6">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <h4 class="text-xl font-bold text-white mb-3">Instant Generation</h4>
+                        <p class="text-slate-400 leading-relaxed">Generate blog posts, emails, and ad copy in seconds, not hours. Beat writer's block forever.</p>
+                    </div>
+
+                    <!-- Feature 2 -->
+                    <div class="glass-card p-8 rounded-2xl reveal delay-100">
+                        <div class="w-12 h-12 bg-purple-500/10 rounded-lg flex items-center justify-center text-purple-400 text-2xl mb-6">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <h4 class="text-xl font-bold text-white mb-3">Context Aware</h4>
+                        <p class="text-slate-400 leading-relaxed">QuillAI understands your brand voice and tone to maintain consistency across all channels.</p>
+                    </div>
+
+                    <!-- Feature 3 -->
+                    <div class="glass-card p-8 rounded-2xl reveal delay-200">
+                        <div class="w-12 h-12 bg-pink-500/10 rounded-lg flex items-center justify-center text-pink-400 text-2xl mb-6">
+                            <i class="fas fa-language"></i>
+                        </div>
+                        <h4 class="text-xl font-bold text-white mb-3">25+ Languages</h4>
+                        <p class="text-slate-400 leading-relaxed">Write and translate content seamlessly into over 25 languages to reach a global audience.</p>
+                    </div>
+
+                    <!-- Feature 4 -->
+                    <div class="glass-card p-8 rounded-2xl reveal delay-300">
+                        <div class="w-12 h-12 bg-green-500/10 rounded-lg flex items-center justify-center text-green-400 text-2xl mb-6">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h4 class="text-xl font-bold text-white mb-3">SEO Optimized</h4>
+                        <p class="text-slate-400 leading-relaxed">Built-in keyword suggestions and readability scores to help you rank higher on Google.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- How it Works -->
+        <section id="how-it-works" class="py-24 bg-dark-800/30">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16 reveal">
+                    <h2 class="text-3xl md:text-4xl font-display font-bold text-white mb-4">How QuillAI Works</h2>
+                    <p class="text-slate-400 text-lg">From idea to publish in three simple steps.</p>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-8 relative">
+                    <!-- Connecting Line (Desktop) -->
+                    <div class="hidden md:block absolute top-12 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-brand-500 to-transparent opacity-20"></div>
+
+                    <!-- Step 1 -->
+                    <div class="relative text-center reveal">
+                        <div class="w-24 h-24 mx-auto bg-dark-900 border border-brand-500/30 rounded-full flex items-center justify-center text-3xl font-bold text-brand-400 mb-6 relative z-10 shadow-[0_0_30px_rgba(14,165,233,0.15)]">
+                            1
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">Choose a Template</h3>
+                        <p class="text-slate-400">Select from over 50+ templates for blogs, ads, emails, and social media.</p>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="relative text-center reveal delay-100">
+                        <div class="w-24 h-24 mx-auto bg-dark-900 border border-purple-500/30 rounded-full flex items-center justify-center text-3xl font-bold text-purple-400 mb-6 relative z-10 shadow-[0_0_30px_rgba(168,85,247,0.15)]">
+                            2
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">Describe Topic</h3>
+                        <p class="text-slate-400">Enter a few sentences about what you want to write. The more detail, the better.</p>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="relative text-center reveal delay-200">
+                        <div class="w-24 h-24 mx-auto bg-dark-900 border border-pink-500/30 rounded-full flex items-center justify-center text-3xl font-bold text-pink-400 mb-6 relative z-10 shadow-[0_0_30px_rgba(236,72,153,0.15)]">
+                            3
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">Generate & Edit</h3>
+                        <p class="text-slate-400">Get multiple variations instantly. Edit, export, and publish directly to your CMS.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Comparison / Before-After Section -->
+        <section class="py-24 overflow-hidden">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid lg:grid-cols-2 gap-16 items-center">
+                    <div class="reveal">
+                        <h2 class="text-3xl md:text-4xl font-display font-bold text-white mb-6">
+                            See the <span class="text-gradient">Transformation</span>
+                        </h2>
+                        <p class="text-slate-400 text-lg mb-8">
+                            Don't settle for generic text. QuillAI refines your rough ideas into polished, professional prose. Drag the slider to see the difference.
+                        </p>
+                        <ul class="space-y-4">
+                            <li class="flex items-center gap-3 text-slate-300">
+                                <i class="fas fa-check-circle text-brand-400"></i> Eliminates grammar errors instantly
+                            </li>
+                            <li class="flex items-center gap-3 text-slate-300">
+                                <i class="fas fa-check-circle text-brand-400"></i> Enhances vocabulary and tone
+                            </li>
+                            <li class="flex items-center gap-3 text-slate-300">
+                                <i class="fas fa-check-circle text-brand-400"></i> Structures paragraphs for readability
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="reveal delay-200">
+                        <!-- Interactive Comparison Slider -->
+                        <div class="comparison-container" id="comparisonSlider">
+                            <!-- After Image (Background) -->
+                            <div class="comparison-image bg-slate-800 flex items-center justify-center p-8">
+                                <div class="w-full max-w-sm space-y-4">
+                                    <div class="h-4 bg-slate-600 rounded w-1/3 mb-6"></div>
+                                    <div class="h-3 bg-slate-600 rounded w-full"></div>
+                                    <div class="h-3 bg-slate-600 rounded w-5/6"></div>
+                                    <div class="h-3 bg-slate-600 rounded w-full"></div>
+                                    <div class="h-3 bg-slate-600 rounded w-4/6"></div>
+                                    <div class="mt-6 p-4 border border-slate-600 rounded bg-slate-700/50">
+                                        <div class="h-3 bg-slate-500 rounded w-full mb-2"></div>
+                                        <div class="h-3 bg-slate-500 rounded w-3/4"></div>
+                                    </div>
+                                </div>
+                                <div class="absolute top-4 right-4 bg-slate-900 text-slate-400 text-xs px-2 py-1 rounded">Before</div>
+                            </div>
+                            
+                            <!-- Before Image (Overlay) -->
+                            <div class="comparison-overlay bg-slate-900 flex items-center justify-center p-8" id="overlay">
+                                <div class="w-full max-w-sm space-y-4">
+                                    <div class="h-4 bg-brand-500 rounded w-1/3 mb-6"></div>
+                                    <div class="h-3 bg-slate-200 rounded w-full"></div>
+                                    <div class="h-3 bg-slate-200 rounded w-5/6"></div>
+                                    <div class="h-3 bg-slate-200 rounded w-full"></div>
+                                    <div class="h-3 bg-slate-200 rounded w-4/6"></div>
+                                    <div class="mt-6 p-4 border border-brand-500/30 rounded bg-brand-900/20">
+                                        <div class="h-3 bg-brand-400 rounded w-full mb-2"></div>
+                                        <div class="h-3 bg-brand-400 rounded w-3/4"></div>
+                                    </div>
+                                </div>
+                                <div class="absolute top-4 right-4 bg-brand-600 text-white text-xs px-2 py-1 rounded">After</div>
+                            </div>
+
+                            <!-- Handle -->
+                            <div class="comparison-handle" id="handle">
+                                <i class="fas fa-arrows-alt-h text-slate-900"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials -->
+        <section id="testimonials" class="py-24 bg-dark-800/30">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16 reveal">
+                    <h2 class="text-3xl md:text-4xl font-display font-bold text-white mb-4">Loved by Writers</h2>
+                    <p class="text-slate-400">Join thousands who have supercharged their workflow.</p>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-8">
+                    <!-- Testimonial 1 -->
+                    <div class="glass-card p-8 rounded-2xl reveal">
+                        <div class="flex items-center gap-1 text-yellow-400 mb-4">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                        </div>
+                        <p class="text-slate-300 mb-6 italic">"QuillAI has completely transformed how I write blog posts. I used to spend 6 hours on a draft, now it takes me 90 minutes."</p>
+                        <div class="flex items-center gap-4">
+                            <img src="https://ui-avatars.com/api/?name=Sarah+J&background=0ea5e9&color=fff" alt="Sarah Jenkins" class="w-10 h-10 rounded-full">
+                            <div>
+                                <h5 class="text-white font-bold text-sm">Sarah Jenkins</h5>
+                                <p class="text-slate-500 text-xs">Content Strategist</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Testimonial 2 -->
+                    <div class="glass-card p-8 rounded-2xl reveal delay-100">
+                        <div class="flex items-center gap-1 text-yellow-400 mb-4">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                        </div>
+                        <p class="text-slate-300 mb-6 italic">"The SEO features are a game changer. My organic traffic has increased by 40% since I started using the AI suggestions."</p>
+                        <div class="flex items-center gap-4">
+                            <img src="https://ui-avatars.com/api/?name=Mike+R&background=8b5cf6&color=fff" alt="Mike Ross" class="w-10 h-10 rounded-full">
+                            <div>
+                                <h5 class="text-white font-bold text-sm">Mike Ross</h5>
+                                <p class="text-slate-500 text-xs">Digital Marketer</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Testimonial 3 -->
+                    <div class="glass-card p-8 rounded-2xl reveal delay-200">
+                        <div class="flex items-center gap-1 text-yellow-400 mb-4">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                        </div>
+                        <p class="text-slate-300 mb-6 italic">"I was skeptical about AI writing, but QuillAI feels like a natural extension of my team. It captures our brand voice perfectly."</p>
+                        <div class="flex items-center gap-4">
+                            <img src="https://ui-avatars.com/api/?name=Elena+D&background=ec4899&color=fff" alt="Elena Rodriguez" class="w-10 h-10 rounded-full">
+                            <div>
+                                <h5 class="text-white font-bold text-sm">Elena Rodriguez</h5>
+                                <p class="text-slate-500 text-xs">Founder, TechStart</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pricing Section -->
+        <section id="pricing" class="py-24 relative">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16 reveal">
+                    <h2 class="text-3xl md:text-4xl font-display font-bold text-white mb-4">Simple, Transparent Pricing</h2>
+                    <p class="text-slate-400">Choose the plan that fits your needs.</p>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                    <!-- Free Tier -->
+                    <div class="glass-card p-8 rounded-2xl flex flex-col reveal">
+                        <h3 class="text-xl font-bold text-white mb-2">Free</h3>
+                        <p class="text-slate-400 text-sm mb-6">For hobbyists trying AI.</p>
+                        <div class="mb-6">
+                            <span class="text-4xl font-bold text-white">$0</span><span class="text-slate-500">/mo</span>
+                        </div>
+                        <ul class="space-y-3 mb-8 flex-1">
+                            <li class="flex items-center gap-3 text-slate-300 text-sm"><i class="fas fa-check text-brand-400"></i> 5,000 words/month</li>
+                            <li class="flex items-center gap-3 text-slate-300 text-sm"><i class="fas fa-check text-brand-400"></i> Basic templates</li>
+                            <li class="flex items-center gap-3 text-slate-300 text-sm"><i class="fas fa-check text-brand-400"></i> Email support</li>
+                        </ul>
+                        <button class="w-full py-3 rounded-lg border border-slate-600 text-white font-medium hover:bg-slate-800 transition-colors">Get Started</button>
+                    </div>
+
+                    <!-- Pro Tier -->
+                    <div class="glass-card p-8 rounded-2xl flex flex-col border-brand-500/50 relative transform md:-translate-y-4 shadow-[0_0_40px_rgba(14,165,233,0.15)] reveal delay-100">
+                        <div class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-brand-600 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide">Most Popular</div>
+                        <h3 class="text-xl font-bold text-white mb-2">Pro</h3>
+                        <p class="text-slate-400 text-sm mb-6">For professional creators.</p>
+                        <div class="mb-6">
+                            <span class="text-4xl font-bold text-white">$29</span><span class="text-slate-500">/mo</span>
+                        </div>
+                        <ul class="space-y-3 mb-8 flex-1">
+                            <li class="flex items-center gap-3 text-slate-300 text-sm"><i class="fas fa-check text-brand-400"></i> 100,000 words/month</li>
+                            <li class="flex items-center gap-3 text-slate-300 text-sm"><i class="fas fa-check text-brand-400"></i> All templates</li>
+                            <li class="flex items-center gap-3 text-slate-300 text-sm"><i class="fas fa-check text-brand-400"></i> Priority support</li>
+                            <li class="flex items-center gap-3 text-slate-300 text-sm"><i class="fas fa-check text-brand-400"></i> SEO Mode</li>
+                        </ul>
+                        <button class="w-full py-3 rounded-lg bg-brand-600 text-white font-medium hover:bg-brand-500 transition-colors shadow-lg shadow-brand-500/25">Start Free Trial</button>
+                    </div>
+
+                    <!-- Enterprise Tier -->
+                    <div class="glass-card p-8 rounded-2xl flex flex-col reveal delay-200">
+                        <h3 class="text-xl font-bold text-white mb-2">Enterprise</h3>
+                        <p class="text-slate-400 text-sm mb-6">For large teams.</p>
+                        <div class="mb-6">
+                            <span class="text-4xl font-bold text-white">$99</span><span class="text-slate-500">/mo</span>
+                        </div>
+                        <ul class="space-y-3 mb-8 flex-1">
+                            <li class="flex items-center gap-3 text-slate-300 text-sm"><i class="fas fa-check text-brand-400"></i> Unlimited words</li>
+                            <li class="flex items-center gap-3 text-slate-300 text-sm"><i class="fas fa-check text-brand-400"></i> Custom AI training</li>
+                            <li class="flex items-center gap-3 text-slate-300 text-sm"><i class="fas fa-check text-brand-400"></i> Dedicated account manager</li>
+                            <li class="flex items-center gap-3 text-slate-300 text-sm"><i class="fas fa-check text-brand-400"></i> API Access</li>
+                        </ul>
+                        <button class="w-full py-3 rounded-lg border border-slate-600 text-white font-medium hover:bg-slate-800 transition-colors">Contact Sales</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section class="py-24 bg-dark-800/30">
+            <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12 reveal">
+                    <h2 class="text-3xl font-display font-bold text-white mb-4">Frequently Asked Questions</h2>
+                </div>
+
+                <div class="space-y-4 reveal">
+                    <!-- FAQ Item 1 -->
+                    <div class="glass rounded-xl overflow-hidden">
+                        <button class="w-full px-6 py-4 text-left flex justify-between items-center focus:outline-none" onclick="toggleFaq(this)">
+                            <span class="font-medium text-white">Is the generated content original?</span>
+                            <i class="fas fa-chevron-down text-slate-500 transition-transform duration-300"></i>
+                        </button>
+                        <div class="px-6 pb-4 text-slate-400 hidden">
+                            Yes. QuillAI generates unique content based on your inputs. It does not copy and paste from the web. We also have a built-in plagiarism checker for Pro users.
+                        </div>
+                    </div>
+
+                    <!-- FAQ Item 2 -->
+                    <div class="glass rounded-xl overflow-hidden">
+                        <button class="w-full px-6 py-4 text-left flex justify-between items-center focus:outline-none" onclick="toggleFaq(this)">
+                            <span class="font-medium text-white">Can I cancel my subscription anytime?</span>
+                            <i class="fas fa-chevron-down text-slate-500 transition-transform duration-300"></i>
+                        </button>
+                        <div class="px-6 pb-4 text-slate-400 hidden">
+                            Absolutely. You can cancel your subscription at any time from your account dashboard. You will continue to have access until the end of your billing period.
+                        </div>
+                    </div>
+
+                    <!-- FAQ Item 3 -->
+                    <div class="glass rounded-xl overflow-hidden">
+                        <button class="w-full px-6 py-4 text-left flex justify-between items-center focus:outline-none" onclick="toggleFaq(this)">
+                            <span class="font-medium text-white">What languages does QuillAI support?</span>
+                            <i class="fas fa-chevron-down text-slate-500 transition-transform duration-300"></i>
+                        </button>
+                        <div class="px-6 pb-4 text-slate-400 hidden">
+                            QuillAI supports over 25 languages including English, Spanish, French, German, Chinese, Japanese, and Portuguese.
+                        </div>
+                    </div>
+
+                    <!-- FAQ Item 4 -->
+                    <div class="glass rounded-xl overflow-hidden">
+                        <button class="w-full px-6 py-4 text-left flex justify-between items-center focus:outline-none" onclick="toggleFaq(this)">
+                            <span class="font-medium text-white">Is there a limit on the free plan?</span>
+                            <i class="fas fa-chevron-down text-slate-500 transition-transform duration-300"></i>
+                        </button>
+                        <div class="px-6 pb-4 text-slate-400 hidden">
+                            The free plan allows you to generate up to 5,000 words per month. It's perfect for testing the waters before upgrading.
+                        </div>
+                    </div>
+
+                    <!-- FAQ Item 5 -->
+                    <div class="glass rounded-xl overflow-hidden">
+                        <button class="w-full px-6 py-4 text-left flex justify-between items-center focus:outline-none" onclick="toggleFaq(this)">
+                            <span class="font-medium text-white">Do you offer refunds?</span>
+                            <i class="fas fa-chevron-down text-slate-500 transition-transform duration-300"></i>
+                        </button>
+                        <div class="px-6 pb-4 text-slate-400 hidden">
+                            We offer a 14-day money-back guarantee. If you are not satisfied with the service, contact us within 14 days of purchase for a full refund.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact / Newsletter Section -->
+        <section id="contact" class="py-24 relative overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-b from-transparent to-brand-900/20 pointer-events-none"></div>
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 reveal">
+                <h2 class="text-3xl md:text-4xl font-display font-bold text-white mb-6">Ready to transform your writing?</h2>
+                <p class="text-slate-400 mb-8 text-lg">Join 10,000+ writers and start creating better content today.</p>
+                
+                <form class="flex flex-col sm:flex-row gap-3 max-w-lg mx-auto mb-8" onsubmit="event.preventDefault(); alert('Subscribed!');">
+                    <label for="newsletter-email" class="sr-only">Email address</label>
+                    <input type="email" id="newsletter-email" placeholder="Enter your email address" class="flex-1 appearance-none rounded-lg border border-slate-700 bg-dark-800/80 text-white px-4 py-3 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent" required>
+                    <button type="submit" class="px-8 py-3 rounded-lg bg-brand-600 text-white font-bold hover:bg-brand-500 transition-colors shadow-lg shadow-brand-500/25">
+                        Subscribe
+                    </button>
+                </form>
+                
+                <p class="text-slate-500 text-sm">
+                    Questions? Email us at <a href="mailto:hello@quillai.com" class="text-brand-400 hover:text-brand-300 underline">hello@quillai.com</a>
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/5 bg-dark-900 pt-16 pb-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
+                <div class="col-span-2 md:col-span-1">
+                    <div class="flex items-center gap-2 mb-4">
+                        <div class="w-8 h-8 bg-gradient-to-br from-brand-400 to-purple-500 rounded flex items-center justify-center text-white font-bold">Q</div>
+                        <span class="font-display font-bold text-xl text-white">QuillAI</span>
+                    </div>
+                    <p class="text-slate-500 text-sm mb-4">The future of writing is here. Powered by advanced artificial intelligence.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-slate-400 hover:text-white transition-colors" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-slate-400 hover:text-white transition-colors" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" class="text-slate-400 hover:text-white transition-colors" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="text-white font-bold mb-4">Product</h4>
+                    <ul class="space-y-2 text-sm text-slate-400">
+                        <li><a href="#features" class="hover:text-brand-400 transition-colors">Features</a></li>
+                        <li><a href="#pricing" class="hover:text-brand-400 transition-colors">Pricing</a></li>
+                        <li><a href="#" class="hover:text-brand-400 transition-colors">API</a></li>
+                        <li><a href="#" class="hover:text-brand-400 transition-colors">Integrations</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-bold mb-4">Company</h4>
+                    <ul class="space-y-2 text-sm text-slate-400">
+                        <li><a href="#" class="hover:text-brand-400 transition-colors">About</a></li>
+                        <li><a href="#" class="hover:text-brand-400 transition-colors">Blog</a></li>
+                        <li><a href="#" class="hover:text-brand-400 transition-colors">Careers</a></li>
+                        <li><a href="#contact" class="hover:text-brand-400 transition-colors">Contact</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-bold mb-4">Legal</h4>
+                    <ul class="space-y-2 text-sm text-slate-400">
+                        <li><a href="#" class="hover:text-brand-400 transition-colors">Privacy Policy</a></li>
+                        <li><a href="#" class="hover:text-brand-400 transition-colors">Terms of Service</a></li>
+                        <li><a href="#" class="hover:text-brand-400 transition-colors">Cookie Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-slate-600 text-sm"> QuillAI Inc. All rights reserved.</p>
+                <p class="text-slate-600 text-sm">Designed with <i class="fas fa-heart text-red-500 mx-1"></i> by AI</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // 1. Mobile Menu Toggle
+            const btn = document.getElementById('mobile-menu-btn');
+            const menu = document.getElementById('mobile-menu');
+            
+            btn.addEventListener('click', () => {
+                menu.classList.toggle('hidden');
+            });
+
+            // 2. Scroll Reveal Animation
+            const revealElements = document.querySelectorAll('.reveal');
+            
+            const revealObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            revealElements.forEach(el => revealObserver.observe(el));
+
+            // 3. Navbar Glass Effect on Scroll
+            const navbar = document.getElementById('navbar');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 20) {
+                    navbar.classList.add('shadow-lg');
+                } else {
+                    navbar.classList.remove('shadow-lg');
+                }
+            });
+
+            // 4. Comparison Slider Logic
+            const slider = document.getElementById('comparisonSlider');
+            const overlay = document.getElementById('overlay');
+            const handle = document.getElementById('handle');
+            let isDragging = false;
+
+            const updateSlider = (x) => {
+                const rect = slider.getBoundingClientRect();
+                let percentage = ((x - rect.left) / rect.width) * 100;
+                
+                // Clamp percentage
+                percentage = Math.max(0, Math.min(100, percentage));
+                
+                overlay.style.width = `${percentage}%`;
+                handle.style.left = `${percentage}%`;
+            };
+
+            // Mouse Events
+            handle.addEventListener('mousedown', () => isDragging = true);
+            window.addEventListener('mouseup', () => isDragging = false);
+            window.addEventListener('mousemove', (e) => {
+                if (!isDragging) return;
+                updateSlider(e.clientX);
+            });
+
+            // Touch Events
+            handle.addEventListener('touchstart', () => isDragging = true);
+            window.addEventListener('touchend', () => isDragging = false);
+            window.addEventListener('touchmove', (e) => {
+                if (!isDragging) return;
+                updateSlider(e.touches[0].clientX);
+            });
+
+            // Click to jump
+            slider.addEventListener('click', (e) => {
+                updateSlider(e.clientX);
+            });
+        });
+
+        // 5. FAQ Accordion Logic
+        function toggleFaq(button) {
+            const content = button.nextElementSibling;
+            const icon = button.querySelector('.fa-chevron-down');
+            
+            // Close others (optional, but cleaner)
+            document.querySelectorAll('.glass > div').forEach(div => {
+                if (div !== content && !div.classList.contains('hidden')) {
+                    div.classList.add('hidden');
+                    div.previousElementSibling.querySelector('.fa-chevron-down').style.transform = 'rotate(0deg)';
+                }
+            });
+
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                icon.style.transform = 'rotate(180deg)';
+            } else {
+                content.classList.add('hidden');
+                icon.style.transform = 'rotate(0deg)';
+            }
+        }
+    </script>
+</body>
+</html>
+```

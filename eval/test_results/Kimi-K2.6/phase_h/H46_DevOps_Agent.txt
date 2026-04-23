@@ -1,0 +1,22 @@
+```json
+{
+  "issues": [
+    {"line": "image: myapp:latest", "issue": "Using the 'latest' image tag prevents immutable deployments and can cause unexpected updates.", "severity": "major"},
+    {"line": "resources: {}", "issue": "Main container has no CPU/memory requests or limits, risking node starvation and noisy neighbor problems.", "severity": "major"},
+    {"line": "privileged: true", "issue": "Container runs in privileged mode, granting full access to host devices and bypassing security controls.", "severity": "critical"},
+    {"line": "runAsRoot: true", "issue": "Invalid securityContext field (should be runAsNonRoot); container will run as root, violating least privilege.", "severity": "critical"},
+    {"line": "value: \"sup3rs3cret!\"", "issue": "Database password hardcoded in environment variables instead of using a Kubernetes Secret.", "severity": "critical"},
+    {"line": "value: \"ak_live_12345\"", "issue": "API key hardcoded in environment variables instead of using a Kubernetes Secret.", "severity": "critical"},
+    {"line": "image: myapp:latest", "issue": "Missing livenessProbe for the main container; application failures will not be automatically detected and restarted.", "severity": "major"},
+    {"line": "image: myapp:latest", "issue": "Missing readinessProbe for the main container; traffic may be sent to pods that are not ready to serve requests.", "severity": "major"},
+    {"line": "cpu: \"8\"", "issue": "Sidecar container specifies resource requests but no limits, allowing it to exhaust node resources.", "severity": "major"},
+    {"line": "memory: \"10Gi\"", "issue": "Sidecar requests excessive resources (10Gi memory / 8 CPU), likely causing scheduling failures or waste.", "severity": "major"},
+    {"line": "hostPath:", "issue": "Use of hostPath volume exposes the host filesystem to the pod, breaking portability and creating security risks.", "severity": "major"},
+    {"line": "path: /tmp/data", "issue": "Host path is located under /tmp, a world-writable directory, increasing risk of file tampering.", "severity": "major"},
+    {"line": "mountPath: /data", "issue": "Volume mount is not read-only (readOnly: true is missing), allowing the container to modify host files.", "severity": "major"},
+    {"line": "securityContext:", "issue": "Missing readOnlyRootFilesystem: true, leaving the container root filesystem writable to runtime attacks.", "severity": "major"},
+    {"line": "type: LoadBalancer", "issue": "LoadBalancer service exposes the application to the public internet (0.0.0.0/0) by default without source IP restrictions.", "severity": "major"}
+  ],
+  "count": 15
+}
+```

@@ -1,0 +1,146 @@
+```json
+{
+  "tasks": [
+    {
+      "id": 1,
+      "task": "Audit monolith and define service boundaries",
+      "depends_on": [],
+      "effort_days": 5,
+      "team": "backend"
+    },
+    {
+      "id": 2,
+      "task": "Design inter-service API contracts and shared libraries",
+      "depends_on": [1],
+      "effort_days": 5,
+      "team": "backend"
+    },
+    {
+      "id": 3,
+      "task": "Provision Kubernetes infrastructure and namespaces",
+      "depends_on": [1],
+      "effort_days": 6,
+      "team": "devops"
+    },
+    {
+      "id": 4,
+      "task": "Configure API Gateway and ingress routing rules",
+      "depends_on": [3],
+      "effort_days": 5,
+      "team": "devops"
+    },
+    {
+      "id": 5,
+      "task": "Create CI/CD pipelines for microservice container builds",
+      "depends_on": [3],
+      "effort_days": 5,
+      "team": "devops"
+    },
+    {
+      "id": 6,
+      "task": "Implement inter-service communication layer (gRPC/REST)",
+      "depends_on": [2],
+      "effort_days": 5,
+      "team": "backend"
+    },
+    {
+      "id": 7,
+      "task": "Extract user service from monolith into standalone Django app",
+      "depends_on": [2, 6],
+      "effort_days": 6,
+      "team": "backend"
+    },
+    {
+      "id": 8,
+      "task": "Extract order service from monolith into standalone Django app",
+      "depends_on": [2, 6],
+      "effort_days": 6,
+      "team": "backend"
+    },
+    {
+      "id": 9,
+      "task": "Deploy dedicated databases per microservice",
+      "depends_on": [3],
+      "effort_days": 4,
+      "team": "devops"
+    },
+    {
+      "id": 10,
+      "task": "Migrate user service data using dual-write strategy",
+      "depends_on": [7, 9],
+      "effort_days": 5,
+      "team": "backend"
+    },
+    {
+      "id": 11,
+      "task": "Migrate order service database and historical records",
+      "depends_on": [8, 9],
+      "effort_days": 5,
+      "team": "backend"
+    },
+    {
+      "id": 12,
+      "task": "Build frontend API abstraction and service client",
+      "depends_on": [2],
+      "effort_days": 5,
+      "team": "frontend"
+    },
+    {
+      "id": 13,
+      "task": "Update frontend to route user flows through API Gateway",
+      "depends_on": [12, 7, 10],
+      "effort_days": 6,
+      "team": "frontend"
+    },
+    {
+      "id": 14,
+      "task": "Update frontend to route order flows through API Gateway",
+      "depends_on": [12, 8, 11],
+      "effort_days": 6,
+      "team": "frontend"
+    },
+    {
+      "id": 15,
+      "task": "Write integration tests for user service endpoints",
+      "depends_on": [10],
+      "effort_days": 4,
+      "team": "qa"
+    },
+    {
+      "id": 16,
+      "task": "Write integration tests for order service endpoints",
+      "depends_on": [11],
+      "effort_days": 4,
+      "team": "qa"
+    },
+    {
+      "id": 17,
+      "task": "Set up centralized logging, monitoring, and alerting",
+      "depends_on": [3],
+      "effort_days": 4,
+      "team": "devops"
+    },
+    {
+      "id": 18,
+      "task": "Implement automated canary and blue-green deployments",
+      "depends_on": [5, 17],
+      "effort_days": 5,
+      "team": "devops"
+    },
+    {
+      "id": 19,
+      "task": "Perform end-to-end QA validation and load testing",
+      "depends_on": [13, 14, 15, 16, 18],
+      "effort_days": 6,
+      "team": "qa"
+    },
+    {
+      "id": 20,
+      "task": "Decommission monolith and finalize traffic cutover",
+      "depends_on": [19, 18],
+      "effort_days": 4,
+      "team": "devops"
+    }
+  ]
+}
+```

@@ -1,0 +1,59 @@
+```python
+def is_valid_password(password):
+    if len(password) < 8 or len(password) > 64:
+        return False
+    if ' ' in password:
+        return False
+    if password[0].isdigit():
+        return False
+    if 'password' in password.lower():
+        return False
+
+    count = 1
+    for i in range(1, len(password)):
+        if password[i] == password[i - 1]:
+            count += 1
+            if count > 3:
+                return False
+        else:
+            count = 1
+
+    has_upper = False
+    has_lower = False
+    has_digit = False
+    has_special = False
+    special_chars = "!@#$%^&*()-_+="
+
+    for char in password:
+        if char.isupper():
+            has_upper = True
+        elif char.islower():
+            has_lower = True
+        elif char.isdigit():
+            has_digit = True
+        elif char in special_chars:
+            has_special = True
+
+    return has_upper and has_lower and has_digit and has_special
+
+
+def run_tests():
+    tests = [
+        ("Hello1!world", True),
+        ("He1!", False),
+        ('A1!' + 'ab' * 31, False),
+        ("hello1!world", False),
+        ("HELLO1!WORLD", False),
+        ("Hello!world", False),
+        ("Hello1world", False),
+        ("Hello 1!world", False),
+        ("1Hello!world", False),
+        ("aaaa1!Bc", False),
+        ("Mypassword1!", False),
+        ("MyPASSWORD1!", False),
+        ("Aaa1!bbb", True),
+        ("!Hello1world", True),
+        ("Hello1!a", True),
+    ]
+    return [(pwd, expected, is_valid_password(pwd)) for pwd, expected in tests]
+```

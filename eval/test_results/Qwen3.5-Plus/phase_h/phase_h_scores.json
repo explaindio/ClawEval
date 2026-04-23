@@ -1,0 +1,300 @@
+{
+  "model": "Qwen3.5-Plus",
+  "phase": "H",
+  "timestamp": "2026-04-22T16:29:58.969160",
+  "total_score": 364,
+  "total_max": 550,
+  "percentage": 66.2,
+  "results": [
+    {
+      "id": 9,
+      "role": "Research / Web Search Agent",
+      "tier": 2,
+      "scoring_type": "json_values",
+      "score": 29,
+      "max": 30,
+      "detail": "29/30 correct | #13: exp=TRUE, got=FALSE",
+      "tokens": 6410
+    },
+    {
+      "id": 12,
+      "role": "Content Planner / Strategist",
+      "tier": 2,
+      "scoring_type": "content_planner",
+      "score": 0,
+      "max": 30,
+      "detail": "Could not parse JSON",
+      "tokens": 0
+    },
+    {
+      "id": 18,
+      "role": "News Aggregation Agent",
+      "tier": 2,
+      "scoring_type": "news_errors",
+      "score": 7,
+      "max": 7,
+      "detail": "7/7 errors found",
+      "tokens": 6059
+    },
+    {
+      "id": 40,
+      "role": "Fact-Checking Agent",
+      "tier": 3,
+      "scoring_type": "json_values",
+      "score": 29,
+      "max": 30,
+      "detail": "29/30 correct | #14: exp=FALSE, got=TRUE",
+      "tokens": 9144
+    },
+    {
+      "id": 48,
+      "role": "STEM Research Analyst",
+      "tier": 4,
+      "scoring_type": "json_numeric",
+      "score": 15,
+      "max": 15,
+      "detail": "15/15 correct",
+      "tokens": 7920
+    },
+    {
+      "id": 49,
+      "role": "Algorithm / Data Structure Explorer",
+      "tier": 4,
+      "scoring_type": "code_exec",
+      "score": 30,
+      "max": 30,
+      "detail": "30/30 test cases passed",
+      "tokens": 8638
+    },
+    {
+      "id": 56,
+      "role": "Security Analyst Agent",
+      "tier": 5,
+      "scoring_type": "security_vulns",
+      "score": 15,
+      "max": 15,
+      "detail": "15/15 vulnerabilities found",
+      "tokens": 8713
+    },
+    {
+      "id": 8,
+      "role": "Calendar / Scheduling Agent",
+      "tier": 1,
+      "scoring_type": "json_values",
+      "score": 12,
+      "max": 20,
+      "detail": "12/20 correct | #3: exp=11:30, got=13:00; #4: exp=270, got=240; #5: exp=90, got=60; #9: exp=56, got=63%; #10: exp=120, got=120 minutes; #11: exp=no, got=Yes; #16: exp=210, got=180; #20: exp=54, got=60",
+      "tokens": 11080
+    },
+    {
+      "id": 11,
+      "role": "Editor Agent",
+      "tier": 2,
+      "scoring_type": "h_keywords",
+      "score": 25,
+      "max": 30,
+      "detail": "25/30 correct | #e5: missing too\u2192to; #e14: missing double space before ROI; #e21: missing $4,700000\u2192$4,700,000; #e22: missing net profit math error; #e24: missing form\u2192from (L21)",
+      "tokens": 16402
+    },
+    {
+      "id": 20,
+      "role": "Memory / Knowledge Management",
+      "tier": 2,
+      "scoring_type": "json_values",
+      "score": 20,
+      "max": 20,
+      "detail": "20/20 correct",
+      "tokens": 3064
+    },
+    {
+      "id": 22,
+      "role": "Data Analysis Agent",
+      "tier": 2,
+      "scoring_type": "json_numeric",
+      "score": 14,
+      "max": 15,
+      "detail": "14/15 correct | q3: exp=99.09, got=102.77",
+      "tokens": 7291
+    },
+    {
+      "id": 26,
+      "role": "Lead Scoring / Prospecting",
+      "tier": 2,
+      "scoring_type": "json_values",
+      "score": 11,
+      "max": 15,
+      "detail": "11/15 correct | #5_tier: exp=warm, got=hot; #10_tier: exp=cold, got=warm; #14_tier: exp=warm, got=hot; #15_tier: exp=warm, got=hot",
+      "tokens": 2738
+    },
+    {
+      "id": 30,
+      "role": "Fitness / Health Tracking",
+      "tier": 2,
+      "scoring_type": "json_numeric",
+      "score": 15,
+      "max": 15,
+      "detail": "15/15 correct",
+      "tokens": 6701
+    },
+    {
+      "id": 32,
+      "role": "Personal Finance Tracking",
+      "tier": 2,
+      "scoring_type": "json_numeric",
+      "score": 15,
+      "max": 15,
+      "detail": "15/15 correct",
+      "tokens": 6310
+    },
+    {
+      "id": 37,
+      "role": "Code Review Agent",
+      "tier": 3,
+      "scoring_type": "h_keywords",
+      "score": 5,
+      "max": 15,
+      "detail": "5/15 correct | #b1: missing L12: multiplies by 0.20 instead of subtracting 20%; #b2: missing L14: multiplies by 10 instead of 0.10; #b3: missing L22: silently allows negative stock; #b8: missing L53: distance + per_km should be distance * per_km; #b9: missing L57: unreachable elif (weight>50) after weight>30",
+      "tokens": 16303
+    },
+    {
+      "id": 38,
+      "role": "QA / Test Writing Agent",
+      "tier": 3,
+      "scoring_type": "code_exec",
+      "score": 13,
+      "max": 15,
+      "detail": "13/15 test cases passed | tc9: exp=False, got=True; tc11: exp=True, got=False",
+      "tokens": 7074
+    },
+    {
+      "id": 42,
+      "role": "Market Research Agent",
+      "tier": 3,
+      "scoring_type": "json_numeric",
+      "score": 14,
+      "max": 15,
+      "detail": "14/15 correct | m7: exp=1904.0, got=2095.0",
+      "tokens": 6707
+    },
+    {
+      "id": 47,
+      "role": "Math / Logic Reasoning",
+      "tier": 4,
+      "scoring_type": "json_numeric",
+      "score": 14,
+      "max": 15,
+      "detail": "14/15 correct | p7: not numeric: 2/3",
+      "tokens": 6179
+    },
+    {
+      "id": 15,
+      "role": "Meeting Notes / Transcription Agent",
+      "tier": 2,
+      "scoring_type": "h_keywords",
+      "score": 35,
+      "max": 35,
+      "detail": "35/35 correct",
+      "tokens": 12296
+    },
+    {
+      "id": 39,
+      "role": "Task Planning / Decomposition",
+      "tier": 3,
+      "scoring_type": "h_keywords",
+      "score": 1,
+      "max": 18,
+      "detail": "1/18 correct | #has_backend: missing; #has_frontend: missing; #has_devops: missing; #has_qa: missing; #first_no_deps: missing",
+      "tokens": 7569
+    },
+    {
+      "id": 46,
+      "role": "DevOps Agent",
+      "tier": 3,
+      "scoring_type": "h_keywords",
+      "score": 4,
+      "max": 15,
+      "detail": "4/15 correct | #i1: missing image uses :latest tag; #i2: missing only 1 replica - no HA; #i4: missing runAsRoot true; #i5: missing privileged true; #i6: missing DB_PASSWORD in plaintext",
+      "tokens": 9641
+    },
+    {
+      "id": 53,
+      "role": "Legal Document Review",
+      "tier": 5,
+      "scoring_type": "h_keywords",
+      "score": 1,
+      "max": 15,
+      "detail": "1/15 correct | #i1: missing contradictory license terms - perpetual but terminable without notice; #i2: missing data ownership transfer - user loses rights to own data; #i3: missing unlimited data sharing with third parties without consent; #i4: missing liability cap unreasonably low at $100; #i5: missing waiver of all consequential damages",
+      "tokens": 8791
+    },
+    {
+      "id": 59,
+      "role": "Compliance / Regulatory Agent",
+      "tier": 5,
+      "scoring_type": "h_keywords",
+      "score": 3,
+      "max": 15,
+      "detail": "3/15 correct | #v2: missing privacy policy not clear or accessible; #v3: missing outdated privacy policy (2019); #v4: missing sharing with 340 partners without valid consent; #v5: missing opt-out requires notarized letter - not freely given; #v6: missing not actually deleting data on deletion request",
+      "tokens": 9413
+    },
+    {
+      "id": 31,
+      "role": "Recipe / Cooking Agent",
+      "tier": 2,
+      "scoring_type": "json_numeric",
+      "score": 15,
+      "max": 15,
+      "detail": "15/15 correct",
+      "tokens": 4326
+    },
+    {
+      "id": 35,
+      "role": "Travel Planning Agent",
+      "tier": 2,
+      "scoring_type": "h_keywords",
+      "score": 8,
+      "max": 15,
+      "detail": "8/15 correct | #within_budget: missing; #has_japanese_meal: missing; #has_daytrip: missing; #hotel_under_150: missing; #free_activities_min_2: missing",
+      "tokens": 7315
+    },
+    {
+      "id": 52,
+      "role": "Complex Debugger Agent",
+      "tier": 5,
+      "scoring_type": "h_keywords",
+      "score": 0,
+      "max": 15,
+      "detail": "0/15 correct | #b1: missing L8: list not thread-safe for async access, needs Lock; #b2: missing L11: deprecated get_event_loop(), use get_running_loop(); #b3: missing L25: creates new session per request instead of sharing; #b4: missing L27: timeout should be aiohttp.ClientTimeout object; #b5: missing L29: dict mutation not safe from concurrent coroutines",
+      "tokens": 12338
+    },
+    {
+      "id": 10,
+      "role": "Content Writer / Blog Writer",
+      "tier": 2,
+      "scoring_type": "h_keywords",
+      "score": 8,
+      "max": 20,
+      "detail": "8/20 correct | #has_remote_work_title: missing; #has_2025_title: missing; #has_5_h2_sections: missing; #has_3_statistics: missing; #has_introduction: missing",
+      "tokens": 7798
+    },
+    {
+      "id": 17,
+      "role": "Social Media Content Agent",
+      "tier": 2,
+      "scoring_type": "h_keywords",
+      "score": 6,
+      "max": 20,
+      "detail": "6/20 correct | #has_3_platforms: missing; #has_hashtags_per_post: missing; #has_cta_per_post: missing; #has_posting_times: missing; #has_competitor_mention: missing",
+      "tokens": 5704
+    },
+    {
+      "id": 41,
+      "role": "Critic / Review Agent",
+      "tier": 3,
+      "scoring_type": "h_keywords",
+      "score": 0,
+      "max": 20,
+      "detail": "0/20 correct | #has_overall_score: missing; #identifies_sql_injection: missing; #flags_hardcoded_credentials: missing; #critiques_monolithic_app: missing; #flags_no_version_pinning: missing",
+      "tokens": 6976
+    }
+  ]
+}

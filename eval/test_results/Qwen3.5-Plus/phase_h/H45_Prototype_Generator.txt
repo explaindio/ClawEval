@@ -1,0 +1,56 @@
+```python
+class JSONValidator:
+    def validate(self, data, schema):
+        """
+        Validates JSON-like data against a schema.
+        
+        Args:
+            data (dict): The data to validate.
+            schema (dict): The schema definition.
+            
+        Returns:
+            dict: {"valid": bool, "errors": list}
+        """
+        errors = []
+
+        for field_name, rules in schema.items():
+            # 1. Check if field is present
+            if field_name not in data:
+                if rules.get("required", False):
+                    errors.append(f"Field '{field_name}' is required but missing.")
+                continue
+
+            value = data[field_name]
+            expected_type = rules.get("type")
+
+            # 2. Check Type
+            # We use type(value).__name__ to get the string name of the type (e.g., 'int', 'str').
+            # This strictly checks the type (e.g., distinguishes bool from int).
+            if expected_type and type(value).__name__ != expected_type:
+                errors.append(f"Field '{field_name}' must be of type {expected_type}.")
+                # If the type is wrong, we skip value/length constraints for this field
+                # to avoid TypeErrors or logical confusion.
+                continue
+
+            # 3. Check Numeric Constraints (min/max)
+            # Only applicable if the type is int or float
+            if expected_type in ["int", "float"]:
+                if "min" in rules and value < rules["min"]:
+                    errors.append(f"Field '{field_name}' value {value} is less than min {rules['min']}.")
+                if "max" in rules and value > rules["max"]:
+                    errors.append(f"Field '{field_name}' value {value} is greater than max {rules['max']}.")
+
+            # 4. Check Length Constraints (min_length/max_length)
+            # Only applicable if the type is str or list
+            if expected_type in ["str", "list"]:
+                length = len(value)
+                if "min_length" in rules and length < rules["min_length"]:
+                    errors.append(f"Field '{field_name}' length {length} is less than min_length {rules['min_length']}.")
+                if "max_length" in rules and length > rules["max_length"]:
+                    errors.append(f"Field '{field_name}' length {length} is greater than max_length {rules['max_length']}.")
+
+        return {
+            "valid": len(errors) == 0,
+            "errors": errors
+        }
+```

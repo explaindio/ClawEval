@@ -1,0 +1,80 @@
+{
+  "bugs": [
+    {
+      "line": "8",
+      "bug": "Shared state 'self.requests' accessed without a lock, causing race conditions in concurrent access.",
+      "fix": "Initialize 'self.lock = asyncio.Lock()' and wrap state modifications in 'async with self.lock'."
+    },
+    {
+      "line": "11",
+      "bug": "Usage of deprecated 'asyncio.get_event_loop()' inside a coroutine.",
+      "fix": "Replace with 'asyncio.get_running_loop().time()'."
+    },
+    {
+      "line": "14",
+      "bug": "Calculated 'wait' time can be negative due to timing precision, causing 'asyncio.sleep' to raise ValueError.",
+      "fix": "Use 'await asyncio.sleep(max(0, wait))' to ensure non-negative sleep time."
+    },
+    {
+      "line": "25",
+      "bug": "Creating a new 'ClientSession' for every request causes significant overhead and resource exhaustion.",
+      "fix": "Create a single 'ClientSession' in 'fetch_all' and pass it to 'fetch_one'."
+    },
+    {
+      "line": "27",
+      "bug": "Passing an integer to 'timeout' is invalid in modern aiohttp; it expects a 'ClientTimeout' object.",
+      "fix": "Use 'timeout=aiohttp.ClientTimeout(total=30)'."
+    },
+    {
+      "line": "29",
+      "bug": "Shared dictionary 'results' is modified by multiple coroutines concurrently without synchronization.",
+      "fix": "Protect 'results' updates with an 'asyncio.Lock' or return values from tasks instead of side-effects."
+    },
+    {
+      "line": "31",
+      "bug": "Exception handling sets result to None without logging, losing critical error context.",
+      "fix": "Log the exception details using 'logging.exception()' before assigning None."
+    },
+    {
+      "line": "32",
+      "bug": "Bare 'except Exception' followed by 'pass' silently swallows errors, making debugging impossible.",
+      "fix": "Remove 'pass' and ensure exceptions are logged or re-raised."
+    },
+    {
+      "line": "35",
+      "bug": "'asyncio.gather' without 'return_exceptions=True' may propagate errors and cancel remaining tasks.",
+      "fix": "Use 'await asyncio.gather(*tasks, return_exceptions=True)'."
+    },
+    {
+      "line": "42",
+      "bug": "Coroutines are stored directly in list without 'asyncio.create_task', complicating lifecycle management.",
+      "fix": "Use 'task = asyncio.create_task(process_item(item))' for explicit task scheduling."
+    },
+    {
+      "line": "45",
+      "bug": "Using 'yield' in 'async def' creates an async generator, which requires 'async for' to consume correctly.",
+      "fix": "Ensure callers use 'async for' or refactor to return a list if streaming is not required."
+    },
+    {
+      "line": "52",
+      "bug": "ConnectionPool uses a standard list for the pool, which is not safe for concurrent async access.",
+      "fix": "Use 'asyncio.Queue' or protect the list with an 'asyncio.Lock'."
+    },
+    {
+      "line": "60",
+      "bug": "'release' method appends to the shared pool list without acquiring a lock, causing race conditions.",
+      "fix": "Acquire the pool lock before appending the connection."
+    },
+    {
+      "line": "63",
+      "bug": "'create_connection' ignores 'self.size', allowing the pool to grow indefinitely beyond the limit.",
+      "fix": "Implement a semaphore or counter to enforce the maximum connection size."
+    },
+    {
+      "line": "68",
+      "bug": "Using 'print' in an async function performs blocking I/O, potentially stalling the event loop.",
+      "fix": "Use 'asyncio.to_thread(print, ...)' or a non-blocking logging library."
+    }
+  ],
+  "count": 15
+}

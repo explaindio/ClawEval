@@ -1,0 +1,22 @@
+```json
+{
+  "vulnerabilities": [
+    {"type": "SQL Injection", "location": "login() - query construction", "severity": "critical"},
+    {"type": "Server-Side Template Injection (SSTI)", "location": "profile() - render_template_string", "severity": "critical"},
+    {"type": "Cross-Site Scripting (XSS)", "location": "search() - reflected query parameter", "severity": "high"},
+    {"type": "Command Injection", "location": "run_command() - subprocess.run with shell=True", "severity": "critical"},
+    {"type": "Path Traversal", "location": "upload() - filename used in path construction", "severity": "high"},
+    {"type": "Path Traversal / Arbitrary File Read", "location": "download() - filepath passed to send_file", "severity": "high"},
+    {"type": "Insecure Deserialization (YAML)", "location": "load_config() - yaml.load without SafeLoader", "severity": "critical"},
+    {"type": "Insecure Deserialization (Pickle)", "location": "restore_session() - pickle.loads on user data", "severity": "critical"},
+    {"type": "Hardcoded Secret", "location": "global SECRET variable", "severity": "high"},
+    {"type": "Weak Cryptographic Hash (MD5)", "location": "login() - token generation", "severity": "medium"},
+    {"type": "Command Injection", "location": "export_data() - os.system with format string", "severity": "critical"},
+    {"type": "Debug Mode Enabled", "location": "app.run(debug=True)", "severity": "high"},
+    {"type": "Missing CSRF Protection", "location": "POST endpoints (login, run, upload, config, session)", "severity": "medium"},
+    {"type": "Plaintext Password Storage / Comparison", "location": "login() - password compared in raw SQL", "severity": "high"},
+    {"type": "Unrestricted File Upload", "location": "upload() - no file type or extension validation", "severity": "high"}
+  ],
+  "count": 15
+}
+```

@@ -1,0 +1,72 @@
+```python
+class JSONValidator:
+    def validate(self, data, schema):
+        errors = []
+
+        if not isinstance(data, dict):
+            return {"valid": False, "errors": ["Data must be a dictionary"]}
+
+        for field_name, rules in schema.items():
+            if not isinstance(rules, dict):
+                continue
+
+            required = rules.get("required", False)
+
+            if field_name not in data:
+                if required:
+                    errors.append(f"Field '{field_name}' is required")
+                continue
+
+            value = data[field_name]
+            field_type = rules.get("type")
+
+            # Type validation
+            if field_type == "str":
+                if not isinstance(value, str):
+                    errors.append(f"Field '{field_name}' must be of type str")
+            elif field_type == "int":
+                if not isinstance(value, int) or isinstance(value, bool):
+                    errors.append(f"Field '{field_name}' must be of type int")
+            elif field_type == "float":
+                if not isinstance(value, float):
+                    errors.append(f"Field '{field_name}' must be of type float")
+            elif field_type == "bool":
+                if not isinstance(value, bool):
+                    errors.append(f"Field '{field_name}' must be of type bool")
+            elif field_type == "list":
+                if not isinstance(value, list):
+                    errors.append(f"Field '{field_name}' must be of type list")
+            elif field_type == "dict":
+                if not isinstance(value, dict):
+                    errors.append(f"Field '{field_name}' must be of type dict")
+
+            # Numeric range validation (int / float)
+            if field_type == "int":
+                if isinstance(value, int) and not isinstance(value, bool):
+                    if "min" in rules and value < rules["min"]:
+                        errors.append(f"Field '{field_name}' is less than minimum {rules['min']}")
+                    if "max" in rules and value > rules["max"]:
+                        errors.append(f"Field '{field_name}' is greater than maximum {rules['max']}")
+            elif field_type == "float":
+                if isinstance(value, float):
+                    if "min" in rules and value < rules["min"]:
+                        errors.append(f"Field '{field_name}' is less than minimum {rules['min']}")
+                    if "max" in rules and value > rules["max"]:
+                        errors.append(f"Field '{field_name}' is greater than maximum {rules['max']}")
+
+            # Length validation (str / list)
+            if field_type == "str" and isinstance(value, str):
+                length = len(value)
+                if "min_length" in rules and length < rules["min_length"]:
+                    errors.append(f"Field '{field_name}' length is less than minimum {rules['min_length']}")
+                if "max_length" in rules and length > rules["max_length"]:
+                    errors.append(f"Field '{field_name}' length is greater than maximum {rules['max_length']}")
+            elif field_type == "list" and isinstance(value, list):
+                length = len(value)
+                if "min_length" in rules and length < rules["min_length"]:
+                    errors.append(f"Field '{field_name}' length is less than minimum {rules['min_length']}")
+                if "max_length" in rules and length > rules["max_length"]:
+                    errors.append(f"Field '{field_name}' length is greater than maximum {rules['max_length']}")
+
+        return {"valid": len(errors) == 0, "errors": errors}
+```

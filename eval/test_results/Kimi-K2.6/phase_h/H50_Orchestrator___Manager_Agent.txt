@@ -1,0 +1,176 @@
+```json
+{
+  "workflow_name": "Customer_Refund_Orchestration",
+  "version": "1.0.0",
+  "max_total_duration_seconds": 55,
+  "agents": [
+    {
+      "agent_id": "A1_INTAKE",
+      "name": "Refund Intake Agent",
+      "role": "Receives refund request and extracts order_id, customer_id, amount, reason",
+      "timeout_seconds": 5,
+      "fallback_agent": "A7_ESCALATION"
+    },
+    {
+      "agent_id": "A2_VALIDATION",
+      "name": "Validation Agent",
+      "role": "Verifies order existence, eligibility window, and refund policy compliance",
+      "timeout_seconds": 8,
+      "fallback_agent": "A7_ESCALATION"
+    },
+    {
+      "agent_id": "A3_FRAUD",
+      "name": "Fraud Detection Agent",
+      "role": "Analyzes velocity, pattern anomalies, and risk scoring",
+      "timeout_seconds": 8,
+      "fallback_agent": "A7_ESCALATION"
+    },
+    {
+      "agent_id": "A4_APPROVAL",
+      "name": "Approval Agent",
+      "role": "Determines approval based on validation, fraud score, and amount thresholds",
+      "timeout_seconds": 10,
+      "fallback_agent": "A7_ESCALATION"
+    },
+    {
+      "agent_id": "A5_PAYMENT",
+      "name": "Payment Processing Agent",
+      "role": "Executes refund transaction to original payment instrument",
+      "timeout_seconds": 15,
+      "fallback_agent": "A7_ESCALATION"
+    },
+    {
+      "agent_id": "A6_NOTIFICATION",
+      "name": "Customer Notification Agent",
+      "role": "Sends final status email/SMS/push to customer",
+      "timeout_seconds": 5,
+      "fallback_agent": "A7_ESCALATION"
+    },
+    {
+      "agent_id": "A7_ESCALATION",
+      "name": "Human Escalation Agent",
+      "role": "Creates support ticket and alerts human team for manual review",
+      "timeout_seconds": 30,
+      "fallback_agent": null
+    }
+  ],
+  "workflow_dag": {
+    "description": "Directed acyclic graph with parallel validation/fraud branches",
+    "edges": [
+      {
+        "from": "A1_INTAKE",
+        "to": ["A2_VALIDATION", "A3_FRAUD"],
+        "parallel": true,
+        "condition": "intake_success == true"
+      },
+      {
+        "from": "A2_VALIDATION",
+        "to": "A4_APPROVAL",
+        "condition": "validation_passed == true"
+      },
+      {
+        "from": "A3_FRAUD",
+        "to": "A4_APPROVAL",
+        "condition": "fraud_risk == low"
+      },
+      {
+        "from": "A4_APPROVAL",
+        "to": "A5_PAYMENT",
+        "condition": "decision == approved"
+      },
+      {
+        "from": "A4_APPROVAL",
+        "to": "A6_NOTIFICATION",
+        "condition": "decision == rejected"
+      },
+      {
+        "from": "A5_PAYMENT",
+        "to": "A6_NOTIFICATION",
+        "condition": "payment_success == true"
+      }
+    ]
+  },
+  "edge_case_handlers": {
+    "rejected": {
+      "triggers": [
+        "A2_VALIDATION returns invalid",
+        "A3_FRAUD returns high_risk",
+        "A4_APPROVAL returns denied"
+      ],
+      "bypass_path": {
+        "skip_agents": ["A5_PAYMENT"],
+        "target": "A6_NOTIFICATION",
+        "payload_enrichment": {
+          "status": "rejected",
+          "rejection_reason": "dynamic_from_source_agent",
+          "customer_message": "Your refund request could not be approved."
+        }
+      }
+    },
+    "timeout": {
+      "triggers": [
+        "any_agent_exceeds_configured_timeout",
+        "total_workflow_exceeds_55_seconds"
+      ],
+      "action": "abort_and_escalate",
+      "target": "A7_ESCALATION",
+      "retry_policy": {
+        "max_retries": 0,
+        "strategy": "immediate_escalation"
+      }
+    },
+    "human_escalation": {
+      "triggers": [
+        "any_agent_failure_or_exception",
+        "refund_amount > 1000.00",
+        "A4_APPROVAL requests manual_review"
+      ],
+      "target": "A7_ESCALATION",
+      "sla_seconds": 14400,
+      "alert_channels": ["pagerduty", "email", "slack"]
+    }
+  },
+  "audit_logging": {
+    "enabled": true,
+    "scope": "every_agent_transition",
+    "immutable_ledger": true,
+    "logged_fields": [
+      "timestamp_utc",
+      "workflow_instance_id",
+      "agent_id",
+      "input_checksum",
+      "output_summary",
+      "decision",
+      "latency_ms",
+      "timeout_occurred",
+      "escalation_triggered"
+    ],
+    "retention_days": 90,
+    "compliance_standard": "SOC2"
+  },
+  "timing_budget": {
+    "critical_path_seconds": 43,
+    "parallel_branches": {
+      "branch_1": {
+        "agents": ["A2_VALIDATION", "A3_FRAUD"],
+        "max_concurrent_duration": 8
+      }
+    },
+    "agent_budgets": {
+      "A1_INTAKE": 5,
+      "A2_VALIDATION": 8,
+      "A3_FRAUD": 8,
+      "A4_APPROVAL": 10,
+      "A5_PAYMENT": 15,
+      "A6_NOTIFICATION": 5
+    },
+    "buffer_seconds": 12,
+    "guarantee": "If critical path exceeds 55 seconds, workflow auto-escalates to A7_ESCALATION"
+  },
+  "circular_dependency_check": {
+    "verified": true,
+    "method": "topological_sort",
+    "note": "All edges flow from lower-index to higher-index agents; no back-edges exist."
+  }
+}
+```

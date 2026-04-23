@@ -1,0 +1,105 @@
+```python
+def is_valid_password(password):
+    # Rule: At least 8 characters long
+    if len(password) < 8:
+        return False
+    # Rule: At most 64 characters
+    if len(password) > 64:
+        return False
+
+    # Rule: No spaces allowed
+    if " " in password:
+        return False
+
+    # Rule: Cannot start with a digit
+    # (Length check ensures password is not empty, so index 0 is safe)
+    if password[0].isdigit():
+        return False
+
+    # Rule: Cannot contain the word "password" (case-insensitive)
+    if "password" in password.lower():
+        return False
+
+    # Rule: Cannot contain more than 3 consecutive identical characters
+    count = 1
+    for i in range(1, len(password)):
+        if password[i] == password[i-1]:
+            count += 1
+            if count > 3:
+                return False
+        else:
+            count = 1
+
+    # Character type checks
+    has_upper = False
+    has_lower = False
+    has_digit = False
+    has_special = False
+    special_chars = "!@#$%^&*()-_+="
+
+    for char in password:
+        if char.isupper():
+            has_upper = True
+        elif char.islower():
+            has_lower = True
+        elif char.isdigit():
+            has_digit = True
+        elif char in special_chars:
+            has_special = True
+
+    # Rule: Contains at least 1 uppercase letter
+    if not has_upper:
+        return False
+    # Rule: Contains at least 1 lowercase letter
+    if not has_lower:
+        return False
+    # Rule: Contains at least 1 digit
+    if not has_digit:
+        return False
+    # Rule: Contains at least 1 special character
+    if not has_special:
+        return False
+
+    return True
+
+def run_tests():
+    test_cases = [
+        # 1. Valid password meeting all criteria
+        ("SecureP@ss1", True),
+        # 2. Too short (< 8 characters)
+        ("Sec1!", False),
+        # 3. Too long (> 64 characters) - 68 chars
+        ("Aa1!" * 17, False),
+        # 4. No uppercase letter
+        ("securep@ss1", False),
+        # 5. No lowercase letter
+        ("SECUREP@SS1", False),
+        # 6. No digit
+        ("SecurePass!", False),
+        # 7. No special character from allowed list
+        ("SecurePass1", False),
+        # 8. Contains space
+        ("Secure P@ss1", False),
+        # 9. Starts with a digit
+        ("1SecureP@ss", False),
+        # 10. More than 3 consecutive identical characters ('u' appears 4 times)
+        ("SecuuuureP@ss1", False),
+        # 11. Exactly 3 consecutive identical characters (Valid boundary)
+        ("SecuuureP@ss1", True),
+        # 12. Contains the word "password"
+        ("MyPassword1!", False),
+        # 13. Contains the word "password" (case-insensitive check)
+        ("MyPaSsWoRd1!", False),
+        # 14. Contains a special character not in the allowed list ('?')
+        ("SecurePass1?", False),
+        # 15. Empty string
+        ("", False)
+    ]
+
+    results = []
+    for pwd, expected in test_cases:
+        actual = is_valid_password(pwd)
+        results.append((pwd, expected, actual))
+    
+    return results
+```

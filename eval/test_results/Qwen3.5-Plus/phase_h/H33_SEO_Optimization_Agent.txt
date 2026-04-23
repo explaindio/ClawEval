@@ -1,0 +1,95 @@
+{
+  "issues": [
+    {
+      "id": 1,
+      "issue": "Missing <!DOCTYPE html> declaration",
+      "severity": "major",
+      "fix": "Add <!DOCTYPE html> at the very beginning of the document to ensure standard rendering mode."
+    },
+    {
+      "id": 2,
+      "issue": "Missing lang attribute on <html> tag",
+      "severity": "minor",
+      "fix": "Add lang attribute (e.g., lang=\"en\") to the <html> tag for accessibility and search engine language targeting."
+    },
+    {
+      "id": 3,
+      "issue": "Missing <meta charset> declaration",
+      "severity": "major",
+      "fix": "Add <meta charset=\"UTF-8\"> in the <head> to prevent encoding issues during crawling."
+    },
+    {
+      "id": 4,
+      "issue": "Missing <meta name=\"viewport\"> tag",
+      "severity": "critical",
+      "fix": "Add <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"> for mobile-friendly indexing."
+    },
+    {
+      "id": 5,
+      "issue": "Generic and non-descriptive <title> tag",
+      "severity": "major",
+      "fix": "Update <title> to include specific keywords and brand name (e.g., \"Best Products | Our Store\")."
+    },
+    {
+      "id": 6,
+      "issue": "Missing <meta name=\"description\"> tag",
+      "severity": "major",
+      "fix": "Add a unique meta description summarizing the page content to improve SERP click-through rates."
+    },
+    {
+      "id": 7,
+      "issue": "Obsolete <meta name=\"keywords\"> tag present",
+      "severity": "minor",
+      "fix": "Remove the meta keywords tag as it is ignored by major search engines and can appear spammy."
+    },
+    {
+      "id": 8,
+      "issue": "Improper heading hierarchy (H2 before H1)",
+      "severity": "minor",
+      "fix": "Ensure the first heading is an <h1> and follows a logical descending order (H1, H2, H3)."
+    },
+    {
+      "id": 9,
+      "issue": "Multiple <h1> tags used on single page",
+      "severity": "minor",
+      "fix": "Consolidate to a single <h1> tag that best describes the primary topic of the page."
+    },
+    {
+      "id": 10,
+      "issue": "Images missing alt attributes",
+      "severity": "major",
+      "fix": "Add descriptive alt text to all <img> tags for accessibility and image search optimization."
+    },
+    {
+      "id": 11,
+      "issue": "Non-descriptive anchor text (\"Click here\")",
+      "severity": "major",
+      "fix": "Replace generic link text with descriptive keywords indicating the destination URL."
+    },
+    {
+      "id": 12,
+      "issue": "Hidden text detected (display:none keyword stuffing)",
+      "severity": "critical",
+      "fix": "Remove the hidden <div> containing keywords immediately to avoid manual penalties for cloaking."
+    },
+    {
+      "id": 13,
+      "issue": "Missing canonical tag for parameterized URL",
+      "severity": "major",
+      "fix": "Add <link rel=\"canonical\"> pointing to the clean URL without tracking parameters to prevent duplicate content."
+    },
+    {
+      "id": 14,
+      "issue": "Thin content with low word count",
+      "severity": "major",
+      "fix": "Expand the page content with unique, valuable text relevant to the products and user intent."
+    },
+    {
+      "id": 15,
+      "issue": "Missing structured data (Schema.org)",
+      "severity": "minor",
+      "fix": "Implement JSON-LD structured data (e.g., Product, Store) to enable rich snippets in search results."
+    }
+  ],
+  "count": 15
+}

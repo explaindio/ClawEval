@@ -1,0 +1,80 @@
+{
+  "issues": [
+    {
+      "line": "6",
+      "issue": "Single replica configuration creates a single point of failure",
+      "severity": "minor"
+    },
+    {
+      "line": "17",
+      "issue": "Using 'latest' tag for container image prevents version pinning and reproducible builds",
+      "severity": "major"
+    },
+    {
+      "line": "20",
+      "issue": "Empty resources block lacks requests and limits, risking node stability and scheduling",
+      "severity": "major"
+    },
+    {
+      "line": "22",
+      "issue": "Invalid securityContext field 'runAsRoot' (should be 'runAsNonRoot') and allows root execution",
+      "severity": "critical"
+    },
+    {
+      "line": "23",
+      "issue": "Privileged container mode grants full host access, posing severe security risk",
+      "severity": "critical"
+    },
+    {
+      "line": "26",
+      "issue": "Database password hardcoded in plain text environment variable",
+      "severity": "critical"
+    },
+    {
+      "line": "28",
+      "issue": "API key hardcoded in plain text environment variable",
+      "severity": "critical"
+    },
+    {
+      "line": "16",
+      "issue": "Missing livenessProbe for main container prevents automatic restart on deadlock",
+      "severity": "major"
+    },
+    {
+      "line": "16",
+      "issue": "Missing readinessProbe for main container risks traffic to unready pods",
+      "severity": "major"
+    },
+    {
+      "line": "34",
+      "issue": "Sidecar container missing resource limits allows unbounded resource consumption",
+      "severity": "major"
+    },
+    {
+      "line": "36",
+      "issue": "Sidecar memory request (10Gi) is excessively high for a logger utility",
+      "severity": "major"
+    },
+    {
+      "line": "37",
+      "issue": "Sidecar CPU request (8 cores) is excessively high for a logger utility",
+      "severity": "major"
+    },
+    {
+      "line": "40",
+      "issue": "Use of hostPath volume breaks portability and poses host filesystem security risks",
+      "severity": "major"
+    },
+    {
+      "line": "41",
+      "issue": "HostPath uses /tmp directory which is insecure, shared, and ephemeral",
+      "severity": "minor"
+    },
+    {
+      "line": "48",
+      "issue": "Service type LoadBalancer exposes application directly to public internet without Ingress protection",
+      "severity": "minor"
+    }
+  ],
+  "count": 15
+}

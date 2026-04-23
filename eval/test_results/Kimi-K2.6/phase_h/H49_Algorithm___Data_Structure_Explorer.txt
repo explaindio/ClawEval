@@ -1,0 +1,139 @@
+```python
+class LRUCache:
+    class _Node:
+        __slots__ = ('key', 'val', 'prev', 'next')
+        def __init__(self, key=0, val=0):
+            self.key = key
+            self.val = val
+            self.prev = None
+            self.next = None
+
+    def __init__(self, capacity):
+        self.capacity = capacity
+        self.cache = {}
+        self.head = self._Node()
+        self.tail = self._Node()
+        self.head.next = self.tail
+        self.tail.prev = self.head
+        self.size = 0
+
+    def _remove(self, node):
+        node.prev.next = node.next
+        node.next.prev = node.prev
+
+    def _add_to_head(self, node):
+        node.next = self.head.next
+        node.prev = self.head
+        self.head.next.prev = node
+        self.head.next = node
+
+    def _move_to_head(self, node):
+        self._remove(node)
+        self._add_to_head(node)
+
+    def get(self, key):
+        if key not in self.cache:
+            return -1
+        node = self.cache[key]
+        self._move_to_head(node)
+        return node.val
+
+    def put(self, key, value):
+        if key in self.cache:
+            node = self.cache[key]
+            node.val = value
+            self._move_to_head(node)
+        else:
+            node = self._Node(key, value)
+            self.cache[key] = node
+            self._add_to_head(node)
+            self.size += 1
+            if self.size > self.capacity:
+                removed = self.tail.prev
+                self._remove(removed)
+                del self.cache[removed.key]
+                self.size -= 1
+
+
+class MinStack:
+    def __init__(self):
+        self.stack = []
+        self.min_stack = []
+
+    def push(self, val):
+        self.stack.append(val)
+        if not self.min_stack or val <= self.min_stack[-1]:
+            self.min_stack.append(val)
+
+    def pop(self):
+        val = self.stack.pop()
+        if val == self.min_stack[-1]:
+            self.min_stack.pop()
+
+    def top(self):
+        return self.stack[-1]
+
+    def get_min(self):
+        return self.min_stack[-1]
+
+
+def find_median(stream):
+    def sift_up(heap, idx):
+        while idx > 0:
+            parent = (idx - 1) // 2
+            if heap[parent] <= heap[idx]:
+                break
+            heap[parent], heap[idx] = heap[idx], heap[parent]
+            idx = parent
+
+    def sift_down(heap, idx):
+        n = len(heap)
+        while True:
+            left = 2 * idx + 1
+            right = 2 * idx + 2
+            smallest = idx
+            if left < n and heap[left] < heap[smallest]:
+                smallest = left
+            if right < n and heap[right] < heap[smallest]:
+                smallest = right
+            if smallest == idx:
+                break
+            heap[idx], heap[smallest] = heap[smallest], heap[idx]
+            idx = smallest
+
+    def heappush(heap, val):
+        heap.append(val)
+        sift_up(heap, len(heap) - 1)
+
+    def heappop(heap):
+        if len(heap) == 1:
+            return heap.pop()
+        top = heap[0]
+        heap[0] = heap.pop()
+        sift_down(heap, 0)
+        return top
+
+    small = []
+    large = []
+    medians = []
+
+    for num in stream:
+        if not small or num <= -small[0]:
+            heappush(small, -num)
+        else:
+            heappush(large, num)
+
+        if len(small) > len(large) + 1:
+            heappush(large, -heappop(small))
+        elif len(large) > len(small) + 1:
+            heappush(small, -heappop(large))
+
+        if len(small) == len(large):
+            medians.append((-small[0] + large[0]) / 2.0)
+        elif len(small) > len(large):
+            medians.append(float(-small[0]))
+        else:
+            medians.append(float(large[0]))
+
+    return medians
+```

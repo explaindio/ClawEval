@@ -1,0 +1,80 @@
+{
+  "vulnerabilities": [
+    {
+      "type": "SQL Injection",
+      "location": "login function, Line 17",
+      "severity": "critical"
+    },
+    {
+      "type": "Plaintext Password Storage/Comparison",
+      "location": "login function, Line 17",
+      "severity": "critical"
+    },
+    {
+      "type": "Weak Hashing Algorithm (MD5)",
+      "location": "login function, Line 20",
+      "severity": "medium"
+    },
+    {
+      "type": "Server-Side Template Injection (SSTI)",
+      "location": "profile function, Line 26",
+      "severity": "critical"
+    },
+    {
+      "type": "Cross-Site Scripting (XSS)",
+      "location": "search function, Line 31",
+      "severity": "medium"
+    },
+    {
+      "type": "Command Injection (subprocess)",
+      "location": "run_command function, Line 36",
+      "severity": "critical"
+    },
+    {
+      "type": "Path Traversal (Upload)",
+      "location": "upload function, Line 42",
+      "severity": "high"
+    },
+    {
+      "type": "Unrestricted File Upload",
+      "location": "upload function, Line 43",
+      "severity": "critical"
+    },
+    {
+      "type": "Path Traversal (Download)",
+      "location": "download function, Line 49",
+      "severity": "high"
+    },
+    {
+      "type": "Insecure Deserialization (YAML)",
+      "location": "load_config function, Line 54",
+      "severity": "critical"
+    },
+    {
+      "type": "Insecure Deserialization (Pickle)",
+      "location": "restore_session function, Line 60",
+      "severity": "critical"
+    },
+    {
+      "type": "Hardcoded Secret",
+      "location": "Global scope, Line 6",
+      "severity": "high"
+    },
+    {
+      "type": "Broken Access Control",
+      "location": "admin function, Line 66",
+      "severity": "critical"
+    },
+    {
+      "type": "Command Injection (os.system)",
+      "location": "export_data function, Line 74",
+      "severity": "critical"
+    },
+    {
+      "type": "Debug Mode Enabled",
+      "location": "Main block, Line 78",
+      "severity": "high"
+    }
+  ],
+  "count": 15
+}

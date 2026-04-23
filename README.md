@@ -134,11 +134,11 @@ Phase F gave every model 8–10/10 on most roles. ClawEval v2 replaces that with
 
 ### 🏅 ClawEval v2 Leaderboard
 
-| Model | Provider | Score | Checkpoints | Notes |
-|-------|----------|-------|-------------|-------|
-| Kimi K2.6 | ☁️ Ollama Cloud | 🔄 Running... | /1220 | First v2 model — results dropping soon |
-| GLM-5.1 | ☁️ Ollama Cloud | ⏳ Queued | /1220 | Next in line |
-| Qwen3.6-35B-A3B | 🟢 24GB Local | ⏳ Pending | /1220 | Baseline re-run needed for 6 new tests |
+| Rank | Model | Provider | Score | % | 100% Tests | Notes |
+|------|-------|----------|-------|---|------------|-------|
+| 🥇 | **Qwen3.5-Plus** | ☁️ Alibaba | 862/1220 | **70.7%** | 21 | Best cloud model tested |
+| 🥈 | **Kimi K2.6** | ☁️ Ollama Cloud | 724/1220 | **~59%** | 15 | Thinking model — 4 tests retrying |
+| — | GLM-5.1 | ☁️ Ollama Cloud | ⏳ Queued | — | — | Next in line |
 
 > 📊 **[Full ClawEval v2 results →](docs/results-phase-h.md)** · Models are tested sequentially — star ⭐ this repo to get notified when results drop.
 

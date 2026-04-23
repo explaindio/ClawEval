@@ -1,0 +1,78 @@
+{
+  "agents": [
+    {
+      "name": "RefundValidationAgent",
+      "input": "refund_request_payload",
+      "output": "validated_request, audit_id",
+      "next": "FraudDetectionAgent",
+      "fallback": "NotificationAgent",
+      "timeout_seconds": 5
+    },
+    {
+      "name": "FraudDetectionAgent",
+      "input": "validated_request, audit_id",
+      "output": "risk_assessment, audit_id",
+      "next": "ApprovalDecisionAgent",
+      "fallback": "HumanEscalationAgent",
+      "timeout_seconds": 10
+    },
+    {
+      "name": "ApprovalDecisionAgent",
+      "input": "risk_assessment, audit_id",
+      "output": "decision_status, audit_id",
+      "next": "IF decision_status == 'approved' THEN PaymentProcessingAgent ELSE IF decision_status == 'pending' THEN HumanEscalationAgent ELSE NotificationAgent",
+      "fallback": "HumanEscalationAgent",
+      "timeout_seconds": 5
+    },
+    {
+      "name": "PaymentProcessingAgent",
+      "input": "decision_status, audit_id",
+      "output": "transaction_receipt, audit_id",
+      "next": "NotificationAgent",
+      "fallback": "HumanEscalationAgent",
+      "timeout_seconds": 15
+    },
+    {
+      "name": "HumanEscalationAgent",
+      "input": "flagged_case, audit_id",
+      "output": "manual_review_result, audit_id",
+      "next": "NotificationAgent",
+      "fallback": "NotificationAgent",
+      "timeout_seconds": 20
+    },
+    {
+      "name": "NotificationAgent",
+      "input": "final_status, audit_id",
+      "output": "delivery_confirmation, audit_id",
+      "next": null,
+      "fallback": null,
+      "timeout_seconds": 5
+    }
+  ],
+  "constraints": {
+    "max_total_duration_seconds": 60,
+    "audit_logging_enabled": true,
+    "min_agents_required": 6,
+    "required_roles": [
+      "validation",
+      "fraud-check",
+      "approval",
+      "payment",
+      "notification"
+    ],
+    "ordering_rules": {
+      "fraud_before_approval": true,
+      "payment_after_approval": true,
+      "first_agent": "RefundValidationAgent",
+      "last_agent": "NotificationAgent"
+    },
+    "error_handling": {
+      "fallback_required_per_agent": true,
+      "human_escalation_path": true
+    },
+    "flow_integrity": {
+      "no_circular_dependencies": true,
+      "conditional_branching_required": true
+    }
+  }
+}
