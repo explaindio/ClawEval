@@ -1,10 +1,10 @@
 {
   "model": "Kimi-K2.6",
   "phase": "H",
-  "timestamp": "2026-04-22T21:36:23.831316",
-  "total_score": 50,
-  "total_max": 265,
-  "percentage": 18.9,
+  "timestamp": "2026-04-23T12:20:52.494259",
+  "total_score": 26,
+  "total_max": 110,
+  "percentage": 23.6,
   "results": [
     {
       "id": 12,
@@ -17,44 +17,14 @@
       "tokens": 16000
     },
     {
-      "id": 3,
-      "role": "Heartbeat / Health Monitor",
-      "tier": 1,
-      "scoring_type": "json_numeric",
-      "score": 0,
-      "max": 15,
-      "detail": "0/15 correct | s1_status: not numeric: healthy; s2_status: not numeric: degraded; s3_status: not numeric: healthy; s4_status: not numeric: degraded; s5_status: not numeric: healthy; s6_status: not numeric: degraded; s7_status: not numeric: healthy; s8_status: not numeric: down; s9_status: not numeric: healthy; s10_status: not numeric: degraded",
-      "tokens": 8908
-    },
-    {
       "id": 11,
       "role": "Editor Agent",
       "tier": 2,
       "scoring_type": "h_keywords",
-      "score": 0,
+      "score": 26,
       "max": 30,
-      "detail": "0/30 correct | #e1: missing Quartely\u2192Quarterly; #e2: missing Reveiw\u2192Review; #e3: missing Summery\u2192Summary; #e4: missing $4.7M million\u2192$4.7M; #e5: missing too\u2192to",
-      "tokens": 16000
-    },
-    {
-      "id": 32,
-      "role": "Personal Finance Tracking",
-      "tier": 2,
-      "scoring_type": "json_numeric",
-      "score": 8,
-      "max": 15,
-      "detail": "8/15 correct | f3: exp=1665, got=1865.0; f7: exp=745, got=545.0; f9: exp=3270, got=2.93; f10: exp=1545, got=1345.0; f11: exp=2.12, got=6.71; f12: exp=235, got=435.0; f13: exp=2.19, got=2.62",
-      "tokens": 10540
-    },
-    {
-      "id": 37,
-      "role": "Code Review Agent",
-      "tier": 3,
-      "scoring_type": "h_keywords",
-      "score": 4,
-      "max": 15,
-      "detail": "4/15 correct | #b1: missing L12: multiplies by 0.20 instead of subtracting 20%; #b3: missing L22: silently allows negative stock; #b6: missing L35: fails if results is empty; #b7: missing L46: insufficient email validation; #b9: missing L57: unreachable elif (weight>50) after weight>30",
-      "tokens": 11800
+      "detail": "26/30 correct | #e5: missing too\u2192to; #e14: missing double space before ROI; #e22: missing net profit math error; #e24: missing form\u2192from (L21)",
+      "tokens": 12801
     },
     {
       "id": 15,
@@ -67,36 +37,6 @@
       "tokens": 16000
     },
     {
-      "id": 46,
-      "role": "DevOps Agent",
-      "tier": 3,
-      "scoring_type": "h_keywords",
-      "score": 5,
-      "max": 15,
-      "detail": "5/15 correct | #i1: missing image uses :latest tag; #i2: missing only 1 replica - no HA; #i6: missing DB_PASSWORD in plaintext; #i7: missing API_KEY in plaintext; #i8: missing hostPath volume - not portable",
-      "tokens": 13387
-    },
-    {
-      "id": 29,
-      "role": "Home Automation Agent",
-      "tier": 2,
-      "scoring_type": "h_keywords",
-      "score": 7,
-      "max": 20,
-      "detail": "7/20 correct | #2: missing lock doors, arm alarm, lights off, eco thermostat; #6: missing show camera, unlock door; #7: missing show camera, keep door locked; #11: missing trigger alarm, notify emergency, unlock doors; #12: missing send alert, shut water valve if available",
-      "tokens": 11438
-    },
-    {
-      "id": 31,
-      "role": "Recipe / Cooking Agent",
-      "tier": 2,
-      "scoring_type": "json_numeric",
-      "score": 15,
-      "max": 15,
-      "detail": "15/15 correct",
-      "tokens": 2387
-    },
-    {
       "id": 52,
       "role": "Complex Debugger Agent",
       "tier": 5,
@@ -105,36 +45,6 @@
       "max": 15,
       "detail": "0/15 correct | #b1: missing L8: list not thread-safe for async access, needs Lock; #b2: missing L11: deprecated get_event_loop(), use get_running_loop(); #b3: missing L25: creates new session per request instead of sharing; #b4: missing L27: timeout should be aiohttp.ClientTimeout object; #b5: missing L29: dict mutation not safe from concurrent coroutines",
       "tokens": 16000
-    },
-    {
-      "id": 24,
-      "role": "Image Description / Understanding",
-      "tier": 2,
-      "scoring_type": "h_keywords",
-      "score": 0,
-      "max": 20,
-      "detail": "0/20 correct | #mentions_tokyo: missing; #mentions_dusk: missing; #mentions_rain: missing; #has_object_count: missing; #mentions_neon_colors: missing",
-      "tokens": 2568
-    },
-    {
-      "id": 34,
-      "role": "Landing Page Generator",
-      "tier": 2,
-      "scoring_type": "h_keywords",
-      "score": 11,
-      "max": 20,
-      "detail": "11/20 correct | #has_navbar_4_links: missing; #has_4_feature_cards: missing; #has_3_pricing_tiers: missing; #has_footer_links: missing; #has_2_cta_buttons: missing",
-      "tokens": 12335
-    },
-    {
-      "id": 58,
-      "role": "Book / Long-Form Writing",
-      "tier": 5,
-      "scoring_type": "h_keywords",
-      "score": 0,
-      "max": 20,
-      "detail": "0/20 correct | #has_12_chapters: missing; #has_3_5_sections_each: missing; #ch1_is_introduction: missing; #ch12_is_conclusion: missing; #has_2_tool_chapters: missing",
-      "tokens": 6232
     }
   ]
 }
