@@ -1,50 +1,40 @@
 {
   "model": "Kimi-K2.6",
   "phase": "H",
-  "timestamp": "2026-04-23T12:20:52.494259",
-  "total_score": 26,
-  "total_max": 110,
-  "percentage": 23.6,
+  "timestamp": "2026-04-23T13:24:20.173323",
+  "total_score": 57,
+  "total_max": 80,
+  "percentage": 71.2,
   "results": [
     {
       "id": 12,
       "role": "Content Planner / Strategist",
       "tier": 2,
       "scoring_type": "content_planner",
-      "score": 0,
-      "max": 30,
-      "detail": "Could not parse JSON",
-      "tokens": 16000
-    },
-    {
-      "id": 11,
-      "role": "Editor Agent",
-      "tier": 2,
-      "scoring_type": "h_keywords",
       "score": 26,
       "max": 30,
-      "detail": "26/30 correct | #e5: missing too\u2192to; #e14: missing double space before ROI; #e22: missing net profit math error; #e24: missing form\u2192from (L21)",
-      "tokens": 12801
+      "detail": "26/30 constraints met | blogs_per_week_min: unverifiable; social_per_week_min: unverifiable; channels_per_week_min: unverifiable; linkedin_per_week_min: unverifiable",
+      "tokens": 20922
     },
     {
       "id": 15,
       "role": "Meeting Notes / Transcription Agent",
       "tier": 2,
       "scoring_type": "h_keywords",
-      "score": 0,
+      "score": 30,
       "max": 35,
-      "detail": "0/35 correct | #a1_owner: missing Bob; #a1_deadline: missing Friday; #a2_owner: missing Carol; #a2_deadline: missing March 14; #a3_owner: missing Dave",
-      "tokens": 16000
+      "detail": "30/35 correct | #a1_deadline: missing Friday; #a4_deadline: missing Monday; #a5_deadline: missing end of month; #a13_deadline: missing end of next week; #a18_count: missing 20",
+      "tokens": 23630
     },
     {
       "id": 52,
       "role": "Complex Debugger Agent",
       "tier": 5,
       "scoring_type": "h_keywords",
-      "score": 0,
+      "score": 1,
       "max": 15,
-      "detail": "0/15 correct | #b1: missing L8: list not thread-safe for async access, needs Lock; #b2: missing L11: deprecated get_event_loop(), use get_running_loop(); #b3: missing L25: creates new session per request instead of sharing; #b4: missing L27: timeout should be aiohttp.ClientTimeout object; #b5: missing L29: dict mutation not safe from concurrent coroutines",
-      "tokens": 16000
+      "detail": "1/15 correct | #b1: missing L8: list not thread-safe for async access, needs Lock; #b2: missing L11: deprecated get_event_loop(), use get_running_loop(); #b3: missing L25: creates new session per request instead of sharing; #b4: missing L27: timeout should be aiohttp.ClientTimeout object; #b5: missing L29: dict mutation not safe from concurrent coroutines",
+      "tokens": 17899
     }
   ]
 }

@@ -1,0 +1,82 @@
+ ```json
+{
+  "bugs": [
+    {
+      "line": "8",
+      "bug": "self.requests is a shared list mutated by multiple concurrent coroutines without an asyncio.Lock, causing race conditions between the check, sleep, and append operations.",
+      "fix": "Add self.lock = asyncio.Lock() in __init__ and wrap the body of acquire() with 'async with self.lock:'."
+    },
+    {
+      "line": "11",
+      "bug": "asyncio.get_event_loop() is deprecated and may return a non-running loop; it should not be used inside running async code.",
+      "fix": "Replace with asyncio.get_running_loop().time()."
+    },
+    {
+      "line": "16",
+      "bug": "After await asyncio.sleep(wait), the stale 'now' timestamp is appended instead of the current time, causing the rate limiter to record inaccurate request times and allow bursts.",
+      "fix": "Recompute now = asyncio.get_running_loop().time() after sleeping and before appending to self.requests."
+    },
+    {
+      "line": "25",
+      "bug": "A new aiohttp.ClientSession is created for every single request, preventing TCP connection pooling and causing excessive overhead.",
+      "fix": "Create one ClientSession in fetch_all and pass it into fetch_one, or manage a single session context around all requests."
+    },
+    {
+      "line": "27",
+      "bug": "The response object is not used as an async context manager, so the underlying connection may not be released back to the pool, causing connection leaks.",
+      "fix": "Use 'async with session.get(url, timeout=30) as response:' to ensure the response is properly closed."
+    },
+    {
+      "line": "29",
+      "bug": "Concurrent tasks mutate the shared 'results' dictionary without synchronization; duplicate URLs also overwrite previous entries.",
+      "fix": "Have fetch_one return its result and build the output from asyncio.gather, or protect the dict with an asyncio.Lock."
+    },
+    {
+      "line": "31",
+      "bug": "Bare 'except Exception' silently swallows all errors, including unexpected programming errors, making debugging impossible.",
+      "fix": "Catch specific exceptions (e.g., aiohttp.ClientError, asyncio.TimeoutError) and log or handle them appropriately."
+    },
+    {
+      "line": "32",
+      "bug": "The 'pass' statement is unnecessary dead code that explicitly does nothing after silently swallowing an exception.",
+      "fix": "Remove 'pass' and add logging or re-raise the exception after handling."
+    },
+    {
+      "line": "35",
+      "bug": "asyncio.gather without return_exceptions=True will cancel all remaining tasks if any task raises a BaseException (e.g., asyncio.CancelledError).",
+      "fix": "Use 'await asyncio.gather(*tasks, return_exceptions=True)' and handle exceptions in the returned list."
+    },
+    {
+      "line": "42",
+      "bug": "process_item is an async function but is called without await or asyncio.create_task(), producing a coroutine object instead of scheduling concurrent work.",
+      "fix": "Use 'task = asyncio.create_task(process_item(item))' to schedule the coroutine as a Task."
+    },
+    {
+      "line": "45",
+      "bug": "Using 'yield' in an async def function creates an async generator, which must be consumed with 'async for' and buffers the entire batch before yielding any item.",
+      "fix": "Collect results into a list and return it, or redesign as a true streaming pipeline if async iteration is intended."
+    },
+    {
+      "line": "52",
+      "bug": "The connection pool uses a plain list with no size enforcement or synchronization primitive, allowing unbounded growth.",
+      "fix": "Use asyncio.Queue(maxsize=self.size) or enforce size limits with appropriate locking."
+    },
+    {
+      "line": "60",
+      "bug": "release() appends connections back without checking if the pool already exceeds its intended size, leading to unbounded memory growth.",
+      "fix": "Only append if len(self.pool) < self.size; otherwise close the connection."
+    },
+    {
+      "line": "63",
+      "bug": "create_connection returns a dummy object() instead of a real connection and ignores self.size, allowing unlimited connections.",
+      "fix": "Implement actual connection creation and enforce the pool size limit (e.g., raise an error or wait when at capacity)."
+    },
+    {
+      "line": "68",
+      "bug": "Because 'results' is a dict and 'urls' contains duplicate keys, len(results) does not reflect the actual number of fetch operations performed.",
+      "fix": "Use a list to store results or compare against len(urls) instead of len(results)."
+    }
+  ],
+  "count": 15
+}
+```
