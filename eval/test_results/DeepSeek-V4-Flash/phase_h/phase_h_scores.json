@@ -1,60 +1,40 @@
 {
   "model": "DeepSeek-V4-Flash",
   "phase": "H",
-  "timestamp": "2026-04-25T16:11:57.210836",
-  "total_score": 97,
-  "total_max": 100,
-  "percentage": 97.0,
+  "timestamp": "2026-04-26T15:04:42.283605",
+  "total_score": 30,
+  "total_max": 55,
+  "percentage": 54.5,
   "results": [
     {
-      "id": 17,
-      "role": "Social Media Content Agent",
+      "id": 29,
+      "role": "Home Automation Agent",
       "tier": 2,
-      "scoring_type": "h_content_check",
-      "score": 17,
+      "scoring_type": "h_keywords",
+      "score": 7,
       "max": 20,
-      "detail": "17/20 correct | #has_cta: missing; #has_educational: missing; #has_trending: missing",
-      "tokens": 3087
+      "detail": "7/20 correct | #2: missing lock doors, arm alarm, lights off, eco thermostat; #6: missing show camera, unlock door; #7: missing show camera, keep door locked; #11: missing trigger alarm, notify emergency, unlock doors; #12: missing send alert, shut water valve if available",
+      "tokens": 4898
     },
     {
-      "id": 24,
-      "role": "Image Description / Understanding",
-      "tier": 2,
-      "scoring_type": "h_content_check",
-      "score": 20,
-      "max": 20,
-      "detail": "20/20 correct",
-      "tokens": 2484
-    },
-    {
-      "id": 34,
-      "role": "Landing Page Generator",
-      "tier": 2,
-      "scoring_type": "h_content_check",
-      "score": 20,
-      "max": 20,
-      "detail": "20/20 correct",
-      "tokens": 14150
-    },
-    {
-      "id": 41,
-      "role": "Critic / Review Agent",
-      "tier": 3,
-      "scoring_type": "h_content_check",
-      "score": 20,
-      "max": 20,
-      "detail": "20/20 correct",
-      "tokens": 1777
-    },
-    {
-      "id": 58,
-      "role": "Book / Long-Form Writing",
+      "id": 51,
+      "role": "Software Architect Agent",
       "tier": 5,
+      "scoring_type": "h_keywords",
+      "score": 4,
+      "max": 15,
+      "detail": "4/15 correct | #q3_valid: missing database mentioned; #q4_valid: missing local storage or sync queue; #q5_valid: missing message broker mentioned; #q7_valid: missing broadcast or presence channel; #q9_valid: missing snapshots or event log",
+      "tokens": 900
+    },
+    {
+      "id": 10,
+      "role": "Content Writer / Blog Writer",
+      "tier": 2,
       "scoring_type": "h_content_check",
-      "score": 20,
+      "score": 19,
       "max": 20,
-      "detail": "20/20 correct",
-      "tokens": 3164
+      "detail": "19/20 correct | #has_introduction: missing",
+      "tokens": 2719
     }
   ]
 }

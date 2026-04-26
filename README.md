@@ -134,15 +134,15 @@ Phase F gave every model 8–10/10 on most roles. ClawEval v2 replaces that with
 
 ### 🏅 ClawEval v2 Leaderboard
 
-| Rank | Model | Provider | Score | % | Tests | Perfect | Notes |
-|------|-------|----------|-------|---|-------|---------|-------|
-| 🥇 | **Qwen3.5-Plus** | ☁️ Alibaba | 1031/1220 | **84.5%** | 59/59 | 26 | Most perfect scores, no zeros |
-| 🥈 | **Kimi K2.6** | ☁️ Ollama Cloud | 1028/1220 | **84.3%** | 59/59 | 24 | Thinking model, no zeros |
-| 🥉 | **DeepSeek V4 Flash** | ☁️ Ollama Cloud | 1024/1220 | **83.9%** | 56/59 | 23 | Fastest cloud model |
-| 4 | **DeepSeek V4 Pro** | ☁️ DeepSeek | 1012/1220 | **83.0%** | 58/59 | 24 | Heavy thinker — 25k+ reasoning tokens |
-| 5 | **GLM-5.1** | ☁️ Ollama Cloud | 944/1220 | **77.4%** | 56/59 | 24 | 3 tests lost to Ollama 503s |
+| Rank | Model | Provider | Score | % | Perfect | Notes |
+|------|-------|----------|-------|---|---------|-------|
+| 🥇 | **DeepSeek V4 Flash** | ☁️ DeepSeek | 1054/1220 | **86.4%** | 23 | Fastest + highest score |
+| 🥈 | **DeepSeek V4 Pro** | ☁️ DeepSeek | 1040/1220 | **85.2%** | 24 | 50k+ thinking tokens per test |
+| 🥉 | **Qwen3.5-Plus** | ☁️ Alibaba | 1031/1220 | **84.5%** | 26 | Most perfect scores |
+| 4 | **Kimi K2.6** | ☁️ Ollama Cloud | 1028/1220 | **84.3%** | 24 | Strong all-around |
+| 5 | **GLM-5.1** | ☁️ Ollama Cloud | 1020/1220 | **83.6%** | 26 | Tied most perfect scores |
 
-> 📊 **[Full ClawEval v2 results →](docs/results-phase-h.md)** · Star ⭐ this repo to get notified when new models drop.
+> All models scored on **59/59 tests** with **zero infrastructure failures**. Full results: **[ClawEval v2 →](docs/results-phase-h.md)**
 
 ---
 

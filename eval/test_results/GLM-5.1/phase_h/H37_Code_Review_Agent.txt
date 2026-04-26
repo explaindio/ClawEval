@@ -1,0 +1,82 @@
+```json
+{
+  "bugs": [
+    {
+      "line": 13,
+      "bug": "A 20% discount should leave 80% of the subtotal, but `subtotal * 0.20` applies an 80% discount. It should be `subtotal * 0.80` or `subtotal -= subtotal * 0.20`.",
+      "severity": "critical"
+    },
+    {
+      "line": 15,
+      "bug": "A 10% discount should be `subtotal * 0.10`, but `subtotal * 10` subtracts 1000% of the subtotal, resulting in a massive negative value.",
+      "severity": "critical"
+    },
+    {
+      "line": 24,
+      "bug": "Negative stock is ignored with `pass`. It should raise an error, skip the order, or handle the insufficient stock scenario.",
+      "severity": "major"
+    },
+    {
+      "line": 36,
+      "bug": "`=+` is an assignment followed by a unary plus, overwriting `total_revenue` with `+total` instead of adding to it. It should be `+=`.",
+      "severity": "critical"
+    },
+    {
+      "line": 39,
+      "bug": "If `orders` is empty, `len(orders)` is 0, which raises a ZeroDivisionError.",
+      "severity": "major"
+    },
+    {
+      "line": 40,
+      "bug": "If `orders` is empty, `results` is empty, and calling `max()` on an empty sequence raises a ValueError.",
+      "severity": "major"
+    },
+    {
+      "line": 52,
+      "bug": "Checking only for `@` is insufficient email validation. It will accept invalid strings like `@` or `a@b`.",
+      "severity": "minor"
+    },
+    {
+      "line": 61,
+      "bug": "`distance + per_km` adds the per_km rate as a flat fee. It should be `distance * per_km` to calculate the distance-based cost.",
+      "severity": "critical"
+    },
+    {
+      "line": 66,
+      "bug": "The `elif weight > 50` condition is unreachable because any weight over 50 is also over 30, so the first `if` block will always execute. The conditions should be reversed.",
+      "severity": "major"
+    },
+    {
+      "line": 69,
+      "bug": "`round(cost)` rounds to the nearest integer, losing decimal precision required for currency. It should be `round(cost, 2)`.",
+      "severity": "major"
+    },
+    {
+      "line": 72,
+      "bug": "`merged = profile_a` creates a reference to the original dictionary, mutating the input argument. It should be `merged = profile_a.copy()`.",
+      "severity": "critical"
+    },
+    {
+      "line": 76,
+      "bug": "The `updated_at` timestamp is hardcoded to `'2024-01-01'`. It should use the current date/time (e.g., `datetime.now()`).",
+      "severity": "minor"
+    },
+    {
+      "line": 80,
+      "bug": "Using `split(',')` doesn't handle quoted fields containing commas, which is a common CSV standard. It requires a proper CSV parser.",
+      "severity": "major"
+    },
+    {
+      "line": 88,
+      "bug": "`seen.append(item)` is not inside an `else` block. This means items are appended to `seen` even if they are already in it, causing an item appearing 3+ times to be added to `duplicates` multiple times.",
+      "severity": "major"
+    },
+    {
+      "line": 83,
+      "bug": "`seen` is initialized as a list instead of a set. Checking `item in seen` takes O(n) time per item, resulting in O(n^2) overall time complexity instead of O(n) with a set.",
+      "severity": "minor"
+    }
+  ],
+  "count": 15
+}
+```

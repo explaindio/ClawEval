@@ -32,6 +32,9 @@ def call_llm(messages, base_url, model, max_tokens=4000, timeout=120, extra_body
         r.raise_for_status()
         data = r.json()
         content = data["choices"][0]["message"]["content"]
+        # Handle thinking models that return content=None (e.g., OpenRouter GLM/DeepSeek)
+        if content is None:
+            content = data["choices"][0]["message"].get("reasoning") or ""
         # Strip SGLang thinking content — model may output </think> with no opening tag
         if "</think>" in content:
             content = content.split("</think>")[-1].strip()
