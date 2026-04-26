@@ -195,7 +195,7 @@ Questions:
     # H-11: EDITOR AGENT — 30 errors to find
     {
         "id": 11, "role": "Editor Agent", "tier": 2,
-        "scoring_type": "h_keywords",
+        "scoring_type": "h_content_check",
         "prompt": """Find ALL errors in this business report. There are exactly 30 errors (spelling, grammar, punctuation, factual, formatting). List each with line reference and correction. Respond as JSON: {"errors": [{"line": N, "error": "...", "correction": "..."}, ...], "count": 30}
 
 Report:
@@ -227,38 +227,37 @@ L25: We anticapte Q4 revenue to reach $5.1M, driven by seasonal demand
 L26: and the upcomming product launch, Management reccommends allocating
 L27: an additonal $200K to marketing to capture holiday season demand.""",
         "scoring": {
-            "type": "json_values",
-            "answers": {
-                "e1": "Quartely→Quarterly",
-                "e2": "Reveiw→Review",
-                "e3": "Summery→Summary",
-                "e4": "$4.7M million→$4.7M",
-                "e5": "too→to",
-                "e6": "pervious→previous",
-                "e7": "employes→employs",
-                "e8": "accross→across",
-                "e9": "achivements→achievements",
-                "e10": "aquiring→acquiring",
-                "e11": "chrun→churn",
-                "e12": "Deparment→Department",
-                "e13": "relaese→release",
-                "e14": "double space before ROI",
-                "e15": "buget→budget",
-                "e16": "there→their",
-                "e17": "Sucess→Success",
-                "e18": "form→from",
-                "e19": "achived→achieved",
-                "e20": "Hightlights→Highlights",
-                "e21": "$4,700000→$4,700,000",
-                "e22": "net profit math error",
-                "e23": "expences→expenses",
-                "e24": "form→from (L21)",
-                "e25": "capaital→capital",
-                "e26": "recievable→receivable",
-                "e27": "priod→period",
-                "e28": "anticapte→anticipate",
-                "e29": "reccommends→recommends",
-                "e30": "additonal→additional"
+            "checks": {
+                "e1_quarterly": ["quarterly"],
+                "e2_review": ["review"],
+                "e3_summary": ["summary"],
+                "e4_redundant_million": ["4.7m million", "redundant", "million"],
+                "e5_too_to": ["too", "to"],
+                "e6_previous": ["previous"],
+                "e7_employs": ["employs"],
+                "e8_across": ["across"],
+                "e9_achievements": ["achievements"],
+                "e10_acquiring": ["acquiring"],
+                "e11_churn": ["churn"],
+                "e12_department": ["department"],
+                "e13_release": ["release"],
+                "e14_double_space": ["double space", "extra space", "spacing"],
+                "e15_budget": ["budget"],
+                "e16_their": ["their"],
+                "e17_success": ["success"],
+                "e18_from_l14": ["from"],
+                "e19_achieved": ["achieved"],
+                "e20_highlights": ["highlights"],
+                "e21_missing_comma": ["4,700,000", "missing comma", "formatting"],
+                "e22_net_profit_math": ["1,600,000", "math", "calculation", "incorrect"],
+                "e23_expenses": ["expenses"],
+                "e24_from_l21": ["from"],
+                "e25_capital": ["capital"],
+                "e26_receivable": ["receivable"],
+                "e27_period": ["period"],
+                "e28_anticipate": ["anticipate"],
+                "e29_recommends": ["recommends"],
+                "e30_additional": ["additional"]
             }
         }
     },

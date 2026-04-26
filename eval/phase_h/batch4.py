@@ -117,7 +117,7 @@ s15: Downtime in minutes""",
     # H-37: CODE REVIEW — 15 bugs
     {
         "id": 37, "role": "Code Review Agent", "tier": 3,
-        "scoring_type": "h_keywords",
+        "scoring_type": "h_content_check",
         "prompt": """Find ALL 15 bugs in this Python code. For each, identify the line and describe the bug. Respond as JSON: {"bugs": [{"line": N, "bug": "description", "severity": "critical/major/minor"}, ...], "count": 15}
 
 ```python
@@ -212,23 +212,22 @@ def find_duplicates(items):
     return duplicates
 ```""",
         "scoring": {
-            "type": "json_values",
-            "answers": {
-                "b1": "L12: multiplies by 0.20 instead of subtracting 20%",
-                "b2": "L14: multiplies by 10 instead of 0.10",
-                "b3": "L22: silently allows negative stock",
-                "b4": "L31: =+ should be +=",
-                "b5": "L34: division by zero if orders is empty",
-                "b6": "L35: fails if results is empty",
-                "b7": "L46: insufficient email validation",
-                "b8": "L53: distance + per_km should be distance * per_km",
-                "b9": "L57: unreachable elif (weight>50) after weight>30",
-                "b10": "L60: round() loses decimal precision for money",
-                "b11": "L63: shallow copy - mutates original profile_a",
-                "b12": "L67: hardcoded date instead of current timestamp",
-                "b13": "L71: doesn't handle quoted CSV fields with commas",
-                "b14": "L78: adds to seen even if duplicate (minor inefficiency)",
-                "b15": "L22: modifies item stock in-place (side effect on input)"
+            "checks": {
+                "b1_save20": ["0.20", "80%", "20%", "discount"],
+                "b2_save10": ["* 10", "multiply", "0.10", "1000%"],
+                "b3_negative_stock": ["negative stock", "negative", "silently"],
+                "b4_equals_plus": ["=+", "+=", "assignment"],
+                "b5_division_zero": ["division by zero", "empty", "len(orders)"],
+                "b6_empty_results": ["empty", "max", "valueerror"],
+                "b7_email_validation": ["email", "validation", "insufficient"],
+                "b8_distance_perkm": ["distance", "per_km", "addition"],
+                "b9_unreachable": ["unreachable", "elif", "50"],
+                "b10_round_precision": ["round", "precision", "decimal"],
+                "b11_shallow_copy": ["shallow copy", "mutate", "reference", "profile_a"],
+                "b12_hardcoded_date": ["hardcoded", "date", "timestamp", "2024"],
+                "b13_csv_quoted": ["csv", "comma", "quoted", "split"],
+                "b14_seen_append": ["seen", "append", "duplicate"],
+                "b15_stock_side_effect": ["side effect", "in-place", "mutate", "stock"]
             }
         }
     },

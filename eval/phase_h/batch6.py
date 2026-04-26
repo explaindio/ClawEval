@@ -413,7 +413,7 @@ q15: Monitoring and observability stack?""",
     # H-52: COMPLEX DEBUGGER — 15 bugs
     {
         "id": 52, "role": "Complex Debugger Agent", "tier": 5,
-        "scoring_type": "h_keywords",
+        "scoring_type": "h_content_check",
         "prompt": """Find ALL 15 bugs in this async Python code. Respond as JSON: {"bugs": [{"line": "...", "bug": "...", "fix": "..."}, ...], "count": 15}
 
 ```python
@@ -492,23 +492,22 @@ async def main():
     print(f"Got {len(results)} results")  # Line 68: Bug
 ```""",
         "scoring": {
-            "type": "json_values",
-            "answers": {
-                "b1": "L8: list not thread-safe for async access, needs Lock",
-                "b2": "L11: deprecated get_event_loop(), use get_running_loop()",
-                "b3": "L25: creates new session per request instead of sharing",
-                "b4": "L27: timeout should be aiohttp.ClientTimeout object",
-                "b5": "L29: dict mutation not safe from concurrent coroutines",
-                "b6": "L31: swallows errors silently, should log",
-                "b7": "L32: bare pass after exception, no retry logic",
-                "b8": "L35: gather without return_exceptions risks crash on error",
-                "b9": "L42: coroutine created but not awaited before append",
-                "b10": "L45: yield in async for needs async generator protocol",
-                "b11": "L52: unbounded pool, should use asyncio.Queue",
-                "b12": "L60: no size check, pool can grow beyond limit",
-                "b13": "L63: returns dummy object, not real connection",
-                "b14": "L68: all URLs are same, results dict will have only 1 key",
-                "b15": "no session cleanup/close in fetch_one error path"
+            "checks": {
+                "b1_list_not_safe": ["thread-safe", "race condition", "lock", "concurrent", "shared"],
+                "b2_get_event_loop": ["get_event_loop", "deprecated", "get_running_loop"],
+                "b3_session_per_request": ["session", "per request", "new session", "clientsession"],
+                "b4_timeout_type": ["timeout", "clienttimeout", "aiohttp"],
+                "b5_dict_mutation": ["dict", "concurrent", "mutation", "results"],
+                "b6_swallow_errors": ["swallow", "silent", "log", "error"],
+                "b7_bare_pass": ["pass", "bare", "retry", "exception"],
+                "b8_gather_exceptions": ["gather", "return_exceptions", "crash"],
+                "b9_missing_await": ["await", "coroutine", "not awaited"],
+                "b10_yield_async": ["yield", "async generator", "async for", "async iter"],
+                "b11_unbounded_pool": ["unbounded", "pool", "queue", "asyncio.queue"],
+                "b12_pool_size": ["size", "pool", "grow", "limit", "beyond"],
+                "b13_dummy_connection": ["dummy", "object", "real connection", "placeholder"],
+                "b14_same_url": ["same url", "duplicate", "1 key", "one key", "overwrite"],
+                "b15_session_cleanup": ["cleanup", "close", "session", "leak"]
             }
         }
     },
