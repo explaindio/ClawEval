@@ -1,0 +1,84 @@
+{
+  "agents": [
+    {
+      "name": "validation_triage",
+      "input": "customer_refund_request",
+      "output": "validation_report",
+      "next": "fraud_check",
+      "fallback": "error_handler",
+      "timeout": 5
+    },
+    {
+      "name": "fraud_check",
+      "input": "validation_report",
+      "output": "fraud_assessment",
+      "next": "approval",
+      "fallback": "error_handler",
+      "timeout": 10
+    },
+    {
+      "name": "approval",
+      "input": "fraud_assessment",
+      "output": "approval_decision",
+      "next": "payment_processing",
+      "fallback": "error_handler",
+      "timeout": 8
+    },
+    {
+      "name": "payment_processing",
+      "input": "approval_decision",
+      "output": "payment_status",
+      "next": "notification",
+      "fallback": "error_handler",
+      "timeout": 12
+    },
+    {
+      "name": "notification",
+      "input": "payment_status",
+      "output": "refund_confirmation",
+      "next": "log_and_audit",
+      "fallback": "error_handler",
+      "timeout": 5
+    },
+    {
+      "name": "log_and_audit",
+      "input": "refund_confirmation",
+      "output": "audit_record",
+      "next": "human_escalation",
+      "fallback": "error_handler",
+      "timeout": 3
+    },
+    {
+      "name": "error_handler",
+      "input": "any_failed_step",
+      "output": "error_notification",
+      "next": "notification",
+      "fallback": "error_handler",
+      "timeout": 2
+    },
+    {
+      "name": "human_escalation",
+      "input": "audit_record",
+      "output": "escalation_alert",
+      "next": "notification",
+      "fallback": "error_handler",
+      "timeout": 15
+    }
+  ],
+  "constraints": {
+    "min_agents": 6,
+    "required_agents": ["validation", "fraud-check", "approval", "payment", "notification"],
+    "conditional_branch": "fraud_check -> approval (if fraud_assessment == 'clean') else fraud_check -> error_handler",
+    "fallback_for_each_agent": "error_handler",
+    "first_agent": "validation_triage",
+    "last_agent": "notification",
+    "fraud_before_approval": true,
+    "payment_after_approval": true,
+    "max_processing_time_seconds": 60,
+    "handles_approved_and_rejected": true,
+    "logging_at_each_step": true,
+    "no_circular_dependencies": true,
+    "human_escalation_path": true,
+    "timeout_per_agent": true
+  }
+}

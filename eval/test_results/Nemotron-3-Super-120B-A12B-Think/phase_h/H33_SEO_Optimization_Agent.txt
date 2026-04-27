@@ -1,0 +1,95 @@
+{
+  "issues": [
+    {
+      "id": 1,
+      "issue": "Missing or incorrect title tag: 'Home' is too generic and not descriptive for SEO",
+      "severity": "critical",
+      "fix": "Replace with a keyword-rich, descriptive title like 'Best Products | Welcome to Our Store | Example.com'"
+    },
+    {
+      "id": 2,
+      "issue": "Multiple H1 tags (two <h1> elements): violates semantic hierarchy and confuses search engines",
+      "severity": "critical",
+      "fix": "Use only one H1 per page (e.g., 'Best Products'), and change the other to H2 or H3"
+    },
+    {
+      "id": 3,
+      "issue": "Heading tags are out of semantic order: H2 appears before H1, breaking content structure",
+      "severity": "major",
+      "fix": "Reorder headings logically: H1 → H2 → H3, etc. (e.g., H1: 'Best Products', H2: 'Welcome to Our Store')"
+    },
+    {
+      "id": 4,
+      "issue": "Image tags lack alt attributes: all three <img> tags have no alt text, hurting accessibility and image SEO",
+      "severity": "critical",
+      "fix": "Add descriptive alt text: e.g., alt='Product 1: Red Running Shoes', alt='Product 2: Leather Handbag', alt='Banner: Summer Sale 2024'"
+    },
+    {
+      "id": 5,
+      "issue": "Anchor text uses non-descriptive phrases like 'Click here' for both links: wastes SEO opportunity and harms accessibility",
+      "severity": "major",
+      "fix": "Replace with descriptive anchor text: e.g., 'View Our Product Collection' and 'Learn About Our Company'"
+    },
+    {
+      "id": 6,
+      "issue": "Hidden text in div with display:none: contains keyword-stuffed content ('cheap shoes buy online discount sale best price') — violates Google's spam policies",
+      "severity": "critical",
+      "fix": "Remove the hidden div entirely. If content is needed, make it visible and natural."
+    },
+    {
+      "id": 7,
+      "issue": "Meta keywords tag is present: outdated and ignored by major search engines; may signal spammy intent",
+      "severity": "minor",
+      "fix": "Remove the <meta name='keywords'> tag entirely."
+    },
+    {
+      "id": 8,
+      "issue": "URL contains unnecessary parameters (?ref=123&utm=abc): can cause duplicate content issues and dilute link equity",
+      "severity": "major",
+      "fix": "Use clean, static URLs like example.com/best-products. Use canonical tags or parameter handling in Google Search Console if parameters are necessary for tracking."
+    },
+    {
+      "id": 9,
+      "issue": "Page lacks meta description: missing opportunity to influence click-through rates in SERPs",
+      "severity": "major",
+      "fix": "Add a compelling meta description: e.g., <meta name='description' content='Shop our best-selling products — high quality, great prices, fast shipping. Browse now!'>"
+    },
+    {
+      "id": 10,
+      "issue": "No internal linking structure beyond two generic links: limits crawlability and topical authority",
+      "severity": "major",
+      "fix": "Add contextual internal links using descriptive anchor text to related categories, blog posts, or product pages."
+    },
+    {
+      "id": 11,
+      "issue": "Content is thin and generic: 'Buy our stuff. Click here for more. Click here to order.' lacks value, keywords, and user intent alignment",
+      "severity": "major",
+      "fix": "Replace with unique, informative, keyword-optimized copy that answers user questions and describes product benefits."
+    },
+    {
+      "id": 12,
+      "issue": "Lorem ipsum placeholder text remains in live content: unprofessional, provides no SEO value, and may be indexed as low-quality content",
+      "severity": "major",
+      "fix": "Replace all lorem ipsum with original, meaningful content relevant to the page’s topic."
+    },
+    {
+      "id": 13,
+      "issue": "No schema markup (e.g., Product, Organization, BreadcrumbList): misses opportunity for rich snippets and enhanced SERP visibility",
+      "severity": "major",
+      "fix": "Add JSON-LD schema for products (if applicable) or at least Organization and WebPage schema."
+    },
+    {
+      "id": 14,
+      "issue": "No Open Graph or Twitter Card tags: limits social sharing effectiveness and click-through from platforms like Facebook, Twitter, LinkedIn",
+      "severity": "minor",
+      "fix": "Add og:title, og:description, og:image, og:url, and twitter:card tags in the <head>."
+    },
+    {
+      "id": 15,
+      "issue": "Page lacks viewport meta tag: may not render properly on mobile devices, harming mobile SEO and user experience",
+      "severity": "major",
+      "fix": "Add <meta name='viewport' content='width=device-width, initial-scale=1.0'> in the <head>."
+    }
+  ],
+  "count": 15
+}

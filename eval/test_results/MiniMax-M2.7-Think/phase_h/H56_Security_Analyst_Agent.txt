@@ -1,0 +1,84 @@
+
+
+```json
+{
+  "vulnerabilities": [
+    {
+      "type": "SQL Injection",
+      "location": "login() - Line 20",
+      "severity": "critical"
+    },
+    {
+      "type": "Reflected XSS",
+      "location": "profile() - Line 26",
+      "severity": "high"
+    },
+    {
+      "type": "Reflected XSS",
+      "location": "search() - Line 31",
+      "severity": "high"
+    },
+    {
+      "type": "Command Injection",
+      "location": "run_command() - Line 36",
+      "severity": "critical"
+    },
+    {
+      "type": "Path Traversal",
+      "location": "upload() - Line 42-43",
+      "severity": "high"
+    },
+    {
+      "type": "Path Traversal",
+      "location": "download() - Line 49",
+      "severity": "critical"
+    },
+    {
+      "type": "Insecure Deserialization",
+      "location": "restore_session() - Line 58",
+      "severity": "critical"
+    },
+    {
+      "type": "YAML Deserialization",
+      "location": "load_config() - Line 53",
+      "severity": "high"
+    },
+    {
+      "type": "Hardcoded Secret",
+      "location": "Line 6 - SECRET",
+      "severity": "medium"
+    },
+    {
+      "type": "Debug Mode Enabled",
+      "location": "Line 71 - app.run()",
+      "severity": "high"
+    },
+    {
+      "type": "OS Command Injection",
+      "location": "export_data() - Line 67-68",
+      "severity": "critical"
+    },
+    {
+      "type": "Insecure Hash (MD5)",
+      "location": "login() - Line 21",
+      "severity": "medium"
+    },
+    {
+      "type": "Unrestricted File Upload",
+      "location": "upload() - Line 42",
+      "severity": "high"
+    },
+    {
+      "type": "Missing Authentication",
+      "location": "admin() - Line 60",
+      "severity": "medium"
+    },
+    {
+      "type": "Weak Token Comparison",
+      "location": "admin() - Line 62",
+      "severity": "medium"
+    }
+  ],
+  "count": 15
+}
+```

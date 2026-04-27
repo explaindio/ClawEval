@@ -1,0 +1,53 @@
+```python
+def is_valid_password(password):
+    # Rule 1 & 2: Length must be 8-64 characters
+    if len(password) < 8 or len(password) > 64:
+        return False
+    
+    # Rule 7: No spaces allowed
+    if ' ' in password:
+        return False
+    
+    # Rule 8: Cannot start with a digit
+    if password[0].isdigit():
+        return False
+    
+    # Rule 10: Cannot contain "password" (case-insensitive)
+    if 'password' in password.lower():
+        return False
+    
+    # Rule 9: Cannot contain more than 3 consecutive identical characters (i.e., 4+)
+    for i in range(len(password) - 3):
+        if password[i] == password[i+1] == password[i+2] == password[i+3]:
+            return False
+    
+    # Rules 3, 4, 5, 6: Check for required character types
+    has_upper = any(c.isupper() for c in password)
+    has_lower = any(c.islower() for c in password)
+    has_digit = any(c.isdigit() for c in password)
+    has_special = any(c in "!@#$%^&*()-_+=" for c in password)
+    
+    if not (has_upper and has_lower and has_digit and has_special):
+        return False
+    
+    return True
+
+def run_tests():
+    return [
+        ("Hello1!World", True, is_valid_password("Hello1!World")),
+        ("Hello1!", False, is_valid_password("Hello1!")),
+        ("Aa1!" * 16 + "A", False, is_valid_password("Aa1!" * 16 + "A")),
+        ("hello1!world", False, is_valid_password("hello1!world")),
+        ("HELLO1!WORLD", False, is_valid_password("HELLO1!WORLD")),
+        ("Hello!World", False, is_valid_password("Hello!World")),
+        ("Hello1World", False, is_valid_password("Hello1World")),
+        ("Hello 1!World", False, is_valid_password("Hello 1!World")),
+        ("1Hello!World", False, is_valid_password("1Hello!World")),
+        ("Heeeello1!", False, is_valid_password("Heeeello1!")),
+        ("abcPassword123!", False, is_valid_password("abcPassword123!")),
+        ("hellopassword1!", False, is_valid_password("hellopassword1!")),
+        ("Hello1!a", True, is_valid_password("Hello1!a")),
+        ("Aa1!" * 16, True, is_valid_password("Aa1!" * 16)),
+        ("Helllo1!W", True, is_valid_password("Helllo1!W")),
+    ]
+```

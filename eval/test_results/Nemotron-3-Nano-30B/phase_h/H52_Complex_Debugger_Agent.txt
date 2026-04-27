@@ -1,0 +1,75 @@
+{
+  "bugs": [
+    {
+      "line": "Line 8: Bug",
+      "bug": "Using a mutable list without thread safety; concurrent access may cause race conditions.",
+      "fix": "Replace with a thread-safe structure like collections.deque or add asyncio.Lock for synchronization."
+    },
+    {
+      "line": "Line 11: Bug",
+      "bug": "Using asyncio.get_event_loop() is unsafe in async contexts; may not be the running loop.",
+      "fix": "Use asyncio.get_running_loop() instead to get the current event loop safely."
+    },
+    {
+      "line": "Line 25: Bug",
+      "bug": "Creating a new ClientSession inside fetch_one without closing it; leads to resource leaks.",
+      "fix": "Create and reuse a single ClientSession outside fetch_one, or use async with properly and ensure closure."
+    },
+    {
+      "line": "Line 27: Bug",
+      "bug": "Missing error handling for timeout; timeout parameter should be set appropriately and caught explicitly.",
+      "fix": "Set timeout=aiohttp.ClientTimeout(total=30) and catch asyncio.TimeoutError separately."
+    },
+    {
+      "line": "Line 29: Bug",
+      "bug": "Overwriting results[url] silently on duplicate URLs; may lose data or cause confusion.",
+      "fix": "Check if url already processed or use a set to track processed URLs; avoid silent overwrites."
+    },
+    {
+      "line": "Line 31: Bug",
+      "bug": "Broad Exception catch hides root causes; should not swallow all exceptions silently.",
+      "fix": "Catch specific exceptions (e.g., aiohttp.ClientError) and log or re-raise unexpected ones."
+    },
+    {
+      "line": "Line 32: Bug",
+      "bug": "Unreachable code after 'pass'; 'pass' does nothing but is unnecessary and misleading.",
+      "fix": "Remove the 'pass' statement as it serves no purpose."
+    },
+    {
+      "line": "Line 35: Bug",
+      "bug": "gather(*tasks) does not await individual tasks properly if they are not coroutines; missing error propagation.",
+      "fix": "Ensure all tasks are proper coroutines and use return_exceptions=True if needed to handle failures safely."
+    },
+    {
+      "line": "Line 42: Bug",
+      "bug": "process_item() is called without await; returns a coroutine object instead of executing it.",
+      "fix": "Change task = process_item(item) to task = asyncio.create_task(process_item(item)) or await it directly."
+    },
+    {
+      "line": "Line 45: Bug",
+      "bug": "Yielding from async generator without making it async; process_batch should be async def with yield.",
+      "fix": "Change 'yield r' to 'yield r' inside an async generator, and declare 'async def process_batch(...):' properly with yield inside."
+    },
+    {
+      "line": "Line 52: Bug",
+      "bug": "pool is shared across coroutines without synchronization; race condition when popping/appending.",
+      "fix": "Protect pool access with asyncio.Lock or use queue.Queue for thread-safe connection management."
+    },
+    {
+      "line": "Line 60: Bug",
+      "bug": "release() appends to pool without checking size or backpressure; may grow unbounded.",
+      "fix": "Add a maximum pool size check and reject excess connections or use a bounded queue."
+    },
+    {
+      "line": "Line 63: Bug",
+      "bug": "create_connection() returns a dummy object without async setup; should simulate real async connection.",
+      "fix": "Replace with actual async connection logic, e.g., async with aiohttp.ClientSession() or mock async DB connection."
+    },
+    {
+      "line": "Line 68: Bug",
+      "bug": "Printing len(results) may be misleading if some URLs failed; count may not reflect successful fetches.",
+      "fix": "Track and print the number of successfully fetched URLs or include success/failure statistics."
+    }
+  ],
+  "count": 15
+}

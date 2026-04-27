@@ -1,0 +1,22 @@
+```json
+{
+  "bugs": [
+    {"line": 13, "bug": "Applies 80% discount instead of 20% off (multiplies by 0.20 rather than subtracting 20% or multiplying by 0.80)", "severity": "major"},
+    {"line": 15, "bug": "Calculates 1000% discount instead of 10% (multiplies by 10 rather than 0.10), resulting in negative subtotal", "severity": "major"},
+    {"line": 23, "bug": "Mutates input data by modifying item['stock'] directly in the original orders list (side effect)", "severity": "major"},
+    {"line": 25, "bug": "Silent pass on negative inventory instead of raising error or handling stock shortage", "severity": "major"},
+    {"line": 36, "bug": "Uses unary plus operator (=+) instead of addition assignment (+=), causing total_revenue to equal only the last order total instead of summing", "severity": "critical"},
+    {"line": 39, "bug": "Potential ZeroDivisionError when orders list is empty", "severity": "critical"},
+    {"line": 40, "bug": "Potential ValueError when results list is empty (max() arg is an empty sequence)", "severity": "critical"},
+    {"line": 53, "bug": "Insufficient email validation (accepts invalid formats like '@example.com' or 'a@b')", "severity": "major"},
+    {"line": 61, "bug": "Incorrect shipping formula: adds per_km rate (0.01) instead of multiplying distance by per_km (distance * 0.01)", "severity": "major"},
+    {"line": 66, "bug": "Unreachable code: elif weight > 50 never executes because weight > 30 condition catches it first", "severity": "minor"},
+    {"line": 69, "bug": "Loses decimal precision by rounding to integer instead of 2 decimal places (cents)", "severity": "major"},
+    {"line": 72, "bug": "Shallow copy assigns reference instead of creating new dict (merged = profile_a), causing original profile_a to be mutated", "severity": "major"},
+    {"line": 76, "bug": "Hardcoded date string instead of using current timestamp (datetime.now())", "severity": "minor"},
+    {"line": 80, "bug": "Naive CSV parsing using split(',') fails on quoted fields containing commas", "severity": "major"},
+    {"line": 88, "bug": "Inefficient O(n²) lookup using list for 'seen' and duplicate items appear multiple times in results", "severity": "minor"}
+  ],
+  "count": 15
+}
+```

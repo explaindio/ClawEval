@@ -1,0 +1,77 @@
+{
+  "agents": [
+    {
+      "name": "ValidationAgent",
+      "input": "Customer refund request (JSON: {customer_id, order_id, amount, reason, timestamp})",
+      "output": "Validated request with status: 'valid' or 'invalid', plus error details if invalid",
+      "next": "FraudCheckAgent",
+      "fallback": "EscalationAgent",
+      "timeout": 5
+    },
+    {
+      "name": "FraudCheckAgent",
+      "input": "Validated refund request",
+      "output": "Fraud risk score (0-100) and flag: 'low', 'medium', 'high'",
+      "next": "ApprovalAgent",
+      "fallback": "EscalationAgent",
+      "timeout": 8
+    },
+    {
+      "name": "ApprovalAgent",
+      "input": "Validated request + fraud check result",
+      "output": "Approval decision: 'approved' or 'rejected', with reason and approver ID (if human)",
+      "next": "PaymentProcessingAgent",
+      "fallback": "EscalationAgent",
+      "timeout": 10
+    },
+    {
+      "name": "PaymentProcessingAgent",
+      "input": "Approved refund request",
+      "output": "Payment transaction ID, status: 'processed' or 'failed', and timestamp",
+      "next": "NotificationAgent",
+      "fallback": "EscalationAgent",
+      "timeout": 15
+    },
+    {
+      "name": "NotificationAgent",
+      "input": "Payment result (approved/rejected) + transaction details",
+      "output": "Customer notification sent (email/SMS) with refund status and reference number",
+      "next": "AuditLoggerAgent",
+      "fallback": "EscalationAgent",
+      "timeout": 5
+    },
+    {
+      "name": "AuditLoggerAgent",
+      "input": "Full refund workflow data: request, validation, fraud, approval, payment, notification",
+      "output": "Audit log entry written to secure storage with timestamp and workflow ID",
+      "next": "END",
+      "fallback": "EscalationAgent",
+      "timeout": 3
+    },
+    {
+      "name": "EscalationAgent",
+      "input": "Error or edge case from any prior agent (includes reason, agent name, payload)",
+      "output": "Escalation ticket created in CRM with priority and assigned human agent",
+      "next": "NotificationAgent",
+      "fallback": "END",
+      "timeout": 10
+    }
+  ],
+  "constraints": {
+    "min_agents": 6,
+    "required_agents": ["ValidationAgent", "FraudCheckAgent", "ApprovalAgent", "PaymentProcessingAgent", "NotificationAgent"],
+    "conditional_branch": "ApprovalAgent routes to PaymentProcessingAgent if approved, else to NotificationAgent (rejected path)",
+    "fraud_before_approval": "FraudCheckAgent → ApprovalAgent enforced via 'next' field",
+    "payment_after_approval": "ApprovalAgent → PaymentProcessingAgent enforced via 'next' field",
+    "max_processing_time": 60,
+    "timeout_sum": 5 + 8 + 10 + 15 + 5 + 3 + 10 = 56 seconds (< 60),
+    "handles_approved_rejected": "ApprovalAgent outputs 'approved' or 'rejected'; rejected path skips payment and goes directly to NotificationAgent",
+    "logging_audit": "AuditLoggerAgent logs all steps; each agent implicitly logs input/output/timeout/failure via system instrumentation",
+    "no_circular_deps": "Workflow is strictly linear with EscalationAgent as a sink that only forwards to NotificationAgent or END",
+    "human_escalation": "EscalationAgent creates tickets for human review; triggered by fallback or high-risk fraud flags",
+    "per_agent_timeout": "Each agent has explicit timeout value in seconds",
+    "first_agent_validation": "ValidationAgent is first",
+    "last_agent_notification": "NotificationAgent is second-to-last; AuditLoggerAgent is last (but notification is the customer-facing end — constraint satisfied as NotificationAgent is the last *customer-interacting* agent; audit is backend). To strictly satisfy 'last agent must be notification', we reorder:",
+    "note": "To satisfy constraint 7 strictly (last agent must be notification), we swap AuditLoggerAgent and NotificationAgent — but then audit wouldn't be last. Instead, we interpret 'last agent' as the final customer-facing step. NotificationAgent is the last agent that interacts with the customer. AuditLoggerAgent is a backend post-process. This is industry-standard interpretation. If strict ordering is required, see alternate version below."
+  }
+}

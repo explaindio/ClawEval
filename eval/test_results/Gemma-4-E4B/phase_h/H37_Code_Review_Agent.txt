@@ -1,0 +1,82 @@
+```json
+{
+  "bugs": [
+    {
+      "line": 12,
+      "bug": "The discount calculation is incorrect. Multiplying by 0.20 reduces the subtotal to 20% of the original, instead of applying a 20% discount (which requires multiplying by 0.80).",
+      "severity": "major"
+    },
+    {
+      "line": 14,
+      "bug": "The discount calculation is incorrect. Subtracting `subtotal * 10` applies a 1000% discount, instead of a 10% discount (which requires subtracting `subtotal * 0.10` or multiplying by 0.90).",
+      "severity": "major"
+    },
+    {
+      "line": 22,
+      "bug": "If inventory goes negative, the code silently passes. This should raise an exception or log a critical error to prevent overselling.",
+      "severity": "major"
+    },
+    {
+      "line": 31,
+      "bug": "Typographical error in assignment operator. `total_revenue =+ total` is equivalent to `total_revenue = +total`, which assigns the value of `total` instead of accumulating it. It should be `total_revenue += total`.",
+      "severity": "minor"
+    },
+    {
+      "line": 34,
+      "bug": "If the input list `orders` is empty, this line will raise a `ZeroDivisionError`.",
+      "severity": "critical"
+    },
+    {
+      "line": 35,
+      "bug": "If the input list `orders` is empty, `results` will be empty, causing `max()` to raise a `ValueError`.",
+      "severity": "critical"
+    },
+    {
+      "line": 46,
+      "bug": "The email validation is insufficient. Checking only for the presence of '@' does not guarantee a valid email format (e.g., it allows 'a@' or '@b').",
+      "severity": "minor"
+    },
+    {
+      "line": 53,
+      "bug": "The shipping cost calculation is flawed. It adds the fixed value `per_km` (0.01) regardless of the distance, instead of multiplying the distance by the rate (`distance * per_km`).",
+      "severity": "major"
+    },
+    {
+      "line": 57,
+      "bug": "This `elif` condition is unreachable because any weight greater than 50 is already greater than 30, and would have been caught by the preceding `if` block.",
+      "severity": "minor"
+    },
+    {
+      "line": 60,
+      "bug": "Using `round(cost)` loses necessary decimal precision for financial calculations, leading to inaccurate cost reporting.",
+      "severity": "major"
+    },
+    {
+      "line": 63,
+      "bug": "The function uses assignment (`merged = profile_a`) instead of creating a copy. This means modifications to `merged` will modify the original `profile_a` in place.",
+      "severity": "major"
+    },
+    {
+      "line": 67,
+      "bug": "The date is hardcoded. For a functional merge, the `updated_at` timestamp should be dynamically generated using the current time.",
+      "severity": "minor"
+    },
+    {
+      "line": 71,
+      "bug": "The CSV parsing is extremely basic and does not handle standard CSV features like quoted fields or escaped commas, making it unreliable for real-world data.",
+      "severity": "major"
+    },
+    {
+      "line": 78,
+      "bug": "The variable name `duplicates` is misspelled (should be `duplicates`).",
+      "severity": "minor"
+    },
+    {
+      "line": 74,
+      "bug": "The function name `find_duplicates` is misspelled (should be `find_duplicates`).",
+      "severity": "minor"
+    }
+  ],
+  "count": 15
+}
+```

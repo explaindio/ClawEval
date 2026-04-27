@@ -1,0 +1,346 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Constraint 9: Title tag containing QuillAI -->
+    <title>QuillAI - AI Writing Assistant for Professionals</title>
+    
+    <!-- Constraint 8: Meta description -->
+    <meta name="description" content="QuillAI is an advanced AI writing assistant that helps you create high-quality content in seconds. Boost your productivity with artificial intelligence.">
+    
+    <!-- Constraint 11: Mobile-responsive viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif; line-height: 1.6; color: #333; }
+        img { max-width: 100%; height: auto; }
+        
+        nav { background: #fff; padding: 1rem; position: sticky; top: 0; box-shadow: 0 2px 5px rgba(0,0,0,0.1); z-index: 100; }
+        nav ul { list-style: none; display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap; }
+        nav a { text-decoration: none; color: #333; font-weight: 600; }
+        
+        .hero { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 4rem 2rem; text-align: center; }
+        .hero h1 { font-size: 2.5rem; margin-bottom: 1rem; }
+        .hero p { font-size: 1.2rem; margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto; }
+        .cta-button { background: #fff; color: #667eea; padding: 12px 30px; border: none; border-radius: 25px; font-size: 1.1rem; cursor: pointer; text-decoration: none; display: inline-block; margin: 0.5rem; font-weight: 600; }
+        .cta-button.secondary { background: transparent; color: white; border: 2px solid white; }
+        
+        .social-proof { padding: 2rem; text-align: center; background: #f8f9fa; }
+        .logos { display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap; margin-top: 1rem; opacity: 0.6; }
+        
+        .how-it-works { padding: 3rem 2rem; text-align: center; }
+        .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; max-width: 1000px; margin: 2rem auto; }
+        .step { padding: 1.5rem; background: #f8f9fa; border-radius: 8px; }
+        .step-number { background: #667eea; color: white; width: 30px; height: 30px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 1rem; font-weight: bold; }
+        
+        .features { padding: 3rem 2rem; background: #fff; }
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; max-width: 1200px; margin: 2rem auto; }
+        .feature-card { padding: 2rem; border: 1px solid #eee; border-radius: 8px; text-align: center; transition: transform 0.2s; }
+        .feature-card:hover { transform: translateY(-5px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .icon-placeholder { width: 60px; height: 60px; background: #e0e0e0; border-radius: 50%; margin: 0 auto 1rem; display: flex; align-items: center; justify-content: center; }
+        
+        .comparison { padding: 3rem 2rem; background: #f8f9fa; text-align: center; }
+        .comparison-container { display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap; max-width: 800px; margin: 2rem auto; }
+        .comparison-box { flex: 1; min-width: 300px; padding: 2rem; border-radius: 8px; text-align: left; }
+        .before { background: #fff; border: 2px solid #ddd; }
+        .after { background: #e8f5e9; border: 2px solid #4caf50; }
+        
+        .pricing { padding: 3rem 2rem; }
+        .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; max-width: 1000px; margin: 2rem auto; }
+        .pricing-card { border: 2px solid #eee; padding: 2rem; border-radius: 8px; text-align: center; background: white; }
+        .pricing-card.featured { border-color: #667eea; transform: scale(1.05); box-shadow: 0 5px 20px rgba(102, 126, 234, 0.2); }
+        .price { font-size: 2.5rem; font-weight: bold; color: #667eea; margin: 1rem 0; }
+        
+        .testimonials { padding: 3rem 2rem; background: #f8f9fa; }
+        .testimonials-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; max-width: 1200px; margin: 2rem auto; }
+        .testimonial-card { background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        
+        .faq { padding: 3rem 2rem; max-width: 800px; margin: 0 auto; }
+        details { margin-bottom: 1rem; border: 1px solid #eee; border-radius: 4px; padding: 1rem; background: white; }
+        summary { font-weight: bold; cursor: pointer; color: #667eea; }
+        
+        .newsletter { padding: 3rem 2rem; background: #667eea; color: white; text-align: center; }
+        .newsletter form { max-width: 500px; margin: 2rem auto; display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
+        .newsletter input { flex: 1; padding: 12px; border: none; border-radius: 4px; min-width: 250px; }
+        .newsletter button { padding: 12px 30px; background: #333; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; }
+        
+        .contact { padding: 3rem 2rem; text-align: center; background: #fff; }
+        .contact a { color: #667eea; text-decoration: none; font-size: 1.2rem; font-weight: 600; }
+        
+        footer { background: #333; color: white; padding: 2rem; text-align: center; }
+        .footer-links { display: flex; justify-content: center; gap: 2rem; margin: 1rem 0; flex-wrap: wrap; }
+        .footer-links a { color: white; text-decoration: none; }
+        .social-links { margin: 1rem 0; display: flex; justify-content: center; gap: 1.5rem; }
+        .social-links a { color: white; text-decoration: none; }
+        
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2rem; }
+            .pricing-card.featured { transform: scale(1); }
+            nav ul { gap: 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Constraint 15: Semantic HTML elements -->
+    <!-- Constraint 2: Navigation bar with 4 links -->
+    <header>
+        <nav role="navigation" aria-label="Main navigation">
+            <ul>
+                <!-- Constraint 16: Anchor links that scroll to sections -->
+                <li><a href="#features" aria-label="Go to Features section">Features</a></li>
+                <li><a href="#pricing" aria-label="Go to Pricing section">Pricing</a></li>
+                <li><a href="#testimonials" aria-label="Go to Testimonials section">Testimonials</a></li>
+                <li><a href="#contact" aria-label="Go to Contact section">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Constraint 1: Hero section with headline, subheadline, CTA button -->
+        <!-- Constraint 18: Must mention AI in hero section -->
+        <section class="hero" aria-labelledby="hero-heading">
+            <h1 id="hero-heading">Write Smarter with QuillAI</h1>
+            <p>Harness the power of artificial intelligence to create compelling content in seconds. From blog posts to marketing copy, our AI writing assistant helps you work faster and write better.</p>
+            
+            <!-- Constraint 12: At least 2 CTA buttons with different text -->
+            <a href="#pricing" class="cta-button" aria-label="Start your free trial now">Start Free Trial</a>
+            <a href="#how-it-works" class="cta-button secondary" aria-label="Learn how QuillAI works">See How It Works</a>
+        </section>
+
+        <!-- Constraint 13: Social proof -->
+        <section class="social-proof" aria-label="Social proof and trust indicators">
+            <h2>Trusted by 10,000+ content creators worldwide</h2>
+            <div class="logos" role="list" aria-label="Company logos">
+                <!-- Constraint 19: Accessibility attributes (alt text) -->
+                <img src="https://via.placeholder.com/100x40?text=TechCorp" alt="TechCorp logo" role="listitem">
+                <img src="https://via.placeholder.com/100x40?text=WriteInc" alt="WriteInc logo" role="listitem">
+                <img src="https://via.placeholder.com/100x40?text=MediaFlow" alt="MediaFlow logo" role="listitem">
+                <img src="https://via.placeholder.com/100x40?text=ContentPro" alt="ContentPro logo" role="listitem">
+            </div>
+        </section>
+
+        <!-- Constraint 14: How it Works section with at least 3 steps -->
+        <section id="how-it-works" class="how-it-works" aria-labelledby="how-it-works-heading">
+            <h2 id="how-it-works-heading">How QuillAI Works</h2>
+            <div class="steps">
+                <article class="step">
+                    <div class="step-number" aria-hidden="true">1</div>
+                    <h3>Input Your Topic</h3>
+                    <p>Simply enter your topic or brief description of what you want to write about.</p>
+                </article>
+                <article class="step">
+                    <div class="step-number" aria-hidden="true">2</div>
+                    <h3>AI Generates Content</h3>
+                    <p>Our advanced AI algorithms create high-quality, original content tailored to your needs.</p>
+                </article>
+                <article class="step">
+                    <div class="step-number" aria-hidden="true">3</div>
+                    <h3>Edit and Publish</h3>
+                    <p>Review, edit with AI-powered suggestions, and publish your perfect content instantly.</p>
+                </article>
+            </div>
+        </section>
+
+        <!-- Constraint 3: Features section with 4 feature cards -->
+        <section id="features" class="features" aria-labelledby="features-heading">
+            <h2 id="features-heading" style="text-align: center; margin-bottom: 2rem;">Powerful AI Features</h2>
+            <div class="features-grid">
+                <article class="feature-card">
+                    <!-- Constraint 19: Accessibility attributes (alt text) -->
+                    <div class="icon-placeholder" aria-hidden="true">
+                        <img src="https://via.placeholder.com/40" alt="Smart Writing icon" width="40" height="40">
+                    </div>
+                    <h3>Smart Writing</h3>
+                    <p>AI-powered writing suggestions that adapt to your tone and style preferences.</p>
+                </article>
+                <article class="feature-card">
+                    <div class="icon-placeholder" aria-hidden="true">
+                        <img src="https://via.placeholder.com/40" alt="Grammar Check icon" width="40" height="40">
+                    </div>
+                    <h3>Grammar Perfection</h3>
+                    <p>Advanced grammar and style checking beyond basic spell-check capabilities.</p>
+                </article>
+                <article class="feature-card">
+                    <div class="icon-placeholder" aria-hidden="true">
+                        <img src="https://via.placeholder.com/40" alt="SEO Optimization icon" width="40" height="40">
+                    </div>
+                    <h3>SEO Optimization</h3>
+                    <p>Built-in SEO tools to ensure your content ranks high on search engines.</p>
+                </article>
+                <article class="feature-card">
+                    <div class="icon-placeholder" aria-hidden="true">
+                        <img src="https://via.placeholder.com/40" alt="Multi-language icon" width="40" height="40">
+                    </div>
+                    <h3>25+ Languages</h3>
+                    <p>Create content in multiple languages with native-level fluency and cultural context.</p>
+                </article>
+            </div>
+        </section>
+
+        <!-- Constraint 20: Before/After comparison element -->
+        <section class="comparison" aria-labelledby="comparison-heading">
+            <h2 id="comparison-heading">See the Difference</h2>
+            <p>Transform your writing from good to exceptional with AI assistance</p>
+            <div class="comparison-container">
+                <div class="comparison-box before" aria-label="Before using QuillAI">
+                    <h3>Before</h3>
+                    <p style="font-style: italic; color: #666; margin-top: 1rem;">
+                        "We make software that helps people write things. It uses technology to make writing easier and faster for everyone who needs to write stuff for work or school."
+                    </p>
+                    <p style="color: #999; font-size: 0.9rem; margin-top: 1rem;">❌ Generic and uninspiring</p>
+                </div>
+                <div class="comparison-box after" aria-label="After using QuillAI">
+                    <h3>After QuillAI</h3>
+                    <p style="font-style: italic; color: #2e7d32; margin-top: 1rem;">
+                        "QuillAI revolutionizes your writing workflow with cutting-edge artificial intelligence, transforming mundane drafts into compelling narratives that engage, convert, and inspire your audience."
+                    </p>
+                    <p style="color: #4caf50; font-size: 0.9rem; margin-top: 1rem;">✨ Professional and persuasive</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Constraint 4: Pricing section with exactly 3 tiers -->
+        <section id="pricing" class="pricing" aria-labelledby="pricing-heading">
+            <h2 id="pricing-heading" style="text-align: center; margin-bottom: 2rem;">Simple, Transparent Pricing</h2>
+            <div class="pricing-grid">
+                <article class="pricing-card" aria-label="Free tier pricing">
+                    <h3>Free</h3>
+                    <div class="price" aria-label="Price: $0 per month">$0<span style="font-size: 1rem; color: #666;">/mo</span></div>
+                    <ul style="list-style: none; text-align: left; margin: 2rem 0; line-height: 2;">
+                        <li>✓ 5,000 words per month</li>
+                        <li>✓ Basic AI writing</li>
+                        <li>✓ Grammar checking</li>
+                        <li>✓ Email support</li>
+                    </ul>
+                    <!-- Constraint 12: Second CTA button with different text -->
+                    <a href="#" class="cta-button" style="background: #667eea; color: white;" aria-label="Get started with free plan">Get Started</a>
+                </article>
+                <article class="pricing-card featured" aria-label="Pro tier pricing">
+                    <h3>Pro</h3>
+                    <div class="price" aria-label="Price: $29 per month">$29<span style="font-size: 1rem; color: #666;">/mo</span></div>
+                    <ul style="list-style: none; text-align: left; margin: 2rem 0; line-height: 2;">
+                        <li>✓ 100,000 words per month</li>
+                        <li>✓ Advanced AI models</li>
+                        <li>✓ SEO optimization tools</li>
+                        <li>✓ Priority support</li>
+                    </ul>
+                    <a href="#" class="cta-button" style="background: #667eea; color: white;" aria-label="Start free trial for Pro plan">Start Free Trial</a>
+                </article>
+                <article class="pricing-card" aria-label="Enterprise tier pricing">
+                    <h3>Enterprise</h3>
+                    <div class="price" aria-label="Price: Custom pricing">Custom</div>
+                    <ul style="list-style: none; text-align: left; margin: 2rem 0; line-height: 2;">
+                        <li>✓ Unlimited words</li>
+                        <li>✓ Custom AI training</li>
+                        <li>✓ API access</li>
+                        <li>✓ Dedicated account manager</li>
+                    </ul>
+                    <a href="#contact" class="cta-button secondary" style="border-color: #667eea; color: #667eea;" aria-label="Contact sales for Enterprise plan">Contact Sales</a>
+                </article>
+            </div>
+        </section>
+
+        <!-- Constraint 5: Testimonials section with at least 3 testimonials -->
+        <section id="testimonials" class="testimonials" aria-labelledby="testimonials-heading">
+            <h2 id="testimonials-heading" style="text-align: center; margin-bottom: 2rem;">What Our Users Say</h2>
+            <div class="testimonials-grid">
+                <article class="testimonial-card">
+                    <p style="font-style: italic; margin-bottom: 1rem;">"QuillAI has transformed my content workflow. I can now produce twice the content in half the time, and the quality has actually improved!"</p>
+                    <footer>
+                        <strong>Sarah Johnson</strong><br>
+                        <span style="color: #666; font-size: 0.9rem;">Marketing Director, TechStart</span>
+                    </footer>
+                </article>
+                <article class="testimonial-card">
+                    <p style="font-style: italic; margin-bottom: 1rem;">"As a non-native English speaker, QuillAI helps me write with confidence. The AI understands context better than any other tool I've tried."</p>
+                    <footer>
+                        <strong>Marco Rodriguez</strong><br>
+                        <span style="color: #666; font-size: 0.9rem;">Freelance Writer</span>
+                    </footer>
+                </article>
+                <article class="testimonial-card">
+                    <p style="font-style: italic; margin-bottom: 1rem;">"The SEO features alone are worth the subscription. Our organic traffic increased by 150% within three months of using QuillAI."</p>
+                    <footer>
+                        <strong>Emily Chen</strong><br>
+                        <span style="color: #666; font-size: 0.9rem;">SEO Specialist, GrowthLabs</span>
+                    </footer>
+                </article>
+            </div>
+        </section>
+
+        <!-- Constraint 6: FAQ section with at least 5 question-answer pairs -->
+        <section class="faq" aria-labelledby="faq-heading">
+            <h2 id="faq-heading" style="text-align: center; margin-bottom: 2rem;">Frequently Asked Questions</h2>
+            
+            <details aria-expanded="false">
+                <summary>What is QuillAI and how does it work?</summary>
+                <p style="margin-top: 1rem;">QuillAI is an advanced artificial intelligence writing assistant that uses machine learning to generate, edit, and optimize content. Simply input your topic or requirements, and our AI creates high-quality text tailored to your needs.</p>
+            </details>
+            
+            <details aria-expanded="false">
+                <summary>Is the content generated by QuillAI original?</summary>
+                <p style="margin-top: 1rem;">Yes, all content generated by QuillAI is 100% original and plagiarism-free. Our AI creates unique text based on your inputs and does not copy from existing sources.</p>
+            </details>
+            
+            <details aria-expanded="false">
+                <summary>Can I use QuillAI for commercial projects?</summary>
+                <p style="margin-top: 1rem;">Absolutely! All subscription plans, including the free tier, grant you full commercial rights to use the generated content for your business, marketing materials, blogs, and more.</p>
+            </details>
+            
+            <details aria-expanded="false">
+                <summary>How does the AI understand my brand voice?</summary>
+                <p style="margin-top: 1rem;">QuillAI learns from examples you provide. You can upload sample content or describe your tone preferences, and the AI will adapt its writing style to match your brand voice consistently.</p>
+            </details>
+            
+            <details aria-expanded="false">
+                <summary>Is there a limit to how much I can generate?</summary>
+                <p style="margin-top: 1rem;">Word limits vary by plan: Free users get 5,000 words/month, Pro users get 100,000 words/month, and Enterprise customers enjoy unlimited generation. You can upgrade or purchase additional credits anytime.</p>
+            </details>
+        </section>
+
+        <!-- Constraint 10: Email signup/newsletter form -->
+        <section class="newsletter" aria-labelledby="newsletter-heading">
+            <h2 id="newsletter-heading">Stay Updated</h2>
+            <p>Get the latest AI writing tips and QuillAI updates delivered to your inbox.</p>
+            <form action="#" method="POST" aria-label="Newsletter signup form">
+                <!-- Constraint 19: Accessibility attributes (aria-label) -->
+                <label for="email-input" style="position: absolute; left: -9999px;">Email address</label>
+                <input type="email" id="email-input" name="email" placeholder="Enter your email address" required aria-required="true" aria-label="Enter your email address for newsletter">
+                <button type="submit" aria-label="Subscribe to newsletter">Subscribe</button>
+            </form>
+        </section>
+
+        <!-- Constraint 17: Contact section with email address -->
+        <section id="contact" class="contact" aria-labelledby="contact-heading">
+            <h2 id="contact-heading">Get In Touch</h2>
+            <p>Have questions? We're here to help.</p>
+            <p style="margin-top: 1rem;">
+                <a href="mailto:support@quillai.com" aria-label="Send email to support at quillai dot com">support@quillai.com</a>
+            </p>
+            <p style="margin-top: 0.5rem; color: #666;">Response time: Usually within 2 hours</p>
+        </section>
+    </main>
+
+    <!-- Constraint 7: Footer with copyright, social media links, and legal links -->
+    <footer role="contentinfo">
+        <div class="social-links" aria-label="Social media links">
+            <a href="#" aria-label="Follow us on Twitter">Twitter</a>
+            <a href="#" aria-label="Follow us on LinkedIn">LinkedIn</a>
+            <a href="#" aria-label="Follow us on Facebook">Facebook</a>
+        </div>
+        
+        <div class="footer-links">
+            <a href="#" aria-label="Read our Privacy Policy">Privacy Policy</a>
+            <a href="#" aria-label="Read our Terms of Service">Terms of Service</a>
+            <a href="#" aria-label="Read our Cookie Policy">Cookies</a>
+        </div>
+        
+        <p>&copy; 2024 QuillAI. All rights reserved.</p>
+        <p style="font-size: 0.9rem; margin-top: 0.5rem; opacity: 0.8;">Powered by advanced artificial intelligence</p>
+    </footer>
+
+</body>
+</html>
+```

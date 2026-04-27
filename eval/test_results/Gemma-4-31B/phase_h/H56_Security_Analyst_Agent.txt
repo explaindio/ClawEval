@@ -1,0 +1,82 @@
+```json
+{
+  "vulnerabilities": [
+    {
+      "type": "SQL Injection",
+      "location": "login() function, query variable",
+      "severity": "critical"
+    },
+    {
+      "type": "Weak Hashing Algorithm (MD5)",
+      "location": "login() function, hashlib.md5()",
+      "severity": "medium"
+    },
+    {
+      "type": "Plaintext Password Storage/Comparison",
+      "location": "login() function, SQL query password check",
+      "severity": "high"
+    },
+    {
+      "type": "Server-Side Template Injection (SSTI)",
+      "location": "profile() function, render_template_string()",
+      "severity": "critical"
+    },
+    {
+      "type": "Reflected Cross-Site Scripting (XSS)",
+      "location": "search() function, return string",
+      "severity": "medium"
+    },
+    {
+      "type": "Command Injection",
+      "location": "run_command() function, subprocess.run(shell=True)",
+      "severity": "critical"
+    },
+    {
+      "type": "Path Traversal (Filename)",
+      "location": "upload() function, os.path.join(UPLOAD_DIR, f.filename)",
+      "severity": "high"
+    },
+    {
+      "type": "Unrestricted File Upload",
+      "location": "upload() function, f.save(path)",
+      "severity": "high"
+    },
+    {
+      "type": "Local File Inclusion (LFI) / Path Traversal",
+      "location": "download() function, send_file(filepath)",
+      "severity": "high"
+    },
+    {
+      "type": "Unsafe YAML Deserialization",
+      "location": "load_config() function, yaml.load()",
+      "severity": "critical"
+    },
+    {
+      "type": "Insecure Deserialization (Pickle)",
+      "location": "restore_session() function, pickle.loads()",
+      "severity": "critical"
+    },
+    {
+      "type": "Hardcoded Credentials",
+      "location": "Global variable SECRET",
+      "severity": "high"
+    },
+    {
+      "type": "Sensitive Information in URL (Token in GET)",
+      "location": "admin() function, request.args.get('token')",
+      "severity": "medium"
+    },
+    {
+      "type": "Command Injection",
+      "location": "export_data() function, os.system()",
+      "severity": "critical"
+    },
+    {
+      "type": "Debug Mode Enabled in Production",
+      "location": "app.run(debug=True)",
+      "severity": "high"
+    }
+  ],
+  "count": 15
+}
+```

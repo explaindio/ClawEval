@@ -1,0 +1,100 @@
+```python
+class LRUCache:
+    class _Node:
+        def __init__(self, key=0, val=0):
+            self.key = key
+            self.val = val
+            self.prev = None
+            self.next = None
+
+    def __init__(self, capacity):
+        self.capacity = capacity
+        self.cache = {}
+        self.head = self._Node()
+        self.tail = self._Node()
+        self.head.next = self.tail
+        self.tail.prev = self.head
+        self.size = 0
+
+    def _remove(self, node):
+        node.prev.next = node.next
+        node.next.prev = node.prev
+
+    def _add_to_head(self, node):
+        node.prev = self.head
+        node.next = self.head.next
+        self.head.next.prev = node
+        self.head.next = node
+
+    def _move_to_head(self, node):
+        self._remove(node)
+        self._add_to_head(node)
+
+    def _pop_tail(self):
+        node = self.tail.prev
+        self._remove(node)
+        return node
+
+    def get(self, key):
+        if key not in self.cache:
+            return -1
+        node = self.cache[key]
+        self._move_to_head(node)
+        return node.val
+
+    def put(self, key, value):
+        if key in self.cache:
+            node = self.cache[key]
+            node.val = value
+            self._move_to_head(node)
+        else:
+            node = self._Node(key, value)
+            self.cache[key] = node
+            self._add_to_head(node)
+            self.size += 1
+            if self.size > self.capacity:
+                tail = self._pop_tail()
+                del self.cache[tail.key]
+                self.size -= 1
+
+
+class MinStack:
+    def __init__(self):
+        self.stack = []
+
+    def push(self, val):
+        if self.stack:
+            current_min = min(val, self.stack[-1][1])
+        else:
+            current_min = val
+        self.stack.append((val, current_min))
+
+    def pop(self):
+        self.stack.pop()
+
+    def top(self):
+        return self.stack[-1][0]
+
+    def get_min(self):
+        return self.stack[-1][1]
+
+
+def find_median(stream):
+    sorted_nums = []
+    medians = []
+    for num in stream:
+        lo, hi = 0, len(sorted_nums)
+        while lo < hi:
+            mid = (lo + hi) // 2
+            if sorted_nums[mid] < num:
+                lo = mid + 1
+            else:
+                hi = mid
+        sorted_nums.insert(lo, num)
+        n = len(sorted_nums)
+        if n % 2 == 1:
+            medians.append(float(sorted_nums[n // 2]))
+        else:
+            medians.append((sorted_nums[n // 2 - 1] + sorted_nums[n // 2]) / 2.0)
+    return medians
+```

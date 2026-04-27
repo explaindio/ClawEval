@@ -1,0 +1,61 @@
+```python
+class JSONValidator:
+    def validate(self, data, schema):
+        errors = []
+        
+        for field_name, rules in schema.items():
+            # Check if field is missing
+            if field_name not in data:
+                if rules.get("required", False):
+                    errors.append(f"Field '{field_name}' is required but missing")
+                continue
+            
+            value = data[field_name]
+            
+            # Validate type if specified
+            if "type" in rules:
+                expected_type = rules["type"]
+                valid_type = False
+                
+                if expected_type == "str":
+                    valid_type = isinstance(value, str)
+                elif expected_type == "int":
+                    # Exclude bool since bool is subclass of int in Python
+                    valid_type = isinstance(value, int) and not isinstance(value, bool)
+                elif expected_type == "float":
+                    valid_type = isinstance(value, float) and not isinstance(value, bool)
+                elif expected_type == "bool":
+                    valid_type = isinstance(value, bool)
+                elif expected_type == "list":
+                    valid_type = isinstance(value, list)
+                elif expected_type == "dict":
+                    valid_type = isinstance(value, dict)
+                
+                if not valid_type:
+                    actual_type = type(value).__name__
+                    errors.append(f"Field '{field_name}' expected type '{expected_type}' but got '{actual_type}'")
+                    continue  # Skip further validation for this field
+            
+            # Validate numeric constraints (min/max) for int and float
+            if isinstance(value, (int, float)) and not isinstance(value, bool):
+                if "min" in rules and value < rules["min"]:
+                    errors.append(f"Field '{field_name}' with value {value} is less than minimum {rules['min']}")
+                if "max" in rules and value > rules["max"]:
+                    errors.append(f"Field '{field_name}' with value {value} is greater than maximum {rules['max']}")
+            
+            # Validate string length constraints
+            if isinstance(value, str):
+                if "min_length" in rules and len(value) < rules["min_length"]:
+                    errors.append(f"Field '{field_name}' with length {len(value)} is shorter than minimum length {rules['min_length']}")
+                if "max_length" in rules and len(value) > rules["max_length"]:
+                    errors.append(f"Field '{field_name}' with length {len(value)} is longer than maximum length {rules['max_length']}")
+            
+            # Validate list length constraints
+            if isinstance(value, list):
+                if "min_length" in rules and len(value) < rules["min_length"]:
+                    errors.append(f"Field '{field_name}' with length {len(value)} is shorter than minimum length {rules['min_length']}")
+                if "max_length" in rules and len(value) > rules["max_length"]:
+                    errors.append(f"Field '{field_name}' with length {len(value)} is longer than maximum length {rules['max_length']}")
+        
+        return {"valid": len(errors) == 0, "errors": errors}
+```

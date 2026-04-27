@@ -1,0 +1,82 @@
+```json
+{
+  "bugs": [
+    {
+      "line": "8",
+      "bug": "Shared list self.requests is accessed by multiple coroutines without an asyncio.Lock, causing a check-then-act race condition in acquire() that can exceed the rate limit.",
+      "fix": "Add self.lock = asyncio.Lock() in __init__ and wrap the acquire logic with 'async with self.lock:'"
+    },
+    {
+      "line": "11",
+      "bug": "asyncio.get_event_loop() is deprecated when a loop is already running (Python 3.10+).",
+      "fix": "Use asyncio.get_running_loop().time() instead."
+    },
+    {
+      "line": "25",
+      "bug": "Creating a new aiohttp.ClientSession for every request prevents connection pooling and is highly inefficient.",
+      "fix": "Create the session once outside fetch_one (e.g., pass it as an argument or use contextlib.asynccontextmanager) and reuse it for all requests."
+    },
+    {
+      "line": "27",
+      "bug": "Using deprecated int timeout parameter instead of aiohttp.ClientTimeout object.",
+      "fix": "Use timeout=aiohttp.ClientTimeout(total=30) instead of timeout=30."
+    },
+    {
+      "line": "27",
+      "bug": "Response object is not used as an async context manager, potentially leaking connections if response.json() raises.",
+      "fix": "Use 'async with session.get(...) as response:' to ensure proper connection cleanup."
+    },
+    {
+      "line": "29",
+      "bug": "Concurrent writes to the shared 'results' dictionary from multiple coroutines without synchronization (race condition).",
+      "fix": "Use asyncio.Lock() to protect dictionary writes, or return (url, data) from fetch_one and build the dict from gather results."
+    },
+    {
+      "line": "31",
+      "bug": "Concurrent writes to shared 'results' dict without synchronization; also catches BaseException silently.",
+      "fix": "Use a lock for dict writes and catch specific exceptions (aiohttp.ClientError, json.JSONDecodeError) instead of bare Exception."
+    },
+    {
+      "line": "32",
+      "bug": "Silently swallowing all exceptions with 'pass' makes debugging impossible.",
+      "fix": "Add logging (e.g., logger.exception()) or remove the pass and let specific exceptions propagate."
+    },
+    {
+      "line": "35",
+      "bug": "asyncio.gather creates all Task objects immediately, consuming O(N) memory for large url lists; also relies on side effects instead of return values.",
+      "fix": "Use asyncio.Queue with a worker pool pattern to bound memory, or return values from fetch_one and construct results from the gather output."
+    },
+    {
+      "line": "42",
+      "bug": "process_item(item) creates a coroutine object but does not schedule it as a Task immediately; while gather accepts coroutines, best practice is to create tasks for clarity and to ensure immediate scheduling.",
+      "fix": "Use task = asyncio.create_task(process_item(item))."
+    },
+    {
+      "line": "45",
+      "bug": "Using 'yield' makes process_batch an async generator, which cannot be awaited directly; callers must use 'async for'. If the caller tries to 'await process_batch()', they will get an async generator object instead of results.",
+      "fix": "Remove 'yield r' and 'return results' at the end, or change the function to be a regular async function that returns a list (e.g., 'return results')."
+    },
+    {
+      "line": "52",
+      "bug": "self.pool is accessed by multiple coroutines without an asyncio.Lock, creating a race condition between 'if self.pool:' and 'self.pool.pop()'.",
+      "fix": "Add self.lock = asyncio.Lock() and protect get_connection/release with 'async with self.lock:'."
+    },
+    {
+      "line": "60",
+      "bug": "Pool can grow unbounded beyond self.size; connections are not validated before reuse; no synchronization on append.",
+      "fix": "Check len(self.pool) < self.size before appending, validate connection health, and use the lock mentioned for line 52."
+    },
+    {
+      "line": "63",
+      "bug": "Returns a dummy object() instead of an actual connection, and the method is marked async but performs no asynchronous I/O.",
+      "fix": "Implement actual async connection creation (e.g., await aiomysql.connect(...)) or raise NotImplementedError."
+    },
+    {
+      "line": "68",
+      "bug": "urls list contains 100 identical strings, which become keys in the results dictionary; dictionary keys are unique, so len(results) will be 1, not 100.",
+      "fix": "Use a list to store results with tuples (index, url, data), or use enumerate(urls) as the key in results."
+    }
+  ],
+  "count": 15
+}
+```

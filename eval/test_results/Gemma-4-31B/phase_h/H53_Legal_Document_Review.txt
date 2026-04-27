@@ -1,0 +1,82 @@
+```json
+{
+  "issues": [
+    {
+      "clause": "Company grants User a perpetual, irrevocable license to use the Software. Company may terminate this license at any time without cause or notice.",
+      "issue": "Direct contradiction between 'irrevocable' and the right to terminate 'at any time'.",
+      "risk": "high"
+    },
+    {
+      "clause": "Company may terminate this license at any time without cause or notice.",
+      "issue": "Lack of notice period or cause for termination creates extreme instability for the user.",
+      "risk": "high"
+    },
+    {
+      "clause": "All data uploaded by User becomes the exclusive property of Company.",
+      "issue": "Unfair transfer of data ownership from the creator/user to the service provider.",
+      "risk": "high"
+    },
+    {
+      "clause": "Company may use, sell, or share User data with any third party for any purpose without consent.",
+      "issue": "Violation of data privacy principles (GDPR/CCPA) regarding consent and purpose limitation.",
+      "risk": "high"
+    },
+    {
+      "clause": "Company's total liability shall not exceed $100, regardless of the nature of the claim.",
+      "issue": "Unconscionably low liability cap that likely fails to cover basic damages.",
+      "risk": "high"
+    },
+    {
+      "clause": "regardless of the nature of the claim",
+      "issue": "Attempts to limit liability for gross negligence or willful misconduct, which is legally unenforceable in many jurisdictions.",
+      "risk": "high"
+    },
+    {
+      "clause": "User waives all rights to consequential, incidental, punitive, or any other damages.",
+      "issue": "Overly broad waiver of damages that strips the user of legitimate legal remedies.",
+      "risk": "medium"
+    },
+    {
+      "clause": "User shall indemnify Company against any and all claims, including those arising from Company's own negligence",
+      "issue": "Requires the user to pay for the Company's own mistakes (negligence).",
+      "risk": "high"
+    },
+    {
+      "clause": "including those arising from Company's own... willful misconduct.",
+      "issue": "Indemnifying a party for intentional harmful acts is generally void as a matter of public policy.",
+      "risk": "high"
+    },
+    {
+      "clause": "Company may increase pricing at any time.",
+      "issue": "Lack of notice period or price ceiling for increases allows for predatory pricing.",
+      "risk": "medium"
+    },
+    {
+      "clause": "Failure to pay within 24 hours of invoice results in immediate account termination",
+      "issue": "Unreasonably short cure period for payment defaults.",
+      "risk": "high"
+    },
+    {
+      "clause": "and forfeiture of all data.",
+      "issue": "Punitive forfeiture of user data as a penalty for a payment delay.",
+      "risk": "high"
+    },
+    {
+      "clause": "Company targets 95% uptime but makes no guarantees. Credits will not be issued for any downtime",
+      "issue": "Illusory SLA; the company promises a target but provides no remedy or guarantee for failure.",
+      "risk": "medium"
+    },
+    {
+      "clause": "Company may modify these terms at any time. Continued use constitutes acceptance.",
+      "issue": "Lack of notification requirement for changes; 'passive acceptance' is often unenforceable.",
+      "risk": "medium"
+    },
+    {
+      "clause": "Upon termination, Company may delete all User data immediately with no obligation to provide export or backup.",
+      "issue": "Lack of data portability or a transition period, leading to permanent data loss.",
+      "risk": "high"
+    }
+  ],
+  "count": 15
+}
+```

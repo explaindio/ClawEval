@@ -1,0 +1,82 @@
+```json
+{
+  "vulnerabilities": [
+    {
+      "type": "SQL Injection",
+      "location": "login function, line 20 (query string formatting)",
+      "severity": "critical"
+    },
+    {
+      "type": "Server-Side Template Injection (SSTI)",
+      "location": "profile function, lines 28-29 (render_template_string with user input)",
+      "severity": "critical"
+    },
+    {
+      "type": "Cross-Site Scripting (XSS)",
+      "location": "search function, line 34 (HTML string formatting)",
+      "severity": "high"
+    },
+    {
+      "type": "Command Injection",
+      "location": "run_command function, line 39 (subprocess.run with shell=True)",
+      "severity": "critical"
+    },
+    {
+      "type": "Path Traversal (Arbitrary File Write)",
+      "location": "upload function, line 46 (os.path.join with unsanitized filename)",
+      "severity": "high"
+    },
+    {
+      "type": "Path Traversal (Local File Inclusion)",
+      "location": "download function, lines 52-53 (send_file with unsanitized path)",
+      "severity": "critical"
+    },
+    {
+      "type": "Remote Code Execution (YAML Deserialization)",
+      "location": "load_config function, line 59 (yaml.load without SafeLoader)",
+      "severity": "critical"
+    },
+    {
+      "type": "Insecure Deserialization (Pickle)",
+      "location": "restore_session function, line 66 (pickle.loads on user data)",
+      "severity": "critical"
+    },
+    {
+      "type": "Hardcoded Credentials",
+      "location": "line 9 (SECRET variable) and line 72 (admin comparison)",
+      "severity": "high"
+    },
+    {
+      "type": "OS Command Injection",
+      "location": "export_data function, lines 79-80 (os.system with formatted string)",
+      "severity": "critical"
+    },
+    {
+      "type": "Debug Mode Enabled",
+      "location": "line 84 (app.run with debug=True)",
+      "severity": "critical"
+    },
+    {
+      "type": "Weak Cryptographic Hash (MD5)",
+      "location": "login function, line 23 (hashlib.md5 for token generation)",
+      "severity": "medium"
+    },
+    {
+      "type": "Plaintext Password Storage/Comparison",
+      "location": "login function, line 20 (direct password comparison in SQL query)",
+      "severity": "high"
+    },
+    {
+      "type": "Unrestricted File Upload",
+      "location": "upload function, lines 45-47 (no file type/extension validation)",
+      "severity": "high"
+    },
+    {
+      "type": "Missing Authentication/Authorization",
+      "location": "run_command, upload, download, load_config, restore_session, export_data endpoints (no auth checks)",
+      "severity": "critical"
+    }
+  ],
+  "count": 15
+}
+```

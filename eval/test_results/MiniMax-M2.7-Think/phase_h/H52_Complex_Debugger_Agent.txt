@@ -1,0 +1,48 @@
+
+
+{
+  "bugs": [
+    {
+      "line": "8",
+      "bug": "The `RateLimiter.requests` list is accessed by multiple concurrent coroutines without synchronization, leading to race conditions.",
+      "fix": "Protect list modifications with an `asyncio.Lock` or replace the list with a thread‑safe structure such as `collections.deque`."
+    },
+    {
+      "line": "11",
+      "bug": "Using `asyncio.get_event_loop().time()` is deprecated and may raise an error if no running loop exists.",
+      "fix": "Replace with `asyncio.get_running_loop().time()` to get the time of the current event loop."
+    },
+    {
+      "line": "25",
+      "bug": "A new `aiohttp.ClientSession` is created for each request, causing resource waste and preventing connection reuse.",
+      "fix": "Create a single `ClientSession` outside the task loop and reuse it across all requests."
+    },
+    {
+      "line": "27",
+      "bug": "`session.get()` is called without checking the HTTP status, so server errors are silently ignored.",
+      "fix": "Call `response.raise_for_status()` after receiving the response to propagate HTTP errors."
+    },
+    {
+      "line": "27",
+      "bug": "The response object is not explicitly closed after reading, which can leak connections.",
+      "fix": "Use `async with response:` context manager or call `await response.release()` after processing."
+    },
+    {
+      "line": "29",
+      "bug": "The shared `results` dictionary is updated by multiple tasks without any lock, creating race conditions.",
+      "fix": "Protect writes to `results` with an `asyncio.Lock` or use a concurrency‑safe collection."
+    },
+    {
+      "line": "31",
+      "bug": "Same race condition as line 29 when setting `results[url] = None` on error.",
+      "fix": "Wrap updates in a lock or use a concurrency‑safe collection."
+    },
+    {
+      "line": "32",
+      "bug": "The bare `except Exception: pass` swallows all exceptions without logging, making debugging difficult.",
+      "fix": "Log the exception (e.g., `logging.exception`) or re‑raise after handling."
+    },
+    {
+      "line": "35",
+      "bug": "`asyncio.gather` will re‑raise the first exception and cancel other tasks, so failures can halt the whole batch.",
+      "fix": "Pass `return_exceptions=True` to `gather` to collect all results

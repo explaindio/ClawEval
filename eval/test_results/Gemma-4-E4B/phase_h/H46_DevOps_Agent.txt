@@ -1,0 +1,82 @@
+```json
+{
+  "issues": [
+    {
+      "line": "spec:\n  replicas: 1",
+      "issue": "Typo in 'replicas'. Should be 'replicas'.",
+      "severity": "critical"
+    },
+    {
+      "line": "        resources: {}",
+      "issue": "Typo in 'resources'. Should be 'resources'.",
+      "severity": "major"
+    },
+    {
+      "line": "          runAsRoot: true",
+      "issue": "Security risk: Running containers as root is a major security vulnerability.",
+      "severity": "critical"
+    },
+    {
+      "line": "          privileged: true",
+      "issue": "Security risk: Running containers with privileged mode grants excessive capabilities and is highly dangerous.",
+      "severity": "critical"
+    },
+    {
+      "line": "        env:",
+      "issue": "Security risk: Storing sensitive credentials (DB_PASSWORD, API_KEY) directly in environment variables in plain text is insecure. Use Kubernetes Secrets.",
+      "severity": "critical"
+    },
+    {
+      "line": "        - name: DB_PASSWORD",
+      "issue": "Security risk: Hardcoding secrets (DB_PASSWORD) in the deployment manifest.",
+      "severity": "critical"
+    },
+    {
+      "line": "        - name: API_KEY",
+      "issue": "Security risk: Hardcoding secrets (API_KEY) in the deployment manifest.",
+      "severity": "critical"
+    },
+    {
+      "line": "        volumeMounts:",
+      "issue": "Missing volume definition for the sidecar container. The sidecar container does not reference 'data-vol'.",
+      "severity": "major"
+    },
+    {
+      "line": "      - name: sidecar",
+      "issue": "Missing resource limits for the sidecar container. This can lead to resource exhaustion or throttling.",
+      "severity": "major"
+    },
+    {
+      "line": "        image: logger:v1",
+      "issue": "Best practice violation: Using a non-specific tag ('v1') for container images. Use immutable tags (e.g., SHA or specific version) to ensure reproducibility.",
+      "severity": "minor"
+    },
+    {
+      "line": "      volumes:",
+      "issue": "Using hostPath volumes is generally discouraged in production environments as it tightly couples the pod to the host node's filesystem, reducing portability.",
+      "severity": "major"
+    },
+    {
+      "line": "        hostPath:",
+      "issue": "Security risk: Using hostPath allows the container access to the host node's filesystem, potentially leading to privilege escalation.",
+      "severity": "critical"
+    },
+    {
+      "line": "      - name: api",
+      "issue": "Missing resource requests/limits for the primary 'api' container. This can lead to unpredictable scheduling and performance issues.",
+      "severity": "major"
+    },
+    {
+      "line": "  type: LoadBalancer",
+      "issue": "Operational concern: LoadBalancer type requires a cloud provider integration. If running locally (e.g., Minikube), this type may not function correctly or may incur unnecessary costs.",
+      "severity": "minor"
+    },
+    {
+      "line": "spec:",
+      "issue": "Missing Pod Disruption Budget (PDB) definition. For production deployments, PDBs ensure availability during voluntary disruptions (like node maintenance).",
+      "severity": "major"
+    }
+  ],
+  "count": 15
+}
+```

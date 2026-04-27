@@ -1,0 +1,50 @@
+```python
+def is_valid_password(password):
+    if not (8 <= len(password) <= 64):
+        return False
+    if any(c == ' ' for c in password):
+        return False
+    if password[0].isdigit():
+        return False
+    if "password" in password.lower():
+        return False
+    
+    has_upper = any(c.isupper() for c in password)
+    has_lower = any(c.islower() for c in password)
+    has_digit = any(c.isdigit() for c in password)
+    has_special = any(c in "!@#$%^&*()-_+=" for c in password)
+    
+    if not (has_upper and has_lower and has_digit and has_special):
+        return False
+    
+    for i in range(len(password) - 3):
+        if password[i] == password[i+1] == password[i+2] == password[i+3]:
+            return False
+            
+    return True
+
+def run_tests():
+    tests = [
+        ("Valid1!abc", True),               # Valid case
+        ("Short1!", False),                 # Too short
+        ("A" * 65 + "1!a", False),          # Too long
+        ("alllowercase1!", False),          # No uppercase
+        ("ALLUPPERCASE1!", False),          # No lowercase
+        ("NoDigitSpecial!", False),         # No digit
+        ("NoSpecialChar123", False),        # No special character
+        ("Space In 1!abc", False),          # Contains space
+        ("1StartDigit!aB", False),          # Starts with digit
+        ("aaaa1!Abc", False),               # 4 consecutive identical characters
+        ("MyPassword123!", False),          # Contains "password" (case-insensitive)
+        ("pAsSwOrD123!", False),            # Contains "password" (case-insensitive)
+        ("Valid_Pass123", True),            # Valid case with underscore
+        ("A" * 3 + "b" * 3 + "1!C", True),  # 3 consecutive is okay
+        ("A" + "b" * 62 + "1!", True),      # Exactly 64 characters
+    ]
+    
+    results = []
+    for pwd, expected in tests:
+        actual = is_valid_password(pwd)
+        results.append((pwd, expected, actual))
+    return results
+```

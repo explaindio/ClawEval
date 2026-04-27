@@ -1,0 +1,77 @@
+```json
+{
+  "bugs": [
+    {
+      "line": 12,
+      "bug": "SAVE20 discount applies only 20% of subtotal instead of 20% off. Should be subtotal = subtotal * 0.80 to retain 80%.",
+      "severity": "critical"
+    },
+    {
+      "line": 14,
+      "bug": "SAVE10 discount subtracts 10x subtotal instead of 10% off. Should be subtotal = subtotal * 0.90 or subtotal -= subtotal * 0.10.",
+      "severity": "critical"
+    },
+    {
+      "line": 22,
+      "bug": "Stock check does nothing (pass) when stock goes negative. Should raise an error or skip the order to prevent invalid inventory.",
+      "severity": "critical"
+    },
+    {
+      "line": 31,
+      "bug": "Assignment operator is =+ (assign positive) instead of += (add). total_revenue is overwritten to total each iteration instead of accumulating.",
+      "severity": "critical"
+    },
+    {
+      "line": 34,
+      "bug": "Division by zero error if orders list is empty. Should check len(orders) > 0 before dividing or return 0 for empty case.",
+      "severity": "major"
+    },
+    {
+      "line": 35,
+      "bug": "ValueError if results list is empty (no orders processed). max() on empty sequence fails. Should handle empty case.",
+      "severity": "major"
+    },
+    {
+      "line": 46,
+      "bug": "Email validation only checks for '@' character. Accepts invalid emails like '@' or 'user@' or 'user@@domain.com'.",
+      "severity": "major"
+    },
+    {
+      "line": 53,
+      "bug": "Shipping cost adds flat per_km value (0.01) instead of per_km * distance. Should be distance * per_km.",
+      "severity": "critical"
+    },
+    {
+      "line": 57,
+      "bug": "elif weight > 50 is unreachable code. Since weight > 30 is checked first, weight > 50 can never be reached.",
+      "severity": "minor"
+    },
+    {
+      "line": 60,
+      "bug": "round(cost) returns integer, losing decimal precision for cents. Should use round(cost, 2) to keep two decimal places.",
+      "severity": "major"
+    },
+    {
+      "line": 63,
+      "bug": "Shallow reference assignment: merged = profile_a. Modifying merged directly mutates profile_a. Should use profile_a.copy() or copy.deepcopy().",
+      "severity": "major"
+    },
+    {
+      "line": 67,
+      "bug": "Hardcoded date '2024-01-01' sets same timestamp for all merges regardless of when they occur. Should use datetime.now() or similar.",
+      "severity": "minor"
+    },
+    {
+      "line": 71,
+      "bug": "Simple split(',') cannot handle quoted fields containing commas (e.g., 'John,Smith'). Should use csv module with proper quoting rules.",
+      "severity": "major"
+    },
+    {
+      "line": 78,
+      "bug": "Item appended to seen AFTER checking, so first occurrence never matches. Should append BEFORE the if check, or use 'if item not in seen'.",
+      "severity": "major"
+    }
+  ],
+  "count": 15
+}
+```

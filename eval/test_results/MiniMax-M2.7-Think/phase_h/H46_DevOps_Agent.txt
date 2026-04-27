@@ -1,0 +1,80 @@
+{
+  "issues": [
+    {
+      "line": "17",
+      "issue": "Container image uses the 'latest' tag, making the deployment non‑reproducible and risking unexpected version changes.",
+      "severity": "major"
+    },
+    {
+      "line": "20",
+      "issue": "No resource requests or limits are defined for the 'api' container, which can cause resource contention and uncontrolled consumption.",
+      "severity": "major"
+    },
+    {
+      "line": "22",
+      "issue": "Container is configured to run as root (runAsRoot: true), violating the principle of least privilege and increasing security risk.",
+      "severity": "critical"
+    },
+    {
+      "line": "23",
+      "issue": "Container runs in privileged mode (privileged: true), granting full host access and exposing the cluster to container‑escape attacks.",
+      "severity": "critical"
+    },
+    {
+      "line": "25-28",
+      "issue": "Sensitive credentials (DB_PASSWORD, API_KEY) are stored in plain‑text environment variables, exposing them in logs and etcd.",
+      "severity": "critical"
+    },
+    {
+      "line": "40-41",
+      "issue": "Using hostPath volume with path /tmp/data introduces security risks and does not guarantee data persistence across pod restarts.",
+      "severity": "major"
+    },
+    {
+      "line": "34-37",
+      "issue": "Sidecar container 'logger' has extremely high resource requests (10Gi memory, 8 CPUs) and no limits, which can starve other workloads and cause scheduling failures.",
+      "severity": "major"
+    },
+    {
+      "line": "48",
+      "issue": "Service type LoadBalancer publicly exposes the workload without additional security controls such as TLS or network policies.",
+      "severity": "major"
+    },
+    {
+      "line": "19",
+      "issue": "Missing readinessProbe for the 'api' container; traffic may be routed to pods that are not yet ready.",
+      "severity": "major"
+    },
+    {
+      "line": "19",
+      "issue": "Missing livenessProbe for the 'api' container; failed containers may not be restarted, causing prolonged outages.",
+      "severity": "major"
+    },
+    {
+      "line": "5-6",
+      "issue": "No PodDisruptionBudget is defined, leaving the deployment vulnerable to voluntary disruptions and reducing availability.",
+      "severity": "minor"
+    },
+    {
+      "line": "6",
+      "issue": "Only a single replica (replicas: 1) provides no high‑availability; the service may become unavailable on node failure.",
+      "severity": "major"
+    },
+    {
+      "line": "1-3",
+      "issue": "No namespace is specified, which can lead to resource name collisions and makes management more difficult.",
+      "severity": "minor"
+    },
+    {
+      "line": "14",
+      "issue": "Pod‑level securityContext is missing; best practices such as runAsNonRoot, readOnlyRootFilesystem, and dropping capabilities are not applied.",
+      "severity": "major"
+    },
+    {
+      "line": "53",
+      "issue": "No NetworkPolicy is defined; the pod accepts traffic from any source, increasing the attack surface.",
+      "severity": "major"
+    }
+  ],
+  "count": 15
+}

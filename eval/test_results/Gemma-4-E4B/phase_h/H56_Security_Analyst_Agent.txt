@@ -1,0 +1,82 @@
+```json
+{
+  "vulnerabilities": [
+    {
+      "type": "SQL Injection",
+      "location": "login()",
+      "severity": "critical"
+    },
+    {
+      "type": "Cross-Site Scripting (XSS)",
+      "location": "profile(username)",
+      "severity": "high"
+    },
+    {
+      "type": "Cross-Site Scripting (XSS)",
+      "location": "search()",
+      "severity": "medium"
+    },
+    {
+      "type": "Remote Code Execution (RCE) / Command Injection",
+      "location": "run_command()",
+      "severity": "critical"
+    },
+    {
+      "type": "Path Traversal / Arbitrary File Upload",
+      "location": "upload()",
+      "severity": "high"
+    },
+    {
+      "type": "Path Traversal / Arbitrary File Read",
+      "location": "download()",
+      "severity": "high"
+    },
+    {
+      "type": "Insecure Deserialization (YAML)",
+      "location": "load_config()",
+      "severity": "critical"
+    },
+    {
+      "type": "Insecure Deserialization (Pickle)",
+      "location": "restore_session()",
+      "severity": "critical"
+    },
+    {
+      "type": "Weak Authentication / Hardcoded Secret",
+      "location": "admin()",
+      "severity": "high"
+    },
+    {
+      "type": "Command Injection",
+      "location": "export_data()",
+      "severity": "high"
+    },
+    {
+      "type": "Insecure Configuration (Debug Mode)",
+      "location": "if __name__ == \"__main__\"",
+      "severity": "critical"
+    },
+    {
+      "type": "Hardcoded Secret",
+      "location": "SECRET definition",
+      "severity": "high"
+    },
+    {
+      "type": "Sensitive Data Storage",
+      "location": "DB definition/usage",
+      "severity": "medium"
+    },
+    {
+      "type": "Denial of Service (Missing Input Validation)",
+      "location": "login()",
+      "severity": "medium"
+    },
+    {
+      "type": "Arbitrary File Upload (Type Restriction Missing)",
+      "location": "upload()",
+      "severity": "high"
+    }
+  ],
+  "count": 15
+}
+```

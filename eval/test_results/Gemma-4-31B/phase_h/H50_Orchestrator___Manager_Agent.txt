@@ -1,0 +1,79 @@
+```json
+{
+  "agents": [
+    {
+      "name": "ValidationAgent",
+      "input": "Customer refund request payload",
+      "output": "Validated request data with audit log",
+      "next": "FraudCheckAgent",
+      "fallback": "ErrorHandlerAgent",
+      "timeout_seconds": 5
+    },
+    {
+      "name": "FraudCheckAgent",
+      "input": "Validated request data",
+      "output": "Fraud risk score and audit log",
+      "next": "ApprovalAgent",
+      "fallback": "ErrorHandlerAgent",
+      "timeout_seconds": 10
+    },
+    {
+      "name": "ApprovalAgent",
+      "input": "Fraud risk score",
+      "output": "Decision (Approved | Rejected | Escalate) and audit log",
+      "next": "IF Approved THEN PaymentAgent ELSE IF Rejected THEN NotificationAgent ELSE HumanEscalationAgent",
+      "fallback": "ErrorHandlerAgent",
+      "timeout_seconds": 10
+    },
+    {
+      "name": "PaymentAgent",
+      "input": "Approved refund request",
+      "output": "Transaction confirmation ID and audit log",
+      "next": "NotificationAgent",
+      "fallback": "ErrorHandlerAgent",
+      "timeout_seconds": 15
+    },
+    {
+      "name": "HumanEscalationAgent",
+      "input": "Edge case refund request",
+      "output": "Manual override decision and audit log",
+      "next": "NotificationAgent",
+      "fallback": "ErrorHandlerAgent",
+      "timeout_seconds": 15
+    },
+    {
+      "name": "NotificationAgent",
+      "input": "Final refund status (Success/Failure/Denied)",
+      "output": "Customer notification sent and final audit log",
+      "next": null,
+      "fallback": "ErrorHandlerAgent",
+      "timeout_seconds": 5
+    },
+    {
+      "name": "ErrorHandlerAgent",
+      "input": "Agent error log and state",
+      "output": "System failure notification and incident ticket",
+      "next": null,
+      "fallback": null,
+      "timeout_seconds": 5
+    }
+  ],
+  "constraints": {
+    "min_agents": 6,
+    "required_agents": [
+      "validation",
+      "fraud-check",
+      "approval",
+      "payment",
+      "notification"
+    ],
+    "conditional_routing": "ApprovalAgent routes based on decision outcome",
+    "execution_order": "Validation -> FraudCheck -> Approval -> (Payment/HumanEscalation) -> Notification",
+    "max_total_processing_time_seconds": 60,
+    "logging_requirement": "Audit log generated at every agent step",
+    "escalation_path": "HumanEscalationAgent for edge cases",
+    "circular_dependency_check": "Passed",
+    "outcome_handling": "Supports Approved, Rejected, and Error states"
+  }
+}
+```

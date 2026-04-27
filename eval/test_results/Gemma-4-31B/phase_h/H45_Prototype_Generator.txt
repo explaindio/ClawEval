@@ -1,0 +1,97 @@
+```python
+class JSONValidator:
+    def validate(self, data, schema):
+        """
+        Validates data against a provided schema.
+        Returns a dictionary containing the validity status and a list of error messages.
+        """
+        errors = []
+        
+        # Mapping schema type strings to Python types
+        type_map = {
+            "str": str,
+            "int": int,
+            "float": float,
+            "bool": bool,
+            "list": list,
+            "dict": dict
+        }
+
+        for field, rules in schema.items():
+            # 1. Check if field is required and missing
+            if field not in data:
+                if rules.get("required", False):
+                    errors.append(f"Field '{field}' is required")
+                continue
+
+            val = data[field]
+            expected_type_str = rules.get("type")
+            expected_type = type_map.get(expected_type_str)
+
+            # 2. Type Validation
+            # Note: isinstance(True, int) is True in Python, 
+            # so we use type() for strict type matching.
+            if expected_type and type(val) is not expected_type:
+                # Special case: allow int to pass for float if desired, 
+                # but based on strict rules, we check exact type.
+                errors.append(f"Field '{field}' should be of type {expected_type_str}")
+                continue
+
+            # 3. Numeric Constraints (min/max)
+            if expected_type_str in ("int", "float"):
+                if "min" in rules and val < rules["min"]:
+                    errors.append(f"Field '{field}' is below minimum value {rules['min']}")
+                if "max" in rules and val > rules["max"]:
+                    errors.append(f"Field '{field}' is above maximum value {rules['max']}")
+
+            # 4. Length Constraints (min_length/max_length)
+            if expected_type_str in ("str", "list"):
+                if "min_length" in rules and len(val) < rules["min_length"]:
+                    errors.append(f"Field '{field}' is below minimum length {rules['min_length']}")
+                if "max_length" in rules and len(val) > rules["max_length"]:
+                    errors.append(f"Field '{field}' is above maximum length {rules['max_length']}")
+
+        return {
+            "valid": len(errors) == 0,
+            "errors": errors
+        }
+
+# Example Usage:
+if __name__ == "__main__":
+    validator = JSONValidator()
+    
+    my_schema = {
+        "username": {"type": "str", "required": True, "min_length": 3, "max_length": 10},
+        "age": {"type": "int", "required": True, "min": 18},
+        "score": {"type": "float", "required": False, "min": 0.0},
+        "tags": {"type": "list", "required": False, "min_length": 1},
+        "is_active": {"type": "bool", "required": True}
+    }
+
+    # Test Case 1: Valid data
+    data_1 = {
+        "username": "Alice",
+        "age": 25,
+        "score": 95.5,
+        "tags": ["python", "coding"],
+        "is_active": True,
+        "extra_field": "I am allowed"
+    }
+    print(f"Test 1: {validator.validate(data_1, my_schema)}") 
+    # Expected: {'valid': True, 'errors': []}
+
+    # Test Case 2: Invalid data
+    data_2 = {
+        "username": "Al",        # Too short
+        "age": 15,               # Too young
+        "score": "high",         # Wrong type
+        "is_active": "yes",      # Wrong type
+        # tags missing (allowed since required=False)
+        # username missing (would be error if not present)
+    }
+    # We remove 'is_active' to test required field
+    del data_2["is_active"]
+    
+    print(f"Test 2: {validator.validate(data_2, my_schema)}")
+    # Expected: Errors for username length, age min, score type, and is_active required.
+```

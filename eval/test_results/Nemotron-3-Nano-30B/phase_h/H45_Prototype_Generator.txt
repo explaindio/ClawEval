@@ -1,0 +1,70 @@
+```python
+class JSONValidator:
+    def validate(self, data, schema):
+        errors = []
+        for field, rules in schema.items():
+            required = rules.get('required', False)
+            if required and field not in data:
+                errors.append(f"Missing required field: {field}")
+                continue
+            if field not in data:
+                continue
+            value = data[field]
+            field_type = rules.get('type')
+            if field_type == 'str':
+                if not isinstance(value, str):
+                    errors.append(f"Field '{field}' must be a string, got {type(value).__name__}")
+                else:
+                    min_len = rules.get('min_length')
+                    max_len = rules.get('max_length')
+                    if min_len is not None and len(value) < min_len:
+                        errors.append(f"Field '{field}' length must be at least {min_len}, got {len(value)}")
+                    if max_len is not None and len(value) > max_len:
+                        errors.append(f"Field '{field}' length must be at most {max_len}, got {len(value)}")
+            elif field_type == 'int':
+                if not isinstance(value, int):
+                    errors.append(f"Field '{field}' must be an integer, got {type(value).__name__}")
+                else:
+                    min_val = rules.get('min')
+                    max_val = rules.get('max')
+                    if min_val is not None and value < min_val:
+                        errors.append(f"Field '{field}' must be at least {min_val}, got {value}")
+                    if max_val is not None and value > max_val:
+                        errors.append(f"Field '{field}' must be at most {max_val}, got {value}")
+            elif field_type == 'float':
+                if not isinstance(value, float):
+                    errors.append(f"Field '{field}' must be a float, got {type(value).__name__}")
+                else:
+                    min_val = rules.get('min')
+                    max_val = rules.get('max')
+                    if min_val is not None and value < min_val:
+                        errors.append(f"Field '{field}' must be at least {min_val}, got {value}")
+                    if max_val is not None and value > max_val:
+                        errors.append(f"Field '{field}' must be at most {max_val}, got {value}")
+            elif field_type == 'bool':
+                if not isinstance(value, bool):
+                    errors.append(f"Field '{field}' must be a boolean, got {type(value).__name__}")
+            elif field_type == 'list':
+                if not isinstance(value, list):
+                    errors.append(f"Field '{field}' must be a list, got {type(value).__name__}")
+                else:
+                    min_len = rules.get('min_length')
+                    max_len = rules.get('max_length')
+                    if min_len is not None and len(value) < min_len:
+                        errors.append(f"Field '{field}' must have at least {min_len} items, got {len(value)}")
+                    if max_len is not None and len(value) > max_len:
+                        errors.append(f"Field '{field}' must have at most {max_len} items, got {len(value)}")
+            elif field_type == 'dict':
+                if not isinstance(value, dict):
+                    errors.append(f"Field '{field}' must be a dictionary, got {type(value).__name__}")
+                else:
+                    min_len = rules.get('min_length')
+                    max_len = rules.get('max_length')
+                    if min_len is not None and len(value) < min_len:
+                        errors.append(f"Field '{field}' must have at least {min_len} keys, got {len(value)}")
+                    if max_len is not None and len(value) > max_len:
+                        errors.append(f"Field '{field}' must have at most {max_len} keys, got {len(value)}")
+            else:
+                errors.append(f"Field '{field}' has an unsupported type: {field_type}")
+        return {"valid": len(errors) == 0, "errors": errors}
+```

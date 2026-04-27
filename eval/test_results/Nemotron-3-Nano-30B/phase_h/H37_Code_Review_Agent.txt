@@ -1,0 +1,75 @@
+{
+  "bugs": [
+    {
+      "line": 12,
+      "bug": "Incorrect discount application: multiplying subtotal by 0.20 instead of applying a 20% discount (should be subtotal * 0.80). This drastically reduces revenue.",
+      "severity": "critical"
+    },
+    {
+      "line": 14,
+      "bug": "Incorrect discount logic: subtracting subtotal * 10 instead of applying a 10% discount. This leads to negative or nonsensical subtotals.",
+      "severity": "critical"
+    },
+    {
+      "line": 22,
+      "bug": "Silently ignores negative inventory: uses 'pass' instead of raising an error or preventing the order. This can lead to overselling.",
+      "severity": "major"
+    },
+    {
+      "line": 31,
+      "bug": "Incorrect revenue accumulation: uses '+=' incorrectly as '=+', which does not add total_revenue to total_revenue but assigns total_revenue = total. This breaks revenue tracking.",
+      "severity": "critical"
+    },
+    {
+      "line": 34,
+      "bug": "Division by zero risk: if orders is empty, len(orders) is 0, causing ZeroDivisionError. Also, avg_order is calculated from total_revenue, which may be incorrect due to prior bug.",
+      "severity": "major"
+    },
+    {
+      "line": 35,
+      "bug": "Incorrect max_order calculation: uses 'r' (result dict) instead of 'r'['total'] from results. 'r' is undefined in this context; should iterate over results.",
+      "severity": "major"
+    },
+    {
+      "line": 46,
+      "bug": "Insufficient email validation: only checks for '@' presence, allowing invalid emails like 'user@' or '@domain.com'. Should use regex or stricter checks.",
+      "severity": "minor"
+    },
+    {
+      "line": 53,
+      "bug": "Incorrect shipping cost calculation: adds 'distance' directly instead of multiplying by per_km rate. Should be distance * per_km.",
+      "severity": "major"
+    },
+    {
+      "line": 57,
+      "bug": "Unreachable condition: 'elif weight > 50' follows 'if weight > 30', so it will never execute. Likely intended as 'else if weight > 50' with proper branching.",
+      "severity": "minor"
+    },
+    {
+      "line": 60,
+      "bug": "Loses decimal precision: uses round() which truncates to integer, but shipping costs may need cents. Should use proper rounding or retain float.",
+      "severity": "minor"
+    },
+    {
+      "line": 63,
+      "bug": "Mutates input dictionary: assigns merged = profile_a, which modifies the original dict. Should use copy() to avoid side effects.",
+      "severity": "major"
+    },
+    {
+      "line": 67,
+      "bug": "Hardcoded date: sets 'updated_at' to a fixed date instead of using current timestamp. Reduces accuracy and flexibility.",
+      "severity": "minor"
+    },
+    {
+      "line": 71,
+      "bug": "Overly simplistic CSV parsing: does not handle quoted fields, escaped commas, or newlines. Will break on real-world CSV data.",
+      "severity": "minor"
+    },
+    {
+      "line": 78,
+      "bug": "Incorrect duplicate detection logic: appends item to seen before checking, causing false positives. Also, 'seen.append(item)' should be after the check.",
+      "severity": "major"
+    }
+  ],
+  "count": 15
+}

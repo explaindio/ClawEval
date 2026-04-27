@@ -1,0 +1,59 @@
+class LRUCache:
+    def __init__(self, capacity):
+        self.capacity = capacity
+        self.cache = {}
+        self.order = []
+
+    def get(self, key):
+        if key not in self.cache:
+            return -1
+        self.order.remove(key)
+        self.order.append(key)
+        return self.cache[key]
+
+    def put(self, key, value):
+        if key in self.cache:
+            self.order.remove(key)
+        elif len(self.cache) >= self.capacity:
+            oldest = self.order.pop(0)
+            del self.cache[oldest]
+        self.cache[key] = value
+        self.order.append(key)
+
+
+class MinStack:
+    def __init__(self):
+        self.stack = []
+        self.min_stack = []
+
+    def push(self, val):
+        self.stack.append(val)
+        if not self.min_stack or val <= self.min_stack[-1]:
+            self.min_stack.append(val)
+
+    def pop(self):
+        if self.stack:
+            val = self.stack.pop()
+            if self.min_stack and val == self.min_stack[-1]:
+                self.min_stack.pop()
+
+    def top(self):
+        return self.stack[-1] if self.stack else None
+
+    def get_min(self):
+        return self.min_stack[-1] if self.min_stack else None
+
+
+def find_median(stream):
+    import bisect
+    sorted_list = []
+    medians = []
+    for num in stream:
+        bisect.insort(sorted_list, num)
+        n = len(sorted_list)
+        if n % 2 == 1:
+            median = sorted_list[n // 2]
+        else:
+            median = (sorted_list[n // 2 - 1] + sorted_list[n // 2]) / 2.0
+        medians.append(float(median))
+    return medians

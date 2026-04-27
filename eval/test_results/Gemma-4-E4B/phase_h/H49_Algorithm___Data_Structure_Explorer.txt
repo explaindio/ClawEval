@@ -1,0 +1,805 @@
+class LRUCache:
+    def __init__(self, capacity):
+        self.capacity = capacity
+        self.cache = {}
+        # Dummy head and tail nodes for the doubly linked list
+        self.head = self._Node(0, 0)
+        self.tail = self._Node(0, 0)
+        self.head.next = self.tail
+        self.tail.prev = self.head
+
+    class _Node:
+        def __init__(self, key, value):
+            self.key = key
+            self.value = value
+            self.prev = None
+            self.next = None
+
+    def _remove_node(self, node):
+        """Removes a node from the linked list."""
+        prev_node = node.prev
+        next_node = node.next
+        prev_node.next = next_node
+        next_node.prev = prev_node
+
+    def _add_to_head(self, node):
+        """Adds a node right after the head (most recently used)."""
+        node.prev = self.head
+        node.next = self.head.next
+        self.head.next.prev = node
+        self.head.next = node
+
+    def _move_to_head(self, node):
+        """Moves an existing node to the head."""
+        self._remove_node(node)
+        self._add_to_head(node)
+
+    def get(self, key):
+        if key not in self.cache:
+            return -1
+        
+        node = self.cache[key]
+        self._move_to_head(node)
+        return node.value
+
+    def put(self, key, value):
+        if key in self.cache:
+            node = self.cache[key]
+            node.value = value
+            self._move_to_head(node)
+        else:
+            new_node = self._Node(key, value)
+            self.cache[key] = new_node
+            self._add_to_head(new_node)
+
+            if len(self.cache) > self.capacity:
+                # Evict the least recently used node (node before tail)
+                lru_node = self.tail.prev
+                self._remove_node(lru_node)
+                del self.cache[lru_node.key]
+
+
+class MinStack:
+    def __init__(self):
+        self.stack = []
+        self.min_stack = []
+
+    def push(self, val):
+        self.stack.append(val)
+        
+        if not self.min_stack or val <= self.min_stack[-1]:
+            self.min_stack.append(val)
+
+    def pop(self):
+        if not self.stack:
+            return None
+        
+        popped_val = self.stack.pop()
+        
+        # If the popped value was the current minimum, remove it from min_stack
+        if popped_val == self.min_stack[-1]:
+            self.min_stack.pop()
+            
+        return popped_val
+
+    def top(self):
+        if not self.stack:
+            return None
+        return self.stack[-1]
+
+    def get_min(self):
+        if not self.min_stack:
+            return None
+        return self.min_stack[-1]
+
+
+def find_median(stream):
+    """
+    Calculates the running median of a stream of integers using two heaps.
+    (Simulating heap behavior using sorted lists to adhere to no-import rule, 
+    though standard implementation requires heapq for O(log N) insertion/extraction).
+    """
+    # max_heap stores the smaller half (negated values for max-heap behavior)
+    max_heap = [] 
+    # min_heap stores the larger half
+    min_heap = []
+    medians = []
+
+    def add_number(num):
+        # 1. Insert the number into the correct heap
+        if not max_heap or num <= -max_heap[0]:
+            # Insert into max_heap (smaller half)
+            max_heap.append(-num)
+            max_heap.sort() # Simulate heap property
+        else:
+            # Insert into min_heap (larger half)
+            min_heap.append(num)
+            min_heap.sort() # Simulate heap property
+
+        # 2. Rebalance the heaps
+        # Ensure |max_heap| == |min_heap| or |max_heap| == |min_heap| + 1
+        if len(max_heap) > len(min_heap) + 1:
+            # Move largest element from max_heap to min_heap
+            largest_of_small = -max_heap.pop(0)
+            min_heap.append(largest_of_small)
+            min_heap.sort()
+        elif len(min_heap) > len(max_heap):
+            # Move smallest element from min_heap to max_heap
+            smallest_of_large = min_heap.pop(0)
+            max_heap.append(-smallest_of_large)
+            max_heap.sort()
+
+    def get_current_median():
+        if len(max_heap) == len(min_heap):
+            # Even number of elements: average of the two middle elements
+            return (-max_heap[0] + min_heap[0]) / 2.0
+        else:
+            # Odd number of elements: median is the top of the larger heap (max_heap)
+            return float(-max_heap[0])
+
+    for num in stream:
+        add_number(num)
+        medians.append(get_current_median())
+        
+    return medians
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+<eos>
+// Note: The implementation of find_median uses sorted lists to simulate heap behavior 
+// without requiring the 'heapq' import, adhering strictly to the constraints.
+<eos>

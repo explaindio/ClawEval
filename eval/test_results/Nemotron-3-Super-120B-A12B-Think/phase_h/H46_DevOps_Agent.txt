@@ -1,0 +1,80 @@
+{
+  "issues": [
+    {
+      "line": "1",
+      "issue": "Using 'latest' tag for container image is discouraged in production as it leads to unpredictable deployments and rollback difficulties.",
+      "severity": "major"
+    },
+    {
+      "line": "14",
+      "issue": "SecurityContext set to runAsRoot: true and privileged: true violates least privilege principle and exposes the container to unnecessary risks.",
+      "severity": "critical"
+    },
+    {
+      "line": "18",
+      "issue": "Hardcoded sensitive values (DB_PASSWORD) in plaintext within the manifest poses a severe security risk if the config is committed to version control.",
+      "severity": "critical"
+    },
+    {
+      "line": "20",
+      "issue": "Hardcoded sensitive values (API_KEY) in plaintext within the manifest poses a severe security risk if the config is committed to version control.",
+      "severity": "critical"
+    },
+    {
+      "line": "25",
+      "issue": "Sidecar container requests 8 CPU cores and 10Gi memory without limits, which can lead to resource starvation and node instability.",
+      "severity": "major"
+    },
+    {
+      "line": "12",
+      "issue": "Resources field is empty ({}) for the main container, meaning no resource requests or limits are set, risking OOM kills or resource hogging.",
+      "severity": "major"
+    },
+    {
+      "line": "30",
+      "issue": "HostPath volume mounts /tmp/data from the node, which is ephemeral, not portable, and poses security risks by exposing host filesystem.",
+      "severity": "major"
+    },
+    {
+      "line": "30",
+      "issue": "HostPath volume is used without any restriction (e.g., readOnly: true or specific subpath), allowing the container to modify critical host files.",
+      "severity": "critical"
+    },
+    {
+      "line": "38",
+      "issue": "Service type LoadBalancer may incur unnecessary cloud costs and complexity if not running in a cloud provider that supports it (e.g., on-prem or dev clusters).",
+      "severity": "minor"
+    },
+    {
+      "line": "2",
+      "issue": "Replica count is set to 1, which provides no high availability or fault tolerance for a production web API.",
+      "severity": "major"
+    },
+    {
+      "line": "10",
+      "issue": "Container port 8080 is exposed but no protocol is specified (though TCP is default, it's better to be explicit for clarity and policy enforcement).",
+      "severity": "minor"
+    },
+    {
+      "line": "16",
+      "issue": "No liveness or readiness probes defined for the main container, making it impossible for Kubernetes to detect and recover from application failures.",
+      "severity": "major"
+    },
+    {
+      "line": "23",
+      "issue": "No liveness or readiness probes defined for the sidecar container, reducing observability and recovery capability.",
+      "severity": "major"
+    },
+    {
+      "line": "5",
+      "issue": "Selector matchLabels and template labels are identical but lack additional labels (e.g., version, tier) that would improve observability and management.",
+      "severity": "minor"
+    },
+    {
+      "line": "7",
+      "issue": "Deployment metadata lacks annotations (e.g., for version, changelog, or contact) that aid in debugging and operational transparency.",
+      "severity": "minor"
+    }
+  ],
+  "count": 15
+}

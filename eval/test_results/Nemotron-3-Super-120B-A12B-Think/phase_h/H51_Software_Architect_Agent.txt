@@ -1,0 +1,17 @@
+{
+  "q1": "CRDT (Conflict-free Replicated Data Type) for eventual consistency with strong convergence guarantees, enabling offline editing and low-latency collaboration without central coordination.",
+  "q2": "WebSocket for bidirectional, low-latency real-time sync; SSE is insufficient for client-to-server edits and cursor updates requiring full duplex communication.",
+  "q3": "PostgreSQL with JSONB for document snapshots and metadata; chosen for ACID compliance, rich querying, horizontal scalability via partitioning, and mature ecosystem.",
+  "q4": "Local CRDT state persisted in IndexedDB; edits queued and synced when online via WebSocket reconnection with exponential backoff and state reconciliation.",
+  "q5": "Apache Kafka for high-throughput, durable, ordered event streaming of document operations; enables replayability, microservice decoupling, and audit trails.",
+  "q6": "Stateless WebSocket servers behind a Layer 4 load balancer (e.g., AWS NLB or Envoy) with sticky sessions based on user ID; state (CRDT) stored in Redis or shared DB, not in-memory.",
+  "q7": "Cursor positions shared as lightweight CRDT operations (e.g., LWW-register per user) over WebSocket; rendered locally with interpolation for smoothness; throttled to 10Hz to reduce bandwidth.",
+  "q8": "OAuth 2.0 with OpenID Connect (OIDC) for authentication; JWTs issued by Auth0 or Keycloak, short-lived (15m) with refresh tokens stored in HTTP-only, Secure cookies.",
+  "q9": "Version history via immutable snapshots every 5 minutes or on significant edit bursts (e.g., >100 ops); stored in object storage (S3) with metadata in PostgreSQL; delta compression using CRDT op logs for efficiency.",
+  "q10": "CDN (Cloudflare or AWS CloudFront) for static assets (JS, CSS, images) with aggressive caching (max-age=1year) and cache-busting via content hashes; edge functions for auth header injection if needed.",
+  "q11": "Large documents handled via operational transformation on document segments (e.g., paragraph-level CRDTs); lazy loading of visible viewport; virtualized rendering; op log sharding by document ID; background compaction of op history.",
+  "q12": "Rate limiting at API gateway (e.g., Kong or AWS API Gateway) using token bucket algorithm: 100 ops/sec per user for edits, 10 req/min for history fetch; burst allowance of 20; 429 responses with Retry-After header.",
+  "q13": "Daily automated backups of PostgreSQL (logical dump via pg_dump) and Kafka (mirror maker to secondary cluster); object storage versioning enabled; cross-region replication; quarterly restore drills.",
+  "q14": "Concurrent image uploads: client chunks file into 5MB parts, uploads via signed S3 PUT URLs (presigned, short-lived); metadata (URL, dimensions, uploader) sent as CRDT op; server validates via Lambda; thumbnail generated async; conflict resolved via last-write-wins on metadata if same position.",
+  "q15": "Observability stack: Prometheus + Grafana for metrics (latency, error rates, WS connections); Loki for log aggregation; Tempo for distributed tracing; Alertmanager for PagerDuty integration; synthetic monitoring via Playwright scripts; health checks on WS heartbeat and DB lag."
+}

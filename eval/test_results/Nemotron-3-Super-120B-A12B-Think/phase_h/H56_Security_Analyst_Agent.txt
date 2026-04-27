@@ -1,0 +1,80 @@
+{
+  "vulnerabilities": [
+    {
+      "type": "SQL Injection",
+      "location": "/login route, line 18",
+      "severity": "critical"
+    },
+    {
+      "type": "Cross-Site Scripting (XSS)",
+      "location": "/profile/<username> route, line 24",
+      "severity": "high"
+    },
+    {
+      "type": "Cross-Site Scripting (XSS)",
+      "location": "/search route, line 28",
+      "severity": "medium"
+    },
+    {
+      "type": "Command Injection",
+      "location": "/run route, line 32",
+      "severity": "critical"
+    },
+    {
+      "type": "Path Traversal",
+      "location": "/upload route, line 38",
+      "severity": "high"
+    },
+    {
+      "type": "Path Traversal",
+      "location": "/download route, line 42",
+      "severity": "critical"
+    },
+    {
+      "type": "Insecure Deserialization (YAML)",
+      "location": "/config route, line 47",
+      "severity": "critical"
+    },
+    {
+      "type": "Insecure Deserialization (Pickle)",
+      "location": "/session route, line 52",
+      "severity": "critical"
+    },
+    {
+      "type": "Hardcoded Secret",
+      "location": "Line 7: SECRET = 'admin123'",
+      "severity": "high"
+    },
+    {
+      "type": "Weak Cryptographic Hash (MD5)",
+      "location": "/login route, line 20",
+      "severity": "medium"
+    },
+    {
+      "type": "Command Injection",
+      "location": "/export route, line 58",
+      "severity": "critical"
+    },
+    {
+      "type": "Debug Mode Enabled in Production",
+      "location": "Line 61: app.run(debug=True, ...)",
+      "severity": "medium"
+    },
+    {
+      "type": "Information Exposure via Error Messages",
+      "location": "Line 61: debug=True exposes stack traces",
+      "severity": "low"
+    },
+    {
+      "type": "Missing Input Validation",
+      "location": "/login route, line 16-17: no validation on username/password",
+      "severity": "low"
+    },
+    {
+      "type": "Missing Authentication on Sensitive Endpoints",
+      "location": "/admin route, line 54: token comparison without rate limiting or secure comparison",
+      "severity": "medium"
+    }
+  ],
+  "count": 15
+}

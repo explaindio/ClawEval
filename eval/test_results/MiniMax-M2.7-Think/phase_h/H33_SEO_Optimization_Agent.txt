@@ -1,0 +1,99 @@
+
+
+```json
+{
+  "issues": [
+    {
+      "id": 1,
+      "issue": "Missing <meta name=\"description\"> tag",
+      "severity": "critical",
+      "fix": "Add a descriptive meta description tag inside <head>, e.g., <meta name=\"description\" content=\"Discover the best products at our store – exclusive deals on shoes, bags, and clothes.\">"
+    },
+    {
+      "id": 2,
+      "issue": "Title tag is too generic and short ('Home')",
+      "severity": "major",
+      "fix": "Replace the title with a unique, keyword‑rich title that reflects the page content, e.g., <title>Best Products – Shoes, Bags & Clothes | Our Store</title>"
+    },
+    {
+      "id": 3,
+      "issue": "Multiple <h1> headings on the page (two <h1> tags)",
+      "severity": "major",
+      "fix": "Use only one <h1> per page for the main heading. Convert the second <h1> to an <h2> or <h3> and structure headings hierarchically."
+    },
+    {
+      "id": 4,
+      "issue": "Images lack alt attributes (product1.jpg, product2.jpg, banner.jpg)",
+      "severity": "major",
+      "fix": "Add descriptive alt text to each image, e.g., <img src=\"product1.jpg\" alt=\"Red running shoes – lightweight and durable\">"
+    },
+    {
+      "id": 5,
+      "issue": "Non‑descriptive anchor text ('Click here') used repeatedly",
+      "severity": "minor",
+      "fix": "Replace generic ‘Click here’ links with keyword‑rich anchor text that describes the destination, e.g., <a href=\"https://example.com/products\">View our product catalog</a>"
+    },
+    {
+      "id": 6,
+      "issue": "Hidden keyword‑stuffed text inside a <div style=\"display:none\">",
+      "severity": "critical",
+      "fix": "Remove the hidden div or replace its content with visible, relevant text. Search engines penalize hidden keyword stuffing."
+    },
+    {
+      "id": 7,
+      "issue": "Obsolete <meta name=\"keywords\"> tag present",
+      "severity": "minor",
+      "fix": "Delete the meta keywords tag entirely; modern search engines ignore it and it can signal over‑optimization."
+    },
+    {
+      "id": 8,
+      "issue": "URL contains tracking parameters (?ref=123&utm=abc) which can cause duplicate‑content issues",
+      "severity": "major",
+      "fix": "Use a clean, static URL for indexing. If tracking parameters are required, implement a <link rel=\"canonical\"> pointing to the clean URL."
+    },
+    {
+      "id": 9,
+      "issue": "Missing canonical link element to indicate the preferred URL",
+      "severity": "major",
+      "fix": "Add a canonical tag inside <head>, e.g., <link rel=\"canonical\" href=\"https://example.com/page-1234\">"
+    },
+    {
+      "id": 10,
+      "issue": "Missing viewport meta tag for mobile responsiveness",
+      "severity": "major",
+      "fix": "Insert <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"> inside <head>."
+    },
+    {
+      "id": 11,
+      "issue": "Missing language attribute on the <html> element",
+      "severity": "minor",
+      "fix": "Add the lang attribute, e.g., <html lang=\"en\">."
+    },
+    {
+      "id": 12,
+      "issue": "Heading hierarchy not logical (no <h2> sections, only <h2> “Welcome”)",
+      "severity": "minor",
+      "fix": "Organize headings so that sections start with <h2>, sub‑sections with <h3>, etc., maintaining a clear hierarchy."
+    },
+    {
+      "id": 13,
+      "issue": "No meta robots directives (e.g., index, follow)",
+      "severity": "minor",
+      "fix": "If specific crawl instructions are needed, add <meta name=\"robots\" content=\"index, follow\">; otherwise, ensure the default is set correctly."
+    },
+    {
+      "id": 14,
+      "issue": "Thin content – page contains placeholder Lorem ipsum text and lacks substantive copy",
+      "severity": "critical",
+      "fix": "Replace the Lorem ipsum placeholder with unique, informative content that describes the store, its value proposition, and products."
+    },
+    {
+      "id": 15,
+      "issue": "Missing structured data (schema.org) for products or organization",
+      "severity": "minor",
+      "fix": "Implement JSON‑LD schema markup (e.g., Product, Organization) in the <head> to help search engines understand the page content."
+    }
+  ],
+  "count": 15
+}
+```

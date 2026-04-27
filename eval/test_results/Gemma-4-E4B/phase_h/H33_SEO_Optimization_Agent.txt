@@ -1,0 +1,97 @@
+```json
+{
+  "issues": [
+    {
+      "id": 1,
+      "issue": "Generic and unoptimized title tag ('Home').",
+      "severity": "major",
+      "fix": "Replace 'Home' with a descriptive, keyword-rich title that clearly states what the page offers (e.g., 'Best Discount Shoes & Bags Online | Our Store Name')."
+    },
+    {
+      "id": 2,
+      "issue": "Missing meta description tag.",
+      "severity": "major",
+      "fix": "Add a compelling meta description (150-160 characters) that summarizes the page content and encourages clicks from search results."
+    },
+    {
+      "id": 3,
+      "issue": "Multiple H1 tags present ('Best Products' and 'Shop Now').",
+      "severity": "critical",
+      "fix": "Use only one H1 tag per page. The H1 should be the primary topic of the page. Consolidate the main selling point into a single, strong H1."
+    },
+    {
+      "id": 4,
+      "issue": "Poor heading hierarchy (H2 followed by multiple H1s).",
+      "severity": "major",
+      "fix": "Ensure a logical flow. If 'Welcome to Our Store' is the main introduction, it should likely be the H1, and subsequent sections should use H2s and H3s."
+    },
+    {
+      "id": 5,
+      "issue": "Missing 'alt' attributes on all images.",
+      "severity": "major",
+      "fix": "Add descriptive 'alt' text to every image tag (e.g., `<img src='product1.jpg' alt='Red leather running shoes'>`). This is crucial for accessibility and image SEO."
+    },
+    {
+      "id": 6,
+      "issue": "Hidden keyword stuffing in a display:none div.",
+      "severity": "critical",
+      "fix": "Remove the hidden div entirely. Keyword stuffing is a black-hat SEO tactic and can lead to penalties."
+    },
+    {
+      "id": 7,
+      "issue": "Vague and low-quality body copy.",
+      "severity": "major",
+      "fix": "Replace generic phrases like 'Buy our stuff' with detailed, benefit-driven content that naturally incorporates target keywords."
+    },
+    {
+      "id": 8,
+      "issue": "Poor anchor text used in links ('Click here').",
+      "severity": "minor",
+      "fix": "Use descriptive anchor text that tells the user and search engines where the link leads (e.g., 'Shop our discounted shoes' instead of 'Click here')."
+    },
+    {
+      "id": 9,
+      "issue": "Missing canonical tag.",
+      "severity": "major",
+      "fix": "Add a canonical tag to prevent duplicate content issues, especially since the URL contains tracking parameters (`?ref=123&utm=abc`). The tag should point to the clean version of the URL."
+    },
+    {
+      "id": 10,
+      "issue": "Outdated and ignored 'keywords' meta tag.",
+      "severity": "minor",
+      "fix": "Remove the `<meta name=\"keywords\">` tag. Google and modern search engines do not use this tag for ranking."
+    },
+    {
+      "id": 11,
+      "issue": "Placeholder content present ('Lorem ipsum').",
+      "severity": "major",
+      "fix": "Replace all placeholder text with unique, valuable, and relevant content that addresses user intent."
+    },
+    {
+      "id": 12,
+      "issue": "Lack of language declaration.",
+      "severity": "minor",
+      "fix": "Add the `lang` attribute to the `<html>` tag (e.g., `<html lang=\"en\">`) to help search engines correctly index the language of the content."
+    },
+    {
+      "id": 13,
+      "issue": "URL parameter pollution.",
+      "severity": "minor",
+      "fix": "Implement server-side logic or use canonical tags to ensure that the clean, primary version of the URL is indexed, ignoring tracking parameters like `?ref=123`."
+    },
+    {
+      "id": 14,
+      "issue": "Lack of internal linking structure.",
+      "severity": "minor",
+      "fix": "Ensure the page links to other relevant pages within the site (e.g., specific product categories or blog posts) to improve crawlability and link equity."
+    },
+    {
+      "id": 15,
+      "issue": "Missing structured data (Schema Markup).",
+      "severity": "minor",
+      "fix": "Implement relevant Schema Markup (e.g., Product, Organization, or LocalBusiness) to help search engines understand the content and qualify for rich snippets."
+    }
+  ],
+  "count": 15
+}
+```

@@ -1,0 +1,252 @@
+```python
+class JSONValidator:
+    """
+    Validates JSON-like data (Python dicts/lists) against a defined schema.
+    No external imports are used.
+    """
+
+    def __init__(self):
+        pass
+
+    def _check_type(self, value, expected_type_str):
+        """Checks if the value matches the expected type string."""
+        if expected_type_str == "str":
+            return isinstance(value, str)
+        elif expected_type_str == "int":
+            return isinstance(value, int)
+        elif expected_type_str == "float":
+            return isinstance(value, (float, int)) # Allow int to pass float check
+        elif expected_type_str == "bool":
+            return isinstance(value, bool)
+        elif expected_type_str == "list":
+            return isinstance(value, list)
+        elif expected_type_str == "dict":
+            return isinstance(value, dict)
+        return False
+
+    def _validate_value(self, data_value, field_schema, field_name, errors):
+        """
+        Performs type checking and constraint checks on a single data value.
+        """
+        schema_type = field_schema.get("type")
+        
+        if not schema_type:
+            errors.append(f"Field '{field_name}': Schema missing 'type'.")
+            return
+
+        # 1. Type Check
+        if not self._check_type(data_value, schema_type):
+            errors.append(f"Field '{field_name}': Expected type '{schema_type}', got '{type(data_value).__name__}'.")
+            # If type is wrong, further checks are often meaningless, but we continue for robustness.
+            return
+
+        # 2. Constraint Checks based on Type
+        
+        if schema_type == "str":
+            min_len = field_schema.get("min_length")
+            max_len = field_schema.get("max_length")
+            
+            if min_len is not None and len(data_value) < min_len:
+                errors.append(f"Field '{field_name}': String length must be at least {min_len}.")
+            if max_len is not None and len(data_value) > max_len:
+                errors.append(f"Field '{field_name}': String length must be at most {max_len}.")
+
+        elif schema_type in ("int", "float"):
+            min_val = field_schema.get("min")
+            max_val = field_schema.get("max")
+
+            if min_val is not None and data_value < min_val:
+                errors.append(f"Field '{field_name}': Value must be at least {min_val}.")
+            if max_val is not None and data_value > max_val:
+                errors.append(f"Field '{field_name}': Value must be at most {max_val}.")
+
+        elif schema_type == "list":
+            min_len = field_schema.get("min_length")
+            max_len = field_schema.get("max_length")
+            
+            if min_len is not None and len(data_value) < min_len:
+                errors.append(f"Field '{field_name}': List length must be at least {min_len}.")
+            if max_len is not None and len(data_value) > max_len:
+                errors.append(f"Field '{field_name}': List length must be at most {max_len}.")
+            
+            # Optional: Check element types if a nested schema is provided for list items
+            item_schema = field_schema.get("item_schema")
+            if item_schema:
+                for i, item in enumerate(data_value):
+                    # Recursively validate list items
+                    self._validate_value(item, item_schema, f"{field_name}[{i}]", errors)
+
+
+        elif schema_type == "dict":
+            # Handle nested dictionary validation
+            nested_schema = field_schema.get("schema")
+            if nested_schema:
+                self._validate_dict(data_value, nested_schema, field_name, errors)
+            else:
+                errors.append(f"Field '{field_name}': Type 'dict' specified, but no nested 'schema' provided.")
+
+
+    def _validate_dict(self, data_dict, schema_dict, parent_field_name, errors):
+        """
+        Validates a dictionary against a schema, handling required fields and recursion.
+        """
+        
+        # 1. Check for missing required fields
+        for field_name, field_schema in schema_dict.items():
+            required = field_schema.get("required", False)
+            
+            if field_name not in data_dict:
+                if required:
+                    errors.append(f"Field '{parent_field_name}.{field_name}': Required field is missing.")
+                # If not required and missing, we skip validation for this field.
+                continue
+
+            # 2. Validate existing fields
+            data_value = data_dict[field_name]
+            self._validate_value(data_value, field_schema, f"{parent_field_name}.{field_name}", errors)
+
+
+    def validate(self, data, schema):
+        """
+        Main validation method.
+        
+        :param data: The data structure (dict) to validate.
+        :param schema: The schema dictionary.
+        :return: A dictionary containing 'valid' status and a list of 'errors'.
+        """
+        errors = []
+        
+        if not isinstance(data, dict):
+            return {"valid": False, "errors": ["Input data must be a dictionary."]}
+
+        # Start validation at the top level
+        self._validate_dict(data, schema, "root", errors)
+
+        # Note: Extra fields in data are allowed per requirements, so we don't check for them.
+
+        return {
+            "valid": len(errors) == 0,
+            "errors": errors
+        }
+
+# ======================================================================
+# Example Usage and Testing
+# ======================================================================
+
+# 1. Define a complex schema
+test_schema = {
+    "user_id": {
+        "type": "int", 
+        "required": True, 
+        "min": 1000
+    },
+    "username": {
+        "type": "str", 
+        "required": True, 
+        "min_length": 5, 
+        "max_length": 20
+    },
+    "is_active": {
+        "type": "bool", 
+        "required": False
+    },
+    "score": {
+        "type": "float", 
+        "required": False, 
+        "min": 0.0, 
+        "max": 100.0
+    },
+    "tags": {
+        "type": "list", 
+        "required": True, 
+        "min_length": 1, 
+        "max_length": 5,
+        # Define schema for list items (must be strings)
+        "item_schema": {
+            "type": "str",
+            "required": True
+        }
+    },
+    "address": {
+        "type": "dict", 
+        "required": True,
+        # Nested schema for the address object
+        "schema": {
+            "street": {"type": "str", "required": True},
+            "zip_code": {"type": "str", "required": True, "min_length": 5}
+        }
+    }
+}
+
+validator = JSONValidator()
+
+# --- Test Case 1: Valid Data ---
+valid_data = {
+    "user_id": 1234,
+    "username": "john_doe",
+    "is_active": True,
+    "score": 95.5,
+    "tags": ["premium", "verified"],
+    "address": {
+        "street": "123 Main St",
+        "zip_code": "90210"
+    },
+    "extra_field": "allowed" # Extra fields are allowed
+}
+print("--- Test Case 1: Valid Data ---")
+result_valid = validator.validate(valid_data, test_schema)
+print(f"Valid: {result_valid['valid']}")
+print("-" * 30)
+
+
+# --- Test Case 2: Invalid Data (Multiple Errors) ---
+invalid_data = {
+    "user_id": 500,  # Too low (min: 1000)
+    "username": "jd", # Too short (min_length: 5)
+    # is_active is missing (OK, not required)
+    "score": 150.0,  # Too high (max: 100.0)
+    "tags": [],      # Too short (min_length: 1)
+    "address": {
+        "street": "Short",
+        "zip_code": "123" # Too short (min_length: 5)
+    }
+    # Missing required field: user_id is present, but let's remove it to test required check
+}
+# Re-running with missing required field
+invalid_data_2 = {
+    "username": "jd", 
+    "score": 150.0, 
+    "tags": [],      
+    "address": {
+        "street": "Short",
+        "zip_code": "123" 
+    }
+    # user_id is missing (Required)
+}
+
+
+print("\n--- Test Case 2: Invalid Data (Multiple Errors) ---")
+result_invalid = validator.validate(invalid_data_2, test_schema)
+print(f"Valid: {result_invalid['valid']}")
+for error in result_invalid['errors']:
+    print(f"  [ERROR] {error}")
+print("-" * 30)
+
+
+# --- Test Case 3: Type Mismatch and List Item Error ---
+type_error_data = {
+    "user_id": "not_an_int", # Type mismatch
+    "username": "valid_user",
+    "tags": ["a", 123], # List item type mismatch
+    "address": {
+        "street": "Valid Street",
+        "zip_code": "12345"
+    }
+}
+print("\n--- Test Case 3: Type Mismatch and List Item Error ---")
+result_type_error = validator.validate(type_error_data, test_schema)
+print(f"Valid: {result_type_error['valid']}")
+for error in result_type_error['errors']:
+    print(f"  [ERROR] {error}")
+print("-" * 30)
+```

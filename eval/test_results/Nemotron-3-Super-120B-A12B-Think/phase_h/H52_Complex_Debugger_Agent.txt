@@ -1,0 +1,70 @@
+{
+  "bugs": [
+    {
+      "line": "8",
+      "bug": "The `requests` list in RateLimiter is not thread-safe for concurrent access from multiple coroutines. Multiple coroutines can read and modify it simultaneously, leading to race conditions in the sliding window logic.",
+      "fix": "Use an asyncio.Lock to protect access to `self.requests` in the `acquire` method."
+    },
+    {
+      "line": "11",
+      "bug": "Using `asyncio.get_event_loop().time()` is deprecated in Python 3.10+ and may raise RuntimeError if no event loop is running. Should use `asyncio.get_running_loop().time()` instead.",
+      "fix": "Replace `asyncio.get_event_loop().time()` with `asyncio.get_running_loop().time()`."
+    },
+    {
+      "line": "25",
+      "bug": "Creating a new aiohttp.ClientSession for every request inside fetch_one is inefficient and defeats connection pooling. Sessions should be reused across multiple requests.",
+      "fix": "Move the ClientSession creation outside the fetch_one function, ideally to the fetch_all scope, and reuse it for all requests."
+    },
+    {
+      "line": "27",
+      "bug": "The timeout parameter in `session.get(url, timeout=30)` is incorrectly used. In aiohttp, timeout should be passed as a ClientTimeout object or a tuple, not a raw integer.",
+      "fix": "Use `timeout=aiohttp.ClientTimeout(total=30)` or `timeout=30` only if using aiohttp < 3.8; better to use explicit ClientTimeout for clarity and compatibility."
+    },
+    {
+      "line": "29",
+      "bug": "The `results` dictionary is accessed and modified concurrently by multiple tasks without any locking, leading to potential race conditions when assigning `results[url] = data`.",
+      "fix": "Use an asyncio.Lock to protect writes to the `results` dictionary, or use a thread-safe collection like `asyncio.Queue` for collecting results."
+    },
+    {
+      "line": "31",
+      "bug": "In the exception handler, `results[url] = None` is followed by a bare `pass`, which is redundant and harmless, but the real issue is that exceptions are silently swallowed without logging, making debugging impossible.",
+      "fix": "Remove the `pass` and add logging (e.g., `logging.exception(...)`) to capture error details for debugging."
+    },
+    {
+      "line": "35",
+      "bug": "`asyncio.gather(*tasks)` does not handle exceptions by default — if any task raises an exception, gather will propagate it immediately, potentially cancelling other tasks. This may be undesirable if you want to collect all results even if some fail.",
+      "fix": "Use `await asyncio.gather(*tasks, return_exceptions=True)` and then filter out exceptions in the results."
+    },
+    {
+      "line": "42",
+      "bug": "The line `task = process_item(item)` does not await the coroutine; it creates a coroutine object but does not schedule it. This means no actual work is done, and the task list contains unawaited coroutines.",
+      "fix": "Change to `task = asyncio.create_task(process_item(item))` or `task = process_item(item)` followed by `await task` — but since you're gathering, use `asyncio.create_task` to properly schedule."
+    },
+    {
+      "line": "45",
+      "bug": "The `process_batch` function uses `yield` inside an async function, making it an async generator, but it is never consumed with `async for`. If called without iteration, it does nothing and returns a generator object that is never awaited.",
+      "fix": "Either change `process_batch` to return a list (if not intended as a generator) or ensure it is consumed via `async for` in an async context. If generator behavior is intended, add documentation and ensure callers use `async for`."
+    },
+    {
+      "line": "52",
+      "bug": "The `ConnectionPool.pool` list is accessed concurrently by multiple coroutines via `get_connection()` and `release()` without any locking, leading to race conditions when popping/appending.",
+      "fix": "Protect access to `self.pool` with an `asyncio.Lock` to ensure thread-safe operations in async context."
+    },
+    {
+      "line": "60",
+      "bug": "The `release` method appends connections to the pool without checking if the pool has exceeded its maximum size (`self.size`). This can lead to unbounded memory growth.",
+      "fix": "Add a check: `if len(self.pool) < self.size: self.pool.append(conn)` else close or discard the connection."
+    },
+    {
+      "line": "63",
+      "bug": "The `create_connection` method returns a plain `object()` instance, which is not a real connection (e.g., no socket, no API client). This is a placeholder that will fail in real usage.",
+      "fix": "Replace `return object()` with actual connection logic, e.g., `return aiohttp.ClientSession()` or a database connection, depending on intended use."
+    },
+    {
+      "line": "68",
+      "bug": "The `print` statement assumes `results` is a dictionary with length equal to number of URLs, but if any request failed and returned `None` (or exception was not handled properly), the count may be misleading. More critically, if `fetch_all` raised an exception due to uncaught errors in gather, this line may never execute.",
+      "fix": "Ensure `fetch_all` uses `return_exceptions=True` and handles exceptions properly so that `results` always contains an entry per URL. Then the print is safe, but consider logging successes/failures separately."
+    }
+  ],
+  "count": 15
+}

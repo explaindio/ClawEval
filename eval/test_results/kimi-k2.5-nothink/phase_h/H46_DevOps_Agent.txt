@@ -1,0 +1,82 @@
+```json
+{
+  "issues": [
+    {
+      "line": "replicas: 1",
+      "issue": "Single replica prevents high availability and creates a single point of failure",
+      "severity": "major"
+    },
+    {
+      "line": "image: myapp:latest",
+      "issue": "Using 'latest' tag prevents deterministic deployments and rollback capabilities",
+      "severity": "major"
+    },
+    {
+      "line": "runAsRoot: true",
+      "issue": "Container configured to run as root user (valid field is runAsNonRoot or runAsUser)",
+      "severity": "critical"
+    },
+    {
+      "line": "privileged: true",
+      "issue": "Privileged mode grants container full access to host devices and bypasses security controls",
+      "severity": "critical"
+    },
+    {
+      "line": "value: \"sup3rs3cret!\"",
+      "issue": "Hardcoded database password exposed in environment variables (security risk)",
+      "severity": "critical"
+    },
+    {
+      "line": "value: \"ak_live_12345\"",
+      "issue": "Hardcoded API key exposed in environment variables (security risk)",
+      "severity": "critical"
+    },
+    {
+      "line": "resources: {}",
+      "issue": "No resource limits or requests defined for main container (risk of resource exhaustion)",
+      "severity": "major"
+    },
+    {
+      "line": "path: /tmp/data",
+      "issue": "hostPath volume mounts host filesystem, creating security risks and portability issues",
+      "severity": "major"
+    },
+    {
+      "line": "memory: \"10Gi\"",
+      "issue": "Excessive memory request (10Gi) for sidecar may starve other workloads",
+      "severity": "major"
+    },
+    {
+      "line": "cpu: \"8\"",
+      "issue": "Excessive CPU request (8 cores) for sidecar may starve other workloads",
+      "severity": "major"
+    },
+    {
+      "line": "type: LoadBalancer",
+      "issue": "LoadBalancer exposes service directly to public internet without ingress controller protection",
+      "severity": "major"
+    },
+    {
+      "line": "name: api",
+      "issue": "Missing livenessProbe (health check) for container",
+      "severity": "major"
+    },
+    {
+      "line": "name: api",
+      "issue": "Missing readinessProbe (ready check) for container",
+      "severity": "major"
+    },
+    {
+      "line": "resources:",
+      "issue": "Sidecar defines resource requests without limits (only requests specified)",
+      "severity": "major"
+    },
+    {
+      "line": "securityContext:",
+      "issue": "Missing readOnlyRootFilesystem: true (container can modify root filesystem)",
+      "severity": "major"
+    }
+  ],
+  "count": 15
+}
+```

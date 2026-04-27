@@ -1,0 +1,160 @@
+
+
+```python
+class JSONValidator:
+    """Validates JSON-like data against a defined schema."""
+    
+    def validate(self, data, schema):
+        """
+        Validate data against a schema.
+        
+        Args:
+            data: Dictionary to validate
+            schema: Schema definition with field specifications
+            
+        Returns:
+            Dictionary with 'valid' (bool) and 'errors' (list of error strings)
+        """
+        errors = []
+        
+        # Check for missing required fields first
+        for field_name, field_schema in schema.items():
+            if field_schema.get('required', False):
+                if field_name not in data:
+                    errors.append(f"Missing required field: '{field_name}'")
+        
+        # Validate each field defined in schema
+        for field_name, field_schema in schema.items():
+            if field_name not in data:
+                continue  # Already checked as required above
+            
+            value = data[field_name]
+            
+            # Type validation
+            expected_type = field_schema.get('type')
+            if expected_type:
+                # Handle bool separately since bool is subclass of int in Python
+                if expected_type == 'bool':
+                    if not isinstance(value, bool):
+                        errors.append(
+                            f"Field '{field_name}': expected type '{expected_type}', "
+                            f"got {type(value).__name__}"
+                        )
+                else:
+                    type_map = {
+                        'str': str,
+                        'int': int,
+                        'float': float,
+                        'list': list,
+                        'dict': dict
+                    }
+                    expected_python_type = type_map.get(expected_type)
+                    if expected_python_type and not isinstance(value, expected_python_type):
+                        errors.append(
+                            f"Field '{field_name}': expected type '{expected_type}', "
+                            f"got {type(value).__name__}"
+                        )
+            
+            # Numeric validations (int/float) - min/max constraints
+            if isinstance(value, (int, float)) and not isinstance(value, bool):
+                if 'min' in field_schema:
+                    if value < field_schema['min']:
+                        errors.append(
+                            f"Field '{field_name}': value {value} is less than min {field_schema['min']}"
+                        )
+                if 'max' in field_schema:
+                    if value > field_schema['max']:
+                        errors.append(
+                            f"Field '{field_name}': value {value} exceeds max {field_schema['max']}"
+                        )
+            
+            # String validations - min_length/max_length constraints
+            elif isinstance(value, str):
+                if 'min_length' in field_schema:
+                    if len(value) < field_schema['min_length']:
+                        errors.append(
+                            f"Field '{field_name}': length {len(value)} is less than "
+                            f"min_length {field_schema['min_length']}"
+                        )
+                if 'max_length' in field_schema:
+                    if len(value) > field_schema['max_length']:
+                        errors.append(
+                            f"Field '{field_name}': length {len(value)} exceeds "
+                            f"max_length {field_schema['max_length']}"
+                        )
+            
+            # List validations - min_length/max_length for list size
+            elif isinstance(value, list):
+                if 'min_length' in field_schema:
+                    if len(value) < field_schema['min_length']:
+                        errors.append(
+                            f"Field '{field_name}': list length {len(value)} is less than "
+                            f"min_length {field_schema['min_length']}"
+                        )
+                if 'max_length' in field_schema:
+                    if len(value) > field_schema['max_length']:
+                        errors.append(
+                            f"Field '{field_name}': list length {len(value)} exceeds "
+                            f"max_length {field_schema['max_length']}"
+                        )
+        
+        return {
+            "valid": len(errors) == 0,
+            "errors": errors
+        }
+
+
+# Example usage and tests
+if __name__ == "__main__":
+    validator = JSONValidator()
+    
+    # Test schema
+    schema = {
+        "name": {"type": "str", "required": True, "min_length": 2, "max_length": 50},
+        "age": {"type": "int", "required": True, "min": 0, "max": 150},
+        "email": {"type": "str", "required": False, "max_length": 100},
+        "score": {"type": "float", "min": 0.0, "max": 100.0},
+        "tags": {"type": "list", "min_length": 1, "max_length": 5},
+        "is_active": {"type": "bool"}
+    }
+    
+    # Test case 1: Valid data
+    valid_data = {
+        "name": "John",
+        "age": 25,
+        "email": "john@example.com",
+        "score": 85.5,
+        "tags": ["python", "coding"],
+        "is_active": True,
+        "extra_field": "allowed"  # Extra fields are allowed
+    }
+    print("Test 1 (valid):", validator.validate(valid_data, schema))
+    
+    # Test case 2: Multiple errors
+    invalid_data = {
+        "name": "J",  # too short
+        "age": 200,   # exceeds max
+        "score": -5,  # below min
+        "tags": []    # too short
+    }
+    print("Test 2 (multiple errors):", validator.validate(invalid_data, schema))
+    
+    # Test case 3: Missing required field
+    missing_required = {"email": "test@example.com"}
+    print("Test 3 (missing required):", validator.validate(missing_required, schema))
+    
+    # Test case 4: Wrong type
+    wrong_type = {"name": 123, "age": "not an int"}
+    print("Test 4 (wrong types):", validator.validate(wrong_type, schema))
+```
+
+**Key features:**
+
+1. **Type checking** - Validates against `str`, `int`, `float`, `bool`, `list`, `dict`
+2. **Required fields** - Checks and reports all missing required fields
+3. **Numeric constraints** - `min`/`max` for int and float types
+4. **String constraints** - `min_length`/`max_length` for strings
+5. **List constraints** - `min_length`/`max_length` for list length
+6. **All errors returned** - Collects every error, doesn't stop at first
+7. **Extra fields allowed** - Fields not in schema pass silently
+8. **Bool handling** - Properly distinguishes bool from int (since bool is a subclass of int in Python)

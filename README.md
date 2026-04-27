@@ -138,15 +138,20 @@ Phase F gave every model 8–10/10 on most roles. ClawEval v2 replaces that with
 |------|-------|----------|-------|---|---------|
 | 🥇 | **DeepSeek V4 Pro** | ☁️ DeepSeek | 1060/1220 | **86.9%** | 26 |
 | 🥈 | **DeepSeek V4 Flash** | ☁️ DeepSeek | 1054/1220 | **86.4%** | 23 |
-| 3 | **Kimi K2.5 Think** | ☁️ Ollama | 1048/1220 | **85.9%** | 24 |
+| 🥉 | **Kimi K2.5 Think** | ☁️ Ollama | 1048/1220 | **85.9%** | 24 |
 | 4 | **Qwen3.5-Plus** | ☁️ Alibaba | 1031/1220 | **84.5%** | 26 |
 | 5 | **Kimi K2.6** | ☁️ Ollama | 1028/1220 | **84.3%** | 24 |
 | 6 | **GLM-5.1** | ☁️ Ollama | 1020/1220 | **83.6%** | 26 |
-| 7 | **Gemma-4-E2B** | 🖥️ Local | 981/1220 | **80.4%** | 17 |
-| 8 | **GPT-OSS-120B** | ☁️ Ollama | 979/1220 | **80.2%** | 19 |
-| 9 | **GLM-5 NoThink** | ☁️ Ollama | 948/1220 | **77.7%** | 25 |
-| 10 | **GLM-5 Think** | ☁️ Ollama | 927/1220 | **76.0%** | 23 |
-| 11 | **LFM2.5-350M** | 🖥️ Local | 308/1220 | **25.2%** | 2 |
+| 7 | **Nemotron-3-Super Think** | ☁️ Ollama | 1016/1220 | **83.3%** | 20 |
+| 8 | **Gemma-4-E2B** | 🖥️ Local | 981/1220 | **80.4%** | 14 |
+| 9 | **GPT-OSS-120B** | ☁️ Ollama | 979/1220 | **80.2%** | 19 |
+| 10 | **MiniMax-M2.7 Think** | ☁️ Ollama | 978/1220 | **80.2%** | 18 |
+| 11 | **GLM-5 NoThink** | ☁️ Ollama | 948/1220 | **77.7%** | 25 |
+| 12 | **Kimi K2.5 NoThink** | ☁️ Ollama | 935/1220 | **76.6%** | 21 |
+| 13 | **Gemma-4-31B** | 🖥️ Local | 927/1220 | **76.0%** | 25 |
+| 14 | **GLM-5 Think** | ☁️ Ollama | 927/1220 | **76.0%** | 23 |
+| 15 | **Gemma-4-E4B** | 🖥️ Local | 867/1220 | **71.1%** | 15 |
+| 16 | **LFM2.5-350M** | 🖥️ Local | 308/1220 | **25.2%** | 2 |
 
 > All models scored on **59/59 tests** with **zero infrastructure failures**. Full results: **[ClawEval v2 →](docs/results-phase-h.md)**
 

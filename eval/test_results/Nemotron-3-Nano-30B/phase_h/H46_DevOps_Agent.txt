@@ -1,0 +1,80 @@
+{
+  "issues": [
+    {
+      "line": "spec:\n  replicas: 1",
+      "issue": "Too few replicas for production workload; single replica creates a single point of failure and reduces availability.",
+      "severity": "major"
+    },
+    {
+      "line": "image: myapp:latest",
+      "issue": "Using 'latest' tag is unsafe; it can lead to unexpected behavior when the image changes without version control.",
+      "severity": "major"
+    },
+    {
+      "line": "securityContext:\n          runAsRoot: true",
+      "issue": "Running containers as root inside the pod increases attack surface and violates security best practices.",
+      "severity": "critical"
+    },
+    {
+      "line": "securityContext:\n          privileged: true",
+      "issue": "Privileged containers grant extensive host access, posing a severe security risk.",
+      "severity": "critical"
+    },
+    {
+      "line": "env:\n        - name: DB_PASSWORD\n          value: \"sup3rs3cret!\"",
+      "issue": "Hard‑coding secrets in plain text exposes credentials in manifests and version control.",
+      "severity": "critical"
+    },
+    {
+      "line": "env:\n        - name: API_KEY\n          value: \"ak_live_12345\"",
+      "issue": "Hard‑coding API keys in plain text exposes credentials in manifests and version control.",
+      "severity": "critical"
+    },
+    {
+      "line": "resources: {}",
+      "issue": "No resource requests or limits defined; may cause resource starvation or over‑provisioning.",
+      "severity": "minor"
+    },
+    {
+      "line": "resources:\n          requests:\n            memory: \"10Gi\"\n            cpu: \"8\"",
+      "issue": "Excessive resource requests for a sidecar container can starve other workloads and cause scheduling failures.",
+      "severity": "major"
+    },
+    {
+      "line": "volumeMounts:\n        - mountPath: /data\n          name: data-vol",
+      "issue": "Mounting hostPath into container without readOnly flag may allow unintended writes to host filesystem.",
+      "severity": "minor"
+    },
+    {
+      "line": "hostPath:\n          path: /tmp/data",
+      "issue": "Using hostPath ties the pod to a specific node and can expose host data, reducing portability and security.",
+      "severity": "minor"
+    },
+    {
+      "line": "type: LoadBalancer",
+      "issue": "LoadBalancer service type may not be supported in all environments and can expose the service publicly without proper ingress controls.",
+      "severity": "minor"
+    },
+    {
+      "line": "ports:\n    - port: 80\n      targetPort: 8080",
+      "issue": "Port mapping uses port 80 (HTTP) but container listens on 8080; may cause confusion and mis‑routed traffic if not handled by ingress.",
+      "severity": "minor"
+    },
+    {
+      "line": "selector:\n    app: web-api",
+      "issue": "Selector matches pods with label app=web-api; if labels are missing or mismatched, service may not route traffic correctly.",
+      "severity": "minor"
+    },
+    {
+      "line": "replicas: 1",
+      "issue": "Redundancy is limited; scaling may be needed for load handling and high availability.",
+      "severity": "major"
+    },
+    {
+      "line": "image: logger:v1",
+      "issue": "Sidecar image tag 'v1' may be outdated; using unpinned tags can lead to untested versions in production.",
+      "severity": "minor"
+    }
+  ],
+  "count": 15
+}

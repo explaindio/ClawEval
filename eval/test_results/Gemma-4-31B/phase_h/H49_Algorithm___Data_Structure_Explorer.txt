@@ -1,0 +1,82 @@
+```python
+class LRUCache:
+    class Node:
+        def __init__(self, key, val):
+            self.key = key
+            self.val = val
+            self.prev = None
+            self.next = None
+
+    def __init__(self, capacity):
+        self.capacity = capacity
+        self.cache = {}
+        self.head = self.Node(0, 0)
+        self.tail = self.Node(0, 0)
+        self.head.next = self.tail
+        self.tail.prev = self.head
+
+    def _remove(self, node):
+        p, n = node.prev, node.next
+        p.next, n.prev = n, p
+
+    def _add(self, node):
+        p, n = self.head, self.head.next
+        p.next = n.prev = node
+        node.prev, node.next = p, n
+
+    def get(self, key):
+        if key in self.cache:
+            node = self.cache[key]
+            self._remove(node)
+            self._add(node)
+            return node.val
+        return -1
+
+    def put(self, key, value):
+        if key in self.cache:
+            self._remove(self.cache[key])
+        node = self.Node(key, value)
+        self.cache[key] = node
+        self._add(node)
+        if len(self.cache) > self.capacity:
+            lru = self.tail.prev
+            self._remove(lru)
+            del self.cache[lru.key]
+
+class MinStack:
+    def __init__(self):
+        self.stack = []
+        self.min_stack = []
+
+    def push(self, val):
+        self.stack.append(val)
+        if not self.min_stack or val <= self.min_stack[-1]:
+            self.min_stack.append(val)
+
+    def pop(self):
+        if self.stack[-1] == self.min_stack[-1]:
+            self.min_stack.pop()
+        return self.stack.pop()
+
+    def top(self):
+        return self.stack[-1]
+
+    def get_min(self):
+        return self.min_stack[-1]
+
+def find_median(stream):
+    import heapq
+    small, large = [], []
+    medians = []
+    for num in stream:
+        heapq.heappush(small, -num)
+        heapq.heappush(large, -heapq.heappop(small))
+        if len(large) > len(small):
+            heapq.heappush(small, -heapq.heappop(large))
+        
+        if len(small) > len(large):
+            medians.append(float(-small[0]))
+        else:
+            medians.append((-small[0] + large[0]) / 2.0)
+    return medians
+```

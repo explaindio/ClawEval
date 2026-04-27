@@ -1,0 +1,146 @@
+```json
+{
+  "tasks": [
+    {
+      "id": 1,
+      "task": "Monolith decomposition analysis and service boundary definition",
+      "depends_on": [],
+      "effort_days": 5,
+      "team": "backend"
+    },
+    {
+      "id": 2,
+      "task": "Database schema decomposition strategy",
+      "depends_on": [1],
+      "effort_days": 4,
+      "team": "backend"
+    },
+    {
+      "id": 3,
+      "task": "API Gateway infrastructure provisioning",
+      "depends_on": [1],
+      "effort_days": 5,
+      "team": "devops"
+    },
+    {
+      "id": 4,
+      "task": "Containerization and Docker setup",
+      "depends_on": [1],
+      "effort_days": 4,
+      "team": "devops"
+    },
+    {
+      "id": 5,
+      "task": "CI/CD pipeline for microservices",
+      "depends_on": [4],
+      "effort_days": 6,
+      "team": "devops"
+    },
+    {
+      "id": 6,
+      "task": "Extract User Service backend",
+      "depends_on": [2],
+      "effort_days": 8,
+      "team": "backend"
+    },
+    {
+      "id": 7,
+      "task": "Extract Product Service backend",
+      "depends_on": [2],
+      "effort_days": 8,
+      "team": "backend"
+    },
+    {
+      "id": 8,
+      "task": "Frontend API client modernization",
+      "depends_on": [1],
+      "effort_days": 5,
+      "team": "frontend"
+    },
+    {
+      "id": 9,
+      "task": "Database migration: User Service data",
+      "depends_on": [6],
+      "effort_days": 5,
+      "team": "backend"
+    },
+    {
+      "id": 10,
+      "task": "Database migration: Product Service data",
+      "depends_on": [7],
+      "effort_days": 5,
+      "team": "backend"
+    },
+    {
+      "id": 11,
+      "task": "Frontend service integration layer",
+      "depends_on": [6, 7, 8],
+      "effort_days": 6,
+      "team": "frontend"
+    },
+    {
+      "id": 12,
+      "task": "API Gateway routing and authentication",
+      "depends_on": [3, 6, 7],
+      "effort_days": 4,
+      "team": "devops"
+    },
+    {
+      "id": 13,
+      "task": "Service mesh implementation",
+      "depends_on": [3, 4],
+      "effort_days": 5,
+      "team": "devops"
+    },
+    {
+      "id": 14,
+      "task": "Integration testing framework setup",
+      "depends_on": [5, 11],
+      "effort_days": 5,
+      "team": "qa"
+    },
+    {
+      "id": 15,
+      "task": "Data synchronization between services",
+      "depends_on": [9, 10],
+      "effort_days": 4,
+      "team": "backend"
+    },
+    {
+      "id": 16,
+      "task": "Frontend error handling for distributed failures",
+      "depends_on": [11],
+      "effort_days": 4,
+      "team": "frontend"
+    },
+    {
+      "id": 17,
+      "task": "Monitoring and logging aggregation",
+      "depends_on": [13],
+      "effort_days": 4,
+      "team": "devops"
+    },
+    {
+      "id": 18,
+      "task": "Load and performance testing",
+      "depends_on": [12, 14, 15],
+      "effort_days": 6,
+      "team": "qa"
+    },
+    {
+      "id": 19,
+      "task": "Security testing and penetration test",
+      "depends_on": [12, 16],
+      "effort_days": 4,
+      "team": "qa"
+    },
+    {
+      "id": 20,
+      "task": "Production cutover and rollback strategy",
+      "depends_on": [17, 18, 19],
+      "effort_days": 4,
+      "team": "devops"
+    }
+  ]
+}
+```

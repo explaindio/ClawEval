@@ -1,0 +1,600 @@
+{
+  "model": "Nemotron-3-Super-120B-A12B-Think",
+  "phase": "H",
+  "timestamp": "2026-04-27T14:24:14.123081",
+  "total_score": 1016,
+  "total_max": 1220,
+  "percentage": 83.3,
+  "results": [
+    {
+      "id": 2,
+      "role": "Input Validator / Sanitizer",
+      "tier": 1,
+      "scoring_type": "json_values",
+      "score": 29,
+      "max": 30,
+      "detail": "29/30 correct | #10: exp=VALID, got=INVALID",
+      "tokens": 250
+    },
+    {
+      "id": 5,
+      "role": "Sentiment Analysis Agent",
+      "tier": 1,
+      "scoring_type": "json_values",
+      "score": 27,
+      "max": 30,
+      "detail": "27/30 correct | #11: exp=NEGATIVE, got=NEUTRAL; #12: exp=NEUTRAL, got=POSITIVE; #15: exp=NEGATIVE, got=NEUTRAL",
+      "tokens": 305
+    },
+    {
+      "id": 9,
+      "role": "Research / Web Search Agent",
+      "tier": 2,
+      "scoring_type": "json_values",
+      "score": 28,
+      "max": 30,
+      "detail": "28/30 correct | #13: exp=TRUE, got=FALSE; #29: exp=TRUE, got=FALSE",
+      "tokens": 234
+    },
+    {
+      "id": 12,
+      "role": "Content Planner / Strategist",
+      "tier": 2,
+      "scoring_type": "content_planner",
+      "score": 22,
+      "max": 30,
+      "detail": "22/30 constraints met | total_posts: 25 vs 24; blogs_per_week_min: unverifiable; social_per_week_min: unverifiable; total_blogs: 4 vs 6; total_social: 11 vs 8; channels_per_week_min: unverifiable; linkedin_per_week_min: unverifiable; total_linkedin: 7 vs 6",
+      "tokens": 1355
+    },
+    {
+      "id": 18,
+      "role": "News Aggregation Agent",
+      "tier": 2,
+      "scoring_type": "news_errors",
+      "score": 7,
+      "max": 7,
+      "detail": "7/7 errors found",
+      "tokens": 638
+    },
+    {
+      "id": 36,
+      "role": "Code Generation Agent",
+      "tier": 3,
+      "scoring_type": "code_exec",
+      "score": 30,
+      "max": 30,
+      "detail": "30/30 test cases passed",
+      "tokens": 252
+    },
+    {
+      "id": 40,
+      "role": "Fact-Checking Agent",
+      "tier": 3,
+      "scoring_type": "json_values",
+      "score": 29,
+      "max": 30,
+      "detail": "29/30 correct | #14: exp=FALSE, got=TRUE",
+      "tokens": 234
+    },
+    {
+      "id": 48,
+      "role": "STEM Research Analyst",
+      "tier": 4,
+      "scoring_type": "json_numeric",
+      "score": 14,
+      "max": 15,
+      "detail": "14/15 correct | p2: exp=836800.0, got=209300.0",
+      "tokens": 192
+    },
+    {
+      "id": 49,
+      "role": "Algorithm / Data Structure Explorer",
+      "tier": 4,
+      "scoring_type": "code_exec",
+      "score": 30,
+      "max": 30,
+      "detail": "30/30 test cases passed",
+      "tokens": 770
+    },
+    {
+      "id": 56,
+      "role": "Security Analyst Agent",
+      "tier": 5,
+      "scoring_type": "security_vulns",
+      "score": 15,
+      "max": 15,
+      "detail": "15/15 vulnerabilities found",
+      "tokens": 599
+    },
+    {
+      "id": 1,
+      "role": "Router / Triage Agent",
+      "tier": 1,
+      "scoring_type": "json_values",
+      "score": 29,
+      "max": 30,
+      "detail": "29/30 correct | #18: exp=product, got=technical",
+      "tokens": 245
+    },
+    {
+      "id": 3,
+      "role": "Heartbeat / Health Monitor",
+      "tier": 1,
+      "scoring_type": "json_values",
+      "score": 14,
+      "max": 15,
+      "detail": "14/15 correct | #s15_status: exp=down, got=degraded",
+      "tokens": 491
+    },
+    {
+      "id": 4,
+      "role": "Notification / Alert Agent",
+      "tier": 1,
+      "scoring_type": "json_values",
+      "score": 26,
+      "max": 30,
+      "detail": "26/30 correct | #2: exp=medium, got=high; #17: exp=low, got=medium; #25: exp=medium, got=info; #26: exp=low, got=high",
+      "tokens": 234
+    },
+    {
+      "id": 8,
+      "role": "Calendar / Scheduling Agent",
+      "tier": 1,
+      "scoring_type": "json_values",
+      "score": 13,
+      "max": 20,
+      "detail": "13/20 correct | #1: exp=yes, got=No; #3: exp=11:30, got=11:30-12:15; #5: exp=90, got=150; #9: exp=56, got=45; #13: exp=09:00, got=10:30-12:00; #16: exp=210, got=330; #18: exp=yes, got=No",
+      "tokens": 188
+    },
+    {
+      "id": 11,
+      "role": "Editor Agent",
+      "tier": 2,
+      "scoring_type": "h_content_check",
+      "score": 29,
+      "max": 30,
+      "detail": "29/30 correct | #e22_net_profit_math: missing",
+      "tokens": 793
+    },
+    {
+      "id": 13,
+      "role": "Email Drafting / Summarization",
+      "tier": 2,
+      "scoring_type": "json_values",
+      "score": 42,
+      "max": 45,
+      "detail": "42/45 correct | #2_category: exp=task, got=approval; #10_priority: exp=high, got=medium; #12_category: exp=meeting, got=fyi",
+      "tokens": 346
+    },
+    {
+      "id": 14,
+      "role": "Document Summarization Agent",
+      "tier": 2,
+      "scoring_type": "json_numeric",
+      "score": 15,
+      "max": 15,
+      "detail": "15/15 correct",
+      "tokens": 173
+    },
+    {
+      "id": 16,
+      "role": "Social Media Scouting / Monitoring",
+      "tier": 2,
+      "scoring_type": "json_values",
+      "score": 55,
+      "max": 60,
+      "detail": "55/60 correct | #2_crisis: exp=yes, got=no; #6_topic: exp=service, got=general; #8_topic: exp=competitor, got=product; #12_crisis: exp=yes, got=no; #13_topic: exp=general, got=service",
+      "tokens": 495
+    },
+    {
+      "id": 19,
+      "role": "Shopping / Price Comparison",
+      "tier": 2,
+      "scoring_type": "h_keywords",
+      "score": 15,
+      "max": 15,
+      "detail": "15/15 correct",
+      "tokens": 495
+    },
+    {
+      "id": 20,
+      "role": "Memory / Knowledge Management",
+      "tier": 2,
+      "scoring_type": "json_values",
+      "score": 20,
+      "max": 20,
+      "detail": "20/20 correct",
+      "tokens": 154
+    },
+    {
+      "id": 21,
+      "role": "RAG / Retrieval Agent",
+      "tier": 2,
+      "scoring_type": "json_values",
+      "score": 10,
+      "max": 15,
+      "detail": "10/15 correct | #6: exp=300, got=$300; #9: exp=80, got=80%; #10: exp=100, got=100%; #13: exp=Director, got=Director approval; #14: exp=500, got=$500",
+      "tokens": 131
+    },
+    {
+      "id": 22,
+      "role": "Data Analysis Agent",
+      "tier": 2,
+      "scoring_type": "json_numeric",
+      "score": 3,
+      "max": 15,
+      "detail": "3/15 correct | q1: exp=664900, got=635700.0; q2: exp=55408.33, got=52975.0; q3: exp=99.09, got=91.0; q4: exp=6470, got=6988.0; q5: exp=416, got=380.0; q6: exp=6.43, got=5.44; q7: exp=75000, got=68000.0; q8: exp=8.87, got=9.35; q9: exp=1379, got=1283.0; q10: exp=54.39, got=53.0",
+      "tokens": 182
+    },
+    {
+      "id": 25,
+      "role": "Customer Support Agent",
+      "tier": 2,
+      "scoring_type": "json_values",
+      "score": 44,
+      "max": 60,
+      "detail": "44/60 correct | #1_urgency: exp=p2, got=p1; #2_urgency: exp=p4, got=p3; #2_action: exp=automate, got=respond; #3_urgency: exp=p2, got=p1; #5_urgency: exp=p2, got=p1; #6_category: exp=bug, got=account; #8_urgency: exp=p3, got=p2; #8_category: exp=account, got=billing; #11_action: exp=escalate, got=respond; #12_action: exp=escalate, got=respond",
+      "tokens": 516
+    },
+    {
+      "id": 26,
+      "role": "Lead Scoring / Prospecting",
+      "tier": 2,
+      "scoring_type": "json_values",
+      "score": 11,
+      "max": 15,
+      "detail": "11/15 correct | #5_tier: exp=warm, got=hot; #8_tier: exp=cold, got=warm; #14_tier: exp=warm, got=hot; #15_tier: exp=warm, got=hot",
+      "tokens": 286
+    },
+    {
+      "id": 28,
+      "role": "Transaction / Approval Agent",
+      "tier": 2,
+      "scoring_type": "json_values",
+      "score": 19,
+      "max": 20,
+      "detail": "19/20 correct | #8: exp=approve, got=flag",
+      "tokens": 161
+    },
+    {
+      "id": 30,
+      "role": "Fitness / Health Tracking",
+      "tier": 2,
+      "scoring_type": "json_numeric",
+      "score": 14,
+      "max": 15,
+      "detail": "14/15 correct | m13: exp=3, got=4.0",
+      "tokens": 172
+    },
+    {
+      "id": 32,
+      "role": "Personal Finance Tracking",
+      "tier": 2,
+      "scoring_type": "json_numeric",
+      "score": 7,
+      "max": 15,
+      "detail": "7/15 correct | f2: exp=5485, got=5105.0; f3: exp=1665, got=2045.0; f9: exp=3270, got=1290.0; f10: exp=1545, got=1445.0; f11: exp=2.12, got=0.89; f12: exp=235, got=615.0; f13: exp=2.19, got=2.35; f14: exp=8400, got=6000.0",
+      "tokens": 202
+    },
+    {
+      "id": 23,
+      "role": "Website Scraping / Understanding",
+      "tier": 2,
+      "scoring_type": "json_values",
+      "score": 15,
+      "max": 15,
+      "detail": "15/15 correct",
+      "tokens": 170
+    },
+    {
+      "id": 27,
+      "role": "Sprint / Project Summarizer",
+      "tier": 2,
+      "scoring_type": "json_numeric",
+      "score": 15,
+      "max": 15,
+      "detail": "15/15 correct",
+      "tokens": 170
+    },
+    {
+      "id": 37,
+      "role": "Code Review Agent",
+      "tier": 3,
+      "scoring_type": "h_content_check",
+      "score": 15,
+      "max": 15,
+      "detail": "15/15 correct",
+      "tokens": 777
+    },
+    {
+      "id": 38,
+      "role": "QA / Test Writing Agent",
+      "tier": 3,
+      "scoring_type": "code_exec",
+      "score": 14,
+      "max": 15,
+      "detail": "14/15 test cases passed | tc11: exp=True, got=False",
+      "tokens": 1072
+    },
+    {
+      "id": 42,
+      "role": "Market Research Agent",
+      "tier": 3,
+      "scoring_type": "json_numeric",
+      "score": 10,
+      "max": 15,
+      "detail": "10/15 correct | m4: exp=37500, got=37.5; m5: exp=403.0, got=430.6; m7: exp=1904.0, got=1288.0; m13: exp=9100, got=9980.0; m15: exp=37931.0, got=37.9",
+      "tokens": 185
+    },
+    {
+      "id": 47,
+      "role": "Math / Logic Reasoning",
+      "tier": 4,
+      "scoring_type": "json_numeric",
+      "score": 14,
+      "max": 15,
+      "detail": "14/15 correct | p7: not numeric: 2/3",
+      "tokens": 160
+    },
+    {
+      "id": 6,
+      "role": "FAQ Generation Agent",
+      "tier": 1,
+      "scoring_type": "h_keywords",
+      "score": 15,
+      "max": 15,
+      "detail": "15/15 correct",
+      "tokens": 267
+    },
+    {
+      "id": 7,
+      "role": "Translation Agent",
+      "tier": 1,
+      "scoring_type": "json_values",
+      "score": 15,
+      "max": 15,
+      "detail": "15/15 correct",
+      "tokens": 370
+    },
+    {
+      "id": 15,
+      "role": "Meeting Notes / Transcription Agent",
+      "tier": 2,
+      "scoring_type": "h_keywords",
+      "score": 35,
+      "max": 35,
+      "detail": "35/35 correct",
+      "tokens": 6933
+    },
+    {
+      "id": 39,
+      "role": "Task Planning / Decomposition",
+      "tier": 3,
+      "scoring_type": "h_keywords",
+      "score": 1,
+      "max": 18,
+      "detail": "1/18 correct | #has_backend: missing; #has_frontend: missing; #has_devops: missing; #has_qa: missing; #first_no_deps: missing",
+      "tokens": 1145
+    },
+    {
+      "id": 46,
+      "role": "DevOps Agent",
+      "tier": 3,
+      "scoring_type": "h_keywords",
+      "score": 8,
+      "max": 15,
+      "detail": "8/15 correct | #i1: missing image uses :latest tag; #i9: missing hostPath in /tmp - insecure; #i10: missing sidecar requests 10Gi memory - excessive; #i11: missing sidecar requests 8 CPU - excessive; #i13: missing no pod disruption budget",
+      "tokens": 802
+    },
+    {
+      "id": 53,
+      "role": "Legal Document Review",
+      "tier": 5,
+      "scoring_type": "h_keywords",
+      "score": 8,
+      "max": 15,
+      "detail": "8/15 correct | #i1: missing contradictory license terms - perpetual but terminable without notice; #i2: missing data ownership transfer - user loses rights to own data; #i3: missing unlimited data sharing with third parties without consent; #i6: missing indemnification covers company's own negligence; #i7: missing 24-hour payment deadline with data forfeiture",
+      "tokens": 1441
+    },
+    {
+      "id": 54,
+      "role": "Medical / Health Analysis",
+      "tier": 5,
+      "scoring_type": "h_keywords",
+      "score": 15,
+      "max": 15,
+      "detail": "15/15 correct",
+      "tokens": 907
+    },
+    {
+      "id": 55,
+      "role": "Financial Analysis / Stock Research",
+      "tier": 5,
+      "scoring_type": "json_numeric",
+      "score": 15,
+      "max": 15,
+      "detail": "15/15 correct",
+      "tokens": 185
+    },
+    {
+      "id": 57,
+      "role": "SRE / Incident Response",
+      "tier": 5,
+      "scoring_type": "json_values",
+      "score": 9,
+      "max": 15,
+      "detail": "9/15 correct | #q2: exp=50, got=45; #q3: exp=30, got=13; #q7: exp=runaway batch job, got=Runaway query from batch job consuming excessive database connections; #q8: exp=13, got=10; #q13: exp=12, got=5; #q15: exp=10, got=15",
+      "tokens": 151
+    },
+    {
+      "id": 59,
+      "role": "Compliance / Regulatory Agent",
+      "tier": 5,
+      "scoring_type": "h_keywords",
+      "score": 7,
+      "max": 15,
+      "detail": "7/15 correct | #v3: missing outdated privacy policy (2019); #v6: missing not actually deleting data on deletion request; #v8: missing no parental consent for minors; #v9: missing cross-border transfers without adequacy or SCCs; #v11: missing breach notification via blog post not direct",
+      "tokens": 1307
+    },
+    {
+      "id": 29,
+      "role": "Home Automation Agent",
+      "tier": 2,
+      "scoring_type": "h_keywords",
+      "score": 6,
+      "max": 20,
+      "detail": "6/20 correct | #2: missing lock doors, arm alarm, lights off, eco thermostat; #6: missing show camera, unlock door; #7: missing show camera, keep door locked; #9: missing turn on heating; #11: missing trigger alarm, notify emergency, unlock doors",
+      "tokens": 264
+    },
+    {
+      "id": 31,
+      "role": "Recipe / Cooking Agent",
+      "tier": 2,
+      "scoring_type": "json_numeric",
+      "score": 15,
+      "max": 15,
+      "detail": "15/15 correct",
+      "tokens": 174
+    },
+    {
+      "id": 33,
+      "role": "SEO Optimization Agent",
+      "tier": 2,
+      "scoring_type": "h_keywords",
+      "score": 4,
+      "max": 15,
+      "detail": "4/15 correct | #i1: missing generic title tag (just 'Home'); #i3: missing multiple h1 tags (2 h1s); #i4: missing h2 appears before h1 - wrong hierarchy; #i5: missing images missing alt attributes; #i6: missing non-descriptive anchor text ('click here')",
+      "tokens": 1179
+    },
+    {
+      "id": 35,
+      "role": "Travel Planning Agent",
+      "tier": 2,
+      "scoring_type": "h_keywords",
+      "score": 2,
+      "max": 15,
+      "detail": "2/15 correct | #has_temple: missing; #has_akihabara: missing; #has_japanese_meal: missing; #has_daytrip: missing; #hotel_under_150: missing",
+      "tokens": 714
+    },
+    {
+      "id": 43,
+      "role": "Synthesizer / Aggregator",
+      "tier": 3,
+      "scoring_type": "json_values",
+      "score": 11,
+      "max": 15,
+      "detail": "11/15 correct | #3: exp=CONTRADICTED, got=CONFIRMED; #5: exp=UNVERIFIED, got=CONFIRMED; #13: exp=UNVERIFIED, got=CONFIRMED; #15: exp=UNVERIFIED, got=CONFIRMED",
+      "tokens": 179
+    },
+    {
+      "id": 44,
+      "role": "Curriculum / Course Designer",
+      "tier": 3,
+      "scoring_type": "h_keywords",
+      "score": 7,
+      "max": 15,
+      "detail": "7/15 correct | #error_handling_before_w5: missing; #file_io_before_w6: missing; #each_has_assignment: missing; #w1_no_prereqs: missing; #has_data_structures: missing",
+      "tokens": 879
+    },
+    {
+      "id": 45,
+      "role": "Prototype Generator",
+      "tier": 3,
+      "scoring_type": "code_exec",
+      "score": 15,
+      "max": 15,
+      "detail": "15/15 test cases passed",
+      "tokens": 1227
+    },
+    {
+      "id": 50,
+      "role": "Orchestrator / Manager Agent",
+      "tier": 5,
+      "scoring_type": "h_keywords",
+      "score": 11,
+      "max": 15,
+      "detail": "11/15 correct | #has_io_defined: missing; #starts_validation: missing; #ends_notification: missing; #handles_rejection: missing",
+      "tokens": 1023
+    },
+    {
+      "id": 51,
+      "role": "Software Architect Agent",
+      "tier": 5,
+      "scoring_type": "h_keywords",
+      "score": 7,
+      "max": 15,
+      "detail": "7/15 correct | #q3_valid: missing database mentioned; #q5_valid: missing message broker mentioned; #q7_valid: missing broadcast or presence channel; #q10_valid: missing CDN mentioned; #q11_valid: missing chunking or pagination",
+      "tokens": 754
+    },
+    {
+      "id": 52,
+      "role": "Complex Debugger Agent",
+      "tier": 5,
+      "scoring_type": "h_content_check",
+      "score": 14,
+      "max": 15,
+      "detail": "14/15 correct | #b14_same_url: missing",
+      "tokens": 1289
+    },
+    {
+      "id": 10,
+      "role": "Content Writer / Blog Writer",
+      "tier": 2,
+      "scoring_type": "h_content_check",
+      "score": 19,
+      "max": 20,
+      "detail": "19/20 correct | #has_introduction: missing",
+      "tokens": 1622
+    },
+    {
+      "id": 17,
+      "role": "Social Media Content Agent",
+      "tier": 2,
+      "scoring_type": "h_content_check",
+      "score": 19,
+      "max": 20,
+      "detail": "19/20 correct | #has_poll: missing",
+      "tokens": 992
+    },
+    {
+      "id": 24,
+      "role": "Image Description / Understanding",
+      "tier": 2,
+      "scoring_type": "h_content_check",
+      "score": 20,
+      "max": 20,
+      "detail": "20/20 correct",
+      "tokens": 1390
+    },
+    {
+      "id": 34,
+      "role": "Landing Page Generator",
+      "tier": 2,
+      "scoring_type": "h_content_check",
+      "score": 18,
+      "max": 20,
+      "detail": "18/20 correct | #has_footer: missing; #has_accessibility: missing",
+      "tokens": 0
+    },
+    {
+      "id": 41,
+      "role": "Critic / Review Agent",
+      "tier": 3,
+      "scoring_type": "h_content_check",
+      "score": 20,
+      "max": 20,
+      "detail": "20/20 correct",
+      "tokens": 1079
+    },
+    {
+      "id": 58,
+      "role": "Book / Long-Form Writing",
+      "tier": 5,
+      "scoring_type": "h_content_check",
+      "score": 20,
+      "max": 20,
+      "detail": "20/20 correct",
+      "tokens": 1971
+    }
+  ]
+}

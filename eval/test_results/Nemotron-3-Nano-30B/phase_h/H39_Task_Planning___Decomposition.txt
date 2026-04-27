@@ -1,0 +1,144 @@
+{
+  "tasks": [
+    {
+      "id": 1,
+      "task": "Define microservices architecture and service boundaries",
+      "depends_on": [],
+      "effort_days": 5,
+      "team": "backend"
+    },
+    {
+      "id": 2,
+      "task": "Set up version control and repository structure",
+      "depends_on": [1],
+      "effort_days": 3,
+      "team": "devops"
+    },
+    {
+      "id": 3,
+      "task": "Create CI/CD pipeline configuration",
+      "depends_on": [2],
+      "effort_days": 4,
+      "team": "devops"
+    },
+    {
+      "id": 4,
+      "task": "Containerize monolithic application",
+      "depends_on": [1],
+      "effort_days": 6,
+      "team": "backend"
+    },
+    {
+      "id": 5,
+      "task": "Set up API gateway and routing",
+      "depends_on": [3],
+      "effort_days": 5,
+      "team": "backend"
+    },
+    {
+      "id": 6,
+      "task": "Extract user service from monolith",
+      "depends_on": [4],
+      "effort_days": 8,
+      "team": "backend"
+    },
+    {
+      "id": 7,
+      "task": "Extract order service from monolith",
+      "depends_on": [4],
+      "effort_days": 8,
+      "team": "backend"
+    },
+    {
+      "id": 8,
+      "task": "Extract payment service from monolith",
+      "depends_on": [4],
+      "effort_days": 7,
+      "team": "backend"
+    },
+    {
+      "id": 9,
+      "task": "Database migration planning",
+      "depends_on": [1],
+      "effort_days": 4,
+      "team": "backend"
+    },
+    {
+      "id": 10,
+      "task": "Migrate user database schema",
+      "depends_on": [9],
+      "effort_days": 6,
+      "team": "backend"
+    },
+    {
+      "id": 11,
+      "task": "Migrate order database schema",
+      "depends_on": [9],
+      "effort_days": 6,
+      "team": "backend"
+    },
+    {
+      "id": 12,
+      "task": "Migrate payment database schema",
+      "depends_on": [9],
+      "effort_days": 5,
+      "team": "backend"
+    },
+    {
+      "id": 13,
+      "task": "Implement service-to-service communication",
+      "depends_on": [6, 7, 8],
+      "effort_days": 7,
+      "team": "backend"
+    },
+    {
+      "id": 14,
+      "task": "Set up monitoring and logging",
+      "depends_on": [5],
+      "effort_days": 4,
+      "team": "devops"
+    },
+    {
+      "id": 15,
+      "task": "Write integration tests for services",
+      "depends_on": [6, 7, 8],
+      "effort_days": 6,
+      "team": "qa"
+    },
+    {
+      "id": 16,
+      "task": "Run end-to-end testing",
+      "depends_on": [13, 14],
+      "effort_days": 5,
+      "team": "qa"
+    },
+    {
+      "id": 17,
+      "task": "Deploy services to staging environment",
+      "depends_on": [13, 14],
+      "effort_days": 3,
+      "team": "devops"
+    },
+    {
+      "id": 18,
+      "task": "Performance tuning and optimization",
+      "depends_on": [16],
+      "effort_days": 5,
+      "team": "backend"
+    },
+    {
+      "id": 19,
+      "task": "Finalize documentation and handover",
+      "depends_on": [15, 17],
+      "effort_days": 4,
+      "team": "backend"
+    },
+    {
+      "id": 20,
+      "task": "Production rollout and cutover",
+      "depends_on": [18, 19],
+      "effort_days": 6,
+      "team": "devops"
+    }
+  ]
+}

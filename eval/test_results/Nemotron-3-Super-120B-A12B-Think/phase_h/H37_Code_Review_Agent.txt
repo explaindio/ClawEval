@@ -1,0 +1,80 @@
+{
+  "bugs": [
+    {
+      "line": 12,
+      "bug": "Discount calculation error: SAVE20 should apply 20% discount (multiply by 0.80), not multiply by 0.20 which reduces subtotal to 20%",
+      "severity": "critical"
+    },
+    {
+      "line": 14,
+      "bug": "Discount calculation error: SAVE10 should subtract 10% (subtotal * 0.10), not subtract subtotal * 10 which makes subtotal negative",
+      "severity": "critical"
+    },
+    {
+      "line": 22,
+      "bug": "Silent failure on negative inventory: pass statement ignores stock underflow; should raise exception or prevent sale",
+      "severity": "major"
+    },
+    {
+      "line": 31,
+      "bug": "Assignment operator error: total_revenue =+ total is parsed as total_revenue = (+total), not total_revenue += total",
+      "severity": "critical"
+    },
+    {
+      "line": 34,
+      "bug": "Division by zero risk: avg_order calculation fails if orders list is empty",
+      "severity": "major"
+    },
+    {
+      "line": 35,
+      "bug": "UnboundLocalError risk: max_order uses 'results' which may be empty if orders is empty, causing ValueError from max()",
+      "severity": "major"
+    },
+    {
+      "line": 46,
+      "bug": "Email validation insufficient: only checks for '@' presence; misses format, domain, and multiple @ symbols",
+      "severity": "minor"
+    },
+    {
+      "line": 53,
+      "bug": "Shipping cost formula error: distance + per_km should be distance * per_km; currently adds distance as raw value",
+      "severity": "major"
+    },
+    {
+      "line": 57,
+      "bug": "Unreachable code: weight > 50 condition never executes because weight > 30 catches all weights >30 first",
+      "severity": "major"
+    },
+    {
+      "line": 60,
+      "bug": "Precision loss: round() without ndigits returns integer, losing cents in shipping cost",
+      "severity": "minor"
+    },
+    {
+      "line": 63,
+      "bug": "Mutation of input: merged = profile_a creates reference, so modifying merged alters original profile_a",
+      "severity": "major"
+    },
+    {
+      "line": 67,
+      "bug": "Hardcoded timestamp: updated_at should use current datetime, not fixed '2024-01-01'",
+      "severity": "minor"
+    },
+    {
+      "line": 71,
+      "bug": "CSV parsing naive: split(',') fails on quoted fields containing commas or newlines",
+      "severity": "minor"
+    },
+    {
+      "line": 78,
+      "bug": "Inefficient duplicate detection: using list for 'seen' causes O(n²) lookup; should use set for O(1)",
+      "severity": "minor"
+    },
+    {
+      "line": 16,
+      "bug": "Missing tax calculation for discounted orders: tax is calculated on discounted subtotal, but logic is correct; no bug here — line 16 is fine",
+      "severity": "info"
+    }
+  ],
+  "count": 15
+}

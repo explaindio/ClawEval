@@ -1,0 +1,73 @@
+```json
+{
+  "agents": [
+    {
+      "name": "IntakeValidationAgent",
+      "input": "RawRefundRequest {customer_id, order_id, amount, reason, timestamp, session_id}",
+      "output": "ValidationResult {is_valid: boolean, sanitized_data: object, error_code: string}",
+      "next": "EligibilityAgent (if is_valid) / NotificationAgent (if !is_valid)",
+      "fallback": "HumanEscalationAgent",
+      "timeout": 5
+    },
+    {
+      "name": "EligibilityAgent",
+      "input": "ValidationResult.sanitized_data",
+      "output": "EligibilityCheck {is_eligible: boolean, policy_violations: array, order_metadata: object}",
+      "next": "FraudDetectionAgent (if is_eligible) / NotificationAgent (if !is_eligible)",
+      "fallback": "HumanEscalationAgent",
+      "timeout": 5
+    },
+    {
+      "name": "FraudDetectionAgent",
+      "input": "EligibilityCheck",
+      "output": "RiskAssessment {risk_score: float, is_suspicious: boolean, flags: array}",
+      "next": "ApprovalAgent (if !is_suspicious) / HumanEscalationAgent (if is_suspicious)",
+      "fallback": "HumanEscalationAgent",
+      "timeout": 10
+    },
+    {
+      "name": "ApprovalAgent",
+      "input": "RiskAssessment",
+      "output": "ApprovalDecision {is_approved: boolean, approval_tier: string, reason: string}",
+      "next": "PaymentAgent (if is_approved) / NotificationAgent (if !is_approved)",
+      "fallback": "HumanEscalationAgent",
+      "timeout": 8
+    },
+    {
+      "name": "PaymentAgent",
+      "input": "ApprovalDecision",
+      "output": "PaymentResult {success: boolean, transaction_id: string, failure_reason: string}",
+      "next": "NotificationAgent (if success) / HumanEscalationAgent (if !success)",
+      "fallback": "HumanEscalationAgent",
+      "timeout": 15
+    },
+    {
+      "name": "HumanEscalationAgent",
+      "input": "EscalationContext {source_agent: string, payload: object, error_type: string, priority: string}",
+      "output": "ManualResolution {resolution_status: string, manual_action_taken: string, resolved_by: string}",
+      "next": "NotificationAgent",
+      "fallback": "TerminalManualIntervention",
+      "timeout": 86400
+    },
+    {
+      "name": "NotificationAgent",
+      "input": "FinalStatus {outcome: string, details: object, customer_id: string}",
+      "output": "NotificationReceipt {channels: array, delivered: boolean, timestamp: string}",
+      "next": "END",
+      "fallback": "DeadLetterQueue",
+      "timeout": 5
+    }
+  ],
+  "constraints": {
+    "total_automated_timeout_seconds": 48,
+    "max_processing_time_sla": 60,
+    "required_agents": ["validation", "fraud-check", "approval", "payment", "notification"],
+    "conditional_branches": ["IntakeValidationAgent", "EligibilityAgent", "FraudDetectionAgent", "ApprovalAgent", "PaymentAgent"],
+    "no_circular_dependencies": true,
+    "audit_logging": "Immutable audit trail required at each agent transition with timestamp, input_hash, and output_hash",
+    "human_escalation_path": "Active via HumanEscalationAgent for high-risk fraud, policy violations, payment failures, and system errors",
+    "outcome_handling": "Both approved and rejected refund outcomes route to NotificationAgent with appropriate status context",
+    "fallback_coverage": "100% agent coverage with defined error handlers"
+  }
+}
+```

@@ -1,0 +1,144 @@
+{
+  "tasks": [
+    {
+      "id": 1,
+      "task": "Analyze monolithic Django app architecture and identify bounded contexts",
+      "depends_on": [],
+      "effort_days": 5,
+      "team": "backend"
+    },
+    {
+      "id": 2,
+      "task": "Define microservice boundaries and data ownership for each service",
+      "depends_on": [1],
+      "effort_days": 4,
+      "team": "backend"
+    },
+    {
+      "id": 3,
+      "task": "Design database schema per microservice and plan data migration strategy",
+      "depends_on": [2],
+      "effort_days": 6,
+      "team": "backend"
+    },
+    {
+      "id": 4,
+      "task": "Set up API gateway (e.g., Kong or AWS API Gateway) for routing and authentication",
+      "depends_on": [2],
+      "effort_days": 5,
+      "team": "devops"
+    },
+    {
+      "id": 5,
+      "task": "Implement user authentication and authorization service (e.g., OAuth2/JWT)",
+      "depends_on": [2],
+      "effort_days": 7,
+      "team": "backend"
+    },
+    {
+      "id": 6,
+      "task": "Extract and containerize the user management microservice",
+      "depends_on": [3, 5],
+      "effort_days": 6,
+      "team": "backend"
+    },
+    {
+      "id": 7,
+      "task": "Extract and containerize the product catalog microservice",
+      "depends_on": [3],
+      "effort_days": 6,
+      "team": "backend"
+    },
+    {
+      "id": 8,
+      "task": "Extract and containerize the order processing microservice",
+      "depends_on": [3, 6, 7],
+      "effort_days": 7,
+      "team": "backend"
+    },
+    {
+      "id": 9,
+      "task": "Set up inter-service communication using REST/gRPC with service discovery",
+      "depends_on": [4],
+      "effort_days": 5,
+      "team": "devops"
+    },
+    {
+      "id": 10,
+      "task": "Implement database migration scripts for splitting shared tables",
+      "depends_on": [3],
+      "effort_days": 8,
+      "team": "backend"
+    },
+    {
+      "id": 11,
+      "task": "Set up centralized logging and monitoring (ELK/Prometheus/Grafana)",
+      "depends_on": [4, 9],
+      "effort_days": 6,
+      "team": "devops"
+    },
+    {
+      "id": 12,
+      "task": "Configure CI/CD pipelines for each microservice (GitHub Actions/GitLab CI)",
+      "depends_on": [6, 7, 8],
+      "effort_days": 7,
+      "team": "devops"
+    },
+    {
+      "id": 13,
+      "task": "Develop frontend components to consume new microservice APIs",
+      "depends_on": [6, 7, 8],
+      "effort_days": 9,
+      "team": "frontend"
+    },
+    {
+      "id": 14,
+      "task": "Implement end-to-end tests for user workflows across services",
+      "depends_on": [13],
+      "effort_days": 6,
+      "team": "qa"
+    },
+    {
+      "id": 15,
+      "task": "Perform load and stress testing on individual microservices",
+      "depends_on": [12],
+      "effort_days": 5,
+      "team": "qa"
+    },
+    {
+      "id": 16,
+      "task": "Conduct security scanning and penetration testing on APIs",
+      "depends_on": [14],
+      "effort_days": 4,
+      "team": "qa"
+    },
+    {
+      "id": 17,
+      "task": "Validate data consistency and integrity post-migration",
+      "depends_on": [10, 14],
+      "effort_days": 5,
+      "team": "qa"
+    },
+    {
+      "id": 18,
+      "task": "Deploy microservices to staging environment and perform smoke tests",
+      "depends_on": [12, 14, 15, 16],
+      "effort_days": 4,
+      "team": "devops"
+    },
+    {
+      "id": 19,
+      "task": "Train operations and support teams on new microservices architecture",
+      "depends_on": [18],
+      "effort_days": 3,
+      "team": "devops"
+    },
+    {
+      "id": 20,
+      "task": "Cutover to production: migrate traffic, monitor, and decommission monolith",
+      "depends_on": [18, 19],
+      "effort_days": 6,
+      "team": "backend"
+    }
+  ]
+}

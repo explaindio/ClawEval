@@ -1,0 +1,76 @@
+{
+  "weeks": [
+    {
+      "week": 1,
+      "topic": "Python Fundamentals: Variables, Data Types, and Basic I/O",
+      "objectives": [
+        "Understand and use variables to store data of different types (int, float, str, bool)",
+        "Perform basic arithmetic and string operations",
+        "Use input() and print() for user interaction",
+        "Write simple scripts that follow Python syntax and indentation rules"
+      ],
+      "assignment": "Create a personal info collector that asks for name, age, and favorite color, then prints a formatted greeting.",
+      "prerequisites": []
+    },
+    {
+      "week": 2,
+      "topic": "Control Flow: Conditionals and Loops",
+      "objectives": [
+        "Use if/elif/else statements to make decisions in code",
+        "Implement while and for loops for repetition",
+        "Apply break and continue statements to control loop execution",
+        "Solve problems using nested conditionals and loops"
+      ],
+      "assignment": "Build a number guessing game where the user tries to guess a random number between 1 and 100 with feedback on high/low.",
+      "prerequisites": ["week 1"]
+    },
+    {
+      "week": 3,
+      "topic": "Data Structures: Lists and Dictionaries",
+      "objectives": [
+        "Create, access, and modify lists and dictionaries",
+        "Use common list methods (append, pop, sort, slicing) and dictionary methods (keys, values, get)",
+        "Iterate over lists and dictionaries using for loops",
+        "Choose appropriate data structures for solving real-world problems"
+      ],
+      "assignment": "Develop a contact manager that stores names and phone numbers in a dictionary, allowing users to add, view, and search contacts.",
+      "prerequisites": ["week 1", "week 2"]
+    },
+    {
+      "week": 4,
+      "topic": "Object-Oriented Programming: Classes and Inheritance",
+      "objectives": [
+        "Define classes with attributes and methods using __init__",
+        "Create instances (objects) and access their properties and behaviors",
+        "Implement inheritance to reuse and extend class functionality",
+        "Use super() to call parent class methods"
+      ],
+      "assignment": "Design a simple zoo simulation with Animal base class and subclasses (Dog, Cat, Bird) that override a speak() method.",
+      "prerequisites": ["week 1", "week 2", "week 3"]
+    },
+    {
+      "week": 5,
+      "topic": "Error Handling, File I/O, and Testing",
+      "objectives": [
+        "Handle exceptions using try/except/else/finally blocks",
+        "Read from and write to text files using open(), read(), write(), and close()",
+        "Use the unittest framework to write and run basic test cases",
+        "Apply defensive programming practices to anticipate and manage errors"
+      ],
+      "assignment": "Create a file-based journal app that saves entries to a text file, loads them on startup, and uses try/except to handle missing files.",
+      "prerequisites": ["week 1", "week 2", "week 3", "week 4"]
+    },
+    {
+      "week": 6,
+      "topic": "Capstone Project: Interactive Task Manager",
+      "objectives": [
+        "Integrate variables, control flow, data structures, OOP, file I/O, and error handling into a cohesive application",
+        "Apply testing principles to validate core functionality",
+        "Design a user-friendly interface with clear prompts and feedback",
+        "Demonstrate code organization, readability, and maintainability"
+      ],
+      "assignment": "Build a command-line task manager that allows users to add, view, mark complete, and delete tasks. Tasks are saved to and loaded from a file. Include unit tests for task addition and completion logic.",
+      "prerequisites": ["week 1", "week 2", "week 3", "week 4", "week 5"]
+    }
+  ]
+}

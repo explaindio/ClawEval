@@ -1,0 +1,82 @@
+```json
+{
+  "bugs": [
+    {
+      "line": 12,
+      "bug": "Incorrect discount calculation: sets subtotal to 20% of original instead of reducing it by 20% (should be * 0.80).",
+      "severity": "major"
+    },
+    {
+      "line": 14,
+      "bug": "Incorrect discount calculation: subtracts 10 times the subtotal, resulting in a negative value (should be * 0.10).",
+      "severity": "critical"
+    },
+    {
+      "line": 22,
+      "bug": "Logic error: 'pass' allows inventory to drop below zero without raising an error or handling the stockout.",
+      "severity": "major"
+    },
+    {
+      "line": 31,
+      "bug": "Operator error: '=+' is an assignment of a positive value, not an addition (should be '+=').",
+      "severity": "critical"
+    },
+    {
+      "line": 34,
+      "bug": "ZeroDivisionError: will crash if the 'orders' list is empty.",
+      "severity": "critical"
+    },
+    {
+      "line": 35,
+      "bug": "ValueError: max() will raise an exception if the 'results' list is empty.",
+      "severity": "critical"
+    },
+    {
+      "line": 46,
+      "bug": "Insufficient validation: checking only for '@' is not a valid way to verify an email address.",
+      "severity": "minor"
+    },
+    {
+      "line": 53,
+      "bug": "Calculation error: distance is added to per_km instead of being multiplied by it.",
+      "severity": "major"
+    },
+    {
+      "line": 57,
+      "bug": "Unreachable code: 'weight > 50' will never be evaluated because 'weight > 30' catches all values above 30.",
+      "severity": "major"
+    },
+    {
+      "line": 60,
+      "bug": "Precision loss: rounding to the nearest integer removes cents from the shipping cost.",
+      "severity": "minor"
+    },
+    {
+      "line": 63,
+      "bug": "Mutable default/reference bug: 'merged = profile_a' creates a reference, meaning changes to 'merged' mutate the original 'profile_a'.",
+      "severity": "major"
+    },
+    {
+      "line": 67,
+      "bug": "Hardcoded value: 'updated_at' is set to a static date instead of the current timestamp.",
+      "severity": "minor"
+    },
+    {
+      "line": 71,
+      "bug": "Naive CSV parsing: split(',') fails to handle fields containing commas enclosed in quotes.",
+      "severity": "minor"
+    },
+    {
+      "line": 78,
+      "bug": "Performance bug: using a list for 'seen' results in O(n^2) time complexity; a set should be used for O(n).",
+      "severity": "minor"
+    },
+    {
+      "line": 80,
+      "bug": "NameError: attempts to return 'duplicates' but the variable is misspelled as 'duplicates' on line 76.",
+      "severity": "critical"
+    }
+  ],
+  "count": 15
+}
+```

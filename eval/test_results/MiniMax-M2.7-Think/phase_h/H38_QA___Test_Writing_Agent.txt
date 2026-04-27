@@ -1,0 +1,77 @@
+
+
+```python
+def is_valid_password(password):
+    # Length constraints
+    if not (8 <= len(password) <= 64):
+        return False
+
+    # At least one uppercase letter
+    if not any(c.isupper() for c in password):
+        return False
+
+    # At least one lowercase letter
+    if not any(c.islower() for c in password):
+        return False
+
+    # At least one digit
+    if not any(c.isdigit() for c in password):
+        return False
+
+    # At least one allowed special character
+    special_chars = set("!@#$%^&*()-_+=()")
+    if not any(c in special_chars for c in password):
+        return False
+
+    # No spaces allowed
+    if ' ' in password:
+        return False
+
+    # Cannot start with a digit
+    if password[0].isdigit():
+        return False
+
+    # Cannot contain more than 3 consecutive identical characters
+    prev_char = None
+    run_length = 0
+    for ch in password:
+        if ch == prev_char:
+            run_length += 1
+            if run_length > 3:
+                return False
+        else:
+            prev_char = ch
+            run_length = 1
+
+    # Cannot contain the word "password" (case‑insensitive)
+    if 'password' in password.lower():
+        return False
+
+    return True
+
+
+def run_tests():
+    tests = [
+        ("Passw0rd!", True),                # valid password
+        ("Ab1!", False),                    # too short
+        ("A" * 65, False),                  # too long
+        ("password1!", False),              # missing uppercase
+        ("PASSWORD1!", False),              # missing lowercase
+        ("Password!", False),               # missing digit
+        ("Password1", False),               # missing special char
+        ("Pass word1!", False),             # contains space
+        ("1Password!", False),              # starts with digit
+        ("Pass1111word!", False),            # >3 consecutive identical chars
+        ("MyPassword1!", False),             # contains "password"
+        ("Secure$Pass1", True),              # valid with $
+        ("Test-1234aB", True),               # valid with hyphen
+        ("Test_1234aB", True),               # valid with underscore
+        ("Aa111!bcD", True),                 # exactly 3 consecutive digits allowed
+    ]
+
+    results = []
+    for pwd, expected in tests:
+        actual = is_valid_password(pwd)
+        results.append((pwd, expected, actual))
+    return results
+```

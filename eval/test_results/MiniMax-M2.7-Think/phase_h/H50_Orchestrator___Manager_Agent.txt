@@ -1,0 +1,93 @@
+```json
+{
+  "agents": [
+    {
+      "name": "ValidationTriageAgent",
+      "input": "Raw refund request payload (customer_id, order_id, amount, reason, attachments)",
+      "output": "ValidatedRequest | ValidationError",
+      "next": "FraudCheckAgent",
+      "fallback": "HumanEscalationAgent",
+      "timeout": 4
+    },
+    {
+      "name": "FraudCheckAgent",
+      "input": "ValidatedRequest",
+      "output": "FraudScore (0-1) and risk flags",
+      "next": "FraudDecisionRouter",
+      "fallback": "HumanEscalationAgent",
+      "timeout": 8
+    },
+    {
+      "name": "FraudDecisionRouter",
+      "input": "FraudScore",
+      "output": "RoutingDecision (APPROVE | REJECT)",
+      "next": "Conditional: if APPROVE -> ApprovalAgent; if REJECT -> RejectionNotificationAgent",
+      "fallback": "HumanEscalationAgent",
+      "timeout": 2
+    },
+    {
+      "name": "ApprovalAgent",
+      "input": "RoutingDecision APPROVE",
+      "output": "ApprovalResult (approved_amount, approval_reference, auditor_notes)",
+      "next": "PaymentProcessingAgent",
+      "fallback": "HumanEscalationAgent",
+      "timeout": 12
+    },
+    {
+      "name": "PaymentProcessingAgent",
+      "input": "ApprovalResult",
+      "output": "PaymentConfirmation (transaction_id, status, timestamp)",
+      "next": "SuccessNotificationAgent",
+      "fallback": "HumanEscalationAgent",
+      "timeout": 15
+    },
+    {
+      "name": "SuccessNotificationAgent",
+      "input": "PaymentConfirmation",
+      "output": "NotificationSent (channel, delivery_status, logged_at)",
+      "next": null,
+      "fallback": "HumanEscalationAgent",
+      "timeout": 4
+    },
+    {
+      "name": "RejectionNotificationAgent",
+      "input": "RoutingDecision REJECT",
+      "output": "RejectionNotificationSent (reason, channel, delivery_status, logged_at)",
+      "next": null,
+      "fallback": "HumanEscalationAgent",
+      "timeout": 4
+    },
+    {
+      "name": "HumanEscalationAgent",
+      "input": "Any escalated payload (validation failure, high fraud score, payment error, etc.)",
+      "output": "EscalationTicket (ticket_id, assigned_to, priority, created_at)",
+      "next": null,
+      "fallback": null,
+      "timeout": 0
+    }
+  ],
+  "constraints": {
+    "minAgents": 6,
+    "mustIncludeAgents": [
+      "ValidationTriageAgent",
+      "FraudCheckAgent",
+      "ApprovalAgent",
+      "PaymentProcessingAgent",
+      "SuccessNotificationAgent",
+      "RejectionNotificationAgent"
+    ],
+    "conditionalBranch": "FraudDecisionRouter routes to ApprovalAgent on low fraud risk and to RejectionNotificationAgent on high fraud risk",
+    "fallbackHandler": "Every agent has a fallback pointing to HumanEscalationAgent for error handling",
+    "firstAgentValidation": "ValidationTriageAgent is the entry point of the pipeline",
+    "lastAgentNotification": "Both SuccessNotificationAgent and RejectionNotificationAgent are terminal nodes, ensuring a notification is always sent",
+    "fraudBeforeApproval": "FraudCheckAgent executes before ApprovalAgent",
+    "paymentAfterApproval": "PaymentProcessingAgent executes only after ApprovalAgent succeeds",
+    "totalProcessingTimeUnder60s": "Sum of agent timeouts = 4+8+2+12+15+4+4 = 49 seconds (< 60s)",
+    "handleApprovedAndRejected": "Both the APPROVE and REJECT paths are implemented",
+    "loggingAtEachStep": "Each agent records an audit log entry (timestamped) as part of its output payload",
+    "noCircularDependencies": "The workflow is a directed acyclic graph; HumanEscalationAgent is a sink with no outgoing edges",
+    "humanEscalationPath": "HumanEscalationAgent is reachable from any agent via its fallback, providing a human review path for edge cases",
+    "timeoutForEachAgent": "All agents have an explicit timeout value (seconds) defined"
+  }
+}
+```

@@ -1,0 +1,73 @@
+```json
+{
+  "weeks": [
+    {
+      "week": 1,
+      "topic": "Python Fundamentals and Basic Syntax",
+      "objectives": [
+        "Declare and manipulate variables using proper naming conventions and primitive data types (int, float, string, bool)",
+        "Apply arithmetic, comparison, and logical operators to perform calculations and evaluations",
+        "Implement basic input/output operations using built-in print() and input() functions"
+      ],
+      "assignment": "Build an interactive unit converter (temperature or currency) that accepts user input, validates numeric data, and displays formatted results",
+      "prerequisites": []
+    },
+    {
+      "week": 2,
+      "topic": "Control Flow and Functions",
+      "objectives": [
+        "Implement conditional logic using if/elif/else statements and boolean expressions",
+        "Create and control iteration using for loops, while loops, and loop control statements (break, continue)",
+        "Define reusable functions with parameters, default arguments, and return values"
+      ],
+      "assignment": "Create a number guessing game featuring difficulty levels, attempt limits, and a scoring system that tracks user statistics across multiple rounds",
+      "prerequisites": ["Week 1"]
+    },
+    {
+      "week": 3,
+      "topic": "Data Structures and Collections",
+      "objectives": [
+        "Manipulate ordered collections including lists, tuples, and sets using indexing and slicing",
+        "Utilize dictionaries for efficient key-value pair storage and retrieval operations",
+        "Apply list comprehensions and dictionary methods to transform and filter data"
+      ],
+      "assignment": "Develop a contact management system that stores searchable contact records, supports adding/removing entries, and exports formatted contact lists using dictionaries and nested data structures",
+      "prerequisites": ["Week 1", "Week 2"]
+    },
+    {
+      "week": 4,
+      "topic": "Object-Oriented Programming and Error Handling",
+      "objectives": [
+        "Design and instantiate classes with attributes, methods, and constructors (__init__)",
+        "Implement inheritance hierarchies, method overriding, and polymorphic behavior",
+        "Handle runtime errors using try/except/finally blocks and specific exception types",
+        "Create and raise custom exception classes for domain-specific error conditions"
+      ],
+      "assignment": "Construct a library management system featuring Book and Library classes with inheritance (e.g., DigitalBook extends Book), custom exceptions for invalid ISBNs or unavailable books, and catalog management methods",
+      "prerequisites": ["Week 1", "Week 2", "Week 3"]
+    },
+    {
+      "week": 5,
+      "topic": "File I/O, Modules and Testing",
+      "objectives": [
+        "Read from and write to text files and JSON files using context managers (with statement)",
+        "Write and execute unit tests using pytest or unittest frameworks with assertions and fixtures",
+        "Organize code into reusable modules and packages with proper import statements"
+      ],
+      "assignment": "Create a persistent note-taking application that saves/loads notes to JSON files, includes a comprehensive test suite with minimum 80% coverage, and utilizes modular architecture separating data access from business logic",
+      "prerequisites": ["Week 1", "Week 2", "Week 3", "Week 4"]
+    },
+    {
+      "week": 6,
+      "topic": "Capstone Project: Real-World Application Development",
+      "objectives": [
+        "Integrate variables, data structures, OOP principles, file I/O, and error handling into a cohesive application",
+        "Implement defensive programming techniques including input validation and comprehensive exception handling",
+        "Develop and execute a full test suite while documenting code with docstrings and comments"
+      ],
+      "assignment": "Develop a complete Task Management System featuring user authentication, project organization with classes, persistent JSON storage, command-line interface, error handling for all edge cases, and a full suite of unit tests",
+      "prerequisites": ["Week 1", "Week 2", "Week 3", "Week 4", "Week 5"]
+    }
+  ]
+}
+```

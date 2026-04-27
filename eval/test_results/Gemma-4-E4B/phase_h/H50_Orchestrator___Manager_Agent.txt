@@ -1,0 +1,91 @@
+```json
+{
+  "agents": [
+    {
+      "name": "Triage_Validation_Agent",
+      "input": "Raw_Refund_Request",
+      "output": "Validated_Request_Data",
+      "next": "Audit_Logging_Agent",
+      "fallback": "Notify_Customer_Invalid_Request",
+      "timeout": "10s",
+      "description": "Checks for completeness, required fields, and basic eligibility (e.g., within return window)."
+    },
+    {
+      "name": "Audit_Logging_Agent",
+      "input": "Validated_Request_Data",
+      "output": "Audited_Request_Data",
+      "next": "Fraud_Check_Agent",
+      "fallback": "Human_Escalation_Audit_Failure",
+      "timeout": "5s",
+      "description": "Logs the validated request state to the audit trail before critical checks."
+    },
+    {
+      "name": "Fraud_Check_Agent",
+      "input": "Audited_Request_Data",
+      "output": "Fraud_Score_Result",
+      "next": "Approval_Decision_Agent",
+      "fallback": "Human_Escalation_Fraud_Review",
+      "timeout": "15s",
+      "description": "Runs the request through risk scoring models. Routes based on score."
+    },
+    {
+      "name": "Approval_Decision_Agent",
+      "input": "Fraud_Score_Result",
+      "output": "Decision_Status",
+      "next": "Payment_Processing_Agent",
+      "conditional_branch": {
+        "condition": "Fraud_Score_Result.risk_level == 'LOW'",
+        "if_true": "Payment_Processing_Agent",
+        "if_false": "Notify_Customer_Rejected_Request"
+      },
+      "fallback": "Human_Escalation_Approval_Review",
+      "timeout": "10s",
+      "description": "Applies business rules (e.g., amount limits, policy adherence) to approve or reject the refund."
+    },
+    {
+      "name": "Payment_Processing_Agent",
+      "input": "Decision_Status",
+      "output": "Payment_Transaction_ID",
+      "next": "Final_Audit_Logging_Agent",
+      "fallback": "Human_Escalation_Payment_Failure",
+      "timeout": "20s",
+      "description": "Interacts with the payment gateway to execute the refund."
+    },
+    {
+      "name": "Final_Audit_Logging_Agent",
+      "input": "Payment_Transaction_ID",
+      "output": "Final_Audit_Record",
+      "next": "Notification_Agent",
+      "fallback": "Human_Escalation_Audit_Failure",
+      "timeout": "5s",
+      "description": "Logs the final outcome (success/failure) of the payment transaction."
+    },
+    {
+      "name": "Notification_Agent",
+      "input": "Final_Audit_Record",
+      "output": "Notification_Sent_Confirmation",
+      "next": "END",
+      "fallback": "System_Alert_Notification_Failure",
+      "timeout": "10s",
+      "description": "Sends the final status update (success or rejection) to the customer."
+    }
+  ],
+  "constraints": {
+    "minimum_agents": 7,
+    "required_agents_present": [
+      "Triage_Validation_Agent",
+      "Fraud_Check_Agent",
+      "Approval_Decision_Agent",
+      "Payment_Processing_Agent",
+      "Notification_Agent"
+    ],
+    "conditional_branch_used": true,
+    "total_estimated_time": "60s (Max)",
+    "escalation_paths_defined": true,
+    "logging_points": [
+      "Audit_Logging_Agent",
+      "Final_Audit_Logging_Agent"
+    ]
+  }
+}
+```
