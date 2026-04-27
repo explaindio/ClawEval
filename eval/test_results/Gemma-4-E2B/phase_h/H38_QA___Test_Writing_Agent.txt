@@ -1,0 +1,109 @@
+```python
+def is_valid_password(password):
+    """
+    Checks if a given password meets all specified complexity rules.
+    """
+    # Rule 1 & 2: Length check (8 to 64 characters)
+    if not (8 <= len(password) <= 64):
+        return False
+
+    # Rule 6: No spaces allowed
+    if ' ' in password:
+        return False
+
+    # Rule 7: Cannot start with a digit
+    if password[0].isdigit():
+        return False
+
+    # Rule 9: Cannot contain the word "password" (case-insensitive)
+    if "password" in password.lower():
+        return False
+
+    # Rule 8: Cannot contain more than 3 consecutive identical characters
+    for i in range(len(password) - 3):
+        if password[i] == password[i+1] == password[i+2] == password[i+3]:
+            return False
+
+    # Rule 3: Contains at least 1 lowercase letter
+    if not any(c.islower() for c in password):
+        return False
+
+    # Rule 2: Contains at least 1 uppercase letter
+    if not any(c.isupper() for c in password):
+        return False
+
+    # Rule 4: Contains at least 1 digit
+    if not any(c.isdigit() for c in password):
+        return False
+
+    # Rule 5: Contains at least 1 special character from: !@#$%^&*()-_+ =
+    special_chars = "!@#$%^&*()-+="
+    if not any(c in special_chars for c in password):
+        return False
+
+    # If all checks pass
+    return True
+
+def run_tests():
+    """
+    Runs 15 test cases for the is_valid_password function.
+    Returns a list of tuples [(input, expected, actual), ...]
+    """
+    test_cases = [
+        # --- Valid Passwords (Expected: True) ---
+        ("P@ssw0rd1", True),  # Basic valid
+        ("LongP@ssw0rd1234567890123456789012345678901234567890", True), # Long valid (64 chars)
+        ("Abc1!def", True), # Shortest valid (8 chars)
+        ("XyZ9#aBcD", True), # Complex mix
+        ("aB1@cDeF", True), # Valid mix
+
+        # --- Invalid Passwords (Expected: False) ---
+
+        # Rule 1: Length
+        ("Short1!", False), # Too short (7 chars)
+        ("ThisIsWayTooLongForAnyPasswordRule64Chars", False), # Too long (> 64 chars)
+
+        # Rule 6: Spaces
+        ("Invalid Password", False),
+
+        # Rule 7: Starts with digit
+        ("1Password!", False),
+
+        # Rule 9: Contains "password"
+        ("MyPassword123!", False),
+        ("password123!", False),
+
+        # Rule 3: No lowercase
+        ("UPPERCASE1@!", False),
+
+        # Rule 2: No uppercase
+        ("lowercase1@!", False),
+
+        # Rule 4: No digit
+        ("NoDigits@!", False),
+
+        # Rule 5: No special character
+        ("NoSpecialChars123", False),
+
+        # Rule 8: Too many consecutive identical characters (4 'a's)
+        ("Abc1!aaaa", False),
+        ("1111@abc", False),
+
+        # Combined failure case (Too short AND no special char)
+        ("Abc123", False),
+    ]
+
+    results = []
+    for password, expected in test_cases:
+        actual = is_valid_password(password)
+        results.append((password, expected, actual))
+
+    return results
+
+if __name__ == '__main__':
+    test_results = run_tests()
+    print("--- Test Results ---")
+    for input_p, expected, actual in test_results:
+        status = "PASS" if expected == actual else "FAIL"
+        print(f"Input: '{input_p}' | Expected: {expected} | Actual: {actual} | Status: {status}")
+```

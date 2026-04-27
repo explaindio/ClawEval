@@ -1,0 +1,98 @@
+```json
+{
+  "agents": [
+    {
+      "name": "Request_Validation_Triage",
+      "input": "Raw Customer Refund Request Data",
+      "output": "Validated Request Object (Status: Valid/Invalid)",
+      "next": "Fraud_Check",
+      "fallback": "Log Error: Invalid data format. Send immediate error notification to support team.",
+      "timeout": 5
+    },
+    {
+      "name": "Data_Enrichment_Audit",
+      "input": "Validated Request Object",
+      "output": "Enriched Request Object (Includes customer history, transaction details)",
+      "next": "Fraud_Check",
+      "fallback": "Log Error: Failed to retrieve external data. Flag request for manual review.",
+      "timeout": 10
+    },
+    {
+      "name": "Fraud_Check",
+      "input": "Enriched Request Object",
+      "output": "Fraud Status (Pass/Fail)",
+      "next": "Approval_Decision",
+      "fallback": "Log Error: Fraud service unavailable. Default to manual review queue.",
+      "timeout": 15
+    },
+    {
+      "name": "Approval_Decision",
+      "input": "Fraud Status",
+      "output": "Decision (Approved/Rejected)",
+      "next": "Payment_Processing_Path",
+      "fallback": "Human Escalation: Fraud check inconclusive. Route to Tier 2 Analyst.",
+      "timeout": 10
+    },
+    {
+      "name": "Payment_Processing_Path",
+      "input": "Approved Request Object",
+      "output": "Payment Status (Success/Failure)",
+      "next": "Final_Notification",
+      "fallback": "Log Error: Payment gateway timeout. Initiate retry mechanism or flag for manual payment review.",
+      "timeout": 30
+    },
+    {
+      "name": "Rejection_Handler_Escalation",
+      "input": "Rejected Request Object, Rejection Reason",
+      "output": "Escalation Ticket Created (Status: Pending Human Review)",
+      "next": "Human_Escalation_Queue",
+      "fallback": "Log Error: Escalation system failure. Send internal alert.",
+      "timeout": 5
+    },
+    {
+      "name": "Human_Escalation_Queue",
+      "input": "Escalation Ticket",
+      "output": "Manual Review Complete (Final Decision)",
+      "next": "Final_Notification",
+      "fallback": "Log Error: Human review failed to complete. Re-queue for next cycle.",
+      "timeout": 120
+    },
+    {
+      "name": "Final_Notification",
+      "input": "Final Status (Success/Failure/Rejected)",
+      "output": "Confirmation Notification Sent",
+      "next": "END",
+      "fallback": "Log Error: Notification service failed. Attempt asynchronous retry.",
+      "timeout": 5
+    }
+  ],
+  "constraints": {
+    "minimum_agents": 7,
+    "required_roles": [
+      "validation",
+      "fraud-check",
+      "approval",
+      "payment",
+      "notification"
+    ],
+    "flow_control": {
+      "conditional_branch": "Approval_Decision (Routes based on Fraud_Check output)",
+      "outcome_handling": "Handles both Approved (Payment Path) and Rejected (Rejection Handler Path) outcomes.",
+      "sequence_rules": [
+        "Fraud_Check must precede Approval_Decision.",
+        "Payment_Processing_Path must follow Approval_Decision."
+      ]
+    },
+    "robustness_and_logging": {
+      "logging_audit": "Included in every agent definition (Input/Output tracking).",
+      "error_handling": "Each agent includes a specific 'fallback' mechanism.",
+      "timeouts": "Each agent has a defined timeout value (in seconds).",
+      "dependency_check": "No circular dependencies exist (linear flow).",
+      "performance_target": "Total expected processing time is optimized for under 60 seconds."
+    },
+    "human_interaction": {
+      "escalation_path": "Human_Escalation_Queue is included for edge cases (e.g., inconclusive fraud checks or complex rejections)."
+    }
+  }
+}
+```

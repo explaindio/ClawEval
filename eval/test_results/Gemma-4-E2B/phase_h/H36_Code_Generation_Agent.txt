@@ -1,0 +1,61 @@
+```python
+def merge_overlapping(intervals):
+    if not intervals:
+        return []
+
+    intervals.sort(key=lambda x: x[0])
+
+    merged = []
+    current_start, current_end = intervals[0]
+
+    for next_start, next_end in intervals[1:]:
+        if next_start <= current_end:
+            current_end = max(current_end, next_end)
+        else:
+            merged.append([current_start, current_end])
+            current_start, current_end = next_start, next_end
+
+    merged.append([current_start, current_end])
+    return merged
+
+def eval_rpn(tokens):
+    stack = []
+    for token in tokens:
+        if token.replace('.', '', 1).isdigit() or (token.startswith('-') and token[1:].replace('.', '', 1).isdigit()):
+            stack.append(int(token))
+        elif token in ('+', '-', '*', '/'):
+            if len(stack) < 2:
+                # Handle error case if needed, but assuming valid RPN input
+                continue
+
+            operand2 = stack.pop()
+            operand1 = stack.pop()
+
+            if token == '+':
+                result = operand1 + operand2
+            elif token == '-':
+                result = operand1 - operand2
+            elif token == '*':
+                result = operand1 * operand2
+            elif token == '/':
+                # Truncate toward zero (standard Python int() behavior for division)
+                if operand2 == 0:
+                    # Handle division by zero if necessary, though problem implies valid math
+                    return 0
+                result = int(operand1 / operand2)
+
+            stack.append(result)
+    
+    if len(stack) == 1:
+        return stack[0]
+    return 0
+
+def deep_flatten(nested):
+    result = []
+    for element in nested:
+        if isinstance(element, (list, tuple)):
+            result.extend(deep_flatten(element))
+        elif isinstance(element, int):
+            result.append(element)
+    return result
+```

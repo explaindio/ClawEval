@@ -1,0 +1,77 @@
+```json
+{
+  "bugs": [
+    {
+      "line": 12,
+      "bug": "Incorrect discount calculation logic. It calculates 20% of the subtotal instead of applying a 20% discount (subtotal = subtotal * 0.80).",
+      "severity": "major"
+    },
+    {
+      "line": 14,
+      "bug": "Incorrect discount calculation logic. Subtracting 10 times the subtotal results in a massive negative number, not a 10% discount.",
+      "severity": "major"
+    },
+    {
+      "line": 22,
+      "bug": "Failure to handle negative inventory stock. The code silently ignores negative stock levels instead of raising an error or skipping the order.",
+      "severity": "major"
+    },
+    {
+      "line": 31,
+      "bug": "Syntax error/Incorrect operator usage. The assignment operator is misused (should be `total_revenue += total`).",
+      "severity": "critical"
+    },
+    {
+      "line": 34,
+      "bug": "Potential ZeroDivisionError. If the input list `orders` is empty, this line will crash.",
+      "severity": "critical"
+    },
+    {
+      "line": 35,
+      "bug": "Potential ValueError. If no orders were processed, the generator expression for `max()` will fail on an empty sequence.",
+      "severity": "major"
+    },
+    {
+      "line": 46,
+      "bug": "Insufficient email validation. Only checks for the presence of '@', allowing invalid email formats (e.g., 'a@b').",
+      "severity": "minor"
+    },
+    {
+      "line": 53,
+      "bug": "Shipping calculation error. The distance is added directly instead of being multiplied by `per_km` (unit mismatch).",
+      "severity": "major"
+    },
+    {
+      "line": 57,
+      "bug": "Unreachable code/Logical flaw. The `elif weight > 50:` condition is logically unreachable because any weight greater than 50 would have already satisfied the preceding `if weight > 30:` condition.",
+      "severity": "minor"
+    },
+    {
+      "line": 60,
+      "bug": "Loss of precision. Using `round()` on financial calculations can lead to rounding errors and loss of necessary decimal precision.",
+      "severity": "minor"
+    },
+    {
+      "line": 63,
+      "bug": "Reference bug/Side effect. Assigning `merged = profile_a` creates a reference, meaning modifications to `merged` will unintentionally modify the original `profile_a` object.",
+      "severity": "major"
+    },
+    {
+      "line": 67,
+      "bug": "Hardcoded value. The 'updated_at' timestamp is hardcoded, which is poor practice for dynamic data.",
+      "severity": "minor"
+    },
+    {
+      "line": 71,
+      "bug": "Fragile CSV parsing. Using simple `split(',')` fails if fields contain commas or are enclosed in quotes, leading to incorrect data parsing.",
+      "severity": "major"
+    },
+    {
+      "line": 78,
+      "bug": "Flawed duplicate detection logic. The `seen` list is incorrectly updated, leading to incorrect identification of duplicates.",
+      "severity": "major"
+    }
+  ],
+  "count": 15
+}
+```

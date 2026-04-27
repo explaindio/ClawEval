@@ -1,0 +1,22 @@
+```json
+{
+  "vulnerabilities": [
+    {"type": "Hardcoded Credentials", "location": "Line 6 (SECRET variable)", "severity": "critical"},
+    {"type": "SQL Injection", "location": "Line 17 (login function)", "severity": "critical"},
+    {"type": "Plaintext Password Storage", "location": "Line 17 (login function)", "severity": "high"},
+    {"type": "Use of Weak Cryptographic Hash (MD5)", "location": "Line 20 (login function)", "severity": "medium"},
+    {"type": "Insecure Token Generation/Predictable Token", "location": "Line 20 (login function)", "severity": "high"},
+    {"type": "Server-Side Template Injection (SSTI)", "location": "Line 25 (profile function)", "severity": "critical"},
+    {"type": "Reflected Cross-Site Scripting (XSS)", "location": "Line 31 (search function)", "severity": "high"},
+    {"type": "Command Injection", "location": "Line 36 (run_command function)", "severity": "critical"},
+    {"type": "Path Traversal (File Write)", "location": "Line 42 (upload function)", "severity": "high"},
+    {"type": "Unrestricted File Upload", "location": "Line 42 (upload function)", "severity": "high"},
+    {"type": "Path Traversal (File Read)", "location": "Line 48 (download function)", "severity": "high"},
+    {"type": "Insecure Deserialization (YAML)", "location": "Line 54 (load_config function)", "severity": "critical"},
+    {"type": "Insecure Deserialization (Pickle)", "location": "Line 60 (restore_session function)", "severity": "critical"},
+    {"type": "Command Injection", "location": "Line 73 (export_data function)", "severity": "critical"},
+    {"type": "Debug Mode Enabled", "location": "Line 78 (__main__ block)", "severity": "high"}
+  ],
+  "count": 15
+}
+```

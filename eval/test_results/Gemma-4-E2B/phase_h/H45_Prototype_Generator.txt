@@ -1,0 +1,187 @@
+```python
+class JSONValidator:
+    """
+    Validates JSON-like data (a dictionary) against a defined schema.
+    No external imports are used.
+    """
+
+    def validate(self, data, schema):
+        """
+        Validates the input data against the provided schema.
+
+        Args:
+            data (dict): The data structure to validate.
+            schema (dict): The validation schema.
+
+        Returns:
+            dict: {"valid": bool, "errors": list of error strings}
+        """
+        errors = []
+
+        for field_name, rules in schema.items():
+            expected_type = rules.get("type")
+            is_required = rules.get("required", False)
+
+            # --- 1. Check Presence (Required Check) ---
+            if field_name not in data:
+                if is_required:
+                    errors.append(f"Missing required field: '{field_name}'")
+                # If not required and missing, we skip further checks for this field.
+                continue
+
+            # If the field is present, proceed with type and constraint checks
+            value = data[field_name]
+
+            # --- 2. Check Type Match ---
+            type_match = False
+            if expected_type == "str" and isinstance(value, str):
+                type_match = True
+            elif expected_type == "int" and isinstance(value, int):
+                type_match = True
+            elif expected_type == "float" and isinstance(value, float):
+                type_match = True
+            elif expected_type == "bool" and isinstance(value, bool):
+                type_match = True
+            elif expected_type == "list" and isinstance(value, list):
+                type_match = True
+            elif expected_type == "dict" and isinstance(value, dict):
+                type_match = True
+
+            if not type_match:
+                errors.append(
+                    f"Field '{field_name}' has incorrect type. Expected '{expected_type}', got '{type(value).__name__}'."
+                )
+                # If the type is wrong, we cannot perform further constraints on it, so skip.
+                continue
+
+            # --- 3. Check Constraints (Only if type matches) ---
+
+            if expected_type == "str":
+                min_len = rules.get("min_length")
+                max_len = rules.get("max_length")
+
+                if min_len is not None and len(value) < min_len:
+                    errors.append(f"String '{field_name}' is too short. Minimum length is {min_len}.")
+                if max_len is not None and len(value) > max_len:
+                    errors.append(f"String '{field_name}' is too long. Maximum length is {max_len}.")
+
+            elif expected_type in ["int", "float"]:
+                min_val = rules.get("min")
+                max_val = rules.get("max")
+
+                if min_val is not None and value < min_val:
+                    errors.append(f"Field '{field_name}' value ({value}) is below minimum allowed value ({min_val}).")
+                if max_val is not None and value > max_val:
+                    errors.append(f"Field '{field_name}' value ({value}) is above maximum allowed value ({max_val}).")
+
+            elif expected_type == "list":
+                min_len = rules.get("min_length")
+                max_len = rules.get("max_length")
+                
+                if min_len is not None and len(value) < min_len:
+                    errors.append(f"List '{field_name}' is too short. Minimum length is {min_len}.")
+                if max_len is not None and len(value) > max_len:
+                    errors.append(f"List '{field_name}' is too long. Maximum length is {max_len}.")
+
+            # Note: For 'dict' and 'bool', no further constraints were specified in the requirements.
+
+
+        # --- 4. Return Result ---
+        if errors:
+            return {"valid": False, "errors": errors}
+        else:
+            return {"valid": True, "errors": []}
+
+# --- Example Usage ---
+
+if __name__ == "__main__":
+    validator = JSONValidator()
+
+    # Define a complex schema
+    validation_schema = {
+        "user_id": {
+            "type": "int",
+            "required": True,
+            "min": 1000,
+            "max": 99999
+        },
+        "username": {
+            "type": "str",
+            "required": True,
+            "min_length": 3,
+            "max_length": 20
+        },
+        "age": {
+            "type": "int",
+            "required": False,
+            "min": 18,
+            "max": 120
+        },
+        "is_active": {
+            "type": "bool",
+            "required": True
+        },
+        "tags": {
+            "type": "list",
+            "required": False,
+            "min_length": 1,
+            "max_length": 5
+        },
+        "metadata": {
+            "type": "dict",
+            "required": False
+        }
+    }
+
+    # --- Test Case 1: Valid Data ---
+    valid_data = {
+        "user_id": 5000,
+        "username": "Alice",
+        "is_active": True,
+        "age": 30,
+        "tags": ["a", "b"],
+        "metadata": {"source": "web"}
+    }
+    print("--- Test Case 1: Valid Data ---")
+    result1 = validator.validate(valid_data, validation_schema)
+    print(result1)
+    print("-" * 30)
+
+
+    # --- Test Case 2: Invalid Data (Multiple Errors) ---
+    invalid_data = {
+        "user_id": 50,  # Too low (min 1000)
+        "username": "A", # Too short (min 3)
+        "is_active": "yes", # Wrong type (expected bool)
+        "age": 150, # Too high (max 120)
+        # 'tags' is missing, but optional, so that's fine.
+    }
+    print("--- Test Case 2: Invalid Data ---")
+    result2 = validator.validate(invalid_data, validation_schema)
+    print(result2)
+    print("-" * 30)
+
+
+    # --- Test Case 3: Missing Required Field ---
+    missing_required_data = {
+        "username": "Bob",
+        "is_active": False
+        # user_id is missing (required)
+    }
+    print("--- Test Case 3: Missing Required Field ---")
+    result3 = validator.validate(missing_required_data, validation_schema)
+    print(result3)
+    print("-" * 30)
+
+    # --- Test Case 4: List Constraint Violation ---
+    list_violation_data = {
+        "user_id": 1000,
+        "username": "ValidUser",
+        "is_active": True,
+        "tags": ["one", "two", "three", "four", "five", "six"] # Too long (max 5)
+    }
+    print("--- Test Case 4: List Constraint Violation ---")
+    result4 = validator.validate(list_violation_data, validation_schema)
+    print(result4)
+    print("-" * 30)
+```

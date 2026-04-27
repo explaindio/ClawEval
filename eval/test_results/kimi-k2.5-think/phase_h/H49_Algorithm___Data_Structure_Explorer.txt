@@ -1,0 +1,134 @@
+```python
+class Node:
+    def __init__(self, key=0, val=0):
+        self.key = key
+        self.val = val
+        self.prev = None
+        self.next = None
+
+class LRUCache:
+    def __init__(self, capacity):
+        self.capacity = capacity
+        self.cache = {}
+        self.head = Node()
+        self.tail = Node()
+        self.head.next = self.tail
+        self.tail.prev = self.head
+    
+    def get(self, key):
+        if key in self.cache:
+            node = self.cache[key]
+            self._remove(node)
+            self._add(node)
+            return node.val
+        return -1
+    
+    def put(self, key, value):
+        if key in self.cache:
+            self._remove(self.cache[key])
+        node = Node(key, value)
+        self._add(node)
+        self.cache[key] = node
+        if len(self.cache) > self.capacity:
+            lru = self.head.next
+            self._remove(lru)
+            del self.cache[lru.key]
+    
+    def _remove(self, node):
+        prev, nxt = node.prev, node.next
+        prev.next = nxt
+        nxt.prev = prev
+    
+    def _add(self, node):
+        prev = self.tail.prev
+        prev.next = node
+        node.prev = prev
+        node.next = self.tail
+        self.tail.prev = node
+
+class MinStack:
+    def __init__(self):
+        self.stack = []
+        self.min_stack = []
+    
+    def push(self, val):
+        self.stack.append(val)
+        if not self.min_stack:
+            self.min_stack.append(val)
+        else:
+            self.min_stack.append(min(val, self.min_stack[-1]))
+    
+    def pop(self):
+        self.stack.pop()
+        self.min_stack.pop()
+    
+    def top(self):
+        return self.stack[-1]
+    
+    def get_min(self):
+        return self.min_stack[-1]
+
+def find_median(stream):
+    def sift_up(heap, idx):
+        while idx > 0:
+            parent = (idx - 1) // 2
+            if heap[parent] > heap[idx]:
+                heap[parent], heap[idx] = heap[idx], heap[parent]
+                idx = parent
+            else:
+                break
+    
+    def sift_down(heap, idx):
+        n = len(heap)
+        while True:
+            smallest = idx
+            left = 2 * idx + 1
+            right = 2 * idx + 2
+            if left < n and heap[left] < heap[smallest]:
+                smallest = left
+            if right < n and heap[right] < heap[smallest]:
+                smallest = right
+            if smallest != idx:
+                heap[idx], heap[smallest] = heap[smallest], heap[idx]
+                idx = smallest
+            else:
+                break
+    
+    def pop_heap(heap):
+        if len(heap) == 1:
+            return heap.pop()
+        root = heap[0]
+        heap[0] = heap.pop()
+        sift_down(heap, 0)
+        return root
+    
+    lowers = []  # max heap (stores negatives)
+    highers = []  # min heap
+    medians = []
+    
+    for num in stream:
+        if not lowers or num < -lowers[0]:
+            lowers.append(-num)
+            sift_up(lowers, len(lowers) - 1)
+        else:
+            highers.append(num)
+            sift_up(highers, len(highers) - 1)
+        
+        # Rebalance: lowers can have at most 1 more element than highers
+        if len(lowers) > len(highers) + 1:
+            val = -pop_heap(lowers)
+            highers.append(val)
+            sift_up(highers, len(highers) - 1)
+        elif len(highers) > len(lowers):
+            val = pop_heap(highers)
+            lowers.append(-val)
+            sift_up(lowers, len(lowers) - 1)
+        
+        if len(lowers) == len(highers):
+            median = (-lowers[0] + highers[0]) / 2.0
+        else:
+            median = float(-lowers[0])
+        medians.append(median)
+    
+    return medians
+```

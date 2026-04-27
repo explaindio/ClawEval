@@ -1,0 +1,97 @@
+```json
+{
+  "issues": [
+    {
+      "id": 1,
+      "issue": "Multiple H1 tags present (\"Best Products\" and \"Shop Now\")",
+      "severity": "critical",
+      "fix": "Consolidate to a single H1 tag that describes the main page topic. Use H2 tags for subsequent sections."
+    },
+    {
+      "id": 2,
+      "issue": "Improper heading hierarchy - H2 appears before H1",
+      "severity": "major",
+      "fix": "Restructure headings to follow logical order (H1 first, then H2, H3, etc.) without skipping levels."
+    },
+    {
+      "id": 3,
+      "issue": "Missing meta description tag",
+      "severity": "critical",
+      "fix": "Add a unique meta description in the <head> section: <meta name=\"description\" content=\"Compelling description of page content\">"
+    },
+    {
+      "id": 4,
+      "issue": "Images missing alt attributes (product1.jpg, product2.jpg, banner.jpg)",
+      "severity": "major",
+      "fix": "Add descriptive alt text to all images: <img src=\"product1.jpg\" alt=\"Red running shoes with breathable mesh\">"
+    },
+    {
+      "id": 5,
+      "issue": "Hidden text/keyword stuffing detected (display:none div with 'cheap shoes buy online discount sale best price')",
+      "severity": "critical",
+      "fix": "Remove all hidden text intended to manipulate search rankings. This violates Google's Webmaster Guidelines and risks penalties."
+    },
+    {
+      "id": 6,
+      "issue": "Non-descriptive link anchor text ('Click here' used twice)",
+      "severity": "major",
+      "fix": "Replace generic text with descriptive keywords: <a href=\"...\">View Product Catalog</a> and <a href=\"...\">About Our Company</a>"
+    },
+    {
+      "id": 7,
+      "issue": "Meta keywords tag placed in body instead of head",
+      "severity": "major",
+      "fix": "Move meta tags to the <head> section, or preferably remove the keywords meta tag entirely as search engines ignore it."
+    },
+    {
+      "id": 8,
+      "issue": "Missing viewport meta tag for mobile optimization",
+      "severity": "major",
+      "fix": "Add to <head>: <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">"
+    },
+    {
+      "id": 9,
+      "issue": "Missing canonical link tag",
+      "severity": "major",
+      "fix": "Add canonical tag to prevent duplicate content issues: <link rel=\"canonical\" href=\"https://example.com/page-1234\">"
+    },
+    {
+      "id": 10,
+      "issue": "Thin content with placeholder text (Lorem ipsum)",
+      "severity": "major",
+      "fix": "Replace placeholder text with substantial, unique, and valuable content relevant to the page topic (minimum 300 words recommended)."
+    },
+    {
+      "id": 11,
+      "issue": "Non-descriptive title tag ('Home' is too generic)",
+      "severity": "major",
+      "fix": "Create unique, descriptive titles under 60 characters: <title>Buy Quality Shoes & Bags | Your Store Name</title>"
+    },
+    {
+      "id": 12,
+      "issue": "HTML element missing lang attribute",
+      "severity": "minor",
+      "fix": "Add language attribute: <html lang=\"en\"> (or appropriate language code)"
+    },
+    {
+      "id": 13,
+      "issue": "Deprecated meta keywords tag used",
+      "severity": "minor",
+      "fix": "Remove the meta keywords tag as it provides no SEO value and is ignored by major search engines."
+    },
+    {
+      "id": 14,
+      "issue": "URL contains tracking parameters without canonical reference",
+      "severity": "minor",
+      "fix": "Implement self-referencing canonical tags or use clean URLs to prevent duplicate content from URL parameters (?ref=123&utm=abc)"
+    },
+    {
+      "id": 15,
+      "issue": "Missing Open Graph meta tags for social sharing",
+      "severity": "minor",
+      "fix": "Add OG tags: <meta property=\"og:title\" content=\"...\">, <meta property=\"og:description\" content=\"...\">, and <meta property=\"og:image\" content=\"...\">"
+    }
+  ],
+  "count": 15
+}
+```

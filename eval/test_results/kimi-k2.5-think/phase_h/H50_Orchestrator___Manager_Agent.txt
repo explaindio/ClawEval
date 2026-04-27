@@ -1,0 +1,86 @@
+```json
+{
+  "agents": [
+    {
+      "name": "ValidationAgent",
+      "input": "RawRefundRequest {customer_id, order_id, amount, reason, request_timestamp, payment_method}",
+      "output": "ValidatedRequest {customer_id, order_id, amount, reason, eligibility_flags} or ValidationError",
+      "next": "FraudCheckAgent",
+      "fallback": "HumanEscalationAgent",
+      "timeout_seconds": 5
+    },
+    {
+      "name": "FraudCheckAgent",
+      "input": "ValidatedRequest",
+      "output": "RiskAssessment {risk_score: float, risk_level: 'low'|'medium'|'high', anomaly_flags: []}",
+      "next": "PolicyComplianceAgent",
+      "fallback": "HumanEscalationAgent",
+      "timeout_seconds": 10
+    },
+    {
+      "name": "PolicyComplianceAgent",
+      "input": "ValidatedRequest + RiskAssessment",
+      "output": "ComplianceResult {policy_valid: boolean, violations: [], adjusted_amount: float, within_time_window: boolean}",
+      "next": "ApprovalAgent",
+      "fallback": "HumanEscalationAgent",
+      "timeout_seconds": 5
+    },
+    {
+      "name": "ApprovalAgent",
+      "input": "ComplianceResult + RiskAssessment + ValidatedRequest",
+      "output": "Decision {status: 'approved'|'rejected', reason: string, final_amount: float, approver_id: string}",
+      "next": {
+        "approved": "PaymentAgent",
+        "rejected": "NotificationAgent"
+      },
+      "fallback": "HumanEscalationAgent",
+      "timeout_seconds": 5
+    },
+    {
+      "name": "PaymentAgent",
+      "input": "Decision {status: 'approved', final_amount, customer_id, order_id, payment_method}",
+      "output": "PaymentResult {transaction_id: string, status: 'completed'|'failed', processed_at: timestamp, gateway_response: object}",
+      "next": "NotificationAgent",
+      "fallback": "HumanEscalationAgent",
+      "timeout_seconds": 15
+    },
+    {
+      "name": "HumanEscalationAgent",
+      "input": "ErrorContext {failed_agent: string, error_message: string, original_request: object, timestamp: string}",
+      "output": "EscalationTicket {ticket_id: string, priority: 'high', assigned_team: 'manual_review', status: 'created'}",
+      "next": "NotificationAgent",
+      "fallback": "AuditOnly",
+      "timeout_seconds": 5
+    },
+    {
+      "name": "NotificationAgent",
+      "input": "FinalStatus {decision: 'approved'|'rejected'|'escalated', transaction_id?: string, ticket_id?: string, customer_id: string, amount: float, reason: string}",
+      "output": "NotificationSent {channel: 'email', delivery_status: 'sent'|'failed', timestamp: string, template_used: string}",
+      "next": null,
+      "fallback": "AuditOnly",
+      "timeout_seconds": 5
+    }
+  ],
+  "constraints": {
+    "total_agents": 7,
+    "minimum_agents_satisfied": true,
+    "required_agents_present": ["ValidationAgent", "FraudCheckAgent", "ApprovalAgent", "PaymentAgent", "NotificationAgent"],
+    "first_agent": "ValidationAgent",
+    "last_agent": "NotificationAgent",
+    "fraud_before_approval": true,
+    "payment_after_approval": true,
+    "conditional_branching": {
+      "location": "ApprovalAgent",
+      "logic": "if approved -> PaymentAgent, else -> NotificationAgent"
+    },
+    "max_total_duration_seconds": 45,
+    "timeout_compliance": "All agents define timeout_seconds (sum: 45s < 60s)",
+    "fallback_handlers": "Each agent has fallback to HumanEscalationAgent (or AuditOnly for final step)",
+    "human_escalation_path": "HumanEscalationAgent handles edge cases and failures",
+    "outcome_handling": "Supports both approved (via PaymentAgent) and rejected (direct to NotificationAgent) paths",
+    "logging_audit": "Each agent logs to immutable audit trail before output generation",
+    "no_circular_dependencies": true,
+    "dependency_chain": "ValidationAgent -> FraudCheckAgent -> PolicyComplianceAgent -> ApprovalAgent -> [PaymentAgent -> NotificationAgent | NotificationAgent]"
+  }
+}
+```

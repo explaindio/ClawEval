@@ -138,13 +138,15 @@ Phase F gave every model 8–10/10 on most roles. ClawEval v2 replaces that with
 |------|-------|----------|-------|---|---------|
 | 🥇 | **DeepSeek V4 Pro** | ☁️ DeepSeek | 1060/1220 | **86.9%** | 26 |
 | 🥈 | **DeepSeek V4 Flash** | ☁️ DeepSeek | 1054/1220 | **86.4%** | 23 |
-| 🥉 | **Qwen3.5-Plus** | ☁️ Alibaba | 1031/1220 | **84.5%** | 26 |
-| 4 | **Kimi K2.6** | ☁️ Ollama | 1028/1220 | **84.3%** | 24 |
-| 5 | **GLM-5.1** | ☁️ Ollama | 1020/1220 | **83.6%** | 26 |
-| 6 | **GPT-OSS-120B** | ☁️ Ollama | 979/1220 | **80.2%** | 19 |
-| 7 | **GLM-5 NoThink** | ☁️ Ollama | 948/1220 | **77.7%** | 25 |
-| 8 | **GLM-5 Think** | ☁️ Ollama | 927/1220 | **76.0%** | 23 |
-| 9 | **LFM2.5-350M** | 🖥️ Local | 308/1220 | **25.2%** | 2 |
+| 3 | **Kimi K2.5 Think** | ☁️ Ollama | 1048/1220 | **85.9%** | 24 |
+| 4 | **Qwen3.5-Plus** | ☁️ Alibaba | 1031/1220 | **84.5%** | 26 |
+| 5 | **Kimi K2.6** | ☁️ Ollama | 1028/1220 | **84.3%** | 24 |
+| 6 | **GLM-5.1** | ☁️ Ollama | 1020/1220 | **83.6%** | 26 |
+| 7 | **Gemma-4-E2B** | 🖥️ Local | 981/1220 | **80.4%** | 17 |
+| 8 | **GPT-OSS-120B** | ☁️ Ollama | 979/1220 | **80.2%** | 19 |
+| 9 | **GLM-5 NoThink** | ☁️ Ollama | 948/1220 | **77.7%** | 25 |
+| 10 | **GLM-5 Think** | ☁️ Ollama | 927/1220 | **76.0%** | 23 |
+| 11 | **LFM2.5-350M** | 🖥️ Local | 308/1220 | **25.2%** | 2 |
 
 > All models scored on **59/59 tests** with **zero infrastructure failures**. Full results: **[ClawEval v2 →](docs/results-phase-h.md)**
 

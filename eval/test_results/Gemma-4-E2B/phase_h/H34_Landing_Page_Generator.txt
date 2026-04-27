@@ -1,0 +1,246 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- Constraint 11: Mobile-responsive viewport meta tag -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Constraint 8: Meta description tag -->
+    <meta name="description" content="QuillAI is the ultimate AI writing assistant. Generate stunning content, articles, and marketing copy in seconds. Start writing smarter today!">
+    <!-- Constraint 9: Title tag containing "QuillAI" -->
+    <title>QuillAI - The AI Writing Assistant</title>
+    <style>
+        /* Basic CSS for structure and responsiveness (Simulated styling) */
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f4f7f9; color: #333; }
+        header { background-color: #ffffff; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        nav { display: flex; justify-content: space-between; align-items: center; padding: 15px 5%; }
+        nav ul { list-style: none; margin: 0; padding: 0; display: flex; }
+        nav ul li { margin-left: 25px; }
+        nav ul li a { text-decoration: none; color: #333; font-weight: bold; transition: color 0.3s; }
+        nav ul li a:hover { color: #007bff; }
+        .container { width: 90%; max-width: 1200px; margin: 0 auto; padding: 20px 0; }
+        section { padding: 60px 0; }
+        h1, h2 { color: #1a237e; text-align: center; margin-bottom: 40px; }
+        /* Hero Section */
+        #hero { background-color: #e3f2fd; text-align: center; padding: 100px 20px; }
+        #hero h1 { font-size: 3em; margin-bottom: 15px; }
+        #hero p { font-size: 1.2em; margin-bottom: 30px; }
+        .cta-button { display: inline-block; padding: 12px 30px; margin: 10px; border-radius: 5px; text-decoration: none; font-weight: bold; transition: background-color 0.3s; }
+        .cta-primary { background-color: #007bff; color: white; }
+        .cta-secondary { background-color: #28a745; color: white; }
+
+        /* Features */
+        .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; text-align: center; }
+        .feature-card { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.05); }
+        .feature-card h3 { color: #007bff; }
+
+        /* Pricing */
+        .pricing-grid { display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; }
+        .price-card { background: white; padding: 30px; border-radius: 8px; width: 300px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); text-align: center; }
+        .price-card h3 { color: #1a237e; }
+        .price { font-size: 2.5em; color: #007bff; margin: 15px 0; }
+
+        /* Testimonials */
+        .testimonial-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .testimonial-card { background: #f9f9f9; padding: 20px; border-left: 5px solid #007bff; border-radius: 5px; }
+
+        /* How It Works */
+        .steps-grid { display: flex; justify-content: space-around; text-align: center; }
+        .step { flex: 1; padding: 20px; }
+
+        /* Comparison (Constraint 20) */
+        .comparison-table { width: 100%; border-collapse: collapse; margin-top: 30px; }
+        .comparison-table th, .comparison-table td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+        .comparison-table th { background-color: #f2f2f2; }
+        .before-after { background-color: #fff3e0; padding: 20px; border-radius: 8px; margin-top: 20px; text-align: center; }
+
+        /* FAQ */
+        .faq-item { margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+        .faq-question { font-weight: bold; cursor: pointer; color: #1a237e; }
+        .faq-answer { margin-top: 10px; padding-left: 15px; }
+
+        /* Footer */
+        footer { background-color: #333; color: white; padding: 40px 0; text-align: center; }
+        footer a { color: #007bff; margin: 0 10px; text-decoration: none; }
+        footer .social-links a { color: white; margin: 0 10px; font-size: 1.5em; }
+    </style>
+</head>
+<body>
+
+    <!-- Constraint 15: Semantic Header -->
+    <header>
+        <!-- Constraint 2: Navigation Bar -->
+        <nav>
+            <div class="logo">QuillAI</div>
+            <ul>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#pricing">Pricing</a></li>
+                <li><a href="#testimonials">Testimonials</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Constraint 1: Hero Section -->
+        <section id="hero">
+            <h1>Unleash Your Creativity with AI Writing Power</h1>
+            <p>QuillAI uses cutting-edge artificial intelligence to generate flawless articles, compelling marketing copy, and creative content instantly.</p>
+            <!-- Constraint 12: CTA Button 1 -->
+            <a href="#pricing" class="cta-button cta-primary">Start Free Trial</a>
+            <!-- Constraint 12: CTA Button 2 -->
+            <a href="#contact" class="cta-button cta-secondary">Get Started Now</a>
+        </section>
+
+        <!-- Constraint 14: How it Works Section -->
+        <section id="how-it-works">
+            <div class="container">
+                <h2>How QuillAI Works</h2>
+                <div class="steps-grid">
+                    <div class="step">
+                        <span aria-label="Step 1 Icon">✍️</span>
+                        <h3>1. Input Your Idea</h3>
+                        <p>Simply provide a topic, tone, and length requirements for your content.</p>
+                    </div>
+                    <div class="step">
+                        <span aria-label="Step 2 Icon">🧠</span>
+                        <h3>2. AI Generates</h3>
+                        <p>Our advanced AI models craft unique, high-quality drafts tailored to your specifications.</p>
+                    </div>
+                    <div class="step">
+                        <span aria-label="Step 3 Icon">✨</span>
+                        <h3>3. Refine & Publish</h3>
+                        <p>Edit the output, customize it, and publish professional-grade content instantly.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Constraint 20: Comparison/Before/After Element -->
+        <section id="comparison" style="background-color: #f4f7f9;">
+            <div class="container">
+                <h2>Before QuillAI: Manual Writing vs. AI Assistance</h2>
+                <div class="before-after">
+                    <p><strong>Before:</strong> Hours spent staring at a blank screen, struggling with writer's block, and endless revisions.</p>
+                    <p><strong>After:</strong> Minutes spent refining AI-generated drafts, focusing only on strategy and final polish.</p>
+                </div>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th>Manual Writing</th>
+                            <th>QuillAI AI Assistant</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Speed</td>
+                            <td>Slow (Hours/Days)</td>
+                            <td>Instant (Seconds)</td>
+                        </tr>
+                        <tr>
+                            <td>Consistency</td>
+                            <td>Variable</td>
+                            <td>High (Consistent Tone)</td>
+                        </tr>
+                        <tr>
+                            <td>Cost</td>
+                            <td>High (Freelancer fees)</td>
+                            <td>Low (Subscription based)</td>
+                        </tr>
+                        <tr>
+                            <td>Overcoming Block</td>
+                            <td>Difficult</td>
+                            <td>Easy (Instant Drafts)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Constraint 3: Features Section -->
+        <section id="features">
+            <div class="container">
+                <h2>Powerful Features Built for Writers</h2>
+                <div class="feature-grid">
+                    <!-- Feature Card 1 -->
+                    <article class="feature-card">
+                        <div aria-label="Icon for Grammar Check">💡</div>
+                        <h3>Flawless Grammar Check</h3>
+                        <p>Eliminate errors instantly. QuillAI ensures your content is grammatically perfect before publishing.</p>
+                    </article>
+                    <!-- Feature Card 2 -->
+                    <article class="feature-card">
+                        <div aria-label="Icon for SEO">🔍</div>
+                        <h3>SEO Optimization</h3>
+                        <p>Generate content optimized for search engines, boosting your visibility and organic traffic.</p>
+                    </article>
+                    <!-- Feature Card 3 -->
+                    <article class="feature-card">
+                        <div aria-label="Icon for Tone">🎭</div>
+                        <h3>Tone Customization</h3>
+                        <p>Switch effortlessly between professional, casual, witty, or academic tones.</p>
+                    </article>
+                    <!-- Feature Card 4 -->
+                    <article class="feature-card">
+                        <div aria-label="Icon for Speed">⚡</div>
+                        <h3>Lightning Fast Generation</h3>
+                        <p>Produce long-form articles and social media posts in a fraction of the time.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- Constraint 4: Pricing Section -->
+        <section id="pricing" style="background-color: #e3f2fd;">
+            <div class="container">
+                <h2>Simple, Transparent Pricing</h2>
+                <div class="pricing-grid">
+                    <!-- Tier 1: Free -->
+                    <div class="price-card">
+                        <h3>Free</h3>
+                        <p class="price">$0<span style="font-size: 0.5em;">/mo</span></p>
+                        <ul>
+                            <li>Limited content generation</li>
+                            <li>Basic grammar checks</li>
+                            <li>Standard templates</li>
+                            <li>5 projects per month</li>
+                        </ul>
+                        <a href="#contact" class="cta-button cta-primary">Start Free Trial</a>
+                    </div>
+                    <!-- Tier 2: Pro (Recommended) -->
+                    <div class="price-card" style="border: 2px solid #007bff;">
+                        <h3>Pro</h3>
+                        <p class="price">$29<span style="font-size: 0.5em;">/mo</span></p>
+                        <ul>
+                            <li>Unlimited content generation</li>
+                            <li>Advanced SEO tools</li>
+                            <li>Full tone customization</li>
+                            <li>Priority support</li>
+                        </ul>
+                        <a href="#contact" class="cta-button cta-primary">Get Started</a>
+                    </div>
+                    <!-- Tier 3: Enterprise -->
+                    <div class="price-card">
+                        <h3>Enterprise</h3>
+                        <p class="price">Custom</p>
+                        <ul>
+                            <li>Everything in Pro</li>
+                            <li>API access</li>
+                            <li>Dedicated account manager</li>
+                            <li>Custom AI model training</li>
+                        </ul>
+                        <a href="#contact" class="cta-button cta-secondary">Contact Sales</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Constraint 5: Testimonials Section -->
+        <section id="testimonials">
+            <div class="container">
+                <h2>What Our Users Say</h2>
+                <div class="testimonial-grid">
+                    <!-- Testimonial 1 -->
+                    <blockquote class="testimonial-card">
+                        <p>"QuillAI transformed our content workflow. We cut our drafting time by 60% and the quality of our blog posts has never

@@ -1,0 +1,82 @@
+```json
+{
+  "bugs": [
+    {
+      "line": "8",
+      "bug": "Shared list `self.requests` is not protected by an asyncio.Lock, causing race conditions when multiple coroutines concurrently modify the list during acquire/release operations.",
+      "fix": "Add `self._lock = asyncio.Lock()` in `__init__` and wrap the logic in `async with self._lock:` in the `acquire` method."
+    },
+    {
+      "line": "11",
+      "bug": "`asyncio.get_event_loop()` is deprecated in Python 3.10+ and will be removed in future versions. It can also return a closed loop if called at the wrong time.",
+      "fix": "Use `asyncio.get_running_loop().time()` instead."
+    },
+    {
+      "line": "13",
+      "bug": "Calculated `wait` time can be negative if the first request timestamp expires between the list comprehension and the wait calculation, causing `asyncio.sleep` to raise a ValueError.",
+      "fix": "Use `await asyncio.sleep(max(0, wait))` to ensure non-negative sleep duration."
+    },
+    {
+      "line": "14",
+      "bug": "Appends the old timestamp `now` (captured before sleeping) instead of the current time after sleeping, leading to inaccurate rate limiting.",
+      "fix": "Capture a new timestamp after sleeping: `self.requests.append(asyncio.get_running_loop().time())`."
+    },
+    {
+      "line": "25",
+      "bug": "Creating a new `ClientSession` for every request inside the semaphore is inefficient and can exhaust resources. Sessions are meant to be reused for connection pooling.",
+      "fix": "Create the session once outside `fetch_one` and pass it as a parameter, or create it in `fetch_all` and use it for all requests."
+    },
+    {
+      "line": "27",
+      "bug": "The response object is not used as an async context manager (`async with`), which may lead to resource leaks if exceptions occur before the response is fully consumed.",
+      "fix": "Use `async with session.get(url, timeout=30) as response:` to ensure proper cleanup."
+    },
+    {
+      "line": "27",
+      "bug": "The `timeout` parameter as a float is deprecated in newer aiohttp versions; it should be a `ClientTimeout` object.",
+      "fix": "Use `timeout=aiohttp.ClientTimeout(total=30)` instead of `timeout=30`."
+    },
+    {
+      "line": "29",
+      "bug": "Using the URL as a dictionary key means duplicate URLs in the input list will overwrite previous results, losing data.",
+      "fix": "Use a list of tuples or include an index in the key to store results for duplicate URLs."
+    },
+    {
+      "line": "31",
+      "bug": "Bare `except Exception` catches system-exiting exceptions (like `KeyboardInterrupt` and `SystemExit`) and all other errors, making debugging difficult and potentially suppressing critical failures.",
+      "fix": "Catch specific exceptions: `except (aiohttp.ClientError, asyncio.TimeoutError, json.JSONDecodeError):`."
+    },
+    {
+      "line": "32",
+      "bug": "Unnecessary `pass` statement after assigning to `results[url]`.",
+      "fix": "Remove the `pass` statement."
+    },
+    {
+      "line": "35",
+      "bug": "`asyncio.gather` without `return_exceptions=True` will cancel all other tasks when the first exception occurs, preventing partial results from being processed.",
+      "fix": "Use `await asyncio.gather(*tasks, return_exceptions=True)` and handle exceptions in the results."
+    },
+    {
+      "line": "42",
+      "bug": "`process_item(item)` creates a coroutine object but does not schedule it as a Task immediately. While `gather` will schedule them, using `create_task` allows eager execution and better error handling.",
+      "fix": "Use `task = asyncio.create_task(process_item(item))` to schedule tasks immediately."
+    },
+    {
+      "line": "45",
+      "bug": "Using `yield` inside an `async def` function makes it an async generator, but `asyncio.gather` buffers all results before yielding, defeating the purpose of streaming and using excessive memory.",
+      "fix": "Use `asyncio.as_completed` to yield results as they complete, or remove `yield` and return the list if buffering is intended."
+    },
+    {
+      "line": "52",
+      "bug": "The connection pool uses a plain list without synchronization primitives (Lock or Queue), leading to race conditions when multiple coroutines pop/append concurrently.",
+      "fix": "Use `asyncio.Queue` for the pool or protect list operations with `asyncio.Lock`."
+    },
+    {
+      "line": "60",
+      "bug": "`release` accepts connections without validating if they are None or checking if the pool has exceeded its intended size, potentially leading to unbounded memory growth.",
+      "fix": "Add checks: `if conn is None: return` and `if len(self.pool) >= self.size: return` before appending."
+    }
+  ],
+  "count": 15
+}
+```

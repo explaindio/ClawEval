@@ -1,0 +1,19 @@
+```json
+{
+  "q1": "CRDT (Conflict-free Replicated Data Types) using libraries like Yjs or Automerge, providing better offline support and simpler convergence than OT",
+  "q2": "WebSocket with fallback to HTTP long-polling for older browsers, enabling bidirectional low-latency communication",
+  "q3": "PostgreSQL with JSONB columns for document metadata and structured data, combined with S3 for document snapshots and binary content",
+  "q4": "Local-first architecture using IndexedDB to persist CRDT state locally, queueing operations during disconnection and performing delta sync with vector clocks upon reconnection",
+  "q5": "Redis Streams or Redis Pub/Sub for low-latency real-time event distribution between application servers",
+  "q6": "Sticky sessions (IP hash or cookie-based) on load balancer combined with Redis Pub/Sub to broadcast messages across all WebSocket server instances",
+  "q7": "Separate ephemeral presence channel with 50ms throttling, transmitting cursor positions and selections as lightweight awareness messages separate from document content",
+  "q8": "OAuth 2.0 / OpenID Connect with short-lived JWTs (15min) passed in WebSocket handshake query parameters, plus refresh token rotation",
+  "q9": "Event sourcing pattern storing immutable operation logs in Apache Kafka or DynamoDB Streams, with periodic snapshots (every 100 ops) archived to S3",
+  "q10": "Multi-tier CDN using CloudFront or Cloudflare for static assets, with edge locations close to users for WebSocket handshake optimization",
+  "q11": "Document chunking into 10-50KB CRDT blocks with virtualized rendering (only visible blocks loaded), using content-addressable storage for deduplication",
+  "q12": "Token bucket algorithm implemented in Redis per user per document, with separate limits for read (100/min) and write (20/min) operations",
+  "q13": "Continuous cross-region replication to standby PostgreSQL instances, daily immutable snapshots to S3 Glacier, and point-in-time recovery capability for 30 days",
+  "q14": "Client-side direct upload to S3 using presigned URLs with multipart upload for large files, inserting CRDT placeholder nodes that update to final URLs upon completion",
+  "q15": "Prometheus + Grafana for metrics, Jaeger for distributed tracing, ELK stack for centralized logging, and Real User Monitoring (RUM) using Web Vitals for client-side performance"
+}
+```

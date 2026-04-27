@@ -1,0 +1,22 @@
+```json
+{
+  "issues": [
+    {"line": "replicas: 1", "issue": "Single replica configured - no high availability", "severity": "minor"},
+    {"line": "image: myapp:latest", "issue": "Using 'latest' image tag - non-deterministic deployments", "severity": "major"},
+    {"line": "resources: {}", "issue": "No resource requests or limits defined for main container", "severity": "major"},
+    {"line": "runAsRoot: true", "issue": "Container running as root user", "severity": "critical"},
+    {"line": "privileged: true", "issue": "Privileged container has full host access", "severity": "critical"},
+    {"line": "value: \"sup3rs3cret!\"", "issue": "Hardcoded database password in environment variables", "severity": "critical"},
+    {"line": "value: \"ak_live_12345\"", "issue": "Hardcoded API key in environment variables", "severity": "critical"},
+    {"line": "N/A (api container)", "issue": "Missing livenessProbe - no health checks configured", "severity": "major"},
+    {"line": "N/A (api container)", "issue": "Missing readinessProbe - no readiness checks configured", "severity": "major"},
+    {"line": "image: logger:v1", "issue": "Using floating 'v1' tag instead of immutable digest", "severity": "minor"},
+    {"line": "memory: \"10Gi\"", "issue": "Excessive memory request for sidecar container", "severity": "major"},
+    {"line": "cpu: \"8\"", "issue": "Excessive CPU request for sidecar container", "severity": "major"},
+    {"line": "resources: (sidecar)", "issue": "Sidecar has resource requests but no limits defined", "severity": "major"},
+    {"line": "path: /tmp/data", "issue": "HostPath mounted to world-writable /tmp directory", "severity": "critical"},
+    {"line": "type: LoadBalancer", "issue": "Service exposed via LoadBalancer without source IP restrictions", "severity": "major"}
+  ],
+  "count": 15
+}
+```

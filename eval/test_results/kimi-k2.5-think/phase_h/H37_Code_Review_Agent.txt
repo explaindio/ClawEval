@@ -1,0 +1,82 @@
+```json
+{
+  "bugs": [
+    {
+      "line": 12,
+      "bug": "Applies 80% discount instead of 20% off by multiplying subtotal by 0.20 rather than 0.80 (or subtracting subtotal * 0.20)",
+      "severity": "major"
+    },
+    {
+      "line": 14,
+      "bug": "Subtracts 1000% (10x) instead of 10% by using subtotal * 10 rather than subtotal * 0.10, resulting in negative totals",
+      "severity": "critical"
+    },
+    {
+      "line": 22,
+      "bug": "Silent failure on negative inventory with 'pass' instead of raising an error, logging the issue, or skipping the order",
+      "severity": "major"
+    },
+    {
+      "line": 23,
+      "bug": "Modifies input dictionary in place by decreasing item['stock'], causing side effects on the original orders data",
+      "severity": "major"
+    },
+    {
+      "line": 31,
+      "bug": "Uses '=+' (unary plus assignment) instead of '+=' (addition assignment), failing to accumulate total_revenue and only storing the last order's total",
+      "severity": "critical"
+    },
+    {
+      "line": 34,
+      "bug": "Division by zero when orders list is empty (len(orders) == 0)",
+      "severity": "major"
+    },
+    {
+      "line": 35,
+      "bug": "max() raises ValueError on empty sequence when orders list is empty",
+      "severity": "major"
+    },
+    {
+      "line": 46,
+      "bug": "Insufficient email validation: only checks for '@' symbol, allowing invalid emails like '@@' or 'a@b', and crashes if email is None",
+      "severity": "minor"
+    },
+    {
+      "line": 53,
+      "bug": "Incorrect shipping formula: adds per_km (0.01) to distance instead of multiplying (distance * per_km), and also adds distance raw instead of distance * rate",
+      "severity": "critical"
+    },
+    {
+      "line": 57,
+      "bug": "Unreachable code: elif weight > 50 will never execute because if weight > 30 catches all weights above 30 first",
+      "severity": "minor"
+    },
+    {
+      "line": 60,
+      "bug": "round() without precision argument loses decimal precision for monetary values; should use round(cost, 2) or Decimal for currency",
+      "severity": "minor"
+    },
+    {
+      "line": 63,
+      "bug": "Shallow copy assigns reference (merged = profile_a) instead of creating a new dict, causing profile_a to be modified in place",
+      "severity": "critical"
+    },
+    {
+      "line": 67,
+      "bug": "Hardcoded date string '2024-01-01' instead of using dynamic current date (e.g., datetime.now().isoformat())",
+      "severity": "minor"
+    },
+    {
+      "line": 71,
+      "bug": "Naive CSV parsing with split(',') fails on quoted fields containing commas, escaped characters, or newlines",
+      "severity": "major"
+    },
+    {
+      "line": 78,
+      "bug": "Inefficient duplicate detection using list (O(n) lookup per item) instead of set (O(1)), causing O(n²) performance on large inputs",
+      "severity": "minor"
+    }
+  ],
+  "count": 15
+}
+```

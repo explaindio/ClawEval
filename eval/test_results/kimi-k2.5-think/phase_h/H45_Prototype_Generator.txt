@@ -1,0 +1,78 @@
+```python
+class JSONValidator:
+    def __init__(self):
+        self.type_map = {
+            "str": str,
+            "int": int,
+            "float": float,
+            "bool": bool,
+            "list": list,
+            "dict": dict
+        }
+    
+    def validate(self, data, schema):
+        errors = []
+        
+        for field_name, rules in schema.items():
+            field_type = rules.get("type")
+            required = rules.get("required", False)
+            min_val = rules.get("min")
+            max_val = rules.get("max")
+            min_length = rules.get("min_length")
+            max_length = rules.get("max_length")
+            
+            # Check required fields
+            if field_name not in data:
+                if required:
+                    errors.append(f"Field '{field_name}' is required but missing")
+                continue
+            
+            value = data[field_name]
+            
+            # Type validation
+            if field_type:
+                if field_type not in self.type_map:
+                    errors.append(f"Field '{field_name}' has unknown type '{field_type}' in schema")
+                    continue
+                
+                type_valid = False
+                if field_type == "bool":
+                    # Must be exactly bool, not int subclass
+                    type_valid = isinstance(value, bool)
+                elif field_type == "int":
+                    # Must be int but not bool (since bool is subclass of int)
+                    type_valid = isinstance(value, int) and not isinstance(value, bool)
+                else:
+                    type_valid = isinstance(value, self.type_map[field_type])
+                
+                if not type_valid:
+                    actual_type = type(value).__name__
+                    errors.append(f"Field '{field_name}' expected type '{field_type}' but got '{actual_type}'")
+                    continue  # Skip constraint checks if type is wrong
+            
+            # Constraint validation based on type
+            if field_type in ("int", "float"):
+                if min_val is not None and value < min_val:
+                    errors.append(f"Field '{field_name}' value {value} is less than minimum {min_val}")
+                if max_val is not None and value > max_val:
+                    errors.append(f"Field '{field_name}' value {value} is greater than maximum {max_val}")
+            
+            elif field_type == "str":
+                length = len(value)
+                if min_length is not None and length < min_length:
+                    errors.append(f"Field '{field_name}' length {length} is less than minimum length {min_length}")
+                if max_length is not None and length > max_length:
+                    errors.append(f"Field '{field_name}' length {length} is greater than maximum length {max_length}")
+            
+            elif field_type == "list":
+                length = len(value)
+                if min_length is not None and length < min_length:
+                    errors.append(f"Field '{field_name}' length {length} is less than minimum length {min_length}")
+                if max_length is not None and length > max_length:
+                    errors.append(f"Field '{field_name}' length {length} is greater than maximum length {max_length}")
+        
+        return {
+            "valid": len(errors) == 0,
+            "errors": errors
+        }
+```

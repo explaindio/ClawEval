@@ -1,0 +1,82 @@
+```json
+{
+  "issues": [
+    {
+      "line": 11,
+      "issue": "Using 'latest' tag for the container image. This is poor practice as it leads to unpredictable deployments.",
+      "severity": "minor"
+    },
+    {
+      "line": 17,
+      "issue": "Typo in resource definition: 'resources' instead of 'resources'.",
+      "severity": "minor"
+    },
+    {
+      "line": 18,
+      "issue": "Missing resource requests and limits for the main 'api' container. This can lead to resource starvation or instability.",
+      "severity": "major"
+    },
+    {
+      "line": 20,
+      "issue": "Security risk: Setting 'runAsRoot: true'. Containers should run as non-root users for enhanced security.",
+      "severity": "critical"
+    },
+    {
+      "line": 21,
+      "issue": "Security risk: Setting 'privileged: true'. This grants the container nearly all capabilities of the host node, posing a severe security vulnerability.",
+      "severity": "critical"
+    },
+    {
+      "line": 25,
+      "issue": "Hardcoding sensitive credentials (DB_PASSWORD) directly in the Deployment manifest. Secrets should be managed via Kubernetes Secrets.",
+      "severity": "critical"
+    },
+    {
+      "line": 27,
+      "issue": "Hardcoding sensitive credentials (API_KEY) directly in the Deployment manifest. Secrets should be managed via Kubernetes Secrets.",
+      "severity": "critical"
+    },
+    {
+      "line": 35,
+      "issue": "Using 'hostPath' for volume mounting. This reduces portability and security, as it binds the pod to a specific host path.",
+      "severity": "major"
+    },
+    {
+      "line": 43,
+      "issue": "Missing resource limits for the 'sidecar' container. While requests are defined, limits are crucial to prevent resource exhaustion.",
+      "severity": "major"
+    },
+    {
+      "line": 43,
+      "issue": "CPU request format is ambiguous ('8'). It should be specified in millicores (e.g., '800m') for clarity and proper scheduling.",
+      "severity": "minor"
+    },
+    {
+      "line": 45,
+      "issue": "Missing liveness and readiness probes for the 'api' container. Without these, Kubernetes cannot reliably determine if the application is healthy or ready to serve traffic.",
+      "severity": "critical"
+    },
+    {
+      "line": 45,
+      "issue": "Missing resource limits for the 'api' container. Limits are necessary to prevent runaway processes from consuming all node resources.",
+      "severity": "major"
+    },
+    {
+      "line": 54,
+      "issue": "Missing resource limits for the 'sidecar' container. Limits are necessary to prevent resource exhaustion.",
+      "severity": "major"
+    },
+    {
+      "line": 58,
+      "issue": "The Service type 'LoadBalancer' is often overkill and expensive for internal applications. A ClusterIP or NodePort might be more appropriate.",
+      "severity": "minor"
+    },
+    {
+      "line": 17,
+      "issue": "Typo in resource definition: 'resources' instead of 'resources'.",
+      "severity": "minor"
+    }
+  ],
+  "count": 15
+}
+```

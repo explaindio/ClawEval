@@ -1,0 +1,77 @@
+```json
+{
+  "vulnerabilities": [
+    {
+      "type": "SQL Injection (SQLi)",
+      "location": "/login (line 21)",
+      "severity": "critical"
+    },
+    {
+      "type": "Command Injection",
+      "location": "/run (line 31)",
+      "severity": "critical"
+    },
+    {
+      "type": "Command Injection",
+      "location": "/export (line 50)",
+      "severity": "critical"
+    },
+    {
+      "type": "Insecure Deserialization (Pickle)",
+      "location": "/session (line 45)",
+      "severity": "critical"
+    },
+    {
+      "type": "Insecure Deserialization (YAML)",
+      "location": "/config (line 42)",
+      "severity": "high"
+    },
+    {
+      "type": "Path Traversal / Arbitrary File Write",
+      "location": "/upload (line 38)",
+      "severity": "high"
+    },
+    {
+      "type": "Path Traversal / Arbitrary File Read",
+      "location": "/download (line 44)",
+      "severity": "high"
+    },
+    {
+      "type": "Cross-Site Scripting (XSS)",
+      "location": "/search (line 28)",
+      "severity": "medium"
+    },
+    {
+      "type": "Cross-Site Scripting (XSS)",
+      "location": "/profile/<username> (line 23)",
+      "severity": "medium"
+    },
+    {
+      "type": "Weak Secret Management",
+      "location": "SECRET variable (line 8)",
+      "severity": "high"
+    },
+    {
+      "type": "Insecure File Handling / Lack of Validation",
+      "location": "/upload (line 36)",
+      "severity": "medium"
+    },
+    {
+      "type": "Use of `subprocess` with `shell=True`",
+      "location": "/run (line 31)",
+      "severity": "high"
+    },
+    {
+      "type": "Use of `os.system`",
+      "location": "/export (line 50)",
+      "severity": "high"
+    },
+    {
+      "type": "Lack of Input Validation (General)",
+      "location": "Multiple routes (e.g., /login, /search)",
+      "severity": "medium"
+    }
+  ],
+  "count": 15
+}
+```
