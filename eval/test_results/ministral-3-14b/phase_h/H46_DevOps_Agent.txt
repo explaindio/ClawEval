@@ -1,0 +1,82 @@
+```json
+{
+  "issues": [
+    {
+      "line": "spec.replicas: 1",
+      "issue": "Single replica deployment without anti-affinity or pod disruption budget, making the application vulnerable to node failures",
+      "severity": "major"
+    },
+    {
+      "line": "containers[0].image: myapp:latest",
+      "issue": "Using 'latest' tag for container image, which is mutable and can lead to unexpected behavior during updates",
+      "severity": "critical"
+    },
+    {
+      "line": "containers[0].securityContext.runAsRoot: true",
+      "issue": "Running container as root user increases security risk (privilege escalation attacks)",
+      "severity": "critical"
+    },
+    {
+      "line": "containers[0].securityContext.privileged: true",
+      "issue": "Privileged mode enabled, giving container full host access (security risk)",
+      "severity": "critical"
+    },
+    {
+      "line": "containers[0].env[0].value: \"sup3rs3cret!\"",
+      "issue": "Hardcoded sensitive database password in configuration (security risk)",
+      "severity": "critical"
+    },
+    {
+      "line": "containers[0].env[1].value: \"ak_live_12345\"",
+      "issue": "Hardcoded sensitive API key in configuration (security risk)",
+      "severity": "critical"
+    },
+    {
+      "line": "containers[1].resources.requests.memory: \"10Gi\"",
+      "issue": "Excessive memory request (10Gi) for sidecar container, likely over-provisioned",
+      "severity": "major"
+    },
+    {
+      "line": "containers[1].resources.requests.cpu: \"8\"",
+      "issue": "Excessive CPU request (8 cores) for sidecar container, likely over-provisioned",
+      "severity": "major"
+    },
+    {
+      "line": "volumes[0].hostPath.path: /tmp/data",
+      "issue": "Using hostPath volume with /tmp which is not persistent across reboots",
+      "severity": "major"
+    },
+    {
+      "line": "volumes[0].hostPath",
+      "issue": "hostPath volumes are not portable across different nodes and environments",
+      "severity": "major"
+    },
+    {
+      "line": "Missing livenessProbe and readinessProbe",
+      "issue": "No health checks defined for containers, making it difficult to detect and recover from failures",
+      "severity": "major"
+    },
+    {
+      "line": "Missing resource limits for containers",
+      "issue": "No resource limits defined, which could lead to resource starvation or noisy neighbor problems",
+      "severity": "major"
+    },
+    {
+      "line": "Missing podDisruptionBudget",
+      "issue": "No pod disruption budget defined, making voluntary disruptions (like node maintenance) risky",
+      "severity": "major"
+    },
+    {
+      "line": "Missing pod anti-affinity rules",
+      "issue": "No anti-affinity rules defined, which could lead to all pods running on the same node",
+      "severity": "major"
+    },
+    {
+      "line": "Missing imagePullSecrets for private registry",
+      "issue": "No imagePullSecrets defined, which would fail if images are from a private registry",
+      "severity": "minor"
+    }
+  ],
+  "count": 15
+}
+```

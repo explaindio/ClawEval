@@ -1,0 +1,107 @@
+```json
+{
+  "issues": [
+    {
+      "clause": "1. LICENSE: Company grants User a perpetual, irrevocable license to use the Software. Company may terminate this license at any time without cause or notice.",
+      "issue": "Irrevocable license with unilateral termination power by Company without cause or notice creates significant user risk, especially for long-term reliance on the service. Perpetual license may also conflict with SaaS industry norms (typically non-perpetual, subscription-based).",
+      "risk": "high"
+    },
+    {
+      "clause": "2. DATA: All data uploaded by User becomes the exclusive property of Company. Company may use, sell, or share User data with any third party for any purpose without consent.",
+      "issue": "Unilateral data ownership transfer and unrestricted use/sale of user data without consent violates GDPR, CCPA, and other privacy laws. High risk of regulatory fines and reputational damage.",
+      "risk": "high"
+    },
+    {
+      "clause": "3. LIABILITY: Company's total liability shall not exceed $100, regardless of the nature of the claim. User waives all rights to consequential, incidental, punitive, or any other damages.",
+      "issue": "Caps liability at $100 (likely unenforceable under many jurisdictions) and waives all damages (including consequential) is extreme and unfair. Users could be left with massive losses (e.g., lost revenue, reputational harm) while Company faces minimal exposure.",
+      "risk": "high"
+    },
+    {
+      "clause": "4. INDEMNIFICATION: User shall indemnify Company against any and all claims, including those arising from Company's own negligence or willful misconduct.",
+      "issue": "Indemnifying Company for its own negligence or willful misconduct is one-sided and unfair. This clause could force users to pay for Company’s mistakes, including breaches of contract or tortious acts.",
+      "risk": "high"
+    },
+    {
+      "clause": "5. PAYMENT: Company may increase pricing at any time. Failure to pay within 24 hours of invoice results in immediate account termination and forfeiture of all data.",
+      "issue": "Unilateral price increases without notice or cap are exploitative. Immediate termination and data forfeiture for non-payment within 24 hours is draconian and could violate consumer protection laws in some jurisdictions.",
+      "risk": "high"
+    },
+    {
+      "clause": "6. SLA: Company targets 95% uptime but makes no guarantees. Credits will not be issued for any downtime, scheduled or unscheduled.",
+      "issue": "No SLA guarantees (even for "target" uptime) and zero liability for downtime (even unscheduled) is unacceptable for a SaaS provider. Users have no recourse for service failures, which could lead to operational disruptions and financial losses.",
+      "risk": "high"
+    },
+    {
+      "clause": "7. INTELLECTUAL PROPERTY: Any feedback, suggestions, or ideas submitted by User become Company's intellectual property without compensation.",
+      "issue": "Unilateral IP transfer of user contributions without compensation is overly broad and could discourage innovation. May violate fair use or implied license principles in some jurisdictions.",
+      "risk": "medium"
+    },
+    {
+      "clause": "8. DISPUTE RESOLUTION: All disputes shall be resolved exclusively in Company's home jurisdiction. User waives right to jury trial and class action participation.",
+      "issue": "Forum selection clause favoring Company’s home jurisdiction (often a distant or unfavorable location) and waiver of jury trial/class actions severely limits user rights. Could make legal recourse impractical or prohibitively expensive.",
+      "risk": "medium"
+    },
+    {
+      "clause": "9. CHANGES: Company may modify these terms at any time. Continued use constitutes acceptance.",
+      "issue": "Unilateral term changes without notice or opportunity to object are unfair and could introduce materially adverse changes (e.g., price hikes, reduced functionality) without user consent.",
+      "risk": "medium"
+    },
+    {
+      "clause": "10. TERMINATION: Upon termination, Company may delete all User data immediately with no obligation to provide export or backup.",
+      "issue": "Immediate data deletion without export/backup violates GDPR (right to data erasure + right to data portability) and other privacy laws. Users could lose critical data irretrievably, causing operational or legal harm.",
+      "risk": "high"
+    },
+    {
+      "clause": "1. LICENSE: Perpetual license language may conflict with SaaS industry standards (typically subscription-based).",
+      "issue": "Perpetual license could create ambiguity about whether the user owns the software or is merely licensed to use it indefinitely, potentially complicating compliance with software licensing laws (e.g., BSA).",
+      "risk": "medium"
+    },
+    {
+      "clause": "2. DATA: No mention of user rights under privacy laws (e.g., GDPR, CCPA) like data access, correction, or deletion.",
+      "issue": "Lack of compliance with data subject rights could lead to regulatory enforcement actions (e.g., GDPR fines up to 4% of global revenue).",
+      "risk": "high"
+    },
+    {
+      "clause": "3. LIABILITY: $100 cap is likely unenforceable under many jurisdictions (e.g., UCC § 2-719 in the U.S. limits liability caps for consumer goods/services).",
+      "issue": "Unenforceable clauses could be struck down in court, leaving Company exposed to full liability while users still face the unfair terms.",
+      "risk": "medium"
+    },
+    {
+      "clause": "4. INDEMNIFICATION: No mutual indemnification clause, shifting all risk to the user.",
+      "issue": "One-sided indemnification is unfair and could deter users from engaging with the service, especially for high-stakes applications (e.g., healthcare, finance).",
+      "risk": "medium"
+    },
+    {
+      "clause": "5. PAYMENT: No grace period or notice for price increases, which could violate consumer protection laws in some jurisdictions.",
+      "issue": "Sudden price hikes without warning could lead to disputes or regulatory scrutiny (e.g., under unfair business practices laws).",
+      "risk": "medium"
+    },
+    {
+      "clause": "6. SLA: No mention of compensation for downtime, even for critical services.",
+      "issue": "Lack of SLA guarantees or compensation for downtime is unacceptable for enterprise or mission-critical SaaS services, increasing user risk of operational failures.",
+      "risk": "medium"
+    },
+    {
+      "clause": "7. INTELLECTUAL PROPERTY: No carve-out for user-generated content that is not directly related to the service (e.g., personal notes, creative works).",
+      "issue": "Overly broad IP transfer could discourage users from sharing ideas or feedback, harming the service’s collaborative features.",
+      "risk": "low"
+    },
+    {
+      "clause": "8. DISPUTE RESOLUTION: No provision for alternative dispute resolution (e.g., mediation) before litigation.",
+      "issue": "Exclusive litigation in Company’s jurisdiction with no ADR option could prolong and complicate disputes, increasing costs for users.",
+      "risk": "low"
+    },
+    {
+      "clause": "9. CHANGES: No requirement for notice or opportunity to object to material changes.",
+      "issue": "Lack of transparency in term changes could lead to user dissatisfaction or churn if changes are unfavorable (e.g., reduced features, higher costs).",
+      "risk": "low"
+    },
+    {
+      "clause": "10. TERMINATION: No right to data export or backup could violate GDPR’s right to data portability (Article 20).",
+      "issue": "Failure to comply with data portability rights could result in fines or legal action under GDPR or similar laws.",
+      "risk": "medium"
+    }
+  ],
+  "count": 15
+}
+```

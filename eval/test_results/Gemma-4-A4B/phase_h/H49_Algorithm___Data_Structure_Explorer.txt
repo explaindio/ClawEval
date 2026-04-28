@@ -1,0 +1,89 @@
+```python
+class Node:
+    def __init__(self, key, val):
+        self.key = key
+        self.val = val
+        self.prev = None
+        self.next = None
+
+class LRUCache:
+    def __init__(self, capacity):
+        self.capacity = capacity
+        self.cache = {}
+        self.head = Node(0, 0)
+        self.tail = Node(0, 0)
+        self.head.next = self.tail
+        self.tail.prev = self.head
+
+    def _remove(self, node):
+        node.prev.next = node.next
+        node.next.prev = node.prev
+
+    def _add(self, node):
+        node.next = self.head.next
+        node.prev = self.head
+        self.head.next.prev = node
+        self.head.next = node
+
+    def get(self, key):
+        if key in self.cache:
+            node = self.cache[key]
+            self._remove(node)
+            self._add(node)
+            return node.val
+        return -1
+
+    def put(self, key, value):
+        if key in self.cache:
+            self._remove(self.cache[key])
+        new_node = Node(key, value)
+        self.cache[key] = new_node
+        self._add(new_node)
+        if len(self.cache) > self.capacity:
+            lru_node = self.tail.prev
+            self._remove(lru_node)
+            del self.cache[lru_node.key]
+
+class MinStack:
+    def __init__(self):
+        self.stack = []
+        self.min_stack = []
+
+    def push(self, val):
+        self.stack.append(val)
+        if not self.min_stack or val <= self.min_stack[-1]:
+            self.min_stack.append(val)
+
+    def pop(self):
+        if self.stack.pop() == self.min_stack[-1]:
+            self.min_stack.pop()
+
+    def top(self):
+        return self.stack[-1]
+
+    def get_min(self):
+        return self.min_stack[-1]
+
+def find_median(stream):
+    import heapq
+    min_heap = []  # Stores the larger half of numbers
+    max_heap = []  # Stores the smaller half (using negative values for max-heap behavior)
+    medians = []
+    
+    for num in stream:
+        # Add to max_heap (smaller half)
+        heapq.heappush(max_heap, -num)
+        # Balance: move largest of max_heap to min_heap
+        heapq.heappush(min_heap, -heapq.heappop(max_heap))
+        
+        # Maintain property: len(max_heap) >= len(min_heap)
+        if len(min_heap) > len(max_heap):
+            heapq.heappush(max_heap, -heapq.heappop(min_heap))
+            
+        if len(max_heap) > len(min_heap):
+            medians.append(float(-max_heap[0]))
+        else:
+            medians.append((-max_heap[0] + min_heap[0]) / 2.0)
+            
+    return medians
+```

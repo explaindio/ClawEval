@@ -1,0 +1,82 @@
+```json
+{
+  "issues": [
+    {
+      "line": "7",
+      "issue": "Replicas set to 1 provides no high availability; pods will be unavailable during node failure or updates.",
+      "severity": "major"
+    },
+    {
+      "line": "17",
+      "issue": "Using 'latest' tag for images leads to non-deterministic deployments and makes rollbacks difficult.",
+      "severity": "major"
+    },
+    {
+      "line": "20",
+      "issue": "Empty resources block means no CPU/Memory limits or requests are defined, risking node instability (OOM).",
+      "severity": "critical"
+    },
+    {
+      "line": "22",
+      "issue": "runAsRoot: true allows the container to run as root user, violating the principle of least privilege.",
+      "severity": "critical"
+    },
+    {
+      "line": "23",
+      "issue": "privileged: true gives the container access to the host's kernel and devices, creating a massive security hole.",
+      "severity": "critical"
+    },
+    {
+      "line": "25",
+      "issue": "Sensitive data (DB_PASSWORD) is stored in plain text in the deployment config.",
+      "severity": "critical"
+    },
+    {
+      "line": "27",
+      "issue": "Sensitive data (API_KEY) is stored in plain text in the deployment config.",
+      "severity": "critical"
+    },
+    {
+      "line": "32",
+      "issue": "Missing livenessProbe; Kubernetes cannot detect if the application has deadlocked.",
+      "severity": "major"
+    },
+    {
+      "line": "32",
+      "issue": "Missing readinessProbe; traffic may be sent to the pod before the application is fully initialized.",
+      "severity": "major"
+    },
+    {
+      "line": "35",
+      "issue": "Sidecar container lacks resource limits, which can lead to it consuming all node resources.",
+      "severity": "major"
+    },
+    {
+      "line": "38",
+      "issue": "Excessively high memory request (10Gi) for a sidecar logger may lead to scheduling failures (Pending pods).",
+      "severity": "major"
+    },
+    {
+      "line": "39",
+      "issue": "Excessively high CPU request (8) for a sidecar logger may lead to scheduling failures.",
+      "severity": "major"
+    },
+    {
+      "line": "42",
+      "issue": "Use of hostPath volumes is a security risk and makes the pod node-dependent (breaks portability).",
+      "severity": "major"
+    },
+    {
+      "line": "43",
+      "issue": "Using /tmp for hostPath is dangerous as it is often cleared by the OS and is insecure.",
+      "severity": "minor"
+    },
+    {
+      "line": "48",
+      "issue": "Service type LoadBalancer is used without specifying annotations or constraints, which can be costly and expose the app directly to the internet without an Ingress.",
+      "severity": "minor"
+    }
+  ],
+  "count": 15
+}
+```

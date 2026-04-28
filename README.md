@@ -141,21 +141,23 @@ Phase F gave every model 8–10/10 on most roles. ClawEval v2 replaces that with
 | 🥉 | **Kimi K2.5 Think** | ☁️ Ollama | 1048/1220 | **85.9%** | 24 |
 | 4 | **Qwen3.5-Plus** | ☁️ Alibaba | 1031/1220 | **84.5%** | 26 |
 | 5 | **Kimi K2.6** | ☁️ Ollama | 1028/1220 | **84.3%** | 24 |
-| 6 | **GLM-5.1** | ☁️ Ollama | 1020/1220 | **83.6%** | 26 |
-| 7 | **Nemotron-3-Super Think** | ☁️ Ollama | 1016/1220 | **83.3%** | 20 |
-| 8 | **Gemma-4-E2B** | 🖥️ Local | 981/1220 | **80.4%** | 14 |
-| 9 | **GPT-OSS-120B** | ☁️ Ollama | 979/1220 | **80.2%** | 19 |
-| 10 | **MiniMax-M2.7 Think** | ☁️ Ollama | 978/1220 | **80.2%** | 18 |
-| 11 | **GLM-5 NoThink** | ☁️ Ollama | 948/1220 | **77.7%** | 25 |
-| 12 | **Kimi K2.5 NoThink** | ☁️ Ollama | 935/1220 | **76.6%** | 21 |
-| 13 | **Gemma-4-31B** | 🖥️ Local | 927/1220 | **76.0%** | 25 |
-| 14 | **GLM-5 Think** | ☁️ Ollama | 927/1220 | **76.0%** | 23 |
-| 15 | **Nemotron-3-Nano-30B** | ☁️ Ollama | 914/1220 | **74.9%** | 19 |
-| 16 | **Ministral-3 8B** | ☁️ Ollama | 906/1220 | **74.3%** | 18 |
-| 17 | **Gemma-4-E4B** | 🖥️ Local | 867/1220 | **71.1%** | 15 |
-| 18 | **Ministral-3 3B** | ☁️ Ollama | 844/1220 | **69.2%** | 14 |
-| 19 | **Gemma-4-A4B** | 🖥️ Local | 531/1220 | **43.5%** | 8 |
-| 20 | **LFM2.5-350M** | 🖥️ Local | 308/1220 | **25.2%** | 2 |
+| 6 | **Gemma-4-31B** | ☁️ Ollama | 1024/1220 | **83.9%** | 25 |
+| 7 | **GLM-5.1** | ☁️ Ollama | 1020/1220 | **83.6%** | 26 |
+| 8 | **Nemotron-3-Super Think** | ☁️ Ollama | 1016/1220 | **83.3%** | 20 |
+| 9 | **Gemma-4-E2B** | 🖥️ Local | 981/1220 | **80.4%** | 14 |
+| 10 | **GPT-OSS-120B** | ☁️ Ollama | 979/1220 | **80.2%** | 19 |
+| 11 | **MiniMax-M2.7 Think** | ☁️ Ollama | 978/1220 | **80.2%** | 18 |
+| 12 | **GLM-5 NoThink** | ☁️ Ollama | 948/1220 | **77.7%** | 25 |
+| 13 | **Kimi K2.5 NoThink** | ☁️ Ollama | 935/1220 | **76.6%** | 21 |
+| 14 | **Gemma-4-31B** | 🖥️ Local Q4 | 927/1220 | **76.0%** | 25 |
+| 15 | **GLM-5 Think** | ☁️ Ollama | 927/1220 | **76.0%** | 23 |
+| 16 | **Nemotron-3-Nano-30B** | ☁️ Ollama | 914/1220 | **74.9%** | 19 |
+| 17 | **Ministral-3 8B** | ☁️ Ollama | 906/1220 | **74.3%** | 18 |
+| 18 | **Ministral-3 14B** | ☁️ Ollama | 888/1220 | **72.8%** | 17 |
+| 19 | **Gemma-4-E4B** | 🖥️ Local | 867/1220 | **71.1%** | 15 |
+| 20 | **Ministral-3 3B** | ☁️ Ollama | 844/1220 | **69.2%** | 14 |
+| 21 | **Gemma-4-A4B** | 🖥️ Local | 531/1220 | **43.5%** | 8 |
+| 22 | **LFM2.5-350M** | 🖥️ Local | 308/1220 | **25.2%** | 2 |
 
 > All models scored on **59/59 tests** with **zero infrastructure failures**. Full results: **[ClawEval v2 →](docs/results-phase-h.md)**
 

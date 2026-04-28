@@ -1,0 +1,146 @@
+```json
+{
+  "tasks": [
+    {
+      "id": 1,
+      "task": "Analyze monolithic domain and define microservice boundaries",
+      "depends_on": [],
+      "effort_days": 5,
+      "team": "backend"
+    },
+    {
+      "id": 2,
+      "task": "Design shared authentication and authorization strategy",
+      "depends_on": [1],
+      "effort_days": 4,
+      "team": "backend"
+    },
+    {
+      "id": 3,
+      "task": "Set up Kubernetes cluster and container registry",
+      "depends_on": [1],
+      "effort_days": 6,
+      "team": "devops"
+    },
+    {
+      "id": 4,
+      "task": "Configure API Gateway (Kong/Nginx) for request routing",
+      "depends_on": [3],
+      "effort_days": 5,
+      "team": "devops"
+    },
+    {
+      "id": 5,
+      "task": "Implement centralized logging and monitoring stack",
+      "depends_on": [3],
+      "effort_days": 5,
+      "team": "devops"
+    },
+    {
+      "id": 6,
+      "task": "Extract User/Auth service from monolith",
+      "depends_on": [2, 4],
+      "effort_days": 7,
+      "team": "backend"
+    },
+    {
+      "id": 7,
+      "task": "Migrate User database tables to a separate instance",
+      "depends_on": [6],
+      "effort_days": 6,
+      "team": "backend"
+    },
+    {
+      "id": 8,
+      "task": "Create integration tests for User service",
+      "depends_on": [7],
+      "effort_days": 4,
+      "team": "qa"
+    },
+    {
+      "id": 9,
+      "task": "Extract Core Business Logic service",
+      "depends_on": [6],
+      "effort_days": 8,
+      "team": "backend"
+    },
+    {
+      "id": 10,
+      "task": "Migrate Core Business database tables",
+      "depends_on": [9],
+      "effort_days": 6,
+      "team": "backend"
+    },
+    {
+      "id": 11,
+      "task": "Create integration tests for Core service",
+      "depends_on": [10],
+      "effort_days": 4,
+      "team": "qa"
+    },
+    {
+      "id": 12,
+      "task": "Extract Notification/Email service",
+      "depends_on": [6],
+      "effort_days": 5,
+      "team": "backend"
+    },
+    {
+      "id": 13,
+      "task": "Implement asynchronous messaging queue (RabbitMQ/Kafka)",
+      "depends_on": [12],
+      "effort_days": 6,
+      "team": "devops"
+    },
+    {
+      "id": 14,
+      "task": "Update Frontend API client to route to API Gateway",
+      "depends_on": [4],
+      "effort_days": 6,
+      "team": "frontend"
+    },
+    {
+      "id": 15,
+      "task": "Refactor Frontend state management for distributed services",
+      "depends_on": [14],
+      "effort_days": 7,
+      "team": "frontend"
+    },
+    {
+      "id": 16,
+      "task": "Implement Frontend error handling for service timeouts",
+      "depends_on": [15],
+      "effort_days": 5,
+      "team": "frontend"
+    },
+    {
+      "id": 17,
+      "task": "Build CI/CD pipelines for automated service deployment",
+      "depends_on": [13],
+      "effort_days": 7,
+      "team": "devops"
+    },
+    {
+      "id": 18,
+      "task": "Perform end-to-end regression testing across services",
+      "depends_on": [8, 11],
+      "effort_days": 8,
+      "team": "qa"
+    },
+    {
+      "id": 19,
+      "task": "Conduct load testing on the distributed architecture",
+      "depends_on": [17, 18],
+      "effort_days": 6,
+      "team": "qa"
+    },
+    {
+      "id": 20,
+      "task": "Final production cutover and monolith decommissioning",
+      "depends_on": [16, 19],
+      "effort_days": 5,
+      "team": "devops"
+    }
+  ]
+}
+```

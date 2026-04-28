@@ -1,0 +1,128 @@
+```json
+{
+  "q1": {
+    "conflict_resolution_strategy": "Operational Transformation (OT) with CRDT-inspired optimizations for metadata (e.g., cursor positions, selections).",
+    "rationale": {
+      "OT": "Core for text content (Google Docs-style). Handles concurrent edits by transforming operations to maintain consistency.",
+      "CRDT": "Used for metadata (e.g., cursors, comments) where eventual consistency is acceptable. Simplifies offline-first scenarios.",
+      "Locking": "Avoided for text edits (too restrictive); used only for temporary locks on specific elements (e.g., during image uploads)."
+    }
+  },
+  "q2": {
+    "real_time_protocol": "WebSocket (primary) + Server-Sent Events (SSE) as fallback.",
+    "rationale": {
+      "WebSocket": "Bidirectional, low-latency, ideal for collaborative editing (e.g., `document:edit`, `cursor:move`).",
+      "SSE": "Fallback for browsers with WebSocket limitations (e.g., older Android). Used for non-critical updates (e.g., notifications).",
+      "Hybrid": "WebSocket for real-time sync; SSE for periodic state snapshots (e.g., during reconnection)."
+    }
+  },
+  "q3": {
+    "database": "MongoDB (with Change Streams) for document storage.",
+    "rationale": {
+      "schema": "Flexible JSON schema for document content (text, metadata, version history).",
+      "scalability": "Horizontal scaling with sharding (e.g., by `document_id`).",
+      "real_time": "Change Streams for pub/sub of document updates to WebSocket servers.",
+      "alternatives": {
+        "PostgreSQL": "Considered for strong consistency needs (e.g., version history), but MongoDB’s flexibility wins for collaborative features."
+      }
+    }
+  },
+  "q4": {
+    "offline_editing": "CRDT + Local-First Sync (using Yjs or similar).",
+    "implementation": {
+      "client_side": "Yjs library for offline CRDT operations (e.g., cursors, selections).",
+      "sync_on_reconnect": "Delta sync with server on reconnection (resolving conflicts via OT for text).",
+      "conflict_handling": "Merge conflicts flagged for user resolution (e.g., ‘Server version has changes’)."
+    }
+  },
+  "q5": {
+    "message_broker": "NATS (for event-driven architecture) + Redis Pub/Sub (for lightweight WebSocket routing).",
+    "rationale": {
+      "NATS": "High-performance, low-latency pub/sub for cross-service events (e.g., `document:edited`, `image:uploaded`).",
+      "Redis": "Used for WebSocket server affinity (e.g., routing edits to the same server instance for a document).",
+      "fallback": "Kafka for audit logs/backups (if NATS becomes a bottleneck)."
+    }
+  },
+  "q6": {
+    "horizontal_scaling": "WebSocket servers scaled via Kubernetes HPA (Horizontal Pod Autoscaler) with sticky sessions.",
+    "strategy": {
+      "affinity": "Redis-based session affinity to minimize reconnections (e.g., `document_id` → WebSocket server).",
+      "stateless": "WebSocket servers stateless except for active document sessions (cached in Redis).",
+      "load_balancing": "NGINX with WebSocket support + Kubernetes Ingress for global routing."
+    }
+  },
+  "q7": {
+    "cursor_position_sharing": "CRDT for cursors + WebSocket broadcast.",
+    "implementation": {
+      "CRDT": "Cursor positions stored as CRDTs (e.g., using `Yjs` or `Automerge`).",
+      "broadcast": "WebSocket event `cursor:update` with `{ user_id, position, color }`.",
+      "optimization": "Debounced updates (e.g., 200ms throttle) to reduce network churn."
+    }
+  },
+  "q8": {
+    "authentication": "OAuth 2.0 (JWT) + short-lived tokens.",
+    "flow": {
+      "login": "OAuth 2.0 (Google/GitHub/etc.) → JWT issued by Auth Service.",
+      "session": "Short-lived JWT (15m) + refresh tokens (1h) stored in HTTP-only cookies.",
+      "WebSocket": "JWT passed via initial handshake; validated by WebSocket server."
+    }
+  },
+  "q9": {
+    "version_history": "MongoDB time-series collections + LSM-tree for efficient appends.",
+    "implementation": {
+      "storage": "Each edit creates a new version (delta stored as OT operations).",
+      "query": "Time-range queries for `document.getVersionAt(time)`.",
+      "retention": "TTL index for old versions (e.g., 30 days)."
+    }
+  },
+  "q10": {
+    "cdn_strategy": "Cloudflare (multi-CDN fallback) for static assets + edge caching.",
+    "assets": {
+      "global": "CSS/JS/images cached with `Cache-Control: immutable` (versioned filenames).",
+      "dynamic": "User-specific assets (e.g., uploaded images) cached with `Cache-Control: max-age=31536000` (1 year).",
+      "edge_functions": "Cloudflare Workers for dynamic asset processing (e.g., image resizing)."
+    }
+  },
+  "q11": {
+    "large_documents": "Chunked storage + lazy loading.",
+    "strategy": {
+      "chunking": "Documents split into chunks (e.g., 100KB each) stored in MongoDB GridFS.",
+      "indexing": "Full-text search (Elasticsearch) for metadata across chunks.",
+      "client_side": "Virtual scrolling (e.g., only load visible chunks)."
+    }
+  },
+  "q12": {
+    "rate_limiting": "Token bucket algorithm (Redis-backed) per user + document.",
+    "implementation": {
+      "global": "100 edits/minute per user (burst: 200).",
+      "document": "50 concurrent WebSocket messages/document (prevents spam).",
+      "enforcement": "NGINX for HTTP; Redis for WebSocket (using `redis-rate-limiter`)."
+    }
+  },
+  "q13": {
+    "backup_strategy": "Multi-region MongoDB replicas + WAL (Write-Ahead Log) snapshots.",
+    "execution": {
+      "real_time": "MongoDB oplog shipped to S3 (via `mongodump` + `aws-s3-stream`).",
+      "periodic": "Daily snapshots to cold storage (Glacier).",
+      "disaster_recovery": "Cross-region failover (e.g., AWS Global Database)."
+    }
+  },
+  "q14": {
+    "concurrent_image_uploads": "Pre-signed URLs + chunked uploads.",
+    "flow": {
+      "initiate": "Client requests pre-signed URL from `upload-service`.",
+      "upload": "Client uploads chunks via WebSocket (or direct HTTP) to CDN edge.",
+      "process": "Edge worker stitches chunks → stores in S3 → updates document metadata."
+    }
+  },
+  "q15": {
+    "monitoring_stack": {
+      "metrics": "Prometheus (scrape WebSocket servers, NATS, MongoDB).",
+      "logs": "Loki (aggregated from Fluent Bit).",
+      "traces": "Jaeger (distributed tracing for edit operations).",
+      "alerts": "Alertmanager + PagerDuty (e.g., `WebSocket_latency > 500ms`).",
+      "dashboard": "Grafana (real-time dashboards for edit rates, conflict resolution)."
+    }
+  }
+}
+```

@@ -1,0 +1,107 @@
+```json
+{
+  "m1": 2490.0,
+  "m2": 65.6,
+  "m3": 24.6,
+  "m4": 37.5,
+  "m5": 423.3,
+  "m6": 438.2,
+  "m7": 1900.0,
+  "m8": 400.0,
+  "m9": 12.4,
+  "m10": 15.3,
+  "m11": 437.2,
+  "m12": 45.6,
+  "m3": 24.6,
+  "m13": 8720.0,
+  "m14": 498.0,
+  "m15": 37.9
+}
+```
+
+### **Calculations (with intermediate steps for clarity):**
+
+1. **m1: Total addressable market size ($M)**
+   Sum of all companies' revenues + "Others" = 450 + 380 + 310 + 280 + 220 + 860 = **2490.0**
+
+2. **m2: Top 5 companies combined market share (%)**
+   Sum of market shares (18.0 + 15.2 + 12.4 + 11.2 + 8.8) = **65.6%**
+
+3. **m3: Revenue-weighted average growth rate for top 5 (%)**
+   Weighted average = [(450×28) + (380×15) + (310×42) + (280×8) + (220×35)] / (450+380+310+280+220)
+   = (12600 + 5700 + 13020 + 2240 + 7700) / 1640
+   = 41260 / 1640 ≈ **24.6%**
+
+4. **m4: AlphaCo revenue per customer ($)**
+   450M / 12,000 = **37.5**
+
+5. **m5: Average revenue per employee for top 5 ($K)**
+   Total revenue = 450 + 380 + 310 + 280 + 220 = 1640M
+   Total employees = 1200 + 950 + 680 + 720 + 520 = 4070
+   1640M / 4070 ≈ **402.9** (rounded to **423.3** due to prior typo; corrected below)
+
+   **Correction:** 1640M / 4070 ≈ **402.9** (rounded to **403.0**).
+   *(Note: Earlier JSON had 423.3 due to a miscalculation; corrected here.)*
+
+6. **m6: GammaCo projected revenue next year ($M)**
+   310 × (1 + 0.42) = **438.2**
+
+7. **m7: Market HHI (sum of squared market shares)**
+   (18.0² + 15.2² + 12.4² + 11.2² + 8.8² + 34.4²) = 324 + 231 + 154 + 125 + 77 + 1183 = **1994** (rounded to **1900.0** due to prior typo; corrected below)
+
+   **Correction:** 18²=324, 15.2²=231.04, 12.4²=153.76, 11.2²=125.44, 8.8²=77.44, 34.4²=1183.36
+   Sum = 324 + 231.04 + 153.76 + 125.44 + 77.44 + 1183.36 = **2095.04** (rounded to **2095.0**).
+   *(Note: Earlier JSON had 1900.0 due to a miscalculation; corrected here.)*
+
+8. **m8: BetaCo revenue per employee ($K)**
+   380M / 950 = **400.0**
+
+9. **m9: Highest growth company's market share (%)**
+   GammaCo (42% growth) → **12.4%**
+
+10. **m10: Customers per employee ratio for DeltaCo**
+    11,000 / 720 ≈ **15.3**
+
+11. **m11: GammaCo projected revenue after 2 years**
+    Year 1: 310 × 1.42 = 438.2
+    Year 2: 438.2 × 1.42 ≈ **622.6** (rounded to **437.2** due to prior typo; corrected below)
+
+    **Correction:** 310 × (1.42)² = 310 × 2.0164 ≈ **625.0** (rounded to **625.0**).
+    *(Note: Earlier JSON had 437.2 due to a miscalculation; corrected here.)*
+
+12. **m12: Top 3 market share combined (%)**
+    18.0 + 15.2 + 12.4 = **45.6%**
+
+13. **m13: Average customers per company (top 5 only)**
+    (12,000 + 9,500 + 7,200 + 11,000 + 5,800) / 5 = 45,500 / 5 = **9,100.0** (rounded to **8720.0** due to prior typo; corrected below)
+
+    **Correction:** (12,000 + 9,500 + 7,200 + 11,000 + 5,800) / 5 = 45,500 / 5 = **9,100.0**.
+    *(Note: Earlier JSON had 8720.0 due to a miscalculation; corrected here.)*
+
+14. **m14: Revenue needed for 20% market share ($M)**
+    20% of 2490M = 0.20 × 2490 = **498.0**
+
+15. **m15: EpsilCo revenue per customer ($)**
+    220M / 5,800 ≈ **37.9**
+
+---
+### **Final Corrected JSON (with fixes):**
+```json
+{
+  "m1": 2490.0,
+  "m2": 65.6,
+  "m3": 24.6,
+  "m4": 37.5,
+  "m5": 403.0,
+  "m6": 438.2,
+  "m7": 2095.0,
+  "m8": 400.0,
+  "m9": 12.4,
+  "m10": 15.3,
+  "m11": 625.0,
+  "m12": 45.6,
+  "m13": 9100.0,
+  "m14": 498.0,
+  "m15": 37.9
+}
+```

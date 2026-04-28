@@ -1,0 +1,97 @@
+```json
+{
+  "issues": [
+    {
+      "id": 1,
+      "issue": "Missing meta description tag (critical for SEO ranking and click-through rates)",
+      "severity": "critical",
+      "fix": "Add a unique, compelling meta description (150-160 characters) within the <head> section. Example: `<meta name=\"description\" content=\"Discover the best products at unbeatable prices. Shop now for shoes, bags, and clothes with free shipping!\">`"
+    },
+    {
+      "id": 2,
+      "issue": "Duplicate or missing H1 tags (only one H1 should exist per page)",
+      "severity": "critical",
+      "fix": "Replace the two `<h1>` tags with a single, descriptive H1 (e.g., `<h1>Best Products at Discounted Prices – Shop Now</h1>`)."
+    },
+    {
+      "id": 3,
+      "issue": "Missing alt text for images (images without alt text are invisible to search engines and screen readers)",
+      "severity": "critical",
+      "fix": "Add descriptive `alt` attributes to all `<img>` tags. Example: `<img src=\"product1.jpg\" alt=\"Premium leather sneakers for men\">`"
+    },
+    {
+      "id": 4,
+      "issue": "Missing canonical URL tag (duplicate content risk due to URL parameters)",
+      "severity": "critical",
+      "fix": "Add a canonical tag to specify the preferred version of the page. Example: `<link rel=\"canonical\" href=\"https://example.com/page-1234\" />`"
+    },
+    {
+      "id": 5,
+      "issue": "Missing viewport meta tag (not mobile-friendly, hurting mobile SEO)",
+      "severity": "critical",
+      "fix": "Add `<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">` to the `<head>` for responsive design."
+    },
+    {
+      "id": 6,
+      "issue": "Missing structured data (schema markup) for products (reduces visibility in rich snippets)",
+      "severity": "major",
+      "fix": "Add JSON-LD schema markup for products. Example: `<script type=\"application/ld+json\">{ \"@context\": \"https://schema.org\", \"@type\": \"Product\", \"name\": \"Product Name\", ... }</script>`"
+    },
+    {
+      "id": 7,
+      "issue": "Missing internal linking strategy (low crawlability and user engagement)",
+      "severity": "major",
+      "fix": "Replace generic anchor text (`Click here`) with descriptive keywords (e.g., `<a href=\"https://example.com/products\">Shop Men's Shoes</a>`)."
+    },
+    {
+      "id": 8,
+      "issue": "Missing title tag optimization (generic title hurts CTR and ranking)",
+      "severity": "major",
+      "fix": "Replace `<title>Home</title>` with a unique, keyword-rich title (e.g., `<title>Best Discounted Shoes, Bags & Clothes | Example Store</title>`)."
+    },
+    {
+      "id": 9,
+      "issue": "Missing robots meta tag (potential indexing issues)",
+      "severity": "major",
+      "fix": "Add `<meta name=\"robots\" content=\"index, follow\">` to the `<head>` to ensure the page is indexed."
+    },
+    {
+      "id": 10,
+      "issue": "Missing Open Graph (OG) tags (reduces social sharing visibility)",
+      "severity": "major",
+      "fix": "Add OG tags for better social media sharing. Example: `<meta property=\"og:title\" content=\"Best Products at Example Store\">`"
+    },
+    {
+      "id": 11,
+      "issue": "Missing semantic HTML structure (poor readability for search engines)",
+      "severity": "minor",
+      "fix": "Use semantic tags like `<header>`, `<main>`, `<section>`, and `<footer>` to improve structure."
+    },
+    {
+      "id": 12,
+      "issue": "Missing URL slug optimization (non-descriptive URL hurts SEO)",
+      "severity": "minor",
+      "fix": "Replace `example.com/page-1234?ref=123&utm=abc` with a clean, keyword-rich URL (e.g., `example.com/best-discounted-shoes`)."
+    },
+    {
+      "id": 13,
+      "issue": "Hidden text in `<div style=\"display:none\">` (black-hat SEO tactic, risks penalties)",
+      "severity": "minor",
+      "fix": "Remove the hidden div or replace it with visible, relevant content."
+    },
+    {
+      "id": 14,
+      "issue": "Missing or poorly optimized meta keywords tag (deprecated but may still cause issues)",
+      "severity": "minor",
+      "fix": "Remove the `<meta name=\"keywords\">` tag (it’s obsolete and ignored by modern search engines)."
+    },
+    {
+      "id": 15,
+      "issue": "Low-quality or duplicate content (Lorem Ipsum placeholder text)",
+      "severity": "minor",
+      "fix": "Replace the placeholder text with unique, valuable content (e.g., product descriptions, buying guides, or customer reviews)."
+    }
+  ],
+  "count": 15
+}
+```

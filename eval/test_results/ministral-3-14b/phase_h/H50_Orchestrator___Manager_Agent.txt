@@ -1,0 +1,541 @@
+```json
+{
+  "agents": [
+    {
+      "name": "RefundRequestValidation",
+      "input": {
+        "type": "object",
+        "properties": {
+          "requestId": { "type": "string" },
+          "customerId": { "type": "string" },
+          "orderId": { "type": "string" },
+          "amount": { "type": "number" },
+          "reason": { "type": "string" },
+          "timestamp": { "type": "string", "format": "date-time" }
+        },
+        "required": ["requestId", "customerId", "orderId", "amount"]
+      },
+      "output": {
+        "type": "object",
+        "properties": {
+          "isValid": { "type": "boolean" },
+          "validationErrors": { "type": "array", "items": { "type": "string" } },
+          "processedData": {
+            "type": "object",
+            "properties": {
+              "requestId": { "type": "string" },
+              "customerId": { "type": "string" },
+              "orderId": { "type": "string" },
+              "amount": { "type": "number" },
+              "reason": { "type": "string" }
+            }
+          }
+        }
+      },
+      "next": [
+        {
+          "condition": "isValid === true",
+          "step": "FraudCheck"
+        },
+        {
+          "condition": "isValid === false",
+          "step": "ValidationErrorHandler"
+        }
+      ],
+      "fallback": {
+        "step": "SystemErrorHandler",
+        "timeout": 10000,
+        "action": "Log error and retry once with exponential backoff"
+      },
+      "timeout": 5000,
+      "logging": {
+        "action": "Log validation attempt with input data",
+        "audit": true
+      }
+    },
+    {
+      "name": "FraudCheck",
+      "input": {
+        "type": "object",
+        "properties": {
+          "requestId": { "type": "string" },
+          "customerId": { "type": "string" },
+          "orderId": { "type": "string" },
+          "amount": { "type": "number" },
+          "reason": { "type": "string" }
+        }
+      },
+      "output": {
+        "type": "object",
+        "properties": {
+          "isFraudulent": { "type": "boolean" },
+          "riskScore": { "type": "number" },
+          "processedData": {
+            "type": "object",
+            "properties": {
+              "requestId": { "type": "string" },
+              "customerId": { "type": "string" },
+              "orderId": { "type": "string" },
+              "amount": { "type": "number" },
+              "reason": { "type": "string" }
+            }
+          }
+        }
+      },
+      "next": [
+        {
+          "condition": "isFraudulent === true",
+          "step": "FraudRejectionHandler"
+        },
+        {
+          "condition": "isFraudulent === false && riskScore < 0.7",
+          "step": "ApprovalRequest"
+        },
+        {
+          "condition": "isFraudulent === false && riskScore >= 0.7",
+          "step": "ManualReview"
+        }
+      ],
+      "fallback": {
+        "step": "SystemErrorHandler",
+        "timeout": 10000,
+        "action": "Log error and notify fraud team"
+      },
+      "timeout": 15000,
+      "logging": {
+        "action": "Log fraud check with risk score",
+        "audit": true
+      }
+    },
+    {
+      "name": "ApprovalRequest",
+      "input": {
+        "type": "object",
+        "properties": {
+          "requestId": { "type": "string" },
+          "customerId": { "type": "string" },
+          "orderId": { "type": "string" },
+          "amount": { "type": "number" },
+          "reason": { "type": "string" },
+          "riskScore": { "type": "number" }
+        }
+      },
+      "output": {
+        "type": "object",
+        "properties": {
+          "isApproved": { "type": "boolean" },
+          "processedData": {
+            "type": "object",
+            "properties": {
+              "requestId": { "type": "string" },
+              "customerId": { "type": "string" },
+              "orderId": { "type": "string" },
+              "amount": { "type": "number" },
+              "reason": { "type": "string" }
+            }
+          }
+        }
+      },
+      "next": [
+        {
+          "condition": "isApproved === true",
+          "step": "PaymentProcessing"
+        },
+        {
+          "condition": "isApproved === false",
+          "step": "RejectionHandler"
+        }
+      ],
+      "fallback": {
+        "step": "SystemErrorHandler",
+        "timeout": 10000,
+        "action": "Log error and notify approval team"
+      },
+      "timeout": 10000,
+      "logging": {
+        "action": "Log approval decision",
+        "audit": true
+      }
+    },
+    {
+      "name": "PaymentProcessing",
+      "input": {
+        "type": "object",
+        "properties": {
+          "requestId": { "type": "string" },
+          "customerId": { "type": "string" },
+          "orderId": { "type": "string" },
+          "amount": { "type": "number" },
+          "reason": { "type": "string" }
+        }
+      },
+      "output": {
+        "type": "object",
+        "properties": {
+          "paymentStatus": { "type": "string", "enum": ["SUCCESS", "FAILURE", "PENDING"] },
+          "transactionId": { "type": "string" },
+          "processedData": {
+            "type": "object",
+            "properties": {
+              "requestId": { "type": "string" },
+              "customerId": { "type": "string" },
+              "orderId": { "type": "string" },
+              "amount": { "type": "number" },
+              "reason": { "type": "string" }
+            }
+          }
+        }
+      },
+      "next": [
+        {
+          "condition": "paymentStatus === 'SUCCESS'",
+          "step": "SuccessNotification"
+        },
+        {
+          "condition": "paymentStatus === 'FAILURE'",
+          "step": "PaymentFailureHandler"
+        },
+        {
+          "condition": "paymentStatus === 'PENDING'",
+          "step": "PaymentRetry"
+        }
+      ],
+      "fallback": {
+        "step": "SystemErrorHandler",
+        "timeout": 10000,
+        "action": "Log error and notify payment team"
+      },
+      "timeout": 20000,
+      "logging": {
+        "action": "Log payment processing attempt",
+        "audit": true
+      }
+    },
+    {
+      "name": "SuccessNotification",
+      "input": {
+        "type": "object",
+        "properties": {
+          "requestId": { "type": "string" },
+          "customerId": { "type": "string" },
+          "orderId": { "type": "string" },
+          "amount": { "type": "number" },
+          "reason": { "type": "string" },
+          "transactionId": { "type": "string" }
+        }
+      },
+      "output": {
+        "type": "object",
+        "properties": {
+          "notificationStatus": { "type": "string", "enum": ["SUCCESS", "FAILURE"] },
+          "processedData": {
+            "type": "object",
+            "properties": {
+              "requestId": { "type": "string" },
+              "customerId": { "type": "string" },
+              "orderId": { "type": "string" },
+              "amount": { "type": "number" },
+              "reason": { "type": "string" }
+            }
+          }
+        }
+      },
+      "next": [
+        {
+          "condition": "notificationStatus === 'SUCCESS'",
+          "step": "WorkflowComplete"
+        },
+        {
+          "condition": "notificationStatus === 'FAILURE'",
+          "step": "NotificationRetry"
+        }
+      ],
+      "fallback": {
+        "step": "SystemErrorHandler",
+        "timeout": 10000,
+        "action": "Log error and notify notification team"
+      },
+      "timeout": 5000,
+      "logging": {
+        "action": "Log success notification sent",
+        "audit": true
+      }
+    },
+    {
+      "name": "ManualReview",
+      "input": {
+        "type": "object",
+        "properties": {
+          "requestId": { "type": "string" },
+          "customerId": { "type": "string" },
+          "orderId": { "type": "string" },
+          "amount": { "type": "number" },
+          "reason": { "type": "string" },
+          "riskScore": { "type": "number" }
+        }
+      },
+      "output": {
+        "type": "object",
+        "properties": {
+          "reviewDecision": { "type": "string", "enum": ["APPROVE", "REJECT", "ESCALATE"] },
+          "processedData": {
+            "type": "object",
+            "properties": {
+              "requestId": { "type": "string" },
+              "customerId": { "type": "string" },
+              "orderId": { "type": "string" },
+              "amount": { "type": "number" },
+              "reason": { "type": "string" }
+            }
+          }
+        }
+      },
+      "next": [
+        {
+          "condition": "reviewDecision === 'APPROVE'",
+          "step": "ApprovalRequest"
+        },
+        {
+          "condition": "reviewDecision === 'REJECT'",
+          "step": "RejectionHandler"
+        },
+        {
+          "condition": "reviewDecision === 'ESCALATE'",
+          "step": "HumanEscalation"
+        }
+      ],
+      "fallback": {
+        "step": "SystemErrorHandler",
+        "timeout": 10000,
+        "action": "Log error and notify manual review team"
+      },
+      "timeout": 30000,
+      "logging": {
+        "action": "Log manual review initiation",
+        "audit": true
+      }
+    },
+    {
+      "name": "ValidationErrorHandler",
+      "input": {
+        "type": "object",
+        "properties": {
+          "requestId": { "type": "string" },
+          "validationErrors": { "type": "array", "items": { "type": "string" } }
+        }
+      },
+      "output": {
+        "type": "object",
+        "properties": {
+          "notificationStatus": { "type": "string", "enum": ["SUCCESS", "FAILURE"] },
+          "processedData": {
+            "type": "object",
+            "properties": {
+              "requestId": { "type": "string" },
+              "validationErrors": { "type": "array", "items": { "type": "string" } }
+            }
+          }
+        }
+      },
+      "next": [
+        {
+          "condition": "notificationStatus === 'SUCCESS'",
+          "step": "WorkflowComplete"
+        },
+        {
+          "condition": "notificationStatus === 'FAILURE'",
+          "step": "SystemErrorHandler"
+        }
+      ],
+      "fallback": {
+        "step": "SystemErrorHandler",
+        "timeout": 10000,
+        "action": "Log error and notify support team"
+      },
+      "timeout": 5000,
+      "logging": {
+        "action": "Log validation error notification",
+        "audit": true
+      }
+    },
+    {
+      "name": "FraudRejectionHandler",
+      "input": {
+        "type": "object",
+        "properties": {
+          "requestId": { "type": "string" },
+          "customerId": { "type": "string" },
+          "reason": { "type": "string" }
+        }
+      },
+      "output": {
+        "type": "object",
+        "properties": {
+          "notificationStatus": { "type": "string", "enum": ["SUCCESS", "FAILURE"] },
+          "processedData": {
+            "type": "object",
+            "properties": {
+              "requestId": { "type": "string" },
+              "customerId": { "type": "string" },
+              "reason": { "type": "string" }
+            }
+          }
+        }
+      },
+      "next": [
+        {
+          "condition": "notificationStatus === 'SUCCESS'",
+          "step": "WorkflowComplete"
+        },
+        {
+          "condition": "notificationStatus === 'FAILURE'",
+          "step": "SystemErrorHandler"
+        }
+      ],
+      "fallback": {
+        "step": "SystemErrorHandler",
+        "timeout": 10000,
+        "action": "Log error and notify fraud team"
+      },
+      "timeout": 5000,
+      "logging": {
+        "action": "Log fraud rejection notification",
+        "audit": true
+      }
+    },
+    {
+      "name": "RejectionHandler",
+      "input": {
+        "type": "object",
+        "properties": {
+          "requestId": { "type": "string" },
+          "customerId": { "type": "string" },
+          "reason": { "type": "string" }
+        }
+      },
+      "output": {
+        "type": "object",
+        "properties": {
+          "notificationStatus": { "type": "string", "enum": ["SUCCESS", "FAILURE"] },
+          "processedData": {
+            "type": "object",
+            "properties": {
+              "requestId": { "type": "string" },
+              "customerId": { "type": "string" },
+              "reason": { "type": "string" }
+            }
+          }
+        }
+      },
+      "next": [
+        {
+          "condition": "notificationStatus === 'SUCCESS'",
+          "step": "WorkflowComplete"
+        },
+        {
+          "condition": "notificationStatus === 'FAILURE'",
+          "step": "SystemErrorHandler"
+        }
+      ],
+      "fallback": {
+        "step": "SystemErrorHandler",
+        "timeout": 10000,
+        "action": "Log error and notify support team"
+      },
+      "timeout": 5000,
+      "logging": {
+        "action": "Log rejection notification",
+        "audit": true
+      }
+    },
+    {
+      "name": "PaymentFailureHandler",
+      "input": {
+        "type": "object",
+        "properties": {
+          "requestId": { "type": "string" },
+          "customerId": { "type": "string" },
+          "orderId": { "type": "string" },
+          "amount": { "type": "number" },
+          "reason": { "type": "string" },
+          "error": { "type": "string" }
+        }
+      },
+      "output": {
+        "type": "object",
+        "properties": {
+          "notificationStatus": { "type": "string", "enum": ["SUCCESS", "FAILURE"] },
+          "processedData": {
+            "type": "object",
+            "properties": {
+              "requestId": { "type": "string" },
+              "customerId": { "type": "string" },
+              "orderId": { "type": "string" },
+              "amount": { "type": "number" },
+              "reason": { "type": "string" }
+            }
+          }
+        }
+      },
+      "next": [
+        {
+          "condition": "notificationStatus === 'SUCCESS'",
+          "step": "WorkflowComplete"
+        },
+        {
+          "condition": "notificationStatus === 'FAILURE'",
+          "step": "SystemErrorHandler"
+        }
+      ],
+      "fallback": {
+        "step": "SystemErrorHandler",
+        "timeout": 10000,
+        "action": "Log error and notify payment team"
+      },
+      "timeout": 5000,
+      "logging": {
+        "action": "Log payment failure notification",
+        "audit": true
+      }
+    },
+    {
+      "name": "HumanEscalation",
+      "input": {
+        "type": "object",
+        "properties": {
+          "requestId": { "type": "string" },
+          "customerId": { "type": "string" },
+          "orderId": { "type": "string" },
+          "amount": { "type": "number" },
+          "reason": { "type": "string" },
+          "riskScore": { "type": "number" }
+        }
+      },
+      "output": {
+        "type": "object",
+        "properties": {
+          "escalationStatus": { "type": "string", "enum": ["RESOLVED", "PENDING"] },
+          "processedData": {
+            "type": "object",
+            "properties": {
+              "requestId": { "type": "string" },
+              "customerId": { "type": "string" },
+              "orderId": { "type": "string" },
+              "amount": { "type": "number" },
+              "reason": { "type": "string" }
+            }
+          }
+        }
+      },
+      "next": [
+        {
+          "condition": "escalationStatus === 'RESOLVED'",
+          "step": "ApprovalRequest"
+        },
+        {
+          "condition": "escalationStatus === 'PENDING'",
+          "step": "EscalationFollowUp"
+        }
+      ],
+      "fallback": {
+        "step": "SystemErrorHandler

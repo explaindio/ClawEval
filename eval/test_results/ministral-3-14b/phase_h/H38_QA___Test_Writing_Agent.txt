@@ -1,0 +1,43 @@
+```python
+def is_valid_password(password):
+    if len(password) < 8 or len(password) > 64:
+        return False
+    if not any(c.isupper() for c in password):
+        return False
+    if not any(c.islower() for c in password):
+        return False
+    if not any(c.isdigit() for c in password):
+        return False
+    if not any(c in '!@#$%^&*()-_+=' for c in password):
+        return False
+    if ' ' in password:
+        return False
+    if password[0].isdigit():
+        return False
+    if any(password[i] == password[i+1] == password[i+2] for i in range(len(password)-2)):
+        return False
+    if 'password' in password.lower():
+        return False
+    return True
+
+def run_tests():
+    tests = [
+        ("ValidPass1!", True, is_valid_password("ValidPass1!")),
+        ("Short1!", False, is_valid_password("Short1!")),
+        ("LongPassword123!@#$%^&*()_+=-123456789012345678901234567890123456789012345678901234567890", False, is_valid_password("LongPassword123!@#$%^&*()_+=-123456789012345678901234567890123456789012345678901234567890")),
+        ("NoUpper1!", False, is_valid_password("NoUpper1!")),
+        ("NoLowerPASS1!", False, is_valid_password("NoLowerPASS1!")),
+        ("NoDigitPass!", False, is_valid_password("NoDigitPass!")),
+        ("NoSpecialPass1", False, is_valid_password("NoSpecialPass1")),
+        ("HasSpace1!", False, is_valid_password("Has Space1!")),
+        ("StartsWithDigit1Pass!", False, is_valid_password("1Pass!")),
+        ("ThreeConsecutiveAAAPass1!", False, is_valid_password("AAAPass1!")),
+        ("ContainsPasswordPass1!", False, is_valid_password("ContainsPasswordPass1!")),
+        ("ValidPass123!", True, is_valid_password("ValidPass123!")),
+        ("ValidPass!123", True, is_valid_password("ValidPass!123")),
+        ("ValidPass!@#", True, is_valid_password("ValidPass!@#")),
+        ("ValidPass1!@#", True, is_valid_password("ValidPass1!@#")),
+        ("ValidPass1!@#$", True, is_valid_password("ValidPass1!@#$"))
+    ]
+    return tests
+```

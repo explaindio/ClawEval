@@ -1,0 +1,82 @@
+```json
+{
+  "bugs": [
+    {
+      "line": 12,
+      "bug": "Discount calculation for 'SAVE20' incorrectly multiplies subtotal by 0.20 (20% off) instead of subtracting 20% (should be subtotal * 0.80)",
+      "severity": "critical"
+    },
+    {
+      "line": 14,
+      "bug": "Discount calculation for 'SAVE10' incorrectly subtracts 10% of subtotal (subtotal * 10) instead of subtracting 10% (should be subtotal * 0.10)",
+      "severity": "critical"
+    },
+    {
+      "line": 22,
+      "bug": "Silently ignores negative stock levels instead of raising an error or handling the inventory issue",
+      "severity": "critical"
+    },
+    {
+      "line": 31,
+      "bug": "Incorrect operator used ('=+') instead of '+=' for accumulating total_revenue",
+      "severity": "major"
+    },
+    {
+      "line": 34,
+      "bug": "Division by zero risk if orders list is empty (no check for empty list)",
+      "severity": "critical"
+    },
+    {
+      "line": 35,
+      "bug": "No handling for empty results list when calculating max_order (will raise ValueError)",
+      "severity": "major"
+    },
+    {
+      "line": 46,
+      "bug": "Email validation only checks for '@' symbol without verifying proper email format (e.g., no domain validation)",
+      "severity": "major"
+    },
+    {
+      "line": 53,
+      "bug": "Incorrect calculation: distance + per_km instead of distance * per_km",
+      "severity": "critical"
+    },
+    {
+      "line": 57,
+      "bug": "Unreachable elif condition (weight > 50) because previous condition (weight > 30) already covers all cases",
+      "severity": "minor"
+    },
+    {
+      "line": 60,
+      "bug": "Using round() loses decimal precision for shipping costs (should use round(cost, 2) or similar)",
+      "severity": "minor"
+    },
+    {
+      "line": 63,
+      "bug": "Merging profiles by modifying profile_a directly instead of creating a new dictionary (potential side effect)",
+      "severity": "minor"
+    },
+    {
+      "line": 67,
+      "bug": "Hardcoded 'updated_at' timestamp instead of using current datetime",
+      "severity": "minor"
+    },
+    {
+      "line": 71,
+      "bug": "No handling for malformed CSV lines (e.g., missing commas, quoted fields with commas)",
+      "severity": "major"
+    },
+    {
+      "line": 78,
+      "bug": "Inefficient duplicate detection (O(n^2) time complexity) and doesn't handle unhashable items",
+      "severity": "minor"
+    },
+    {
+      "line": 78,
+      "bug": "Appends items to seen list even if they're duplicates, which can lead to incorrect duplicate detection",
+      "severity": "minor"
+    }
+  ],
+  "count": 15
+}
+```

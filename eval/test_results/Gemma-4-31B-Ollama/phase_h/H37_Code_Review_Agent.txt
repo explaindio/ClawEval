@@ -1,0 +1,82 @@
+```json
+{
+  "bugs": [
+    {
+      "line": 12,
+      "bug": "Discount logic error: sets subtotal to 20% of original instead of subtracting 20% (should be * 0.80).",
+      "severity": "critical"
+    },
+    {
+      "line": 14,
+      "bug": "Discount logic error: subtracts 10 times the subtotal instead of 10% (should be * 0.10).",
+      "severity": "critical"
+    },
+    {
+      "line": 22,
+      "bug": "Inventory logic error: allows stock to go negative without handling the error or preventing the order.",
+      "severity": "major"
+    },
+    {
+      "line": 31,
+      "bug": "Assignment operator error: '=+' is not a valid increment operator; it assigns the positive value of total to total_revenue, erasing previous sums.",
+      "severity": "critical"
+    },
+    {
+      "line": 34,
+      "bug": "ZeroDivisionError: will crash if the 'orders' list is empty.",
+      "severity": "major"
+    },
+    {
+      "line": 35,
+      "bug": "ValueError: 'max()' will crash if the 'results' list is empty.",
+      "severity": "major"
+    },
+    {
+      "line": 46,
+      "bug": "Insufficient validation: only checks for '@' symbol, allowing invalid emails like '@' or 'a@'.",
+      "severity": "minor"
+    },
+    {
+      "line": 53,
+      "bug": "Calculation error: adds distance directly to cost instead of multiplying distance by per_km.",
+      "severity": "major"
+    },
+    {
+      "line": 57,
+      "bug": "Unreachable code: 'weight > 50' is inside an 'elif' after 'weight > 30', so it will never be triggered.",
+      "severity": "major"
+    },
+    {
+      "line": 60,
+      "bug": "Precision loss: 'round()' returns an integer, losing cents/decimal precision for currency.",
+      "severity": "minor"
+    },
+    {
+      "line": 63,
+      "bug": "Reference error: 'merged = profile_a' creates a shallow reference; modifying 'merged' mutates the original 'profile_a' object.",
+      "severity": "critical"
+    },
+    {
+      "line": 67,
+      "bug": "Hardcoded value: 'updated_at' is set to a static date instead of the current timestamp.",
+      "severity": "minor"
+    },
+    {
+      "line": 71,
+      "bug": "CSV parsing error: simple split(',') fails if values contain quoted commas (e.g., \"New York, NY\").",
+      "severity": "major"
+    },
+    {
+      "line": 78,
+      "bug": "Performance bug: using a list for 'seen' results in O(n^2) complexity; should use a set for O(n).",
+      "severity": "major"
+    },
+    {
+      "line": 78,
+      "bug": "Logic error: 'duplicates' list will contain the same item multiple times if it appears more than twice in 'items'.",
+      "severity": "minor"
+    }
+  ],
+  "count": 15
+}
+```

@@ -1,0 +1,154 @@
+```json
+{
+  "1": {
+    "action": [
+      "open blinds (all)",
+      "turn on kitchen lights (100%)",
+      "play morning playlist"
+    ],
+    "notes": "Morning routine triggered at 7:00 AM"
+  },
+  "2": {
+    "action": [
+      "lock all doors",
+      "arm alarm",
+      "turn off all lights",
+      "set thermostat to eco (62°F)"
+    ],
+    "notes": "Nobody home, default security/energy-saving mode"
+  },
+  "3": {
+    "action": [
+      "turn on cooling (thermostat)"
+    ],
+    "notes": "Temperature > 78°F, cooling activated (someone home)"
+  },
+  "4": {
+    "action": [
+      "dim all lights to 20%",
+      "lock all doors"
+    ],
+    "notes": "After 11 PM, nighttime routine (family home, no alarm trigger)"
+  },
+  "5": {
+    "action": [
+      "trigger alarm (motion detected at night + nobody home)"
+    ],
+    "notes": "Security breach detected, alarm armed"
+  },
+  "6": {
+    "action": [
+      "show camera feed (front door)",
+      "unlock front door"
+    ],
+    "notes": "Recognized visitor, door unlocked automatically"
+  },
+  "7": {
+    "action": [
+      "show camera feed (front door)",
+      "do nothing (door remains locked)"
+    ],
+    "notes": "Unknown person, no action taken (security measure)"
+  },
+  "8": {
+    "action": [
+      "disarm alarm",
+      "unlock front door",
+      "turn on hall lights (100%)"
+    ],
+    "notes": "Occupant arrival, welcome-home routine"
+  },
+  "9": {
+    "action": [
+      "set thermostat to eco (62°F) (no heating, since nobody home)"
+    ],
+    "notes": "Temperature < 65°F, but nobody home (no heating needed)"
+  },
+  "10": {
+    "action": [
+      "skip morning routine (holiday exception)",
+      "notify occupants (optional: 'Happy Holiday! Morning routine skipped.')"
+    ],
+    "notes": "Holiday detected, morning routine overridden"
+  },
+  "11": {
+    "action": [
+      "trigger alarm (smoke detector)",
+      "notify occupants/emergency contacts",
+      "activate emergency lights (if available)"
+    ],
+    "notes": "Critical safety event, highest priority"
+  },
+  "12": {
+    "action": [
+      "notify occupants/emergency contacts (water leak)",
+      "turn off water supply (if automated valve available)",
+      "activate basement lights (if safe)"
+    ],
+    "notes": "Potential flood risk, immediate action required"
+  },
+  "13": {
+    "action": [
+      "notify parents/caregivers (baby room noise)",
+      "turn on baby monitor lights (if available)",
+      "record timestamped audio (optional)"
+    ],
+    "notes": "Non-critical but important alert for parents"
+  },
+  "14": {
+    "action": [
+      "notify occupants (guest WiFi threshold exceeded)",
+      "log device list (optional)",
+      "no automatic action (manual review recommended)"
+    ],
+    "notes": "House rule violation, inform occupants"
+  },
+  "15": {
+    "action": [
+      "notify occupants (power outage)",
+      "switch to backup power (UPS for critical devices)",
+      "turn off non-essential loads (if automated)",
+      "activate emergency lights (if available)"
+    ],
+    "notes": "Power failure, prioritize safety and critical systems"
+  },
+  "16": {
+    "action": [
+      "open windows (if automated)",
+      "notify occupants (high CO2 levels)",
+      "activate ventilation system (if available)"
+    ],
+    "notes": "Indoor air quality concern, ventilation needed"
+  },
+  "17": {
+    "action": [
+      "close living room blinds (to reduce glare/heat gain)",
+      "adjust thermostat (if cooling active, maintain comfort)"
+    ],
+    "notes": "Sunlight management for comfort/energy efficiency"
+  },
+  "18": {
+    "action": [
+      "turn on toddler's room lights (soft/nightlight mode)",
+      "notify parents (optional: 'Toddler room door opened at 3 AM')"
+    ],
+    "notes": "Non-critical but potentially important for parents"
+  },
+  "19": {
+    "action": [
+      "notify occupants (garage door open for 30+ minutes)",
+      "lock garage door (if automated)",
+      "activate garage lights (if safe)"
+    ],
+    "notes": "Security concern, potential unauthorized access"
+  },
+  "20": {
+    "action": [
+      "notify occupants (freezing outdoor temp)",
+      "check garage/outdoor pipes (if automated sensors available)",
+      "no automatic action (manual review recommended)"
+    ],
+    "notes": "Preventative measure for potential pipe freeze"
+  }
+}
+```

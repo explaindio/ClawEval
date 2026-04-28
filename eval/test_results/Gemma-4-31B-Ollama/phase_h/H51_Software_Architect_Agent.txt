@@ -1,0 +1,19 @@
+```json
+{
+  "q1": "CRDT (Conflict-free Replicated Data Types) for decentralized consistency and better offline support.",
+  "q2": "WebSockets for full-duplex, low-latency bidirectional communication.",
+  "q3": "MongoDB (Document-oriented storage for flexible schema and high write throughput).",
+  "q4": "Local-first storage using IndexedDB with a synchronization queue that replays operations upon reconnection.",
+  "q5": "Redis Pub/Sub for low-latency message distribution between server nodes.",
+  "q6": "Sticky sessions via Load Balancer and a distributed state manager (Redis) to track which user is on which server node.",
+  "q7": "Ephemeral WebSocket messages containing user ID, color, and index offset, not persisted to the primary database.",
+  "q8": "OAuth 2.0 with JWT (JSON Web Tokens) for stateless session verification.",
+  "q9": "Event Sourcing: Store a log of all operations (deltas) and periodically create snapshots for fast loading.",
+  "q10": "CloudFront or Akamai with edge caching for the React/Vue frontend bundle.",
+  "q11": "Document sharding and 'Windowing/Virtualization' on the frontend to render only the visible viewport.",
+  "q12": "Token Bucket algorithm implemented at the API Gateway level (e.g., Nginx or Kong).",
+  "q13": "Point-in-time recovery (PITR) with daily snapshots stored in S3 (cross-region replication).",
+  "q14": "Presigned URLs (S3) to allow clients to upload directly to storage, bypassing the application server.",
+  "q15": "Prometheus for metrics, Grafana for visualization, and ELK Stack (Elasticsearch, Logstash, Kibana) for logging."
+}
+```

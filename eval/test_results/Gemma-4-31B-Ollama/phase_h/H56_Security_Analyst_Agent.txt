@@ -1,0 +1,82 @@
+```json
+{
+  "vulnerabilities": [
+    {
+      "type": "SQL Injection",
+      "location": "login() - query = f\"SELECT * FROM users WHERE username='{user}' AND password='{pwd}'\"",
+      "severity": "critical"
+    },
+    {
+      "type": "Weak Hashing Algorithm (MD5)",
+      "location": "login() - hashlib.md5(user.encode()).hexdigest()",
+      "severity": "medium"
+    },
+    {
+      "type": "Server-Side Template Injection (SSTI)",
+      "location": "profile() - render_template_string(template)",
+      "severity": "critical"
+    },
+    {
+      "type": "Cross-Site Scripting (XSS)",
+      "location": "search() - return f\"<html><body>Results for: {q}</body></html>\"",
+      "severity": "high"
+    },
+    {
+      "type": "Command Injection",
+      "location": "run_command() - subprocess.run(cmd, shell=True, ...)",
+      "severity": "critical"
+    },
+    {
+      "type": "Arbitrary File Upload (Path Traversal)",
+      "location": "upload() - os.path.join(UPLOAD_DIR, f.filename)",
+      "severity": "critical"
+    },
+    {
+      "type": "Local File Inclusion / Path Traversal",
+      "location": "download() - send_file(filepath)",
+      "severity": "critical"
+    },
+    {
+      "type": "Unsafe YAML Deserialization",
+      "location": "load_config() - yaml.load(data)",
+      "severity": "critical"
+    },
+    {
+      "type": "Insecure Deserialization (Pickle)",
+      "location": "restore_session() - pickle.loads(data)",
+      "severity": "critical"
+    },
+    {
+      "type": "Hardcoded Credentials",
+      "location": "SECRET = \"admin123\"",
+      "severity": "high"
+    },
+    {
+      "type": "Broken Access Control (Insecure Token Comparison)",
+      "location": "admin() - if token == SECRET:",
+      "severity": "high"
+    },
+    {
+      "type": "Command Injection",
+      "location": "export_data() - os.system(cmd)",
+      "severity": "critical"
+    },
+    {
+      "type": "Information Exposure (Debug Mode Enabled)",
+      "location": "app.run(debug=True, ...)",
+      "severity": "medium"
+    },
+    {
+      "type": "Insecure Network Binding (0.0.0.0)",
+      "location": "app.run(..., host=\"0.0.0.0\")",
+      "severity": "medium"
+    },
+    {
+      "type": "Missing CSRF Protection",
+      "location": "All POST routes (/login, /run, /upload, /config, /session)",
+      "severity": "medium"
+    }
+  ],
+  "count": 15
+}
+```

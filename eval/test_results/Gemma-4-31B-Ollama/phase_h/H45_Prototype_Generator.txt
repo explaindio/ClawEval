@@ -1,0 +1,76 @@
+```python
+class JSONValidator:
+    def validate(self, data, schema):
+        errors = []
+        
+        # Map schema type strings to Python types
+        type_map = {
+            "str": str,
+            "int": int,
+            "float": float,
+            "bool": bool,
+            "list": list,
+            "dict": dict
+        }
+
+        for field, rules in schema.items():
+            # 1. Check if required field is missing
+            if field not in data:
+                if rules.get("required", False):
+                    errors.append(f"Field '{field}' is required")
+                continue
+
+            val = data[field]
+            expected_type_str = rules.get("type")
+            expected_type = type_map.get(expected_type_str)
+
+            # 2. Type Validation
+            # Special case: allow int where float is expected
+            if expected_type == float and isinstance(val, int):
+                pass 
+            elif not isinstance(val, expected_type):
+                errors.append(f"Field '{field}' must be of type {expected_type_str}")
+                continue  # Skip further checks for this field if type is wrong
+
+            # 3. Numeric Range Validation (int/float)
+            if expected_type in (int, float):
+                if "min" in rules and val < rules["min"]:
+                    errors.append(f"Field '{field}' must be at least {rules['min']}")
+                if "max" in rules and val > rules["max"]:
+                    errors.append(f"Field '{field}' must be at most {rules['max']}")
+
+            # 4. Length Validation (str/list)
+            if expected_type in (str, list):
+                val_len = len(val)
+                if "min_length" in rules and val_len < rules["min_length"]:
+                    errors.append(f"Field '{field}' length must be at least {rules['min_length']}")
+                if "max_length" in rules and val_len > rules["max_length"]:
+                    errors.append(f"Field '{field}' length must be at most {rules['max_length']}")
+
+        return {
+            "valid": len(errors) == 0,
+            "errors": errors
+        }
+
+# Example Usage:
+if __name__ == "__main__":
+    validator = JSONValidator()
+    
+    my_schema = {
+        "username": {"type": "str", "required": True, "min_length": 3},
+        "age": {"type": "int", "required": True, "min": 18, "max": 99},
+        "tags": {"type": "list", "required": False, "max_length": 3},
+        "score": {"type": "float", "required": False}
+    }
+
+    test_data = {
+        "username": "Jo",        # Too short
+        "age": 15,               # Too young
+        "tags": [1, 2, 3, 4],    # Too long
+        "score": "high",         # Wrong type
+        "extra": "allowed"       # Should be ignored
+    }
+
+    result = validator.validate(test_data, my_schema)
+    print(result)
+```

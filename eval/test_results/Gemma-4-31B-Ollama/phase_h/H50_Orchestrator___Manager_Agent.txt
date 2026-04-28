@@ -1,0 +1,91 @@
+```json
+{
+  "agents": [
+    {
+      "name": "TriageValidationAgent",
+      "input": "Customer Refund Request",
+      "output": "ValidatedRequestData",
+      "next": "FraudCheckAgent",
+      "fallback": "ErrorHandlerAgent",
+      "timeout_seconds": 5,
+      "logging": "Audit: Request received and schema validated"
+    },
+    {
+      "name": "FraudCheckAgent",
+      "input": "ValidatedRequestData",
+      "output": "FraudScore",
+      "next": "ApprovalAgent",
+      "fallback": "ErrorHandlerAgent",
+      "timeout_seconds": 10,
+      "logging": "Audit: Fraud risk assessment completed"
+    },
+    {
+      "name": "ApprovalAgent",
+      "input": "FraudScore",
+      "output": "ApprovalDecision",
+      "next": {
+        "approved": "PaymentAgent",
+        "rejected": "NotificationAgent",
+        "edge_case": "HumanEscalationAgent"
+      },
+      "fallback": "ErrorHandlerAgent",
+      "timeout_seconds": 10,
+      "logging": "Audit: Approval decision rendered based on fraud score and policy"
+    },
+    {
+      "name": "HumanEscalationAgent",
+      "input": "EdgeCaseRequest",
+      "output": "ManualDecision",
+      "next": "PaymentAgent",
+      "fallback": "ErrorHandlerAgent",
+      "timeout_seconds": 30,
+      "logging": "Audit: Request escalated to human supervisor"
+    },
+    {
+      "name": "PaymentAgent",
+      "input": "ApprovalDecision",
+      "output": "TransactionReceipt",
+      "next": "NotificationAgent",
+      "fallback": "ErrorHandlerAgent",
+      "timeout_seconds": 15,
+      "logging": "Audit: Funds disbursed via payment gateway"
+    },
+    {
+      "name": "NotificationAgent",
+      "input": "TransactionReceipt or RejectionNotice",
+      "output": "CustomerConfirmation",
+      "next": null,
+      "fallback": "ErrorHandlerAgent",
+      "timeout_seconds": 5,
+      "logging": "Audit: Final status communicated to customer"
+    },
+    {
+      "name": "ErrorHandlerAgent",
+      "input": "AgentErrorLog",
+      "output": "ErrorResolution",
+      "next": "NotificationAgent",
+      "fallback": null,
+      "timeout_seconds": 5,
+      "logging": "Audit: System error handled and logged"
+    }
+  ],
+  "constraints": {
+    "min_agents": 6,
+    "required_agents": [
+      "validation",
+      "fraud-check",
+      "approval",
+      "payment",
+      "notification"
+    ],
+    "conditional_routing": "ApprovalAgent routes to Payment, Notification, or HumanEscalation",
+    "sequence_logic": "Validation -> Fraud -> Approval -> Payment -> Notification",
+    "max_total_processing_time_seconds": 60,
+    "outcome_handling": "Supports Approved, Rejected, and Edge Case paths",
+    "audit_requirement": "Logging enabled for every agent step",
+    "dependency_type": "Directed Acyclic Graph (No circular dependencies)",
+    "escalation_path": "HumanEscalationAgent for edge cases",
+    "timeout_enforcement": "Per-agent timeout values defined"
+  }
+}
+```

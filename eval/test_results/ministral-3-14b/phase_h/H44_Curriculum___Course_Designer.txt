@@ -1,0 +1,90 @@
+```json
+{
+  "weeks": [
+    {
+      "week": 1,
+      "topic": "Python Fundamentals",
+      "objectives": [
+        "Understand Python syntax and structure (indentation, comments, etc.)",
+        "Declare and use variables with different data types (int, float, str, bool)",
+        "Perform basic arithmetic and string operations",
+        "Use built-in functions (e.g., `print()`, `input()`, `len()`, `type()`)"
+      ],
+      "assignment": "Create a simple calculator that performs basic arithmetic operations (addition, subtraction, multiplication, division) and handles user input/output.",
+      "prerequisites": []
+    },
+    {
+      "week": 2,
+      "topic": "Control Flow & Data Structures",
+      "objectives": [
+        "Use conditional statements (`if`, `elif`, `else`) to control program flow",
+        "Implement loops (`for`, `while`) for iteration",
+        "Work with lists (creation, indexing, slicing, methods like `append()`, `remove()`)",
+        "Introduce dictionaries (key-value pairs, basic operations)"
+      ],
+      "assignment": "Build a to-do list application that allows users to add, view, and delete tasks using lists and loops.",
+      "prerequisites": ["Week 1"]
+    },
+    {
+      "week": 3,
+      "topic": "Functions & File I/O",
+      "objectives": [
+        "Define and call functions with parameters and return values",
+        "Use scope rules (global vs. local variables)",
+        "Read from and write to files (`open()`, `read()`, `write()`, `with` statement)",
+        "Handle file operations for data persistence"
+      ],
+      "assignment": "Create a contact book that stores names and phone numbers in a file. Users should be able to add, search, and display contacts.",
+      "prerequisites": ["Week 1", "Week 2"]
+    },
+    {
+      "week": 4,
+      "topic": "Object-Oriented Programming (OOP)",
+      "objectives": [
+        "Define classes and create objects with attributes and methods",
+        "Use constructors (`__init__`) and instance variables",
+        "Implement inheritance and method overriding",
+        "Apply encapsulation (private/public attributes)"
+      ],
+      "assignment": "Design a simple game (e.g., a `Character` class with `health`, `attack()`, and `defend()` methods) using OOP principles.",
+      "prerequisites": ["Week 1", "Week 2", "Week 3"]
+    },
+    {
+      "week": 5,
+      "topic": "Error Handling & Testing",
+      "objectives": [
+        "Use `try/except` blocks to handle exceptions gracefully",
+        "Raise custom exceptions with `raise`",
+        "Write unit tests using `unittest` or `pytest`",
+        "Test functions for correctness and edge cases"
+      ],
+      "assignment": "Refactor the contact book from Week 3 to include error handling (e.g., invalid inputs) and write unit tests for its core functions.",
+      "prerequisites": ["Week 1", "Week 2", "Week 3", "Week 4"]
+    },
+    {
+      "week": 6,
+      "topic": "Capstone Project",
+      "objectives": [
+        "Integrate all learned concepts (OOP, file I/O, error handling, testing) into a cohesive project",
+        "Design a practical application (e.g., a library management system, quiz app, or budget tracker)",
+        "Implement modular code with reusable functions/classes",
+        "Document the project with comments and a `README.md`"
+      ],
+      "assignment": "Build a **Library Management System** with the following features:
+        - Add/remove books (using OOP and file storage),
+        - Search for books by title/author,
+        - Handle borrowing/returning books (with error handling),
+        - Include unit tests for critical functions.
+      ",
+      "prerequisites": ["Week 1", "Week 2", "Week 3", "Week 4", "Week 5"]
+    }
+  ]
+}
+```
+
+### Key Features:
+1. **Progressive Complexity**: Assignments grow from simple scripts (Week 1) to a full project (Week 6).
+2. **Practical Focus**: Weeks 3 and 6 include real-world applications (contact book, library system).
+3. **Testing Early**: Introduced in Week 5 to prepare for the capstone.
+4. **Prerequisites**: Each week builds on prior knowledge (e.g., OOP in Week 4 requires functions from Week 3).
+5. **Total Objectives**: 19 (within the 15–20 range).

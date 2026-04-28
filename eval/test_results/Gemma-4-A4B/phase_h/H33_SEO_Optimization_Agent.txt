@@ -3,93 +3,93 @@
   "issues": [
     {
       "id": 1,
-      "issue": "Generic Page Title",
+      "issue": "Generic title tag ('Home') provides no keyword context.",
       "severity": "major",
-      "fix": "Change '<title>Home</title>' to a descriptive, keyword-rich title that reflects the page content."
+      "fix": "Update the <title> to include primary keywords and brand name (e.g., 'Best Discount Shoes & Bags | Our Store')."
     },
     {
       "id": 2,
-      "issue": "Multiple H1 Tags",
+      "issue": "Missing meta description tag.",
       "severity": "major",
-      "fix": "Ensure there is only one H1 tag per page to establish a clear content hierarchy."
+      "fix": "Add a <meta name='description'> tag with a compelling summary of the page content."
     },
     {
       "id": 3,
-      "issue": "Incorrect Heading Hierarchy",
-      "severity": "minor",
-      "fix": "The H2 tag appears before the H1 tag. Reorder headings so H1 is the primary heading."
+      "issue": "Missing viewport meta tag, impacting mobile-friendliness.",
+      "severity": "critical",
+      "fix": "Add <meta name='viewport' content='width=device-width, initial-scale=1.0'> to the <head>."
     },
     {
       "id": 4,
-      "issue": "Missing Alt Text (Image 1)",
-      "severity": "major",
-      "fix": "Add a descriptive 'alt' attribute to the first img tag for accessibility and image SEO."
+      "issue": "Missing character encoding declaration.",
+      "severity": "minor",
+      "fix": "Add <meta charset='UTF-8'> to ensure correct text rendering."
     },
     {
       "id": 5,
-      "issue": "Missing Alt Text (Image 2)",
+      "issue": "Missing canonical link tag.",
       "severity": "major",
-      "fix": "Add a descriptive 'alt' attribute to the second img tag."
+      "fix": "Add <link rel='canonical' href='https://example.com/page-1234'> to prevent duplicate content issues."
     },
     {
       "id": 6,
-      "issue": "Missing Alt Text (Image 3)",
-      "severity": "major",
-      "fix": "Add a descriptive 'alt' attribute to the banner image."
+      "issue": "Incorrect heading hierarchy (H2 appears before H1).",
+      "severity": "minor",
+      "fix": "Reorder headings so the H1 is the first heading element in the document structure."
     },
     {
       "id": 7,
-      "issue": "Non-descriptive Anchor Text",
+      "issue": "Multiple H1 tags detected on a single page.",
       "severity": "major",
-      "fix": "Replace 'Click here' with descriptive text like 'View our product catalog' to provide context to search engines."
+      "fix": "Ensure there is only one <h1> tag per page to define the main topic."
     },
     {
       "id": 8,
-      "issue": "Non-descriptive Anchor Text",
+      "issue": "Images are missing alt attributes.",
       "severity": "major",
-      "fix": "Replace the second 'Click here' with descriptive text like 'Read more about our company'."
+      "fix": "Add descriptive alt text to all <img> tags for accessibility and image SEO."
     },
     {
       "id": 9,
-      "issue": "Hidden Text / Keyword Stuffing",
-      "severity": "critical",
-      "fix": "Remove the div with 'display:none'. Using hidden text to manipulate rankings is a Black Hat SEO violation and can lead to penalties."
+      "issue": "Non-descriptive image filenames (e.g., 'product1.jpg').",
+      "severity": "minor",
+      "fix": "Rename image files to be keyword-rich (e.g., 'discount-running-shoes.jpg')."
     },
     {
       "id": 10,
-      "issue": "Obsolete Meta Keywords Tag",
-      "severity": "minor",
-      "fix": "Remove the <meta name='keywords'> tag as modern search engines (like Google) do not use it for ranking."
+      "issue": "Non-descriptive anchor text ('Click here').",
+      "severity": "major",
+      "fix": "Use descriptive, keyword-rich text for links (e.g., 'Browse our collection of shoes')."
     },
     {
       "id": 11,
-      "issue": "Missing Meta Description",
-      "severity": "major",
-      "fix": "Add a <meta name='description'> tag with a unique, compelling summary of the page content."
+      "issue": "Hidden text/Keyword stuffing detected (display:none).",
+      "severity": "critical",
+      "fix": "Remove the <div> containing hidden keywords to avoid search engine penalties for cloaking."
     },
     {
       "id": 12,
-      "issue": "Placeholder/Low-Quality Content",
-      "severity": "major",
-      "fix": "Replace 'Lorem ipsum' text with high-quality, relevant, and original content."
+      "issue": "Use of obsolete meta keywords tag.",
+      "severity": "minor",
+      "fix": "Remove the <meta name='keywords'> tag as it is no longer used by major search engines."
     },
     {
       "id": 13,
-      "issue": "Non-Semantic URL Slug",
-      "severity": "minor",
-      "fix": "Change the URL path from '/page-1234' to something descriptive like '/best-products'."
+      "issue": "Thin/Placeholder content ('Lorem ipsum' and 'Buy our stuff').",
+      "severity": "major",
+      "fix": "Replace placeholder text with high-quality, unique, and relevant content."
     },
     {
       "id": 14,
-      "issue": "Missing Viewport Meta Tag",
-      "severity": "critical",
-      "fix": "Add '<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">' to ensure mobile-friendliness."
+      "issue": "URL contains tracking parameters without canonicalization.",
+      "severity": "major",
+      "fix": "Use a canonical tag to point to the clean version of the URL to avoid duplicate content indexing."
     },
     {
       "id": 15,
-      "issue": "Missing Language Attribute",
+      "issue": "Missing structured data (Schema.org).",
       "severity": "minor",
-      "fix": "Add the 'lang' attribute to the html tag (e.g., <html lang=\"en\">) to help search engines identify the language of the page."
+      "fix": "Implement Product or Store schema markup to enhance search engine understanding and Rich Snippets."
     }
   ],
   "count": 15

@@ -1,0 +1,82 @@
+```python
+class LRUCache:
+    def __init__(self, capacity: int):
+        self.capacity = capacity
+        self.cache = {}  # key: node
+        self.head = self.tail = None
+
+    class Node:
+        def __init__(self, key, val):
+            self.key, self.val = key, val
+            self.prev = self.next = None
+
+    def _remove(self, node):
+        if node.prev: node.prev.next = node.next
+        else: self.head = node.next
+        if node.next: node.next.prev = node.prev
+        else: self.tail = node.prev
+
+    def _add(self, node):
+        node.next = self.head
+        node.prev = None
+        if self.head: self.head.prev = node
+        self.head = node
+        if not self.tail: self.tail = node
+
+    def get(self, key: int) -> int:
+        if key not in self.cache:
+            return -1
+        node = self.cache[key]
+        self._remove(node)
+        self._add(node)
+        return node.val
+
+    def put(self, key: int, value: int) -> None:
+        if key in self.cache:
+            self._remove(self.cache[key])
+        node = self.Node(key, value)
+        self.cache[key] = node
+        self._add(node)
+        if len(self.cache) > self.capacity:
+            del self.cache[self.tail.key]
+            self._remove(self.tail)
+
+class MinStack:
+    def __init__(self):
+        self.stack = []
+        self.min_stack = []
+
+    def push(self, val: int) -> None:
+        self.stack.append(val)
+        if not self.min_stack or val <= self.min_stack[-1]:
+            self.min_stack.append(val)
+
+    def pop(self) -> None:
+        if self.stack[-1] == self.min_stack[-1]:
+            self.min_stack.pop()
+        self.stack.pop()
+
+    def top(self) -> int:
+        return self.stack[-1]
+
+    def get_min(self) -> int:
+        return self.min_stack[-1]
+
+def find_median(stream):
+    import heapq
+    small, large = [], [] # small is max-heap, large is min-heap
+    medians = []
+    for num in stream:
+        # Push to max-heap (small), then move top of max-heap to min-heap (large)
+        heapq.heappush(small, -num)
+        heapq.heappush(large, -heapq.heappop(small))
+        # Balance: small can have at most 1 more element than large
+        if len(large) > len(small):
+            heapq.heappush(small, -heapq.heappop(large))
+        
+        if len(small) > len(large):
+            medians.append(float(-small[0]))
+        else:
+            medians.append((-small[0] + large[0]) / 2.0)
+    return medians
+```
