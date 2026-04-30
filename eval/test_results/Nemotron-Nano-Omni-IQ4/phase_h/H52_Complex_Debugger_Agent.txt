@@ -1,0 +1,80 @@
+{
+  "bugs": [
+    {
+      "line": "8",
+      "bug": "Uses a plain list for timestamps, causing O(n) filtering and potential memory growth",
+      "fix": "Replace with collections.deque for O(1) popleft and efficient filtering"
+    },
+    {
+      "line": "11",
+      "bug": "Calls asyncio.get_event_loop().time() which may not be the running loop",
+      "fix": "Use asyncio.get_running_loop().time() or obtain the loop first and call .time()"
+    },
+    {
+      "line": "25",
+      "bug": "Creates a new aiohttp.ClientSession per request, leading to resource leaks",
+      "fix": "Create a shared ClientSession or use a connector pool instead"
+    },
+    {
+      "line": "27",
+      "bug": "Uses timeout=30 which is interpreted as connect timeout, not total request timeout",
+      "fix": "Use timeout=aiohttp.ClientTimeout(total=30)"
+    },
+    {
+      "line": "29",
+      "bug": "Overwrites previous results for the same URL, losing data",
+      "fix": "Store results in a list per URL or use results.setdefault(url, []).append(data)"
+    },
+    {
+      "line": "31",
+      "bug": "Swallows all exceptions and sets result to None without diagnostics",
+      "fix": "Log the exception or store error details instead of silently setting None"
+    },
+    {
+      "line": "32",
+      "bug": "Redundant 'pass' statement after handling exception",
+      "fix": "Remove the 'pass' statement"
+    },
+    {
+      "line": "35",
+      "bug": "asyncio.gather without return_exceptions=True may cancel remaining tasks on first error",
+      "fix": "Call await asyncio.gather(*tasks, return_exceptions=True)"
+    },
+    {
+      "line": "42",
+      "bug": "Missing await on process_item, coroutine never executed",
+      "fix": "Use task = await process_item(item) or task = asyncio.create_task(process_item(item))"
+    },
+    {
+      "line": "45",
+      "bug": "Yielding inside an async function is illegal",
+      "fix": "Replace yield with return or make process_batch a regular generator"
+    },
+    {
+      "line": "52",
+      "bug": "Initializes self.pool as a list, which is inefficient for pop operations",
+      "fix": "Use collections.deque for efficient pop from the left"
+    },
+    {
+      "line": "60",
+      "bug": "Appends connection to pool without size limit, risking unbounded growth",
+      "fix": "Enforce a maximum pool size or protect with a lock"
+    },
+    {
+      "line": "63",
+      "bug": "create_connection returns object() which is not awaitable",
+      "fix": "Make create_connection return an actual connection or remove the await"
+    },
+    {
+      "line": "68",
+      "bug": "Prints total dict length, counting failed/None results",
+      "fix": "Count only successful results, e.g., sum(1 for v in results.values() if v is not None)"
+    },
+    {
+      "line": "67",
+      "bug": "Awaits a non-awaitable object returned by create_connection",
+      "fix": "Remove the await or make create_connection return an awaitable coroutine"
+    }
+  ],
+  "count": 15
+}

@@ -1,0 +1,17 @@
+{
+  "q1": "CRDT (e.g., Automerge/Yjs) – operation‑based conflict resolution without locking",
+  "q2": "WebSocket (full‑duplex) for real‑time bidirectional sync",
+  "q3": "PostgreSQL (or CockroachDB) – strongly consistent relational store",
+  "q4": "Client‑side CRDT store of local edits; sync changes when connectivity restores",
+  "q5": "NATS (JetStream) – lightweight pub/sub broker for real‑time event distribution",
+  "q6": "Run WebSocket instances behind a load balancer with a shared message bus (e.g., NATS/Redis) so all nodes receive broadcast ops",
+  "q7": "Send minimal cursor deltas (x,y,page) as ops; apply via the same CRDT/OT layer that merges document changes",
+  "q8": "OAuth2 with short‑lived JWT access tokens and refresh tokens for user authentication",
+  "q9": "Append‑only immutable log of document commits (snapshot IDs + operation hash chain) stored in the DB for version history",
+  "q10": "Serve static assets through a CDN (e.g., Cloudflare/AWS CloudFront) with versioned URLs for cache busting",
+  "q11": "Chunk documents into pages/slates; store each page as a separate entity and lazy‑load content on demand",
+  "q12": "Token‑bucket rate limiting enforced at the API gateway using Redis for distributed counters",
+  "q13": "Periodic DB snapshots + WAL archiving to object storage (e.g., S3) with cross‑region replication",
+  "q14": "Use multipart signed URLs for image uploads; client chunks files, upload in parallel, and a background worker finalizes the object",
+  "q15": "Prometheus for metrics, Grafana dashboards, Loki/ELK for logs, Jaeger/Tempo for tracing, Alertmanager for alerts, all container‑monitored via Kubernetes"
+}

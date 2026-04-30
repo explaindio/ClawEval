@@ -1,0 +1,70 @@
+{
+  "weeks": [
+    {
+      "week": 1,
+      "topic": "Fundamentals: Variables and Data Types",
+      "objectives": [
+        "Understand Python variables and basic data types (int, float, str, bool)",
+        "Perform arithmetic operations and type conversion",
+        "Use input() and print() for basic I/O"
+      ],
+      "assignment": "Write a script that prompts the user for their name and age, converts the age to an integer, and prints a personalized greeting message.",
+      "prerequisites": []
+    },
+    {
+      "week": 2,
+      "topic": "Data Structures: Lists and Dictionaries",
+      "objectives": [
+        "Create, access, and modify Python lists",
+        "Create, access, and modify Python dictionaries",
+        "Apply common list and dictionary methods (append, pop, keys, values)"
+      ],
+      "assignment": "Develop a contact manager program that stores contacts in a dictionary, allowing users to add, remove, and display contacts.",
+      "prerequisites": ["week 1"]
+    },
+    {
+      "week": 3,
+      "topic": "Control Flow: Loops and Conditionals",
+      "objectives": [
+        "Write conditional statements (if, elif, else)",
+        "Use for and while loops with range and iteration",
+        "Implement nested loops and loop control statements (break, continue)"
+      ],
+      "assignment": "Create a number guessing game where the user tries to guess a random number between 1 and 100, with feedback after each guess.",
+      "prerequisites": ["week 2"]
+    },
+    {
+      "week": 4,
+      "topic": "Object-Oriented Programming: Classes and Inheritance",
+      "objectives": [
+        "Define classes with __init__ and instance methods",
+        "Understand object-oriented principles: encapsulation and inheritance",
+        "Apply polymorphism through method overriding"
+      ],
+      "assignment": "Design a library system with a Book class and an eBook subclass; implement methods to add books, check availability, and display details.",
+      "prerequisites": ["week 1", "week 2", "week 3"]
+    },
+    {
+      "week": 5,
+      "topic": "Error Handling and File I/O",
+      "objectives": [
+        "Use try/except blocks to handle exceptions",
+        "Read from and write to text files and CSV files",
+        "Write unit tests using unittest or pytest for file I/O functions"
+      ],
+      "assignment": "Build a grade processor that reads a CSV file of student grades, calculates each student's average, handles missing or invalid data with exception handling, and writes the results to a new CSV file. Include unit tests for the processing functions.",
+      "prerequisites": ["week 1", "week 2", "week 3", "week 4"]
+    },
+    {
+      "week": 6,
+      "topic": "Capstone Project",
+      "objectives": [
+        "Plan and scope a capstone project integrating course concepts",
+        "Implement OOP, file I/O, error handling, and data structures in a cohesive application",
+        "Write comprehensive unit tests and document the project"
+      ],
+      "assignment": "Develop a capstone project (e.g., personal finance manager or simple inventory system) that combines classes, file I/O, error handling, data structures, and includes a suite of unit tests.",
+      "prerequisites": ["week 1", "week 2", "week 3", "week 4", "week 5"]
+    }
+  ]
+}

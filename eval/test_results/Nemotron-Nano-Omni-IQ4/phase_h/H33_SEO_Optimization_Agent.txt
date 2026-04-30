@@ -1,0 +1,95 @@
+{
+  "issues": [
+    {
+      "id": 1,
+      "issue": "Missing meta description tag – no summary for search engines to display in SERPs.",
+      "severity": "major",
+      "fix": "Add a unique, compelling meta description within the <head> that summarizes the page content."
+    },
+    {
+      "id": 2,
+      "issue": "Missing viewport meta tag – page is not mobile‑friendly, affecting rankings.",
+      "severity": "major",
+      "fix": "Insert <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"> in the <head>."
+    },
+    {
+      "id": 3,
+      "issue": "Multiple H1 tags (two <h1> elements) causing keyword cannibalization.",
+      "severity": "major",
+      "fix": "Keep only one H1 per page; use H2/H3 for sub‑headings and ensure the primary keyword appears in the single H1."
+    },
+    {
+      "id": 4,
+      "issue": "Hidden content (display:none) containing keyword stuffing – considered spam.",
+      "severity": "critical",
+      "fix": "Remove the <div style=\"display:none\"> block or replace it with visible, relevant content."
+    },
+    {
+      "id": 5,
+      "issue": "Image tags lack alt attributes – inaccessible to screen readers and missing keyword context.",
+      "severity": "major",
+      "fix": "Add descriptive alt text to each  tag, e.g., <img src=\"product1.jpg\" alt=\"Product 1 name\">."
+    },
+    {
+      "id": 6,
+      "issue": "Meta keywords tag is obsolete and spammy; provides no SEO benefit.",
+      "severity": "minor",
+      "fix": "Remove the meta keywords tag entirely."
+    },
+    {
+      "id": 7,
+      "issue": "No canonical URL tag – potential duplicate content if accessed via different URLs.",
+      "severity": "major",
+      "fix": "Add a <link rel=\"canonical\" href=\"https://example.com/\"> tag pointing to the preferred URL."
+    },
+    {
+      "id": 8,
+      "issue": "Missing Open Graph / Twitter Card meta tags – poor social sharing appearance.",
+      "severity": "minor",
+      "fix": "Add og:title, og:description, og:image and twitter:card meta tags to enable rich previews."
+    },
+    {
+      "id": 9,
+      "issue": "URL contains query parameters (ref, utm) – creates duplicate content issues.",
+      "severity": "major",
+      "fix": "Use a clean, static URL (e.g., https://example.com/) and handle tracking parameters via server configuration or JavaScript."
+    },
+    {
+      "id": 10,
+      "issue": "No structured data (Schema.org) – missing rich snippets for products.",
+      "severity": "minor",
+      "fix": "Implement Product schema JSON‑LD markup for each product image/link."
+    },
+    {
+      "id": 11,
+      "issue": "Thin/low‑quality content – generic sentences provide little value to users or search engines.",
+      "severity": "major",
+      "fix": "Write unique, descriptive copy that highlights product benefits, uses target keywords naturally, and exceeds 200 words."
+    },
+    {
+      "id": 12,
+      "issue": "Generic anchor text \"Click here\" – not descriptive for users or crawlers.",
+      "severity": "minor",
+      "fix": "Replace with descriptive link text such as \"View our product catalog\" or \"Learn more about us\"."
+    },
+    {
+      "id": 13,
+      "issue": "Lack of internal linking – limited site navigation and page authority distribution.",
+      "severity": "minor",
+      "fix": "Add a navigation menu or related products section with keyword‑rich internal links."
+    },
+    {
+      "id": 14,
+      "issue": "Inconsistent heading hierarchy – only H1 and H2 present, missing H3 for sub‑sections.",
+      "severity": "minor",
+      "fix": "Introduce H3 (and possibly H4) tags to create a clear, hierarchical structure for content sections."
+    },
+    {
+      "id": 15,
+      "issue": "Non‑descriptive image file names (product1.jpg, banner.jpg) – not SEO‑friendly.",
+      "severity": "minor",
+      "fix": "Rename images to descriptive, keyword‑rich filenames, e.g., product-1-red-widget.jpg."
+    }
+  ],
+  "count": 15
+}

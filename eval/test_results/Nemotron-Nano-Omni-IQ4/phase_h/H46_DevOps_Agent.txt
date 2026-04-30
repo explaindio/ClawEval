@@ -1,0 +1,80 @@
+{
+  "issues": [
+    {
+      "line": 17,
+      "issue": "Using `myapp:latest` image tag (non-reproducible)",
+      "severity": "major"
+    },
+    {
+      "line": 6,
+      "issue": "`replicas: 1` – single replica, no high availability",
+      "severity": "minor"
+    },
+    {
+      "line": 20,
+      "issue": "Empty `resources` for main container (no requests or limits)",
+      "severity": "critical"
+    },
+    {
+      "line": 22,
+      "issue": "`runAsRoot: true` and `privileged: true` – container runs as root with full privileges",
+      "severity": "critical"
+    },
+    {
+      "line": 25,
+      "issue": "`DB_PASSWORD` plaintext in environment variable (secret exposed)",
+      "severity": "major"
+    },
+    {
+      "line": 27,
+      "issue": "`API_KEY` plaintext in environment variable (secret exposed)",
+      "severity": "major"
+    },
+    {
+      "line": 35,
+      "issue": "Sidecar container `resources` unrealistic (`memory: \"10Gi\"`, `cpu: \"8\"`)",
+      "severity": "major"
+    },
+    {
+      "line": 40,
+      "issue": "`hostPath` volume using `/tmp/data` (insecure persistent storage)",
+      "severity": "major"
+    },
+    {
+      "line": 19,
+      "issue": "`containerPort: 8080` without protocol specified",
+      "severity": "minor"
+    },
+    {
+      "line": 33,
+      "issue": "Sidecar container lacks `securityContext` (runs with default privileges)",
+      "severity": "minor"
+    },
+    {
+      "line": 48,
+      "issue": "Service `type: LoadBalancer` without `externalIPs` (potential exposure)",
+      "severity": "minor"
+    },
+    {
+      "line": 20,
+      "issue": "Missing `livenessProbe` (critical health check)",
+      "severity": "critical"
+    },
+    {
+      "line": 20,
+      "issue": "Missing `readinessProbe` (critical health check)",
+      "severity": "critical"
+    },
+    {
+      "line": 35,
+      "issue": "Sidecar container missing `limits` (critical resource control)",
+      "severity": "critical"
+    },
+    {
+      "line": 17,
+      "issue": "Missing `imagePullPolicy` (should be `Always` for `latest` tag)",
+      "severity": "minor"
+    }
+  ],
+  "count": 15
+}

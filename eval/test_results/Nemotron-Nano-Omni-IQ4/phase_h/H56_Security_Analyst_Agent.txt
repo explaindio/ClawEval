@@ -1,0 +1,80 @@
+{
+  "vulnerabilities": [
+    {
+      "type": "SQL Injection",
+      "location": "login() function (query string interpolation)",
+      "severity": "high"
+    },
+    {
+      "type": "Command Injection",
+      "location": "run_command() function (subprocess.run with shell=True)",
+      "severity": "critical"
+    },
+    {
+      "type": "Path Traversal / Information Disclosure",
+      "location": "download() function (unvalidated path parameter)",
+      "severity": "high"
+    },
+    {
+      "type": "Path Traversal",
+      "location": "upload() function (unsanitized filename)",
+      "severity": "high"
+    },
+    {
+      "type": "Insecure Deserialization",
+      "location": "restore_session() function (pickle.loads)",
+      "severity": "critical"
+    },
+    {
+      "type": "Unsafe YAML Loading",
+      "location": "load_config() function (yaml.load)",
+      "severity": "critical"
+    },
+    {
+      "type": "Reflected XSS",
+      "location": "profile() function (template string)",
+      "severity": "medium"
+    },
+    {
+      "type": "Reflected XSS",
+      "location": "search() function (query parameter)",
+      "severity": "medium"
+    },
+    {
+      "type": "Command Injection",
+      "location": "export_data() function (os.system with unsanitized format)",
+      "severity": "high"
+    },
+    {
+      "type": "Weak Authentication",
+      "location": "admin() function (hardcoded SECRET)",
+      "severity": "medium"
+    },
+    {
+      "type": "Information Disclosure / Debug Mode",
+      "location": "if __name__ == \"__main__\" (app.run debug=True)",
+      "severity": "high"
+    },
+    {
+      "type": "Insecure Password Storage",
+      "location": "login() function (plaintext password comparison)",
+      "severity": "high"
+    },
+    {
+      "type": "Improper File Validation",
+      "location": "upload() function (save without type check)",
+      "severity": "medium"
+    },
+    {
+      "type": "Weak Token Generation",
+      "location": "login() function (MD5 token)",
+      "severity": "medium"
+    },
+    {
+      "type": "Server‑Side Template Injection",
+      "location": "profile() function (render_template_string with user input)",
+      "severity": "high"
+    }
+  ],
+  "count": 15
+}

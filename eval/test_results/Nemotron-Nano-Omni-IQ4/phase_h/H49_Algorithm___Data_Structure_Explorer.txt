@@ -1,0 +1,151 @@
+```python
+class LRUCache:
+    class Node:
+        __slots__ = ('key', 'val', 'prev', 'next')
+        def __init__(self, key, val):
+            self.key = key
+            self.val = val
+            self.prev = None
+            self.next = None
+
+    def __init__(self, capacity):
+        self.capacity = capacity
+        self.cache = {}
+        self.head = self.Node(0, 0)   # dummy head
+        self.tail = self.Node(0, 0)   # dummy tail
+        self.head.next = self.tail
+        self.tail.prev = self.head
+
+    def _add_node(self, node):
+        """Insert node right after head."""
+        node.prev = self.head
+        node.next = self.head.next
+        self.head.next.prev = node
+        self.head.next = node
+
+    def _remove_node(self, node):
+        """Remove node from the list."""
+        prev = node.prev
+        nxt = node.next
+        prev.next = nxt
+        nxt.prev = prev
+
+    def _move_to_head(self, node):
+        """Move existing node to the head (most recent)."""
+        self._remove_node(node)
+        self._add_node(node)
+
+    def _pop_tail(self):
+        """Pop the tail (least recent) node."""
+        res = self.tail.prev
+        self._remove_node(res)
+        return res
+
+    def get(self, key):
+        if key not in self.cache:
+            return -1
+        node = self.cache[key]
+        self._move_to_head(node)
+        return node.val
+
+    def put(self, key, value):
+        if key in self.cache:
+            node = self.cache[key]
+            node.val = value
+            self._move_to_head(node)
+        else:
+            if len(self.cache) >= self.capacity:
+                tail = self._pop_tail()
+                del self.cache[tail.key]
+            node = self.Node(key, value)
+            self._add_node(node)
+            self.cache[key] = node
+
+
+class MinStack:
+    def __init__(self):
+        self.stack = []
+        self.min_stack = []
+
+    def push(self, val):
+        self.stack.append(val)
+        if not self.min_stack or val <= self.min_stack[-1]:
+            self.min_stack.append(val)
+
+    def pop(self):
+        if not self.stack:
+            return None
+        val = self.stack.pop()
+        if self.min_stack and val == self.min_stack[-1]:
+            self.min_stack.pop()
+        return val
+
+    def top(self):
+        if not self.stack:
+            return None
+        return self.stack[-1]
+
+    def get_min(self):
+        if not self.min_stack:
+            return None
+        return self.min_stack[-1]
+
+
+def find_median(stream):
+    def _heap_push(heap, item):
+        heap.append(item)
+        i = len(heap) - 1
+        while i > 0:
+            parent = (i - 1) // 2
+            if heap[parent] <= item:
+                break
+            heap[parent], heap[i] = heap[i], heap[parent]
+            i = parent
+
+    def _heap_pop(heap):
+        if not heap:
+            return None
+        root = heap[0]
+        last = heap.pop()
+        if heap:
+            heap[0] = last
+            i = 0
+            n = len(heap)
+            while True:
+                left = 2 * i + 1
+                right = 2 * i + 2
+                smallest = i
+                if left < n and heap[left] < heap[smallest]:
+                    smallest = left
+                if right < n and heap[right] < heap[smallest]:
+                    smallest = right
+                if smallest == i:
+                    break
+                heap[i], heap[smallest] = heap[smallest], heap[i]
+                i = smallest
+        return root
+
+    def _heap_peek(heap):
+        return heap[0] if heap else None
+
+    lo = []   # max‑heap (store negatives)
+    hi = []   # min‑heap
+    res = []
+
+    for val in stream:
+        _heap_push(lo, -val)
+        _heap_push(hi, -_heap_pop(lo))
+
+        if len(lo) > len(hi) + 1:
+            _heap_push(hi, -_heap_pop(lo))
+        elif len(hi) > len(lo):
+            _heap_push(lo, -_heap_pop(hi))
+
+        if len(lo) == len(hi):
+            median = (-lo[0] + hi[0]) / 2.0
+        else:
+            median = float(-lo[0])
+        res.append(median)
+
+    return res
+```

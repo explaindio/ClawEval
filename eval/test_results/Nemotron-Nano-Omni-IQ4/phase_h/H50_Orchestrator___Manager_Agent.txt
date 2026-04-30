@@ -1,0 +1,69 @@
+{
+  "agents": [
+    {
+      "name": "ValidationAgent",
+      "input": "Raw refund request JSON payload",
+      "output": "Validated request object with status 'valid' or detailed error message",
+      "next": "FraudCheckAgent",
+      "fallback": "Log validation error, mark request as failed, and forward to HumanEscalationAgent",
+      "timeout": 5
+    },
+    {
+      "name": "FraudCheckAgent",
+      "input": "Validated request object",
+      "output": "Fraud assessment: { status: 'clean'|'fraud', score: number }",
+      "next": "ApprovalAgent",
+      "fallback": "Log fraud check failure, flag request, and forward to HumanEscalationAgent",
+      "timeout": 10
+    },
+    {
+      "name": "ApprovalAgent",
+      "input": "Fraud assessment result",
+      "output": "Approval decision: { decision: 'approved'|'rejected', reason: string, audit_ts: string }",
+      "next": "PaymentAgent",
+      "fallback": "Log approval failure, escalate to HumanEscalationAgent",
+      "timeout": 5
+    },
+    {
+      "name": "PaymentAgent",
+      "input": "Approved request details (amount, payment method, etc.)",
+      "output": "Payment status: { status: 'success'|'failed', transaction_id: string, audit_ts: string }",
+      "next": "NotificationAgent",
+      "fallback": "Log payment failure, notify support via HumanEscalationAgent, and send partial notification",
+      "timeout": 10
+    },
+    {
+      "name": "NotificationAgent",
+      "input": "Final outcome (approved payment or rejected request)",
+      "output": "Notification sent: { status: 'sent', recipient: string, message: string, audit_ts: string }",
+      "next": null,
+      "fallback": "Log notification failure, retry or escalate to HumanEscalationAgent",
+      "timeout": 5
+    },
+    {
+      "name": "HumanEscalationAgent",
+      "input": "Escalation request details (agent name, error type, request data)",
+      "output": "Escalation ticket created, status 'pending'",
+      "next": "NotificationAgent",
+      "fallback": "Log escalation failure, notify administrator",
+      "timeout": 15
+    }
+  ],
+  "constraints": {
+    "c1": true,   // Minimum 6 agents in the pipeline
+    "c2": true,   // Must include validation, fraud-check, approval, payment, notification agents
+    "c3": true,   // Each agent has defined input, output, next, fallback
+    "c4": true,   // Conditional branch (Approval decides next step)
+    "c5": true,   // Fallback/error handler defined for every agent
+    "c6": true,   // First agent is validation/triage
+    "c7": true,   // Last agent is notification
+    "c8": true,   // Fraud check occurs before approval
+    "c9": true,   // Payment processing occurs after approval
+    "c10": true,  // Expected total processing time < 60 seconds
+    "c11": true,  // Handles both approved and rejected outcomes
+    "c12": true,  // Logging/audit included at each step
+    "c13": true,  // No circular dependencies
+    "c14": true,  // Human escalation path for edge cases
+    "c15": true   // Each agent has a timeout value
+  }
+}

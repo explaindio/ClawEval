@@ -1,0 +1,144 @@
+{
+  "tasks": [
+    {
+      "id": 1,
+      "task": "Define microservice architecture and bounded contexts",
+      "depends_on": [],
+      "effort_days": 4,
+      "team": "devops"
+    },
+    {
+      "id": 2,
+      "task": "Set up repository structure and version control",
+      "depends_on": [1],
+      "effort_days": 3,
+      "team": "frontend"
+    },
+    {
+      "id": 3,
+      "task": "Provision cloud infrastructure (VPC, subnets, IAM)",
+      "depends_on": [2],
+      "effort_days": 5,
+      "team": "devops"
+    },
+    {
+      "id": 4,
+      "task": "Plan database migration for monolith",
+      "depends_on": [3],
+      "effort_days": 5,
+      "team": "backend"
+    },
+    {
+      "id": 5,
+      "task": "Execute database migration for core modules",
+      "depends_on": [4],
+      "effort_days": 4,
+      "team": "backend"
+    },
+    {
+      "id": 6,
+      "task": "Configure API gateway and routing rules",
+      "depends_on": [3],
+      "effort_days": 4,
+      "team": "devops"
+    },
+    {
+      "id": 7,
+      "task": "Define service boundaries and contracts",
+      "depends_on": [1, 6],
+      "effort_days": 5,
+      "team": "backend"
+    },
+    {
+      "id": 8,
+      "task": "Implement service skeleton code for each microservice",
+      "depends_on": [7],
+      "effort_days": 5,
+      "team": "backend"
+    },
+    {
+      "id": 9,
+      "task": "Set up CI/CD pipelines for building and deploying services",
+      "depends_on": [3, 8],
+      "effort_days": 5,
+      "team": "devops"
+    },
+    {
+      "id": 10,
+      "task": "Write unit tests for each microservice",
+      "depends_on": [8],
+      "effort_days": 4,
+      "team": "backend"
+    },
+    {
+      "id": 11,
+      "task": "Develop frontend UI components for new services",
+      "depends_on": [8],
+      "effort_days": 5,
+      "team": "frontend"
+    },
+    {
+      "id": 12,
+      "task": "Integrate frontend UI with API gateway",
+      "depends_on": [11, 6],
+      "effort_days": 4,
+      "team": "frontend"
+    },
+    {
+      "id": 13,
+      "task": "Implement frontend monitoring dashboard",
+      "depends_on": [12],
+      "effort_days": 3,
+      "team": "frontend"
+    },
+    {
+      "id": 14,
+      "task": "Perform security review and hardening",
+      "depends_on": [3, 6, 9],
+      "effort_days": 3,
+      "team": "qa"
+    },
+    {
+      "id": 15,
+      "task": "Deploy services to staging environment",
+      "depends_on": [9, 14],
+      "effort_days": 4,
+      "team": "devops"
+    },
+    {
+      "id": 16,
+      "task": "Execute end-to-end testing of integrated services",
+      "depends_on": [10, 11, 15],
+      "effort_days": 5,
+      "team": "qa"
+    },
+    {
+      "id": 17,
+      "task": "Monitor and optimize performance in staging",
+      "depends_on": [16],
+      "effort_days": 3,
+      "team": "devops"
+    },
+    {
+      "id": 18,
+      "task": "Document architecture and handover",
+      "depends_on": [15, 17],
+      "effort_days": 3,
+      "team": "devops"
+    },
+    {
+      "id": 19,
+      "task": "Perform production cutover and traffic shifting",
+      "depends_on": [16, 18],
+      "effort_days": 5,
+      "team": "devops"
+    },
+    {
+      "id": 20,
+      "task": "Set up post‑production monitoring and incident response",
+      "depends_on": [19, 15],
+      "effort_days": 4,
+      "team": "qa"
+    }
+  ]
+}
