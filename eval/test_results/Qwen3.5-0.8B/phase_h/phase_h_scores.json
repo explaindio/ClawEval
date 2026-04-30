@@ -1,0 +1,600 @@
+{
+  "model": "Qwen3.5-0.8B",
+  "phase": "H",
+  "timestamp": "2026-04-30T17:06:39.537859",
+  "total_score": 58,
+  "total_max": 1220,
+  "percentage": 4.8,
+  "results": [
+    {
+      "id": 2,
+      "role": "Input Validator / Sanitizer",
+      "tier": 1,
+      "scoring_type": "json_values",
+      "score": 0,
+      "max": 30,
+      "detail": "Could not parse JSON",
+      "tokens": 16000
+    },
+    {
+      "id": 5,
+      "role": "Sentiment Analysis Agent",
+      "tier": 1,
+      "scoring_type": "json_values",
+      "score": 0,
+      "max": 30,
+      "detail": "Could not parse JSON",
+      "tokens": 16000
+    },
+    {
+      "id": 9,
+      "role": "Research / Web Search Agent",
+      "tier": 2,
+      "scoring_type": "json_values",
+      "score": 0,
+      "max": 30,
+      "detail": "Could not parse JSON",
+      "tokens": 16000
+    },
+    {
+      "id": 12,
+      "role": "Content Planner / Strategist",
+      "tier": 2,
+      "scoring_type": "content_planner",
+      "score": 0,
+      "max": 30,
+      "detail": "Could not parse JSON",
+      "tokens": 16000
+    },
+    {
+      "id": 18,
+      "role": "News Aggregation Agent",
+      "tier": 2,
+      "scoring_type": "news_errors",
+      "score": 0,
+      "max": 7,
+      "detail": "Could not parse JSON",
+      "tokens": 16000
+    },
+    {
+      "id": 36,
+      "role": "Code Generation Agent",
+      "tier": 3,
+      "scoring_type": "code_exec",
+      "score": 0,
+      "max": 30,
+      "detail": "0/30 test cases passed | tc1: error=name 'merge_overlapping' is not defined; tc2: error=name 'merge_overlapping' is not defined; tc3: error=name 'merge_overlapping' is not defined; tc4: error=name 'merge_overlapping' is not defined; tc5: error=name 'merge_overlapping' is not defined; tc6: error=name 'merge_overlapping' is not defined; tc7: error=name 'merge_overlapping' is not defined; tc8: error=name 'merge_overlapping' is not defined; tc9: error=name 'merge_overlapping' is not defined; tc10: error=name 'merge_overlapping' is not defined",
+      "tokens": 16000
+    },
+    {
+      "id": 40,
+      "role": "Fact-Checking Agent",
+      "tier": 3,
+      "scoring_type": "json_values",
+      "score": 25,
+      "max": 30,
+      "detail": "25/30 correct | #7: exp=FALSE, got=TRUE; #14: exp=FALSE, got=TRUE; #24: exp=FALSE, got=TRUE; #29: exp=FALSE, got=TRUE; #30: exp=FALSE, got=TRUE",
+      "tokens": 4356
+    },
+    {
+      "id": 48,
+      "role": "STEM Research Analyst",
+      "tier": 4,
+      "scoring_type": "json_numeric",
+      "score": 0,
+      "max": 15,
+      "detail": "Could not parse JSON",
+      "tokens": 16000
+    },
+    {
+      "id": 49,
+      "role": "Algorithm / Data Structure Explorer",
+      "tier": 4,
+      "scoring_type": "code_exec",
+      "score": 0,
+      "max": 30,
+      "detail": "0/30 test cases passed | tc1: error=name 'LRUCache' is not defined; tc2: error=name 'LRUCache' is not defined; tc3: error=name 'LRUCache' is not defined; tc4: error=name 'LRUCache' is not defined; tc5: error=name 'LRUCache' is not defined; tc6: error=name 'LRUCache' is not defined; tc7: error=name 'LRUCache' is not defined; tc8: error=name 'LRUCache' is not defined; tc9: error=name 'LRUCache' is not defined; tc10: error=name 'LRUCache' is not defined",
+      "tokens": 16000
+    },
+    {
+      "id": 56,
+      "role": "Security Analyst Agent",
+      "tier": 5,
+      "scoring_type": "security_vulns",
+      "score": 0,
+      "max": 15,
+      "detail": "Could not parse JSON",
+      "tokens": 16000
+    },
+    {
+      "id": 1,
+      "role": "Router / Triage Agent",
+      "tier": 1,
+      "scoring_type": "json_values",
+      "score": 0,
+      "max": 30,
+      "detail": "Could not parse JSON",
+      "tokens": 16000
+    },
+    {
+      "id": 3,
+      "role": "Heartbeat / Health Monitor",
+      "tier": 1,
+      "scoring_type": "json_values",
+      "score": 0,
+      "max": 15,
+      "detail": "Could not parse JSON",
+      "tokens": 16000
+    },
+    {
+      "id": 4,
+      "role": "Notification / Alert Agent",
+      "tier": 1,
+      "scoring_type": "json_values",
+      "score": 0,
+      "max": 30,
+      "detail": "Could not parse JSON",
+      "tokens": 16000
+    },
+    {
+      "id": 8,
+      "role": "Calendar / Scheduling Agent",
+      "tier": 1,
+      "scoring_type": "json_values",
+      "score": 0,
+      "max": 20,
+      "detail": "Could not parse JSON",
+      "tokens": 16000
+    },
+    {
+      "id": 11,
+      "role": "Editor Agent",
+      "tier": 2,
+      "scoring_type": "h_content_check",
+      "score": 0,
+      "max": 30,
+      "detail": "No content to check",
+      "tokens": 16000
+    },
+    {
+      "id": 13,
+      "role": "Email Drafting / Summarization",
+      "tier": 2,
+      "scoring_type": "json_values",
+      "score": 0,
+      "max": 45,
+      "detail": "Could not parse JSON",
+      "tokens": 16000
+    },
+    {
+      "id": 14,
+      "role": "Document Summarization Agent",
+      "tier": 2,
+      "scoring_type": "json_numeric",
+      "score": 0,
+      "max": 15,
+      "detail": "Could not parse JSON",
+      "tokens": 16000
+    },
+    {
+      "id": 16,
+      "role": "Social Media Scouting / Monitoring",
+      "tier": 2,
+      "scoring_type": "json_values",
+      "score": 0,
+      "max": 60,
+      "detail": "Could not parse JSON",
+      "tokens": 16000
+    },
+    {
+      "id": 19,
+      "role": "Shopping / Price Comparison",
+      "tier": 2,
+      "scoring_type": "h_keywords",
+      "score": 0,
+      "max": 15,
+      "detail": "0/15 correct | #1_best_store: missing B; #2_best_store: missing C; #3_best_store: missing C; #4_best_store: missing A; #5_best_store: missing B",
+      "tokens": 16000
+    },
+    {
+      "id": 20,
+      "role": "Memory / Knowledge Management",
+      "tier": 2,
+      "scoring_type": "json_values",
+      "score": 0,
+      "max": 20,
+      "detail": "Could not parse JSON",
+      "tokens": 16000
+    },
+    {
+      "id": 21,
+      "role": "RAG / Retrieval Agent",
+      "tier": 2,
+      "scoring_type": "json_values",
+      "score": 0,
+      "max": 15,
+      "detail": "Could not parse JSON",
+      "tokens": 16000
+    },
+    {
+      "id": 22,
+      "role": "Data Analysis Agent",
+      "tier": 2,
+      "scoring_type": "json_numeric",
+      "score": 0,
+      "max": 15,
+      "detail": "Could not parse JSON",
+      "tokens": 16000
+    },
+    {
+      "id": 25,
+      "role": "Customer Support Agent",
+      "tier": 2,
+      "scoring_type": "json_values",
+      "score": 0,
+      "max": 60,
+      "detail": "Could not parse JSON",
+      "tokens": 16000
+    },
+    {
+      "id": 26,
+      "role": "Lead Scoring / Prospecting",
+      "tier": 2,
+      "scoring_type": "json_values",
+      "score": 0,
+      "max": 15,
+      "detail": "Could not parse JSON",
+      "tokens": 16000
+    },
+    {
+      "id": 28,
+      "role": "Transaction / Approval Agent",
+      "tier": 2,
+      "scoring_type": "json_values",
+      "score": 0,
+      "max": 20,
+      "detail": "Could not parse JSON",
+      "tokens": 16000
+    },
+    {
+      "id": 30,
+      "role": "Fitness / Health Tracking",
+      "tier": 2,
+      "scoring_type": "json_numeric",
+      "score": 0,
+      "max": 15,
+      "detail": "Could not parse JSON",
+      "tokens": 16000
+    },
+    {
+      "id": 32,
+      "role": "Personal Finance Tracking",
+      "tier": 2,
+      "scoring_type": "json_numeric",
+      "score": 0,
+      "max": 15,
+      "detail": "Could not parse JSON",
+      "tokens": 16000
+    },
+    {
+      "id": 23,
+      "role": "Website Scraping / Understanding",
+      "tier": 2,
+      "scoring_type": "json_values",
+      "score": 0,
+      "max": 15,
+      "detail": "Could not parse JSON",
+      "tokens": 16000
+    },
+    {
+      "id": 27,
+      "role": "Sprint / Project Summarizer",
+      "tier": 2,
+      "scoring_type": "json_numeric",
+      "score": 0,
+      "max": 15,
+      "detail": "Could not parse JSON",
+      "tokens": 16000
+    },
+    {
+      "id": 37,
+      "role": "Code Review Agent",
+      "tier": 3,
+      "scoring_type": "h_content_check",
+      "score": 0,
+      "max": 15,
+      "detail": "No content to check",
+      "tokens": 16000
+    },
+    {
+      "id": 38,
+      "role": "QA / Test Writing Agent",
+      "tier": 3,
+      "scoring_type": "code_exec",
+      "score": 0,
+      "max": 15,
+      "detail": "0/15 test cases passed | tc1: error=unterminated string literal (detected at line 1265; tc2: error=unterminated string literal (detected at line 1265; tc3: error=unterminated string literal (detected at line 1265; tc4: error=unterminated string literal (detected at line 1265; tc5: error=unterminated string literal (detected at line 1265; tc6: error=unterminated string literal (detected at line 1265; tc7: error=unterminated string literal (detected at line 1265; tc8: error=unterminated string literal (detected at line 1265; tc9: error=unterminated string literal (detected at line 1265; tc10: error=unterminated string literal (detected at line 1265",
+      "tokens": 16000
+    },
+    {
+      "id": 42,
+      "role": "Market Research Agent",
+      "tier": 3,
+      "scoring_type": "json_numeric",
+      "score": 0,
+      "max": 15,
+      "detail": "Could not parse JSON",
+      "tokens": 16000
+    },
+    {
+      "id": 47,
+      "role": "Math / Logic Reasoning",
+      "tier": 4,
+      "scoring_type": "json_numeric",
+      "score": 0,
+      "max": 15,
+      "detail": "Could not parse JSON",
+      "tokens": 16000
+    },
+    {
+      "id": 6,
+      "role": "FAQ Generation Agent",
+      "tier": 1,
+      "scoring_type": "h_keywords",
+      "score": 0,
+      "max": 15,
+      "detail": "0/15 correct | #q1_users: missing 5; #q2_import: missing; #q3_mobile: missing iOS and Android; #q4_sla: missing 99.9; #q5_encryption: missing AES-256",
+      "tokens": 16000
+    },
+    {
+      "id": 7,
+      "role": "Translation Agent",
+      "tier": 1,
+      "scoring_type": "json_values",
+      "score": 0,
+      "max": 15,
+      "detail": "Could not parse JSON",
+      "tokens": 16000
+    },
+    {
+      "id": 15,
+      "role": "Meeting Notes / Transcription Agent",
+      "tier": 2,
+      "scoring_type": "h_keywords",
+      "score": 0,
+      "max": 35,
+      "detail": "0/35 correct | #a1_owner: missing Bob; #a1_deadline: missing Friday; #a2_owner: missing Carol; #a2_deadline: missing March 14; #a3_owner: missing Dave",
+      "tokens": 16000
+    },
+    {
+      "id": 39,
+      "role": "Task Planning / Decomposition",
+      "tier": 3,
+      "scoring_type": "h_keywords",
+      "score": 0,
+      "max": 18,
+      "detail": "0/18 correct | #task_count: missing 20; #has_backend: missing; #has_frontend: missing; #has_devops: missing; #has_qa: missing",
+      "tokens": 16000
+    },
+    {
+      "id": 46,
+      "role": "DevOps Agent",
+      "tier": 3,
+      "scoring_type": "h_keywords",
+      "score": 0,
+      "max": 15,
+      "detail": "0/15 correct | #i1: missing image uses :latest tag; #i2: missing only 1 replica - no HA; #i3: missing no resource limits or requests on api container; #i4: missing runAsRoot true; #i5: missing privileged true",
+      "tokens": 16000
+    },
+    {
+      "id": 53,
+      "role": "Legal Document Review",
+      "tier": 5,
+      "scoring_type": "h_keywords",
+      "score": 0,
+      "max": 15,
+      "detail": "0/15 correct | #i1: missing contradictory license terms - perpetual but terminable without notice; #i2: missing data ownership transfer - user loses rights to own data; #i3: missing unlimited data sharing with third parties without consent; #i4: missing liability cap unreasonably low at $100; #i5: missing waiver of all consequential damages",
+      "tokens": 16000
+    },
+    {
+      "id": 54,
+      "role": "Medical / Health Analysis",
+      "tier": 5,
+      "scoring_type": "h_keywords",
+      "score": 0,
+      "max": 15,
+      "detail": "0/15 correct | #1_status: missing high; #2_status: missing high; #3_status: missing high; #4_status: missing high; #5_status: missing low",
+      "tokens": 16000
+    },
+    {
+      "id": 55,
+      "role": "Financial Analysis / Stock Research",
+      "tier": 5,
+      "scoring_type": "json_numeric",
+      "score": 0,
+      "max": 15,
+      "detail": "Could not parse JSON",
+      "tokens": 16000
+    },
+    {
+      "id": 57,
+      "role": "SRE / Incident Response",
+      "tier": 5,
+      "scoring_type": "json_values",
+      "score": 0,
+      "max": 15,
+      "detail": "Could not parse JSON",
+      "tokens": 16000
+    },
+    {
+      "id": 59,
+      "role": "Compliance / Regulatory Agent",
+      "tier": 5,
+      "scoring_type": "h_keywords",
+      "score": 0,
+      "max": 15,
+      "detail": "0/15 correct | #v1: missing collecting data without consent before account creation; #v2: missing privacy policy not clear or accessible; #v3: missing outdated privacy policy (2019); #v4: missing sharing with 340 partners without valid consent; #v5: missing opt-out requires notarized letter - not freely given",
+      "tokens": 16000
+    },
+    {
+      "id": 29,
+      "role": "Home Automation Agent",
+      "tier": 2,
+      "scoring_type": "h_keywords",
+      "score": 0,
+      "max": 20,
+      "detail": "0/20 correct | #1: missing open blinds, kitchen lights on, play morning playlist; #2: missing lock doors, arm alarm, lights off, eco thermostat; #3: missing turn on cooling; #4: missing dim lights to 20%, lock doors; #5: missing trigger alarm",
+      "tokens": 16000
+    },
+    {
+      "id": 31,
+      "role": "Recipe / Cooking Agent",
+      "tier": 2,
+      "scoring_type": "json_numeric",
+      "score": 0,
+      "max": 15,
+      "detail": "Could not parse JSON",
+      "tokens": 16000
+    },
+    {
+      "id": 33,
+      "role": "SEO Optimization Agent",
+      "tier": 2,
+      "scoring_type": "h_keywords",
+      "score": 0,
+      "max": 15,
+      "detail": "0/15 correct | #i1: missing generic title tag (just 'Home'); #i2: missing no meta description; #i3: missing multiple h1 tags (2 h1s); #i4: missing h2 appears before h1 - wrong hierarchy; #i5: missing images missing alt attributes",
+      "tokens": 16000
+    },
+    {
+      "id": 35,
+      "role": "Travel Planning Agent",
+      "tier": 2,
+      "scoring_type": "h_keywords",
+      "score": 0,
+      "max": 15,
+      "detail": "0/15 correct | #total_days: missing 5; #within_budget: missing; #has_temple: missing; #has_akihabara: missing; #has_japanese_meal: missing",
+      "tokens": 16000
+    },
+    {
+      "id": 43,
+      "role": "Synthesizer / Aggregator",
+      "tier": 3,
+      "scoring_type": "json_values",
+      "score": 0,
+      "max": 15,
+      "detail": "Could not parse JSON",
+      "tokens": 16000
+    },
+    {
+      "id": 44,
+      "role": "Curriculum / Course Designer",
+      "tier": 3,
+      "scoring_type": "h_keywords",
+      "score": 0,
+      "max": 15,
+      "detail": "0/15 correct | #total_weeks: missing 6; #w1_fundamentals: missing; #oop_by_w4: missing; #error_handling_before_w5: missing; #file_io_before_w6: missing",
+      "tokens": 16000
+    },
+    {
+      "id": 45,
+      "role": "Prototype Generator",
+      "tier": 3,
+      "scoring_type": "code_exec",
+      "score": 0,
+      "max": 15,
+      "detail": "0/15 test cases passed | tc1: error=name 'JSONValidator' is not defined; tc2: error=name 'JSONValidator' is not defined; tc3: error=name 'JSONValidator' is not defined; tc4: error=name 'JSONValidator' is not defined; tc5: error=name 'JSONValidator' is not defined; tc6: error=name 'JSONValidator' is not defined; tc7: error=name 'JSONValidator' is not defined; tc8: error=name 'JSONValidator' is not defined; tc9: error=name 'JSONValidator' is not defined; tc10: error=name 'JSONValidator' is not defined",
+      "tokens": 16000
+    },
+    {
+      "id": 50,
+      "role": "Orchestrator / Manager Agent",
+      "tier": 5,
+      "scoring_type": "h_keywords",
+      "score": 0,
+      "max": 15,
+      "detail": "0/15 correct | #min_6_agents: missing; #has_validation: missing; #has_fraud_check: missing; #has_approval: missing; #has_payment: missing",
+      "tokens": 16000
+    },
+    {
+      "id": 51,
+      "role": "Software Architect Agent",
+      "tier": 5,
+      "scoring_type": "h_keywords",
+      "score": 0,
+      "max": 15,
+      "detail": "0/15 correct | #q1_valid: missing OT or CRDT; #q2_valid: missing WebSocket; #q3_valid: missing database mentioned; #q4_valid: missing local storage or sync queue; #q5_valid: missing message broker mentioned",
+      "tokens": 16000
+    },
+    {
+      "id": 52,
+      "role": "Complex Debugger Agent",
+      "tier": 5,
+      "scoring_type": "h_content_check",
+      "score": 0,
+      "max": 15,
+      "detail": "No content to check",
+      "tokens": 16000
+    },
+    {
+      "id": 10,
+      "role": "Content Writer / Blog Writer",
+      "tier": 2,
+      "scoring_type": "h_content_check",
+      "score": 0,
+      "max": 20,
+      "detail": "No content to check",
+      "tokens": 16000
+    },
+    {
+      "id": 17,
+      "role": "Social Media Content Agent",
+      "tier": 2,
+      "scoring_type": "h_content_check",
+      "score": 0,
+      "max": 20,
+      "detail": "No content to check",
+      "tokens": 16000
+    },
+    {
+      "id": 24,
+      "role": "Image Description / Understanding",
+      "tier": 2,
+      "scoring_type": "h_content_check",
+      "score": 0,
+      "max": 20,
+      "detail": "No content to check",
+      "tokens": 16000
+    },
+    {
+      "id": 34,
+      "role": "Landing Page Generator",
+      "tier": 2,
+      "scoring_type": "h_content_check",
+      "score": 18,
+      "max": 20,
+      "detail": "18/20 correct | #has_how_it_works: missing; #has_accessibility: missing",
+      "tokens": 5601
+    },
+    {
+      "id": 41,
+      "role": "Critic / Review Agent",
+      "tier": 3,
+      "scoring_type": "h_content_check",
+      "score": 15,
+      "max": 20,
+      "detail": "15/20 correct | #critiques_python_38: missing; #suggests_structure: missing; #recommends_parameterized: missing; #recommends_cicd: missing; #has_severity_ratings: missing",
+      "tokens": 16000
+    },
+    {
+      "id": 58,
+      "role": "Book / Long-Form Writing",
+      "tier": 5,
+      "scoring_type": "h_content_check",
+      "score": 0,
+      "max": 20,
+      "detail": "No content to check",
+      "tokens": 16000
+    }
+  ]
+}
