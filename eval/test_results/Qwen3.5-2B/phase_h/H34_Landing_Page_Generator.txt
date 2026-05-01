@@ -1,0 +1,355 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="QuillAI is the intelligent writing assistant that helps you write better, faster, and more accurately.">
+    <title>QuillAI - The Intelligent Writing Assistant</title>
+    <style>
+        /* Basic Reset and Typography */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; background-color: #f9f9f9; }
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+        img { max-width: 100%; display: block; }
+        
+        /* Utility Classes */
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        .btn { display: inline-block; padding: 12px 24px; border-radius: 5px; font-weight: bold; cursor: pointer; transition: background 0.3s; }
+        .btn-primary { background-color: #4F46E5; color: white; }
+        .btn-primary:hover { background-color: #4338ca; }
+        .btn-secondary { background-color: #10B981; color: white; }
+        .btn-secondary:hover { background-color: #059669; }
+        .text-center { text-align: center; }
+        .section-padding { padding: 80px 0; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; }
+        .card { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .icon-box { width: 50px; height: 50px; background: #e0e7ff; color: #4F46E5; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 15px; font-size: 24px; }
+        
+        /* Specific Sections */
+        .hero { background: linear-gradient(135deg, #f0f4ff 0%, #e0e7ff 100%); padding: 100px 0; text-align: center; }
+        .hero h1 { font-size: 3rem; margin-bottom: 20px; color: #1e293b; }
+        .hero p { font-size: 1.25rem; margin-bottom: 40px; color: #475569; }
+        .social-proof { margin-bottom: 40px; }
+        .social-proof p { margin-bottom: 10px; font-size: 0.9rem; color: #64748b; }
+        
+        .steps { background: white; padding: 60px 0; }
+        .step { text-align: center; margin-bottom: 40px; }
+        .step-number { font-size: 4rem; font-weight: bold; color: #e0e7ff; opacity: 0.2; }
+        
+        .comparison { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; margin: 40px 0; }
+        .comp-box { flex: 1; min-width: 300px; background: #fff; border: 2px solid #e2e8f0; padding: 20px; border-radius: 10px; }
+        .comp-box.active { border-color: #4F46E5; background: #eef2ff; }
+        .comp-box.active .comparison-text { color: #4F46E5; }
+        .comparison-text { font-weight: bold; font-size: 1.2rem; }
+
+        .pricing { background: #fff; }
+        .pricing-card { border: 1px solid #e2e8f0; }
+        .pricing-card.featured { border: 2px solid #4F46E5; transform: scale(1.05); }
+        .price { font-size: 2rem; font-weight: bold; margin: 20px 0; }
+        
+        .faq { background: #f8fafc; }
+        .faq-item { border-bottom: 1px solid #e2e8f0; padding: 15px 0; }
+        .faq-question { font-weight: bold; cursor: pointer; display: block; margin-bottom: 5px; }
+        .faq-answer { display: block; color: #64748b; font-size: 0.95rem; }
+        
+        .contact { background: #1e293b; color: white; text-align: center; }
+        .contact h2 { color: white; }
+        .contact p { color: #94a3b8; }
+        
+        footer { background: #0f172a; color: #94a3b8; padding: 40px 0; font-size: 0.9rem; }
+        footer a { color: #cbd5e1; margin: 0 10px; }
+        footer a:hover { color: white; }
+        
+        /* Accessibility */
+        .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0; }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <header class="container">
+        <nav role="navigation" aria-label="Main Navigation">
+            <div class="logo" style="margin-bottom: 20px;">
+                <h2 style="margin:0; font-size: 1.5rem;">Quill<span style="color:#4F46E5">AI</span></h2>
+            </div>
+            <ul style="display: flex; gap: 20px; flex-wrap: wrap; justify-content: center;">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#pricing">Pricing</a></li>
+                <li><a href="#testimonials">Testimonials</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container">
+                <h1>Write Better with <span style="color:#4F46E5">Intelligent AI</span></h1>
+                <p>QuillAI transforms your ideas into polished, professional content in seconds. Stop typing and start creating.</p>
+                <div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
+                    <a href="#signup" class="btn btn-primary">Start Free Trial</a>
+                    <a href="#contact" class="btn btn-secondary">Get Started</a>
+                </div>
+                <div class="social-proof">
+                    <p>Trusted by 10,000+ creators and businesses worldwide.</p>
+                    <!-- Social Proof Logos (Placeholders) -->
+                    <div style="margin-top: 10px; font-weight: bold; font-size: 1.2rem;">
+                        <span style="margin-right: 15px;">&nbsp;</span>
+                        <span>Acme Corp</span>
+                        <span style="margin-right: 15px;">&nbsp;</span>
+                        <span>GlobalTech</span>
+                        <span style="margin-right: 15px;">&nbsp;</span>
+                        <span>StartUp Inc</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- How it Works -->
+        <section class="steps">
+            <div class="container">
+                <h2 class="text-center" style="margin-bottom: 40px;">How it Works</h2>
+                <div class="grid">
+                    <div class="step">
+                        <div class="step-number">01</div>
+                        <h3>Upload Your Draft</h3>
+                        <p>Drag and drop your text or paste it directly into the chat interface.</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">02</div>
+                        <h3>AI Refines & Rewrites</h3>
+                        <p>Our advanced language models analyze tone, style, and structure.</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">03</div>
+                        <h3>Download & Publish</h3>
+                        <p>Get a polished version ready for your audience in minutes.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Comparison Section -->
+        <section class="section-padding">
+            <div class="container">
+                <h2 class="text-center" style="margin-bottom: 40px;">Before vs. After</h2>
+                <div class="comparison">
+                    <div class="comp-box">
+                        <h3>Without QuillAI</h3>
+                        <p class="comparison-text">You spend hours editing, rewriting, and formatting. The output is often inconsistent and lacks professional polish.</p>
+                        <div style="margin-top: 10px; font-size: 0.8rem; color: #666;">Time: 4 hours</div>
+                    </div>
+                    <div class="comp-box active">
+                        <h3>With QuillAI</h3>
+                        <p class="comparison-text">Get a professional-grade rewrite instantly. QuillAI understands context, tone, and style automatically.</p>
+                        <div style="margin-top: 10px; font-size: 0.8rem; color: #4F46E5;">Time: 2 minutes</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section id="features" class="section-padding">
+            <div class="container">
+                <h2 class="text-center" style="margin-bottom: 50px;">Features</h2>
+                <div class="grid">
+                    <div class="card">
+                        <div class="icon-box">📝</div>
+                        <h3>Smart Summarization</h3>
+                        <p>Reduce word counts while retaining key information and context.</p>
+                    </div>
+                    <div class="card">
+                        <div class="icon-box">🎨</div>
+                        <h3>Style Transfer</h3>
+                        <p>Change your writing style from casual to formal or vice versa.</p>
+                    </div>
+                    <div class="card">
+                        <div class="icon-box">🔍</div>
+                        <h3>Grammar Check</h3>
+                        <p>Advanced grammar checking that understands nuance and context.</p>
+                    </div>
+                    <div class="card">
+                        <div class="icon-box">📊</div>
+                        <h3>Analytics</h3>
+                        <p>Track how your AI edits your content and improve over time.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials -->
+        <section id="testimonials" class="section-padding">
+            <div class="container">
+                <h2 class="text-center" style="margin-bottom: 50px;">What Users Say</h2>
+                <div class="grid">
+                    <div class="card">
+                        <p class="text-center" style="font-style: italic; margin-bottom: 20px;">"QuillAI completely changed how I write my blog posts. It's like having a ghostwriter."</p>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <strong>Sarah Jenkins</strong>
+                            <span style="font-size: 0.9rem; color: #666;">Content Writer</span>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <p class="text-center" style="font-style: italic; margin-bottom: 20px;">"The grammar check feature is a lifesaver. I used to spend hours fixing typos."</p>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <strong>Michael Ross</strong>
+                            <span style="font-size: 0.9rem; color: #666;">Freelancer</span>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <p class="text-center" style="font-style: italic; margin-bottom: 20px;">"Best investment I've made for my business. The analytics help me track my productivity."</p>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <strong>Emily Chen</strong>
+                            <span style="font-size: 0.9rem; color: #666;">CEO, TechFlow</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section class="section-padding faq">
+            <div class="container">
+                <h2 class="text-center" style="margin-bottom: 40px;">Frequently Asked Questions</h2>
+                <div class="grid">
+                    <div class="faq-item">
+                        <div class="faq-question">How does QuillAI work?</div>
+                        <div class="faq-answer">QuillAI uses advanced natural language processing to analyze your text and suggest improvements in grammar, tone, and structure.</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">Is there a free trial?</div>
+                        <div class="faq-answer">Yes, we offer a 14-day free trial with full access to all features. No credit card required.</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">Can I export my content?</div>
+                        <div class="faq-answer">Absolutely. You can download your rewritten content in .txt, .docx, or .pdf formats.</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">Does it work with all AI models?</div>
+                        <div class="faq-answer">Yes, QuillAI is compatible with GPT-3.5, GPT-4, and other major LLMs.</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">Is my data secure?</div>
+                        <div class="faq-answer">Yes, we use end-to-end encryption and never sell your data to third parties.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pricing Section -->
+        <section id="pricing" class="section-padding pricing">
+            <div class="container">
+                <h2 class="text-center" style="margin-bottom: 50px;">Pricing Plans</h2>
+                <div class="grid">
+                    <div class="card pricing-card">
+                        <h3>Free</h3>
+                        <div class="price">$0</div>
+                        <p>Perfect for hobbyists.</p>
+                        <ul style="margin-bottom: 20px; list-style: none;">
+                            <li>✓ 500 words/month</li>
+                            <li>✓ Basic Grammar Check</li>
+                            <li>✓ 1 Export</li>
+                        </ul>
+                        <a href="#" class="btn btn-secondary" style="width: 100%;">Start Free</a>
+                    </div>
+                    <div class="card pricing-card featured">
+                        <div style="background: #4F46E5; color: white; display: inline-block; padding: 4px 10px; border-radius: 4px; font-size: 0.8rem; margin-bottom: 10px;">Most Popular</div>
+                        <h3>Pro</h3>
+                        <div class="price">$29</div>
+                        <p>For serious writers.</p>
+                        <ul style="margin-bottom: 20px; list-style: none;">
+                            <li>✓ 5,000 words/month</li>
+                            <li>✓ Advanced AI Rewrites</li>
+                            <li>✓ 5 Exports</li>
+                            <li>✓ Priority Support</li>
+                        </ul>
+                        <a href="#" class="btn btn-primary" style="width: 100%;">Get Started</a>
+                    </div>
+                    <div class="card pricing-card">
+                        <h3>Enterprise</h3>
+                        <div class="price">$99</div>
+                        <p>For large teams.</p>
+                        <ul style="margin-bottom: 20px; list-style: none;">
+                            <li>✓ Unlimited words</li>
+                            <li>✓ Custom API Access</li>
+                            <li>✓ Dedicated Account Manager</li>
+                            <li>✓ Custom Integrations</li>
+                        </ul>
+                        <a href="#" class="btn btn-secondary" style="width: 100%;">Contact Sales</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Email Signup -->
+        <section id="signup" class="section-padding" style="background: #f1f5f9;">
+            <div class="container text-center">
+                <h2 style="margin-bottom: 20px;">Join the Newsletter</h2>
+                <p style="margin-bottom: 30px; color: #666;">Get the latest tips on writing and AI trends.</p>
+                <form action="#" method="POST" style="display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;">
+                    <input type="email" placeholder="Enter your email" required style="padding: 12px; border: 1px solid #ccc; border-radius: 5px; min-width: 250px;">
+                    <button type="submit" class="btn btn-primary">Subscribe</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="contact">
+            <div class="container">
+                <h2>Have questions?</h2>
+                <p>Our team is here to help you get started.</p>
+                <br>
+                <a href="mailto:hello@quillai.com" style="font-size: 1.5rem; font-weight: bold;">hello@quillai.com</a>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div style="display: flex; justify-content: space-between; flex-wrap: wrap; margin-bottom: 30px;">
+                <div>
+                    <h4 style="margin-bottom: 15px;">QuillAI</h4>
+                    <ul style="list-style: none;">
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 style="margin-bottom: 15px;">Legal</h4>
+                    <ul style="list-style: none;">
+                        <li><a href="#">Cookie Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div style="text-align: center; border-top: 1px solid #334155; padding-top: 20px;">
+                <p>&copy; 2023 QuillAI Inc. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Accessibility -->
+    <script>
+        // Simple script to handle FAQ accordion behavior
+        document.querySelectorAll('.faq-question').forEach(item => {
+            item.addEventListener('click', function() {
+                const answer = this.nextElementSibling;
+                if (answer.style.display === "block") {
+                    answer.style.display = "none";
+                } else {
+                    answer.style.display = "block";
+                    // Add aria-expanded for accessibility
+                    item.setAttribute('aria-expanded', 'true');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+```

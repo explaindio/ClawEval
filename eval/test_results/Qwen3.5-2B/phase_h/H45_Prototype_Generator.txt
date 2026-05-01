@@ -1,0 +1,93 @@
+```python
+class JSONValidator:
+    def validate(self, data, schema):
+        """
+        Validates JSON-like data against a schema.
+        
+        Args:
+            data: The data to validate (dict or list)
+            schema: A string representing the schema in JSON-like format
+            
+        Returns:
+            A dictionary with 'valid' (bool) and 'errors' (list of strings)
+        """
+        errors = []
+        
+        # Parse schema string into a dictionary
+        schema_fields = self._parse_schema(schema)
+        
+        # Check each field in the schema
+        for field_name, field_schema in schema_fields.items():
+            # Check if field exists in data
+            if field_name not in data:
+                if field_schema.get("required", False):
+                    errors.append(f"Missing required field: {field_name}")
+                continue
+            
+            # Get the value
+            value = data[field_name]
+            
+            # Check type
+            if field_schema["type"] not in ["str", "int", "float", "bool", "list", "dict"]:
+                errors.append(f"Invalid type for field '{field_name}': expected {field_schema['type']}, got {type(value).__name__}")
+                continue
+            
+            # Check required
+            if field_schema.get("required", False):
+                if value is None:
+                    errors.append(f"Missing required field: {field_name}")
+                elif not isinstance(value, type(value)):
+                    errors.append(f"Invalid type for field '{field_name}': expected {field_schema['type']}, got {type(value).__name__}")
+                continue
+            
+            # Check min/max for numbers
+            if field_schema.get("type") in ["int", "float"]:
+                if "min" in field_schema and value < field_schema["min"]:
+                    errors.append(f"Value {value} is less than minimum {field_schema['min']} for field '{field_name}'")
+                if "max" in field_schema and value > field_schema["max"]:
+                    errors.append(f"Value {value} is greater than maximum {field_schema['max']} for field '{field_name}'")
+            
+            # Check min/max for strings
+            if field_schema.get("type") == "str":
+                if "min_length" in field_schema and len(value) < field_schema["min_length"]:
+                    errors.append(f"String '{value}' is less than minimum length {field_schema['min_length']} for field '{field_name}'")
+                if "max_length" in field_schema and len(value) > field_schema["max_length"]:
+                    errors.append(f"String '{value}' is greater than maximum length {field_schema['max_length']} for field '{field_name}'")
+            
+            # Check min/max for lists
+            if field_schema.get("type") == "list":
+                if "min_length" in field_schema and len(value) < field_schema["min_length"]:
+                    errors.append(f"List '{value}' is less than minimum length {field_schema['min_length']} for field '{field_name}'")
+                if "max_length" in field_schema and len(value) > field_schema["max_length"]:
+                    errors.append(f"List '{value}' is greater than maximum length {field_schema['max_length']} for field '{field_name}'")
+            
+            # Check min/max for dicts
+            if field_schema.get("type") == "dict":
+                if "min_length" in field_schema and len(value) < field_schema["min_length"]:
+                    errors.append(f"Dict '{value}' is less than minimum length {field_schema['min_length']} for field '{field_name}'")
+                if "max_length" in field_schema and len(value) > field_schema["max_length"]:
+                    errors.append(f"Dict '{value}' is greater than maximum length {field_schema['max_length']} for field '{field_name}'")
+        
+        return {"valid": len(errors) == 0, "errors": errors}
+    
+    def _parse_schema(self, schema):
+        """
+        Parse schema string into a dictionary of field information.
+        
+        Args:
+            schema: A string representing the schema in JSON-like format
+            
+        Returns:
+            A dictionary mapping field names to their schema definitions
+        """
+        schema_fields = {}
+        
+        # Split by comma to get individual fields
+        fields = schema.split(",")
+        
+        for field in fields:
+            field_name, field_schema = field.split(":")
+            schema_fields[field_name] = field_schema
+        
+        return schema_fields
+```
