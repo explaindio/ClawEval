@@ -1,0 +1,19 @@
+```json
+{
+  "q1": "Conflict-free Replicated Data Types (CRDT) for conflict resolution, as it allows concurrent edits without central coordination.",
+  "q2": "WebSocket for real-time bidirectional communication between clients and the server.",
+  "q3": "CouchDB for document storage, as it is designed for distributed systems and supports real-time updates and conflict resolution.",
+  "q4": "Use a local cache to store the document state and pending edits. When the user reconnects, sync the local cache with the server using CRDT or OT to merge changes.",
+  "q5": "Apache Kafka for real-time event publishing and subscription, due to its scalability and durability.",
+  "q6": "Horizontal scaling with a load balancer (e.g., Nginx) in front of multiple WebSocket servers, each handling a subset of clients.",
+  "q7": "Use a CRDT for cursor positions to allow concurrent updates and automatic merging of cursor positions across clients.",
+  "q8": "OAuth 2.0 or OpenID Connect (OIDC) for user authentication, implemented with a service like Keycloak.",
+  "q9": "Store each version of the document in the database. When a user edits, save the current version and create a new one. Alternatively, use a CRDT that maintains a history of changes.",
+  "q10": "Use a CDN like Cloudflare or AWS CloudFront to serve static assets (e.g., images) from multiple locations, improving performance.",
+  "q11": "Implement lazy loading: only store and load visible parts of the document on the server. For very large documents, use sharding to split the document into chunks stored on different servers.",
+  "q12": "Implement rate limiting at the API level, using Redis to track and limit the number of requests per user per time window (e.g., per minute).",
+  "q13": "Use a combination of regular backups and distributed file systems. For databases, enable snapshots or use replication. Store backups in a cloud storage like S3.",
+  "q14": "Use a queue system like RabbitMQ or Kafka to manage concurrent image uploads, processing them in batches to avoid server overload. Alternatively, use a CDN to handle uploads and serve images from there.",
+  "q15": "Monitoring and observability stack: Prometheus for metrics, Grafana for dashboards, ELK for logging, and Datadog or New Relic for end-to-end monitoring."
+}
+```

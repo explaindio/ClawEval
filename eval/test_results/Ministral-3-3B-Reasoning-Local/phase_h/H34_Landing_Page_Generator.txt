@@ -1,0 +1,370 @@
+Here is the complete HTML code for the SaaS landing page for QuillAI, meeting all the specified constraints:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="QuillAI is an AI-powered writing assistant that helps you create high-quality content with ease. Our AI assistant understands your needs and generates content that matches your style. Trusted by 10,000+ users.">
+    <title>QuillAI - AI Writing Assistant</title>
+    <style>
+        /* Basic styles for accessibility and structure */
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        header, footer {
+            background: #f8f9fa;
+            padding: 1rem 0;
+        }
+        nav {
+            background: #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .nav-links {
+            display: flex;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .nav-links li {
+            margin: 0 1rem;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+        }
+        .nav-links a:hover {
+            color: #007bff;
+        }
+        .btn {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+        .section {
+            padding: 4rem 0;
+        }
+        .feature-card, .pricing-card, .testimonial {
+            background: #fff;
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+        .pricing-cards {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        .pricing-card {
+            flex: 1 1 300px;
+            min-width: 300px;
+        }
+        .testimonials {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+        .testimonial {
+            flex: 1 1 100%;
+            min-width: 300px;
+        }
+        .faq-item {
+            margin-bottom: 1rem;
+        }
+        .faq-question {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        .faq-answer {
+            margin-bottom: 0.5rem;
+        }
+        footer {
+            padding: 2rem 0;
+        }
+        .social-links, .legal-links {
+            display: flex;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .social-links a, .legal-links a {
+            margin: 0 0.5rem;
+            text-decoration: none;
+            color: #333;
+        }
+        .social-links a:hover, .legal-links a:hover {
+            color: #007bff;
+        }
+        .before-after {
+            display: flex;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        .before, .after {
+            flex: 1;
+        }
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        .step-number {
+            width: 30px;
+            height: 30px;
+            background: #007bff;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .email-signup {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .email-signup input {
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <div class="logo">QuillAI</div>
+            <ul class="nav-links">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#pricing">Pricing</a></li>
+                <li><a href="#testimonials">Testimonials</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <a href="#start-free" class="btn">Start Free Trial</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero" id="hero">
+            <div class="container">
+                <h1>AI-Powered Writing Assistant for Your Content</h1>
+                <p class="subheadline">QuillAI helps you create high-quality, engaging content with just a few clicks. Our AI assistant understands your needs and generates content that matches your style. Trusted by 10,000+ users.</p>
+                <a href="#start-free" class="btn">Get Started</a>
+                <a href="#signup" class="btn btn-secondary">Sign Up for Free</a>
+            </div>
+        </section>
+
+        <section class="container" id="features">
+            <h2>Key Features</h2>
+            <div class="feature-cards">
+                <div class="feature-card">
+                    <div class="icon" aria-label="AI writing icon">🤖</div>
+                    <h3>Smart AI Writing</h3>
+                    <p>Our AI generates content that is tailored to your audience and style.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon" aria-label="Content editing icon">✏️</div>
+                    <h3>Content Editing</h3>
+                    <p>Easily edit and refine your content with our intuitive interface.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon" aria-label="Plagiarism check icon">🔍</div>
+                    <h3>Plagiarism Check</h3>
+                    <p>Ensure your content is original with our built-in plagiarism detector.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon" aria-label="SEO optimization icon">📊</div>
+                    <h3>SEO Optimization</h3>
+                    <p>Improve your content's search engine ranking with our SEO tools.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="container" id="how-it-works">
+            <h2>How QuillAI Works</h2>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div>
+                        <h3>Input Your Content</h3>
+                        <p>Paste or type your content into our interface.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div>
+                        <h3>AI Generates Content</h3>
+                        <p>Our AI processes your input and generates relevant content.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div>
+                        <h3>Review and Edit</h3>
+                        <p>Review the generated content and make any necessary adjustments.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="container" id="pricing">
+            <h2>Pricing Plans</h2>
+            <div class="pricing-cards">
+                <div class="pricing-card" id="free">
+                    <h3>Free</h3>
+                    <p>$0 per month</p>
+                    <ul>
+                        <li>Basic AI writing</li>
+                        <li>Limited content generation</li>
+                        <li>No plagiarism check</li>
+                    </ul>
+                    <a href="#signup" class="btn">Get Started</a>
+                </div>
+                <div class="pricing-card" id="pro">
+                    <h3>Pro</h3>
+                    <p>$9.99 per month</p>
+                    <ul>
+                        <li>Unlimited AI writing</li>
+                        <li>Advanced content editing</li>
+                        <li>Plagiarism check</li>
+                        <li>SEO optimization</li>
+                    </ul>
+                    <a href="#signup" class="btn">Get Started</a>
+                </div>
+                <div class="pricing-card" id="enterprise">
+                    <h3>Enterprise</h3>
+                    <p>$49.99 per month</p>
+                    <ul>
+                        <li>Unlimited content generation</li>
+                        <li>Team collaboration</li>
+                        <li>Priority support</li>
+                        <li>Custom AI models</li>
+                    </ul>
+                    <a href="#signup" class="btn">Contact Sales</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="container" id="testimonials">
+            <h2>Testimonials</h2>
+            <div class="testimonials">
+                <div class="testimonial">
+                    <p>"QuillAI has transformed my content creation process. It's so easy to use and the results are amazing."</p>
+                    <div>
+                        <h4>Sarah Johnson</h4>
+                        <p>Marketing Manager, TechCorp</p>
+                    </div>
+                </div>
+                <div class="testimonial">
+                    <p>"As a freelance writer, I needed an AI assistant that could handle multiple projects. QuillAI is perfect for that."</p>
+                    <div>
+                        <h4>Michael Chen</h4>
+                        <p>Freelance Writer</p>
+                    </div>
+                </div>
+                <div class="testimonial">
+                    <p>"Our team has been using QuillAI for months, and it has significantly improved our content quality and productivity."</p>
+                    <div>
+                        <h4>David Lee</h4>
+                        <p>CEO, Startup Inc.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="container" id="faq">
+            <h2>Frequently Asked Questions</h2>
+            <div class="faq">
+                <div class="faq-item">
+                    <h3 class="faq-question">How does QuillAI work?</h3>
+                    <p class="faq-answer">QuillAI uses advanced AI algorithms to analyze your input and generate content that matches your style and requirements.</p>
+                </div>
+                <div class="faq-item">
+                    <h3 class="faq-question">Is QuillAI free to use?</h3>
+                    <p class="faq-answer">Yes, our Free plan is available at no cost, but it includes some limitations. For full features, consider our Pro or Enterprise plans.</p>
+                </div>
+                <div class="faq-item">
+                    <h3 class="faq-question">Can I cancel my subscription at any time?</h3>
+                    <p class="faq-answer">Absolutely! You can cancel your subscription at any time from your account settings without any penalties.</p>
+                </div>
+                <div class="faq-item">
+                    <h3 class="faq-question">What is the difference between Pro and Enterprise plans?</h3>
+                    <p class="faq-answer">The Pro plan includes all basic features, while the Enterprise plan offers team collaboration, priority support, and custom AI models.</p>
+                </div>
+                <div class="faq-item">
+                    <h3 class="faq-question">Is my data secure with QuillAI?</h3>
+                    <p class="faq-answer">Yes, we take data security very seriously. Your information is encrypted and stored securely on our servers.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="container" id="contact">
+            <h2>Contact Us</h2>
+            <p>Have questions or need support? Reach out to us at <a href="mailto:support@quillai.com">support@quillai.com</a></p>
+            <a href="#signup" class="btn">Get in Touch</a>
+        </section>
+
+        <section class="container" id="before-after">
+            <h2>Before and After</h2>
+            <div class="before-after">
+                <div class="before">
+                    <h3>Before QuillAI</h3>
+                    <p>Manual content creation can be time-consuming and often lacks consistency.</p>
+                </div>
+                <div class="after">
+                    <h3>After QuillAI</h3>
+                    <p>With QuillAI, you can generate high-quality content in minutes, ensuring consistency and efficiency.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="container" id="signup">
+            <h2>Sign Up for QuillAI</h2>
+            <form class="email-signup">
+                <input type="email" placeholder="Enter your email" aria-label="Email input for newsletter">
+                <button type="submit" class="btn">Subscribe</button>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="logo">QuillAI</div>
+                <div class="social-links">
+                    <a href="#" aria-label="Facebook">📘</a>
+                    <a href="#" aria-label="Twitter">🐦</a>
+                    <a href="#" aria-label="LinkedIn">🔗</a>
+                    <a href="#" aria-label="Instagram">📷</a>
+                </div>
+                <div class="legal-links">
+                    <a href="#" aria-label="Privacy Policy">Privacy Policy</a>
+                    <a href="#" aria-label="Terms of Service">Terms of Service</a>
+                </div>
+            </div>
+            <p class="copyright">© 2023 QuillAI. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>
+```

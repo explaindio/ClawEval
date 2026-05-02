@@ -1,0 +1,76 @@
+The solution to the problem involves creating a `JSONValidator` class that can validate JSON-like data against a schema. The schema is a dictionary where each key is a field name, and the value is another dictionary specifying the type, required status, and optional constraints for that field. The data is assumed to be a dictionary, and the schema is for its fields, which is a reasonable assumption given the problem statement.
+
+The approach is to iterate over the schema to check for required fields and validate the types and constraints of the fields present in the data. The solution must handle various data types (string, integer, float, boolean, list, dictionary) and their respective constraints (min/max, min_length/max_length). The code must also ensure that the data is a dictionary if the schema is not empty, as the problem statement implies that the data is JSON-like, which typically is a dictionary.
+
+The solution is structured to first check for missing required fields, then validate the types and constraints of the fields that are present in the data. It collects all errors in a list and returns a dictionary with the validation result and the list of errors.
+
+Here is the reference code:
+
+```python
+class JSONValidator:
+    def validate(self, data, schema):
+        errors = []
+        for field, field_schema in schema.items():
+            if field_schema.get("required", False) and field not in data:
+                errors.append(f"Missing required field: {field}")
+        
+        for field, field_schema in schema.items():
+            if field not in data:
+                continue
+            expected_type = field_schema["type"]
+            actual_value = data[field]
+            
+            if expected_type == "str":
+                if not isinstance(actual_value, str):
+                    errors.append(f"Field {field} must be a string, got {type(actual_value).__name__}")
+                else:
+                    min_len = field_schema.get("min_length", None)
+                    max_len = field_schema.get("max_length", None)
+                    if min_len is not None and len(actual_value) < min_len:
+                        errors.append(f"Field {field} must be at least {min_len} characters long")
+                    if max_len is not None and len(actual_value) > max_len:
+                        errors.append(f"Field {field} must be at most {max_len} characters long")
+            elif expected_type == "int":
+                if not isinstance(actual_value, int):
+                    errors.append(f"Field {field} must be an integer, got {type(actual_value).__name__}")
+                else:
+                    min_val = field_schema.get("min", None)
+                    max_val = field_schema.get("max", None)
+                    if min_val is not None and actual_value < min_val:
+                        errors.append(f"Field {field} must be at least {min_val}")
+                    if max_val is not None and actual_value > max_val:
+                        errors.append(f"Field {field} must be at most {max_val}")
+            elif expected_type == "float":
+                if not isinstance(actual_value, float):
+                    errors.append(f"Field {field} must be a float, got {type(actual_value).__name__}")
+                else:
+                    min_val = field_schema.get("min", None)
+                    max_val = field_schema.get("max", None)
+                    if min_val is not None and actual_value < min_val:
+                        errors.append(f"Field {field} must be at least {min_val}")
+                    if max_val is not None and actual_value > max_val:
+                        errors.append(f"Field {field} must be at most {max_val}")
+            elif expected_type == "bool":
+                if not isinstance(actual_value, bool):
+                    errors.append(f"Field {field} must be a boolean, got {type(actual_value).__name__}")
+            elif expected_type == "list":
+                if not isinstance(actual_value, list):
+                    errors.append(f"Field {field} must be a list, got {type(actual_value).__name__}")
+                else:
+                    min_len = field_schema.get("min", None)
+                    max_len = field_schema.get("max", None)
+                    if min_len is not None and len(actual_value) < min_len:
+                        errors.append(f"Field {field} must have at least {min_len} items")
+                    if max_len is not None and len(actual_value) > max_len:
+                        errors.append(f"Field {field} must have at most {max_len} items")
+            elif expected_type == "dict":
+                if not isinstance(actual_value, dict):
+                    errors.append(f"Field {field} must be a dictionary, got {type(actual_value).__name__}")
+        
+        if schema and not isinstance(data, dict):
+            errors.append("Data must be a dictionary")
+        
+        return {"valid": len(errors) == 0, "errors": errors}
+```
+
+The code first checks for missing required fields and then validates the types and constraints of the fields present in the data. It collects all errors in a list and returns a dictionary with the validation result and the list of errors. The solution assumes that the data is a dictionary and the schema is for its fields, which is a reasonable assumption given the problem statement.

@@ -1,0 +1,105 @@
+The solution involves creating three data structures: an LRUCache, a MinStack, and a function to find the median of a stream of numbers. Each is designed to meet specific requirements for time complexity and functionality.
+
+1. **LRUCache**: This class uses a doubly linked list and a hash map to achieve O(1) operations for get and put. The doubly linked list maintains the order of elements based on their usage, with the head representing the least recently used and the tail the most recently used. The hash map provides quick access to the nodes in the list.
+
+2. **MinStack**: This class uses two stacks to track the minimum value. The main stack stores all elements, while the min_stack keeps track of the minimum values. This ensures that all operations (push, pop, top, get_min) can be performed in O(1) time.
+
+3. **find_median**: This function processes a stream of numbers, maintaining a sorted list to compute the median after each element. The median is calculated as the middle element for an odd number of elements or the average of the two middle elements for an even number of elements.
+
+Here is the code for the three implementations:
+
+```python
+class LRUCache:
+    class Node:
+        def __init__(self, key, value):
+            self.key = key
+            self.value = value
+            self.prev = None
+            self.next = None
+
+    def __init__(self, capacity):
+        self.capacity = capacity
+        self.cache = {}
+        self.head = self.Node(0, 0)
+        self.tail = self.Node(0, 0)
+        self.head.next = self.tail
+        self.tail.prev = self.head
+
+    def get(self, key):
+        if key in self.cache:
+            node = self.cache[key]
+            self._remove(node)
+            self._add_to_tail(node)
+            return node.value
+        return -1
+
+    def put(self, key, value):
+        if key in self.cache:
+            node = self.cache[key]
+            node.value = value
+            self._remove(node)
+            self._add_to_tail(node)
+        else:
+            if len(self.cache) >= self.capacity:
+                lru_node = self.head.next
+                self._remove(lru_node)
+                del self.cache[lru_node.key]
+            new_node = self.Node(key, value)
+            self.cache[key] = new_node
+            self._add_to_tail(new_node)
+
+    def _remove(self, node):
+        prev = node.prev
+        next = node.next
+        prev.next = next
+        next.prev = prev
+
+    def _add_to_tail(self, node):
+        prev = self.tail.prev
+        prev.next = node
+        node.prev = prev
+        node.next = self.tail
+        self.tail.prev = node
+
+class MinStack:
+    def __init__(self):
+        self.stack = []
+        self.min_stack = []
+
+    def push(self, val):
+        self.stack.append(val)
+        if not self.min_stack or val <= self.min_stack[-1]:
+            self.min_stack.append(val)
+
+    def pop(self):
+        if not self.stack:
+            return
+        val = self.stack.pop()
+        if val == self.min_stack[-1]:
+            self.min_stack.pop()
+
+    def top(self):
+        if not self.stack:
+            return
+        return self.stack[-1]
+
+    def get_min(self):
+        if not self.min_stack:
+            return
+        return self.min_stack[-1]
+
+def find_median(stream):
+    sorted_list = []
+    medians = []
+    for num in stream:
+        i = 0
+        while i < len(sorted_list) and sorted_list[i] < num:
+            i += 1
+        sorted_list.insert(i, num)
+        n = len(sorted_list)
+        if n % 2 == 1:
+            medians.append(float(sorted_list[n // 2]))
+        else:
+            medians.append((sorted_list[n // 2 - 1] + sorted_list[n // 2]) / 2.0)
+    return medians
+```

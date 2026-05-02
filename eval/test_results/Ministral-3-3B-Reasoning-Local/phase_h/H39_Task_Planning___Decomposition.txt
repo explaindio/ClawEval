@@ -1,0 +1,146 @@
+```json
+{
+  "tasks": [
+    {
+      "id": 1,
+      "task": "Define the microservices architecture",
+      "depends_on": [],
+      "effort_days": 10,
+      "team": "backend"
+    },
+    {
+      "id": 2,
+      "task": "Design database schema for microservices",
+      "depends_on": [1],
+      "effort_days": 10,
+      "team": "backend"
+    },
+    {
+      "id": 3,
+      "task": "Set up API gateway",
+      "depends_on": [1],
+      "effort_days": 10,
+      "team": "devops"
+    },
+    {
+      "id": 4,
+      "task": "Develop first microservice",
+      "depends_on": [1],
+      "effort_days": 15,
+      "team": "backend"
+    },
+    {
+      "id": 5,
+      "task": "Develop second microservice",
+      "depends_on": [1],
+      "effort_days": 15,
+      "team": "backend"
+    },
+    {
+      "id": 6,
+      "task": "Set up CI/CD pipeline",
+      "depends_on": [1],
+      "effort_days": 10,
+      "team": "devops"
+    },
+    {
+      "id": 7,
+      "task": "Write unit tests for first microservice",
+      "depends_on": [4],
+      "effort_days": 10,
+      "team": "qa"
+    },
+    {
+      "id": 8,
+      "task": "Write unit tests for second microservice",
+      "depends_on": [5],
+      "effort_days": 10,
+      "team": "qa"
+    },
+    {
+      "id": 9,
+      "task": "Migrate database",
+      "depends_on": [2],
+      "effort_days": 15,
+      "team": "backend"
+    },
+    {
+      "id": 10,
+      "task": "Deploy first microservice",
+      "depends_on": [4, 9],
+      "effort_days": 15,
+      "team": "backend"
+    },
+    {
+      "id": 11,
+      "task": "Deploy second microservice",
+      "depends_on": [5, 9],
+      "effort_days": 15,
+      "team": "backend"
+    },
+    {
+      "id": 12,
+      "task": "Integrate API gateway with microservices",
+      "depends_on": [3, 9],
+      "effort_days": 15,
+      "team": "devops"
+    },
+    {
+      "id": 13,
+      "task": "Run integration tests",
+      "depends_on": [10, 11],
+      "effort_days": 15,
+      "team": "qa"
+    },
+    {
+      "id": 14,
+      "task": "Set up monitoring",
+      "depends_on": [12],
+      "effort_days": 10,
+      "team": "devops"
+    },
+    {
+      "id": 15,
+      "task": "Fix issues in first microservice",
+      "depends_on": [13],
+      "effort_days": 10,
+      "team": "backend"
+    },
+    {
+      "id": 16,
+      "task": "Fix issues in second microservice",
+      "depends_on": [13],
+      "effort_days": 10,
+      "team": "backend"
+    },
+    {
+      "id": 17,
+      "task": "Update frontend UI for first microservice",
+      "depends_on": [4],
+      "effort_days": 10,
+      "team": "frontend"
+    },
+    {
+      "id": 18,
+      "task": "Update frontend UI for second microservice",
+      "depends_on": [5],
+      "effort_days": 10,
+      "team": "frontend"
+    },
+    {
+      "id": 19,
+      "task": "Final testing and validation",
+      "depends_on": [13, 14, 15, 16],
+      "effort_days": 10,
+      "team": "frontend"
+    },
+    {
+      "id": 20,
+      "task": "Go-live and deployment",
+      "depends_on": [13, 14, 15, 16, 17, 18, 19],
+      "effort_days": 20,
+      "team": "backend, devops"
+    }
+  ]
+}
+```

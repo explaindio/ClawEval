@@ -1,0 +1,52 @@
+1. **merge_overlapping**: This function takes a list of intervals and merges overlapping or touching intervals. It first sorts the intervals by their start times. Then, it iterates through the sorted intervals, merging them if they overlap or touch. The function handles edge cases such as an empty list or a single interval.
+
+2. **eval_rpn**: This function evaluates a Reverse Polish Notation (RPN) expression. It uses a stack to process the tokens. Each token is either a number or an operator. Numbers are pushed onto the stack, and operators pop the top two numbers, apply the operation, and push the result back onto the stack. Division is handled to truncate towards zero, which is achieved by using integer division of absolute values and adjusting the sign.
+
+3. **deep_flatten**: This function recursively flattens a nested list or tuple of integers. If the input is a list or tuple, it iterates over each element, recursively flattens them, and combines the results. If the input is an integer, it returns a list containing that integer. This function handles empty lists and deeply nested structures.
+
+```python
+def merge_overlapping(intervals):
+    if not intervals:
+        return []
+    intervals.sort(key=lambda x: x[0])
+    merged = [intervals[0]]
+    for i in range(1, len(intervals)):
+        current = merged[-1]
+        next_interval = intervals[i]
+        if current[1] >= next_interval[0]:
+            merged[-1][1] = max(current[1], next_interval[1])
+        else:
+            merged.append(next_interval)
+    return merged
+
+def eval_rpn(tokens):
+    stack = []
+    for token in tokens:
+        if token in '+-*/':
+            b = stack.pop()
+            a = stack.pop()
+            if token == '+':
+                result = a + b
+            elif token == '-':
+                result = a - b
+            elif token == '*':
+                result = a * b
+            else:  # token == '/'
+                if a * b >= 0:
+                    result = a // b
+                else:
+                    result = - (abs(a) // abs(b))
+            stack.append(result)
+        else:
+            stack.append(int(token))
+    return stack[0]
+
+def deep_flatten(nested):
+    if isinstance(nested, (list, tuple)):
+        result = []
+        for item in nested:
+            result.extend(deep_flatten(item))
+        return result
+    else:
+        return [nested]
+```
