@@ -169,6 +169,8 @@ Phase F gave every model 8–10/10 on most roles. ClawEval v2 replaces that with
 | 31 | **Qwen3.5-2B** | 🖥️ Local | 50/1220 | **4.1%** | 0 |
 
 > All models scored on **59/59 tests** with **zero infrastructure failures**. Full results: **[ClawEval v2 →](docs/results-phase-h.md)** · **[RTX 3090 24GB Guide →](docs/results-rtx3090-24gb.md)**
+>
+> ⚠️ **Why are Qwen3.5 small models so low?** Qwen3.5 (0.8B–4B) are *thinking* models that spend most of their token budget on chain-of-thought reasoning. At small sizes, the CoT consumes all available tokens, leaving the model unable to produce structured output — 20+ tests returned unparseable JSON or empty responses. Compare Qwen3.5-4B (30.7%) vs Gemma-4-E4B (71.1%, same 4B, non-thinking). Thinking architectures need ≥30B MoE to be effective for agent tasks.
 
 ---
 

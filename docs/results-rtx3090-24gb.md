@@ -140,6 +140,18 @@ Which local model to pick for each of the 59 agent roles. Qwen3.6-35B-A3B domina
 
 Nemotron-Nano-Omni IQ4_NL_XL (lower-quality quant) **outperformed** Q4_K_S (higher-quality) by +3.4%. The smaller quant leaves more VRAM headroom, which may reduce KV-cache pressure and improve generation quality.
 
-### Thinking Model Warning
+### Thinking Model Warning ⚠️
 
-Gemma-4-A4B scores only 51% despite 90 t/s speed. The thinking model burns most of its token budget on chain-of-thought reasoning, leaving insufficient tokens for the actual answer. Use `reasoning_budget_tokens` to cap thinking, or prefer non-thinking variants.
+Small thinking models are **dramatically worse** than non-thinking models of the same size for agent tasks:
+
+| Model | Type | Params | Score | Failure Mode |
+|-------|------|--------|-------|-------------|
+| Gemma-4-E4B | Non-thinking | 4B | **71.1%** | — |
+| Qwen3.5-4B | Thinking | 4B | **30.7%** | 38/59 tests scored 0 — 20 unparseable JSON, 6 empty responses |
+| Gemma-4-E2B | Non-thinking | 2B | **80.4%** | — |
+| Qwen3.5-2B | Thinking | 2B | **4.1%** | Nearly all tests failed |
+| Qwen3.5-0.8B | Thinking | 0.8B | **4.8%** | Nearly all tests failed |
+
+**Why?** Thinking models spend tokens on chain-of-thought reasoning *before* producing the answer. At small sizes (≤4B), the CoT consumes most of the token budget, leaving the model unable to produce structured output. Even with `reasoning_budget_tokens` caps, the model's capacity is too limited to both reason *and* format answers correctly.
+
+**Takeaway:** For local agent deployment, prefer non-thinking models at ≤4B. Thinking architectures only become viable at ≥30B MoE (e.g. Qwen3.6-35B-A3B at 84.3%).
