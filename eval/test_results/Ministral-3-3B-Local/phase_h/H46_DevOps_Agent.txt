@@ -1,0 +1,87 @@
+```json
+{
+  "issues": [
+    {
+      "line": "spec.replicas: 1",
+      "issue": "Deployment has only 1 replica, which is highly risky for production workloads. High availability and fault tolerance are compromised.",
+      "severity": "critical"
+    },
+    {
+      "line": "securityContext.runAsRoot: true",
+      "issue": "Running the container as root user is a major security risk. All containers should run as non-root users with minimal privileges.",
+      "severity": "critical"
+    },
+    {
+      "line": "securityContext.privileged: true",
+      "issue": "The `privileged` mode allows the container to escape Kubernetes sandboxing, enabling full access to the host system. This is a severe security risk.",
+      "severity": "critical"
+    },
+    {
+      "line": "env.DB_PASSWORD.value: \"sup3rs3cret!\"",
+      "issue": "Hardcoding sensitive credentials like database passwords in the deployment manifest is a major security risk. Use Kubernetes Secrets or external vaults instead.",
+      "severity": "critical"
+    },
+    {
+      "line": "env.API_KEY.value: \"ak_live_12345\"",
+      "issue": "Hardcoding API keys in the deployment manifest is a security risk. These keys should be stored securely (e.g., in Kubernetes Secrets or a secrets manager).",
+      "severity": "critical"
+    },
+    {
+      "line": "resources: {} (in api container)",
+      "issue": "Missing resource requests/limits for the `api` container. This can lead to resource starvation or unpredictable behavior. Define CPU/memory requests and limits.",
+      "severity": "major"
+    },
+    {
+      "line": "resources.requests.memory: \"10Gi\" (in sidecar container)",
+      "issue": "The `sidecar` container's memory request is set to 10Gi, which is unrealistic for most sidecar containers. This could lead to resource contention and pod failures.",
+      "severity": "major"
+    },
+    {
+      "line": "resources.cpu: \"8\" (in sidecar container)",
+      "issue": "The CPU request of 8 cores is excessive and likely unnecessary for a sidecar container. CPU requests should be realistic and aligned with actual usage.",
+      "severity": "major"
+    },
+    {
+      "line": "volumeMounts.mountPath: /data (in api container)",
+      "issue": "The `/data` mount path is arbitrary and not explicitly documented. This could lead to unexpected behavior or security issues if the path is misconfigured.",
+      "severity": "minor"
+    },
+    {
+      "line": "volumeMounts.name: data-vol (in api container)",
+      "issue": "The volume name `data-vol` is not explicitly documented in the deployment. This could cause confusion or issues if the volume is not properly referenced elsewhere.",
+      "severity": "minor"
+    },
+    {
+      "line": "volumeMounts not defined for sidecar container",
+      "issue": "The `sidecar` container does not mount any volumes, which may be necessary if it interacts with external resources (e.g., config files, logs).",
+      "severity": "minor"
+    },
+    {
+      "line": "hostPath.path: /tmp/data (in data-vol)",
+      "issue": "Using `hostPath` for persistent storage is not recommended in production. This can lead to issues like host path changes or lack of portability across environments.",
+      "severity": "major"
+    },
+    {
+      "line": "Service.type: LoadBalancer",
+      "issue": "Using `LoadBalancer` for a stateless service like `web-api` is not ideal. Consider `ClusterIP` for internal communication or `NodePort` for simpler external access (if needed).",
+      "severity": "minor"
+    },
+    {
+      "line": "Service.selector: app: web-api",
+      "issue": "The `selector` in the Service matches the Deployment's `matchLabels`, which is correct, but the `LoadBalancer` type may not work as expected if the Deployment has only 1 replica (no load balancing).",
+      "severity": "minor"
+    },
+    {
+      "line": "No livenessProbe or readinessProbe defined in Deployment",
+      "issue": "Missing health checks (liveness/readiness probes) to monitor the container's health and ensure traffic is only routed to healthy pods.",
+      "severity": "minor"
+    },
+    {
+      "line": "No resource limits defined for the api container",
+      "issue": "Missing CPU/memory limits for the `api` container. This could lead to resource exhaustion or throttling issues if the container consumes too many resources.",
+      "severity": "minor"
+    }
+  ],
+  "count": 15
+}
+```

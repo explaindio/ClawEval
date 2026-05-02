@@ -1,0 +1,42 @@
+Here’s the classification of each event by priority, structured in JSON format:
+
+```json
+{
+  "1": "critical",
+  "2": "high",
+  "3": "info",
+  "4": "critical",
+  "5": "high",
+  "6": "info",
+  "7": "critical",
+  "8": "info",
+  "9": "high",
+  "10": "info",
+  "11": "critical",
+  "12": "info",
+  "13": "critical",
+  "14": "medium",
+  "15": "info",
+  "16": "medium",
+  "17": "medium",
+  "18": "critical",
+  "19": "info",
+  "20": "info",
+  "21": "medium",
+  "22": "info",
+  "23": "high",
+  "24": "medium",
+  "25": "info",
+  "26": "medium",
+  "27": "medium",
+  "28": "critical",
+  "29": "info",
+  "30": "critical"
+}
+```
+
+### Explanation of Priority Rationale:
+- **Critical**: Immediate impact on system functionality (e.g., unreachable database, DDoS, ransomware, failover, latency spike, unreachable SSL, SSH brute-force).
+- **High**: Significant but not immediate risk (e.g., CPU spikes, disk full, replication lag, connection pool exhaustion).
+- **Medium**: Requires attention but not urgent (e.g., rate limits, data inconsistencies, API timeouts, storage limits).
+- **Info**: Non-operational or non-critical (e.g., new user, A/B test, automated backups, email campaigns, deployments).

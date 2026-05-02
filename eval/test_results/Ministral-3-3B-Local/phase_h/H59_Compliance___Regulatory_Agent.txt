@@ -1,0 +1,103 @@
+```json
+{
+  "violations": [
+    {
+      "id": 1,
+      "article": "Article 6(1)(a) - Lawful Basis",
+      "violation": "Collection of personal data without explicit consent (e.g., email, name, phone, location, browsing history, purchase history, social media profiles) before account creation or any other lawful basis (e.g., explicit consent, contract necessity, legitimate interest).",
+      "severity": "critical"
+    },
+    {
+      "id": 2,
+      "article": "Article 12(1) & (2) - Information to be Made Available",
+      "violation": "Privacy policy is excessively long (47 pages) and written in legal jargon, making it difficult for users to understand their rights and obligations. Last updated in 2019, likely outdated and not easily accessible.",
+      "severity": "major"
+    },
+    {
+      "id": 3,
+      "article": "Article 11(1) & (2) - Right to Withdraw Consent",
+      "violation": "Sharing data with 340 advertising partners without providing a clear, effective opt-out mechanism (only requiring a notarized letter to legal department).",
+      "severity": "major"
+    },
+    {
+      "id": 4,
+      "article": "Article 17(1) - Right to Erasure ('Right to Be Forgotten')",
+      "violation": "Data deletion requests are marked as 'inactive' but data is retained indefinitely for 'business analytics,' violating the right to erasure.",
+      "severity": "critical"
+    },
+    {
+      "id": 5,
+      "article": "Article 8(1) - Children's Data Protection",
+      "violation": "Processing children's data (ages 8-15) without obtaining parental consent or applying special protections, which is prohibited under GDPR.",
+      "severity": "critical"
+    },
+    {
+      "id": 6,
+      "article": "Article 49(1)(a) - Adequacy & Transfer Risks",
+      "violation": "Data stored in 12 countries without adequacy decisions (e.g., jurisdictions lacking GDPR compliance) and no Standard Contractual Clauses (SCCs) in place for cross-border transfers.",
+      "severity": "critical"
+    },
+    {
+      "id": 7,
+      "article": "Article 33(1) - Notification of a Personal Data Breach",
+      "violation": "Data breach affecting 50,000 users notified 6 months later via a blog post instead of a direct, official communication to affected individuals.",
+      "severity": "critical"
+    },
+    {
+      "id": 8,
+      "article": "Article 37(1) - Role of Data Protection Officer (DPO)",
+      "violation": "Data Protection Officer (DPO) is a marketing intern with no legal or technical expertise, violating the requirement for a qualified individual to oversee compliance.",
+      "severity": "critical"
+    },
+    {
+      "id": "9a",
+      "article": "Article 20(1) - Right to Data Portability",
+      "violation": "Users cannot download their data in a machine-readable format; only PDF summaries are provided upon written request, violating the right to data portability.",
+      "severity": "major"
+    },
+    {
+      "id": "9b",
+      "article": "Article 15(1) - Right to Access",
+      "violation": "Limited access to data (PDF summaries only) instead of full machine-readable access, which could hinder users' ability to verify or use their data.",
+      "severity": "major"
+    },
+    {
+      "id": 10,
+      "article": "Article 22(1) - Automated Individual Decision-Making",
+      "violation": "Use of automated decision-making (e.g., credit scoring, loan approvals) without providing users with the right to human review or meaningful explanation of the decision.",
+      "severity": "major"
+    },
+    {
+      "id": 11,
+      "article": "Article 5(2)(f) - Purpose Limitation",
+      "violation": "Lack of explicit justification for retaining data indefinitely for 'business analytics' after deletion requests, violating the principle of purpose limitation.",
+      "severity": "major"
+    },
+    {
+      "id": 12,
+      "article": "Article 35(1) - Data Protection Impact Assessment (DPIA)",
+      "violation": "No mention of conducting a Data Protection Impact Assessment (DPIA) for high-risk data processing activities (e.g., cross-border transfers, automated decisions, children's data).",
+      "severity": "major"
+    },
+    {
+      "id": 13,
+      "article": "Article 30(1) - Record-Keeping Obligations",
+      "violation": "Failure to maintain detailed records of processing activities (e.g., purposes, categories of data, recipients, legal bases) as required under GDPR.",
+      "severity": "major"
+    },
+    {
+      "id": 14,
+      "article": "Article 32(1) - Security of Processing",
+      "violation": "No explicit mention of implementing appropriate technical and organizational measures to ensure data security, especially given the breach history.",
+      "severity": "major"
+    },
+    {
+      "id": 15,
+      "article": "Article 9(1) - Special Categories of Data",
+      "violation": "Implicit assumption that data processing complies with Article 9 (e.g., health, biometric, racial data) is not addressed, and no safeguards are mentioned for sensitive data.",
+      "severity": "minor"  // (Note: While not explicitly stated, this is inferred from broader violations; GDPR does not explicitly mention sensitive data in this description, but the lack of safeguards could apply if such data were processed.)
+    }
+  ],
+  "count": 15
+}
+```

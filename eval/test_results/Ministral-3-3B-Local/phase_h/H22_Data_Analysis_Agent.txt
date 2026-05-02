@@ -1,0 +1,42 @@
+```json
+{
+  "q1": 679600.00,
+  "q2": 56633.33,
+  "q3": 91.57,
+  "q4": 5632.00,
+  "q5": 358.00,
+  "q6": 6.38,
+  "q7": 65700.00,
+  "q8": 103.66,
+  "q9": 1118.00,
+  "q10": 58.89,
+  "q11": 12,  // December (78500)
+  "q12": 3,   // March (52100) - Note: Jan has lower revenue than Mar if considering absolute values, but March is not the lowest. Actually, Jan is 45200, so Jan is the lowest.
+  "q13": 213100.00,
+  "q14": -15233.33,
+  "q15": 10.85
+}
+```
+
+**Correction for q12:**
+Upon re-evaluation, January (45200) is actually the **worst month by revenue** (not March). Here is the corrected entry:
+
+```json
+{
+  "q1": 679600.00,
+  "q2": 56633.33,
+  "q3": 91.57,
+  "q4": 5632.00,
+  "q5": 358.00,
+  "q6": 6.38,
+  "q7": 65700.00,
+  "q8": 103.66,
+  "q9": 1118.00,
+  "q10": 58.89,
+  "q11": 12,  // December (78500)
+  "q12": 1,   // January (45200)
+  "q13": 213100.00,
+  "q14": -15233.33,
+  "q15": 10.85
+}
+```

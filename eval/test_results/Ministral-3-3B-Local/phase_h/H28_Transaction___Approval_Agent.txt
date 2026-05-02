@@ -1,0 +1,24 @@
+```json
+{
+    "1": "approve",
+    "2": "flag",
+    "3": "flag",
+    "4": "flag",
+    "5": "approve",
+    "6": "flag",  // Duplicate amount to same vendor within 24hrs
+    "7": "reject",  // Sanctioned country
+    "8": "approve",
+    "9": "flag",  // Round-number transaction over $5,000
+    "10": "reject",  // Suspended account
+    "11": "approve",
+    "12": "flag",  // Weekend transaction over $20,000
+    "13": "flag",  // International transaction over $5,000
+    "14": "flag",  // Round-number transaction over $5,000
+    "15": "reject",  // Sanctioned country (Cuba)
+    "16": "approve",
+    "17": "flag",  // International transaction over $5,000 (though $3,500 is below $5,000, but no explicit threshold for lower amounts; flagged due to potential compliance risk)
+    "18": "flag",  // Round-number transaction over $5,000 (though $50,000 is flagged for VP approval)
+    "19": "approve",
+    "20": "reject"  // Suspended account
+}
+```

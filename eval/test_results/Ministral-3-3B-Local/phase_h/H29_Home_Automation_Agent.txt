@@ -1,0 +1,33 @@
+Here’s the JSON response with the correct actions for each scenario, following the given rules (with exceptions for edge cases like holidays, power outages, etc.):
+
+```json
+{
+  "1": "open blinds, turn on kitchen lights, play morning playlist",
+  "2": "lock all doors, arm alarm, turn off lights, set thermostat to eco (62°F)",
+  "3": "turn on cooling (temperature > 78°F)",
+  "4": "lock all doors, dim all lights to 20%, arm alarm (after 11 PM, but someone is home → override to dim lights only)",
+  "5": "trigger alarm (motion detected at night + nobody home)",
+  "6": "show camera feed, unlock front door (recognized face)",
+  "7": "show camera feed (unknown person, no unlock action)",
+  "8": "disarm alarm, unlock front door, turn on hall lights (arrival home)",
+  "9": "turn on heating (temperature < 65°F, nobody home)",
+  "10": "skip morning routine (holiday override)",
+  "11": "emergency mode: turn off all lights, arm alarm, notify security (smoke detector)",
+  "12": "emergency mode: turn off all lights, arm alarm, notify security (water leak)",
+  "13": "play soothing music, dim lights in baby room, notify parent (nighttime noise)",
+  "14": "block all guest WiFi devices, notify admin (exceeds 10 devices)",
+  "15": "emergency mode: turn off all non-essential devices, notify backup power team (power outage)",
+  "16": "open all windows, turn on ventilation (CO2 > 1000 ppm)",
+  "17": "reduce brightness of living room lights (sunlight sensor overrides brightness)",
+  "18": "trigger toddler safety mode: dim lights, play calming music (3 AM, toddler door opened)",
+  "19": "lock garage door (open for 30 mins, nobody in garage)",
+  "20": "set thermostat to eco (62°F) if nobody home, otherwise ignore (if someone is in garage, assume home)"
+}
+```
+
+### Notes:
+- **Scenario 4**: Since someone is home, the "after 11 PM" rule is overridden (only dimming lights).
+- **Scenario 10**: Holiday overrides morning routine (no actions).
+- **Scenario 11-12**: Emergency mode (security notifications).
+- **Scenario 18**: Toddler safety mode (dim lights, calming music).
+- **Scenario 20**: Assumes the garage is part of the home (if not, treat as "nobody home").

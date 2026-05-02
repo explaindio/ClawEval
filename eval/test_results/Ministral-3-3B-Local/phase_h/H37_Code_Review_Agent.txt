@@ -1,0 +1,87 @@
+```json
+{
+  "bugs": [
+    {
+      "line": 12,
+      "bug": "Incorrect discount application for 'SAVE20': multiplying subtotal by 0.20 instead of subtracting 20%. Should be `subtotal *= 0.80` (80% of original).",
+      "severity": "critical"
+    },
+    {
+      "line": 14,
+      "bug": "Incorrect discount application for 'SAVE10': subtracting 10% of subtotal (`subtotal -= subtotal * 10`) instead of subtracting 10%. Should be `subtotal *= 0.90` (90% of original).",
+      "severity": "critical"
+    },
+    {
+      "line": 22,
+      "bug": "Silent negative stock handling: no action taken when `item['stock'] < 0`. Should either raise an error (e.g., `raise ValueError(f"Insufficient stock for item {item['name']}")`) or skip the order entirely.",
+      "severity": "critical"
+    },
+    {
+      "line": 31,
+      "bug": "Typo in `total_revenue` update: `total_revenue =+ total` should be `total_revenue += total`.",
+      "severity": "minor"
+    },
+    {
+      "line": 34,
+      "bug": "Division by zero risk: `avg_order = total_revenue / len(orders)` assumes `orders` is non-empty. Should handle empty input (e.g., return `None` or raise an error).",
+      "severity": "critical"
+    },
+    {
+      "line": 35,
+      "bug": "Incorrect `max_order` calculation: `max(r['total'] for r in results)` assumes `results` is non-empty. Should handle empty input (e.g., return `None` or raise an error).",
+      "severity": "critical"
+    },
+    {
+      "line": 46,
+      "bug": "Insufficient email validation: Only checks for presence of `@` symbol. Should validate email format (e.g., using regex or standard validation rules).",
+      "severity": "major"
+    },
+    {
+      "line": 53,
+      "bug": "Incorrect shipping cost calculation: `distance + per_km` adds `distance` (a plain number) to `per_km` (a decimal), which is likely unintended. Should multiply `distance` by `per_km` (e.g., `distance * per_km`).",
+      "severity": "critical"
+    },
+    {
+      "line": 57,
+      "bug": "Unreachable `elif` condition: `elif weight > 50` is unreachable because the prior `if weight > 30` already handles all cases (weight > 30).",
+      "severity": "minor"
+    },
+    {
+      "line": 60,
+      "bug": "Loss of decimal precision: `round(cost)` truncates decimals. Should use `round(cost, 2)` or similar to preserve precision.",
+      "severity": "minor"
+    },
+    {
+      "line": 63,
+      "bug": "Inefficient merge: `merged = profile_a` creates a shallow copy. Should use `merged = profile_a.copy()` or `merged = dict(profile_a)` to avoid unintended modifications to `profile_a`.",
+      "severity": "minor"
+    },
+    {
+      "line": 67,
+      "bug": "Hardcoded date: `merged['updated_at'] = '2024-01-01'` is arbitrary. Should use the current timestamp or a dynamic value (e.g., `datetime.now()`).",
+      "severity": "minor"
+    },
+    {
+      "line": 71,
+      "bug": "No handling of CSV parsing edge cases: `line.split(',')` does not account for quoted fields or escaped commas. Should use a proper CSV parser (e.g., `csv.reader`).",
+      "severity": "major"
+    },
+    {
+      "line": 78,
+      "bug": "Incorrect duplicate detection: `seen.append(item)` appends items to `seen` *after* checking for duplicates, which can lead to false positives (e.g., `item` is added to `seen` before being checked again). Should prepend `seen.append(item)` before the `if` check.",
+      "severity": "critical"
+    },
+    {
+      "line": 78 (revisited for clarity),
+      "bug": "Duplicate detection logic is flawed: The current implementation will incorrectly flag items as duplicates if they appear consecutively in the list. Example: `[1, 2, 1]` would incorrectly return `[1]` as duplicates.",
+      "severity": "critical"
+    },
+    {
+      "line": 78 (corrected logic for duplicate detection),
+      "bug": "Missing duplicate handling: The function returns *all* duplicates, but it should return *unique* duplicates (e.g., `[1, 1, 2]` should return `[1]`).",
+      "severity": "minor"
+    }
+  ],
+  "count": 15
+}
+```

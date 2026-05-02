@@ -1,0 +1,19 @@
+```json
+{
+  "q1": "3 minutes"  // From 02:15 to 02:18 (alert to acknowledgment),
+  "q2": "57 minutes" // From 02:15 to 03:12 (alert to resolution + stakeholder report),
+  "q3": "10 minutes" // From 02:18 (acknowledgment) to 02:28 (root cause identified),
+  "q4": "25 minutes" // From 02:15 (alert) to 03:00 (error rate normal),
+  "q5": "6 minutes"  // From 02:22 (acknowledgment) to 02:28 (escalation),
+  "q6": "Alice"     // Incident commander (investigated and declared resolution),
+  "q7": "Runaway query from batch job consuming 200 connections" // Root cause,
+  "q8": "2 minutes" // From 02:48 (escalation) to 02:48 (fix applied: job killed),
+  "q9": "200 connections" // Connections consumed by the runaway query,
+  "q10": "500"        // Max connection limit (500/500),
+  "q11": "No"         // Initial fix attempt (restart) failed,
+  "q12": "40 minutes" // Service degraded from 02:15 (error rate >5%) to 02:55 (drop below 5%),
+  "q13": "5 minutes"  // From 02:48 (fix applied) to 02:53 (connection pool recovery begins),
+  "q14": "P1"         // High severity: >40 minutes of degradation + critical impact,
+  "q15": "65 minutes" // From 03:05 (resolution) to 03:15 (stakeholder communication)
+}
+```

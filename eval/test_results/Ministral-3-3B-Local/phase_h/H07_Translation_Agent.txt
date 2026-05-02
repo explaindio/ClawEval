@@ -1,0 +1,26 @@
+```json
+{
+  "translations": {
+    "spanish": "¡Obtén un 30% de descuento en tu primera compra! Usa el código WELCOME30 al momento del pago. Envío gratis en pedidos superiores a $50. Oferta limitada — válida hasta el 31 de diciembre de 2024. Las condiciones de uso aplican.",
+    "french": "Obtenez 30 % de réduction sur votre première commande ! Utilisez le code WELCOME30 au moment du paiement. Livraison gratuite pour les commandes dépassant 50 $ (50 USD). Offre limitée — expire le 31 décembre 2024. Les conditions s'appliquent.",
+    "german": "Erhalte 30 % Rabatt auf deine erste Bestellung! Nutze das Code WELCOME30 beim Kauf. Versandkostenfrei bei Bestellungen über 50 $. Zeitlich begrenzte Aktion – endet am 31. Dezember 2024. Die Geschäftsbedingungen gelten."
+  },
+  "checks": {
+    "c1": "yes",  // Spanish preserves the 30% number
+    "c2": "yes",  // French preserves the code WELCOME30 unchanged
+    "c3": "yes",  // German preserves the $50 threshold
+    "c4": "yes",  // Spanish includes the expiration date
+    "c5": "yes",  // All three preserve the code WELCOME30 exactly
+    "c6": "no",   // French does not use "vous" form (uses "vous" only in formal contexts like "vous êtes")
+    "c7": "yes",  // German uses "Geschäftsbedingungen"
+    "c8": "no",   // Spanish does not start with exclamation marks at the beginning (it starts with "¡")
+    "c9": "yes",  // All translations preserve the date
+    "c10": "yes", // None translate "WELCOME30"
+    "c11": "yes", // French includes "livraison gratuite"
+    "c12": "yes", // German uses "Bestellung"
+    "c13": "yes", // Spanish starts with imperative ("¡Obtén")
+    "c14": "yes", // All maintain urgency ("limited time" equivalent)
+    "c15": "yes"  // None add extra information
+  }
+}
+```

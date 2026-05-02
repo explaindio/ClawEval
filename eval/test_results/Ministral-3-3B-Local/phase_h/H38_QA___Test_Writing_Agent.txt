@@ -1,0 +1,68 @@
+Here's the Python function `is_valid_password()` and the test cases:
+
+```python
+def is_valid_password(password):
+    # Length checks
+    if len(password) < 8 or len(password) > 64:
+        return False
+
+    # Character checks
+    has_upper = any(c.isupper() for c in password)
+    has_lower = any(c.islower() for c in password)
+    has_digit = any(c.isdigit() for c in password)
+    has_special = any(c in '!@#$%^&*()-_+=' for c in password)
+
+    if not (has_upper and has_lower and has_digit and has_special):
+        return False
+
+    # Space check
+    if ' ' in password:
+        return False
+
+    # No spaces allowed
+    if ' ' in password:
+        return False
+
+    # Cannot start with digit
+    if password[0].isdigit():
+        return False
+
+    # Consecutive characters check
+    for i in range(len(password) - 2):
+        if password[i] == password[i+1] == password[i+2]:
+            return False
+
+    # Password check
+    if 'password' in password.lower():
+        return False
+
+    return True
+
+def run_tests():
+    test_cases = [
+        # Valid passwords
+        ("ValidP@ssw0rd", True, True),
+        ("Short1!", False, False),  # Too short
+        ("LongerPassword123!", True, True),
+        ("NoSpecial123", False, False),  # Missing special char
+        ("NoDigitsA!B", False, False),  # Missing digit
+        ("NoUpper1!A", False, False),  # Missing uppercase
+        ("NoLower1!@", False, False),  # Missing lowercase
+        ("StartsWithDigit1!", False, False),  # Starts with digit
+        ("ThreeSame1!", False, False),  # Three consecutive identical
+        ("Password1!", False, False),  # Contains "password"
+        ("Password123!", False, False),  # Contains "password"
+        ("ValidP@ssw0rd123!", True, True),  # Valid with extra chars
+        ("ValidP@ssw0rd123456789012345678901234567890", False, False),  # Too long
+        ("ValidP@ssw0rd with space", False, False),  # Contains space
+        ("ValidP@ssw0rd!!!!", False, False),  # Three consecutive special chars
+        ("ValidP@ssw0rd!!", True, True)  # Valid with consecutive special chars (only 2)
+    ]
+
+    results = []
+    for input_pwd, expected, _ in test_cases:
+        actual = is_valid_password(input_pwd)
+        results.append((input_pwd, expected, actual))
+
+    return results
+```

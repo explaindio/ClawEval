@@ -1,0 +1,92 @@
+```json
+{
+  "vulnerabilities": [
+    {
+      "type": "SQL Injection",
+      "location": "app.route('/login', methods=['POST']) - Line 10 (query construction)",
+      "severity": "high"
+    },
+    {
+      "type": "Cross-Site Scripting (XSS) in Profile Page",
+      "location": "app.route('/profile/<username>') - Line 14 (template rendering)",
+      "severity": "high"
+    },
+    {
+      "type": "Directory Traversal in Download Endpoint",
+      "location": "app.route('/download') - Line 20 (filepath parameter)",
+      "severity": "high"
+    },
+    {
+      "type": "Command Injection in Command Execution",
+      "location": "app.route('/run', methods=['POST']) - Line 18 (subprocess.run with shell=True)",
+      "severity": "critical"
+    },
+    {
+      "type": "Directory Traversal in Upload Endpoint",
+      "location": "app.route('/upload', methods=['POST']) - Line 22 (path construction)",
+      "severity": "high"
+    },
+    {
+      "type": "Insecure File Upload Handling",
+      "location": "app.route('/upload', methods=['POST']) - Line 22 (no file type validation)",
+      "severity": "high"
+    },
+    {
+      "type": "Insecure Deserialization (Pickle)",
+      "location": "app.route('/session', methods=['POST']) - Line 26 (pickle.loads)",
+      "severity": "critical"
+    },
+    {
+      "type": "Hardcoded Credentials",
+      "location": "app - Global variable SECRET = 'admin123'",
+      "severity": "critical"
+    },
+    {
+      "type": "Insecure Session Token Generation",
+      "location": "app.route('/login', methods=['POST']) - Line 11 (MD5 hash of username)",
+      "severity": "high"
+    },
+    {
+      "type": "Insecure External Command Execution",
+      "location": "app.route('/export') - Line 30 (os.system with external script)",
+      "severity": "high"
+    },
+    {
+      "type": "Missing Input Validation in Search",
+      "location": "app.route('/search') - Line 16 (q parameter directly rendered)",
+      "severity": "medium"
+    },
+    {
+      "type": "Insecure Configuration Handling",
+      "location": "app.route('/config', methods=['POST']) - Line 24 (yaml.load with untrusted input)",
+      "severity": "high"
+    },
+    {
+      "type": "Missing Authentication for Admin Panel",
+      "location": "app.route('/admin') - Line 28 (token check against hardcoded value)",
+      "severity": "high"
+    },
+    {
+      "type": "Missing CSRF Protection",
+      "location": "All POST routes (login, run, upload, config, session)",
+      "severity": "medium"
+    },
+    {
+      "type": "Missing Rate Limiting",
+      "location": "All endpoints (no protection against brute force attacks)",
+      "severity": "medium"
+    },
+    {
+      "type": "Insecure File Permissions",
+      "location": "UPLOAD_DIR = '/tmp/uploads' (no permission checks on uploads)",
+      "severity": "medium"
+    },
+    {
+      "type": "Missing Input Sanitization for All Routes",
+      "location": "All endpoints (no sanitization of user-provided input)",
+      "severity": "medium"
+    }
+  ],
+  "count": 15
+}
+```

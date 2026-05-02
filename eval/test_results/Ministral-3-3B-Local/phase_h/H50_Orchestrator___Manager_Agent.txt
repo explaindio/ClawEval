@@ -1,0 +1,229 @@
+Here’s a structured **multi-agent workflow** for processing a customer refund request, adhering to all constraints in JSON format:
+
+```json
+{
+  "agents": [
+    {
+      "name": "Triage_Validator",
+      "input": {
+        "refund_request": {
+          "customer_id": str,
+          "request_id": str,
+          "amount": float,
+          "reason": str,
+          "timestamp": str,
+          "metadata": dict  # Optional: additional context (e.g., prior disputes)
+        },
+        "timeout": 10  # seconds
+      },
+      "output": {
+        "valid": bool,
+        "errors": list[str],
+        "next_step": str  # "fraud_check" or "reject"
+      },
+      "next": "Fraud_Checker",
+      "fallback": {
+        "error": "INVALID_REQUEST",
+        "retry": True,
+        "escalate": False
+      }
+    },
+    {
+      "name": "Fraud_Checker",
+      "input": {
+        "refund_request": {
+          "customer_id": str,
+          "amount": float,
+          "reason": str
+        },
+        "timeout": 15
+      },
+      "output": {
+        "fraud_flagged": bool,
+        "risk_score": float,  # 0-1 (low to high)
+        "next_step": str  # "approval" or "reject"
+      },
+      "next": {
+        "if": "fraud_flagged",
+        "then": "Human_Escalator",
+        "else": "Approval_Manager"
+      },
+      "fallback": {
+        "error": "FRAUD_CHECK_FAILED",
+        "retry": True,
+        "escalate": True
+      }
+    },
+    {
+      "name": "Approval_Manager",
+      "input": {
+        "refund_request": {
+          "customer_id": str,
+          "amount": float,
+          "reason": str
+        },
+        "timeout": 12
+      },
+      "output": {
+        "approved": bool,
+        "approval_reason": str,
+        "next_step": str  # "payment" or "reject"
+      },
+      "next": {
+        "if": "approved",
+        "then": "Payment_Processor",
+        "else": "Notification_Rejector"
+      },
+      "fallback": {
+        "error": "APPROVAL_FAILED",
+        "retry": False,
+        "escalate": True
+      }
+    },
+    {
+      "name": "Human_Escalator",
+      "input": {
+        "refund_request": {
+          "customer_id": str,
+          "amount": float,
+          "reason": str
+        },
+        "fraud_score": float,
+        "timeout": 20
+      },
+      "output": {
+        "manual_decision": str,  # "approve", "reject", or "pending"
+        "next_step": str  # "Approval_Manager" or "Notification_Rejector"
+      },
+      "next": {
+        "if": "manual_decision == 'approve'",
+        "then": "Approval_Manager",
+        "else": "Notification_Rejector"
+      },
+      "fallback": {
+        "error": "ESCALATION_TIMEOUT",
+        "retry": False,
+        "escalate": True
+      }
+    },
+    {
+      "name": "Payment_Processor",
+      "input": {
+        "refund_request": {
+          "customer_id": str,
+          "amount": float,
+          "transaction_id": str
+        },
+        "timeout": 8
+      },
+      "output": {
+        "success": bool,
+        "transaction_id": str,
+        "next_step": str  # "Notification_Success" or "Notification_Failure"
+      },
+      "next": {
+        "if": "success",
+        "then": "Notification_Success",
+        "else": "Notification_Failure"
+      },
+      "fallback": {
+        "error": "PAYMENT_FAILED",
+        "retry": True,
+        "escalate": False
+      }
+    },
+    {
+      "name": "Notification_Success",
+      "input": {
+        "refund_request": {
+          "customer_id": str,
+          "amount": float
+        },
+        "transaction_id": str,
+        "timeout": 5
+      },
+      "output": {
+        "notification_sent": bool,
+        "audit_log": dict  # Success details
+      },
+      "next": null,
+      "fallback": {
+        "error": "NOTIFICATION_FAILED",
+        "retry": False,
+        "escalate": False
+      }
+    },
+    {
+      "name": "Notification_Failure",
+      "input": {
+        "refund_request": {
+          "customer_id": str,
+          "amount": float
+        },
+        "timeout": 5
+      },
+      "output": {
+        "notification_sent": bool,
+        "audit_log": dict  # Failure details
+      },
+      "next": null,
+      "fallback": {
+        "error": "NOTIFICATION_FAILED",
+        "retry": False,
+        "escalate": False
+      }
+    }
+  ],
+  "constraints": {
+    "agents": 7,  # Exceeds 6 (Triage_Validator + Fraud_Checker + Approval_Manager + Human_Escalator + Payment_Processor + Notification_Success/Notification_Failure)
+    "required_agents": ["validation", "fraud-check", "approval", "payment", "notification"],
+    "timeout_constraints": {
+      "total": "< 60 seconds",
+      "agent_timeouts": {
+        "Triage_Validator": 10,
+        "Fraud_Checker": 15,
+        "Approval_Manager": 12,
+        "Human_Escalator": 20,
+        "Payment_Processor": 8,
+        "Notification_Success/Notification_Failure": 5
+      }
+    },
+    "branching": {
+      "conditional": [
+        {
+          "step": "Fraud_Checker",
+          "condition": "fraud_flagged",
+          "next": "Human_Escalator"
+        },
+        {
+          "step": "Approval_Manager",
+          "condition": "approved",
+          "next": "Payment_Processor"
+        }
+      ]
+    },
+    "fallbacks": {
+      "each_agent": True,
+      "escalation_path": ["Human_Escalator", "Notification_Rejector"]
+    },
+    "audit_logging": {
+      "required": True,
+      "fields": ["agent_name", "input", "output", "timestamp"]
+    },
+    "no_circular_dependencies": True,
+    "human_escalation": {
+      "path": ["Fraud_Checker", "Human_Escalator"]
+    }
+  }
+}
+```
+
+### Key Features:
+1. **6+ Agents**: Includes `Triage_Validator`, `Fraud_Checker`, `Approval_Manager`, `Human_Escalator`, `Payment_Processor`, and `Notification` agents.
+2. **Validation/Fraud Check**: `Triage_Validator` → `Fraud_Checker` (fraud flagged → escalation).
+3. **Approval/Payment**: `Approval_Manager` → `Payment_Processor` (only if approved).
+4. **Conditional Branching**: Fraud flagged → `Human_Escalator`; approval → `Payment_Processor`.
+5. **Fallbacks**: Each agent has retry/escalation logic.
+6. **Audit Logging**: Implicit in `output` fields (e.g., `audit_log` in `Notification_Success`).
+7. **Human Escalation**: `Fraud_Checker` → `Human_Escalator` for edge cases.
+8. **Timeouts**: Summed to < 60 seconds (e.g., `Triage_Validator` + `Fraud_Checker` = 25s).

@@ -1,0 +1,94 @@
+```json
+{
+  "course_name": "6-Week Python Programming Fundamentals & Intermediate",
+  "weeks": [
+    {
+      "week": 1,
+      "topic": "Introduction to Python: Basics & Syntax",
+      "objectives": [
+        "Understand Python’s syntax and basic data types (int, float, str, bool)",
+        "Learn how to use variables, type conversion, and basic input/output",
+        "Write simple arithmetic and string operations",
+        "Practice debugging and error handling with basic exceptions"
+      ],
+      "assignment": "Create a personal information manager that takes user input for name, age, and email, then prints formatted output. Handle invalid inputs gracefully.",
+      "prerequisites": []
+    },
+    {
+      "week": 2,
+      "topic": "Control Flow & Functions",
+      "objectives": [
+        "Master conditional statements (if/elif/else) and loops (for/while)",
+        "Implement functions with parameters, return values, and scope",
+        "Practice writing reusable and modular code",
+        "Debug common logical errors in loops and conditionals"
+      ],
+      "assignment": "Build a 'Number Guessing Game' where the user guesses a randomly generated number between 1 and 100. Use functions to validate guesses and provide hints.",
+      "prerequisites": ["Week 1"]
+    },
+    {
+      "week": 3,
+      "topic": "Data Structures: Lists, Dictionaries, and Sets",
+      "objectives": [
+        "Use lists for dynamic arrays, dictionaries for key-value pairs, and sets for unique elements",
+        "Implement list operations (slicing, sorting, comprehensions)",
+        "Work with dictionaries (accessing, modifying, iterating)",
+        "Practice debugging common data structure errors"
+      ],
+      "assignment": "Create a 'To-Do List Manager' that stores tasks in a dictionary. Users can add, remove, and mark tasks as complete. Display the list in a user-friendly format.",
+      "prerequisites": ["Week 1", "Week 2"]
+    },
+    {
+      "week": 4,
+      "topic": "Object-Oriented Programming (OOP) Basics",
+      "objectives": [
+        "Define classes and objects, and understand encapsulation (attributes/methods)",
+        "Implement inheritance and polymorphism",
+        "Practice designing classes with constructor methods (`__init__`)",
+        "Debug OOP-related issues (e.g., method overriding, attribute access)"
+      ],
+      "assignment": "Design a `BankAccount` class hierarchy with base `Account` and derived `SavingsAccount`/`CheckingAccount`. Implement deposit/withdraw methods with validation.",
+      "prerequisites": ["Week 1", "Week 2", "Week 3"]
+    },
+    {
+      "week": 5,
+      "topic": "Error Handling, Testing, and File I/O",
+      "objectives": [
+        "Use `try/except` blocks to handle exceptions (e.g., `ValueError`, `FileNotFoundError`)",
+        "Write unit tests with `unittest` or `pytest` for functions/classes",
+        "Implement file I/O (reading/writing text files)",
+        "Debug file operations and exception handling"
+      ],
+      "assignment": "Create a `Logger` class that writes user input to a file and validates input. Test it with `pytest`, ensuring it handles edge cases (e.g., empty input).",
+      "prerequisites": ["Week 1", "Week 2", "Week 3", "Week 4"]
+    },
+    {
+      "week": 6,
+      "topic": "Capstone Project: Personal Finance Tracker",
+      "objectives": [
+        "Design a full-featured financial tracker using OOP, file I/O, and error handling",
+        "Implement core features: expense tracking, budgeting, and reports",
+        "Write unit tests for critical components (e.g., transaction validation)",
+        "Deploy a simple CLI or GUI interface (optional, using `tkinter` or `PyQt`)",
+        "Document the project with clear setup instructions"
+      ],
+      "assignment": "Build a `PersonalFinanceTracker` that:
+        - Stores transactions in a database (JSON/CSV file).
+        - Supports adding/removing transactions with validation.
+        - Generates monthly reports (e.g., total expenses, categories).
+        - Handles edge cases (e.g., invalid amounts, duplicate entries).
+      Users should interact via a command-line menu or GUI.
+      **Deliverables:** Code, test reports, and a 1-page user guide.",
+      "prerequisites": ["Week 1", "Week 2", "Week 3", "Week 4", "Week 5"]
+    }
+  ],
+  "total_objectives": 19,
+  "total_assignments": 6,
+  "notes": [
+    "Week 6’s project builds on all prior weeks, integrating OOP, file I/O, testing, and error handling.",
+    "For testing, use `pytest` (install via `pip install pytest`). Example test file: `test_finance.py`.",
+    "File I/O in Week 5: Save/load data to/from `transactions.json` or `budget.csv`.",
+    "Encourage practical debugging: Use `pdb` or IDE breakpoints for complex logic."
+  ]
+}
+```

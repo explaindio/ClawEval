@@ -1,0 +1,96 @@
+Here’s the extracted JSON with **15 legal issues** from the SaaS service agreement, including **clause references**, **issues**, and **risk levels** (based on common SaaS legal red flags):
+
+```json
+{
+  "issues": [
+    {
+      "clause": "TERMS OF SERVICE (1)",
+      "issue": "Perpetual, irrevocable license granted to User with no termination notice requirement (even for cause).",
+      "risk": "high"
+    },
+    {
+      "clause": "DATA (2)",
+      "issue": "User data becomes Company’s exclusive property with no consent or compensation for data ownership transfer.",
+      "risk": "high"
+    },
+    {
+      "clause": "DATA (2)",
+      "issue": "Company’s right to sell/share User data with third parties without consent (potential GDPR/CCPA violations).",
+      "risk": "high"
+    },
+    {
+      "clause": "LIABILITY (3)",
+      "issue": "$100 cap on liability + waiver of all damages (including consequential/incidental), leaving User fully exposed to unlimited risk.",
+      "risk": "high"
+    },
+    {
+      "clause": "INDEMNIFICATION (4)",
+      "issue": User must indemnify Company for **all claims**, including those arising from Company’s own negligence or misconduct (unfairly shifts risk to User).",
+      "risk": "high"
+    },
+    {
+      "clause": "PAYMENT (5)",
+      "issue": Automatic account termination + data forfeiture for non-payment within 24 hours (no grace period).",
+      "risk": "high"
+    },
+    {
+      "clause": "PAYMENT (5)",
+      "issue": Pricing increases at any time without notice (could violate anti-price-gouging laws in some jurisdictions).",
+      "risk": "medium"
+    },
+    {
+      "clause": "SLA (6)",
+      "issue": No guarantees for uptime (95% target) + no credits for downtime (could violate contract law or regulatory obligations).",
+      "risk": "high"
+    },
+    {
+      "clause": "INTELLECTUAL PROPERTY (8)",
+      "issue": User feedback/suggestions/ideas become Company’s IP without compensation (could violate trade secret laws or user expectations).",
+      "risk": "medium"
+    },
+    {
+      "clause": "DISPUTE RESOLUTION (9)",
+      "issue": Exclusive jurisdiction in Company’s home country + waiver of jury trials and class actions (could violate due process rights).",
+      "risk": "high"
+    },
+    {
+      "clause": "CHANGES (10)",
+      "issue": Terms can be modified at any time with continued use constituting acceptance (could violate notice requirements in some jurisdictions).",
+      "risk": "medium"
+    },
+    {
+      "clause": "TERMINATION (11)",
+      "issue": Immediate data deletion on termination with no obligation to export/backup (could violate data protection laws like GDPR).",
+      "risk": "high"
+    },
+    {
+      "clause": "TERMINATION (11)",
+      "issue": No clear notice period for termination (could be ambiguous and unfair).",
+      "risk": "medium"
+    },
+    {
+      "clause": "TERMS OF SERVICE (1)",
+      "issue": No clear definition of "Software" or "User" (could lead to disputes over scope of license).",
+      "risk": "medium"
+    },
+    {
+      "clause": "INTELLECTUAL PROPERTY (8)",
+      "issue": Missing clause on User’s right to retain original contributions (e.g., custom code, content).",
+      "risk": "medium"
+    },
+    {
+      "clause": "PAYMENT (5)",
+      "issue": No clear definition of "invoice" or "payment failure" (could lead to disputes over termination triggers).",
+      "risk": "medium"
+    }
+  ],
+  "count": 15
+}
+```
+
+### **Key Observations**:
+- **High-Risk Issues**: Mostly relate to **data ownership, liability caps, indemnification, and termination clauses** (common in exploitative SaaS contracts).
+- **Medium-Risk Issues**: Ambiguities around **pricing, jurisdiction, and IP retention** could lead to disputes.
+- **Missing Clauses**: Some issues (e.g., User’s right to retain original contributions) are not explicitly addressed, which could be a **gap risk**.
+
+Would you like a deeper analysis of any specific clause?

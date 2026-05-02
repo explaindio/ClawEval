@@ -1,0 +1,78 @@
+```json
+{
+  "q1": "Conflict resolution strategy: **Operational Transformation (OT)** with **Conflict-Free Replicated Data Types (CRDT)** fallback for simpler cases.
+    - **Primary**: OT (used in Google Docs) transforms operations to resolve conflicts by tracking changes in a way that maintains document consistency.
+    - **Secondary**: CRDTs (e.g., for basic text edits like insert/delete) provide eventual consistency without explicit conflict resolution logic.
+    - **Locking**: Not used for core sync; reserved for critical sections (e.g., metadata updates) to prevent race conditions in edge cases.",
+
+  "q2": "Real-time sync protocol: **WebSocket (with bidirectional streaming)**.
+    - Preferred over Server-Sent Events (SSE) for:
+      - Full-duplex communication (client pushes edits as well as receives them).
+      - Lower latency for bidirectional operations (e.g., cursor movement, undo/redo).
+      - Supports persistent connections for efficient real-time updates.",
+
+  "q3": "Database for document storage: **MongoDB (with GridFS for large files)**.
+    - **Primary choice**: MongoDB’s document model aligns well with nested document structures (e.g., paragraphs, lists, images).
+    - **GridFS**: Handles large binary data (e.g., images, PDFs) via chunked storage.
+    - **Alternatives considered**: PostgreSQL (for relational metadata) or Firebase (simpler but less scalable). MongoDB is chosen for flexibility and real-time sync compatibility.",
+
+  "q4": "Offline editing: **Conflict-free Replicated Data Types (CRDT) + Local State Management**.
+    - **CRDTs**: Track edits locally (e.g., text inserts/deletes) and merge changes when reconnecting.
+    - **Local state**: Use a lightweight in-memory database (e.g., SQLite) to cache document state.
+    - **Sync on reconnect**: Merge local changes with server state via OT/CRDT reconciliation.",
+
+  "q5": "Message broker for real-time events: **Kafka (or RabbitMQ)**.
+    - **Kafka**: High-throughput, partitioned streams for scalability; ideal for decoupled real-time sync.
+    - **RabbitMQ**: Simpler, but Kafka scales better for high concurrency.
+    - **Alternative**: Redis Streams (if lower latency is critical), but Kafka is preferred for production.",
+
+  "q6": "Horizontal scaling strategy for WebSocket servers: **Sharding by IP/Region + Load Balancing**.
+    - **Sharding**: Route WebSocket connections to different servers based on client IP/geolocation.
+    - **Load Balancer**: Use NGINX or HAProxy to distribute traffic across shards.
+    - **State Partitioning**: Store user sessions/state in a distributed cache (e.g., Redis Cluster) to avoid hotspots.",
+
+  "q7": "Handling cursor position sharing: **OT + Delta Encoding + Global State Synchronization**.
+    - **OT**: Transform cursor movements to document-aware operations (e.g., "move cursor to X" becomes "insert empty paragraph at Y").
+    - **Delta Encoding**: Minimize payload size by sending only changes (e.g., cursor position updates as deltas).
+    - **Global State Sync**: Broadcast cursor positions to all clients via WebSocket (with conflict resolution if needed).",
+
+  "q8": "Authentication protocol: **OAuth 2.0 + JWT (JSON Web Tokens)**.
+    - **OAuth 2.0**: Enables secure delegation (e.g., Google/Facebook login).
+    - **JWT**: Signed tokens for stateless authentication (e.g., `user_id`, `expires_at`).
+    - **Alternatives**: Firebase Auth (simpler) or custom JWT with LDAP/SAML for enterprise.",
+
+  "q9": "Implementing version history: **Time-Travel Database + OT-Based Rollbacks**.
+    - **Time-Travel DB**: Store document snapshots (e.g., every 5 minutes) in a time-series database (e.g., TimescaleDB).
+    - **OT Rollbacks**: Replay OT transformations to revert changes (e.g., "undo last edit") without full sync.",
+
+  "q10": "CDN strategy for static assets: **Cloudflare + Edge Caching**.
+    - **Cloudflare**: Cache static assets (CSS/JS) at edge locations for low-latency delivery.
+    - **Edge Functions**: Serve dynamic assets (e.g., WebSocket handshakes) closer to users.",
+
+  "q11": "Handling large documents (1000+ pages): **Chunked Storage + Client-Side Rendering**.
+    - **Chunking**: Split document into chunks (e.g., 100KB pages) stored in GridFS/MongoDB.
+    - **Client-Side Rendering**: Load chunks asynchronously; use Web Workers to render pages out of order.
+    - **Lazy Loading**: Fetch chunks only when users scroll to them.",
+
+  "q12": "Rate limiting approach: **Token Bucket + Distributed Locks**.
+    - **Token Bucket**: Limit WebSocket connection rate per user/IP (e.g., 100 ops/min).
+    - **Distributed Locks**: Use Redis for per-user rate limits (e.g., `SETNX rate_limit:{user}:tokens 100`).
+    - **Alternatives**: Sliding Window (for strict compliance) or Leaky Bucket.",
+
+  "q13": "Data backup strategy: **Automated Snapshots + Distributed Storage**.
+    - **Snapshots**: MongoDB’s built-in snapshots + TimescaleDB time-series backups.
+    - **Distributed Storage**: Offload backups to S3/Google Cloud Storage with versioning.
+    - **Daily/Weekly**: Full backups; incremental backups for daily changes.",
+
+  "q14": "Handling concurrent image uploads: **Queue-Based Processing + CDN Caching**.
+    - **Queue**: Use Kafka/RabbitMQ to buffer uploads; process in parallel (e.g., 100 concurrent workers).
+    - **CDN Caching**: Store uploaded images in a CDN (e.g., Cloudflare) with cache invalidation on updates.",
+
+  "q15": "Monitoring and observability stack: **Prometheus + Grafana + Distributed Tracing**.
+    - **Metrics**: Prometheus for WebSocket latency, error rates, and load.
+    - **Dashboards**: Grafana for real-time monitoring (e.g., "active users," "conflict resolution failures").
+    - **Tracing**: OpenTelemetry + Jaeger for distributed tracing (e.g., WebSocket handshake latency).
+    - **Logging**: ELK Stack (Elasticsearch, Logstash, Kibana) for structured logs.
+    - **Alerts**: PagerDuty/Slack alerts for critical failures (e.g., Kafka broker down)."
+}
+```

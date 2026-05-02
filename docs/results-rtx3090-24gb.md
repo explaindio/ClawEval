@@ -15,11 +15,12 @@ All models tested on a single NVIDIA RTX 3090 24GB. No cloud, no API costs — f
 | 5 | **Gemma-4-31B** (TurboQuant3) | Q4_K_M + turbo3 KV | 31B | 915/1220 | **75.0%** | 262K |
 | 6 | **Nemotron-Nano-Omni** (Q4) | Q4_K_S | 30B MoE (3B active) | 906/1220 | **74.3%** | 262K |
 | 7 | **Gemma-4-E4B** | BF16 | 4B | 867/1220 | **71.1%** | 32K |
-| 8 | **Gemma-4-A4B** | UD-Q4_K_M | 26B MoE (4B active) | 622/1220 | **51.0%** | 32K |
-| 9 | **LFM2.5-350M** | Q4_K_M | 350M | 308/1220 | **25.2%** | 32K |
+| 8 | **Ministral-3 3B** | Q4_K_M | 3B | 760/1220 | **62.3%** | 32K |
+| 9 | **Gemma-4-A4B** | UD-Q4_K_M | 26B MoE (4B active) | 622/1220 | **51.0%** | 32K |
 | 10 | **Qwen3.5-4B** | Q4_K_M | 4B | 374/1220 | **30.7%** | 32K |
-| 11 | **Qwen3.5-0.8B** | Q4_K_M | 0.8B | 58/1220 | **4.8%** | 32K |
-| 12 | **Qwen3.5-2B** | Q4_K_M | 2B | 50/1220 | **4.1%** | 32K |
+| 11 | **LFM2.5-350M** | Q4_K_M | 350M | 308/1220 | **25.2%** | 32K |
+| 12 | **Qwen3.5-0.8B** | Q4_K_M | 0.8B | 58/1220 | **4.8%** | 32K |
+| 13 | **Qwen3.5-2B** | Q4_K_M | 2B | 50/1220 | **4.1%** | 32K |
 
 > Qwen3.6-35B-A3B at 84.3% **ties Kimi K2.6 cloud** — the best local model matches top-tier cloud APIs.
 
@@ -35,6 +36,7 @@ All models tested on a single NVIDIA RTX 3090 24GB. No cloud, no API costs — f
 | Nemotron-Nano-Omni (IQ4) | IQ4_NL_XL | 127.1 | — | 144.9 |
 | Nemotron-Nano-Omni (Q4) | Q4_K_S | 123.4 | — | 148.3 |
 | Qwen3.5-4B | Q4_K_M | 119.5 | 115.5 | 135.0 |
+| Ministral-3 3B | Q4_K_M | 174.8 | 142.7 | 184.0 |
 | Gemma-4-E2B | BF16 | 101.1 | 98.9 | 111.7 |
 | Qwen3.6-35B-A3B | UD-Q4_K_M | 99.3 | 94.8 | 108.6 |
 | Gemma-4-A4B | UD-Q4_K_M | 89.6 | 82.5 | 106.4 |

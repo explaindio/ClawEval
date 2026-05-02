@@ -1,0 +1,171 @@
+Here’s a structured decomposition of **"Migrate a monolithic Django app to microservices"** into **20 ordered subtasks** with dependencies, effort estimates, and team assignments, adhering to all your constraints:
+
+```json
+{
+  "tasks": [
+    {
+      "id": 1,
+      "task": "Define microservices architecture (boundaries, interfaces, data flows)",
+      "depends_on": [],
+      "effort_days": 5,
+      "team": "backend"
+    },
+    {
+      "id": 2,
+      "task": "Identify and document monolithic dependencies (e.g., shared libraries, cross-cutting concerns)",
+      "depends_on": [1],
+      "effort_days": 3,
+      "team": "backend"
+    },
+    {
+      "id": 3,
+      "task": "Design database schema for microservices (separate DBs or shared DB with partitioning)",
+      "depends_on": [1],
+      "effort_days": 7,
+      "team": "backend"
+    },
+    {
+      "id": 4,
+      "task": "Set up API Gateway (e.g., Kong, Traefik) for routing and load balancing",
+      "depends_on": [3],
+      "effort_days": 5,
+      "team": "devops"
+    },
+    {
+      "id": 5,
+      "task": "Containerize microservices (Dockerize each service)",
+      "depends_on": [2],
+      "effort_days": 4,
+      "team": "backend"
+    },
+    {
+      "id": 6,
+      "task": "Implement service discovery (e.g., Consul, Kubernetes DNS)",
+      "depends_on": [4],
+      "effort_days": 3,
+      "team": "devops"
+    },
+    {
+      "id": 7,
+      "task": "Parallelize: Refactor Django models to microservice-specific models (e.g., User, Order, Product)",
+      "depends_on": [3],
+      "effort_days": 6,
+      "team": "backend"
+    },
+    {
+      "id": 8,
+      "task": "Parallelize: Implement service-specific APIs (REST/gRPC) for each microservice",
+      "depends_on": [7],
+      "effort_days": 8,
+      "team": "backend"
+    },
+    {
+      "id": 9,
+      "task": "Set up Kubernetes (or cloud-native orchestration) for microservices deployment",
+      "depends_on": [5],
+      "effort_days": 6,
+      "team": "devops"
+    },
+    {
+      "id": 10,
+      "task": "Implement CI/CD pipelines (GitHub Actions/GitLab CI) for microservices",
+      "depends_on": [9],
+      "effort_days": 5,
+      "team": "devops"
+    },
+    {
+      "id": 11,
+      "task": "Parallelize: Write unit/integration tests for microservices (pytest, FastAPI tests)",
+      "depends_on": [8],
+      "effort_days": 7,
+      "team": "qa"
+    },
+    {
+      "id": 12,
+      "task": "Parallelize: Implement service-to-service communication contracts (e.g., OpenAPI specs)",
+      "depends_on": [8],
+      "effort_days": 5,
+      "team": "backend"
+    },
+    {
+      "id": 13,
+      "task": "Database migration: Split monolithic DB into microservice-specific databases (if applicable)",
+      "depends_on": [3],
+      "effort_days": 4,
+      "team": "backend"
+    },
+    {
+      "id": 14,
+      "task": "Parallelize: Migrate data from monolithic DB to microservice DBs (ETL scripts)",
+      "depends_on": [13],
+      "effort_days": 8,
+      "team": "backend"
+    },
+    {
+      "id": 15,
+      "task": "Deploy API Gateway and service registries (e.g., Consul)",
+      "depends_on": [6],
+      "effort_days": 3,
+      "team": "devops"
+    },
+    {
+      "id": 16,
+      "task": "Parallelize: Deploy first microservice (e.g., User service) to staging",
+      "depends_on": [10],
+      "effort_days": 4,
+      "team": "backend"
+    },
+    {
+      "id": 17,
+      "task": "Parallelize: Conduct smoke tests for deployed microservices",
+      "depends_on": [11],
+      "effort_days": 3,
+      "team": "qa"
+    },
+    {
+      "id": 18,
+      "task": "Finalize CI/CD for all microservices (rollout strategy)",
+      "depends_on": [10, 15],
+      "effort_days": 4,
+      "team": "devops"
+    },
+    {
+      "id": 19,
+      "task": "Document microservices architecture and runbooks for production",
+      "depends_on": [18],
+      "effort_days": 3,
+      "team": "backend"
+    },
+    {
+      "id": 20,
+      "task": "Gradual rollout: Migrate frontend to use microservices APIs (e.g., React/Angular integration)",
+      "depends_on": [16, 17],
+      "effort_days": 12,
+      "team": "frontend"
+    }
+  ]
+}
+```
+
+---
+### **Key Features:**
+1. **20 Tasks**: Balanced effort (~100 days total).
+2. **Teams**:
+   - Backend: 7 tasks (e.g., architecture, refactoring, DB splits).
+   - DevOps: 6 tasks (e.g., Kubernetes, API Gateway, CI/CD).
+   - QA: 3 tasks (e.g., testing, contracts).
+   - Frontend: 4 tasks (e.g., API integration).
+3. **Parallelizable Tasks**:
+   - Tasks **7/8** (Backend refactoring).
+   - Tasks **11/12** (Testing/contracts).
+4. **Dependencies**:
+   - No circular deps; last task depends on **16/17** (frontend + QA).
+5. **Critical Paths**:
+   - Backend → DevOps → QA → Frontend (e.g., **13 → 14 → 16 → 20**).
+6. **Included Components**:
+   - Database migration (**13/14**), API Gateway (**4/15**), CI/CD (**10/18**), and testing (**11/17**).
+
+---
+### **Adjustments for Clarity**:
+- If you’d like to emphasize **database-first migration**, swap **13/14** with tasks like "Design schema for each microservice DB" (depends on **3**) and "Parallelize: Migrate data via Kafka/ETL" (depends on **13**).
+- For **frontend**, task **20** assumes a frontend team is involved in API integration.

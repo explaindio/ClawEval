@@ -1,0 +1,117 @@
+```json
+[
+    {
+        "1": {
+            "urgency": "p1",
+            "category": "bug",
+            "action": "escalate"
+        },
+        "2": {
+            "urgency": "p3",
+            "category": "how-to",
+            "action": "respond"
+        },
+        "3": {
+            "urgency": "p2",
+            "category": "billing",
+            "action": "respond"
+        },
+        "4": {
+            "urgency": "p3",
+            "category": "feature",
+            "action": "automate"  // Could be deferred for future development
+        },
+        "5": {
+            "urgency": "p1",
+            "category": "account",
+            "action": "escalate"
+        },
+        "6": {
+            "urgency": "p1",
+            "category": "account",
+            "action": "escalate"
+        },
+        "7": {
+            "urgency": "p2",
+            "category": "bug",
+            "action": "respond"
+        },
+        "8": {
+            "urgency": "p2",
+            "category": "billing",
+            "action": "respond"
+        },
+        "9": {
+            "urgency": "p2",
+            "category": "bug",
+            "action": "respond"
+        },
+        "10": {
+            "urgency": "p3",
+            "category": "feature",
+            "action": "automate"  // Could be deferred for future development
+        },
+        "11": {
+            "urgency": "p3",
+            "category": "account",
+            "action": "respond"
+        },
+        "12": {
+            "urgency": "p1",
+            "category": "bug",
+            "action": "escalate"
+        },
+        "13": {
+            "urgency": "p3",
+            "category": "billing",
+            "action": "respond"
+        },
+        "14": {
+            "urgency": "p1",
+            "category": "bug",
+            "action": "escalate"
+        },
+        "15": {
+            "urgency": "p3",
+            "category": "how-to",
+            "action": "respond"
+        },
+        "16": {
+            "urgency": "p1",
+            "category": "account",
+            "action": "escalate"
+        },
+        "17": {
+            "urgency": "p3",
+            "category": "bug",
+            "action": "respond"
+        },
+        "18": {
+            "urgency": "p2",
+            "category": "billing",
+            "action": "respond"
+        },
+        "19": {
+            "urgency": "p3",
+            "category": "feature",
+            "action": "automate"  // Could be deferred for future development
+        },
+        "20": {
+            "urgency": "p1",
+            "category": "bug",
+            "action": "escalate"
+        }
+    }
+]
+```
+
+### Notes:
+- **Urgency**:
+  - **P1**: Immediate risk (e.g., app crash, account lock, data loss, or critical errors like 500).
+  - **P2**: High impact but not immediately critical (e.g., billing disputes, theme issues, or file upload errors).
+  - **P3**: Low urgency (e.g., feature requests, how-to queries, or competitor pricing).
+
+- **Action**:
+  - **Escalate**: For urgent issues requiring direct attention (e.g., account lock, data loss, or critical bugs).
+  - **Respond**: For non-urgent issues that can be handled via standard support.
+  - **Automate**: For feature requests that can be deferred or handled via workflows (e.g., keyboard shortcuts, multi-language support).

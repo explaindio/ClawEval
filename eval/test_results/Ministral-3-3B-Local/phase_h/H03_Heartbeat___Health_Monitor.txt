@@ -1,0 +1,109 @@
+```json
+[
+    {
+        "service": "s1",
+        "status": "healthy",
+        "latency_ms": {"avg": 45, "p99": 120},
+        "error_rate_pct": 0.01,
+        "uptime": "99.99%"
+    },
+    {
+        "service": "s2",
+        "status": "degraded",
+        "latency_ms": {"avg": 200, "p99": 1500},
+        "error_rate_pct": 2.5,
+        "critical_issues": ["3 timeout errors in last hour"]
+    },
+    {
+        "service": "s3",
+        "status": "healthy",
+        "latency_ms": {"avg": 5, "p99": 15},
+        "error_rate_pct": 0,
+        "replication": {"lag": 0, "status": "synchronized"}
+    },
+    {
+        "service": "s4",
+        "status": "degraded",
+        "latency_ms": {"avg": 5, "p99": 200},
+        "error_rate_pct": 0.1,
+        "critical_issues": ["replication lag: 5200ms"]
+    },
+    {
+        "service": "s5",
+        "status": "healthy",
+        "latency_ms": {"avg": 1, "p99": 3},
+        "error_rate_pct": 0,
+        "memory_usage": "45%"
+    },
+    {
+        "service": "s6",
+        "status": "down",
+        "latency_ms": {"avg": 800, "p99": 5000},
+        "error_rate_pct": 8,
+        "critical_issues": ["cluster yellow status"]
+    },
+    {
+        "service": "s7",
+        "status": "healthy",
+        "latency_ms": {"avg": 150, "p99": 300},
+        "error_rate_pct": 0.5,
+        "queue_depth": 12
+    },
+    {
+        "service": "s8",
+        "status": "down",
+        "latency_ms": null,
+        "error_rate_pct": null,
+        "critical_issues": ["connection refused for last 30 minutes"]
+    },
+    {
+        "service": "s9",
+        "status": "healthy",
+        "latency_ms": {"avg": 15, "p99": 50},
+        "error_rate_pct": 0,
+        "cache_hit_rate": "94%"
+    },
+    {
+        "service": "s10",
+        "status": "degraded",
+        "latency_ms": {"avg": 10, "p99": null},
+        "error_rate_pct": 0.2,
+        "critical_issues": ["consumer lag: 50000 messages"]
+    },
+    {
+        "service": "s11",
+        "status": "degraded",
+        "latency_ms": {"avg": 2000, "p99": 8000},
+        "error_rate_pct": 12,
+        "critical_issues": ["GPU utilization: 99%"]
+    },
+    {
+        "service": "s12",
+        "status": "healthy",
+        "latency_ms": {"avg": 100, "p99": 500},
+        "error_rate_pct": 0.02,
+        "availability": "99.99%"
+    },
+    {
+        "service": "s13",
+        "status": "healthy",
+        "latency_ms": {"avg": 2, "p99": 10},
+        "error_rate_pct": 0,
+        "resolution_status": "all zones resolving"
+    },
+    {
+        "service": "s14",
+        "status": "healthy",
+        "latency_ms": {"avg": 1, "p99": 5},
+        "error_rate_pct": 0,
+        "connections": "2500/10000"
+    },
+    {
+        "service": "s15",
+        "status": "degraded",
+        "latency_ms": {"avg": 50, "p99": null},
+        "error_rate_pct": null,
+        "critical_issues": ["all dashboards stale for 45 minutes"]
+    }
+]
+```

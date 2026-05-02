@@ -1,0 +1,96 @@
+```json
+{
+  "issues": [
+    {
+      "id": 1,
+      "issue": "Lack of a primary keyword-rich `<title>` tag (current: 'Home'). SEO best practice is to include the main keyword in the title (e.g., 'Best Products – [Your Store Name]')",
+      "severity": "major",
+      "fix": "Update `<title>` to include the primary keyword (e.g., `<title>Best Products – [Your Store Name] | Shop Online`)"
+    },
+    {
+      "id": 2,
+      "issue": "Duplicate `<h1>` tags ('Best Products' and 'Shop Now'). Search engines may penalize for poor semantic hierarchy; only one `<h1>` should represent the main topic",
+      "severity": "major",
+      "fix": "Replace one `<h1>` with a more descriptive heading (e.g., `<h1>Shop Now: Best Deals on [Product Category]</h1>`)"
+    },
+    {
+      "id": 3,
+      "issue": "Poorly structured `<h2>` and `<h1>` hierarchy. The `<h2>` 'Welcome to Our Store' is too generic and lacks keyword relevance. Headings should guide user intent",
+      "severity": "major",
+      "fix": "Replace `<h2>` with a keyword-optimized heading (e.g., `<h2>Discover Our Top-Rated Products</h2>`)"
+    },
+    {
+      "id": 4,
+      "issue": "Missing `<meta description>` tag. Search engines use this to display snippets in results; missing it weakens organic visibility",
+      "severity": "major",
+      "fix": "Add `<meta name="description" content="Shop the best products at unbeatable prices. Get discounts on shoes, bags, and clothes—order now!">"`
+    },
+    {
+      "id": 5,
+      "issue": "Redundant `<meta keywords>` tag (deprecated by Google). Modern SEO relies on semantic markup (e.g., schema.org) instead of keyword lists",
+      "severity": "minor",
+      "fix": "Remove `<meta name="keywords">` and focus on structured data (e.g., Product schema) in JSON-LD format"
+    },
+    {
+      "id": 6,
+      "issue": "Hidden text in `<div>` with no semantic meaning (e.g., 'cheap shoes buy online discount sale'). Search engines ignore invisible content for ranking",
+      "severity": "minor",
+      "fix": "Remove or reformat this text into visible, relevant content (e.g., a footer or promotional banner)"
+    },
+    {
+      "id": 7,
+      "issue": "No internal linking strategy. Links to `/products` and `/about` are generic and lack anchor text optimization (e.g., 'Shop Our Best Deals' instead of 'Click here')",
+      "severity": "minor",
+      "fix": "Optimize anchor text (e.g., `<a href="/products">Shop Our Best Deals Now</a>`)"
+    },
+    {
+      "id": 8,
+      "issue": "No alt text for images (`<img src="product1.jpg">`). Missing alt attributes hurt accessibility and SEO (search engines rely on alt text for image descriptions)",
+      "severity": "major",
+      "fix": "Add descriptive alt text (e.g., `<img src="product1.jpg" alt="Premium leather shoes with discount badge">`)"
+    },
+    {
+      "id": 9,
+      "issue": "No canonical URL or structured data for product pages. Missing canonical tags can cause duplicate content issues or confuse search engines",
+      "severity": "minor",
+      "fix": "Add canonical URL (e.g., `<link rel="canonical" href="https://example.com/products">`)" if applicable
+    },
+    {
+      "id": 10,
+      "issue": "Lack of mobile responsiveness. The page lacks viewport meta tag (`<meta name="viewport">`) or responsive design, harming mobile rankings",
+      "severity": "minor",
+      "fix": "Add viewport meta tag: `<meta name="viewport" content="width=device-width, initial-scale=1.0">"`
+    },
+    {
+      "id": 11,
+      "issue": "No internal linking to product pages. The page lacks links to specific products (e.g., 'View Product X'), reducing crawlability",
+      "severity": "minor",
+      "fix": "Add links to product pages (e.g., `<a href="/product1">View Product 1</a>`)"
+    },
+    {
+      "id": 12,
+      "issue": "No schema markup for products. Missing structured data (e.g., Product schema) prevents rich snippets (e.g., price, rating) in search results",
+      "severity": "major",
+      "fix": "Implement JSON-LD schema for products (e.g., `<script type="application/ld+json">...</script>`)"
+    },
+    {
+      "id": 13,
+      "issue": "No URL parameters (e.g., `?ref=123&utm=abc`) are properly handled. These can confuse search engines if not filtered via `rel="canonical"` or `noindex`",
+      "severity": "minor",
+      "fix": "Use `rel="canonical"` for the primary URL (e.g., `<link rel="canonical" href="https://example.com/page-1234">`)"
+    },
+    {
+      "id": 14,
+      "issue": "Lack of user intent alignment. The page promotes generic terms ('buy, cheap, discount') without targeting specific queries (e.g., 'best shoes under $50')",
+      "severity": "minor",
+      "fix": "Refine content to match user intent (e.g., 'Find the best deals on shoes, bags, and clothes—shop now!')"
+    },
+    {
+      "id": 15,
+      "issue": "No loading performance metrics (e.g., Core Web Vitals). Slow image loading (e.g., unoptimized `product1.jpg`) harms rankings and user experience",
+      "severity": "minor",
+      "fix": "Optimize images (e.g., compress with tools like TinyPNG) and add lazy loading: `<img src="product1.jpg" loading="lazy">"`
+  }
+},
+"count": 15
+```
