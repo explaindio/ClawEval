@@ -1,0 +1,97 @@
+```json
+{
+  "issues": [
+    {
+      "id": 1,
+      "issue": "Generic and non-unique title tag. The title 'Home' is too generic and doesn't include any relevant keywords.",
+      "severity": "critical",
+      "fix": "Update the title to include relevant keywords and be descriptive, e.g., 'Best Cheap Shoes, Bags & Clothes Online Store | Home'."
+    },
+    {
+      "id": 2,
+      "issue": "Missing meta description tag, which is crucial for SEO as it provides a summary that appears in search results.",
+      "severity": "major",
+      "fix": "Add a meta description tag with a concise and compelling summary of the page content, e.g., 'Discover the best deals on shoes, bags, and clothes. Buy cheap and get discounts today!'"
+    },
+    {
+      "id": 3,
+      "issue": "Duplicate H1 tags ('Best Products' and 'Shop Now') which can confuse search engines about the primary content of the page.",
+      "severity": "major",
+      "fix": "Keep only one H1 tag that best represents the page content, e.g., 'Best Products at Cheap Prices'."
+    },
+    {
+      "id": 4,
+      "issue": "Missing alt text for images, which is important for both SEO and accessibility.",
+      "severity": "major",
+      "fix": "Add descriptive alt text to each image, e.g., 'High-quality leather shoes for men' for product1.jpg."
+    },
+    {
+      "id": 5,
+      "issue": "Low-quality or missing content with placeholder text 'Lorem ipsum dolor sit amet...' which doesn't provide any value to users or search engines.",
+      "severity": "critical",
+      "fix": "Replace the placeholder text with relevant, high-quality content that provides value to users."
+    },
+    {
+      "id": 6,
+      "issue": "Hidden content with spammy keywords ('cheap shoes buy online discount sale best price') which can lead to penalties from search engines.",
+      "severity": "critical",
+      "fix": "Remove the hidden content or make it visible and relevant to the user's needs."
+    },
+    {
+      "id": 7,
+      "issue": "Missing viewport meta tag, which is essential for responsive design and proper rendering on mobile devices.",
+      "severity": "major",
+      "fix": "Add a viewport meta tag in the head section, e.g., `<meta name='viewport' content='width=device-width, initial-scale=1'>`."
+    },
+    {
+      "id": 8,
+      "issue": "Missing canonical tag and URL structure issues due to query parameters ('?ref=123&utm=abc'), which can create duplicate content issues.",
+      "severity": "major",
+      "fix": "Add a canonical tag pointing to the preferred version of the page and clean up the URL structure, e.g., `<link rel='canonical' href='https://example.com/page-1234'>`."
+    },
+    {
+      "id": 9,
+      "issue": "Missing schema markup which can enhance search engine understanding of the content and provide rich snippets in search results.",
+      "severity": "minor",
+      "fix": "Implement schema markup relevant to the page content, e.g., Product schema for the products shown."
+    },
+    {
+      "id": 10,
+      "issue": "Too many 'Click here' links with non-descriptive anchor text, which can lead to a poor user experience and may be seen as spammy by search engines.",
+      "severity": "minor",
+      "fix": "Replace 'Click here' with descriptive anchor text, e.g., 'Shop our latest collection', 'Learn more about our products'."
+    },
+    {
+      "id": 11,
+      "issue": "Missing H2 or H3 headings for content structure, which can improve the readability and SEO of the page.",
+      "severity": "minor",
+      "fix": "Use H2 or H3 tags to structure the content, e.g., `<h2>Our Products</h2>` followed by product categories."
+    },
+    {
+      "id": 12,
+      "issue": "Missing internal links structure with only two internal links, which is insufficient for a well-structured site that helps with SEO and user navigation.",
+      "severity": "minor",
+      "fix": "Add more internal links to other relevant pages, such as blog posts, contact pages, etc."
+    },
+    {
+      "id": 13,
+      "issue": "Missing robots meta tag to control how search engines crawl and index the page.",
+      "severity": "minor",
+      "fix": "Add a robots meta tag to allow indexing, e.g., `<meta name='robots' content='index, follow'>`."
+    },
+    {
+      "id": 14,
+      "issue": "External links do not have nofollow attributes, which can pass SEO value to external sites.",
+      "severity": "minor",
+      "fix": "Add nofollow attributes to external links, e.g., `<a href='https://example.com/products' rel='nofollow'>Click here</a>`."
+    },
+    {
+      "id": 15,
+      "issue": "Missing image dimensions (width and height attributes) which can affect loading times and SEO.",
+      "severity": "minor",
+      "fix": "Add width and height attributes to images, e.g., `<img src='product1.jpg' alt='High-quality leather shoes for men' width='300' height='200'>`."
+    }
+  ],
+  "count": 15
+}
+```

@@ -1,0 +1,82 @@
+```json
+{
+  "vulnerabilities": [
+    {
+      "type": "SQL Injection",
+      "location": "login function, lines 15-17",
+      "severity": "critical"
+    },
+    {
+      "type": "Cross-Site Scripting (XSS)",
+      "location": "profile function, lines 25-26",
+      "severity": "high"
+    },
+    {
+      "type": "Cross-Site Scripting (XSS)",
+      "location": "search function, lines 30-31",
+      "severity": "high"
+    },
+    {
+      "type": "Command Injection",
+      "location": "run_command function, lines 35-37",
+      "severity": "critical"
+    },
+    {
+      "type": "Unsafe File Upload",
+      "location": "upload function, lines 45-48",
+      "severity": "high"
+    },
+    {
+      "type": "Directory Traversal",
+      "location": "download function, lines 53-54",
+      "severity": "high"
+    },
+    {
+      "type": "Insecure Direct Object Reference (IDOR)",
+      "location": "download function, lines 53-54",
+      "severity": "high"
+    },
+    {
+      "type": "Insecure Authentication",
+      "location": "login function, line 18",
+      "severity": "critical"
+    },
+    {
+      "type": "Hardcoded Secret Key",
+      "location": "Global scope, line 8",
+      "severity": "high"
+    },
+    {
+      "type": "Arbitrary Code Execution via YAML",
+      "location": "load_config function, lines 60-61",
+      "severity": "critical"
+    },
+    {
+      "type": "Arbitrary Code Execution via Pickle",
+      "location": "restore_session function, lines 66-67",
+      "severity": "critical"
+    },
+    {
+      "type": "Cross-Site Request Forgery (CSRF)",
+      "location": "All routes (no specific line)",
+      "severity": "high"
+    },
+    {
+      "type": "Brute Force",
+      "location": "All routes (no specific line)",
+      "severity": "medium"
+    },
+    {
+      "type": "Insecure Debug Mode",
+      "location": "if __name__ == \"__main__\": block, line 80",
+      "severity": "critical"
+    },
+    {
+      "type": "Lack of Input Validation and Sanitization",
+      "location": "Multiple functions (login, profile, search, download, upload, etc.)",
+      "severity": "high"
+    }
+  ],
+  "count": 15
+}
+```

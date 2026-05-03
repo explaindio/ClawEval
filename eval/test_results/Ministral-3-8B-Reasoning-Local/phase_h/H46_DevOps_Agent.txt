@@ -1,0 +1,82 @@
+```json
+{
+  "issues": [
+    {
+      "line": "6-8",
+      "issue": "Only one replica reduces fault tolerance and high availability.",
+      "severity": "minor"
+    },
+    {
+      "line": "18-20",
+      "issue": "Using 'latest' tag can lead to unexpected behavior if the image changes between deployments.",
+      "severity": "minor"
+    },
+    {
+      "line": "24-26",
+      "issue": "Empty resources specification can lead to resource starvation or unexpected behavior.",
+      "severity": "minor"
+    },
+    {
+      "line": "27-30",
+      "issue": "Running containers as root and with privileged mode enabled is a major security risk.",
+      "severity": "critical"
+    },
+    {
+      "line": "31-34",
+      "issue": "Hardcoded DB_PASSWORD in environment variables is a critical security risk.",
+      "severity": "critical"
+    },
+    {
+      "line": "35-37",
+      "issue": "Hardcoded API_KEY in environment variables is a critical security risk.",
+      "severity": "critical"
+    },
+    {
+      "line": "45-47",
+      "issue": "Requesting 8 CPUs is extremely high and might not be feasible on most clusters.",
+      "severity": "critical"
+    },
+    {
+      "line": "45-47",
+      "issue": "Requesting 10Gi of memory is extremely high and might not be feasible on most clusters.",
+      "severity": "critical"
+    },
+    {
+      "line": "52-55",
+      "issue": "Using hostPath for data storage ties the pod directly to a specific node and can cause issues with portability and scaling.",
+      "severity": "minor"
+    },
+    {
+      "line": "62-64",
+      "issue": "Using LoadBalancer type without considering the environment might cause service to fail if the environment doesn't support it.",
+      "severity": "minor"
+    },
+    {
+      "line": "Missing in 'api' container",
+      "issue": "No liveness probe for 'api' container can lead to traffic to unhealthy pods.",
+      "severity": "major"
+    },
+    {
+      "line": "Missing in 'api' container",
+      "issue": "No readiness probe for 'api' container can lead to traffic to pods that are not fully initialized.",
+      "severity": "major"
+    },
+    {
+      "line": "Missing in 'sidecar' container",
+      "issue": "No liveness probe for 'sidecar' container can lead to Kubernetes not knowing if the container is healthy.",
+      "severity": "major"
+    },
+    {
+      "line": "Missing in 'sidecar' container",
+      "issue": "No readiness probe for 'sidecar' container can lead to Kubernetes not knowing when the container is ready to serve traffic.",
+      "severity": "major"
+    },
+    {
+      "line": "Missing in Deployment",
+      "issue": "No PodDisruptionBudget can lead to downtime during node drain.",
+      "severity": "major"
+    }
+  ],
+  "count": 15
+}
+```

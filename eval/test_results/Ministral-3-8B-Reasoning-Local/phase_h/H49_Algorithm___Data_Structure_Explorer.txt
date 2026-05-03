@@ -1,0 +1,181 @@
+Here are the three Python data structure implementations as requested:
+
+1. **LRUCache**: A cache that evicts the least recently used item when at capacity, with O(1) operations for get and put.
+
+```python
+class LRUCache:
+    class _Node:
+        def __init__(self, key, value):
+            self.key = key
+            self.value = value
+            self.prev = None
+            self.next = None
+
+    def __init__(self, capacity):
+        self.capacity = capacity
+        self.cache = {}
+        self.head = self._Node(0, 0)
+        self.tail = self._Node(0, 0)
+        self.head.next = self.tail
+        self.tail.prev = self.head
+
+    def _add_node(self, node):
+        node.prev = self.head
+        node.next = self.head.next
+        self.head.next.prev = node
+        self.head.next = node
+
+    def _remove_node(self, node):
+        prev_node = node.prev
+        next_node = node.next
+        prev_node.next = next_node
+        next_node.prev = prev_node
+
+    def _move_to_head(self, node):
+        self._remove_node(node)
+        self._add_node(node)
+
+    def get(self, key):
+        if key in self.cache:
+            node = self.cache[key]
+            self._move_to_head(node)
+            return node.value
+        return -1
+
+    def put(self, key, value):
+        if key in self.cache:
+            node = self.cache[key]
+            node.value = value
+            self._move_to_head(node)
+        else:
+            if len(self.cache) >= self.capacity:
+                lru_node = self.tail.prev
+                self._remove_node(lru_node)
+                del self.cache[lru_node.key]
+            new_node = self._Node(key, value)
+            self.cache[key] = new_node
+            self._add_node(new_node)
+```
+
+2. **MinStack**: A stack that supports push, pop, top, and get_min operations in O(1) time.
+
+```python
+class MinStack:
+    def __init__(self):
+        self.stack = []
+        self.min_stack = []
+
+    def push(self, val):
+        self.stack.append(val)
+        if not self.min_stack or val <= self.min_stack[-1]:
+            self.min_stack.append(val)
+
+    def pop(self):
+        if not self.stack:
+            return
+        val = self.stack.pop()
+        if val == self.min_stack[-1]:
+            self.min_stack.pop()
+
+    def top(self):
+        if not self.stack:
+            return None
+        return self.stack[-1]
+
+    def get_min(self):
+        if not self.min_stack:
+            return None
+        return self.min_stack[-1]
+```
+
+3. **find_median**: A function that returns the running median of a stream of integers.
+
+```python
+def find_median(stream):
+    lower = []  # max-heap
+    upper = []  # min-heap
+    medians = []
+    
+    for num in stream:
+        if not lower or num <= lower[0]:
+            lower.append(num)
+            idx = len(lower) - 1
+            while idx > 0:
+                parent_idx = (idx - 1) // 2
+                if lower[parent_idx] >= lower[idx]:
+                    break
+                lower[parent_idx], lower[idx] = lower[idx], lower[parent_idx]
+                idx = parent_idx
+        else:
+            upper.append(num)
+            idx = len(upper) - 1
+            while idx > 0:
+                parent_idx = (idx - 1) // 2
+                if upper[parent_idx] <= upper[idx]:
+                    break
+                upper[parent_idx], upper[idx] = upper[idx], upper[parent_idx]
+                idx = parent_idx
+        
+        if len(lower) > len(upper) + 1:
+            val = lower[0]
+            last = lower.pop()
+            if lower:
+                lower[0] = last
+                idx = 0
+                n = len(lower)
+                while True:
+                    left = 2 * idx + 1
+                    right = 2 * idx + 2
+                    largest = idx
+                    if left < n and lower[left] > lower[largest]:
+                        largest = left
+                    if right < n and lower[right] > lower[largest]:
+                        largest = right
+                    if largest == idx:
+                        break
+                    lower[idx], lower[largest] = lower[largest], lower[idx]
+                    idx = largest
+            upper.append(val)
+            idx = len(upper) - 1
+            while idx > 0:
+                parent_idx = (idx - 1) // 2
+                if upper[parent_idx] <= upper[idx]:
+                    break
+                upper[parent_idx], upper[idx] = upper[idx], upper[parent_idx]
+                idx = parent_idx
+        elif len(upper) > len(lower):
+            val = upper[0]
+            last = upper.pop()
+            if upper:
+                upper[0] = last
+                idx = 0
+                n = len(upper)
+                while True:
+                    left = 2 * idx + 1
+                    right = 2 * idx + 2
+                    smallest = idx
+                    if left < n and upper[left] < upper[smallest]:
+                        smallest = left
+                    if right < n and upper[right] < upper[smallest]:
+                        smallest = right
+                    if smallest == idx:
+                        break
+                    upper[idx], upper[smallest] = upper[smallest], upper[idx]
+                    idx = smallest
+            lower.append(val)
+            idx = len(lower) - 1
+            while idx > 0:
+                parent_idx = (idx - 1) // 2
+                if lower[parent_idx] >= lower[idx]:
+                    break
+                lower[parent_idx], lower[idx] = lower[idx], lower[parent_idx]
+                idx = parent_idx
+        
+        if len(lower) > len(upper):
+            median = lower[0]
+        else:
+            median = (lower[0] + upper[0]) / 2.0
+        medians.append(median)
+    
+    return medians
+```

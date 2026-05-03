@@ -1,0 +1,93 @@
+```json
+{
+  "agents": [
+    {
+      "name": "Validation/Triage",
+      "input": "Customer refund request details (order ID, amount, reason, customer details, etc.)",
+      "output": "Validated request details or an error message if invalid",
+      "next": "If valid, proceed to 'Document Verification'; if invalid, go to 'Notification (rejection)'",
+      "fallback": "Escalate to 'Human Review Agent' if validation fails due to system issues",
+      "timeout": 3,
+      "logging": "Logs request details, validation status, and reasons for rejection if any"
+    },
+    {
+      "name": "Document Verification",
+      "input": "Validated request details",
+      "output": "Verified document status (approved or rejected with reasons)",
+      "next": "If documents are approved, proceed to 'Fraud Check'; if rejected, go to 'Notification (rejection)'",
+      "fallback": "Escalate to 'Human Review Agent' if document verification fails due to system issues",
+      "timeout": 5,
+      "logging": "Logs document verification status and reasons for rejection if any"
+    },
+    {
+      "name": "Fraud Check",
+      "input": "Verified document details and customer request",
+      "output": "Fraud check result (fraud detected or not)",
+      "next": "If no fraud detected, proceed to 'Approval'; if fraud detected, go to 'Notification (rejection)'",
+      "fallback": "Escalate to 'Human Review Agent' if fraud check fails or times out",
+      "timeout": 10,
+      "logging": "Logs fraud check results and reasons for detection if any"
+    },
+    {
+      "name": "Approval",
+      "input": "Fraud check results and verified document details",
+      "output": "Approval status (approved or rejected with reasons)",
+      "next": "If approved, proceed to 'Payment Processing'; if rejected, go to 'Notification (rejection)'",
+      "fallback": "Escalate to 'Human Review Agent' if approval fails due to system issues",
+      "timeout": 15,
+      "logging": "Logs approval status and reasons for rejection if any"
+    },
+    {
+      "name": "Payment Processing",
+      "input": "Approval details and customer payment information",
+      "output": "Payment status (success or failure with reasons)",
+      "next": "If payment is successful, proceed to 'Notification (success)'; if failed, go to 'Notification (failure)'",
+      "fallback": "Escalate to 'Human Review Agent' if payment processing fails due to system issues",
+      "timeout": 15,
+      "logging": "Logs payment status and reasons for failure if any"
+    },
+    {
+      "name": "Notification",
+      "input": "Results from the previous agent (approval, payment status, etc.)",
+      "output": "Notification sent to customer and relevant parties",
+      "next": "End of workflow",
+      "fallback": "Log error and end workflow if notification fails",
+      "timeout": 5,
+      "logging": "Logs notification status and details sent"
+    },
+    {
+      "name": "Human Review Agent",
+      "input": "Details from the previous agent that escalated (e.g., invalid request, fraud detected, etc.)",
+      "output": "Manual review decision (approve, reject, or additional action required)",
+      "next": "Based on manual review, proceed to 'Approval' or 'Notification (rejection)' or 'Notification (additional action needed)'",
+      "fallback": "Log error and end workflow if human review fails to provide a decision",
+      "timeout": 60,
+      "logging": "Logs human review decision and rationale"
+    }
+  ],
+  "constraints": {
+    "minimum_agents": 6,
+    "required_agents": ["validation", "fraud-check", "approval", "payment", "notification"],
+    "conditional_branch": "Fraud Check leads to different paths based on fraud detection",
+    "fallback_handlers": "Each agent has a fallback to escalate to 'Human Review Agent' or log errors",
+    "first_agent": "Validation/Triage",
+    "last_agent": "Notification",
+    "fraud_before_approval": true,
+    "payment_after_approval": true,
+    "total_processing_time": 53,
+    "handles_both_outcomes": true,
+    "logging_audit": "Each agent logs its actions and outcomes",
+    "no_circular_dependencies": true,
+    "human_escalation_path": "Human Review Agent for edge cases",
+    "timeout_values": {
+      "Validation/Triage": 3,
+      "Document Verification": 5,
+      "Fraud Check": 10,
+      "Approval": 15,
+      "Payment Processing": 15,
+      "Notification": 5,
+      "Human Review Agent": 60
+    }
+  }
+}
+```

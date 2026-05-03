@@ -1,0 +1,55 @@
+The solution to the problem involves creating a function `is_valid_password(password)` that checks a password against a series of rules. The function is designed to return `False` as soon as it encounters a violation of any rule, which optimizes performance by avoiding unnecessary checks. The rules include length constraints, the absence of spaces, the prohibition of starting with a digit, the presence of at least one uppercase letter, one lowercase letter, one digit, and one special character from a specified set, the absence of the word "password" (case-insensitive), and the prohibition of more than three consecutive identical characters.
+
+The function `run_tests()` is designed to test the `is_valid_password` function with a predefined set of test cases, ensuring that the function behaves as expected across a range of scenarios, including edge cases and invalid inputs.
+
+Here is the reference code:
+
+```python
+def is_valid_password(password):
+    n = len(password)
+    if n < 8 or n > 64:
+        return False
+    if ' ' in password:
+        return False
+    if password[0].isdigit():
+        return False
+    special_chars = "!@#$%^&*()-_+="
+    has_upper = any(c.isupper() for c in password)
+    has_lower = any(c.islower() for c in password)
+    has_digit = any(c.isdigit() for c in password)
+    has_special = any(c in special_chars for c in password)
+    if not (has_upper and has_lower and has_digit and has_special):
+        return False
+    if "password" in password.lower():
+        return False
+    for i in range(n - 3):
+        if password[i] == password[i+1] == password[i+2] == password[i+3]:
+            return False
+    return True
+
+def run_tests():
+    test_cases = [
+        ("Short", False),
+        ("a"*65, False),
+        ("1Abcdefg!", False),
+        ("ABCDEFG1!", False),
+        ("abcdefg1!", False),
+        ("Abcdefg!@", False),
+        ("Abcdefg1a", False),
+        ("Abcdefg 1!", False),
+        ("Abcdefg1!password", False),
+        ("Abcdefg1!!!!", False),
+        ("Abcdefg1!", True),
+        ("12345678!", False),
+        ("Abcdefghijklmnopqrstuvwxyz!@", False),
+        ("ABCDEFG1!password", False),
+        ("Abcdefg1!pass", True)
+    ]
+    results = []
+    for inp, expected in test_cases:
+        actual = is_valid_password(inp)
+        results.append((inp, expected, actual))
+    return results
+```
+
+The `is_valid_password` function first checks the length of the password to ensure it is between 8 and 64 characters. It then checks for the presence of spaces and ensures the password does not start with a digit. The function also verifies the presence of at least one uppercase letter, one lowercase letter, one digit, and one special character from the specified set. It checks for the absence of the word "password" (case-insensitive) and ensures there are no more than three consecutive identical characters. The `run_tests` function tests the `is_valid_password` function with a predefined set of test cases, ensuring that the function behaves as expected across a range of scenarios.
