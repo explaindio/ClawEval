@@ -1,0 +1,116 @@
+```json
+{
+  "weeks": [
+    {
+      "week": 1,
+      "topic": "Python Fundamentals: Basics and Syntax",
+      "objectives": [
+        "Understand Python syntax and basic structure (indentation, comments, print statements)",
+        "Learn about variables, data types (int, float, str, bool), and type conversion",
+        "Master basic input/output operations (print, input functions)",
+        "Practice arithmetic operations and operator precedence"
+      ],
+      "assignment": {
+        "type": "Exercises",
+        "description": "Complete a series of small exercises covering variables, data types, arithmetic operations, and basic I/O. Example tasks: Calculate area/volume, convert units, or create a simple greeting program.",
+        "complexity": "Low"
+      },
+      "prerequisites": []
+    },
+    {
+      "week": 2,
+      "topic": "Control Flow and Data Structures (Lists, Dictionaries)",
+      "objectives": [
+        "Implement conditional statements (if/elif/else) and logical operators",
+        "Learn loops (for, while) and their practical applications",
+        "Understand and use lists (creation, iteration, methods like append, pop, sort)",
+        "Work with dictionaries (key-value pairs, iteration, common methods)"
+      ],
+      "assignment": {
+        "type": "Practical Project",
+        "description": "Build a **simple to-do list manager** using lists and dictionaries. Include features like adding, removing, marking tasks as complete, and saving/loading tasks to/from a file (introduction to file I/O).",
+        "complexity": "Medium"
+      },
+      "prerequisites": ["Week 1"]
+    },
+    {
+      "week": 3,
+      "topic": "Functions and Error Handling",
+      "objectives": [
+        "Define and use functions (parameters, return values, scope)",
+        "Learn about function arguments (default, keyword, variable-length args)",
+        "Implement basic error handling using try/except blocks",
+        "Understand common exceptions (ValueError, TypeError, ZeroDivisionError)"
+      ],
+      "assignment": {
+        "type": "Exercises",
+        "description": "Write a set of functions to solve mathematical problems (e.g., factorial, Fibonacci, prime checker) with error handling. Include a main program that uses these functions and handles invalid inputs gracefully.",
+        "complexity": "Medium"
+      },
+      "prerequisites": ["Week 1", "Week 2"]
+    },
+    {
+      "week": 4,
+      "topic": "Object-Oriented Programming (OOP)",
+      "objectives": [
+        "Define classes and objects (attributes, methods)",
+        "Understand inheritance (single and multiple levels)",
+        "Implement encapsulation (private/public attributes/methods)",
+        "Use composition and basic polymorphism"
+      ],
+      "assignment": {
+        "type": "Practical Project",
+        "description": "Design a **library system** using OOP. Create classes like `Book`, `Member`, and `Library` with methods to add/remove books, check out/return books, and track overdue items. Include inheritance (e.g., `EBook` inheriting from `Book`).",
+        "complexity": "High"
+      },
+      "prerequisites": ["Week 1", "Week 2", "Week 3"]
+    },
+    {
+      "week": 5,
+      "topic": "File I/O and Testing",
+      "objectives": [
+        "Read/write files (text and binary modes, with/without context managers)",
+        "Work with file paths and directories (os module)",
+        "Write unit tests using `unittest` or `pytest`",
+        "Test functions with assertions and mocking (basic cases)"
+      ],
+      "assignment": {
+        "type": "Exercises + Testing",
+        "description": "Extend the **to-do list manager** from Week 2 with file I/O (save/load tasks) and write unit tests for core functions (e.g., add_task, remove_task). Use `pytest` to automate testing.",
+        "complexity": "High"
+      },
+      "prerequisites": ["Week 2", "Week 3", "Week 4"]
+    },
+    {
+      "week": 6,
+      "topic": "Capstone Project: Full-Stack Application",
+      "objectives": [
+        "Combine all concepts (OOP, file I/O, testing, functions) into a single project",
+        "Design a modular and scalable application",
+        "Include user interaction (CLI or simple GUI with `tkinter`)",
+        "Write comprehensive tests and documentation"
+      ],
+      "assignment": {
+        "type": "Capstone Project",
+        "description": "Build a **complete application** (e.g., a **personal finance tracker**, **quiz game**, or **blog system**) with the following requirements:
+          - Use OOP for core components (e.g., `User`, `Transaction`, `Post` classes).
+          - Implement file I/O for persistence (save/load data).
+          - Write unit tests for critical functions.
+          - Include error handling for edge cases.
+          - Add a simple CLI or GUI interface.
+        Deliver: Code, tests, and a short documentation file.",
+        "complexity": "Very High"
+      },
+      "prerequisites": ["Week 1", "Week 2", "Week 3", "Week 4", "Week 5"]
+    }
+  ],
+  "total_objectives": 19,
+  "notes": {
+    "progression": "Assignments increase in complexity from exercises (Week 1) to a full project (Week 6).",
+    "practical_project": "Week 2's to-do list and Week 4's library system are practical projects.",
+    "testing": "Introduced in Week 5 before the capstone.",
+    "file_io": "Covered in Weeks 2 and 5 (with practical application).",
+    "oop": "Introduced in Week 4 as required."
+  }
+}
+```

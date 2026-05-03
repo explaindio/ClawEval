@@ -1,0 +1,84 @@
+Here's the Python function `is_valid_password(password)` along with the `run_tests()` function:
+
+```python
+def is_valid_password(password):
+    # Check length
+    if len(password) < 8 or len(password) > 64:
+        return False
+
+    # Check for spaces
+    if ' ' in password:
+        return False
+
+    # Check starts with digit
+    if password[0].isdigit():
+        return False
+
+    # Check for at least one uppercase, lowercase, digit, and special character
+    has_upper = any(c.isupper() for c in password)
+    has_lower = any(c.islower() for c in password)
+    has_digit = any(c.isdigit() for c in password)
+    has_special = any(c in "!@#$%^&*()-_+=" for c in password)
+
+    if not (has_upper and has_lower and has_digit and has_special):
+        return False
+
+    # Check for "password" (case-insensitive)
+    if "password" in password.lower():
+        return False
+
+    # Check for more than 3 consecutive identical characters
+    for i in range(len(password) - 3):
+        if password[i] == password[i+1] == password[i+2] == password[i+3]:
+            return False
+
+    return True
+
+def run_tests():
+    tests = [
+        # Valid passwords
+        ("SecureP@ss123", True, True),
+        ("Ab1!@#cd", True, True),
+        ("LongEnough123!", True, True),
+
+        # Invalid passwords (too short)
+        ("Short1!", False, False),
+        ("Ab1!", False, False),
+
+        # Invalid passwords (too long)
+        ("A" * 65, False, False),
+
+        # Invalid passwords (missing uppercase)
+        ("lowercase1!", False, False),
+
+        # Invalid passwords (missing lowercase)
+        ("UPPERCASE1!", False, False),
+
+        # Invalid passwords (missing digit)
+        ("NoDigitHere!", False, False),
+
+        # Invalid passwords (missing special char)
+        ("NoSpecial123", False, False),
+
+        # Invalid passwords (contains space)
+        ("Has Space1!", False, False),
+
+        # Invalid passwords (starts with digit)
+        ("1BadStart!", False, False),
+
+        # Invalid passwords (contains "password")
+        ("ThisIsPassword123!", False, False),
+        ("PASSWORD123!", False, False),
+
+        # Invalid passwords (more than 3 consecutive chars)
+        ("AAAA123!", False, False),
+        ("111234!", False, False),
+        ("aabbcc123!", True, True),  # This one should pass (only 2 consecutive)
+    ]
+
+    results = []
+    for input_pw, expected, actual in tests:
+        results.append((input_pw, expected, is_valid_password(input_pw)))
+
+    return results
+```

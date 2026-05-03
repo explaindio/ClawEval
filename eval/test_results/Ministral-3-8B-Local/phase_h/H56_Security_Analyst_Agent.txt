@@ -1,0 +1,117 @@
+```json
+{
+  "vulnerabilities": [
+    {
+      "type": "SQL Injection",
+      "location": "login function, line with query construction (around line 10)",
+      "severity": "critical"
+    },
+    {
+      "type": "SQL Injection",
+      "location": "login function, query parameter interpolation (around line 10)",
+      "severity": "critical"
+    },
+    {
+      "type": "Template Injection (Server-Side Template Injection)",
+      "location": "profile function, template string construction (around line 15)",
+      "severity": "high"
+    },
+    {
+      "type": "OS Command Injection",
+      "location": "run_command function, subprocess.run() with shell=True (around line 25)",
+      "severity": "critical"
+    },
+    {
+      "type": "OS Command Injection",
+      "location": "run_command function, cmd parameter (around line 25)",
+      "severity": "critical"
+    },
+    {
+      "type": "OS Command Injection",
+      "location": "export_data function, os.system() with user input (around line 45)",
+      "severity": "critical"
+    },
+    {
+      "type": "Directory Traversal",
+      "location": "download function, filepath parameter (around line 30)",
+      "severity": "high"
+    },
+    {
+      "type": "Directory Traversal",
+      "location": "upload function, path construction (around line 28)",
+      "severity": "high"
+    },
+    {
+      "type": "Insecure Deserialization",
+      "location": "restore_session function, pickle.loads() (around line 35)",
+      "severity": "critical"
+    },
+    {
+      "type": "Insecure Deserialization",
+      "location": "restore_session function, untrusted data loading (around line 35)",
+      "severity": "critical"
+    },
+    {
+      "type": "Insecure YAML Loading",
+      "location": "load_config function, yaml.load() without safe mode (around line 32)",
+      "severity": "critical"
+    },
+    {
+      "type": "Insecure YAML Loading",
+      "location": "load_config function, untrusted data loading (around line 32)",
+      "severity": "critical"
+    },
+    {
+      "type": "Hardcoded Secret",
+      "location": "SECRET variable (around line 5)",
+      "severity": "high"
+    },
+    {
+      "type": "Insecure Debug Mode",
+      "location": "app.run() with debug=True (around line 50)",
+      "severity": "high"
+    },
+    {
+      "type": "Insecure Debug Mode",
+      "location": "app.run() with host='0.0.0.0' (around line 50)",
+      "severity": "high"
+    },
+    {
+      "type": "Insecure Password Storage",
+      "location": "login function, MD5 hashing of passwords (around line 10)",
+      "severity": "high"
+    }
+  ],
+  "count": 15
+}
+```
+
+### Explanation of Vulnerabilities:
+
+1. **SQL Injection (x2)**:
+   - The `login` function directly interpolates user input into an SQL query, allowing attackers to manipulate the query.
+
+2. **Server-Side Template Injection**:
+   - The `profile` function uses user input directly in a template string, which could lead to arbitrary code execution.
+
+3. **OS Command Injection (x3)**:
+   - `run_command` uses `subprocess.run()` with `shell=True`, allowing command injection.
+   - `export_data` uses `os.system()` with user input, allowing command injection.
+
+4. **Directory Traversal (x2)**:
+   - `download` and `upload` functions do not sanitize user input for path traversal attacks.
+
+5. **Insecure Deserialization (x2)**:
+   - `restore_session` uses `pickle.loads()` on untrusted data, which can execute arbitrary code.
+
+6. **Insecure YAML Loading (x2)**:
+   - `load_config` uses `yaml.load()` without `safe=False`, allowing arbitrary code execution.
+
+7. **Hardcoded Secret**:
+   - The `SECRET` variable is hardcoded, which can be easily exposed.
+
+8. **Insecure Debug Mode (x2)**:
+   - The Flask app runs with `debug=True` and `host="0.0.0.0"`, exposing debug information and allowing remote code execution.
+
+9. **Insecure Password Storage**:
+   - The `login` function uses MD5 hashing, which is easily reversible and insecure for password storage.

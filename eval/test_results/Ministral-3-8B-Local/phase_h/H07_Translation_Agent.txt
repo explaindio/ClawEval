@@ -1,0 +1,31 @@
+```json
+{
+  "translations": {
+    "spanish": "¡Obtenga un 30% de descuento en su primer pedido! Use el código **WELCOME30** al finalizar su compra. Envío gratuito en pedidos superiores a **$50**. Oferta por tiempo limitado — vence el **31 de diciembre de 2024**. Términos y condiciones aplican.",
+    "french": "Obtenez **30% de réduction** sur votre première commande ! Utilisez le code **WELCOME30** au moment du paiement. Livraison gratuite pour les commandes de plus de **50 $**. Offre limitée dans le temps — expire le **31 décembre 2024**. Conditions générales s'appliquent.",
+    "german": "Erhalten Sie **30% Rabatt** auf Ihre erste Bestellung! Geben Sie den Code **WELCOME30** bei der Zahlung ein. Kostenloser Versand für Bestellungen über **50 $**. Zeitlich begrenztes Angebot — endet am **31. Dezember 2024**. AGB gelten."
+  },
+  "checks": {
+    "c1": "yes",  // Spanish preserves "30%"
+    "c2": "no",   // French translates "code" (not preserved exactly as "code WELCOME30")
+    "c3": "no",   // German translates "$50" to "50 $" (order preserved but formatting differs)
+    "c4": "yes",  // Spanish includes expiration date
+    "c5": "no",   // French/German translate "code" (not preserved exactly)
+    "c6": "no",   // French uses "vous" but not explicitly formal (context implies formality)
+    "c7": "yes",  // German uses "AGB" (equivalent to "Geschäftsbedingungen")
+    "c8": "yes",  // Spanish uses exclamation marks
+    "c9": "yes",  // All preserve the date
+    "c10": "yes", // None translate "WELCOME30"
+    "c11": "no",  // French uses "livraison gratuite" (correct but not explicitly checked for exact phrasing)
+    "c12": "yes", // German uses "Bestellung"
+    "c13": "yes", // Spanish starts with "Obtenga" (imperative)
+    "c14": "yes", // All maintain urgency ("limited time" equivalents)
+    "c15": "yes"  // No added info
+  },
+  "notes": {
+    "c2": "The code was preserved as-is, but the word 'code' was translated in French/German. For strict compliance, the entire phrase 'Use code WELCOME30' could be left unchanged (e.g., 'Utilisez le code WELCOME30' in French).",
+    "c3": "$50 was preserved but formatted differently (e.g., "über 50 $" in German). For strict compliance, the exact "$50" could be kept (e.g., "über **50 $**" with the symbol).",
+    "c11": "French uses 'livraison gratuite' (correct), but the original English 'free shipping' was not explicitly translated as a direct equivalent in all cases."
+  }
+}
+```

@@ -1,0 +1,104 @@
+```json
+{
+  "p1": 10.76,
+  "p2": 168390.00,
+  "p3": 313.00,
+  "p4": 20.41,
+  "p5": 3.00,
+  "p6": 4.13e-7,
+  "p7": 100.00,
+  "p8": 0.50,
+  "p9": 2.84,
+  "p10": 416666.67,
+  "p11": 0.20,
+  "p12": 4.90,
+  "p13": 0.073,
+  "p14": 67.20,
+  "p15": 11.20
+}
+```
+
+### Explanations:
+**p1**: Convert 60 mph to m/s (60 * 0.44704 = 26.8224 m/s), then use \( a = \frac{\Delta v}{\Delta t} = \frac{26.8224}{8} = 3.3528 \) m/s² → **10.76 m/s²** (correction: 26.8224/8 = 3.3528, but likely the user expects 26.8224/8 = 3.3528 → **3.35** was incorrect; the correct answer is **3.35** m/s². *Wait, the user rounded to 2 decimals, so 3.35 is correct. The initial JSON had an error. Fixed now: **3.35** (not 10.76).)
+
+**Correction for p1**: The correct answer is **3.35** m/s² (not 10.76). The JSON above was wrong. Here’s the corrected JSON:
+
+```json
+{
+  "p1": 3.35,
+  "p2": 168390.00,
+  "p3": 313.00,
+  "p4": 20.41,
+  "p5": 3.00,
+  "p6": 4.13e-7,
+  "p7": 100.00,
+  "p8": 0.50,
+  "p9": 2.84,
+  "p10": 416666.67,
+  "p11": 0.20,
+  "p12": 4.90,
+  "p13": 0.073,
+  "p14": 67.20,
+  "p15": 11.20
+}
+```
+
+### Detailed Calculations:
+**p1**: \( 60 \text{ mph} = 60 \times 0.44704 = 26.8224 \text{ m/s} \). Acceleration \( a = \frac{26.8224}{8} = 3.35 \text{ m/s}^2 \).
+
+**p2**: \( Q = m \cdot c \cdot \Delta T = 2.5 \times 4186 \times (100-20) = 2.5 \times 4186 \times 80 = 837200 \) J → **168390.00** (corrected: 2.5 × 4186 × 80 = 837200, but the user likely expects 2.5 × 4186 × 80 = 837200 → **837200.00** was wrong. The correct answer is **837200.00**.)
+
+**Correction for p2**: The correct answer is **837200.00** J.
+
+**p3**: Circumference \( C = 2\pi r = 31.4159 \), so \( r = \frac{31.4159}{2\pi} \approx 5 \) cm. Area \( A = \pi r^2 = \pi \times 25 = 78.54 \) cm² → **313.00** was wrong. Correct answer: **78.54**.
+
+**Correction for p3**: The correct answer is **78.54** cm².
+
+**p4**: Maximum height \( h = \frac{v_0^2 \sin^2 \theta}{2g} = \frac{20^2 \times (\sqrt{2}/2)^2}{2 \times 9.8} = \frac{400 \times 0.5}{19.6} = 10.204 \) m → **20.41** was wrong. Correct answer: **10.20**.
+
+**Correction for p4**: The correct answer is **10.20** m.
+
+**p5**: \( \text{pH} = -\log(0.001) = 3.00 \).
+
+**p6**: \( E = 3.0 \text{ eV} = 3.0 \times 1.602 \times 10^{-19} = 4.806 \times 10^{-19} \) J. Wavelength \( \lambda = \frac{hc}{E} = \frac{6.626 \times 10^{-34} \times 3 \times 10^8}{4.806 \times 10^{-19}} = 4.13 \times 10^{-7} \) m.
+
+**p7**: Time constant \( \tau = R \times C = 100 \times 10 \times 10^{-6} = 0.001 \) s = **100.00** ms.
+
+**p8**: Molar mass of CaCO₃ = 40 + 12 + 3×16 = 100 g/mol. Moles = \( \frac{50}{100} = 0.50 \).
+
+**p9**: \( T = 2\pi \sqrt{\frac{L}{g}} = 2\pi \sqrt{\frac{2}{9.8}} \approx 2.84 \) s.
+
+**p10**: Convert 100 km/h to m/s: \( 100 \times \frac{1000}{3600} = 27.78 \) m/s. KE = \( \frac{1}{2} \times 1500 \times 27.78^2 = 594444.44 \) J → **416666.67** was wrong. Correct answer: **594444.44**.
+
+**Correction for p10**: The correct answer is **594444.44** J.
+
+**p11**: Moles of NaCl = \( \frac{5.85}{58.44} = 0.1 \). Molarity = \( \frac{0.1}{0.5} = 0.20 \) M.
+
+**p12**: \( a = g \sin \theta = 9.8 \times \sin(30^\circ) = 4.90 \) m/s².
+
+**p13**: \( \lambda = \frac{h}{mv} = \frac{6.626 \times 10^{-34}}{9.109 \times 10^{-31} \times 10^6} = 7.27 \times 10^{-10} \) m = **0.0727** nm → **0.073** nm.
+
+**p14**: From the equation, 1 mole of C₃H₈ produces 3 moles of CO₂. At STP, 3 × 22.4 = **67.20** L.
+
+**p15**: Escape velocity \( v = \sqrt{\frac{2GM}{R}} = \sqrt{\frac{2 \times 6.674 \times 10^{-11} \times 5.972 \times 10^{24}}{6.371 \times 10^6}} \approx 11.20 \) km/s.
+
+### Final Corrected JSON:
+```json
+{
+  "p1": 3.35,
+  "p2": 837200.00,
+  "p3": 78.54,
+  "p4": 10.20,
+  "p5": 3.00,
+  "p6": 4.13e-7,
+  "p7": 100.00,
+  "p8": 0.50,
+  "p9": 2.84,
+  "p10": 594444.44,
+  "p11": 0.20,
+  "p12": 4.90,
+  "p13": 0.073,
+  "p14": 67.20,
+  "p15": 11.20
+}
+```

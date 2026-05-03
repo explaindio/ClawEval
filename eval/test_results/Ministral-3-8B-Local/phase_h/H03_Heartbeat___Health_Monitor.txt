@@ -1,0 +1,93 @@
+```json
+{
+  "s1": {
+    "status": "healthy",
+    "latency_ms": 45,
+    "error_rate_pct": 0.01
+  },
+  "s2": {
+    "status": "degraded",
+    "latency_ms": 200,
+    "error_rate_pct": 2.5,
+    "notes": "High error rate and timeouts observed"
+  },
+  "s3": {
+    "status": "healthy",
+    "latency_ms": 5,
+    "error_rate_pct": 0,
+    "notes": "Replication lag is optimal"
+  },
+  "s4": {
+    "status": "degraded",
+    "latency_ms": 5,
+    "error_rate_pct": 0.1,
+    "notes": "High replication lag (5200ms) indicates potential issues"
+  },
+  "s5": {
+    "status": "healthy",
+    "latency_ms": 1,
+    "error_rate_pct": 0,
+    "notes": "Memory usage at 45% (likely acceptable)"
+  },
+  "s6": {
+    "status": "degraded",
+    "latency_ms": 800,
+    "error_rate_pct": 8,
+    "notes": "High error rate and cluster in yellow status"
+  },
+  "s7": {
+    "status": "healthy",
+    "latency_ms": 150,
+    "error_rate_pct": 0.5,
+    "notes": "Queue depth of 12 may need monitoring"
+  },
+  "s8": {
+    "status": "down",
+    "latency_ms": null,
+    "error_rate_pct": 100,
+    "notes": "All requests failing for 30 minutes"
+  },
+  "s9": {
+    "status": "healthy",
+    "latency_ms": 15,
+    "error_rate_pct": 0,
+    "notes": "Cache hit rate of 94% is good"
+  },
+  "s10": {
+    "status": "degraded",
+    "latency_ms": 10,
+    "error_rate_pct": 0.2,
+    "notes": "High consumer lag (50000 messages) indicates backlog"
+  },
+  "s11": {
+    "status": "degraded",
+    "latency_ms": 2000,
+    "error_rate_pct": 12,
+    "notes": "High error rate and latency, GPU utilization at 99%"
+  },
+  "s12": {
+    "status": "healthy",
+    "latency_ms": 100,
+    "error_rate_pct": 0.02,
+    "notes": "High availability (99.99%)"
+  },
+  "s13": {
+    "status": "healthy",
+    "latency_ms": 2,
+    "error_rate_pct": 0,
+    "notes": "All zones resolving"
+  },
+  "s14": {
+    "status": "healthy",
+    "latency_ms": 1,
+    "error_rate_pct": 0,
+    "notes": "Active connections at 25% capacity"
+  },
+  "s15": {
+    "status": "degraded",
+    "latency_ms": 50,
+    "error_rate_pct": 0,
+    "notes": "All dashboards stale for 45 minutes"
+  }
+}
+```

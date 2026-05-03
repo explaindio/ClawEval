@@ -1,0 +1,144 @@
+Here's a Python class `JSONValidator` that validates JSON-like data against the specified schema format:
+
+```python
+class JSONValidator:
+    def validate(self, data, schema):
+        errors = []
+        self._validate_data(data, schema, errors)
+        return {
+            "valid": len(errors) == 0,
+            "errors": errors
+        }
+
+    def _validate_data(self, data, schema, errors):
+        if isinstance(data, dict):
+            for field_name, field_schema in schema.items():
+                if field_name in data:
+                    self._validate_field(data[field_name], field_schema, errors)
+                elif field_schema.get("required", False):
+                    errors.append(f"Missing required field: {field_name}")
+        elif isinstance(data, list):
+            # If data is a list but schema expects a dict, this would be caught by type validation
+            pass
+        else:
+            # If data is neither dict nor list (but schema expects one), this would be caught by type validation
+            pass
+
+    def _validate_field(self, value, field_schema, errors):
+        expected_type = field_schema.get("type")
+        required = field_schema.get("required", False)
+
+        # Check type first
+        if expected_type == "str":
+            if not isinstance(value, str):
+                errors.append(f"Field type mismatch: expected str, got {type(value).__name__}")
+            else:
+                self._validate_string(value, field_schema, errors)
+        elif expected_type == "int":
+            if not isinstance(value, int):
+                errors.append(f"Field type mismatch: expected int, got {type(value).__name__}")
+            else:
+                self._validate_number(value, field_schema, errors)
+        elif expected_type == "float":
+            if not isinstance(value, float):
+                errors.append(f"Field type mismatch: expected float, got {type(value).__name__}")
+            else:
+                self._validate_number(value, field_schema, errors)
+        elif expected_type == "bool":
+            if not isinstance(value, bool):
+                errors.append(f"Field type mismatch: expected bool, got {type(value).__name__}")
+        elif expected_type == "list":
+            if not isinstance(value, list):
+                errors.append(f"Field type mismatch: expected list, got {type(value).__name__}")
+            else:
+                self._validate_list(value, field_schema, errors)
+        elif expected_type == "dict":
+            if not isinstance(value, dict):
+                errors.append(f"Field type mismatch: expected dict, got {type(value).__name__}")
+            else:
+                self._validate_dict(value, field_schema, errors)
+        else:
+            errors.append(f"Unknown type: {expected_type}")
+
+    def _validate_string(self, value, field_schema, errors):
+        min_len = field_schema.get("min_length")
+        max_len = field_schema.get("max_length")
+
+        if min_len is not None and len(value) < min_len:
+            errors.append(f"String length too short: got {len(value)}, minimum {min_len} required")
+        if max_len is not None and len(value) > max_len:
+            errors.append(f"String length too long: got {len(value)}, maximum {max_len} required")
+
+    def _validate_number(self, value, field_schema, errors):
+        min_val = field_schema.get("min")
+        max_val = field_schema.get("max")
+
+        if min_val is not None and value < min_val:
+            errors.append(f"Value too small: got {value}, minimum {min_val} required")
+        if max_val is not None and value > max_val:
+            errors.append(f"Value too large: got {value}, maximum {max_val} required")
+
+    def _validate_list(self, value, field_schema, errors):
+        min_len = field_schema.get("min_length")
+        max_len = field_schema.get("max_length")
+
+        if min_len is not None and len(value) < min_len:
+            errors.append(f"List length too short: got {len(value)}, minimum {min_len} required")
+        if max_len is not None and len(value) > max_len:
+            errors.append(f"List length too long: got {len(value)}, maximum {max_len} required")
+
+    def _validate_dict(self, value, field_schema, errors):
+        # For dicts, we don't have specific validation rules in the schema
+        # except for type checking which is already done
+        pass
+```
+
+Example usage:
+
+```python
+validator = JSONValidator()
+
+# Valid data
+data1 = {
+    "name": "John",
+    "age": 30,
+    "height": 175.5,
+    "is_student": False,
+    "scores": [95, 87, 92],
+    "address": {
+        "street": "123 Main St",
+        "city": "Anytown"
+    }
+}
+
+schema1 = {
+    "name": {"type": "str", "min_length": 2, "max_length": 50},
+    "age": {"type": "int", "min": 0, "max": 120},
+    "height": {"type": "float", "min": 0, "max": 300},
+    "is_student": {"type": "bool"},
+    "scores": {"type": "list", "min_length": 1, "max_length": 5},
+    "address": {"type": "dict"}
+}
+
+print(validator.validate(data1, schema1))
+
+# Invalid data
+data2 = {
+    "name": "Jo",  # Too short
+    "age": -5,     # Negative age
+    "height": "175.5",  # Wrong type
+    "scores": [95, 87, 92, 98, 100, 91]  # Too long
+}
+
+print(validator.validate(data2, schema1))
+```
+
+Key features:
+1. Validates all specified schema rules
+2. Collects all errors (not just the first one)
+3. Handles all specified types (str, int, float, bool, list, dict)
+4. Checks required fields
+5. Validates min/max for numbers
+6. Validates min/max_length for strings and lists
+7. Allows extra fields not in schema
+8. Returns a dictionary with "valid" boolean and "errors" list

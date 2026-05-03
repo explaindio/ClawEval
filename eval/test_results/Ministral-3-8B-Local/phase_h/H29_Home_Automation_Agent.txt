@@ -1,0 +1,178 @@
+Here’s the JSON response with the correct actions for each scenario based on the provided rules and house configuration:
+
+```json
+{
+  "1": {
+    "action": {
+      "blinds": "open",
+      "lights": {
+        "hall": "on",
+        "kitchen": "on"
+      },
+      "music": "play",
+      "playlist": "morning_playlist"
+    },
+    "note": "Morning routine triggered (7 AM)"
+  },
+  "2": {
+    "action": {
+      "doors": "lock",
+      "alarm": "arm",
+      "lights": "off",
+      "thermostat": "eco (62°F)"
+    },
+    "note": "Nobody home → 'When nobody is home' rule"
+  },
+  "3": {
+    "action": {
+      "thermostat": "cooling"
+    },
+    "note": "Temperature > 78°F → 'When temperature > 78°F' rule"
+  },
+  "4": {
+    "action": {
+      "lights": {
+        "all": "dim (20%)"
+      },
+      "doors": "lock"
+    },
+    "note": "After 11 PM → 'After 11pm' rule"
+  },
+  "5": {
+    "action": {
+      "alarm": "trigger"
+    },
+    "note": "Motion detected at night + nobody home → 'When motion detected at night + nobody home' rule"
+  },
+  "6": {
+    "action": {
+      "cameras": "on",
+      "doors": "unlock"
+    },
+    "note": "Doorbell rings + recognized face → 'When doorbell rings' rule"
+  },
+  "7": {
+    "action": {
+      "cameras": "on",
+      "doors": "lock (no unlock)"
+    },
+    "note": "Doorbell rings + unknown person → 'When doorbell rings' rule (no unlock)"
+  },
+  "8": {
+    "action": {
+      "alarm": "disarm",
+      "doors": "unlock (front)",
+      "lights": {
+        "hall": "on"
+      }
+    },
+    "note": "Someone arrives home → 'When someone arrives home' rule"
+  },
+  "9": {
+    "action": {
+      "doors": "lock",
+      "alarm": "arm",
+      "lights": "off",
+      "thermostat": "eco (62°F)"
+    },
+    "note": "Nobody home + temp < 65°F → 'When nobody is home' + 'When temperature < 65°F' (eco overrides heating)"
+  },
+  "10": {
+    "action": {
+      "blinds": "open",
+      "lights": {
+        "kitchen": "on"
+      },
+      "music": "play",
+      "playlist": "morning_playlist"
+    },
+    "note": "Morning routine (7 AM) overrides holiday → 'Morning routine' rule"
+  },
+  "11": {
+    "action": {
+      "alarm": "trigger (smoke)",
+      "lights": "on (all)",
+      "thermostat": "off (for safety)"
+    },
+    "note": "Smoke detector triggered → Emergency override (not explicitly in rules, but implied)"
+  },
+  "12": {
+    "action": {
+      "alarm": "trigger (water leak)",
+      "lights": "on (basement)",
+      "water_leak_notification": "send"
+    },
+    "note": "Water leak sensor → Emergency override (not explicitly in rules, but implied)"
+  },
+  "13": {
+    "action": {
+      "lights": {
+        "baby_room": "on (low)"
+      },
+      "music": "play (lullaby)",
+      "cameras": "on (baby room)"
+    },
+    "note": "Baby room noise → Comfort/alert rule (not in original rules, but logical extension)"
+  },
+  "14": {
+    "action": {
+      "guest_wifi": "limit (or disable)",
+      "notification": "send (excessive devices)"
+    },
+    "note": "Guest WiFi threshold exceeded → Security/usage rule (not in original rules, but logical)"
+  },
+  "15": {
+    "action": {
+      "thermostat": "hold (last state)",
+      "lights": "hold (last state)",
+      "alarms": "hold (last state)",
+      "notification": "send (power outage)"
+    },
+    "note": "Power outage → UPS backup mode (not in original rules, but implied)"
+  },
+  "16": {
+    "action": {
+      "ventilation": "activate",
+      "notification": "send (CO2 alert)"
+    },
+    "note": "Indoor CO2 > 1000 ppm → Air quality rule (not in original rules, but logical)"
+  },
+  "17": {
+    "action": {
+      "blinds": "close (auto)",
+      "lights": "dim (auto)"
+    },
+    "note": "Sunlight sensor → Comfort rule (not in original rules, but logical)"
+  },
+  "18": {
+    "action": {
+      "lights": {
+        "toddler_room": "on (low)"
+      },
+      "cameras": "on (toddler room)"
+    },
+    "note": "Toddler room door opened → Safety/comfort rule (not in original rules, but logical)"
+  },
+  "19": {
+    "action": {
+      "garage_door": "close",
+      "notification": "send (open too long)"
+    },
+    "note": "Garage door open too long → Security rule (not in original rules, but logical)"
+  },
+  "20": {
+    "action": {
+      "thermostat": "eco (or heating if < 65°F)",
+      "doors": "lock",
+      "alarm": "arm",
+      "lights": "off"
+    },
+    "note": "Nobody home + freezing → 'When nobody is home' rule (eco may override heating if > 65°F)"
+  }
+}
+```
+
+### Notes:
+1. **Unaddressed Rules**: Some scenarios (e.g., #13, #14, #15, #16, #17, #18, #19) required logical extensions since they weren’t explicitly covered in the original rules. I added reasonable actions based on typical smart home behavior.
+2. **Priority**: Rules like "nobody home" or "after 11 PM" take precedence over other conditions (e.g., temperature adjustments).
+3. **Emergency Overrides**: Scenarios like smoke/water leaks imply overriding normal rules for safety.

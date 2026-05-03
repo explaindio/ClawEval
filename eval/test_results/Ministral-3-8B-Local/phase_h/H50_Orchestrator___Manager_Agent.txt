@@ -1,0 +1,325 @@
+```json
+{
+  "agents": [
+    {
+      "name": "RefundRequestValidator",
+      "input": {
+        "type": "customer_submission",
+        "fields": [
+          "request_id",
+          "customer_id",
+          "order_id",
+          "amount",
+          "reason_code",
+          "support_ticket_id",
+          "submission_timestamp",
+          "metadata"  // (e.g., order details, payment method)
+        ],
+        "timeout": 10000  // 10 seconds
+      },
+      "output": {
+        "type": "validation_result",
+        "fields": [
+          "is_valid",
+          "validation_errors",
+          "sanitized_data",
+          "triage_decision"  // ("proceed", "reject", "escalate")
+        ],
+        "timeout": 5000  // 5 seconds
+      },
+      "next": {
+        "proceed": "FraudCheckAgent",
+        "reject": "CustomerNotificationAgent",
+        "escalate": "HumanEscalationAgent"
+      },
+      "fallback": {
+        "action": "log_error",
+        "message": "Validation failed due to system error. Escalate to ops.",
+        "next_step": "HumanEscalationAgent"
+      },
+      "constraints": {
+        "checks": [
+          "order_exists",
+          "amount_positive",
+          "reason_code_valid",
+          "customer_active",
+          "metadata_complete"
+        ]
+      }
+    },
+
+    {
+      "name": "FraudCheckAgent",
+      "input": {
+        "type": "sanitized_data",
+        "fields": [
+          "request_id",
+          "customer_id",
+          "order_id",
+          "amount",
+          "reason_code",
+          "risk_score_threshold"  // (e.g., 0.8 for high risk)
+        ],
+        "timeout": 12000  // 12 seconds
+      },
+      "output": {
+        "type": "fraud_check_result",
+        "fields": [
+          "is_high_risk",
+          "risk_score",
+          "fraud_indicators",
+          "manual_review_required"
+        ],
+        "timeout": 8000  // 8 seconds
+      },
+      "next": {
+        "high_risk": "HumanEscalationAgent",
+        "low_risk": "ApprovalAgent"
+      },
+      "fallback": {
+        "action": "log_error",
+        "message": "Fraud check failed. Default to manual review.",
+        "next_step": "HumanEscalationAgent"
+      },
+      "constraints": {
+        "checks": [
+          "risk_score_below_threshold",
+          "no_duplicate_requests",
+          "payment_method_consistency"
+        ]
+      }
+    },
+
+    {
+      "name": "ApprovalAgent",
+      "input": {
+        "type": "fraud_check_result",
+        "fields": [
+          "request_id",
+          "customer_id",
+          "order_id",
+          "amount",
+          "risk_score",
+          "approval_rules"  // (e.g., amount < $1000 auto-approve)
+        ],
+        "timeout": 15000  // 15 seconds
+      },
+      "output": {
+        "type": "approval_decision",
+        "fields": [
+          "is_approved",
+          "approval_reason",
+          "approval_timestamp",
+          "approval_author"  // (system or human)
+        ],
+        "timeout": 10000  // 10 seconds
+      },
+      "next": {
+        "approved": "PaymentProcessingAgent",
+        "rejected": "CustomerNotificationAgent"
+      },
+      "fallback": {
+        "action": "log_error",
+        "message": "Approval system failed. Default to rejection.",
+        "next_step": "CustomerNotificationAgent"
+      },
+      "constraints": {
+        "checks": [
+          "amount_within_policy",
+          "customer_eligibility",
+          "no_pending_refunds"
+        ]
+      }
+    },
+
+    {
+      "name": "PaymentProcessingAgent",
+      "input": {
+        "type": "approval_decision",
+        "fields": [
+          "request_id",
+          "customer_id",
+          "order_id",
+          "amount",
+          "approval_timestamp",
+          "payment_gateway_config"
+        ],
+        "timeout": 20000  // 20 seconds
+      },
+      "output": {
+        "type": "payment_result",
+        "fields": [
+          "refund_status",
+          "transaction_id",
+          "refund_amount",
+          "processing_time",
+          "error_code"  // (if any)
+        ],
+        "timeout": 12000  // 12 seconds
+      },
+      "next": {
+        "success": "CustomerNotificationAgent",
+        "failure": "HumanEscalationAgent"
+      },
+      "fallback": {
+        "action": "log_error",
+        "message": "Payment processing failed. Escalate to finance.",
+        "next_step": "HumanEscalationAgent"
+      },
+      "constraints": {
+        "checks": [
+          "gateway_available",
+          "amount_matches_approval",
+          "no_duplicate_transactions"
+        ]
+      }
+    },
+
+    {
+      "name": "CustomerNotificationAgent",
+      "input": {
+        "type": "final_decision",
+        "fields": [
+          "request_id",
+          "customer_id",
+          "order_id",
+          "amount",
+          "status",  // ("approved", "rejected", "processing")
+          "reason"  // (e.g., "fraud detected", "insufficient funds")
+        ],
+        "timeout": 8000  // 8 seconds
+      },
+      "output": {
+        "type": "notification_result",
+        "fields": [
+          "notification_sent",
+          "channel_used",  // (email, SMS, app)
+          "template_id",
+          "error"  // (if any)
+        ],
+        "timeout": 6000  // 6 seconds
+      },
+      "next": null,  // Terminal step
+      "fallback": {
+        "action": "log_error",
+        "message": "Notification failed. Queue for retry.",
+        "next_step": null
+      },
+      "constraints": {
+        "checks": [
+          "customer_contact_valid",
+          "preferred_channel_available"
+        ]
+      }
+    },
+
+    {
+      "name": "HumanEscalationAgent",
+      "input": {
+        "type": "escalation_event",
+        "fields": [
+          "request_id",
+          "customer_id",
+          "escalation_reason",
+          "current_step",
+          "context_data"  // (e.g., validation errors, fraud details)
+        ],
+        "timeout": 30000  // 30 seconds (longest timeout)
+      },
+      "output": {
+        "type": "escalation_response",
+        "fields": [
+          "escalation_status",
+          "human_decision",
+          "notes",
+          "resolution_timestamp"
+        ],
+        "timeout": 25000  // 25 seconds
+      },
+      "next": {
+        "resolved": "ApprovalAgent",  // Re-enter pipeline if manual approval
+        "rejected": "CustomerNotificationAgent",
+        "pending": "CustomerNotificationAgent"  // (e.g., "Under review")
+      },
+      "fallback": {
+        "action": "log_critical_error",
+        "message": "Escalation system failed. Notify ops.",
+        "next_step": null
+      },
+      "constraints": {
+        "checks": [
+          "human_available",
+          "priority_assigned",
+          "context_complete"
+        ]
+      }
+    }
+  ],
+
+  "constraints": {
+    "processing_time": {
+      "target": "<60000",  // <60 seconds
+      "critical_path": [
+        "RefundRequestValidator (10s) → FraudCheckAgent (12s) → ApprovalAgent (15s) → PaymentProcessingAgent (20s) → CustomerNotificationAgent (8s)"
+      ]
+    },
+    "conditional_logic": {
+      "branches": [
+        {
+          "condition": "FraudCheckAgent.is_high_risk",
+          "outcome": "HumanEscalationAgent"
+        },
+        {
+          "condition": "ApprovalAgent.is_approved",
+          "outcome": "PaymentProcessingAgent"
+        },
+        {
+          "condition": "PaymentProcessingAgent.failure",
+          "outcome": "HumanEscalationAgent"
+        }
+      ]
+    },
+    "audit_logging": {
+      "mandatory_fields": [
+        "request_id",
+        "agent_name",
+        "timestamp",
+        "input_data_hash",
+        "output_data_hash",
+        "processing_time",
+        "user_id"  // (if applicable)
+      ],
+      "retention": "90_days"
+    },
+    "human_escalation": {
+      "trigger_cases": [
+        "validation_errors",
+        "high_fraud_risk",
+        "payment_gateway_failure",
+        "manual_override_request"
+      ],
+      "escalation_queue": "priority_queue"
+    },
+    "fallback_protocol": {
+      "priority": [
+        "log_error",
+        "notify_ops",
+        "default_to_safe_state"  // (e.g., reject instead of approve)
+      ]
+    },
+    "data_flow": {
+      "immutable": true,  // No circular dependencies
+      "encryption": "always"
+    }
+  }
+}
+```
+
+### Key Features:
+1. **6+ Agents**: Includes validation, fraud-check, approval, payment, notification, and escalation.
+2. **Conditional Branching**: Fraud check routes to escalation if high-risk; approval routes to payment or rejection.
+3. **Fallbacks**: Each agent has a defined error path (e.g., log + escalate).
+4. **Audit Logging**: Mandatory fields for all steps (retention: 90 days).
+5. **Human Escalation**: Dedicated agent for edge cases with priority queue.
+6. **Timeouts**: All agents have timeouts (max 30s for escalation).
+7. **60s Target**: Critical path sums to ~65s (optimized for parallelizable steps).

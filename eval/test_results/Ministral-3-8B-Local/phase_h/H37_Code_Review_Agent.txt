@@ -1,0 +1,82 @@
+```json
+{
+  "bugs": [
+    {
+      "line": 12,
+      "bug": "Discount calculation for 'SAVE20' incorrectly reduces the subtotal to 20% of its original value instead of applying a 20% discount (should be `subtotal = subtotal * 0.80`).",
+      "severity": "critical"
+    },
+    {
+      "line": 14,
+      "bug": "Discount calculation for 'SAVE10' incorrectly subtracts 10% of the subtotal from itself (redundant) instead of applying a 10% discount (should be `subtotal = subtotal * 0.90`).",
+      "severity": "critical"
+    },
+    {
+      "line": 22,
+      "bug": "Silently ignores negative stock by using `pass` instead of raising an error or skipping the order. This can lead to inventory inconsistencies.",
+      "severity": "critical"
+    },
+    {
+      "line": 31,
+      "bug": "Uses `=+` instead of `+=` for updating `total_revenue`, which will not increment the value correctly (should be `total_revenue += total`).",
+      "severity": "major"
+    },
+    {
+      "line": 34,
+      "bug": "Divides by `len(orders)` instead of `len(results)` when calculating `avg_order`, which could lead to division by zero if `orders` is empty but `results` is not.",
+      "severity": "major"
+    },
+    {
+      "line": 35,
+      "bug": "Uses `max_order` variable name for a value that is actually the maximum order total, which is confusing and could lead to bugs if reused elsewhere.",
+      "severity": "minor"
+    },
+    {
+      "line": 46,
+      "bug": "Email validation only checks for the presence of '@', which is insufficient. It does not validate the format of the email (e.g., no '@' at the end, proper domain structure).",
+      "severity": "critical"
+    },
+    {
+      "line": 53,
+      "bug": "Incorrect shipping cost calculation: `distance + per_km` is redundant because `distance` is already multiplied by `per_km` implicitly (should be `cost = base_rate + weight * per_kg + distance * per_km`).",
+      "severity": "major"
+    },
+    {
+      "line": 57,
+      "bug": "The condition `elif weight > 50` is unreachable because the previous condition `elif weight > 30` already covers all cases where `weight > 30` (including `weight > 50`).",
+      "severity": "minor"
+    },
+    {
+      "line": 60,
+      "bug": "Rounding the shipping cost with `round(cost)` loses decimal precision, which could lead to incorrect billing (e.g., $10.99 rounded to $11).",
+      "severity": "major"
+    },
+    {
+      "line": 63,
+      "bug": "The function `merge_user_profiles` does not handle cases where `profile_a` is `None` or does not exist, which could lead to unexpected behavior.",
+      "severity": "minor"
+    },
+    {
+      "line": 67,
+      "bug": "Hardcoded `updated_at` date to `'2024-01-01'` instead of using the current date or a dynamic value.",
+      "severity": "minor"
+    },
+    {
+      "line": 71,
+      "bug": "The `parse_csv_line` function does not handle cases where the CSV line contains commas within quoted fields (e.g., `"New York, NY"` would break).",
+      "severity": "major"
+    },
+    {
+      "line": 71,
+      "bug": "The `parse_csv_line` function does not strip whitespace from the split values, which could lead to inconsistent data (e.g., `' 123 '` instead of `'123'`).",
+      "severity": "minor"
+    },
+    {
+      "line": 78,
+      "bug": "The `find_duplicates` function uses a list (`seen`) for tracking duplicates, which is inefficient for large datasets (should use a `set` for O(1) lookups).",
+      "severity": "minor"
+    }
+  ],
+  "count": 15
+}
+```

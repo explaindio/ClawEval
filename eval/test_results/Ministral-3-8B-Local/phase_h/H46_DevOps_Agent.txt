@@ -1,0 +1,92 @@
+```json
+{
+  "issues": [
+    {
+      "line": "replicas: 1",
+      "issue": "Single replica increases single point of failure risk. At least 3 replicas recommended for production deployments.",
+      "severity": "critical"
+    },
+    {
+      "line": "runAsRoot: true",
+      "issue": "Running as root is a security risk. Use non-root user with least privileges.",
+      "severity": "critical"
+    },
+    {
+      "line": "privileged: true",
+      "issue": "Privileged containers have elevated permissions and can compromise cluster security.",
+      "severity": "critical"
+    },
+    {
+      "line": "image: myapp:latest",
+      "issue": "Using 'latest' tag makes deployments unstable. Use specific version/tag (e.g., v1.2.3).",
+      "severity": "critical"
+    },
+    {
+      "line": "value: \"sup3rs3cret!\"",
+      "issue": "Hardcoded secrets in YAML violate security best practices. Use Kubernetes Secrets or external secret management.",
+      "severity": "critical"
+    },
+    {
+      "line": "value: \"ak_live_12345\"",
+      "issue": "Hardcoded API key in YAML violates security best practices. Use Kubernetes Secrets or external secret management.",
+      "severity": "critical"
+    },
+    {
+      "line": "hostPath: /tmp/data",
+      "issue": "HostPath volumes are not portable and can cause issues in different environments. Use ConfigMaps, PersistentVolumes, or cloud storage instead.",
+      "severity": "major"
+    },
+    {
+      "line": "memory: \"10Gi\"",
+      "issue": "10Gi memory request is extremely high for most workloads. Verify if this is necessary or reduce to appropriate value.",
+      "severity": "major"
+    },
+    {
+      "line": "cpu: \"8\"",
+      "issue": "8 CPU cores request is excessive for most workloads. Verify if this is necessary or reduce to appropriate value.",
+      "severity": "major"
+    },
+    {
+      "line": "resources: {}",
+      "issue": "Empty resources block prevents proper resource allocation. Define at least requests for CPU/memory.",
+      "severity": "major"
+    },
+    {
+      "line": "ports: - containerPort: 8080",
+      "issue": "Missing `livenessProbe` and `readinessProbe` for container health checks. Critical for self-healing deployments.",
+      "severity": "major"
+    },
+    {
+      "line": "spec:",
+      "issue": "Missing `strategy` in Deployment spec. Default rolling update may not be optimal for this workload.",
+      "severity": "minor"
+    },
+    {
+      "line": "spec:",
+      "issue": "Missing `restartPolicy` in Deployment spec (though default is `Always`). Explicitly defining improves clarity.",
+      "severity": "minor"
+    },
+    {
+      "line": "spec:",
+      "issue": "Missing `terminationGracePeriodSeconds` for graceful shutdown handling.",
+      "severity": "minor"
+    },
+    {
+      "line": "spec:",
+      "issue": "Missing `imagePullPolicy` (defaults to `IfNotPresent`). Explicitly defining improves clarity for `latest` tag usage.",
+      "severity": "minor"
+    },
+    {
+      "line": "spec:",
+      "issue": "Missing `nodeSelector`, `affinity`, or `tolerations` for resource scheduling. May lead to suboptimal node placement.",
+      "severity": "minor"
+    },
+    {
+      "line": "spec:",
+      "issue": "Missing `podSecurityContext` to enforce security context at pod level (e.g., `runAsNonRoot`).",
+      "severity": "minor"
+    }
+  ],
+  "count": 15
+}
+```

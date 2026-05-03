@@ -1,0 +1,106 @@
+Here’s the JSON response identifying **15 SEO issues** in the provided webpage, categorized by severity:
+
+```json
+{
+  "issues": [
+    {
+      "id": 1,
+      "issue": "Missing `<meta charset="UTF-8">` in `<head>`",
+      "severity": "critical",
+      "fix": "Add `<meta charset="UTF-8">` to the `<head>` section to ensure proper character encoding for global accessibility."
+    },
+    {
+      "id": 2,
+      "issue": "Duplicate `<h1>` tags (`Best Products` and `Shop Now`)",
+      "severity": "critical",
+      "fix": "Use only **one `<h1>` per page** (e.g., replace one with `<h2>` or `<h3>`)."
+    },
+    {
+      "id": 3,
+      "issue": "No `<meta name="description">` tag",
+      "severity": "critical",
+      "fix": "Add a **unique, descriptive meta description** (150–160 chars) to improve CTR in SERPs."
+    },
+    {
+      "id": 4,
+      "issue": "Missing `<meta name="viewport">` for mobile responsiveness",
+      "severity": "critical",
+      "fix": "Add `<meta name="viewport" content="width=device-width, initial-scale=1.0">` to support mobile SEO."
+    },
+    {
+      "id": 5,
+      "issue": "No canonical URL specified",
+      "severity": "major",
+      "fix": "Add `<link rel="canonical" href="https://example.com/page-1234">` to avoid duplicate content issues."
+    },
+    {
+      "id": 6,
+      "issue": "URL contains tracking parameters (`?ref=123&utm=abc`)",
+      "severity": "major",
+      "fix": "Use **clean URLs** (e.g., `example.com/page-123`) or self-referencing UTM tags (e.g., `utm_source=internal`)."
+    },
+    {
+      "id": 7,
+      "issue": "No `alt` text for images (`product1.jpg`, `product2.jpg`, `banner.jpg`)",
+      "severity": "major",
+      "fix": "Add descriptive `alt` attributes (e.g., `<img src="product1.jpg" alt="Black leather shoes on sale">`)."
+    },
+    {
+      "id": 8,
+      "issue": "Hidden keyword stuffing in `<div style="display:none">`",
+      "severity": "major",
+      "fix": "Remove hidden text. Use **semantic HTML** (e.g., `<footer>`) or **schema markup** for keywords."
+    },
+    {
+      "id": 9,
+      "issue": "No semantic HTML structure (e.g., missing `<header>`, `<main>`, `<footer>`)",
+      "severity": "major",
+      "fix": "Wrap content in semantic tags for better readability and accessibility."
+    },
+    {
+      "id": 10,
+      "issue": "Unoptimized `<title>` tag (`Home` is vague)",
+      "severity": "major",
+      "fix": "Replace with a **targeted title** (e.g., `Buy Discount Shoes & Bags Online – Example Store`)."
+    },
+    {
+      "id": 11,
+      "issue": "No `schema.org` markup for products/offers",
+      "severity": "major",
+      "fix": "Add **Product Schema** (e.g., `<script type="application/ld+json">...</script>`) to enhance rich snippets."
+    },
+    {
+      "id": 12,
+      "issue": "Outdated `<meta name="keywords">` (deprecated by search engines)",
+      "severity": "minor",
+      "fix": "Remove the `<meta keywords>` tag—use **natural keyword placement** in content instead."
+    },
+    {
+      "id": 13,
+      "issue": "No internal linking strategy (only external links to `/products` and `/about`)",
+      "severity": "minor",
+      "fix": "Add **internal links** to related pages (e.g., category pages, blog posts) to improve crawlability."
+    },
+    {
+      "id": 14,
+      "issue": "Unoptimized anchor text (`Click here` in links)",
+      "severity": "minor",
+      "fix": "Use **descriptive anchor text** (e.g., `<a href="/products">Shop Our Discount Shoes</a>`)."
+    },
+    {
+      "id": 15,
+      "issue": "No `rel="nofollow"` for external links (e.g., `https://example.com/products`)",
+      "severity": "minor",
+      "fix": "Add `rel="nofollow"` to external links if they’re not editorially relevant (or use `rel="sponsored"` if paid)."
+    }
+  ],
+  "count": 15
+}
+```
+
+### Key Takeaways:
+1. **Critical Issues**: Fix these first (e.g., encoding, duplicate `<h1>`, missing meta tags).
+2. **Major Issues**: Address these next (e.g., images, schema, URL cleanup).
+3. **Minor Issues**: Optimize later (e.g., anchor text, internal links).
+
+Would you like a prioritized action plan for fixes?
