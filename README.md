@@ -1,5 +1,7 @@
 # 🦞 ClawEval — Can Your Local or Cloud LLM Actually Do the Job?
 
+[![AIgenteur](https://img.shields.io/badge/AIgenteur-cofounder%20OSS-e7c14b)](https://github.com/AIgenteur/aigenteur)
+
 **The only deterministic benchmark that tests LLMs as real AI agents** — not trivia, not chat, not vibes. 59 specialized roles. Hard, verifiable tasks. Every score is reproducible. Built for [OpenClaw](https://github.com/AIgenteur/ClawEval), [Hermes Agent](https://github.com/NousResearch/hermes-agent), and any model-agnostic agent framework.
 
 > 🔥 **New models added regularly.** Star ⭐ this repo to get notified when new results drop.
@@ -7,6 +9,8 @@
 > 📬 **[Subscribe to AIgenteur Dispatch](https://aigenteurdispatch.substack.com/)** — benchmark results, local AI guides, and agent workflows in your inbox.
 >
 > 🎓 **[Join AIgenteur Launchpad (free)](https://www.skool.com/aigenteur-academy-9764)** — community for freelancers and entrepreneurs putting AI agents to work. Want a model tested? Post your request in the community.
+>
+> 🤖 **Sister project: [AIgenteur](https://github.com/AIgenteur/aigenteur)** — open-source AI cofounder for solopreneurs. ClawEval grades the agents it dispatches.
 
 > 💡 **You'd be surprised** how well some small, fast models handle sub-agent tasks — even on an RTX 3090 (we got ours for $799). Before you rent cloud GPUs, check the scores below.
 
@@ -621,4 +625,5 @@ MIT
 
 - **Newsletter**: [AIgenteur Dispatch](https://aigenteurdispatch.substack.com/) — subscribe for new benchmark results and AI agent guides
 - **Community**: [AIgenteur Launchpad (free)](https://www.skool.com/aigenteur-academy-9764) — discuss results, get help, share what's working
+- **Sister project**: [AIgenteur](https://github.com/AIgenteur/aigenteur) — main cofounder repo. ClawEval is the eval harness it grades itself with.
 - **GitHub**: [github.com/AIgenteur/ClawEval](https://github.com/AIgenteur/ClawEval)
