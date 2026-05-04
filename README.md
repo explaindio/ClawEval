@@ -6,7 +6,7 @@
 >
 > 📬 **[Subscribe to AIgenteur Dispatch](https://aigenteurdispatch.substack.com/)** — benchmark results, local AI guides, and agent workflows in your inbox.
 >
-> 🎓 **[Join AIgenteur Academy (free)](https://www.skool.com/aigenteur-academy-9764)** — community for freelancers and entrepreneurs putting AI agents to work. Want a model tested? Post your request in the community.
+> 🎓 **[Join AIgenteur Launchpad (free)](https://www.skool.com/aigenteur-academy-9764)** — community for freelancers and entrepreneurs putting AI agents to work. Want a model tested? Post your request in the community.
 
 > 💡 **You'd be surprised** how well some small, fast models handle sub-agent tasks — even on an RTX 3090 (we got ours for $799). Before you rent cloud GPUs, check the scores below.
 
@@ -620,5 +620,5 @@ MIT
 ## 🔗 Links
 
 - **Newsletter**: [AIgenteur Dispatch](https://aigenteurdispatch.substack.com/) — subscribe for new benchmark results and AI agent guides
-- **Community**: [AIgenteur Academy (free)](https://www.skool.com/aigenteur-academy-9764) — discuss results, get help, share what's working
+- **Community**: [AIgenteur Launchpad (free)](https://www.skool.com/aigenteur-academy-9764) — discuss results, get help, share what's working
 - **GitHub**: [github.com/AIgenteur/ClawEval](https://github.com/AIgenteur/ClawEval)
